@@ -1385,3 +1385,284 @@
           </div>
         </div>
       </section>
+      <!-- TRANSITION BAR -->
+      <div class="transition-strip">
+        CONTACT • BULK • RESEARCH COLLABORATION
+      </div>
+
+      <!-- CONTACT / FOOTER SECTION -->
+      <section id="contact" style="
+        padding:32px 22px 30px;
+        background:linear-gradient(135deg,#020617,#020617,#020617);
+        border-radius:22px;
+        margin-top:18px;
+        margin-bottom:24px;
+      ">
+        <div style="max-width:900px;margin:0 auto 18px;text-align:center;">
+          <h2 style="
+            font-size:22px;
+            font-weight:800;
+            text-transform:uppercase;
+            margin-bottom:6px;
+            background:linear-gradient(135deg,#fb923c,#f97316,#facc15);
+            -webkit-background-clip:text;
+            color:transparent;
+          ">
+            Bulk, Research &amp; Long-Term Partners
+          </h2>
+          <p style="font-size:13px;line-height:1.9;color:#e5e7eb;">
+            For serious inquiries about planting, research collaboration, or future bulk use of
+            <span style="color:var(--accent-green);">MayaNut</span> powder, please reach out directly.
+            This phase is about building foundations — genetics, plantations, and knowledge —
+            more than pushing product.
+          </p>
+        </div>
+
+        <div style="
+          max-width:760px;
+          margin:0 auto 20px;
+          background:rgba(15,23,42,0.96);
+          border-radius:18px;
+          padding:16px 18px;
+          box-shadow:0 10px 30px rgba(0,0,0,0.9);
+          color:#e5e7eb;
+          font-size:13px;
+          line-height:1.8;
+          border:1px solid rgba(148,163,184,0.8);
+        ">
+          <p style="margin-bottom:6px;">
+            📧 Email:
+            <strong>themayanutcompany@gmail.com</strong>
+          </p>
+          <p style="margin-bottom:0;">
+            When writing, you can mention:
+            approximate volumes you have in mind, whether you are a grower, researcher,
+            café / beverage brand, or community project — and how you imagine
+            <span style="color:var(--accent-green);">MayaNut</span> fitting into that vision.
+          </p>
+        </div>
+
+        <!-- BOTTOM LOGO -->
+        <div style="max-width:220px;margin:0 auto 18px;">
+          <img src="mayanut-the-maya-nut-company-logo.png"
+               alt="The MayaNut Company logo"
+               style="
+                 width:100%;
+                 display:block;
+                 filter:drop-shadow(0 16px 40px rgba(0,0,0,0.95));
+               ">
+        </div>
+
+        <footer style="max-width:900px;margin:0 auto;">
+          <div style="
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+            font-size:11px;
+            color:#9ca3af;
+          ">
+            <div>
+              © <span id="footer-year"></span>
+              <span style="color:#facc15;">The MayaNut Company, Inc.</span>
+              All rights reserved.
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <a href="#faq" style="color:#e5e7eb;text-decoration:none;border-bottom:1px dotted #e5e7eb;">
+                FAQ
+              </a>
+              <a href="#research" style="color:#e5e7eb;text-decoration:none;border-bottom:1px dotted #e5e7eb;">
+                Research
+              </a>
+              <a href="#hero" style="color:#e5e7eb;text-decoration:none;border-bottom:1px dotted #e5e7eb;">
+                Back to top
+              </a>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <!-- SMALL HIDDEN SEO KEYWORDS SPAN -->
+    <span style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+      MayaNut superfood, Brosimum alicastrum, nuez de ramón, ojoche, breadnut,
+      tropical agroforestry, South Florida trials, canopy tree crop, sustainable powder,
+      climate-resilient agriculture, The MayaNut Company.
+    </span>
+
+    <!-- CORE INTERACTION SCRIPT -->
+    <script>
+      (function(){
+        const $  = (sel, root=document) => root.querySelector(sel);
+        const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+        /* Logo scroll-to-top */
+        const logoClick = $('#site-logo-click');
+        if(logoClick){
+          logoClick.addEventListener('click', (e)=>{
+            e.preventDefault();
+            window.scrollTo({top:0, behavior:'smooth'});
+          });
+        }
+
+        /* Smooth scroll for elements with data-scroll-target */
+        function bindSmoothScroll(el){
+          const targetSel = el.getAttribute('data-scroll-target');
+          if(!targetSel) return;
+          el.addEventListener('click', (e)=>{
+            e.preventDefault();
+            const target = document.querySelector(targetSel);
+            if(target){
+              target.scrollIntoView({behavior:'smooth', block:'start'});
+            }
+          });
+        }
+        $$('[data-scroll-target]').forEach(bindSmoothScroll);
+
+        /* Scroll-spy for active nav link */
+        const navLinks = $$('.nav-link');
+        const sectionIds = ['hero','store','about','research','gallery','recipes','faq','contact'];
+        const linkMap = {};
+        navLinks.forEach(link=>{
+          const t = link.getAttribute('data-scroll-target');
+          if(t && t.startsWith('#')){
+            linkMap[t.slice(1)] = link;
+          }
+        });
+
+        const observer = new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              const id = entry.target.id;
+              if(linkMap[id]){
+                navLinks.forEach(l=>l.classList.remove('nav-link--active'));
+                linkMap[id].classList.add('nav-link--active');
+              }
+            }
+          });
+        }, {threshold:0.4});
+
+        sectionIds.forEach(id=>{
+          const el = document.getElementById(id);
+          if(el) observer.observe(el);
+        });
+
+        /* Language switching */
+        const langSel = $('#language-select');
+        if(langSel){
+          langSel.addEventListener('change', ()=>{
+            const v = langSel.value;
+            if(v === 'en') window.location.href = 'index.html';
+            else if(v === 'es') window.location.href = 'index-es.html';
+            else if(v === 'fr') window.location.href = 'index-fr.html';
+            else if(v === 'pt') window.location.href = 'index-pt.html';
+            else if(v === 'de') window.location.href = 'index-de.html';
+            else if(v === 'it') window.location.href = 'index-it.html';
+            else if(v === 'nl') window.location.href = 'index-nl.html';
+            else if(v === 'sv') window.location.href = 'index-sv.html';
+            else if(v === 'no') window.location.href = 'index-no.html';
+            else if(v === 'da') window.location.href = 'index-da.html';
+            else if(v === 'fi') window.location.href = 'index-fi.html';
+            else if(v === 'ru') window.location.href = 'index-ru.html';
+            else if(v === 'hi') window.location.href = 'index-hi.html';
+            else if(v === 'ar-eg') window.location.href = 'index-ar-eg.html';
+            else if(v === 'ja') window.location.href = 'index-ja.html';
+            else if(v === 'sw') window.location.href = 'index-sw.html';
+            else if(v === 'el') window.location.href = 'index-el.html';
+          });
+        }
+
+        /* Store search simple highlight */
+        const storeSearch = $('#store-search');
+        if(storeSearch){
+          const productCards = $$('.product-card');
+          storeSearch.addEventListener('input', ()=>{
+            const q = storeSearch.value.toLowerCase();
+            productCards.forEach(card=>{
+              const text = card.textContent.toLowerCase();
+              card.style.outline = q && text.includes(q)
+                ? '1px solid rgba(7,237,218,0.9)'
+                : 'none';
+            });
+          });
+        }
+
+        /* FAQ mini-bot */
+        const faqOutput = $('#faq-output');
+        const faqInput  = $('#faq-input');
+        const faqSend   = $('#faq-send');
+
+        const replies = {
+          superfood:
+            "We treat MayaNut as a superfood because the roasted seed of " +
+            "Brosimum alicastrum can be turned into a versatile powder. It can go into drinks, " +
+            "porridges, and baking while coming from a long-lived canopy tree crop.",
+          tree:
+            "Brosimum alicastrum is an evergreen canopy tree in the Moraceae family. It stores " +
+            "carbon, stabilizes soils, and offers fruit with an edible seed that can be roasted " +
+            "and milled into MayaNut powder.",
+          products:
+            "The first realistic products are roasted MayaNut powder and powder-based drinks. " +
+            "These will arrive once plantations mature and we have reliable seed supply.",
+          mission:
+            "The mission of The MayaNut Company is to make Brosimum alicastrum impossible to ignore: " +
+            "a real, planted tree crop for the next century that links ecology, food, and culture."
+        };
+
+        function answerTopic(topic){
+          if(!faqOutput) return;
+          if(replies[topic]){
+            faqOutput.textContent = replies[topic];
+          }
+        }
+
+        $$('.faq-chip').forEach(chip=>{
+          chip.addEventListener('click', ()=>{
+            const t = chip.getAttribute('data-topic');
+            answerTopic(t);
+          });
+        });
+
+        function answerFreeform(){
+          if(!faqInput || !faqOutput) return;
+          const q = (faqInput.value || '').toLowerCase();
+          if(!q.trim()){
+            faqOutput.textContent =
+              "Ask about the tree, MayaNut powder, research, plantations, or the long-term vision.";
+            return;
+          }
+          if(q.includes('superfood') || q.includes('nutrit')){
+            answerTopic('superfood');
+          }else if(q.includes('tree') || q.includes('roots') || q.includes('canopy')){
+            answerTopic('tree');
+          }else if(q.includes('product') || q.includes('drink') || q.includes('powder')){
+            answerTopic('products');
+          }else if(q.includes('mission') || q.includes('why') || q.includes('vision')){
+            answerTopic('mission');
+          }else{
+            faqOutput.textContent =
+              "Short version: MayaNut is the roasted seed powder of Brosimum alicastrum, grown as a " +
+              "future tree crop. This site tracks the genetics, plantations, and product concepts.";
+          }
+        }
+
+        if(faqSend){
+          faqSend.addEventListener('click', answerFreeform);
+        }
+        if(faqInput){
+          faqInput.addEventListener('keydown', (e)=>{
+            if(e.key === 'Enter'){
+              e.preventDefault();
+              answerFreeform();
+            }
+          });
+        }
+
+        /* Footer year */
+        const y = document.getElementById('footer-year');
+        if(y){ y.textContent = new Date().getFullYear(); }
+      })();
+    </script>
+  </body>
+</html>

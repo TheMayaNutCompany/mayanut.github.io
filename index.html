@@ -18,17 +18,20 @@
     :root{
       --text-main: #0f172a;
       --text-muted: #6b7280;
-      --accent-blue: #084AC5;
-      --accent-blue-light: #53D5E9;
-      --accent-green: #16a34a;
+      --accent-blue: #2563eb;
+      --accent-blue-soft: #eff6ff;
+      --accent-cyan: #07edda;
       --border-soft: #e5e7eb;
+      --bg-frame-top: #ffffff;
+      --bg-frame-mid: #f3f4f6;
+      --bg-frame-bottom: #e5e7eb;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background:#020617 url("mayanutimagebackground.png") center/cover fixed no-repeat;
+      background:#d4d4d4;
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
     }
@@ -39,56 +42,97 @@
       padding:20px 12px 40px;
       display:flex;
       justify-content:center;
-      align-items:flex-start;
     }
 
     .page-frame{
       width:100%;
       max-width:1050px;
-      background:linear-gradient(to bottom,#ffffff 0%,#f3f4f6 50%,#d1d5db 100%);
+      background:linear-gradient(to bottom,var(--bg-frame-top),var(--bg-frame-mid),var(--bg-frame-bottom));
       border-radius:28px;
-      box-shadow:0 20px 60px rgba(15,23,42,0.28);
+      box-shadow:0 20px 60px rgba(15,23,42,0.08);
       overflow:hidden;
-      border:1px solid rgba(148,163,184,0.4);
       position:relative;
     }
 
     /* HEADER / TOP TAB */
     .site-header{
       padding:10px 22px;
-      background:#ffffff; /* top tab stays white */
+      background:#ffffff;
       display:flex;
       align-items:center;
       justify-content:space-between;
       position:relative;
-      z-index:5;
+      z-index:10;
     }
 
-    .header-left,
-    .header-center,
-    .header-right{
-      display:flex;
-      align-items:center;
-      min-width:0;
+    /* floating effect – we’ll show background through tab-gap instead of a line */
+    .site-header::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:0; /* no visible line; gap below shows outer background */
+      height:0;
+    }
+
+    /* GAP BETWEEN HEADER AND CONTENT (shows outer background) */
+    .tab-gap{
+      height:14px;
+      background:transparent;
+      margin:0 22px;
+      border-radius:0 0 18px 18px;
     }
 
     .header-left{
-      justify-content:flex-start;
+      display:flex;
+      align-items:center;
       gap:10px;
+      min-width:0;
     }
 
-    .header-center{
+    /* Gear icon */
+    .icon-gear{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:#f9fafb;
+      display:flex;
+      align-items:center;
       justify-content:center;
-      flex:1;
+      cursor:pointer;
+    }
+    .icon-gear svg{
+      width:16px;
+      height:16px;
+      fill:#4b5563;
+    }
+
+    /* Centered logo */
+    .header-center{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none; /* so clicks go to img only */
+    }
+    .header-center img{
+      width:70px;
+      cursor:pointer;
+      pointer-events:auto;
     }
 
     .header-right{
-      justify-content:flex-end;
-      gap:14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
-    /* Settings gear */
-    .settings-btn{
+    /* Hamburger menu */
+    .icon-menu{
       width:28px;
       height:28px;
       border-radius:999px;
@@ -99,146 +143,12 @@
       justify-content:center;
       cursor:pointer;
     }
-    .settings-btn svg{
-      width:15px;
-      height:15px;
-      stroke:#4b5563;
-      fill:none;
-    }
-
-    /* Centered logo */
-    .site-logo{
-      width:70px;
-      cursor:pointer;
-      display:block;
-    }
-
-    /* Hamburger */
-    .hamburger{
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#f9fafb;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-    }
-    .hamburger svg{
+    .icon-menu svg{
       width:16px;
       height:16px;
       fill:#4b5563;
     }
 
-    /* MENU DROPDOWN – right frame */
-    .menu-dropdown{
-      position:absolute;
-      top:44px;
-      right:22px;
-      background:rgba(255,255,255,0.98);
-      border-radius:18px;
-      border:1px solid #e5e7eb;
-      box-shadow:0 18px 40px rgba(15,23,42,0.22);
-      padding:10px 0;
-      width:190px;
-      display:none;
-      z-index:20;
-    }
-    .menu-dropdown.open{ display:block; }
-    .menu-item{
-      padding:7px 14px;
-      font-size:13px;
-      color:#111827;
-      cursor:pointer;
-      display:block;
-      text-decoration:none;
-    }
-    .menu-item:hover{
-      background:#eff6ff;
-      color:#1d4ed8;
-    }
-
-    /* SETTINGS PANEL – left frame */
-    .settings-panel{
-      position:absolute;
-      top:44px;
-      left:22px;
-      width:230px;
-      background:rgba(255,255,255,0.98);
-      border-radius:18px;
-      border:1px solid #e5e7eb;
-      box-shadow:0 18px 40px rgba(15,23,42,0.22);
-      padding:12px 14px;
-      display:none;
-      z-index:20;
-      font-size:13px;
-      color:#111827;
-    }
-    .settings-panel.open{ display:block; }
-
-    .settings-section-title{
-      font-weight:600;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      color:#6b7280;
-      margin-bottom:4px;
-    }
-    .settings-field{
-      margin-bottom:10px;
-    }
-    .lang-select{
-      width:100%;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      padding:6px 10px;
-      font-size:12px;
-      background:#f9fafb;
-      color:#111827;
-      cursor:pointer;
-    }
-    .toggle-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-top:6px;
-    }
-    .toggle-label{
-      font-size:12px;
-      color:#374151;
-    }
-    .toggle{
-      width:40px;
-      height:22px;
-      border-radius:999px;
-      background:#e5e7eb;
-      position:relative;
-      cursor:pointer;
-    }
-    .toggle-handle{
-      position:absolute;
-      top:3px;
-      left:3px;
-      width:16px;
-      height:16px;
-      border-radius:999px;
-      background:white;
-      box-shadow:0 1px 2px rgba(0,0,0,0.25);
-      transition:left .16s ease;
-    }
-    .toggle.on{
-      background:#22c55e;
-    }
-    .toggle.on .toggle-handle{
-      left:21px;
-    }
-    .settings-version{
-      margin-top:6px;
-      font-size:11px;
-      color:#9ca3af;
-      text-align:right;
-    }
     /* HERO LAYOUT */
     #hero{
       padding:26px 22px 30px;
@@ -255,24 +165,8 @@
     .hero-left{
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:14px;
       justify-content:center;
-    }
-
-    /* Coming soon image (hidden on mobile) */
-    .hero-top-image{
-      width:100%;
-      max-width:380px;
-      margin:0 auto 12px;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid #e5e7eb;
-      box-shadow:0 12px 30px rgba(15,23,42,0.12);
-    }
-    .hero-top-image img{
-      width:100%;
-      height:auto;
-      display:block;
     }
 
     .hero-kicker{
@@ -290,10 +184,10 @@
       letter-spacing:0.08em;
     }
     .hero-title span{
-      color:var(--accent-blue);
+      color:#084ac5;
       text-decoration:underline;
       text-decoration-thickness:2px;
-      text-underline-offset:3px;
+      text-underline-offset:2px;
     }
 
     .hero-sub{
@@ -302,7 +196,7 @@
       color:var(--text-muted);
     }
     .hero-sub em{ font-style:italic; }
-    .hero-sub .name-green{ color:var(--accent-green); font-weight:600; }
+    .hero-sub .name-green{ color:#16a34a; font-weight:600; }
 
     .hero-cta-row{
       display:flex;
@@ -314,7 +208,7 @@
       padding:8px 16px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
-      background:rgba(83,213,233,0.18);
+      background:rgba(7,237,218,0.16);
       color:#111827;
       font-size:11px;
       text-transform:uppercase;
@@ -324,7 +218,7 @@
       transition:background .16s ease,border-color .16s ease;
     }
     .btn:hover{
-      background:rgba(83,213,233,0.28);
+      background:rgba(7,237,218,0.22);
       border-color:#9ca3af;
     }
 
@@ -335,7 +229,7 @@
     }
     .hero-meta strong{ color:#111827; }
 
-    /* STORE PANEL */
+    /* STORE INSIDE HERO (RIGHT SIDE) */
     #store-panel{
       border-radius:22px;
       border:1px solid #e5e7eb;
@@ -366,46 +260,34 @@
       gap:6px;
       align-items:center;
     }
-    .store-search-wrapper{
-      position:relative;
-      flex:1;
-    }
-    .search-icon{
-      position:absolute;
-      left:8px;
-      top:50%;
-      transform:translateY(-50%);
-      font-size:13px;
+    .store-search span{
+      font-size:14px;
     }
     .store-search input{
       flex:1;
-      width:100%;
-      padding:8px 10px 8px 24px;
+      padding:8px 10px;
       border-radius:999px;
       border:1px solid #d1d5db;
       font-size:12px;
       background:white;
       color:#111827;
     }
-    .store-view-full{
-      padding:7px 10px;
+    .store-search button{
+      padding:6px 10px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
-      background:rgba(83,213,233,0.14);
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.12em;
+      background:rgba(7,237,218,0.16);
       cursor:pointer;
-      white-space:nowrap;
     }
 
-    .store-scroll{
+    /* Product grid (desktop: 4 cards, no scroll) */
+    .store-grid{
       margin-top:10px;
-      overflow:visible;
-    }
-    .products-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
       gap:12px;
     }
     .product-card{
@@ -418,14 +300,14 @@
       align-items:center;
       text-align:center;
       cursor:pointer;
-      transition:transform .16s ease, box-shadow .16s ease;
+      transition:transform .15s ease, box-shadow .15s ease;
     }
     .product-card:hover{
       transform:translateY(-2px);
-      box-shadow:0 10px 24px rgba(15,23,42,0.18);
+      box-shadow:0 10px 30px rgba(15,23,42,0.12);
     }
     .product-card img{
-      width:70px;
+      width:80px;
       margin-bottom:8px;
     }
     .product-name{
@@ -443,251 +325,202 @@
       padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
-      background:rgba(83,213,233,0.16);
+      background:rgba(7,237,218,0.16);
       font-size:11px;
       letter-spacing:0.12em;
       text-transform:uppercase;
       cursor:pointer;
     }
 
-    /* FOOTER */
-    footer{
-      padding:10px 22px 18px;
-      border-top:1px solid #e5e7eb;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-      font-size:11px;
-      color:#6b7280;
+    /* BOTTOM GAP (between content and footer, showing outer background) */
+    .bottom-gap{
+      height:14px;
       background:transparent;
+      margin:0 22px;
+      border-radius:18px 18px 0 0;
     }
-    .footer-center img{
-      width:56px;
+
+    /* FOOTER TAB */
+    footer{
+      padding:12px 22px 18px;
+      background:#ffffff;
+      border-radius:0 0 28px 28px;
+      position:relative;
     }
-    .footer-left{
-      flex:1;
+    .footer-inner{
+      position:relative;
+      text-align:center;
+      font-size:11px;
+      color:#9ca3af;
     }
-    .footer-center{
-      flex:0;
-      display:flex;
-      justify-content:center;
-    }
-    .footer-right{
-      flex:1;
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:10px;
-    }
-    .footer-instagram{
-      width:28px;
-      height:28px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#f9fafb;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .footer-logo{
+      display:inline-block;
       cursor:pointer;
     }
+    .footer-logo img{
+      width:64px;
+      margin:0 auto 4px;
+      display:block;
+    }
+    .footer-text{
+      margin-top:2px;
+    }
+    .footer-instagram{
+      position:absolute;
+      right:0;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      align-items:center;
+      gap:4px;
+      color:#4b5563;
+      text-decoration:none;
+      font-size:11px;
+    }
     .footer-instagram svg{
-      width:15px;
-      height:15px;
+      width:16px;
+      height:16px;
       fill:#4b5563;
     }
 
-    @media(max-width:640px){
-      footer{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .footer-left,.footer-center,.footer-right{
-        flex:none;
-        justify-content:flex-start;
-      }
-    }
-
-    /* MOBILE-SPECIFIC LAYOUT CHANGES */
-    @media(max-width:880px){
-      /* Hide coming-soon image on mobile */
-      .hero-top-image{
-        display:none;
-      }
-      /* Store panel first, text second on mobile */
-      #hero{
-        display:flex;
-        flex-direction:column;
-      }
-      #store-panel{
-        order:1;
-      }
-      .hero-left{
-        order:2;
-      }
-
-      /* Store scroll becomes horizontal carousel on mobile */
-      .store-scroll{
-        overflow-x:auto;
-        padding-bottom:6px;
-      }
-      .products-grid{
-        display:flex;
-        gap:12px;
-        min-width:520px;
-      }
-      .product-card{
-        flex:0 0 210px;
-      }
-    }
-
-    /* WELCOME OVERLAY */
-    .welcome-overlay{
+    /* SIMPLE OVERLAYS FOR SETTINGS & MENU */
+    .overlay{
       position:fixed;
       inset:0;
-      background:rgba(15,23,42,0.65);
-      display:flex;
+      background:rgba(15,23,42,0.45);
+      display:none;
       align-items:center;
       justify-content:center;
-      z-index:100;
+      z-index:50;
     }
-    .welcome-card{
-      width:100%;
-      max-width:360px;
+    .overlay.active{ display:flex; }
+
+    .overlay-panel{
+      width:90%;
+      max-width:420px;
       background:#ffffff;
-      border-radius:22px;
-      padding:18px 20px 20px;
-      box-shadow:0 22px 60px rgba(0,0,0,0.35);
-      font-size:13px;
-      color:#111827;
+      border-radius:18px;
+      padding:18px 16px 20px;
+      box-shadow:0 20px 60px rgba(15,23,42,0.25);
     }
-    .welcome-title{
-      font-size:16px;
+
+    .overlay-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .overlay-title{
+      font-size:14px;
       font-weight:700;
-      margin-bottom:6px;
     }
-    .welcome-body{
-      font-size:13px;
-      line-height:1.7;
-      color:#4b5563;
-      margin-bottom:10px;
-    }
-    .welcome-field{
-      margin-bottom:10px;
-    }
-    .welcome-label{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
+    .overlay-close{
+      border:none;
+      background:transparent;
+      font-size:18px;
+      cursor:pointer;
+      line-height:1;
       color:#6b7280;
-      margin-bottom:3px;
     }
-    .welcome-select{
-      width:100%;
+
+    .settings-row{
+      margin-bottom:12px;
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .settings-row label{
+      margin-right:8px;
+    }
+    .settings-lang{
       border-radius:999px;
       border:1px solid #d1d5db;
       padding:6px 10px;
       font-size:12px;
       background:#f9fafb;
-      color:#111827;
+      max-width:180px;
+    }
+    .settings-link{
+      font-size:12px;
+      color:#2563eb;
+      text-decoration:underline;
       cursor:pointer;
     }
-    .welcome-actions{
-      display:flex;
-      justify-content:flex-end;
-      margin-top:4px;
-    }
-    .welcome-btn{
-      padding:7px 16px;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,0.7);
-      background:rgba(83,213,233,0.2);
+    .settings-version{
+      margin-top:6px;
       font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.14em;
+      color:#9ca3af;
+      text-align:right;
+    }
+
+    /* MENU LIST OVERLAY */
+    .menu-list{
+      list-style:none;
+      padding:4px 0;
+      margin:0;
+    }
+    .menu-list li{
+      margin-bottom:6px;
+    }
+    .menu-list button{
+      width:100%;
+      text-align:left;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      font-size:13px;
       cursor:pointer;
     }
+
+    @media(max-width:780px){
+      #hero{
+        grid-template-columns:1fr;
+      }
+      .footer-instagram{
+        right:8px;
+      }
+    }
+
   </style>
 </head>
 <body>
   <main>
     <div class="page-frame" id="top">
-      <!-- HEADER -->
+
+      <!-- HEADER (white top tab with centered logo) -->
       <header class="site-header">
-        <!-- Left: settings gear -->
         <div class="header-left">
-          <button class="settings-btn" id="settings-btn" aria-label="Settings">
-            <svg viewBox="0 0 24 24">
-              <path d="M10.325 4.317a1 1 0 0 1 .965-.263l1.414.377a1 1 0 0 0 1.018-.27l.9-.9a1 1 0 0 1 1.414 0l1.414 1.414a1 1 0 0 1 0 1.414l-.9.9a1 1 0 0 0-.27 1.018l.377 1.414a1 1 0 0 1-.263.965l-.707.707a1 1 0 0 1-.707.293h-.586a1 1 0 0 0-.707.293l-.707.707a1 1 0 0 1-.965.263l-1.414-.377a1 1 0 0 0-1.018.27l-.9.9a1 1 0 0 1-1.414 0L6.05 14.95a1 1 0 0 1 0-1.414l.9-.9a1 1 0 0 0 .27-1.018l-.377-1.414a1 1 0 0 1 .263-.965l.707-.707A1 1 0 0 1 8.52 8.24h.586a1 1 0 0 0 .707-.293l.707-.707z"/>
+          <button class="icon-gear" id="settings-btn" aria-label="Settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19.14,12.94a7.14,7.14,0,0,0,.05-.94,7.14,7.14,0,0,0-.05-.94l2.11-1.65a.5.5,0,0,0,.12-.63l-2-3.46a.5.5,0,0,0-.61-.22l-2.49,1a6.9,6.9,0,0,0-1.63-.94l-.38-2.65A.5.5,0,0,0,13.71,2H10.29a.5.5,0,0,0-.5.42L9.41,5.07a6.9,6.9,0,0,0-1.63.94l-2.49-1a.5.5,0,0,0-.61.22l-2,3.46a.5.5,0,0,0,.12.63L4.86,11.06a7.14,7.14,0,0,0-.05.94,7.14,7.14,0,0,0,.05.94L2.75,14.59a.5.5,0,0,0-.12.63l2,3.46a.5.5,0,0,0,.61.22l2.49-1a6.9,6.9,0,0,0,1.63.94l.38,2.65a.5.5,0,0,0,.5.42h3.42a.5.5,0,0,0,.5-.42l.38-2.65a6.9,6.9,0,0,0,1.63-.94l2.49,1a.5.5,0,0,0,.61-.22l2-3.46a.5.5,0,0,0-.12-.63ZM12,15.5A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"></path>
             </svg>
           </button>
         </div>
 
-        <!-- Center: logo -->
         <div class="header-center">
           <img src="mayanut-the-maya-nut-company-logo.png"
                alt="The MayaNut Company logo"
-               class="site-logo"
                id="logo-top" />
         </div>
 
-        <!-- Right: hamburger -->
         <div class="header-right">
-          <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-            <svg viewBox="0 0 24 24">
-              <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+          <button class="icon-menu" id="menu-btn" aria-label="Open menu">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
             </svg>
           </button>
         </div>
-
-        <!-- MENU DROPDOWN -->
-        <nav class="menu-dropdown" id="menu-dropdown" aria-label="Main menu">
-          <a class="menu-item" href="index.html">Home</a>
-          <a class="menu-item" href="store.html">Store</a>
-          <a class="menu-item" href="about.html">About</a>
-          <a class="menu-item" href="research.html">Research</a>
-          <a class="menu-item" href="gallery.html">Gallery</a>
-          <a class="menu-item" href="faq.html">FAQ</a>
-          <a class="menu-item" href="contact.html">Contact</a>
-        </nav>
-
-        <!-- SETTINGS PANEL -->
-        <div class="settings-panel" id="settings-panel">
-          <div class="settings-field">
-            <div class="settings-section-title">Language</div>
-            <select class="lang-select" id="language-select">
-              <option value="en" selected>English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="pt">Português</option>
-              <option value="de">Deutsch</option>
-              <option value="ja">日本語</option>
-            </select>
-          </div>
-          <div class="settings-field">
-            <div class="settings-section-title">Theme</div>
-            <div class="toggle-row">
-              <div class="toggle-label">Dark theme (beta)</div>
-              <div class="toggle" id="theme-toggle">
-                <div class="toggle-handle"></div>
-              </div>
-            </div>
-          </div>
-          <div class="settings-version">
-            V 1.0.5
-          </div>
-        </div>
       </header>
-      <!-- HERO SECTION (text left, store right) -->
-      <section id="hero">
-        <!-- LEFT: IMAGE + TEXT -->
-        <div class="hero-left">
-          <!-- Coming soon image (desktop / tablet only) -->
-          <div class="hero-top-image">
-            <img src="mayanutstorecomingsoonarrow.png"
-                 alt="MayaNut store coming soon arrow" />
-          </div>
 
+      <!-- Floating gap under header (shows outer background) -->
+      <div class="tab-gap"></div>
+
+      <!-- HERO + STORE (only content) -->
+      <section id="hero">
+        <!-- LEFT: TEXT -->
+        <div class="hero-left">
           <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
 
           <h1 class="hero-title">
@@ -698,18 +531,14 @@
           <p class="hero-sub">
             <span class="name-green">MayaNut</span> is the roasted seed of
             <span class="name-green"><em>Brosimum alicastrum</em></span>, a long-lived tropical canopy tree.
-            The MayaNut Company, Inc. is a focused project in South Florida working to turn
+            The MayaNut Company, Inc. is a small, focused project in South Florida working to turn
             hundreds of seed-grown trees into a future source of
             <span class="name-green">MayaNut powder</span> and reforestation plantings.
           </p>
 
           <div class="hero-cta-row">
-            <button class="btn" onclick="window.location.href='about.html'">
-              Learn more
-            </button>
-            <button class="btn" onclick="window.location.href='research.html'">
-              Research
-            </button>
+            <button class="btn" data-nav="about.html">Learn more</button>
+            <button class="btn" data-nav="research.html">Research</button>
           </div>
 
           <div class="hero-meta">
@@ -718,165 +547,109 @@
           </div>
         </div>
 
-        <!-- RIGHT: STORE PREVIEW -->
+        <!-- RIGHT: STORE PREVIEW (4 products, no page scroll glitch) -->
         <aside id="store-panel" aria-label="Future store preview">
           <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
           <p class="store-sub">
-            When plantations mature, the first real offerings are expected to be
-            <span class="name-green">MayaNut powder</span> and powder-based drinks.
+            Early glimpse of concept products that will exist once plantations mature and
+            seed supply is reliable.
           </p>
 
           <div class="store-search">
-            <div class="store-search-wrapper">
-              <span class="search-icon">🔍</span>
-              <input id="store-search" type="text" placeholder="Search future products…" />
-            </div>
-            <button class="store-view-full" onclick="window.location.href='store.html'">
-              View full store
-            </button>
+            <span>🔍</span>
+            <input id="store-search" type="text" placeholder="Search future products…" />
+            <button id="store-view-full" type="button">Full store</button>
           </div>
 
-          <div class="store-scroll" id="store-scroll">
-            <div class="products-grid">
-              <!-- Product 1 -->
-              <article class="product-card" data-name="powder"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut powder concept"/>
-                <div class="product-name">MayaNut Powder</div>
-                <p class="product-text">
-                  Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
+          <!-- 4 products (grid) -->
+          <div class="store-grid">
+            <!-- Product 1 -->
+            <article class="product-card" data-name="powder">
+              <img src="mayanut-the-maya-nut-company-logo.png"
+                   alt="MayaNut powder concept" />
+              <div class="product-name">MayaNut Powder</div>
+              <p class="product-text">
+                Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
+              </p>
+              <button class="product-btn">Order (soon)</button>
+            </article>
 
-              <!-- Product 2 -->
-              <article class="product-card" data-name="latte drink"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Instant MayaNut latte concept"/>
-                <div class="product-name">Instant MayaNut Latte</div>
-                <p class="product-text">
-                  A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
+            <!-- Product 2 -->
+            <article class="product-card" data-name="latte drink">
+              <img src="mayanut-the-maya-nut-company-logo.png"
+                   alt="Instant MayaNut latte concept" />
+              <div class="product-name">Instant MayaNut Latte</div>
+              <p class="product-text">
+                A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
+              </p>
+              <button class="product-btn">Order (soon)</button>
+            </article>
 
-              <!-- Product 3 -->
-              <article class="product-card" data-name="baking blend"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut baking blend concept"/>
-                <div class="product-name">MayaNut Baking Blend</div>
-                <p class="product-text">
-                  A gluten-oriented blend for cookies, bars, and breads with a forest story.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
+            <!-- Product 3 -->
+            <article class="product-card" data-name="baking blend">
+              <img src="mayanut-the-maya-nut-company-logo.png"
+                   alt="MayaNut baking blend concept" />
+              <div class="product-name">MayaNut Baking Blend</div>
+              <p class="product-text">
+                A gluten-free oriented blend for cookies, bars, and breads with a forest story.
+              </p>
+              <button class="product-btn">Order (soon)</button>
+            </article>
 
-              <!-- Product 4 -->
-              <article class="product-card" data-name="iced drink"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Iced MayaNut drink concept"/>
-                <div class="product-name">Iced MayaNut Drink</div>
-                <p class="product-text">
-                  Chilled, plant-based, and built on roasted MayaNut powder for hot climates.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
-
-              <!-- Product 5 -->
-              <article class="product-card" data-name="nutrition bar"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut nutrition bar concept"/>
-                <div class="product-name">MayaNut Nutrition Bar</div>
-                <p class="product-text">
-                  A future bar concept using MayaNut powder as a core tree-based ingredient.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
-
-              <!-- Product 6 -->
-              <article class="product-card" data-name="cereal"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut cereal concept"/>
-                <div class="product-name">MayaNut Cereal Blend</div>
-                <p class="product-text">
-                  Concept for a breakfast cereal blend that features roasted MayaNut powder.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
-
-              <!-- Product 7 -->
-              <article class="product-card" data-name="concentrate"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut concentrate concept"/>
-                <div class="product-name">MayaNut Concentrate</div>
-                <p class="product-text">
-                  A future concentrated liquid base for cafés and beverage programs.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
-
-              <!-- Product 8 -->
-              <article class="product-card" data-name="capsule"
-                       onclick="window.location.href='store.html'">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut capsule concept"/>
-                <div class="product-name">MayaNut Capsules (Concept)</div>
-                <p class="product-text">
-                  A concept only — any supplement-style use would follow regulations and research.
-                </p>
-                <button class="product-btn">Order (soon)</button>
-              </article>
-            </div>
+            <!-- Product 4 -->
+            <article class="product-card" data-name="cold brew">
+              <img src="mayanut-the-maya-nut-company-logo.png"
+                   alt="Cold MayaNut drink concept" />
+              <div class="product-name">Cold MayaNut Drink</div>
+              <p class="product-text">
+                A chilled, smooth, tree-based drink concept built on MayaNut powder and plant milk.
+              </p>
+              <button class="product-btn">Order (soon)</button>
+            </article>
           </div>
         </aside>
       </section>
 
-      <!-- FOOTER -->
+      <!-- Gap above footer to show outer background -->
+      <div class="bottom-gap"></div>
+
+      <!-- FOOTER WITH CENTERED LOGO + INSTAGRAM RIGHT -->
       <footer>
-        <div class="footer-left">
-          © <span id="year"></span> The MayaNut Company, Inc. · MayaNut ·
-          <span class="name-green">Brosimum alicastrum</span>
-        </div>
-        <div class="footer-center">
-          <img src="mayanut-the-maya-nut-company-logo.png"
-               alt="The MayaNut Company logo small" />
-        </div>
-        <div class="footer-right">
-          <button class="footer-instagram"
-                  onclick="window.open('https://instagram.com/themayanutcompany','_blank')"
-                  aria-label="Instagram">
-            <svg viewBox="0 0 24 24">
+        <div class="footer-inner">
+          <a href="#top" class="footer-logo" id="footer-logo">
+            <img src="mayanut-the-maya-nut-company-logo.png"
+                 alt="The MayaNut Company logo footer" />
+          </a>
+          <div class="footer-text">
+            © <span id="year"></span> The MayaNut Company, Inc. · MayaNut ·
+            <span class="name-green">Brosimum alicastrum</span>
+          </div>
+
+          <a class="footer-instagram" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 
               0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 
               3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.5 5.5 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 
-              8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"/>
+              8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"></path>
             </svg>
-          </button>
+            <span>@themayanutcompany</span>
+          </a>
         </div>
       </footer>
     </div>
   </main>
 
-  <!-- WELCOME OVERLAY -->
-  <div class="welcome-overlay" id="welcome-overlay">
-    <div class="welcome-card">
-      <div class="welcome-title">Welcome to The MayaNut Company</div>
-      <div class="welcome-body">
-        This site presents a long-term project around
-        <span style="color:#16a34a;font-weight:600;">MayaNut</span> and
-        <span style="color:#16a34a;font-weight:600;"><em>Brosimum alicastrum</em></span>.
-        Choose your language and tap proceed to explore the current concept site.
+  <!-- SETTINGS OVERLAY -->
+  <div class="overlay" id="settings-overlay">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <div class="overlay-title">Settings</div>
+        <button class="overlay-close" data-close="settings-overlay">&times;</button>
       </div>
-      <div class="welcome-field">
-        <div class="welcome-label">Language</div>
-        <select class="welcome-select" id="welcome-language">
+
+      <div class="settings-row">
+        <label for="settings-lang">Language</label>
+        <select id="settings-lang" class="settings-lang">
           <option value="en" selected>English</option>
           <option value="es">Español</option>
           <option value="fr">Français</option>
@@ -885,159 +658,153 @@
           <option value="ja">日本語</option>
         </select>
       </div>
-      <div class="welcome-actions">
-        <button class="welcome-btn" id="welcome-proceed">Proceed</button>
+
+      <div class="settings-row">
+        <span>Theme</span>
+        <span class="settings-link" id="dark-link">Go to dark theme</span>
+      </div>
+
+      <div class="settings-version">
+        Version v1.0.5
       </div>
     </div>
   </div>
+
+  <!-- MENU OVERLAY -->
+  <div class="overlay" id="menu-overlay">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <div class="overlay-title">Menu</div>
+        <button class="overlay-close" data-close="menu-overlay">&times;</button>
+      </div>
+
+      <ul class="menu-list">
+        <li><button data-nav="index.html">Home</button></li>
+        <li><button data-nav="store.html">Store</button></li>
+        <li><button data-nav="about.html">About</button></li>
+        <li><button data-nav="research.html">Research</button></li>
+        <li><button data-nav="gallery.html">Gallery</button></li>
+        <li><button data-nav="faq.html">FAQ</button></li>
+        <li><button data-nav="contact.html">Contact</button></li>
+      </ul>
+    </div>
+  </div>
+
   <script>
+    // Scroll to top on header logo and footer logo
+    const topLogo = document.getElementById('logo-top');
+    const footerLogo = document.getElementById('footer-logo');
+    function scrollTopSmooth(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    if(topLogo)   topLogo.addEventListener('click', scrollTopSmooth);
+    if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
+
     // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearSpan = document.getElementById('year');
+    if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-    // Logo scroll to top
-    const logoTop = document.getElementById('logo-top');
-    if(logoTop){
-      logoTop.addEventListener('click', ()=>{
-        window.scrollTo({top:0, behavior:'smooth'});
-      });
-    }
-
-    // Menu dropdown open/close
-    const hamburgerBtn = document.getElementById('hamburger-btn');
-    const menuDropdown = document.getElementById('menu-dropdown');
-    if(hamburgerBtn && menuDropdown){
-      hamburgerBtn.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        menuDropdown.classList.toggle('open');
-      });
-      document.addEventListener('click', (e)=>{
-        if(!menuDropdown.contains(e.target) && !hamburgerBtn.contains(e.target)){
-          menuDropdown.classList.remove('open');
-        }
-      });
-    }
-
-    // Settings panel open/close
+    // Settings overlay
     const settingsBtn = document.getElementById('settings-btn');
-    const settingsPanel = document.getElementById('settings-panel');
-    if(settingsBtn && settingsPanel){
-      settingsBtn.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        settingsPanel.classList.toggle('open');
+    const settingsOverlay = document.getElementById('settings-overlay');
+    if(settingsBtn && settingsOverlay){
+      settingsBtn.addEventListener('click', ()=>{
+        settingsOverlay.classList.add('active');
       });
-      document.addEventListener('click', (e)=>{
-        if(!settingsPanel.contains(e.target) && !settingsBtn.contains(e.target)){
-          settingsPanel.classList.remove('open');
+    }
+
+    // Menu overlay
+    const menuBtn = document.getElementById('menu-btn');
+    const menuOverlay = document.getElementById('menu-overlay');
+    if(menuBtn && menuOverlay){
+      menuBtn.addEventListener('click', ()=>{
+        menuOverlay.classList.add('active');
+      });
+    }
+
+    // Close buttons
+    document.querySelectorAll('.overlay-close').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-close');
+        const ov = document.getElementById(id);
+        if(ov) ov.classList.remove('active');
+      });
+    });
+
+    // Click outside overlays to close
+    document.querySelectorAll('.overlay').forEach(ov=>{
+      ov.addEventListener('click', e=>{
+        if(e.target === ov){
+          ov.classList.remove('active');
         }
       });
-    }
+    });
 
-    // Theme toggle -> redirect to dark version
-    const themeToggle = document.getElementById('theme-toggle');
-    if(themeToggle){
-      themeToggle.addEventListener('click', ()=>{
-        themeToggle.classList.toggle('on');
-        window.location.href = 'index-dark.html';
-      });
-    }
-
-    // Language switching (settings + welcome)
-    function attachLanguageHandler(selectId){
-      const sel = document.getElementById(selectId);
-      if(!sel) return;
-      sel.addEventListener('change', ()=>{
-        const val = sel.value;
+    // Settings language redirect
+    const settingsLang = document.getElementById('settings-lang');
+    if(settingsLang){
+      settingsLang.addEventListener('change', ()=>{
+        const val = settingsLang.value;
         if(val === 'en') return;
         window.location.href = `index-${val}.html`;
       });
     }
-    attachLanguageHandler('language-select');
-    attachLanguageHandler('welcome-language');
 
-    // Simple product search
+    // Dark theme link
+    const darkLink = document.getElementById('dark-link');
+    if(darkLink){
+      darkLink.addEventListener('click', ()=>{
+        window.location.href = 'index-dark.html';
+      });
+    }
+
+    // Menu navigation buttons
+    document.querySelectorAll('.menu-list button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dest = btn.getAttribute('data-nav');
+        if(dest){
+          window.location.href = dest;
+        }
+      });
+    });
+
+    // Hero CTA navigation
+    document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dest = btn.getAttribute('data-nav');
+        if(dest){
+          window.location.href = dest;
+        }
+      });
+    });
+
+    // Store search basic filter (opacity change only)
     const searchInput = document.getElementById('store-search');
     if(searchInput){
       searchInput.addEventListener('input', ()=>{
         const q = searchInput.value.toLowerCase();
         document.querySelectorAll('.product-card').forEach(card=>{
-          const name = card.dataset.name || "";
+          const name = (card.dataset.name || "").toLowerCase();
           card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
         });
       });
     }
 
-    // Welcome overlay
-    const welcomeOverlay = document.getElementById('welcome-overlay');
-    const welcomeProceed = document.getElementById('welcome-proceed');
-    if(welcomeOverlay && welcomeProceed){
-      welcomeProceed.addEventListener('click', ()=>{
-        welcomeOverlay.style.display = 'none';
+    // View full store button
+    const viewFullStore = document.getElementById('store-view-full');
+    if(viewFullStore){
+      viewFullStore.addEventListener('click', ()=>{
+        window.location.href = 'store.html';
       });
     }
 
-    // MOBILE STORE AUTO-SCROLL (horizontal)
-    const storeScroll = document.getElementById('store-scroll');
-    let autoScrollInterval = null;
-    let autoScrollTimeout = null;
-
-    function stopAutoScroll(){
-      if(autoScrollInterval){
-        clearInterval(autoScrollInterval);
-        autoScrollInterval = null;
-      }
-    }
-
-    function startAutoScroll(){
-      if(!storeScroll) return;
-      if(window.innerWidth > 880) return; // only on mobile
-      stopAutoScroll();
-
-      autoScrollInterval = setInterval(()=>{
-        if(!storeScroll) return;
-        const maxScroll = storeScroll.scrollWidth;
-        const viewWidth = storeScroll.clientWidth;
-        if(maxScroll <= viewWidth) return;
-
-        storeScroll.scrollLeft += 1;
-        // Loop: once we reach end, reset to start
-        if(storeScroll.scrollLeft + viewWidth >= maxScroll - 1){
-          storeScroll.scrollLeft = 0;
-        }
-      }, 20); // ~5s per full loop depending on widths
-    }
-
-    if(storeScroll){
-      // Pause on user scroll, restart after 5s
-      let userScrolling = false;
-      storeScroll.addEventListener('scroll', ()=>{
-        if(window.innerWidth > 880) return;
-        if(!userScrolling){
-          userScrolling = true;
-          stopAutoScroll();
-        }
-        if(autoScrollTimeout){
-          clearTimeout(autoScrollTimeout);
-        }
-        autoScrollTimeout = setTimeout(()=>{
-          userScrolling = false;
-          startAutoScroll();
-        }, 5000);
+    // Clicking any product card -> store.html
+    document.querySelectorAll('.product-card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        window.location.href = 'store.html';
       });
-
-      // Start on load for mobile
-      if(window.innerWidth <= 880){
-        startAutoScroll();
-      }
-
-      // Restart logic on resize
-      window.addEventListener('resize', ()=>{
-        if(window.innerWidth <= 880){
-          startAutoScroll();
-        }else{
-          stopAutoScroll();
-        }
-      });
-    }
+    });
   </script>
 </body>
 </html>

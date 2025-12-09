@@ -16,59 +16,55 @@
 
   <style>
     :root{
-      --card-bg: #ffffff;
-      --border-soft: #e5e7eb;
-      --text-main: #111827;
+      --text-main: #0f172a;
       --text-muted: #6b7280;
-      --accent-line: #d1d5db;
-      --menu-blue: rgba(83,213,233,0.20);   /* translucent 53d5e9 */
-      --menu-blue-solid: #53d5e9;
-      --shadow-soft: 0 16px 40px rgba(15,23,42,0.12);
-      --radius-xl: 26px;
-      --radius-lg: 20px;
-      --accent-green: #338e2d; /* MayaNut / Brosimum alicastrum text */
-      --blue-forgotten: #084ac5;
+      --accent-blue: #084ac5;
+      --accent-blue-soft: #53d5e9;
+      --accent-green: #338e2d;
+      --accent-cyan: #07edda;
+      --border-soft: #e5e7eb;
+      --frame-top: #ffffff;
+      --frame-bottom: #d4d4d8;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
-    html,body{ height:100%; scroll-behavior:smooth; }
+    html,body{ height:100%; }
     body{
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      background:linear-gradient(to bottom, #ffffff 0%, #e5e7eb 55%, #d4d4d8 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:linear-gradient(to bottom,var(--frame-top),var(--frame-bottom));
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
     }
     img{ max-width:100%; display:block; }
-    a{ color:inherit; text-decoration:none; }
 
     main{
       min-height:100vh;
-      padding:18px 10px 40px;
+      padding:20px 12px 40px;
       display:flex;
       justify-content:center;
-      align-items:flex-start;
     }
 
-    .shell{
+    .page-frame{
       width:100%;
-      max-width:980px;
-      background:var(--card-bg);
-      border-radius:var(--radius-xl);
-      box-shadow:var(--shadow-soft);
-      border:1px solid var(--border-soft);
+      max-width:1050px;
+      background:#ffffff;
+      border-radius:28px;
+      box-shadow:0 20px 60px rgba(15,23,42,0.08);
       overflow:hidden;
-      position:relative;
     }
 
-    /* HEADER */
+    /* HEADER / TOP TAB */
     .site-header{
+      padding:10px 18px;
+      background:#ffffff;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:8px 16px;
-      background:#ffffff;
       position:relative;
     }
+
+    /* short grey line under header (not full width) */
     .site-header::after{
       content:"";
       position:absolute;
@@ -77,146 +73,248 @@
       bottom:0;
       width:78%;
       height:1px;
-      background:var(--accent-line);
+      background:#d1d5db;
       border-radius:999px;
     }
 
-    .header-side{
-      width:44px;
+    .header-left,
+    .header-center,
+    .header-right{
       display:flex;
-      justify-content:flex-start;
       align-items:center;
     }
-    .header-side.right{
-      justify-content:flex-end;
-    }
 
-    .header-center-logo{
-      display:flex;
-      justify-content:center;
+    .header-left{
       flex:1;
+      justify-content:flex-start;
     }
-    .site-logo{
-      width:80px;
-      max-width:90px;
-      cursor:pointer;
+    .header-center{
+      flex:1;
+      justify-content:center;
+    }
+    .header-right{
+      flex:1;
+      justify-content:flex-end;
     }
 
     .icon-btn{
       width:30px;
       height:30px;
       border-radius:999px;
-      border:1px solid #d1d5db;
-      background:var(--menu-blue);
+      border:1px solid var(--border-soft);
+      background:rgba(7,237,218,0.14);
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      backdrop-filter:blur(10px);
+      padding:0;
     }
     .icon-btn svg{
       width:16px;
       height:16px;
-      stroke:#0f172a;
-      fill:none;
-      stroke-width:1.7;
+      display:block;
+      fill:#4b5563;
     }
 
-    .content{
-      padding:22px 18px 24px;
+    .site-logo{
+      width:72px;
+      cursor:pointer;
     }
 
-    /* HERO + STORE BLOCK */
-    .hero-block{
+    /* Hamburger */
+    .hamburger{
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      border:1px solid var(--border-soft);
+      background:rgba(7,237,218,0.14);
       display:flex;
-      flex-direction:column;
-      gap:22px;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      padding:0;
+    }
+    .hamburger span{
+      display:block;
+      width:14px;
+      height:1.5px;
+      border-radius:999px;
+      background:#4b5563;
+      position:relative;
+    }
+    .hamburger span::before,
+    .hamburger span::after{
+      content:"";
+      position:absolute;
+      left:0;
+      width:14px;
+      height:1.5px;
+      border-radius:999px;
+      background:#4b5563;
+    }
+    .hamburger span::before{ top:-4px; }
+    .hamburger span::after{ top:4px; }
+
+    /* MOBILE NAV OVERLAY */
+    .nav-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.55);
+      display:none;
+      align-items:flex-start;
+      justify-content:center;
+      padding-top:72px;
+      z-index:40;
+    }
+    .nav-overlay-inner{
+      width:90%;
+      max-width:320px;
+      background:#ffffff;
+      border-radius:18px;
+      box-shadow:0 24px 60px rgba(15,23,42,0.45);
+      padding:14px 16px 16px;
+    }
+    .nav-overlay-title{
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+      margin-bottom:10px;
+      color:#6b7280;
+    }
+    .nav-overlay-list button{
+      width:100%;
+      text-align:left;
+      border:none;
+      background:rgba(7,237,218,0.12);
+      color:#111827;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      cursor:pointer;
+      border:1px solid rgba(148,163,184,0.6);
+      margin-bottom:6px;
+    }
+
+    /* HERO LAYOUT */
+    #hero{
+      padding:22px 20px 28px;
+      display:grid;
+      grid-template-columns:1.05fr 1.05fr;
+      gap:24px;
+    }
+    @media(max-width:880px){
+      #hero{
+        grid-template-columns:1fr;
+        padding:22px 18px 26px;
+      }
     }
 
     .hero-left{
-      order:2; /* mobile: text below store */
       display:flex;
       flex-direction:column;
       gap:12px;
+      justify-content:center;
     }
 
-    .hero-tag{
+    .hero-kicker{
       font-size:11px;
-      letter-spacing:0.22em;
       text-transform:uppercase;
-      color:#9ca3af;
+      letter-spacing:0.16em;
+      color:var(--text-muted);
     }
 
     .hero-title{
-      font-size:24px;
-      line-height:1.3;
       font-weight:800;
-      max-width:540px;
-      text-transform:none;
-      color:#111827;
+      text-transform:uppercase;
+      letter-spacing:0.09em;
+      line-height:1.1;
+      font-size:clamp(22px, 3vw, 28px);
+    }
+    .hero-title-line1{
+      display:block;
+      color:#000000;
+    }
+    .hero-title-line2{
+      display:block;
+      color:var(--accent-blue);
+      text-align:left;
+      font-family: Georgia, "Times New Roman", serif;
       font-style:italic;
     }
-    .hero-title .highlight-blue{
-      color:var(--blue-forgotten);
+
+    @media(max-width:640px){
+      .hero-title{
+        text-align:left;
+      }
+      .hero-title-line1{
+        text-align:left;
+      }
+      .hero-title-line2{
+        text-align:center;
+      }
     }
 
-    .hero-body{
+    .hero-sub{
       font-size:14px;
-      line-height:1.8;
+      line-height:1.85;
       color:var(--text-muted);
-      max-width:640px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
+      margin-top:4px;
     }
-    .hero-body-top,
-    .hero-body-bottom{
-      margin:0;
-    }
-    .hero-body .green{
+    .hero-sub em{ font-style:italic; }
+    .hero-sub .name-green{
       color:var(--accent-green);
       font-weight:600;
     }
 
-    .hero-actions{
+    .hero-cta-row{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin-top:4px;
+      margin-top:6px;
     }
-    .cta-btn{
-      border-radius:999px;
-      border:1px solid var(--menu-blue-solid);
+    .btn{
       padding:8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.7);
+      background:rgba(83,213,233,0.16);
+      color:#111827;
       font-size:11px;
-      letter-spacing:0.12em;
       text-transform:uppercase;
-      background:var(--menu-blue);
-      color:#0f172a;
+      letter-spacing:0.14em;
       cursor:pointer;
       backdrop-filter:blur(8px);
+      transition:background .16s ease,border-color .16s ease;
+    }
+    .btn:hover{
+      background:rgba(83,213,233,0.24);
+      border-color:#9ca3af;
     }
 
     .hero-meta{
       margin-top:4px;
       font-size:11px;
-      color:var(--text-muted);
+      color:#6b7280;
     }
-    .hero-meta strong{
-      color:#111827;
+    .hero-meta strong{ color:#111827; }
+    .hero-meta .name-green{
+      color:var(--accent-green);
+      font-weight:600;
     }
 
-    /* STORE PANEL (right on desktop, top on mobile) */
-    .store-panel{
-      order:1; /* mobile: store above text */
+    /* STORE PANEL (RIGHT SIDE) */
+    #store-panel{
       border-radius:22px;
       border:1px solid #e5e7eb;
       background:#f9fafb;
-      padding:16px 14px 18px;
+      padding:14px 14px 16px;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:8px;
     }
+
     .store-title{
       font-size:13px;
       font-weight:700;
@@ -224,48 +322,43 @@
       text-transform:uppercase;
       color:#4b5563;
     }
+
     .store-sub{
       font-size:12px;
       color:#6b7280;
       line-height:1.7;
     }
-    .store-sub .green{
-      color:var(--accent-green);
-      font-weight:600;
-    }
 
-    .store-search{
+    .store-search-row{
       margin-top:4px;
-    }
-    .store-search-inner{
       display:flex;
       align-items:center;
       gap:6px;
     }
-    .store-search-inner input{
+    .store-search-row input{
       flex:1;
       padding:8px 10px;
       border-radius:999px;
       border:1px solid #d1d5db;
       font-size:12px;
-      background:white;
+      background:#ffffff;
       color:#111827;
     }
-    .view-store-btn{
-      padding:6px 10px;
+    .store-search-row button{
+      padding:7px 10px;
       border-radius:999px;
-      border:1px solid var(--menu-blue-solid);
-      background:var(--menu-blue);
+      border:1px solid rgba(148,163,184,0.7);
+      background:rgba(83,213,233,0.16);
       font-size:11px;
-      letter-spacing:0.1em;
       text-transform:uppercase;
+      letter-spacing:0.12em;
       cursor:pointer;
       white-space:nowrap;
-      color:#0f172a;
     }
 
+    /* Horizontal product scroll */
     .store-scroll{
-      margin-top:10px;
+      margin-top:8px;
       overflow-x:auto;
       padding-bottom:6px;
     }
@@ -289,7 +382,7 @@
     }
     .product-card:hover{
       transform:translateY(-2px);
-      box-shadow:0 10px 24px rgba(15,23,42,0.12);
+      box-shadow:0 12px 30px rgba(15,23,42,0.12);
     }
     .product-card img{
       width:80px;
@@ -311,334 +404,136 @@
       padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
-      background:var(--menu-blue);
+      background:rgba(83,213,233,0.16);
       font-size:11px;
       letter-spacing:0.12em;
       text-transform:uppercase;
       cursor:pointer;
-      color:#0f172a;
     }
 
-    /* Placeholder sections just to anchor menu targets */
-    .section-placeholder{
-      margin-top:26px;
-      padding-top:18px;
-      border-top:1px solid var(--accent-line);
-    }
-    .section-placeholder h2{
-      font-size:14px;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      color:#6b7280;
-      margin-bottom:4px;
-    }
-    .section-placeholder p{
-      font-size:13px;
-      color:#9ca3af;
-    }
-
-    /* FOOTER */
+    /* FOOTER (very simple) */
     footer{
-      border-top:1px solid var(--accent-line);
-      padding:10px 16px 12px;
+      padding:10px 20px 18px;
+      border-top:1px solid #e5e7eb;
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      font-size:11px;
-      color:#6b7280;
-      gap:8px;
-      background:#ffffff;
-    }
-    .footer-left{
-      display:flex;
-      flex-wrap:wrap;
-      gap:4px;
-      align-items:center;
-    }
-    .footer-right{
-      display:flex;
       align-items:center;
       gap:8px;
-    }
-    .insta-link svg{
-      width:18px;
-      height:18px;
-      fill:none;
-      stroke:#dc2626;
-      stroke-width:1.6;
-    }
-
-    /* MENU PANEL */
-    .menu-panel{
-      position:absolute;
-      top:48px;
-      right:12px;
-      width:220px;
-      max-width:70%;
-      background:rgba(255,255,255,0.96);
-      border-radius:18px;
-      border:1px solid var(--border-soft);
-      box-shadow:var(--shadow-soft);
-      padding:10px 10px 8px;
-      display:none;
-      z-index:30;
-    }
-    .menu-panel.open{ display:block; }
-    .menu-title{
       font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.18em;
       color:#9ca3af;
-      margin-bottom:4px;
     }
-    .menu-list{ list-style:none; }
-    .menu-item-btn{
-      width:100%;
-      text-align:left;
-      padding:6px 8px;
-      border-radius:12px;
-      border:none;
-      background:transparent;
-      cursor:pointer;
-      font-size:13px;
+    footer img{
+      width:56px;
     }
-    .menu-item-btn:hover{
-      background:var(--menu-blue);
+    @media(max-width:640px){
+      footer{ flex-direction:column; align-items:flex-start; }
     }
 
-    /* SETTINGS PANEL */
-    .settings-panel{
-      position:absolute;
-      top:48px;
-      left:12px;
-      width:220px;
-      max-width:70%;
-      background:rgba(255,255,255,0.96);
-      border-radius:18px;
-      border:1px solid var(--border-soft);
-      box-shadow:var(--shadow-soft);
-      padding:10px 10px 12px;
-      display:none;
-      z-index:30;
-    }
-    .settings-panel.open{ display:block; }
-    .settings-title{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      color:#9ca3af;
-      margin-bottom:6px;
-    }
-    .settings-label{
-      font-size:12px;
-      color:#374151;
-      margin-bottom:3px;
-    }
-    .settings-select{
-      width:100%;
-      padding:6px 8px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      font-size:12px;
-      background:#f9fafb;
-    }
-
-    /* WELCOME MODAL */
-    .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(15,23,42,0.45);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:50;
-    }
-    .modal{
-      width:90%;
-      max-width:360px;
-      background:#ffffff;
-      border-radius:20px;
-      padding:18px 18px 14px;
-      box-shadow:0 18px 50px rgba(15,23,42,0.35);
-      text-align:left;
-    }
-    .modal h2{
-      font-size:16px;
-      margin-bottom:6px;
-    }
-    .modal p{
-      font-size:13px;
-      color:#4b5563;
-      margin-bottom:10px;
-    }
-    .modal-select{
-      width:100%;
-      padding:6px 8px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      font-size:12px;
-      margin-bottom:10px;
-    }
-    .modal-actions{
-      display:flex;
-      justify-content:flex-end;
-    }
-    .modal-btn{
-      border-radius:999px;
-      border:1px solid var(--menu-blue-solid);
-      background:var(--menu-blue);
-      padding:7px 16px;
-      font-size:12px;
-      cursor:pointer;
-      color:#0f172a;
-    }
-
-    /* DESKTOP LAYOUT (hero left, store right) */
-    @media (min-width:880px){
-      .hero-block{
-        display:grid;
-        grid-template-columns:1.1fr 1.1fr;
-        gap:26px;
-        align-items:start;
-      }
+    /* RESPONSIVE ADJUSTMENTS */
+    @media(max-width:880px){
       .hero-left{
+        order:0;
+      }
+      #store-panel{
         order:1;
       }
-      .store-panel{
-        order:2;
-      }
     }
 
-    @media (max-width:640px){
-      .content{
-        padding:16px 12px 20px;
+    /* Optional: tweak hero spacing on narrow screens */
+    @media(max-width:640px){
+      #hero{
+        padding-top:18px;
       }
-      .store-row{
-        min-width:430px;
-      }
-      footer{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      /* Mobile: 2x2 square feel for hero text */
-      .hero-left{
-        display:grid;
-        grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr);
-        grid-template-rows:auto auto auto auto auto;
-        column-gap:10px;
-        row-gap:8px;
-        align-items:start;
-      }
-      .hero-tag{
-        grid-column:1 / 3;
-        grid-row:1;
-      }
-      .hero-title{
-        grid-column:1 / 2;
-        grid-row:2;
-        font-size:20px;
-      }
-      .hero-body{
-        grid-column:1 / 3;
-        grid-row:3;
-      }
-      .hero-actions{
-        grid-column:1 / 3;
-        grid-row:4;
-      }
-      .hero-meta{
-        grid-column:1 / 3;
-        grid-row:5;
-      }
-
-      /* Mobile: hide store description line */
-      .store-sub{
-        display:none;
+      .hero-sub{
+        margin-top:2px;
       }
     }
   </style>
 </head>
 <body>
-<main>
-  <div class="shell" id="top">
-    <!-- HEADER -->
-    <header class="site-header">
-      <div class="header-side">
-        <button class="icon-btn" id="settings-btn" aria-label="Open settings">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 9.5A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5Z"></path>
-            <path d="M19.4 13a7.54 7.54 0 0 0 .06-1l1.72-1.34a.5.5 0 0 0 .12-.64l-1.63-2.83a.5.5 0 0 0-.6-.22l-2 .8a7.42 7.42 0 0 0-.86-.5l-.3-2.12A.5.5 0 0 0 15.4 4h-3.2a.5.5 0 0 0-.5.41l-.3 2.12a7.42 7.42 0 0 0-.86.5l-2-.8a.5.5 0 0 0-.6.22L6 9.28a.5.5 0 0 0 .12.64L7.84 11.26A7.54 7.54 0 0 0 7.9 12a7.54 7.54 0 0 0-.06 1L6.12 14.34a.5.5 0 0 0-.12.64l1.63 2.83a.5.5 0 0 0 .6.22l2-.8a7.42 7.42 0 0 0 .86.5l.3 2.12a.5.5 0 0 0 .5.41h3.2a.5.5 0 0 0 .5-.41l.3-2.12a7.42 7.42 0 0 0 .86-.5l2 .8a.5.5 0 0 0 .6-.22l1.63-2.83a.5.5 0 0 0-.12-.64Z"></path>
-          </svg>
-        </button>
+  <main>
+    <div class="page-frame" id="top">
+
+      <!-- HEADER (WHITE TAB) -->
+      <header class="site-header">
+        <!-- Left: Settings gear -->
+        <div class="header-left">
+          <button class="icon-btn" id="settings-btn" aria-label="Settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .11-.65l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.02 7.02 0 0 0-1.63-.94L14.5 2.5a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0-.5.5l-.33 2.37c-.6.24-1.15.55-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.62 8.41a.5.5 0 0 0 .11.65l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.11.65l1.92 3.32c.14.24.43.34.69.23l2.39-.96c.48.39 1.03.7 1.63.94l.33 2.37a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5l.33-2.37c.6-.24 1.15-.55 1.63-.94l2.39.96c.26.11.55.01.69-.23l1.92-3.32a.5.5 0 0 0-.11-.65l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 15.5 12 3.5 3.5 0 0 1 12 15.5z" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Center: Logo -->
+        <div class="header-center">
+          <img src="mayanut-the-maya-nut-company-logo.png"
+               alt="The MayaNut Company logo"
+               class="site-logo"
+               id="logo-top" />
+        </div>
+
+        <!-- Right: Hamburger menu -->
+        <div class="header-right">
+          <button class="hamburger" id="menu-toggle" aria-label="Open menu">
+            <span></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV OVERLAY -->
+      <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+        <div class="nav-overlay-inner">
+          <div class="nav-overlay-title">Menu</div>
+          <div class="nav-overlay-list">
+            <button data-scroll="#hero">Home</button>
+            <button data-scroll="#store-panel">Store</button>
+            <!-- Future: About, Research, Gallery, FAQ, Contact -->
+          </div>
+        </div>
       </div>
 
-      <div class="header-center-logo">
-        <img src="mayanut-the-maya-nut-company-logo.png"
-             alt="The MayaNut Company logo"
-             class="site-logo"
-             id="logo-top">
-      </div>
+      <!-- HERO + STORE (only content) -->
+      <section id="hero">
+        <!-- LEFT: TEXT -->
+        <div class="hero-left">
+          <div class="hero-kicker">MayaNut • <span class="name-green">Brosimum alicastrum</span></div>
 
-      <div class="header-side right">
-        <button class="icon-btn" id="menu-btn" aria-label="Open menu">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 7h16M4 12h16M4 17h16"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
+          <h1 class="hero-title">
+            <span class="hero-title-line1">The future of food grows on a</span>
+            <span class="hero-title-line2">FORGOTTEN TREE.</span>
+          </h1>
 
-    <!-- MENU PANEL -->
-    <div class="menu-panel" id="menu-panel">
-      <div class="menu-title">Menu</div>
-      <ul class="menu-list">
-        <li><button class="menu-item-btn" data-target="#top">Home</button></li>
-        <li><button class="menu-item-btn" data-target="#store">Store</button></li>
-        <li><button class="menu-item-btn" data-target="#about">About</button></li>
-        <li><button class="menu-item-btn" data-target="#research">Research</button></li>
-        <li><button class="menu-item-btn" data-target="#gallery">Gallery</button></li>
-        <li><button class="menu-item-btn" data-target="#faq">FAQ</button></li>
-        <li><button class="menu-item-btn" data-target="#contact">Contact</button></li>
-      </ul>
-    </div>
-
-    <!-- SETTINGS PANEL -->
-    <div class="settings-panel" id="settings-panel">
-      <div class="settings-title">Settings</div>
-      <div class="settings-group">
-        <div class="settings-label">Language</div>
-        <select id="language-select" class="settings-select">
-          <option value="en" selected>English</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="pt">Português</option>
-          <option value="de">Deutsch</option>
-          <option value="it">Italiano</option>
-          <option value="ja">日本語</option>
-          <option value="ar-eg">العربية</option>
-          <option value="sw">Kiswahili</option>
-          <option value="el">Ελληνικά</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- CONTENT -->
-    <div class="content">
-      <section id="hero-block" class="hero-block">
-        <!-- STORE PANEL -->
-        <aside id="store" class="store-panel" aria-label="Future store preview">
-          <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
-          <p class="store-sub">
-            These are concept products only. When plantations mature, the first real offerings
-            are expected to be <span class="green">MayaNut powder</span> and powder-based drinks.
+          <p class="hero-sub">
+            <span class="name-green">MayaNut</span> is the roasted seed of
+            <span class="name-green"><em>Brosimum alicastrum</em></span>, a long-lived tropical canopy tree.
+            The MayaNut Company, Inc. is a focused project in South Florida working to turn
+            hundreds of seed-grown trees into a future source of
+            <span class="name-green">MayaNut powder</span> and reforestation plantings.
           </p>
 
-          <div class="store-search">
-            <div class="store-search-inner">
-              <input id="store-search" type="text" placeholder="🔍 Search future products…" />
-              <button class="view-store-btn" id="view-store-btn">View full store</button>
-            </div>
+          <div class="hero-cta-row">
+            <button class="btn" data-scroll="#store-panel">Preview future products</button>
+            <button class="btn">Get updates (soon)</button>
+          </div>
+
+          <div class="hero-meta">
+            Over <strong>200 seed-grown trees</strong> already in the ground – this phase is about
+            genetics, plantings, and learning, not yet about selling <span class="name-green">MayaNut</span>.
+          </div>
+        </div>
+
+        <!-- RIGHT: STORE PREVIEW SCROLL -->
+        <aside id="store-panel" aria-label="Future store preview">
+          <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
+          <p class="store-sub">
+            Concept products only. When plantations mature, the first real offerings
+            are expected to be <span class="name-green">MayaNut powder</span> and powder-based drinks.
+          </p>
+
+          <div class="store-search-row">
+            <input id="store-search" type="text" placeholder="🔍 Search future products…" />
+            <button type="button" id="view-full-store-btn">View full store</button>
           </div>
 
           <div class="store-scroll" id="store-scroll">
@@ -679,10 +574,10 @@
               <!-- Product 4 (extra concept) -->
               <article class="product-card" data-name="cold brew">
                 <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Cold brew MayaNut drink concept"/>
-                <div class="product-name">MayaNut Cold Brew (Concept)</div>
+                     alt="Cold MayaNut drink concept"/>
+                <div class="product-name">Chilled MayaNut Drink</div>
                 <p class="product-text">
-                  A chilled, tree-based drink concept built around roasted MayaNut powder.
+                  A cold, tree-based drink concept for hot climates and everyday refreshment.
                 </p>
                 <button class="product-btn">Order (soon)</button>
               </article>
@@ -690,308 +585,201 @@
               <!-- Product 5 (extra concept) -->
               <article class="product-card" data-name="nutrition bar">
                 <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut nutrition bar concept"/>
+                     alt="MayaNut bar concept"/>
                 <div class="product-name">MayaNut Nutrition Bar</div>
                 <p class="product-text">
-                  A future bar idea combining MayaNut powder with fruits, nuts, and seeds.
+                  A future bar idea that uses MayaNut powder for depth of flavor and story.
                 </p>
                 <button class="product-btn">Order (soon)</button>
               </article>
             </div>
           </div>
         </aside>
+      </section>
 
-        <!-- HERO TEXT -->
-        <div id="hero" class="hero-left">
-          <div class="hero-tag">Tropical tree · seed-grown trials · South Florida</div>
-
-          <h1 class="hero-title">
-            THE FUTURE OF FOOD GROWS ON A
-            <span class="highlight-blue">FORGOTTEN TREE</span>.
-          </h1>
-
-          <div class="hero-body">
-            <p class="hero-body-top">
-              <span class="green">MayaNut</span> is the roasted seed of
-              <span class="green"><em>Brosimum alicastrum</em></span>, a tropical evergreen tree
-              native to Mesoamerica and nearby regions. Its seeds were roasted, ground, and stored
-              by past cultures as a stable food source.
-            </p>
-            <p class="hero-body-bottom">
-              The MayaNut Company, Inc. is translating that quiet history into a modern,
-              highly productive super-crop. We are building seed-grown trial plantations in South Florida
-              and designing future <span class="green">MayaNut powder</span> products to match.
-            </p>
-          </div>
-
-          <div class="hero-actions">
-            <button class="cta-btn" data-target="#about">Learn the story</button>
-            <button class="cta-btn" data-target="#research">See research focus</button>
-          </div>
-
-          <div class="hero-meta">
-            Over <strong>200 seed-grown trees</strong> already in the ground – this phase is about
-            genetics, plantings, and learning, not yet about selling.
-          </div>
+      <!-- SIMPLE FOOTER WITH LOGO -->
+      <footer>
+        <div>
+          © <span id="year"></span> The MayaNut Company, Inc. · MayaNut ·
+          <span class="name-green">Brosimum alicastrum</span>
         </div>
-      </section>
-
-      <!-- SIMPLE ANCHOR SECTIONS -->
-      <section id="about" class="section-placeholder">
-        <h2>About (coming soon)</h2>
-        <p>Expanded background on the company, founder, and plantations will appear here.</p>
-      </section>
-
-      <section id="research" class="section-placeholder">
-        <h2>Research (coming soon)</h2>
-        <p>Ecology, genetics, and trial notes for <span class="green"><em>Brosimum alicastrum</em></span>.</p>
-      </section>
-
-      <section id="gallery" class="section-placeholder">
-        <h2>Gallery (coming soon)</h2>
-        <p>Photos of trees, nursery rows, and field trials will be added over time.</p>
-      </section>
-
-      <section id="faq" class="section-placeholder">
-        <h2>FAQ (coming soon)</h2>
-        <p>Short answers to common questions about MayaNut and this project.</p>
-      </section>
-
-      <section id="contact" class="section-placeholder" style="margin-bottom:4px;">
-        <h2>Contact</h2>
-        <p>For now, email: <strong>themayanutcompany@gmail.com</strong></p>
-      </section>
+        <img src="mayanut-the-maya-nut-company-logo.png"
+             alt="The MayaNut Company logo small" />
+      </footer>
     </div>
+  </main>
 
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-left">
-        <span>© <span id="year"></span> The MayaNut Company, Inc.</span>
-      </div>
-      <div class="footer-right">
-        <a href="https://www.instagram.com/themayanutcompany"
-           class="insta-link"
-           target="_blank"
-           rel="noopener">
-          <svg viewBox="0 0 24 24">
-            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-            <circle cx="12" cy="12" r="4"></circle>
-            <circle cx="17" cy="7" r="1"></circle>
-          </svg>
-        </a>
-      </div>
-    </footer>
-  </div>
-</main>
-
-<!-- WELCOME MODAL -->
-<div class="modal-backdrop" id="welcome-backdrop">
-  <div class="modal">
-    <h2>Welcome to The MayaNut Company</h2>
-    <p>
-      This site introduces <span class="green">MayaNut</span> and
-      <span class="green"><em>Brosimum alicastrum</em></span> as a future tropical tree crop.
-      Choose your language and tap Proceed to continue.
-    </p>
-    <select id="welcome-language" class="modal-select">
-      <option value="en" selected>English</option>
-      <option value="es">Español</option>
-      <option value="fr">Français</option>
-      <option value="pt">Português</option>
-      <option value="de">Deutsch</option>
-      <option value="it">Italiano</option>
-      <option value="ja">日本語</option>
-      <option value="ar-eg">العربية</option>
-      <option value="sw">Kiswahili</option>
-      <option value="el">Ελληνικά</option>
-    </select>
-    <div class="modal-actions">
-      <button class="modal-btn" id="welcome-proceed">Proceed</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  (function(){
-    const $  = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-    const menuBtn   = $('#menu-btn');
-    const menuPanel = $('#menu-panel');
-    const settingsBtn   = $('#settings-btn');
-    const settingsPanel = $('#settings-panel');
-    const logoTop   = $('#logo-top');
-
-    function toggle(el){
-      el.classList.toggle('open');
-    }
-    function closeAllPanels(){
-      menuPanel.classList.remove('open');
-      settingsPanel.classList.remove('open');
-    }
-
-    if(menuBtn){
-      menuBtn.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        toggle(menuPanel);
-        settingsPanel.classList.remove('open');
+  <script>
+    // Smooth scroll for any element with [data-scroll]
+    document.querySelectorAll('[data-scroll]').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const targetSel = btn.getAttribute('data-scroll');
+        const target = document.querySelector(targetSel);
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+        }
       });
-    }
-    if(settingsBtn){
-      settingsBtn.addEventListener('click',(e)=>{
-        e.stopPropagation();
-        toggle(settingsPanel);
-        menuPanel.classList.remove('open');
-      });
-    }
-    document.addEventListener('click', ()=>{
-      closeAllPanels();
-    });
-    [menuPanel,settingsPanel].forEach(p=>{
-      p.addEventListener('click', e=>e.stopPropagation());
     });
 
+    // Logo scroll to top
+    const logoTop = document.getElementById('logo-top');
     if(logoTop){
       logoTop.addEventListener('click', ()=>{
         window.scrollTo({top:0, behavior:'smooth'});
       });
     }
 
-    function scrollToTarget(target){
-      const el = typeof target === 'string' ? document.querySelector(target) : target;
-      if(el){
-        const rect = el.getBoundingClientRect();
-        const offset = rect.top + window.scrollY - 70;
-        window.scrollTo({top: offset, behavior:'smooth'});
-      }
+    // Mobile nav overlay
+    const menuToggle = document.getElementById('menu-toggle');
+    const navOverlay = document.getElementById('nav-overlay');
+    if(menuToggle && navOverlay){
+      menuToggle.addEventListener('click', ()=>{
+        const isOpen = navOverlay.style.display === 'flex';
+        navOverlay.style.display = isOpen ? 'none' : 'flex';
+        navOverlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+      });
+
+      navOverlay.addEventListener('click', e=>{
+        // Close when clicking outside the inner panel
+        const inner = navOverlay.querySelector('.nav-overlay-inner');
+        if(inner && !inner.contains(e.target)){
+          navOverlay.style.display = 'none';
+          navOverlay.setAttribute('aria-hidden','true');
+        }
+      });
+
+      // Buttons inside overlay
+      navOverlay.querySelectorAll('[data-scroll]').forEach(btn=>{
+        btn.addEventListener('click', e=>{
+          const targetSel = btn.getAttribute('data-scroll');
+          const target = document.querySelector(targetSel);
+          if(target){
+            e.preventDefault();
+            navOverlay.style.display = 'none';
+            navOverlay.setAttribute('aria-hidden','true');
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        });
+      });
     }
 
-    $$('.menu-item-btn, .cta-btn').forEach(btn=>{
-      const target = btn.getAttribute('data-target');
-      if(target){
-        btn.addEventListener('click', ()=>{
-          closeAllPanels();
-          scrollToTarget(target);
+    // View full store button
+    const viewFullStoreBtn = document.getElementById('view-full-store-btn');
+    if(viewFullStoreBtn){
+      viewFullStoreBtn.addEventListener('click', ()=>{
+        window.location.href = 'store.html';
+      });
+    }
+
+    // Product click -> store.html
+    document.querySelectorAll('.product-card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        window.location.href = 'store.html';
+      });
+      const btn = card.querySelector('.product-btn');
+      if(btn){
+        btn.addEventListener('click', e=>{
+          e.stopPropagation();
+          window.location.href = 'store.html';
         });
       }
     });
 
-    // Tiny fake search filter
-    const searchInput = $('#store-search');
+    // Tiny search filter
+    const searchInput = document.getElementById('store-search');
     if(searchInput){
       searchInput.addEventListener('input', ()=>{
         const q = searchInput.value.toLowerCase();
-        $$('.product-card').forEach(card=>{
-          const name = card.dataset.name || "";
+        document.querySelectorAll('.product-card').forEach(card=>{
+          const name = (card.dataset.name || "").toLowerCase();
           card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
         });
       });
     }
 
-    // View full store + product clicks -> store.html
-    const viewStoreBtn = $('#view-store-btn');
-    if(viewStoreBtn){
-      viewStoreBtn.addEventListener('click', ()=>{
-        window.location.href = 'store.html';
+    // Auto-scroll (desktop + mobile) for store row
+    (function(){
+      const scrollContainer = document.getElementById('store-scroll');
+      const row = document.getElementById('store-row');
+      if(!scrollContainer || !row) return;
+
+      // Duplicate children to allow seamless looping
+      const items = Array.from(row.children);
+      items.forEach(item=>{
+        const clone = item.cloneNode(true);
+        row.appendChild(clone);
       });
-    }
-    $$('.product-card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        window.location.href = 'store.html';
-      });
-    });
 
-    // Auto-panning store carousel
-    const storeScroll = $('#store-scroll');
-    const productCards = $$('.product-card');
-    let autoIndex = -1;
-    let autoTimer = null;
-    let resumeTimer = null;
-    let userInteracting = false;
+      let autoTimer = null;
+      let lastInteraction = Date.now();
+      let cardWidth = 0;
 
-    function goToNextCard(){
-      if(!productCards.length) return;
-      autoIndex = (autoIndex + 1) % productCards.length;
-      productCards[autoIndex].scrollIntoView({
-        behavior:'smooth',
-        inline:'center',
-        block:'nearest'
-      });
-    }
-
-    function startAuto(){
-      if(autoTimer) clearInterval(autoTimer);
-      autoTimer = setInterval(goToNextCard, 3500);
-    }
-
-    function stopAuto(){
-      if(autoTimer) clearInterval(autoTimer);
-      autoTimer = null;
-    }
-
-    function scheduleResume(){
-      if(resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(()=>{
-        userInteracting = false;
-        startAuto();
-      }, 3000);
-    }
-
-    if(storeScroll){
-      ['wheel','touchstart','mousedown','pointerdown','scroll'].forEach(evt=>{
-        storeScroll.addEventListener(evt, ()=>{
-          userInteracting = true;
-          stopAuto();
-          scheduleResume();
-        }, {passive:true});
-      });
-      // kick off auto-scroll
-      startAuto();
-    }
-
-    // Language routing
-    function goLanguage(code){
-      if(code === 'en'){ window.location.href = 'index.html'; return; }
-      const map = {
-        'es':'index-es.html',
-        'fr':'index-fr.html',
-        'pt':'index-pt.html',
-        'de':'index-de.html',
-        'it':'index-it.html',
-        'ja':'index-ja.html',
-        'ar-eg':'index-ar-eg.html',
-        'sw':'index-sw.html',
-        'el':'index-el.html'
-      };
-      const dest = map[code];
-      if(dest){ window.location.href = dest; }
-    }
-
-    const langSelect = $('#language-select');
-    if(langSelect){
-      langSelect.addEventListener('change', ()=>{
-        goLanguage(langSelect.value);
-      });
-    }
-
-    const welcomeBackdrop = $('#welcome-backdrop');
-    const welcomeSelect   = $('#welcome-language');
-    const welcomeBtn      = $('#welcome-proceed');
-
-    if(welcomeBtn && welcomeBackdrop){
-      welcomeBtn.addEventListener('click', ()=>{
-        welcomeBackdrop.style.display = 'none';
-        if(welcomeSelect && welcomeSelect.value !== 'en'){
-          goLanguage(welcomeSelect.value);
+      function measureCardWidth(){
+        const firstCard = row.querySelector('.product-card');
+        if(firstCard){
+          const styles = window.getComputedStyle(row);
+          const gap = parseInt(styles.columnGap || styles.gap || '12', 10) || 12;
+          cardWidth = firstCard.offsetWidth + gap;
         }
-      });
-    }
+      }
 
-    const yearSpan = $('#year');
-    if(yearSpan){
-      yearSpan.textContent = new Date().getFullYear();
-    }
-  })();
-</script>
+      function startAutoScroll(){
+        if(autoTimer) clearInterval(autoTimer);
+        if(!cardWidth) measureCardWidth();
+        if(!cardWidth) return;
+
+        const stepInterval = 40; // ms
+        const stepsPerCard = 5000 / stepInterval; // 5s per card
+        const stepPx = cardWidth / stepsPerCard;
+
+        autoTimer = setInterval(()=>{
+          scrollContainer.scrollLeft += stepPx;
+
+          const maxScroll = row.scrollWidth / 2; // length of original set
+          if(scrollContainer.scrollLeft >= maxScroll){
+            // loop back keeping smooth rightward motion
+            scrollContainer.scrollLeft -= maxScroll;
+          }
+        }, stepInterval);
+      }
+
+      function stopAutoScroll(){
+        if(autoTimer){
+          clearInterval(autoTimer);
+          autoTimer = null;
+        }
+      }
+
+      // Pause on user interaction, resume after 3s of no interaction
+      function userInteracted(){
+        lastInteraction = Date.now();
+        stopAutoScroll();
+        setTimeout(()=>{
+          const now = Date.now();
+          if(now - lastInteraction >= 3000){
+            startAutoScroll();
+          }
+        }, 3200);
+      }
+
+      ['pointerdown','wheel','touchstart'].forEach(evt=>{
+        scrollContainer.addEventListener(evt, userInteracted, {passive:true});
+      });
+
+      // Start auto-scroll after small delay to avoid layout thrash
+      window.addEventListener('load', ()=>{
+        measureCardWidth();
+        startAutoScroll();
+      });
+      window.addEventListener('resize', ()=>{
+        measureCardWidth();
+      });
+    })();
+
+    // Footer year
+    const yr = document.getElementById('year');
+    if(yr){ yr.textContent = new Date().getFullYear(); }
+  </script>
 </body>
 </html>

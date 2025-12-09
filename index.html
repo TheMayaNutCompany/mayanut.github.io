@@ -24,7 +24,7 @@
       --accent-cyan: #07edda;
       --border-soft: #e5e7eb;
       --frame-top: #ffffff;
-      --frame-bottom: #d4d4d8;
+      --frame-bottom: #cbd5e1;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -40,7 +40,7 @@
 
     main{
       min-height:100vh;
-      padding:20px 12px 40px;
+      padding:20px 12px 60px;
       display:flex;
       justify-content:center;
     }
@@ -95,6 +95,7 @@
     .header-right{
       flex:1;
       justify-content:flex-end;
+      position:relative;
     }
 
     .icon-btn{
@@ -155,47 +156,45 @@
     .hamburger span::before{ top:-4px; }
     .hamburger span::after{ top:4px; }
 
-    /* MOBILE NAV OVERLAY */
-    .nav-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(15,23,42,0.55);
-      display:none;
-      align-items:flex-start;
-      justify-content:center;
-      padding-top:72px;
-      z-index:40;
-    }
-    .nav-overlay-inner{
-      width:90%;
-      max-width:320px;
+    /* SMALL MENU DROPDOWN (top-right) */
+    .menu-dropdown{
+      position:absolute;
+      top:calc(100% + 8px);
+      right:0;
+      width:190px;
       background:#ffffff;
-      border-radius:18px;
-      box-shadow:0 24px 60px rgba(15,23,42,0.45);
-      padding:14px 16px 16px;
+      border-radius:16px;
+      border:1px solid rgba(148,163,184,0.7);
+      box-shadow:0 18px 50px rgba(15,23,42,0.35);
+      padding:8px 10px;
+      display:none;
+      z-index:30;
     }
-    .nav-overlay-title{
-      font-size:12px;
+    .menu-dropdown-title{
+      font-size:11px;
       font-weight:700;
-      text-transform:uppercase;
       letter-spacing:0.14em;
-      margin-bottom:10px;
+      text-transform:uppercase;
       color:#6b7280;
+      margin-bottom:6px;
     }
-    .nav-overlay-list button{
+    .menu-dropdown button{
       width:100%;
-      text-align:left;
       border:none;
-      background:rgba(7,237,218,0.12);
+      background:rgba(7,237,218,0.10);
       color:#111827;
       padding:7px 10px;
       border-radius:999px;
-      font-size:12px;
+      font-size:11px;
       letter-spacing:0.12em;
       text-transform:uppercase;
       cursor:pointer;
       border:1px solid rgba(148,163,184,0.6);
-      margin-bottom:6px;
+      margin-bottom:5px;
+      text-align:left;
+    }
+    .menu-dropdown button:last-child{
+      margin-bottom:0;
     }
 
     /* HERO LAYOUT */
@@ -225,6 +224,10 @@
       letter-spacing:0.16em;
       color:var(--text-muted);
     }
+    .hero-kicker .name-green{
+      color:var(--accent-green);
+      font-weight:600;
+    }
 
     .hero-title{
       font-weight:800;
@@ -240,18 +243,12 @@
     .hero-title-line2{
       display:block;
       color:var(--accent-blue);
-      text-align:left;
-      font-family: Georgia, "Times New Roman", serif;
-      font-style:italic;
+      text-decoration:underline;
+      text-decoration-thickness:2px;
+      text-underline-offset:3px;
     }
 
     @media(max-width:640px){
-      .hero-title{
-        text-align:left;
-      }
-      .hero-title-line1{
-        text-align:left;
-      }
       .hero-title-line2{
         text-align:center;
       }
@@ -328,6 +325,10 @@
       color:#6b7280;
       line-height:1.7;
     }
+    .store-sub .name-green{
+      color:var(--accent-green);
+      font-weight:600;
+    }
 
     .store-search-row{
       margin-top:4px;
@@ -356,7 +357,7 @@
       white-space:nowrap;
     }
 
-    /* Horizontal product scroll */
+    /* STORE LIST – MOBILE (default) */
     .store-scroll{
       margin-top:8px;
       overflow-x:auto;
@@ -411,6 +412,22 @@
       cursor:pointer;
     }
 
+    /* DESKTOP STORE GRID */
+    @media(min-width:881px){
+      .store-scroll{
+        overflow-x:visible;
+      }
+      .store-row{
+        display:grid;
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:12px;
+        min-width:0;
+      }
+      .product-card{
+        flex:none;
+      }
+    }
+
     /* FOOTER (very simple) */
     footer{
       padding:10px 20px 18px;
@@ -439,7 +456,6 @@
       }
     }
 
-    /* Optional: tweak hero spacing on narrow screens */
     @media(max-width:640px){
       #hero{
         padding-top:18px;
@@ -473,31 +489,32 @@
                id="logo-top" />
         </div>
 
-        <!-- Right: Hamburger menu -->
+        <!-- Right: Hamburger menu + dropdown -->
         <div class="header-right">
           <button class="hamburger" id="menu-toggle" aria-label="Open menu">
             <span></span>
           </button>
-        </div>
-      </header>
 
-      <!-- MOBILE NAV OVERLAY -->
-      <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
-        <div class="nav-overlay-inner">
-          <div class="nav-overlay-title">Menu</div>
-          <div class="nav-overlay-list">
+          <div class="menu-dropdown" id="menu-dropdown">
+            <div class="menu-dropdown-title">Menu</div>
             <button data-scroll="#hero">Home</button>
             <button data-scroll="#store-panel">Store</button>
-            <!-- Future: About, Research, Gallery, FAQ, Contact -->
+            <button data-href="about.html">About</button>
+            <button data-href="research.html">Research</button>
+            <button data-href="gallery.html">Gallery</button>
+            <button data-href="faq.html">FAQ</button>
+            <button data-href="contact.html">Contact</button>
           </div>
         </div>
-      </div>
+      </header>
 
       <!-- HERO + STORE (only content) -->
       <section id="hero">
         <!-- LEFT: TEXT -->
         <div class="hero-left">
-          <div class="hero-kicker">MayaNut • <span class="name-green">Brosimum alicastrum</span></div>
+          <div class="hero-kicker">
+            MayaNut • <span class="name-green">Brosimum alicastrum</span>
+          </div>
 
           <h1 class="hero-title">
             <span class="hero-title-line1">The future of food grows on a</span>
@@ -513,17 +530,18 @@
           </p>
 
           <div class="hero-cta-row">
-            <button class="btn" data-scroll="#store-panel">Preview future products</button>
-            <button class="btn">Get updates (soon)</button>
+            <button class="btn" id="btn-learn-more">Learn More</button>
+            <button class="btn" id="btn-research">Research</button>
           </div>
 
           <div class="hero-meta">
             Over <strong>200 seed-grown trees</strong> already in the ground – this phase is about
-            genetics, plantings, and learning, not yet about selling <span class="name-green">MayaNut</span>.
+            genetics, plantings, and learning, not yet about selling
+            <span class="name-green">MayaNut</span>.
           </div>
         </div>
 
-        <!-- RIGHT: STORE PREVIEW SCROLL -->
+        <!-- RIGHT: STORE PREVIEW -->
         <aside id="store-panel" aria-label="Future store preview">
           <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
           <p class="store-sub">
@@ -571,7 +589,7 @@
                 <button class="product-btn">Order (soon)</button>
               </article>
 
-              <!-- Product 4 (extra concept) -->
+              <!-- Product 4 -->
               <article class="product-card" data-name="cold brew">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="Cold MayaNut drink concept"/>
@@ -582,13 +600,46 @@
                 <button class="product-btn">Order (soon)</button>
               </article>
 
-              <!-- Product 5 (extra concept) -->
+              <!-- Product 5 -->
               <article class="product-card" data-name="nutrition bar">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut bar concept"/>
                 <div class="product-name">MayaNut Nutrition Bar</div>
                 <p class="product-text">
                   A future bar idea that uses MayaNut powder for depth of flavor and story.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
+
+              <!-- Product 6 -->
+              <article class="product-card" data-name="porridge">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut porridge concept"/>
+                <div class="product-name">MayaNut Breakfast Porridge</div>
+                <p class="product-text">
+                  A warm, tree-based porridge concept using MayaNut powder as the flavor base.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
+
+              <!-- Product 7 -->
+              <article class="product-card" data-name="concentrate">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut concentrate concept"/>
+                <div class="product-name">MayaNut Liquid Concentrate</div>
+                <p class="product-text">
+                  A potential future concentrate for cafés and beverage brands.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
+
+              <!-- Product 8 -->
+              <article class="product-card" data-name="ice cream">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut ice cream concept"/>
+                <div class="product-name">MayaNut Frozen Dessert</div>
+                <p class="product-text">
+                  A frozen dessert concept where MayaNut adds depth and a forest origin story.
                 </p>
                 <button class="product-btn">Order (soon)</button>
               </article>
@@ -610,17 +661,13 @@
   </main>
 
   <script>
-    // Smooth scroll for any element with [data-scroll]
-    document.querySelectorAll('[data-scroll]').forEach(btn=>{
-      btn.addEventListener('click', e=>{
-        const targetSel = btn.getAttribute('data-scroll');
-        const target = document.querySelector(targetSel);
-        if(target){
-          e.preventDefault();
-          target.scrollIntoView({behavior:'smooth', block:'start'});
-        }
-      });
-    });
+    // Smooth scroll helper
+    function smoothScrollTo(sel){
+      const target = document.querySelector(sel);
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
 
     // Logo scroll to top
     const logoTop = document.getElementById('logo-top');
@@ -630,37 +677,51 @@
       });
     }
 
-    // Mobile nav overlay
+    // Learn More / Research buttons
+    const btnLearn = document.getElementById('btn-learn-more');
+    const btnResearch = document.getElementById('btn-research');
+    if(btnLearn){
+      btnLearn.addEventListener('click', ()=>{
+        window.location.href = 'about.html';
+      });
+    }
+    if(btnResearch){
+      btnResearch.addEventListener('click', ()=>{
+        window.location.href = 'research.html';
+      });
+    }
+
+    // Small menu dropdown
     const menuToggle = document.getElementById('menu-toggle');
-    const navOverlay = document.getElementById('nav-overlay');
-    if(menuToggle && navOverlay){
-      menuToggle.addEventListener('click', ()=>{
-        const isOpen = navOverlay.style.display === 'flex';
-        navOverlay.style.display = isOpen ? 'none' : 'flex';
-        navOverlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    const menuDropdown = document.getElementById('menu-dropdown');
+
+    if(menuToggle && menuDropdown){
+      menuToggle.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const isOpen = menuDropdown.style.display === 'block';
+        menuDropdown.style.display = isOpen ? 'none' : 'block';
       });
 
-      navOverlay.addEventListener('click', e=>{
-        // Close when clicking outside the inner panel
-        const inner = navOverlay.querySelector('.nav-overlay-inner');
-        if(inner && !inner.contains(e.target)){
-          navOverlay.style.display = 'none';
-          navOverlay.setAttribute('aria-hidden','true');
-        }
-      });
-
-      // Buttons inside overlay
-      navOverlay.querySelectorAll('[data-scroll]').forEach(btn=>{
-        btn.addEventListener('click', e=>{
-          const targetSel = btn.getAttribute('data-scroll');
-          const target = document.querySelector(targetSel);
-          if(target){
+      // Click on menu items
+      menuDropdown.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click', (e)=>{
+          const scrollTarget = btn.getAttribute('data-scroll');
+          const href = btn.getAttribute('data-href');
+          menuDropdown.style.display = 'none';
+          if(scrollTarget){
             e.preventDefault();
-            navOverlay.style.display = 'none';
-            navOverlay.setAttribute('aria-hidden','true');
-            target.scrollIntoView({behavior:'smooth', block:'start'});
+            smoothScrollTo(scrollTarget);
+          }else if(href){
+            window.location.href = href;
           }
         });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e)=>{
+        if(!menuDropdown.contains(e.target) && !menuToggle.contains(e.target)){
+          menuDropdown.style.display = 'none';
+        }
       });
     }
 
@@ -672,17 +733,17 @@
       });
     }
 
-    // Product click -> store.html
-    document.querySelectorAll('.product-card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        window.location.href = 'store.html';
-      });
-      const btn = card.querySelector('.product-btn');
+    // Product click -> store.html (delegation so clones work too)
+    document.addEventListener('click', e=>{
+      const btn = e.target.closest('.product-btn');
       if(btn){
-        btn.addEventListener('click', e=>{
-          e.stopPropagation();
-          window.location.href = 'store.html';
-        });
+        e.preventDefault();
+        window.location.href = 'store.html';
+        return;
+      }
+      const card = e.target.closest('.product-card');
+      if(card){
+        window.location.href = 'store.html';
       }
     });
 
@@ -698,22 +759,21 @@
       });
     }
 
-    // Auto-scroll (desktop + mobile) for store row
+    // Auto-scroll (MOBILE ONLY) for store row
     (function(){
       const scrollContainer = document.getElementById('store-scroll');
       const row = document.getElementById('store-row');
       if(!scrollContainer || !row) return;
 
-      // Duplicate children to allow seamless looping
-      const items = Array.from(row.children);
-      items.forEach(item=>{
-        const clone = item.cloneNode(true);
-        row.appendChild(clone);
-      });
-
+      const originalCards = Array.from(row.children);
+      let duplicated = false;
       let autoTimer = null;
       let lastInteraction = Date.now();
       let cardWidth = 0;
+
+      function isMobile(){
+        return window.innerWidth <= 880;
+      }
 
       function measureCardWidth(){
         const firstCard = row.querySelector('.product-card');
@@ -725,7 +785,7 @@
       }
 
       function startAutoScroll(){
-        if(autoTimer) clearInterval(autoTimer);
+        if(autoTimer || !isMobile()) return;
         if(!cardWidth) measureCardWidth();
         if(!cardWidth) return;
 
@@ -736,9 +796,8 @@
         autoTimer = setInterval(()=>{
           scrollContainer.scrollLeft += stepPx;
 
-          const maxScroll = row.scrollWidth / 2; // length of original set
+          const maxScroll = scrollContainer.scrollWidth / 2; // length of original set
           if(scrollContainer.scrollLeft >= maxScroll){
-            // loop back keeping smooth rightward motion
             scrollContainer.scrollLeft -= maxScroll;
           }
         }, stepInterval);
@@ -751,13 +810,30 @@
         }
       }
 
-      // Pause on user interaction, resume after 3s of no interaction
+      function setupMobile(){
+        if(!duplicated){
+          originalCards.forEach(card=>{
+            const clone = card.cloneNode(true);
+            row.appendChild(clone);
+          });
+          duplicated = true;
+        }
+        scrollContainer.scrollLeft = 0;
+        measureCardWidth();
+        startAutoScroll();
+      }
+
+      function teardownDesktop(){
+        stopAutoScroll();
+        scrollContainer.scrollLeft = 0;
+      }
+
       function userInteracted(){
         lastInteraction = Date.now();
         stopAutoScroll();
         setTimeout(()=>{
           const now = Date.now();
-          if(now - lastInteraction >= 3000){
+          if(now - lastInteraction >= 3000 && isMobile()){
             startAutoScroll();
           }
         }, 3200);
@@ -767,13 +843,16 @@
         scrollContainer.addEventListener(evt, userInteracted, {passive:true});
       });
 
-      // Start auto-scroll after small delay to avoid layout thrash
       window.addEventListener('load', ()=>{
-        measureCardWidth();
-        startAutoScroll();
+        if(isMobile()) setupMobile();
       });
+
       window.addEventListener('resize', ()=>{
-        measureCardWidth();
+        if(isMobile()){
+          setupMobile();
+        }else{
+          teardownDesktop();
+        }
       });
     })();
 

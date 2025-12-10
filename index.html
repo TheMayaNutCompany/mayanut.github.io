@@ -389,8 +389,52 @@
       color:#6b7280;
       line-height:1.6;
     }
+
+    /* New product actions row: qty control + ADD button */
+    .product-actions{
+      display:flex;
+      width:100%;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .qty-control{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.7);
+      background:rgba(7,237,218,0.16);
+      padding:4px 8px;
+      font-size:11px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
+    .qty-btn{
+      border:none;
+      background:transparent;
+      font-size:14px;
+      cursor:pointer;
+      width:22px;
+      height:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#111827;
+    }
+
+    .qty-value{
+      flex:1;
+      text-align:center;
+      font-weight:600;
+      font-size:12px;
+      color:#111827;
+    }
+
     .product-btn{
-      margin-top:8px;
+      flex:1;
       padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
@@ -399,6 +443,13 @@
       letter-spacing:0.12em;
       text-transform:uppercase;
       cursor:pointer;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .product-btn:hover{
+      background:rgba(7,237,218,0.22);
+      border-color:#9ca3af;
     }
 
     /* BOTTOM GAP (between content and footer, shows outer background) */
@@ -733,7 +784,14 @@
                 <p class="product-text">
                   Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
                 </p>
-                <button class="product-btn">Order (soon)</button>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
               </article>
 
               <!-- Product 2 -->
@@ -745,7 +803,14 @@
                 <p class="product-text">
                   A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
                 </p>
-                <button class="product-btn">Order (soon)</button>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
               </article>
 
               <!-- Product 3 -->
@@ -757,7 +822,14 @@
                 <p class="product-text">
                   A gluten-free oriented blend for cookies, bars, and breads with a forest story.
                 </p>
-                <button class="product-btn">Order (soon)</button>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
               </article>
 
               <!-- Product 4 -->
@@ -769,7 +841,14 @@
                 <p class="product-text">
                   A chilled, smooth, tree-based drink concept built on MayaNut powder and plant milk.
                 </p>
-                <button class="product-btn">Order (soon)</button>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
               </article>
             </div>
           </aside>
@@ -1032,6 +1111,45 @@
       card.addEventListener('click', ()=>{
         window.location.href = 'store.html';
       });
+    });
+
+    //-------------------------------
+    // Quantity controls for each product
+    //-------------------------------
+    document.querySelectorAll('.product-card').forEach(card=>{
+      const minusBtn = card.querySelector('.qty-minus');
+      const plusBtn = card.querySelector('.qty-plus');
+      const valueSpan = card.querySelector('.qty-value');
+      const addBtn = card.querySelector('.add-btn');
+
+      if(!minusBtn || !plusBtn || !valueSpan) return;
+
+      function updateQty(delta){
+        let current = parseInt(valueSpan.textContent, 10);
+        if(isNaN(current)) current = 1;
+        current += delta;
+        if(current < 1) current = 1;
+        valueSpan.textContent = String(current);
+      }
+
+      minusBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        updateQty(-1);
+      });
+
+      plusBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        updateQty(1);
+      });
+
+      if(addBtn){
+        addBtn.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          const qty = valueSpan.textContent;
+          // Here you could hook into a real cart later.
+          console.log('ADD clicked for product:', card.dataset.name, 'qty:', qty);
+        });
+      }
     });
 
     // WELCOME overlay logic

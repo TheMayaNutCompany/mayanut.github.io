@@ -23,12 +23,15 @@
       --accent-cyan: #07edda;
       --border-soft: #e5e7eb;
       --green-name: #338e2d;
+      --btn-bg: rgba(7,237,218,0.16);
+      --btn-border: rgba(148,163,184,0.7);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      /* Single continuous gradient background */
       background: linear-gradient(to bottom, #f3f4f6, #d1d5db);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
@@ -76,18 +79,19 @@
       width:32px;
       height:32px;
       border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#f9fafb;
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
+      backdrop-filter:blur(6px);
     }
 
     .settings-btn svg{
       width:16px;
       height:16px;
-      fill:#4b5563;
+      fill:#0f172a;
     }
 
     .header-logo-wrap{
@@ -113,18 +117,19 @@
       width:32px;
       height:32px;
       border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#f9fafb;
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
+      backdrop-filter:blur(6px);
     }
 
     .hamburger-btn svg{
       width:16px;
       height:16px;
-      fill:#4b5563;
+      fill:#0f172a;
     }
 
     /* SETTINGS + MENU PANELS (floating) */
@@ -171,11 +176,12 @@
 
     .lang-select-inline{
       border-radius:999px;
-      border:1px solid #d1d5db;
+      border:1px solid var(--btn-border);
       padding:4px 8px;
       font-size:11px;
-      background:#f9fafb;
-      max-width:120px;
+      background:var(--btn-bg);
+      max-width:140px;
+      cursor:pointer;
     }
 
     .toggle-pill{
@@ -238,11 +244,11 @@
       width:100%;
     }
 
-    /* MAIN BODY CARD (same width as tabs) */
+    /* MAIN BODY CARD – solid white so the gray gradient is ONE background (body only) */
     .main-body-card{
       width:100%;
-      background:linear-gradient(to bottom,#ffffff,#e5e7eb);
-      border-radius:0; /* flat edges, gaps create the separation */
+      background:#ffffff;
+      border-radius:0;
       box-shadow:0 18px 40px rgba(15,23,42,0.12);
       padding:26px 22px 26px;
     }
@@ -308,8 +314,8 @@
     .btn{
       padding:8px 16px;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,0.7);
-      background:rgba(7,237,218,0.16);
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
       color:#111827;
       font-size:11px;
       text-transform:uppercase;
@@ -399,12 +405,13 @@
     .store-search button{
       padding:7px 10px;
       border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#ffffff;
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.12em;
       cursor:pointer;
+      backdrop-filter:blur(6px);
     }
 
     .store-grid{
@@ -442,12 +449,13 @@
       margin-top:8px;
       padding:6px 12px;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,0.7);
-      background:rgba(7,237,218,0.16);
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
       font-size:11px;
       letter-spacing:0.12em;
       text-transform:uppercase;
       cursor:pointer;
+      backdrop-filter:blur(6px);
     }
 
     /* GAP between content and bottom tab */
@@ -511,14 +519,15 @@
       width:32px;
       height:32px;
       border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#f9fafb;
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
       text-decoration:none;
+      backdrop-filter:blur(6px);
     }
     .footer-instagram svg{
       width:16px;
       height:16px;
-      fill:#4b5563;
+      fill:#0f172a;
     }
 
     @media(max-width:700px){
@@ -579,14 +588,26 @@
     .welcome-proceed{
       padding:7px 14px;
       border-radius:999px;
-      border:none;
-      background:#111827;
-      color:#f9fafb;
+      border:1px solid var(--btn-border);
+      background:var(--btn-bg);
+      color:#111827;
       font-size:12px;
       cursor:pointer;
+      backdrop-filter:blur(6px);
     }
     .welcome-lang{
       font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .welcome-lang-select{
+      border-radius:999px;
+      border:1px solid var(--btn-border);
+      padding:4px 8px;
+      font-size:11px;
+      background:var(--btn-bg);
+      cursor:pointer;
     }
   </style>
 </head>
@@ -824,8 +845,15 @@
       <div class="welcome-actions">
         <button class="welcome-proceed" id="welcome-proceed">Proceed</button>
         <div class="welcome-lang">
-          Language:&nbsp;
-          <strong>English</strong>
+          <span>Language:</span>
+          <select id="welcome-lang-select" class="welcome-lang-select">
+            <option value="en" selected>English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="pt">Português</option>
+            <option value="de">Deutsch</option>
+            <option value="ja">日本語</option>
+          </select>
         </div>
       </div>
     </div>
@@ -886,10 +914,30 @@
       });
     }
 
+    // Settings language redirect
     const langSelectInline = document.getElementById('language-select');
     if(langSelectInline){
       langSelectInline.addEventListener('change', ()=>{
         const val = langSelectInline.value;
+        if(val === 'en') return;
+        window.location.href = `index-${val}.html`;
+      });
+    }
+
+    // Welcome overlay
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    const welcomeProceed = document.getElementById('welcome-proceed');
+    const welcomeLangSelect = document.getElementById('welcome-lang-select');
+
+    if(welcomeProceed){
+      welcomeProceed.addEventListener('click', ()=>{
+        if(welcomeOverlay) welcomeOverlay.style.display = 'none';
+      });
+    }
+
+    if(welcomeLangSelect){
+      welcomeLangSelect.addEventListener('change', ()=>{
+        const val = welcomeLangSelect.value;
         if(val === 'en') return;
         window.location.href = `index-${val}.html`;
       });
@@ -904,15 +952,6 @@
           const name = (card.dataset.name || '').toLowerCase();
           card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
         });
-      });
-    }
-
-    // Welcome overlay
-    const welcomeOverlay = document.getElementById('welcome-overlay');
-    const welcomeProceed = document.getElementById('welcome-proceed');
-    if(welcomeOverlay && welcomeProceed){
-      welcomeProceed.addEventListener('click', ()=>{
-        welcomeOverlay.style.display = 'none';
       });
     }
 

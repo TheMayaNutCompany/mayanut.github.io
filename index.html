@@ -53,6 +53,7 @@
       box-shadow:0 20px 60px rgba(15,23,42,0.08);
       overflow:visible;
       position:relative;
+      transition:all .2s ease;
     }
 
     /* FLOATING LOGO – fixed in background frame, upper-left */
@@ -189,25 +190,12 @@
       transition:grid-template-columns .2s ease;
     }
 
-    /* When store expanded, make hero single-column and let store span full width */
+    /* When store expanded: hide hero-left and give store full width */
     .page-frame.store-expanded #hero{
       grid-template-columns:1fr;
     }
-    .page-frame.store-expanded #store-panel{
-      margin-top:20px;
-    }
-    .page-frame.store-expanded .store-grid{
-      grid-template-columns:repeat(4,minmax(0,1fr));
-    }
-    @media(max-width:960px){
-      .page-frame.store-expanded .store-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
-    }
-    @media(max-width:600px){
-      .page-frame.store-expanded .store-grid{
-        grid-template-columns:1fr;
-      }
+    .page-frame.store-expanded .hero-left{
+      display:none;
     }
 
     @media(max-width:880px){
@@ -307,7 +295,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      transition:width .2s ease;
+      transition:margin-top .2s ease;
     }
 
     .store-title{
@@ -330,6 +318,7 @@
       gap:6px;
       align-items:center;
     }
+
     .store-search input{
       flex:1;
       padding:8px 10px;
@@ -338,6 +327,32 @@
       font-size:12px;
       background:white;
       color:#111827;
+    }
+
+    /* magnifying glass container with internal vertical line */
+    .search-icon-wrap{
+      position:relative;
+      height:30px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 10px 0 12px;
+    }
+    .search-icon-wrap::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:50%;
+      width:1px;
+      height:65%;
+      background:#d1d5db;
+      transform:translateY(-50%);
+    }
+    .search-icon svg{
+      width:14px;
+      height:14px;
+      fill:#6b7280;
+      transform:rotate(-20deg);
     }
 
     /* Arrow send button at end of search box */
@@ -356,7 +371,7 @@
       transition:opacity .15s ease;
     }
 
-    .store-search #store-view-full{
+    #store-view-full{
       padding:6px 10px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
@@ -368,14 +383,47 @@
       white-space:nowrap;
     }
 
-    /* Product grid */
-    .store-grid{
+    /* Store grid layout: left extra, right main */
+    .store-grid-row{
       margin-top:10px;
+      display:flex;
+      gap:12px;
+    }
+
+    .store-grid{
+      flex:1;
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
       gap:12px;
-      transition:grid-template-columns .2s ease;
     }
+
+    .store-grid-extra{
+      display:none; /* hidden until expanded */
+    }
+
+    /* Slide-in animation for extra 4 when expanded */
+    @keyframes slideInFromRight{
+      0%{
+        opacity:0;
+        transform:translateX(40px);
+      }
+      100%{
+        opacity:1;
+        transform:translateX(0);
+      }
+    }
+
+    .page-frame.store-expanded .store-grid-extra{
+      display:grid;
+      animation:slideInFromRight .4s ease-out;
+    }
+
+    @media(max-width:880px){
+      .store-grid-row{
+        flex-direction:column;
+      }
+    }
+
     .product-card{
       border-radius:18px;
       background:#ffffff;
@@ -713,6 +761,9 @@
       #hero{
         grid-template-columns:1fr;
       }
+      .store-grid-row{
+        flex-direction:column;
+      }
       .footer-inner{
         grid-template-columns:1fr;
         row-gap:6px;
@@ -820,162 +871,177 @@
 
             <div class="store-search">
               <input id="store-search" type="text" placeholder="Search future products…" />
+              <!-- magnifying glass with inner divider -->
+              <div class="search-icon-wrap">
+                <span class="search-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10 4a6 6 0 1 1-4.24 10.24l-3.5 3.5-1.06-1.06 3.5-3.5A6 6 0 0 1 10 4zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                  </svg>
+                </span>
+              </div>
+              <!-- send arrow -->
               <button id="store-search-btn" class="store-search-btn" type="button">➜</button>
-              <button id="store-view-full" type="button">Full store</button>
+              <!-- view all / collapse -->
+              <button id="store-view-full" type="button">VIEW ALL PRODUCTS</button>
             </div>
 
-            <div class="store-grid">
-              <!-- Product 1 -->
-              <article class="product-card" data-name="mayanut powder">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut powder concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">MayaNut Powder</div>
-                <p class="product-text">
-                  Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+            <!-- Store grids: left extra (hidden initially), right main -->
+            <div class="store-grid-row">
+              <div class="store-grid store-grid-extra">
+                <!-- Product 5 -->
+                <article class="product-card" data-name="mayanut cereal">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="MayaNut breakfast cereal concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">MayaNut Breakfast Cereal</div>
+                  <p class="product-text">
+                    Lightly sweetened flakes and clusters featuring roasted MayaNut powder and grains.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
 
-              <!-- Product 2 -->
-              <article class="product-card" data-name="mayanut latte drink">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Instant MayaNut latte concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">Instant MayaNut Latte</div>
-                <p class="product-text">
-                  A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+                <!-- Product 6 -->
+                <article class="product-card" data-name="mayanut energy bar">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="MayaNut energy bar concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">MayaNut Energy Bar</div>
+                  <p class="product-text">
+                    Compact snack bars combining MayaNut powder, nuts, and dried fruit for on-the-go energy.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
 
-              <!-- Product 3 -->
-              <article class="product-card" data-name="mayanut baking blend">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut baking blend concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">MayaNut Baking Blend</div>
-                <p class="product-text">
-                  A gluten-free oriented blend for cookies, bars, and breads with a forest story.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+                <!-- Product 7 -->
+                <article class="product-card" data-name="mayanut ice cream">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="MayaNut ice cream concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">MayaNut Ice Cream</div>
+                  <p class="product-text">
+                    A creamy frozen dessert concept using MayaNut powder and plant-based milk.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
 
-              <!-- Product 4 -->
-              <article class="product-card" data-name="mayanut cold brew drink">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Cold MayaNut drink concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">Cold MayaNut Drink</div>
-                <p class="product-text">
-                  A chilled, smooth, tree-based drink concept built on MayaNut powder and plant milk.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+                <!-- Product 8 -->
+                <article class="product-card" data-name="mayanut hot chocolate">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="MayaNut hot chocolate concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">MayaNut Hot Chocolate</div>
+                  <p class="product-text">
+                    A rich, tree-based hot chocolate concept blending MayaNut powder and cocoa.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
+              </div>
 
-              <!-- Product 5 -->
-              <article class="product-card" data-name="mayanut cereal">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut breakfast cereal concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">MayaNut Breakfast Cereal</div>
-                <p class="product-text">
-                  Lightly sweetened flakes and clusters featuring roasted MayaNut powder and grains.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+              <div class="store-grid store-grid-main">
+                <!-- Product 1 -->
+                <article class="product-card" data-name="mayanut powder">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="MayaNut powder concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">MayaNut Powder</div>
+                  <p class="product-text">
+                    Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
 
-              <!-- Product 6 -->
-              <article class="product-card" data-name="mayanut energy bar">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut energy bar concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">MayaNut Energy Bar</div>
-                <p class="product-text">
-                  Compact snack bars combining MayaNut powder, nuts, and dried fruit for on-the-go energy.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+                <!-- Product 2 -->
+                <article class="product-card" data-name="mayanut latte drink">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="Instant MayaNut latte concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">Instant MayaNut Latte</div>
+                  <p class="product-text">
+                    A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
 
-              <!-- Product 7 -->
-              <article class="product-card" data-name="mayanut ice cream">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut ice cream concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">MayaNut Ice Cream</div>
-                <p class="product-text">
-                  A creamy frozen dessert concept using MayaNut powder and plant-based milk.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+                <!-- Product 3 -->
+                <article class="product-card" data-name="mayanut baking blend">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="MayaNut baking blend concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">MayaNut Baking Blend</div>
+                  <p class="product-text">
+                    A gluten-free oriented blend for cookies, bars, and breads with a forest story.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
 
-              <!-- Product 8 -->
-              <article class="product-card" data-name="mayanut hot chocolate">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut hot chocolate concept" />
-                <div class="product-divider"></div>
-                <div class="product-name">MayaNut Hot Chocolate</div>
-                <p class="product-text">
-                  A rich, tree-based hot chocolate concept blending MayaNut powder and cocoa.
-                </p>
-                <div class="product-actions">
-                  <div class="qty-control">
-                    <button class="qty-btn qty-minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus">+</button>
+                <!-- Product 4 -->
+                <article class="product-card" data-name="mayanut cold brew drink">
+                  <img src="mayanut-the-maya-nut-company-logo.png"
+                       alt="Cold MayaNut drink concept" />
+                  <div class="product-divider"></div>
+                  <div class="product-name">Cold MayaNut Drink</div>
+                  <p class="product-text">
+                    A chilled, smooth, tree-based drink concept built on MayaNut powder and plant milk.
+                  </p>
+                  <div class="product-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn qty-minus">−</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn qty-plus">+</button>
+                    </div>
+                    <button class="product-btn add-btn">ADD</button>
                   </div>
-                  <button class="product-btn add-btn">ADD</button>
-                </div>
-              </article>
+                </article>
+              </div>
             </div>
           </aside>
         </section>
@@ -1021,7 +1087,10 @@
                rel="noopener"
                aria-label="Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.5 5.5 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"></path>
+                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 
+                0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66-1.34-3 
+                3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.5 5.5 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 
+                8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"></path>
               </svg>
             </a>
           </div>
@@ -1192,7 +1261,7 @@
     });
 
     // Hero CTA navigation (Learn more)
-    document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
+    document.querySelectorAll('.btn[data-nav]).forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
         if(dest){
@@ -1251,11 +1320,11 @@
         storeExpanded = !storeExpanded;
         if(storeExpanded){
           pageFrame.classList.add('store-expanded');
-          storeViewFull.textContent = 'Collapse';
+          storeViewFull.textContent = 'COLLAPSE STORE';
           storePanel.scrollIntoView({behavior:'smooth', block:'start'});
         }else{
           pageFrame.classList.remove('store-expanded');
-          storeViewFull.textContent = 'Full store';
+          storeViewFull.textContent = 'VIEW ALL PRODUCTS';
           storePanel.scrollIntoView({behavior:'smooth', block:'start'});
         }
       });

@@ -31,7 +31,8 @@
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background:linear-gradient(to bottom,#4b5563,#9ca3af,#e5e7eb);
+      /* light green gradient background */
+      background:linear-gradient(to bottom,#d1fae5,#bbf7d0,#a7f3d0);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
     }
@@ -47,29 +48,23 @@
     .page-frame{
       width:100%;
       max-width:1050px;
-      background:transparent; /* let outer grey show in gaps */
+      background:transparent; /* let outer gradient show in gaps */
       border-radius:28px;
       box-shadow:0 20px 60px rgba(15,23,42,0.08);
       overflow:visible;
       position:relative;
     }
 
-    /* FLOATING LOGO – fixed, aligned with frame, upper-left */
+    /* FLOATING LOGO – fixed, in the green/grey frame, upper-left */
     .floating-logo{
       position:fixed;
       top:16px;
-      left:50%;
-      transform:translateX(-50%);
-      width:100%;
-      max-width:1050px;
-      pointer-events:none;
+      left:16px;        /* move it way left into the background frame */
       z-index:60;
-      display:flex;
-      justify-content:flex-start;
-      padding:0 22px; /* matches inner padding so it sits in the frame */
+      pointer-events:none;
     }
     .floating-logo img{
-      width:130px; /* bigger than before */
+      width:120px;      /* good size, can tweak */
       cursor:pointer;
       pointer-events:auto;
     }
@@ -112,7 +107,6 @@
       fill:#4b5563;
     }
 
-    /* Header center now empty, but kept for spacing if needed */
     .header-center{
       flex:1;
     }
@@ -142,7 +136,7 @@
       fill:#4b5563;
     }
 
-    /* GAP BETWEEN HEADER AND MAIN CONTENT – shows outer grey background */
+    /* GAP BETWEEN HEADER AND MAIN CONTENT – shows outer background */
     .tab-gap{
       height:38px;
       background:transparent;
@@ -397,7 +391,7 @@
       cursor:pointer;
     }
     .footer-logo img{
-      width:64px;
+      width:80px;  /* slightly bigger bottom logo */
       margin:0 auto;
       display:block;
     }
@@ -585,11 +579,8 @@
       .footer-links{
         justify-content:center;
       }
-      .floating-logo{
-        padding:0 16px;
-      }
       .floating-logo img{
-        width:110px;
+        width:100px; /* scale down a bit on mobile so it doesn’t dominate */
       }
     }
   </style>
@@ -597,7 +588,7 @@
 <body>
   <main>
     <div class="page-frame" id="top">
-      <!-- FLOATING LOGO (fixed, upper-left inside frame width) -->
+      <!-- FLOATING LOGO (fixed, upper-left in background frame) -->
       <div class="floating-logo">
         <img src="mayanut-the-maya-nut-company-logo.png"
              alt="The MayaNut Company logo"
@@ -614,9 +605,7 @@
           </button>
         </div>
 
-        <div class="header-center">
-          <!-- intentionally empty now -->
-        </div>
+        <div class="header-center"></div>
 
         <div class="header-right">
           <button class="icon-menu" id="menu-btn" aria-label="Open menu">
@@ -627,7 +616,7 @@
         </div>
       </header>
 
-      <!-- Floating gap under header (shows outer grey background) -->
+      <!-- Floating gap under header (shows outer background) -->
       <div class="tab-gap"></div>
 
       <!-- MAIN CONTENT (white -> light grey) -->
@@ -733,7 +722,7 @@
         </section>
       </div>
 
-      <!-- Gap above footer to show outer grey background -->
+      <!-- Gap above footer to show outer background -->
       <div class="bottom-gap"></div>
 
       <!-- FOOTER TAB -->
@@ -891,9 +880,9 @@
       });
     });
 
-    // Click outside overlays to close (except welcome, which is blocking until proceed)
+    // Click outside overlays to close (except welcome, blocking until proceed)
     document.querySelectorAll('.overlay').forEach(ov=>{
-      if(ov.id === 'welcome-overlay') return; // don't close welcome by background click
+      if(ov.id === 'welcome-overlay') return;
       ov.addEventListener('click', e=>{
         if(e.target === ov){
           ov.classList.remove('active');
@@ -975,7 +964,6 @@
       welcomeProceed.addEventListener('click', ()=>{
         const val = welcomeLang.value;
         if(val && val !== 'en'){
-          // redirect to language-specific page
           window.location.href = `index-${val}.html`;
           return;
         }
@@ -983,7 +971,6 @@
       });
     }
 
-    // Allow closing welcome overlay via X without redirect
     const welcomeClose = document.querySelector('[data-close="welcome-overlay"]');
     if(welcomeClose && welcomeOverlay){
       welcomeClose.addEventListener('click', ()=>{

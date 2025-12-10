@@ -31,7 +31,7 @@
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background:linear-gradient(to bottom,#4b5563,#e5e7eb);
+      background:linear-gradient(to bottom,#4b5563,#9ca3af,#e5e7eb);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
     }
@@ -47,16 +47,16 @@
     .page-frame{
       width:100%;
       max-width:1050px;
-      background:linear-gradient(to bottom,var(--bg-frame-top),var(--bg-frame-mid),var(--bg-frame-bottom));
+      background:transparent; /* let outer grey show in gaps */
       border-radius:28px;
       box-shadow:0 20px 60px rgba(15,23,42,0.08);
-      overflow:hidden;
+      overflow:visible;
       position:relative;
     }
 
     /* HEADER / TOP TAB */
     .site-header{
-      padding:10px 22px;
+      padding:14px 22px;
       background:#ffffff;
       display:flex;
       align-items:center;
@@ -64,25 +64,6 @@
       position:relative;
       z-index:10;
       border-radius:28px 28px 0 0;
-    }
-
-    /* no visible line; gap below shows outer background */
-    .site-header::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:0;
-      height:0;
-    }
-
-    /* GAP BETWEEN HEADER AND CONTENT (shows outer background) */
-    .tab-gap{
-      height:38px;          /* roughly search-bar height */
-      background:transparent;
-      margin:0 22px;
-      border-radius:0 0 18px 18px;
     }
 
     .header-left{
@@ -110,18 +91,19 @@
       fill:#4b5563;
     }
 
-    /* Centered logo */
+    /* Centered logo, larger and not cut off */
     .header-center{
       position:absolute;
       left:50%;
-      transform:translateX(-50%);
+      top:50%;
+      transform:translate(-50%,-50%);
       display:flex;
       align-items:center;
       justify-content:center;
       pointer-events:none;
     }
     .header-center img{
-      width:72px;
+      width:92px;
       cursor:pointer;
       pointer-events:auto;
     }
@@ -150,9 +132,24 @@
       fill:#4b5563;
     }
 
+    /* GAP BETWEEN HEADER AND MAIN CONTENT – shows grey background */
+    .tab-gap{
+      height:38px;
+      background:transparent;
+      margin:0 22px;
+      border-radius:0 0 18px 18px;
+    }
+
+    /* MAIN CONTENT WRAPPER (white -> light grey) */
+    .content-wrapper{
+      margin:0 22px;
+      background:linear-gradient(to bottom,var(--bg-frame-top),var(--bg-frame-mid),var(--bg-frame-bottom));
+      border-radius:20px;
+      padding:26px 22px 30px;
+    }
+
     /* HERO LAYOUT */
     #hero{
-      padding:26px 22px 30px;
       display:grid;
       grid-template-columns:1.1fr 1.1fr;
       gap:26px;
@@ -167,7 +164,17 @@
       display:flex;
       flex-direction:column;
       gap:14px;
-      justify-content:center;
+      justify-content:flex-start;
+    }
+
+    /* placeholder image above text */
+    .hero-placeholder{
+      margin-bottom:10px;
+    }
+    .hero-placeholder img{
+      max-width:260px;
+      border-radius:16px;
+      box-shadow:0 12px 30px rgba(15,23,42,0.22);
     }
 
     .hero-kicker{
@@ -265,9 +272,6 @@
       gap:6px;
       align-items:center;
     }
-    .store-search span{
-      font-size:14px;
-    }
     .store-search input{
       flex:1;
       padding:8px 10px;
@@ -337,7 +341,7 @@
       cursor:pointer;
     }
 
-    /* BOTTOM GAP (between content and footer, showing outer background) */
+    /* BOTTOM GAP (between content and footer, shows outer background) */
     .bottom-gap{
       height:38px;
       background:transparent;
@@ -391,8 +395,8 @@
       text-decoration:none;
     }
     .footer-instagram svg{
-      width:22px;
-      height:22px;
+      width:26px;
+      height:26px;
       fill:#4b5563;
     }
 
@@ -487,6 +491,13 @@
       cursor:pointer;
     }
 
+    @media(max-width:880px){
+      .content-wrapper{
+        margin:0 16px;
+        padding:20px 16px 26px;
+      }
+    }
+
     @media(max-width:780px){
       #hero{
         grid-template-columns:1fr;
@@ -536,102 +547,108 @@
         </div>
       </header>
 
-      <!-- Floating gap under header (shows outer background) -->
+      <!-- Floating gap under header (shows outer grey background) -->
       <div class="tab-gap"></div>
 
-      <!-- HERO + STORE (only content) -->
-      <section id="hero">
-        <!-- LEFT: TEXT -->
-        <div class="hero-left">
-          <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
+      <!-- MAIN CONTENT (white -> light grey) -->
+      <div class="content-wrapper">
+        <section id="hero">
+          <!-- LEFT: HERO TEXT + PLACEHOLDER IMAGE -->
+          <div class="hero-left">
+            <div class="hero-placeholder">
+              <img src="mayanutstorecomingsoonarrow.png"
+                   alt="MayaNut store coming soon" />
+            </div>
 
-          <h1 class="hero-title">
-            The future of<br />
-            food grows on a<br />
-            <span>forgotten tree.</span>
-          </h1>
+            <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
 
-          <p class="hero-sub">
-            <span class="name-green">MayaNut</span> is America's new agricultural resource, provide nutritional
-            support and tasty memories for all to enjoy. It is the roasted seed of
-            <span class="name-green"><em>Brosimum alicastrum</em></span>, a tropical canopy tree emerging from
-            a forgotten time.
-          </p>
+            <h1 class="hero-title">
+              The future of<br />
+              food grows on a<br />
+              <span>forgotten tree.</span>
+            </h1>
 
-          <div class="hero-cta-row">
-            <button class="btn" data-nav="about.html">Learn more</button>
-            <button class="btn" data-nav="research.html">Research</button>
+            <p class="hero-sub">
+              <span class="name-green">MayaNut</span> is America's new agricultural resource, provide nutritional
+              support and tasty memories for all to enjoy. It is the roasted seed of
+              <span class="name-green"><em>Brosimum alicastrum</em></span>, a tropical canopy tree emerging from
+              a forgotten time.
+            </p>
+
+            <div class="hero-cta-row">
+              <button class="btn" data-nav="about.html">Learn more</button>
+              <button class="btn" data-nav="research.html">Research</button>
+            </div>
+
+            <div class="hero-meta">
+              Over <strong>200 seed-grown trees</strong> already in the ground – this phase is about
+              genetics, plantings, and learning, not yet about selling.
+            </div>
           </div>
 
-          <div class="hero-meta">
-            Over <strong>200 seed-grown trees</strong> already in the ground – this phase is about
-            genetics, plantings, and learning, not yet about selling.
-          </div>
-        </div>
+          <!-- RIGHT: STORE PREVIEW (4 products) -->
+          <aside id="store-panel" aria-label="Future store preview">
+            <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
+            <p class="store-sub">
+              Early glimpse of concept products that will exist once plantations mature and
+              seed supply is reliable.
+            </p>
 
-        <!-- RIGHT: STORE PREVIEW (4 products) -->
-        <aside id="store-panel" aria-label="Future store preview">
-          <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
-          <p class="store-sub">
-            Early glimpse of concept products that will exist once plantations mature and
-            seed supply is reliable.
-          </p>
+            <div class="store-search">
+              <input id="store-search" type="text" placeholder="🔍 Search future products…" />
+              <button id="store-view-full" type="button">Full store</button>
+            </div>
 
-          <div class="store-search">
-            <span>🔍</span>
-            <input id="store-search" type="text" placeholder="Search future products…" />
-            <button id="store-view-full" type="button">Full store</button>
-          </div>
+            <div class="store-grid">
+              <!-- Product 1 -->
+              <article class="product-card" data-name="powder">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut powder concept" />
+                <div class="product-name">MayaNut Powder</div>
+                <p class="product-text">
+                  Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
 
-          <div class="store-grid">
-            <!-- Product 1 -->
-            <article class="product-card" data-name="powder">
-              <img src="mayanut-the-maya-nut-company-logo.png"
-                   alt="MayaNut powder concept" />
-              <div class="product-name">MayaNut Powder</div>
-              <p class="product-text">
-                Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
-              </p>
-              <button class="product-btn">Order (soon)</button>
-            </article>
+              <!-- Product 2 -->
+              <article class="product-card" data-name="latte drink">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="Instant MayaNut latte concept" />
+                <div class="product-name">Instant MayaNut Latte</div>
+                <p class="product-text">
+                  A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
 
-            <!-- Product 2 -->
-            <article class="product-card" data-name="latte drink">
-              <img src="mayanut-the-maya-nut-company-logo.png"
-                   alt="Instant MayaNut latte concept" />
-              <div class="product-name">Instant MayaNut Latte</div>
-              <p class="product-text">
-                A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
-              </p>
-              <button class="product-btn">Order (soon)</button>
-            </article>
+              <!-- Product 3 -->
+              <article class="product-card" data-name="baking blend">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut baking blend concept" />
+                <div class="product-name">MayaNut Baking Blend</div>
+                <p class="product-text">
+                  A gluten-free oriented blend for cookies, bars, and breads with a forest story.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
 
-            <!-- Product 3 -->
-            <article class="product-card" data-name="baking blend">
-              <img src="mayanut-the-maya-nut-company-logo.png"
-                   alt="MayaNut baking blend concept" />
-              <div class="product-name">MayaNut Baking Blend</div>
-              <p class="product-text">
-                A gluten-free oriented blend for cookies, bars, and breads with a forest story.
-              </p>
-              <button class="product-btn">Order (soon)</button>
-            </article>
+              <!-- Product 4 -->
+              <article class="product-card" data-name="cold brew">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="Cold MayaNut drink concept" />
+                <div class="product-name">Cold MayaNut Drink</div>
+                <p class="product-text">
+                  A chilled, smooth, tree-based drink concept built on MayaNut powder and plant milk.
+                </p>
+                <button class="product-btn">Order (soon)</button>
+              </article>
+            </div>
+          </aside>
+        </section>
+      </div>
 
-            <!-- Product 4 -->
-            <article class="product-card" data-name="cold brew">
-              <img src="mayanut-the-maya-nut-company-logo.png"
-                   alt="Cold MayaNut drink concept" />
-              <div class="product-name">Cold MayaNut Drink</div>
-              <p class="product-text">
-                A chilled, smooth, tree-based drink concept built on MayaNut powder and plant milk.
-              </p>
-              <button class="product-btn">Order (soon)</button>
-            </article>
-          </div>
-        </aside>
-      </section>
-
-      <!-- Gap above footer to show outer background -->
+      <!-- Gap above footer to show outer grey background -->
       <div class="bottom-gap"></div>
 
       <!-- FOOTER TAB -->

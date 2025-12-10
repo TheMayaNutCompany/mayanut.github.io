@@ -31,7 +31,7 @@
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      /* light cyan background matching the glassy buttons */
+      /* translucent version of the blue so it matches the glassy buttons */
       background: rgba(7,237,218,0.16);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
@@ -48,7 +48,7 @@
     .page-frame{
       width:100%;
       max-width:1050px;
-      background:transparent; /* let outer color show in gaps */
+      background:transparent;
       border-radius:28px;
       box-shadow:0 20px 60px rgba(15,23,42,0.08);
       overflow:visible;
@@ -146,7 +146,7 @@
       transform:translate(-50%,-50%);
       font-size:14px;
       font-weight:600;
-      color:var(--accent-blue);  /* same blue as "forgotten tree" */
+      color:var(--accent-blue);
       white-space:nowrap;
       pointer-events:none;
       animation:holiday-slide 4s ease-in-out infinite;
@@ -172,12 +172,13 @@
       width:100%;
     }
 
-    /* MAIN CONTENT WRAPPER – now solid white */
+    /* MAIN CONTENT WRAPPER (solid white) */
     .content-wrapper{
       background:#ffffff;
       border-radius:20px;
       padding:26px 22px 30px;
       width:100%;
+      transition:padding .2s ease;
     }
 
     /* HERO LAYOUT */
@@ -185,7 +186,30 @@
       display:grid;
       grid-template-columns:1.1fr 1.1fr;
       gap:26px;
+      transition:grid-template-columns .2s ease;
     }
+
+    /* When store expanded, make hero single-column and let store span full width */
+    .page-frame.store-expanded #hero{
+      grid-template-columns:1fr;
+    }
+    .page-frame.store-expanded #store-panel{
+      margin-top:20px;
+    }
+    .page-frame.store-expanded .store-grid{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+    @media(max-width:960px){
+      .page-frame.store-expanded .store-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+    @media(max-width:600px){
+      .page-frame.store-expanded .store-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
     @media(max-width:880px){
       #hero{
         grid-template-columns:1fr;
@@ -283,6 +307,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      transition:width .2s ease;
     }
 
     .store-title{
@@ -343,12 +368,13 @@
       white-space:nowrap;
     }
 
-    /* Product grid (4 cards) */
+    /* Product grid */
     .store-grid{
       margin-top:10px;
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
       gap:12px;
+      transition:grid-template-columns .2s ease;
     }
     .product-card{
       border-radius:18px;
@@ -359,7 +385,6 @@
       flex-direction:column;
       align-items:center;
       text-align:center;
-      cursor:pointer;
       transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
     }
     .product-card:hover{
@@ -452,6 +477,28 @@
       border-color:#9ca3af;
     }
 
+    /* Popup for ADD button */
+    .add-popup{
+      position:fixed;
+      bottom:24px;
+      left:50%;
+      transform:translateX(-50%) translateY(20px);
+      background:#111827;
+      color:#f9fafb;
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:12px;
+      box-shadow:0 10px 30px rgba(15,23,42,0.35);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease, transform .2s ease;
+      z-index:80;
+    }
+    .add-popup.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
     /* BOTTOM GAP (between content and footer, shows outer background) */
     .bottom-gap{
       height:38px;
@@ -496,15 +543,20 @@
 
     .footer-right{
       text-align:right;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:10px;
     }
 
-    .footer-instagram{
+    .footer-icon-link{
       display:inline-flex;
       align-items:center;
-      justify-content:flex-end;
+      justify-content:center;
       text-decoration:none;
     }
-    .footer-instagram svg{
+
+    .footer-icon-link svg{
       width:26px;
       height:26px;
       fill:#4b5563;
@@ -670,8 +722,6 @@
       .footer-center,
       .footer-right{
         text-align:center;
-      }
-      .footer-instagram{
         justify-content:center;
       }
       .footer-links{
@@ -722,7 +772,7 @@
       <!-- Gap under header (shows outer background color) -->
       <div class="tab-gap"></div>
 
-      <!-- MAIN CONTENT (now solid white) -->
+      <!-- MAIN CONTENT (solid white) -->
       <div class="content-wrapper">
         <section id="hero">
           <!-- LEFT: HERO TEXT + PLACEHOLDER IMAGE -->
@@ -760,7 +810,7 @@
             </div>
           </div>
 
-          <!-- RIGHT: STORE PREVIEW (4 products) -->
+          <!-- RIGHT: STORE PREVIEW -->
           <aside id="store-panel" aria-label="Future store preview">
             <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
             <p class="store-sub">
@@ -850,6 +900,82 @@
                   <button class="product-btn add-btn">ADD</button>
                 </div>
               </article>
+
+              <!-- Product 5 -->
+              <article class="product-card" data-name="mayanut cereal">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut breakfast cereal concept" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Breakfast Cereal</div>
+                <p class="product-text">
+                  Lightly sweetened flakes and clusters featuring roasted MayaNut powder and grains.
+                </p>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
+              </article>
+
+              <!-- Product 6 -->
+              <article class="product-card" data-name="mayanut energy bar">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut energy bar concept" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Energy Bar</div>
+                <p class="product-text">
+                  Compact snack bars combining MayaNut powder, nuts, and dried fruit for on-the-go energy.
+                </p>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
+              </article>
+
+              <!-- Product 7 -->
+              <article class="product-card" data-name="mayanut ice cream">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut ice cream concept" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Ice Cream</div>
+                <p class="product-text">
+                  A creamy frozen dessert concept using MayaNut powder and plant-based milk.
+                </p>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
+              </article>
+
+              <!-- Product 8 -->
+              <article class="product-card" data-name="mayanut hot chocolate">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut hot chocolate concept" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Hot Chocolate</div>
+                <p class="product-text">
+                  A rich, tree-based hot chocolate concept blending MayaNut powder and cocoa.
+                </p>
+                <div class="product-actions">
+                  <div class="qty-control">
+                    <button class="qty-btn qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus">+</button>
+                  </div>
+                  <button class="product-btn add-btn">ADD</button>
+                </div>
+              </article>
             </div>
           </aside>
         </section>
@@ -877,16 +1003,25 @@
           </div>
 
           <div class="footer-right">
-            <a class="footer-instagram"
+            <!-- Email icon -->
+            <a class="footer-icon-link"
+               href="mailto:themayanutcompany@gmail.com"
+               aria-label="Email The MayaNut Company">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12a2 2 0 0 1-2 2H4c-1.1 
+                0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2v.01L12 13 20 6.01V6H4zm0 
+                2.25V18h16V8.25l-8 6-8-6z"></path>
+              </svg>
+            </a>
+
+            <!-- Instagram icon -->
+            <a class="footer-icon-link"
                href="https://www.instagram.com/themayanutcompany"
                target="_blank"
                rel="noopener"
                aria-label="Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 
-                0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 
-                3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.5 5.5 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 
-                8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"></path>
+                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.5 5.5 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"></path>
               </svg>
             </a>
           </div>
@@ -894,6 +1029,11 @@
       </footer>
     </div>
   </main>
+
+  <!-- ADD POPUP -->
+  <div class="add-popup" id="add-popup">
+    MayaNut products coming 2029!
+  </div>
 
   <!-- WELCOME OVERLAY -->
   <div class="overlay active" id="welcome-overlay">
@@ -1084,8 +1224,8 @@
       });
     }
 
-    // Show arrow button when typing
     if(searchInput && searchButton){
+      // Show arrow button when typing
       searchInput.addEventListener('input', ()=>{
         const val = searchInput.value.trim();
         searchButton.style.opacity = val.length > 0 ? '1' : '0';
@@ -1098,31 +1238,51 @@
       });
     }
 
-    // View full store button
-    const viewFullStore = document.getElementById('store-view-full');
-    if(viewFullStore){
-      viewFullStore.addEventListener('click', ()=>{
-        window.location.href = 'store.html';
+    //-------------------------------
+    // FULL STORE EXPAND / COLLAPSE
+    //-------------------------------
+    const pageFrame = document.querySelector('.page-frame');
+    const storePanel = document.getElementById('store-panel');
+    const storeViewFull = document.getElementById('store-view-full');
+    let storeExpanded = false;
+
+    if(storeViewFull && pageFrame && storePanel){
+      storeViewFull.addEventListener('click', ()=>{
+        storeExpanded = !storeExpanded;
+        if(storeExpanded){
+          pageFrame.classList.add('store-expanded');
+          storeViewFull.textContent = 'Collapse';
+          storePanel.scrollIntoView({behavior:'smooth', block:'start'});
+        }else{
+          pageFrame.classList.remove('store-expanded');
+          storeViewFull.textContent = 'Full store';
+          storePanel.scrollIntoView({behavior:'smooth', block:'start'});
+        }
       });
     }
 
-    // Clicking any product card -> store.html
-    document.querySelectorAll('.product-card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        window.location.href = 'store.html';
-      });
-    });
+    //-------------------------------
+    // Quantity controls + ADD popup
+    //-------------------------------
+    const addPopup = document.getElementById('add-popup');
+    let addPopupTimer = null;
 
-    //-------------------------------
-    // Quantity controls for each product
-    //-------------------------------
+    function showAddPopup(){
+      if(!addPopup) return;
+      addPopup.classList.add('show');
+      if(addPopupTimer) clearTimeout(addPopupTimer);
+      addPopupTimer = setTimeout(()=>{
+        addPopup.classList.remove('show');
+      }, 2000);
+    }
+
     document.querySelectorAll('.product-card').forEach(card=>{
       const minusBtn = card.querySelector('.qty-minus');
       const plusBtn = card.querySelector('.qty-plus');
       const valueSpan = card.querySelector('.qty-value');
       const addBtn = card.querySelector('.add-btn');
 
-      if(!minusBtn || !plusBtn || !valueSpan) return;
+      if(!minusBtn || !plusBtn || !valueSpan || !addBtn) return;
 
       function updateQty(delta){
         let current = parseInt(valueSpan.textContent, 10);
@@ -1142,17 +1302,18 @@
         updateQty(1);
       });
 
-      if(addBtn){
-        addBtn.addEventListener('click', (e)=>{
-          e.stopPropagation();
-          const qty = valueSpan.textContent;
-          // Here you could hook into a real cart later.
-          console.log('ADD clicked for product:', card.dataset.name, 'qty:', qty);
-        });
-      }
+      // ADD button: show popup, no navigation
+      addBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const qty = valueSpan.textContent;
+        console.log('ADD clicked for product:', card.dataset.name, 'qty:', qty);
+        showAddPopup();
+      });
     });
 
+    //-------------------------------
     // WELCOME overlay logic
+    //-------------------------------
     const welcomeOverlay = document.getElementById('welcome-overlay');
     const welcomeLang = document.getElementById('welcome-lang');
     const welcomeProceed = document.getElementById('welcome-proceed');

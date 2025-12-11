@@ -17,7 +17,7 @@
   <!-- Open Graph -->
   <meta property="og:title" content="The MayaNut Company – Maya Nut • Brosimum alicastrum" />
   <meta property="og:description"
-        content="The MayaNut Company is developing South Florida’s first Brosimum alicastrum plantation and exploring MayaNut as a future tree-based superfood and reforestation crop." />
+        content="The MayaNut Company is developing South Florida’s first Brosimum alicastrum plantation, exploring MayaNut as a future tree superfood and reforestation species." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mayanut.com/" />
   <meta property="og:image" content="https://mayanut.com/mayanut-the-maya-nut-company-logo.png" />
@@ -33,21 +33,57 @@
       --accent-cyan: #07edda;
       --border-soft: #e5e7eb;
       --bg-frame-top: #ffffff;
-      --bg-frame-mid: #f9fafb;
-      --bg-frame-bottom: #e0f2fe;
+      --bg-frame-mid: #e5f2ff;   /* pale blue */
+      --bg-frame-bottom: #dbeafe;/* slightly deeper pale blue */
       --green: #16a34a;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
     body{
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      /* pale “transparent” version of button blue */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      /* pale transparent version of button blue */
       background: rgba(7,237,218,0.16);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
     img{ max-width:100%; display:block; }
+
+    /* Larger text mode */
+    body.large-text{
+      font-size:110%;
+    }
+
+    /* High contrast mode */
+    body.high-contrast{
+      background:#000000;
+      color:#ffffff;
+    }
+    body.high-contrast .content-wrapper{
+      background:linear-gradient(to bottom,#000000,#111827);
+    }
+    body.high-contrast .site-header,
+    body.high-contrast footer{
+      background:#111827;
+      color:#f9fafb;
+    }
+    body.high-contrast .btn,
+    body.high-contrast .product-add-btn,
+    body.high-contrast .qty-control,
+    body.high-contrast .store-search button{
+      background:#facc15;
+      border-color:#facc15;
+      color:#111827;
+    }
+    body.high-contrast .product-card{
+      background:#020617;
+      border-color:#64748b;
+    }
+    body.high-contrast .footer-links a{
+      color:#e5e7eb;
+      border-bottom-color:#e5e7eb;
+    }
 
     main{
       min-height:100vh;
@@ -85,22 +121,25 @@
       min-width:0;
     }
 
-    .icon-gear{
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      background:rgba(7,237,218,0.18);
+    .header-logo-block{
       display:flex;
       align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      backdrop-filter:blur(8px);
+      gap:10px;
     }
-    .icon-gear svg{
-      width:16px;
-      height:16px;
-      fill:#4b5563;
+
+    #logo-top{
+      width:120px;
+      height:auto;
+      cursor:pointer;
+      display:block;
+    }
+
+    .ricky-text{
+      font-size:11px;
+      line-height:1.3;
+      font-weight:600;
+      color:var(--accent-blue);
+      white-space:pre-line;
     }
 
     .header-center{
@@ -108,11 +147,6 @@
       display:flex;
       justify-content:center;
       align-items:center;
-    }
-    .header-center img{
-      width:120px;
-      height:auto;
-      display:block;
     }
 
     .header-right{
@@ -139,24 +173,42 @@
       fill:#4b5563;
     }
 
-    .tab-gap{
+    /* Accessibility floating button */
+    .accessibility-btn{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:rgba(7,237,218,0.85);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:70;
+      box-shadow:0 10px 25px rgba(15,23,42,0.3);
+    }
+    .accessibility-btn span{
+      font-size:22px;
+      color:#ffffff;
+    }
+
+    .tab-gap,
+    .bottom-gap{
       height:38px;
-      background:transparent;
+      background:transparent; /* let body background show seamlessly */
       width:100%;
     }
 
-    /* MAIN BODY – white -> pale blue gradient, sharp corners */
+    /* MAIN BODY – white to pale blue gradient, sharp corners */
     .content-wrapper{
-      background:linear-gradient(
-        to bottom,
-        #ffffff 0%,
-        #f9fafb 45%,
-        #e0f2fe 100%
-      );
+      background:linear-gradient(to bottom,var(--bg-frame-top),var(--bg-frame-mid),var(--bg-frame-bottom));
       border-radius:0;
       padding:26px 22px 30px;
       width:100%;
-      transition:all 0.25s ease;
+      transition:background 0.25s ease;
     }
 
     /* HERO LAYOUT */
@@ -250,11 +302,11 @@
     }
     .hero-meta strong{ color:#111827; }
 
-    /* STORE PANEL */
+    /* STORE PANEL – pale blue gradient with darker blue outer edges */
     #store-panel{
       border-radius:22px;
       border:1px solid #e5e7eb;
-      background:#f9fafb;
+      background:radial-gradient(circle at top center,#e0f2fe,#bfdbfe 40%,#1d4ed8 100%);
       padding:16px 14px 18px;
       display:flex;
       flex-direction:column;
@@ -267,12 +319,12 @@
       font-weight:700;
       letter-spacing:0.16em;
       text-transform:uppercase;
-      color:#4b5563;
+      color:#111827;
     }
 
     .store-sub{
       font-size:12px;
-      color:#6b7280;
+      color:#111827;
       line-height:1.7;
     }
 
@@ -282,17 +334,45 @@
       gap:6px;
       align-items:center;
     }
-    .store-search input{
+
+    .store-search-input-wrapper{
+      position:relative;
       flex:1;
-      padding:8px 10px;
+    }
+
+    .store-search input{
+      width:100%;
+      padding:8px 30px 8px 10px;
       border-radius:999px;
       border:1px solid #d1d5db;
       font-size:12px;
-      /* match outside buttons light blue */
-      background:rgba(7,237,218,0.16);
+      background:#e0f2fe; /* solid pale blue, matches external buttons */
       color:#111827;
     }
-    .store-search button{
+
+    .store-search-send{
+      position:absolute;
+      right:6px;
+      top:50%;
+      transform:translateY(-50%);
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      border:1px solid #9ca3af;
+      background:#e5e7eb;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:11px;
+      color:#374151;
+    }
+
+    .store-search-send.visible{
+      display:flex;
+    }
+
+    .store-search button#store-view-full{
       padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
@@ -301,6 +381,7 @@
       letter-spacing:0.12em;
       background:rgba(7,237,218,0.16);
       cursor:pointer;
+      white-space:nowrap;
     }
 
     .store-grid{
@@ -311,30 +392,22 @@
       transition:all 0.25s ease;
     }
 
-    /* STORE CARDS – blue spotlight gradient with darker edges */
     .product-card{
       border-radius:18px;
-      border:1px solid rgba(148,163,184,0.5);
+      background:rgba(255,255,255,0.96);
+      border:1px solid #e5e7eb;
       padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
       align-items:center;
       text-align:center;
       transition:transform .15s ease, box-shadow .15s ease, opacity 0.2s ease;
-      background:
-        radial-gradient(circle at 25% 0,
-          rgba(219,234,254,0.95) 0%,
-          rgba(191,219,254,0.92) 32%,
-          rgba(129,199,255,0.75) 55%,
-          rgba(59,130,246,0.55) 78%,
-          rgba(30,64,175,0.7) 100%
-        );
-      color:#0b1120;
     }
     .product-card:hover{
       transform:translateY(-2px);
-      box-shadow:0 10px 30px rgba(15,23,42,0.18);
+      box-shadow:0 10px 30px rgba(15,23,42,0.12);
     }
+
     .product-card img{
       width:80px;
       margin-bottom:8px;
@@ -343,7 +416,7 @@
     .product-divider{
       width:60%;
       height:1px;
-      background:rgba(15,23,42,0.12);
+      background:#e5e7eb;
       margin-bottom:8px;
     }
 
@@ -354,7 +427,7 @@
     }
     .product-text{
       font-size:12px;
-      color:#0f172a;
+      color:#4b5563;
       line-height:1.6;
       margin-bottom:8px;
     }
@@ -411,7 +484,7 @@
       opacity:0;
     }
 
-    /* When store is expanded */
+    /* When store is expanded: full width, hero hidden */
     body.store-expanded #hero{
       grid-template-columns:1fr;
     }
@@ -427,16 +500,16 @@
       opacity:1;
     }
 
+    /* FOOTER */
     .bottom-gap{
       height:38px;
       background:transparent;
       width:100%;
     }
 
-    /* FOOTER TAB – solid blue matching bottom of gradient */
     footer{
       padding:16px 22px 26px;
-      background:var(--bg-frame-bottom); /* #e0f2fe */
+      background:#bfdbfe; /* same as lower part of body gradient */
       border-radius:0 0 28px 28px;
       position:relative;
     }
@@ -447,7 +520,7 @@
       align-items:center;
       column-gap:8px;
       font-size:11px;
-      color:#64748b;
+      color:#1f2937;
     }
 
     .footer-left{
@@ -487,7 +560,7 @@
     .footer-email svg{
       width:26px;
       height:26px;
-      fill:#4b5563;
+      fill:#1f2937;
       display:block;
       overflow:visible;
     }
@@ -499,12 +572,12 @@
       gap:10px;
     }
     .footer-links a{
-      color:#475569;
+      color:#374151;
       text-decoration:none;
-      border-bottom:1px dotted #94a3b8;
+      border-bottom:1px dotted #9ca3af;
     }
 
-    /* OVERLAYS */
+    /* OVERLAYS: accessibility, menu, welcome */
     .overlay{
       position:fixed;
       inset:0;
@@ -514,7 +587,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index:50;
+      z-index:60;
     }
     .overlay.active{ display:flex; }
 
@@ -525,6 +598,11 @@
       border-radius:18px;
       padding:18px 16px 20px;
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
+    }
+
+    /* Welcome panel gradient */
+    #welcome-overlay .overlay-panel{
+      background:linear-gradient(to bottom,#ffffff,#e0f2fe);
     }
 
     .overlay-header{
@@ -561,24 +639,58 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
+      gap:8px;
     }
     .settings-row label{
       margin-right:8px;
     }
+
     .settings-lang{
       border-radius:999px;
       border:1px solid #d1d5db;
       padding:6px 10px;
       font-size:12px;
       background:rgba(7,237,218,0.16);
-      max-width:200px;
+      max-width:220px;
+      flex:1;
     }
-    .settings-link{
-      font-size:12px;
-      color:#2563eb;
-      text-decoration:underline;
+
+    .toggle-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .toggle-row label{
+      font-size:13px;
+    }
+    .toggle-input{
+      width:40px;
+      height:20px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:#e5e7eb;
+      position:relative;
       cursor:pointer;
     }
+    .toggle-input span{
+      position:absolute;
+      top:2px;
+      left:2px;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#ffffff;
+      transition:transform 0.2s ease;
+    }
+    .toggle-input.active{
+      background:#22c55e;
+      border-color:#22c55e;
+    }
+    .toggle-input.active span{
+      transform:translateX(18px);
+    }
+
     .settings-version{
       margin-top:6px;
       font-size:11px;
@@ -642,110 +754,6 @@
       background:rgba(7,237,218,0.26);
     }
 
-    /* ACCESSIBILITY BUTTON + PANEL */
-    .accessibility-btn{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      width:46px;
-      height:46px;
-      border-radius:999px;
-      border:none;
-      background:#2563eb;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 12px 30px rgba(15,23,42,0.35);
-      cursor:pointer;
-      z-index:60;
-    }
-    .accessibility-btn svg{
-      width:24px;
-      height:24px;
-      fill:#ffffff;
-    }
-
-    .accessibility-panel{
-      position:fixed;
-      right:18px;
-      bottom:74px;
-      width:260px;
-      background:#ffffff;
-      border-radius:14px;
-      box-shadow:0 18px 40px rgba(15,23,42,0.25);
-      padding:12px 14px 14px;
-      font-size:13px;
-      color:#111827;
-      display:none;
-      z-index:59;
-    }
-    .accessibility-panel-header{
-      font-weight:600;
-      margin-bottom:8px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    .accessibility-panel-close{
-      border:none;
-      background:transparent;
-      cursor:pointer;
-      font-size:16px;
-      line-height:1;
-      color:#6b7280;
-    }
-    .accessibility-option{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      margin-bottom:6px;
-    }
-    .accessibility-option input{
-      width:16px;
-      height:16px;
-    }
-
-    .accessibility-panel.active{
-      display:block;
-    }
-
-    /* Accessibility modes */
-    body.access-text-large{
-      font-size:110%;
-    }
-    body.access-high-contrast{
-      background:#020617;
-      color:#f9fafb;
-    }
-    body.access-high-contrast .content-wrapper{
-      background:linear-gradient(to bottom,#020617,#020617,#020617);
-    }
-    body.access-high-contrast .product-card{
-      background:#020617;
-      border-color:#e5e7eb;
-      color:#e5e7eb;
-    }
-    body.access-high-contrast .product-text{
-      color:#e5e7eb;
-    }
-    body.access-high-contrast .btn,
-    body.access-high-contrast .product-add-btn,
-    body.access-high-contrast .qty-control,
-    body.access-high-contrast .store-search input,
-    body.access-high-contrast .store-search button{
-      background:#111827;
-      color:#f9fafb;
-      border-color:#e5e7eb;
-    }
-    body.access-high-contrast footer{
-      background:#020617;
-      color:#e5e7eb;
-    }
-    body.access-high-contrast .footer-links a{
-      color:#e5e7eb;
-      border-bottom-color:#e5e7eb;
-    }
-
     /* RESPONSIVE / MOBILE */
     @media(max-width:880px){
       #hero{
@@ -800,25 +808,26 @@
   </style>
 </head>
 <body>
-  <!-- © 2025 The MayaNut Company, Inc. All rights reserved. -->
   <main>
     <div class="page-frame" id="top">
-
       <!-- HEADER -->
       <header class="site-header">
         <div class="header-left">
-          <button class="icon-gear" id="settings-btn" aria-label="Settings">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M19.14,12.94a7.14,7.14,0,0,0,.05-.94,7.14,7.14,0,0,0-.05-.94l2.11-1.65a.5.5,0,0,0,.12-.63l-2-3.46a.5.5,0,0,0-.61-.22l-2.49,1a6.9,6.9,0,0,0-1.63-.94l-.38-2.65A.5.5,0,0,0,13.71,2H10.29a.5.5,0,0,0-.5.42L9.41,5.07a6.9,6.9,0,0,0-1.63.94l-2.49-1a.5.5,0,0,0-.61.22l-2,3.46a.5.5,0,0,0,.12.63L4.86,11.06a7.14,7.14,0,0,0-.05.94,7.14,7.14,0,0,0,.05.94L2.75,14.59a.5.5,0,0,0-.12.63l2,3.46a.5.5,0,0,0,.61.22l2.49-1a6.9,6.9,0,0,0,1.63.94l.38,2.65a.5.5,0,0,0,.5.42h3.42a.5.5,0,0,0,.5-.42l.38-2.65a6.9,6.9,0,0,0,1.63-.94l2.49,1a.5.5,0,0,0,.61-.22l2-3.46a.5.5,0,0,0-.12-.63ZM12,15.5A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"></path>
-            </svg>
-          </button>
+          <div class="header-logo-block">
+            <img src="mayanut-the-maya-nut-company-logo.png"
+                 alt="The MayaNut Company logo"
+                 id="logo-top" />
+            <div class="ricky-text" id="ricky-text" style="display:none;">
+🧡💛💙🩵
+THE MAYANUT COMPANY
+GROWS ON
+FOR RICKY
+🧡💛💙🩵
+            </div>
+          </div>
         </div>
 
-        <div class="header-center">
-          <img src="mayanut-the-maya-nut-company-logo.png"
-               alt="The MayaNut Company logo"
-               id="logo-top" />
-        </div>
+        <div class="header-center"></div>
 
         <div class="header-right">
           <button class="icon-menu" id="menu-btn" aria-label="Open menu">
@@ -838,7 +847,7 @@
           <div class="hero-left">
             <div class="hero-image">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt="MayaNut nursery plantings"
+                   alt="MayaNut plantation nursery"
                    loading="lazy" decoding="async" />
             </div>
 
@@ -853,9 +862,9 @@
             <p class="hero-sub">
               <span class="name-green">MayaNut</span> is the roasted tree-seed of
               <span class="name-green"><em>Brosimum alicastrum</em></span>, a tropical fruit tree in the
-              <span class="name-green">jackfruit</span> family, providing ancient
-              <span class="name-green">Mayans</span> with a unique
-              <span class="name-green">superfood</span> unknown to the modern world until
+              <span class="name-green">jackfruit</span> family that helped feed ancient
+              <span class="name-green">Mayan</span> communities – a true
+              <span class="name-green">superfood</span> almost unknown to the modern world until
               <span class="name-green">TODAY!</span>
             </p>
 
@@ -864,7 +873,7 @@
             </div>
 
             <div class="hero-meta">
-              Over <strong>200 seed-grown trees already potted up</strong> – this phase is about
+              Over <strong>200 seed-grown trees</strong> already potted up – this phase is about
               domestication, selecting the best quality trees for sustainable agriculture, and education.
               Our store is currently in development.
             </div>
@@ -874,12 +883,17 @@
           <aside id="store-panel" aria-label="Future store preview">
             <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
             <p class="store-sub">
-              These products are conceptual. We are currently developing Florida’s first MayaNut plantation.
+              These products are conceptual. We are currently developing South Florida’s first MayaNut plantation.
               We expect to begin selling MayaNut powder by 2029. Thank you for your patience and support!
             </p>
 
             <div class="store-search">
-              <input id="store-search" type="text" placeholder="🔍 Search future products…" />
+              <div class="store-search-input-wrapper">
+                <input id="store-search" type="text" placeholder="Search future products…" />
+                <button id="store-search-send" class="store-search-send" type="button" aria-label="Search">
+                  →
+                </button>
+              </div>
               <button id="store-view-full" type="button">VIEW ALL PRODUCTS</button>
             </div>
 
@@ -891,7 +905,7 @@
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Powder</div>
                 <p class="product-text">
-                  Roasted seed powder – smooth, caffeine-free, and ready to mix into drinks or food.
+                  Roasted seed powder – smooth, caffeine-free, ready to mix into drinks or food.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="powder">
@@ -904,13 +918,13 @@
               </article>
 
               <!-- Product 2 -->
-              <article class="product-card" data-name="mayanut latte drink">
+              <article class="product-card" data-name="instant mayanut latte">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="Instant MayaNut latte concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Instant MayaNut Latte</div>
                 <p class="product-text">
-                  A future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
+                  Future drink mix for warm, creamy cups based on tree-grown MayaNut powder.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="latte">
@@ -929,7 +943,7 @@
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Baking Blend</div>
                 <p class="product-text">
-                  A gluten-free-oriented blend for cookies, bars, and breads with a forest story.
+                  A gluten-free oriented blend for cookies, bars, and breads with a forest story.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
@@ -960,14 +974,14 @@
                 </div>
               </article>
 
-              <!-- EXTRA PRODUCTS (5–8) -->
-              <article class="product-card extra-product" data-name="mayanut espresso">
+              <!-- EXTRA PRODUCTS 5–8 (hidden until expanded) -->
+              <article class="product-card extra-product" data-name="mayanut espresso blend">
                 <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut espresso blend concept" loading="lazy" decoding="async" />
+                     alt="MayaNut espresso concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Espresso Blend</div>
                 <p class="product-text">
-                  A deeper-roasted MayaNut concept with caramel notes for those who like a bolder cup.
+                  A deeper roast MayaNut concept with caramel notes for stronger-flavor drinks.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="espresso">
@@ -985,7 +999,7 @@
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Energy Bar</div>
                 <p class="product-text">
-                  A tree-based snack concept combining MayaNut powder with seeds and dried fruit.
+                  Tree-based energy bar concept combining MayaNut powder with seeds and dried fruit.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="bars">
@@ -1003,7 +1017,7 @@
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Ice Cream</div>
                 <p class="product-text">
-                  A dessert concept adding roasted MayaNut flavor to dairy or plant-based ice cream.
+                  Dessert concept that folds roasted MayaNut flavor into dairy or plant-based ice cream.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="icecream">
@@ -1021,7 +1035,7 @@
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Granola</div>
                 <p class="product-text">
-                  A breakfast granola concept built around MayaNut powder, nuts, and fruit.
+                  Breakfast granola concept built around MayaNut powder, nuts, and fruit.
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="granola">
@@ -1081,40 +1095,22 @@
     </div>
   </main>
 
-  <!-- ACCESSIBILITY BUTTON + PANEL -->
+  <!-- ACCESSIBILITY BUTTON -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <!-- stylized person icon -->
-      <path d="M12 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 12 2zm-6 5a1 1 0 0 0 0 2h4v12a1 1 0 0 0 2 0V14h2v7a1 1 0 0 0 2 0V9h4a1 1 0 0 0 0-2H6z"></path>
-    </svg>
+    <span>♿</span>
   </button>
-
-  <div class="accessibility-panel" id="accessibility-panel">
-    <div class="accessibility-panel-header">
-      <span>Accessibility</span>
-      <button class="accessibility-panel-close" id="accessibility-close" aria-label="Close accessibility panel">&times;</button>
-    </div>
-    <div class="accessibility-option">
-      <input type="checkbox" id="access-text-large" />
-      <label for="access-text-large">Larger text</label>
-    </div>
-    <div class="accessibility-option">
-      <input type="checkbox" id="access-high-contrast" />
-      <label for="access-high-contrast">High contrast mode</label>
-    </div>
-  </div>
 
   <!-- WELCOME OVERLAY -->
   <div class="overlay active" id="welcome-overlay">
     <div class="overlay-panel">
       <div class="overlay-header">
         <div class="overlay-title welcome-title">Welcome to The MayaNut Company</div>
-        <button class="overlay-close" data-close="welcome-overlay" aria-label="Close welcome">&times;</button>
+        <button class="overlay-close" data-close="welcome-overlay" aria-label="Close welcome message">&times;</button>
       </div>
       <div class="welcome-body">
-        This site explores anything and everything MayaNut. We are currently developing
-        South Florida’s first <em>Brosimum alicastrum</em> plantation. We hope to inspire and
-        ignite the cultivation of this species for generations to come!
+        This site explores anything and everything MayaNut. We are currently developing South Florida’s first
+        <em>Brosimum alicastrum</em> plantation. We hope to inspire and ignite the cultivation of this species
+        for generations to come!
       </div>
       <div class="welcome-row">
         <label for="welcome-lang" style="font-size:12px;">Language</label>
@@ -1126,21 +1122,21 @@
           <option value="ar-eg">العربية</option>
         </select>
       </div>
-      <button class="welcome-proceed" id="welcome-proceed">Proceed</button>
+      <button class="welcome-proceed" id="welcome-proceed">PROCEED</button>
     </div>
   </div>
 
-  <!-- SETTINGS OVERLAY -->
-  <div class="overlay" id="settings-overlay">
+  <!-- ACCESSIBILITY OVERLAY -->
+  <div class="overlay" id="accessibility-overlay">
     <div class="overlay-panel">
       <div class="overlay-header">
-        <div class="overlay-title">Settings</div>
-        <button class="overlay-close" data-close="settings-overlay">&times;</button>
+        <div class="overlay-title">Accessibility &amp; Language</div>
+        <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>
 
       <div class="settings-row">
-        <label for="settings-lang">Language</label>
-        <select id="settings-lang" class="settings-lang">
+        <label for="access-lang">Language</label>
+        <select id="access-lang" class="settings-lang">
           <option value="en" selected>English</option>
           <option value="es">Español</option>
           <option value="zh">中文 (Mandarin)</option>
@@ -1150,12 +1146,21 @@
       </div>
 
       <div class="settings-row">
-        <span>Theme</span>
-        <span class="settings-link" id="dark-link">Go to dark theme</span>
+        <div class="toggle-row">
+          <label for="toggle-contrast">High contrast mode</label>
+          <div class="toggle-input" id="toggle-contrast"><span></span></div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <div class="toggle-row">
+          <label for="toggle-large-text">Larger text</label>
+          <div class="toggle-input" id="toggle-large-text"><span></span></div>
+        </div>
       </div>
 
       <div class="settings-version">
-        Version v1.1.1
+        Version v2.0.4
       </div>
     </div>
   </div>
@@ -1194,16 +1199,7 @@
     const yearSpan = document.getElementById('year');
     if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-    // SETTINGS overlay
-    const settingsBtn = document.getElementById('settings-btn');
-    const settingsOverlay = document.getElementById('settings-overlay');
-    if(settingsBtn && settingsOverlay){
-      settingsBtn.addEventListener('click', ()=>{
-        settingsOverlay.classList.add('active');
-      });
-    }
-
-    // MENU overlay
+    // Menu overlay
     const menuBtn = document.getElementById('menu-btn');
     const menuOverlay = document.getElementById('menu-overlay');
     if(menuBtn && menuOverlay){
@@ -1212,7 +1208,16 @@
       });
     }
 
-    // Close overlays (except welcome special logic)
+    // Accessibility overlay
+    const accessBtn = document.getElementById('accessibility-btn');
+    const accessOverlay = document.getElementById('accessibility-overlay');
+    if(accessBtn && accessOverlay){
+      accessBtn.addEventListener('click', ()=>{
+        accessOverlay.classList.add('active');
+      });
+    }
+
+    // Close overlays (except welcome special rules)
     document.querySelectorAll('.overlay-close').forEach(btn=>{
       const targetId = btn.getAttribute('data-close');
       if(targetId !== 'welcome-overlay'){
@@ -1223,7 +1228,7 @@
       }
     });
 
-    // Allow backdrop click to close for settings/menu, but NOT welcome
+    // Click backdrop to close for accessibility + menu (but NOT welcome)
     document.querySelectorAll('.overlay').forEach(ov=>{
       if(ov.id === 'welcome-overlay') return;
       ov.addEventListener('click', e=>{
@@ -1233,11 +1238,11 @@
       });
     });
 
-    // Settings language redirect
-    const settingsLang = document.getElementById('settings-lang');
-    if(settingsLang){
-      settingsLang.addEventListener('change', ()=>{
-        const val = settingsLang.value;
+    // Accessibility language redirect
+    const accessLang = document.getElementById('access-lang');
+    if(accessLang){
+      accessLang.addEventListener('change', ()=>{
+        const val = accessLang.value;
         if(val === 'en'){
           window.location.href = 'index.html';
         } else {
@@ -1246,11 +1251,21 @@
       });
     }
 
-    // Dark theme link
-    const darkLink = document.getElementById('dark-link');
-    if(darkLink){
-      darkLink.addEventListener('click', ()=>{
-        window.location.href = 'index-dark.html';
+    // High contrast toggle
+    const contrastToggle = document.getElementById('toggle-contrast');
+    if(contrastToggle){
+      contrastToggle.addEventListener('click', ()=>{
+        contrastToggle.classList.toggle('active');
+        document.body.classList.toggle('high-contrast');
+      });
+    }
+
+    // Larger text toggle
+    const textToggle = document.getElementById('toggle-large-text');
+    if(textToggle){
+      textToggle.addEventListener('click', ()=>{
+        textToggle.classList.toggle('active');
+        document.body.classList.toggle('large-text');
       });
     }
 
@@ -1274,16 +1289,59 @@
       });
     });
 
-    // Store search basic filter (opacity change only)
+    // Store search: opacity filter + send arrow visibility + Ricky Easter egg
     const searchInput = document.getElementById('store-search');
-    if(searchInput){
-      searchInput.addEventListener('input', ()=>{
-        const q = searchInput.value.toLowerCase();
-        document.querySelectorAll('.product-card').forEach(card=>{
-          const name = (card.dataset.name || "").toLowerCase();
-          card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
-        });
+    const searchSend  = document.getElementById('store-search-send');
+    const logoImg     = document.getElementById('logo-top');
+    const rickyText   = document.getElementById('ricky-text');
+    const originalLogoSrc = logoImg ? logoImg.getAttribute('src') : '';
+    let rickyTimeoutId = null;
+
+    function applyStoreFilter(){
+      if(!searchInput) return;
+      const q = searchInput.value.toLowerCase();
+      document.querySelectorAll('.product-card').forEach(card=>{
+        const name = (card.dataset.name || "").toLowerCase();
+        card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
       });
+
+      // Arrow button visibility
+      if(searchSend){
+        if(searchInput.value.length > 0){
+          searchSend.classList.add('visible');
+        } else {
+          searchSend.classList.remove('visible');
+        }
+      }
+
+      // Ricky Easter egg
+      if(logoImg && rickyText && q.includes('ricky')){
+        // Swap to ricky.jpeg and show text for 10 seconds
+        logoImg.src = 'ricky.jpeg';
+        logoImg.alt = 'Ricky & The MayaNut Company';
+        rickyText.style.display = 'block';
+
+        if(rickyTimeoutId) clearTimeout(rickyTimeoutId);
+        rickyTimeoutId = setTimeout(()=>{
+          logoImg.src = originalLogoSrc;
+          logoImg.alt = 'The MayaNut Company logo';
+          rickyText.style.display = 'none';
+        }, 10000);
+      }
+    }
+
+    if(searchInput){
+      searchInput.addEventListener('input', applyStoreFilter);
+      // Enter key triggers "search"
+      searchInput.addEventListener('keydown', e=>{
+        if(e.key === 'Enter'){
+          applyStoreFilter();
+        }
+      });
+    }
+
+    if(searchSend){
+      searchSend.addEventListener('click', applyStoreFilter);
     }
 
     // FULL STORE / COLLAPSE STORE toggle
@@ -1319,11 +1377,11 @@
     // ADD button popup
     document.querySelectorAll('.product-add-btn').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        alert('MayaNut products are expected to launch in 2029!');
+        alert('MayaNut products are coming in 2029! Thank you for your patience.');
       });
     });
 
-    // WELCOME overlay logic (must pick language + proceed or close)
+    // WELCOME overlay logic – cannot dismiss by clicking outside, must pick language & proceed/close
     const welcomeOverlay = document.getElementById('welcome-overlay');
     const welcomeLang = document.getElementById('welcome-lang');
     const welcomeProceed = document.getElementById('welcome-proceed');
@@ -1333,26 +1391,26 @@
       if(!welcomeOverlay || !welcomeLang) return;
       const val = welcomeLang.value;
       if(val && val !== 'en'){
-        if(val === 'es'){
-          window.location.href = 'index-es.html';
-        } else if(val === 'zh'){
-          window.location.href = 'index-zh.html';
-        } else if(val === 'hi'){
-          window.location.href = 'index-hi.html';
-        } else if(val === 'ar-eg'){
-          window.location.href = 'index-ar-eg.html';
-        } else {
-          window.location.href = 'index.html';
-        }
+        window.location.href = `index-${val}.html`;
       } else {
         welcomeOverlay.classList.remove('active');
       }
     }
+
     if(welcomeProceed){
       welcomeProceed.addEventListener('click', finishWelcome);
     }
     if(welcomeClose){
       welcomeClose.addEventListener('click', finishWelcome);
+    }
+
+    // Prevent backdrop click from closing welcome
+    if(welcomeOverlay){
+      welcomeOverlay.addEventListener('click', e=>{
+        if(e.target === welcomeOverlay){
+          // do nothing – force user to choose language + proceed/close
+        }
+      });
     }
 
     // MOBILE STORE AUTO-SCROLL (only on small screens)
@@ -1375,11 +1433,11 @@
         const now = Date.now();
         if(now - lastInteraction < 5000) return;
 
-        const firstCard = grid.querySelector('.product-card');
-        if(!firstCard) return;
+        const card = grid.querySelector('.product-card');
+        if(!card) return;
 
-        const cardRect = firstCard.getBoundingClientRect();
-        const cardWidth = cardRect.width + 12;
+        const rect = card.getBoundingClientRect();
+        const cardWidth = rect.width + 12;
         const maxScroll = grid.scrollWidth - grid.clientWidth;
         let next = grid.scrollLeft + cardWidth;
 
@@ -1391,35 +1449,6 @@
     }
 
     window.addEventListener('load', initMobileStoreCarousel);
-
-    // ACCESSIBILITY BUTTON + PANEL LOGIC
-    const accessBtn   = document.getElementById('accessibility-btn');
-    const accessPanel = document.getElementById('accessibility-panel');
-    const accessClose = document.getElementById('accessibility-close');
-    const accessText  = document.getElementById('access-text-large');
-    const accessHC    = document.getElementById('access-high-contrast');
-
-    if(accessBtn && accessPanel){
-      accessBtn.addEventListener('click', ()=>{
-        accessPanel.classList.toggle('active');
-      });
-    }
-    if(accessClose && accessPanel){
-      accessClose.addEventListener('click', ()=>{
-        accessPanel.classList.remove('active');
-      });
-    }
-
-    if(accessText){
-      accessText.addEventListener('change', ()=>{
-        document.body.classList.toggle('access-text-large', accessText.checked);
-      });
-    }
-    if(accessHC){
-      accessHC.addEventListener('change', ()=>{
-        document.body.classList.toggle('access-high-contrast', accessHC.checked);
-      });
-    }
   </script>
 </body>
 </html>

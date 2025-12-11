@@ -42,7 +42,7 @@
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      /* lighter, “transparent” version of the button blue */
+      /* light “transparent” version of button blue */
       background: rgba(7,237,218,0.16);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
@@ -151,6 +151,7 @@
       border-radius:0;
       padding:26px 22px 30px;
       width:100%;
+      transition:all 0.25s ease;
     }
 
     /* HERO LAYOUT */
@@ -158,6 +159,7 @@
       display:grid;
       grid-template-columns:1.1fr 1.1fr;
       gap:26px;
+      transition:all 0.25s ease;
     }
 
     .hero-left{
@@ -165,16 +167,15 @@
       flex-direction:column;
       gap:14px;
       justify-content:flex-start;
+      transition:opacity 0.25s ease;
     }
 
-    /* NEW: two images side-by-side for desktop */
-    .hero-images{
-      display:flex;
-      gap:10px;
+    /* SINGLE image, smaller */
+    .hero-image{
       margin-bottom:10px;
     }
-    .hero-images img{
-      flex:1;
+    .hero-image img{
+      max-width:260px;
       border-radius:16px;
       box-shadow:0 12px 30px rgba(15,23,42,0.22);
       object-fit:cover;
@@ -254,6 +255,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      transition:all 0.25s ease;
     }
 
     .store-title{
@@ -286,7 +288,7 @@
       color:#111827;
     }
     .store-search button{
-      padding:6px 10px;
+      padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.7);
       font-size:11px;
@@ -301,6 +303,7 @@
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
       gap:12px;
+      transition:all 0.25s ease;
     }
 
     .product-card{
@@ -312,7 +315,7 @@
       flex-direction:column;
       align-items:center;
       text-align:center;
-      transition:transform .15s ease, box-shadow .15s ease;
+      transition:transform .15s ease, box-shadow .15s ease, opacity 0.2s ease;
     }
     .product-card:hover{
       transform:translateY(-2px);
@@ -342,7 +345,6 @@
       margin-bottom:8px;
     }
 
-    /* quantity + ADD controls */
     .product-controls{
       width:100%;
       display:flex;
@@ -389,6 +391,28 @@
       cursor:pointer;
     }
 
+    /* Extra products hidden until FULL STORE is toggled */
+    .product-card.extra-product{
+      display:none;
+      opacity:0;
+    }
+
+    /* When store is expanded */
+    body.store-expanded #hero{
+      grid-template-columns:1fr;
+    }
+    body.store-expanded .hero-left{
+      display:none;
+      opacity:0;
+    }
+    body.store-expanded #store-panel{
+      grid-column:1 / -1;
+    }
+    body.store-expanded .product-card.extra-product{
+      display:flex;
+      opacity:1;
+    }
+
     .bottom-gap{
       height:38px;
       background:transparent;
@@ -396,7 +420,7 @@
     }
 
     footer{
-      padding:14px 22px 22px; /* a bit more bottom so icons don’t clip */
+      padding:16px 22px 26px;
       background:#ffffff;
       border-radius:0 0 28px 28px;
       position:relative;
@@ -434,7 +458,7 @@
       display:flex;
       justify-content:flex-end;
       align-items:center;
-      gap:10px;
+      gap:12px;
     }
 
     .footer-instagram,
@@ -449,7 +473,8 @@
       width:26px;
       height:26px;
       fill:#4b5563;
-      display:block; /* prevents clipping */
+      display:block;       /* avoid clipping */
+      overflow:visible;
     }
 
     .footer-links{
@@ -602,7 +627,7 @@
       background:rgba(7,237,218,0.26);
     }
 
-    /* RESPONSIVE / MOBILE LAYOUT CHANGES */
+    /* RESPONSIVE / MOBILE */
     @media(max-width:880px){
       #hero{
         display:flex;
@@ -617,15 +642,6 @@
         order:2;
       }
 
-      /* On mobile: hide the second image (fruit.jpeg) for now */
-      .hero-images{
-        flex-direction:column;
-      }
-      .hero-images img:nth-child(2){
-        display:none;
-      }
-
-      /* horizontal scroll store on mobile */
       .store-grid{
         display:flex;
         overflow-x:auto;
@@ -700,14 +716,11 @@
       <!-- MAIN CONTENT -->
       <div class="content-wrapper">
         <section id="hero">
-          <!-- LEFT: TEXT + 2 IMAGES -->
+          <!-- LEFT: TEXT + single IMAGE -->
           <div class="hero-left">
-            <div class="hero-images">
+            <div class="hero-image">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
                    alt="MayaNut plantation nursery"
-                   loading="lazy" decoding="async" />
-              <img src="fruit.jpeg"
-                   alt="MayaNut fruit"
                    loading="lazy" decoding="async" />
             </div>
 
@@ -748,7 +761,7 @@
 
             <div class="store-search">
               <input id="store-search" type="text" placeholder="🔍 Search future products…" />
-              <button id="store-view-full" type="button">Full store</button>
+              <button id="store-view-full" type="button">FULL STORE</button>
             </div>
 
             <div class="store-grid" id="store-grid">
@@ -820,6 +833,79 @@
                 </p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
+                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus" type="button">+</button>
+                  </div>
+                  <button class="product-add-btn" type="button">ADD</button>
+                </div>
+              </article>
+
+              <!-- EXTRA PRODUCTS (5–8), only visible when FULL STORE is active) -->
+              <article class="product-card extra-product" data-name="mayanut espresso">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut espresso concept" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Espresso Blend</div>
+                <p class="product-text">
+                  A dark-roast style MayaNut concept with deeper caramelized notes for bold drinks.
+                </p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="espresso">
+                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus" type="button">+</button>
+                  </div>
+                  <button class="product-add-btn" type="button">ADD</button>
+                </div>
+              </article>
+
+              <article class="product-card extra-product" data-name="mayanut energy bar">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut energy bar concept" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Energy Bars</div>
+                <p class="product-text">
+                  Tree-based snack bar concept combining MayaNut powder with seeds and fruit.
+                </p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="bars">
+                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus" type="button">+</button>
+                  </div>
+                  <button class="product-add-btn" type="button">ADD</button>
+                </div>
+              </article>
+
+              <article class="product-card extra-product" data-name="mayanut ice cream">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut ice cream concept" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Ice Cream</div>
+                <p class="product-text">
+                  A dairy or plant-based dessert concept with toasted MayaNut flavor.
+                </p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="icecream">
+                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn qty-plus" type="button">+</button>
+                  </div>
+                  <button class="product-add-btn" type="button">ADD</button>
+                </div>
+              </article>
+
+              <article class="product-card extra-product" data-name="mayanut granola">
+                <img src="mayanut-the-maya-nut-company-logo.png"
+                     alt="MayaNut granola concept" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Granola</div>
+                <p class="product-text">
+                  Crunchy breakfast concept featuring MayaNut powder with nuts and fruit.
+                </p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="granola">
                     <button class="qty-btn qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
                     <button class="qty-btn qty-plus" type="button">+</button>
@@ -952,7 +1038,7 @@
   </div>
 
   <script>
-    // Scroll to top on logo and footer logo
+    // Scroll to top on header logo and footer logo
     const topLogo   = document.getElementById('logo-top');
     const footerLogo= document.getElementById('footer-logo');
     function scrollTopSmooth(e){
@@ -1023,7 +1109,7 @@
       });
     }
 
-    // Menu navigation
+    // Menu navigation buttons
     document.querySelectorAll('.menu-list button').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
@@ -1055,11 +1141,19 @@
       });
     }
 
-    // Full store button
+    // FULL STORE / COLLAPSE STORE toggle
     const viewFullStore = document.getElementById('store-view-full');
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>{
-        window.location.href = 'store.html';
+        const expanded = document.body.classList.toggle('store-expanded');
+        viewFullStore.textContent = expanded ? 'COLLAPSE STORE' : 'FULL STORE';
+        // scroll to store top when opening full store
+        if(expanded){
+          const panel = document.getElementById('store-panel');
+          if(panel){
+            panel.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        }
       });
     }
 

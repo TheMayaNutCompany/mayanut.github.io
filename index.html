@@ -33,8 +33,8 @@
       --accent-cyan: #07edda;
       --border-soft: #e5e7eb;
       --bg-frame-top: #ffffff;
-      --bg-frame-mid: #e5f2ff;   /* pale blue */
-      --bg-frame-bottom: #dbeafe;/* slightly deeper pale blue */
+      --bg-frame-mid: #e5f2ff;
+      --bg-frame-bottom: #dbeafe;
       --green: #16a34a;
     }
 
@@ -42,7 +42,6 @@
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      /* pale transparent version of button blue */
       background: rgba(7,237,218,0.16);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
@@ -83,6 +82,11 @@
     body.high-contrast .footer-links a{
       color:#e5e7eb;
       border-bottom-color:#e5e7eb;
+    }
+    /* Make hero title visible in high contrast */
+    body.high-contrast .hero-title,
+    body.high-contrast .hero-title span{
+      color:#ffffff;
     }
 
     main{
@@ -145,44 +149,56 @@
     .header-center{
       flex:1;
       display:flex;
-      justify-content:center;
+      justify-content:flex-start;
       align-items:center;
+      gap:14px;
+    }
+
+    .header-flag{
+      display:flex;
+      align-items:center;
+    }
+    .header-flag img{
+      width:26px;
+      height:auto;
+      border-radius:3px;
+      box-shadow:0 2px 6px rgba(15,23,42,0.3);
+    }
+
+    .main-nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-left:10px;
+    }
+    .main-nav a{
+      font-size:11px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      text-decoration:none;
+      color:#374151;
+      font-weight:400;
+      transition:font-size 0.12s ease, color 0.12s ease;
+    }
+    .main-nav a:hover{
+      font-size:12px;
+      color:#111827;
     }
 
     .header-right{
-      display:flex;
-      align-items:center;
-      gap:10px;
+      width:40px; /* just to balance layout visually */
     }
 
-    .icon-menu{
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      background:rgba(7,237,218,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      backdrop-filter:blur(8px);
-    }
-    .icon-menu svg{
-      width:16px;
-      height:16px;
-      fill:#4b5563;
-    }
-
-    /* Accessibility floating button */
+    /* Accessibility floating button (blue with person icon) */
     .accessibility-btn{
       position:fixed;
       right:18px;
       bottom:18px;
-      width:44px;
-      height:44px;
+      width:46px;
+      height:46px;
       border-radius:999px;
       border:1px solid #d1d5db;
-      background:rgba(7,237,218,0.85);
+      background:rgba(7,237,218,0.9);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -190,15 +206,16 @@
       z-index:70;
       box-shadow:0 10px 25px rgba(15,23,42,0.3);
     }
-    .accessibility-btn span{
-      font-size:22px;
-      color:#ffffff;
+    .accessibility-btn svg{
+      width:26px;
+      height:26px;
+      fill:#ffffff;
     }
 
     .tab-gap,
     .bottom-gap{
       height:38px;
-      background:transparent; /* let body background show seamlessly */
+      background:transparent;
       width:100%;
     }
 
@@ -242,6 +259,9 @@
       text-transform:uppercase;
       letter-spacing:0.16em;
       color:var(--text-muted);
+      display:flex;
+      align-items:center;
+      gap:6px;
     }
 
     .hero-title{
@@ -302,7 +322,7 @@
     }
     .hero-meta strong{ color:#111827; }
 
-    /* STORE PANEL – pale blue gradient with darker blue outer edges */
+    /* STORE PANEL – keep exactly as you liked */
     #store-panel{
       border-radius:22px;
       border:1px solid #e5e7eb;
@@ -342,11 +362,11 @@
 
     .store-search input{
       width:100%;
-      padding:8px 30px 8px 10px;
+      padding:8px 32px 8px 10px;
       border-radius:999px;
       border:1px solid #d1d5db;
       font-size:12px;
-      background:#e0f2fe; /* solid pale blue, matches external buttons */
+      background:#e0f2fe;
       color:#111827;
     }
 
@@ -355,21 +375,35 @@
       right:6px;
       top:50%;
       transform:translateY(-50%);
-      width:20px;
-      height:20px;
+      width:22px;
+      height:22px;
       border-radius:999px;
       border:1px solid #9ca3af;
-      background:#e5e7eb;
+      background:#1f2937;
       display:none;
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      font-size:11px;
-      color:#374151;
     }
-
     .store-search-send.visible{
       display:flex;
+    }
+    .store-search-send svg{
+      width:12px;
+      height:12px;
+      stroke:#ffffff;
+      fill:none;
+      stroke-width:2;
+    }
+    /* thin grey divider not touching top/bottom inside field */
+    .store-search-send::before{
+      content:"";
+      position:absolute;
+      left:-6px;
+      top:4px;
+      bottom:4px;
+      width:1px;
+      background:#d1d5db;
     }
 
     .store-search button#store-view-full{
@@ -379,7 +413,7 @@
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.12em;
-      background:rgba(7,237,218,0.16);
+      background:rgba(7,237,218,0.16); /* same color as other buttons */
       cursor:pointer;
       white-space:nowrap;
     }
@@ -509,7 +543,7 @@
 
     footer{
       padding:16px 22px 26px;
-      background:#bfdbfe; /* same as lower part of body gradient */
+      background:#bfdbfe;
       border-radius:0 0 28px 28px;
       position:relative;
     }
@@ -577,7 +611,7 @@
       border-bottom:1px dotted #9ca3af;
     }
 
-    /* OVERLAYS: accessibility, menu, welcome */
+    /* OVERLAYS */
     .overlay{
       position:fixed;
       inset:0;
@@ -703,19 +737,6 @@
       padding:4px 0;
       margin:0;
     }
-    .menu-list li{
-      margin-bottom:6px;
-    }
-    .menu-list button{
-      width:100%;
-      text-align:left;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid #e5e7eb;
-      background:rgba(7,237,218,0.16);
-      font-size:13px;
-      cursor:pointer;
-    }
 
     .welcome-body{
       font-size:13px;
@@ -787,6 +808,10 @@
       .content-wrapper{
         padding:20px 16px 26px;
       }
+
+      .main-nav{
+        display:none; /* simple: hide nav on very small screens, can add alt later */
+      }
     }
 
     @media(max-width:780px){
@@ -827,15 +852,22 @@ FOR RICKY
           </div>
         </div>
 
-        <div class="header-center"></div>
-
-        <div class="header-right">
-          <button class="icon-menu" id="menu-btn" aria-label="Open menu">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
-            </svg>
-          </button>
+        <div class="header-center">
+          <div class="header-flag">
+            <img src="us-flag.png" alt="United States flag" />
+          </div>
+          <nav class="main-nav">
+            <a href="index.html">HOME</a>
+            <a href="index.html">STORE</a>
+            <a href="about.html">ABOUT</a>
+            <a href="research.html">RESEARCH</a>
+            <a href="gallery.html">GALLERY</a>
+            <a href="faq.html">FAQ</a>
+            <a href="contact.html">CONTACT</a>
+          </nav>
         </div>
+
+        <div class="header-right"></div>
       </header>
 
       <div class="tab-gap"></div>
@@ -851,7 +883,9 @@ FOR RICKY
                    loading="lazy" decoding="async" />
             </div>
 
-            <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
+            <div class="hero-kicker">
+              <span>MayaNut • Brosimum alicastrum</span>
+            </div>
 
             <h1 class="hero-title">
               The future of<br />
@@ -891,7 +925,10 @@ FOR RICKY
               <div class="store-search-input-wrapper">
                 <input id="store-search" type="text" placeholder="Search future products…" />
                 <button id="store-search-send" class="store-search-send" type="button" aria-label="Search">
-                  →
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10" cy="10" r="5"></circle>
+                    <line x1="14" y1="14" x2="20" y2="20"></line>
+                  </svg>
                 </button>
               </div>
               <button id="store-view-full" type="button">VIEW ALL PRODUCTS</button>
@@ -1097,7 +1134,10 @@ FOR RICKY
 
   <!-- ACCESSIBILITY BUTTON -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
-    <span>♿</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="6" r="2"></circle>
+      <path d="M5 8h14l-1 2-4 1v7h-2v-5h-2v5H8v-7L4 10z"></path>
+    </svg>
   </button>
 
   <!-- WELCOME OVERLAY -->
@@ -1165,25 +1205,6 @@ FOR RICKY
     </div>
   </div>
 
-  <!-- MENU OVERLAY -->
-  <div class="overlay" id="menu-overlay">
-    <div class="overlay-panel">
-      <div class="overlay-header">
-        <div class="overlay-title">Menu</div>
-        <button class="overlay-close" data-close="menu-overlay">&times;</button>
-      </div>
-
-      <ul class="menu-list">
-        <li><button data-nav="index.html">Home</button></li>
-        <li><button data-nav="store.html">Store</button></li>
-        <li><button data-nav="about.html">About</button></li>
-        <li><button data-nav="gallery.html">Gallery</button></li>
-        <li><button data-nav="faq.html">FAQ</button></li>
-        <li><button data-nav="contact.html">Contact</button></li>
-      </ul>
-    </div>
-  </div>
-
   <script>
     // Scroll to top on header logo and footer logo
     const topLogo   = document.getElementById('logo-top');
@@ -1199,15 +1220,6 @@ FOR RICKY
     const yearSpan = document.getElementById('year');
     if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-    // Menu overlay
-    const menuBtn = document.getElementById('menu-btn');
-    const menuOverlay = document.getElementById('menu-overlay');
-    if(menuBtn && menuOverlay){
-      menuBtn.addEventListener('click', ()=>{
-        menuOverlay.classList.add('active');
-      });
-    }
-
     // Accessibility overlay
     const accessBtn = document.getElementById('accessibility-btn');
     const accessOverlay = document.getElementById('accessibility-overlay');
@@ -1217,7 +1229,7 @@ FOR RICKY
       });
     }
 
-    // Close overlays (except welcome special rules)
+    // Close overlays (except welcome)
     document.querySelectorAll('.overlay-close').forEach(btn=>{
       const targetId = btn.getAttribute('data-close');
       if(targetId !== 'welcome-overlay'){
@@ -1228,7 +1240,7 @@ FOR RICKY
       }
     });
 
-    // Click backdrop to close for accessibility + menu (but NOT welcome)
+    // Backdrop click to close (not for welcome)
     document.querySelectorAll('.overlay').forEach(ov=>{
       if(ov.id === 'welcome-overlay') return;
       ov.addEventListener('click', e=>{
@@ -1269,16 +1281,6 @@ FOR RICKY
       });
     }
 
-    // Menu navigation buttons
-    document.querySelectorAll('.menu-list button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const dest = btn.getAttribute('data-nav');
-        if(dest){
-          window.location.href = dest;
-        }
-      });
-    });
-
     // Hero CTA navigation
     document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
@@ -1289,7 +1291,7 @@ FOR RICKY
       });
     });
 
-    // Store search: opacity filter + send arrow visibility + Ricky Easter egg
+    // Store search: opacity filter + send icon visibility + Ricky Easter egg
     const searchInput = document.getElementById('store-search');
     const searchSend  = document.getElementById('store-search-send');
     const logoImg     = document.getElementById('logo-top');
@@ -1305,7 +1307,7 @@ FOR RICKY
         card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
       });
 
-      // Arrow button visibility
+      // Magnifying glass visibility
       if(searchSend){
         if(searchInput.value.length > 0){
           searchSend.classList.add('visible');
@@ -1316,7 +1318,6 @@ FOR RICKY
 
       // Ricky Easter egg
       if(logoImg && rickyText && q.includes('ricky')){
-        // Swap to ricky.jpeg and show text for 10 seconds
         logoImg.src = 'ricky.jpeg';
         logoImg.alt = 'Ricky & The MayaNut Company';
         rickyText.style.display = 'block';
@@ -1332,7 +1333,6 @@ FOR RICKY
 
     if(searchInput){
       searchInput.addEventListener('input', applyStoreFilter);
-      // Enter key triggers "search"
       searchInput.addEventListener('keydown', e=>{
         if(e.key === 'Enter'){
           applyStoreFilter();
@@ -1381,7 +1381,7 @@ FOR RICKY
       });
     });
 
-    // WELCOME overlay logic – cannot dismiss by clicking outside, must pick language & proceed/close
+    // WELCOME overlay logic – must choose language + proceed
     const welcomeOverlay = document.getElementById('welcome-overlay');
     const welcomeLang = document.getElementById('welcome-lang');
     const welcomeProceed = document.getElementById('welcome-proceed');
@@ -1404,16 +1404,15 @@ FOR RICKY
       welcomeClose.addEventListener('click', finishWelcome);
     }
 
-    // Prevent backdrop click from closing welcome
     if(welcomeOverlay){
       welcomeOverlay.addEventListener('click', e=>{
         if(e.target === welcomeOverlay){
-          // do nothing – force user to choose language + proceed/close
+          // no-op, user must use buttons
         }
       });
     }
 
-    // MOBILE STORE AUTO-SCROLL (only on small screens)
+    // MOBILE STORE AUTO-SCROLL (unchanged)
     function initMobileStoreCarousel(){
       const grid = document.getElementById('store-grid');
       if(!grid) return;

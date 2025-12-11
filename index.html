@@ -7,7 +7,7 @@
 
   <!-- Basic SEO -->
   <meta name="description"
-        content="The MayaNut Company is building a future food and reforestation industry around MayaNut (Maya Nut, Brosimum alicastrum, ramón, ojoche, breadnut) – a resilient tropical tree with edible seeds and deep ecological value." />
+        content="The The MayaNut Company is building a future food and reforestation industry around MayaNut (Maya Nut, Brosimum alicastrum, ramón, ojoche, breadnut) – a resilient tropical tree with edible seeds and deep ecological value." />
   <meta name="keywords"
         content="MayaNut, Maya Nut, Brosimum alicastrum, ramón, ojoche, breadnut, nuez de ramón, tropical superfood, tree superfood, agroforestry, reforestation, South Florida, The MayaNut Company, jackfruit family" />
   <meta name="author" content="The MayaNut Company, Inc." />
@@ -281,14 +281,25 @@
       z-index:1;
     }
 
-    .hero-image{
+    /* Two images side by side (desktop) */
+    .hero-images{
       margin-top:10px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
     }
-    .hero-image img{
-      max-width:260px;
+    .hero-images img{
       border-radius:16px;
       box-shadow:0 12px 30px rgba(15,23,42,0.22);
       object-fit:cover;
+      flex:1;
+      max-width:100%;
+    }
+    .hero-image-main{
+      max-width:260px;
+    }
+    .hero-image-fruit{
+      max-width:260px;
     }
 
     .hero-kicker{
@@ -303,18 +314,28 @@
 
     .hero-title{
       font-size:clamp(24px, 3vw, 30px);
-      line-height:1.1;
+      line-height:1.2;
       font-weight:800;
       text-transform:uppercase;
       letter-spacing:0.08em;
       color:#000000;
-      font-style:italic;
     }
-    .hero-title span{
+
+    /* Top line: black, slanted */
+    .hero-title-main{
+      display:block;
+      font-style:italic;
+      color:#000000;
+      text-align:left;
+    }
+
+    /* Bottom line: blue, centered under it */
+    .hero-title-sub{
+      display:block;
+      margin-top:2px;
       color:var(--accent-blue);
-      text-decoration:underline;
-      text-decoration-thickness:2px;
-      text-underline-offset:2px;
+      text-align:center;
+      font-style:italic;
     }
 
     .hero-sub{
@@ -359,7 +380,7 @@
     }
     .hero-meta strong{ color:#111827; }
 
-    /* Desktop: image above text block */
+    /* Desktop: order of elements */
     @media(min-width:881px){
       .hero-left{
         display:flex;
@@ -367,7 +388,7 @@
       }
       .hero-kicker{ order:1; }
       .hero-title{ order:2; }
-      .hero-image{ order:3; }
+      .hero-images{ order:3; }
       .hero-sub{ order:4; }
       .hero-cta-row{ order:5; }
       .hero-meta{ order:6; }
@@ -590,6 +611,10 @@
       }
       body.store-expanded #store-grid{
         grid-template-columns:repeat(4,minmax(0,1fr));
+      }
+      /* second fruit image only on desktop */
+      .hero-image-fruit{
+        display:block;
       }
     }
 
@@ -884,6 +909,11 @@
       .mobile-menu-btn{
         display:flex;
       }
+
+      /* hide second image on mobile */
+      .hero-image-fruit{
+        display:none;
+      }
     }
 
     @media(max-width:780px){
@@ -953,17 +983,27 @@ FOR RICKY
       <!-- MAIN CONTENT -->
       <div class="content-wrapper">
         <section id="hero">
-          <!-- LEFT: TEXT + IMAGE -->
+          <!-- LEFT: TEXT + IMAGES -->
           <div class="hero-left">
             <div class="hero-kicker">
               <span>MayaNut • Brosimum alicastrum</span>
             </div>
 
             <h1 class="hero-title">
-              The future of<br />
-              food grows on a<br />
-              <span>forgotten tree.</span>
+              <span class="hero-title-main">The future of food grows on a</span>
+              <span class="hero-title-sub">forgotten tree.</span>
             </h1>
+
+            <div class="hero-images">
+              <img class="hero-image-main"
+                   src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
+                   loading="lazy" decoding="async" />
+              <img class="hero-image-fruit"
+                   src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                   alt="MayaNut Brosimum alicastrum fruit"
+                   loading="lazy" decoding="async" />
+            </div>
 
             <p class="hero-sub">
               <span class="name-green">MayaNut</span> (Maya Nut) is the roasted tree-seed of
@@ -976,12 +1016,6 @@ FOR RICKY
 
             <div class="hero-cta-row">
               <button class="btn" data-nav="about.html">Learn more</button>
-            </div>
-
-            <div class="hero-image">
-              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
-                   loading="lazy" decoding="async" />
             </div>
 
             <div class="hero-meta">
@@ -1220,11 +1254,12 @@ FOR RICKY
     </div>
   </main>
 
-  <!-- ACCESSIBILITY BUTTON -->
+  <!-- ACCESSIBILITY BUTTON (fixed icon) -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="6" r="2"></circle>
-      <path d="M5 8h14l-1 2-4 1v7h-2v-5h-2v5H8v-7L4 10z"></path>
+      <!-- Head sits clearly above body now -->
+      <circle cx="12" cy="5" r="2.2"></circle>
+      <path d="M5 9h3v11h2v-6h4v6h2V9h3V7H5z"></path>
     </svg>
   </button>
 
@@ -1312,6 +1347,7 @@ FOR RICKY
     </div>
   </div>
 
+  <!-- Scripts are in PART 2 -->
   <script>
     // Scroll to top on header logo and footer logo
     const topLogo   = document.getElementById('logo-top');
@@ -1475,7 +1511,7 @@ FOR RICKY
       }
     }
 
-    // FULL STORE / COLLAPSE STORE toggle (desktop animation only via CSS media query)
+    // FULL STORE / COLLAPSE STORE toggle
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>{
         openOrToggleStore(false);
@@ -1571,7 +1607,289 @@ FOR RICKY
       grid.addEventListener('mousedown', markInteraction);
 
       setInterval(()=>{
-        if(window.innerWidth > 880) return; // desktop: no auto-scroll needed
+        if(window.innerWidth > 880) return;
+        const now = Date.now();
+        if(now - lastInteraction < 5000) return;
+
+        const card = grid.querySelector('.product-card');
+        if(!card) return;
+
+        const rect = card.getBoundingClientRect();
+        const cardWidth = rect.width + 12;
+        const maxScroll = grid.scrollWidth - grid.clientWidth;
+        let next = grid.scrollLeft + cardWidth;
+
+        if(next > maxScroll + 5){
+          next = 0;
+        }
+        grid.scrollTo({left: next, behavior:'smooth'});
+      }, 5000);
+    }
+
+    window.addEventListener('load', initMobileStoreCarousel);
+  </script>
+</body>
+</html>
+  <script>
+    // Scroll to top on header logo and footer logo
+    const topLogo   = document.getElementById('logo-top');
+    const footerLogo= document.getElementById('footer-logo');
+    function scrollTopSmooth(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    if(topLogo)    topLogo.addEventListener('click', scrollTopSmooth);
+    if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
+
+    // Footer year
+    const yearSpan = document.getElementById('year');
+    if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+    // Accessibility overlay
+    const accessBtn = document.getElementById('accessibility-btn');
+    const accessOverlay = document.getElementById('accessibility-overlay');
+    if(accessBtn && accessOverlay){
+      accessBtn.addEventListener('click', ()=>{
+        accessOverlay.classList.add('active');
+      });
+    }
+
+    // Mobile menu overlay
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    if(mobileMenuBtn && mobileMenuOverlay){
+      mobileMenuBtn.addEventListener('click', ()=>{
+        mobileMenuOverlay.classList.add('active');
+      });
+    }
+
+    // Close overlays (except welcome special logic)
+    document.querySelectorAll('.overlay-close').forEach(btn=>{
+      const targetId = btn.getAttribute('data-close');
+      if(targetId !== 'welcome-overlay'){
+        btn.addEventListener('click', ()=>{
+          const ov = document.getElementById(targetId);
+          if(ov) ov.classList.remove('active');
+        });
+      }
+    });
+
+    // Backdrop click to close (not for welcome)
+    document.querySelectorAll('.overlay').forEach(ov=>{
+      if(ov.id === 'welcome-overlay') return;
+      ov.addEventListener('click', e=>{
+        if(e.target === ov){
+          ov.classList.remove('active');
+        }
+      });
+    });
+
+    // Accessibility language redirect
+    const accessLang = document.getElementById('access-lang');
+    if(accessLang){
+      accessLang.addEventListener('change', ()=>{
+        const val = accessLang.value;
+        if(val === 'en'){
+          window.location.href = 'index.html';
+        } else {
+          window.location.href = `index-${val}.html`;
+        }
+      });
+    }
+
+    // High contrast toggle
+    const contrastToggle = document.getElementById('toggle-contrast');
+    if(contrastToggle){
+      contrastToggle.addEventListener('click', ()=>{
+        contrastToggle.classList.toggle('active');
+        document.body.classList.toggle('high-contrast');
+      });
+    }
+
+    // Larger text toggle
+    const textToggle = document.getElementById('toggle-large-text');
+    if(textToggle){
+      textToggle.addEventListener('click', ()=>{
+        textToggle.classList.toggle('active');
+        document.body.classList.toggle('large-text');
+      });
+    }
+
+    // Hero CTA navigation
+    document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dest = btn.getAttribute('data-nav');
+        if(dest){
+          window.location.href = dest;
+        }
+      });
+    });
+
+    // Store search: opacity filter + Ricky Easter egg
+    const searchInput = document.getElementById('store-search');
+    const searchSend  = document.getElementById('store-search-send');
+    const logoImg     = document.getElementById('logo-top');
+    const rickyText   = document.getElementById('ricky-text');
+    const originalLogoSrc = logoImg ? logoImg.getAttribute('src') : '';
+    let rickyTimeoutId = null;
+
+    function applyStoreFilter(){
+      if(!searchInput) return;
+      const q = searchInput.value.toLowerCase();
+      document.querySelectorAll('.product-card').forEach(card=>{
+        const name = (card.dataset.name || "").toLowerCase();
+        card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
+      });
+
+      // Ricky Easter egg
+      if(logoImg && rickyText && q.includes('ricky')){
+        logoImg.src = 'ricky.jpeg';
+        logoImg.alt = 'Ricky & The MayaNut Company';
+        rickyText.style.display = 'block';
+
+        if(rickyTimeoutId) clearTimeout(rickyTimeoutId);
+        rickyTimeoutId = setTimeout(()=>{
+          logoImg.src = originalLogoSrc;
+          logoImg.alt = 'The MayaNut Company logo';
+          rickyText.style.display = 'none';
+        }, 10000);
+      }
+    }
+
+    if(searchInput){
+      searchInput.addEventListener('input', applyStoreFilter);
+      searchInput.addEventListener('keydown', e=>{
+        if(e.key === 'Enter'){
+          applyStoreFilter();
+        }
+      });
+    }
+
+    if(searchSend){
+      searchSend.addEventListener('click', applyStoreFilter);
+    }
+
+    const storePanel = document.getElementById('store-panel');
+    const viewFullStore = document.getElementById('store-view-full');
+
+    function openOrToggleStore(oneWayOpen = false){
+      let expanded = document.body.classList.contains('store-expanded');
+
+      if(oneWayOpen){
+        if(!expanded){
+          document.body.classList.add('store-expanded');
+          expanded = true;
+        }
+      } else {
+        document.body.classList.toggle('store-expanded');
+        expanded = document.body.classList.contains('store-expanded');
+      }
+
+      if(viewFullStore){
+        viewFullStore.textContent = expanded ? 'COLLAPSE STORE' : 'VIEW FULL STORE';
+      }
+      if(storePanel){
+        storePanel.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+
+    // FULL STORE / COLLAPSE STORE toggle
+    if(viewFullStore){
+      viewFullStore.addEventListener('click', ()=>{
+        openOrToggleStore(false);
+      });
+    }
+
+    // Top nav STORE links trigger store open
+    const navStoreDesktop = document.getElementById('nav-store');
+    const navStoreMobile  = document.getElementById('nav-store-mobile');
+
+    if(navStoreDesktop){
+      navStoreDesktop.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openOrToggleStore(true);
+      });
+    }
+    if(navStoreMobile){
+      navStoreMobile.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openOrToggleStore(true);
+        if(mobileMenuOverlay){
+          mobileMenuOverlay.classList.remove('active');
+        }
+      });
+    }
+
+    // Quantity +/- logic
+    document.querySelectorAll('.qty-control').forEach(control=>{
+      const valueSpan = control.querySelector('.qty-value');
+      control.addEventListener('click', (e)=>{
+        if(!valueSpan) return;
+        let val = parseInt(valueSpan.textContent || '1', 10);
+        if(e.target.classList.contains('qty-plus')){
+          val += 1;
+        } else if(e.target.classList.contains('qty-minus')){
+          val = Math.max(1, val - 1);
+        }
+        valueSpan.textContent = String(val);
+      });
+    });
+
+    // ADD button popup
+    document.querySelectorAll('.product-add-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        alert('MayaNut products are coming in 2029! Thank you for your patience.');
+      });
+    });
+
+    // WELCOME overlay logic
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    const welcomeLang = document.getElementById('welcome-lang');
+    const welcomeProceed = document.getElementById('welcome-proceed');
+    const welcomeClose = document.querySelector('[data-close="welcome-overlay"]');
+
+    function finishWelcome(){
+      if(!welcomeOverlay || !welcomeLang) return;
+      const val = welcomeLang.value;
+      if(val && val !== 'en'){
+        window.location.href = `index-${val}.html`;
+      } else {
+        welcomeOverlay.classList.remove('active');
+      }
+    }
+
+    if(welcomeProceed){
+      welcomeProceed.addEventListener('click', finishWelcome);
+    }
+    if(welcomeClose){
+      welcomeClose.addEventListener('click', finishWelcome);
+    }
+
+    if(welcomeOverlay){
+      welcomeOverlay.addEventListener('click', e=>{
+        if(e.target === welcomeOverlay){
+          // must use buttons; do nothing
+        }
+      });
+    }
+
+    // MOBILE STORE AUTO-SCROLL
+    function initMobileStoreCarousel(){
+      const grid = document.getElementById('store-grid');
+      if(!grid) return;
+
+      let lastInteraction = Date.now();
+
+      function markInteraction(){
+        lastInteraction = Date.now();
+      }
+
+      grid.addEventListener('scroll', markInteraction, {passive:true});
+      grid.addEventListener('touchstart', markInteraction, {passive:true});
+      grid.addEventListener('mousedown', markInteraction);
+
+      setInterval(()=>{
+        if(window.innerWidth > 880) return;
         const now = Date.now();
         if(now - lastInteraction < 5000) return;
 

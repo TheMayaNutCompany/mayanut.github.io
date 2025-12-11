@@ -35,14 +35,14 @@
       --bg-frame-top: #ffffff;
       --bg-frame-mid: #e5f2ff;
       --bg-frame-bottom: #dbeafe;
-      --green: #fd6c02; /* updated orange highlight */
+      --green: #fd6c02; /* orange highlight */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: rgba(7,237,218,0.16);
+      background: rgba(7,237,218,0.16); /* keep this */
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       transition: background-color 0.25s ease, color 0.25s ease;
@@ -95,7 +95,6 @@
       color:#e5e7eb;
       border-bottom-color:#e5e7eb;
     }
-    /* Make hero title visible in high contrast */
     body.high-contrast .hero-title,
     body.high-contrast .hero-title span{
       color:#ffffff;
@@ -103,31 +102,31 @@
 
     main{
       min-height:100vh;
-      padding:20px 12px 40px;
       display:flex;
       justify-content:center;
     }
 
+    /* Remove frame: full-width page */
     .page-frame{
       width:100%;
-      max-width:1050px;
+      max-width:none;
       background:transparent;
-      border-radius:28px;
-      box-shadow:0 20px 60px rgba(15,23,42,0.08);
+      border-radius:0;
+      box-shadow:none;
       overflow:visible;
       position:relative;
     }
 
-    /* HEADER / TOP TAB */
+    /* HEADER / TOP TAB – blue gradient same as store */
     .site-header{
       padding:14px 22px;
-      background:#ffffff;
+      background:radial-gradient(circle at top center,#e0f2fe,#bfdbfe 40%,#1d4ed8 100%);
       display:flex;
       align-items:center;
       justify-content:space-between;
       position:relative;
       z-index:10;
-      border-radius:28px 28px 0 0;
+      border-radius:0;
     }
 
     .header-left{
@@ -136,7 +135,7 @@
       gap:10px;
       min-width:0;
       position:relative;
-      flex:0 0 260px; /* reserves space for logo + Ricky text so nav never overlaps */
+      flex:0 0 260px;
     }
 
     .header-logo-block{
@@ -184,14 +183,14 @@
       letter-spacing:0.18em;
       text-transform:uppercase;
       text-decoration:none;
-      color:#374151;
+      color:#111827;
       font-weight:400;
       display:inline-block;
       transition:transform 0.12s ease, color 0.12s ease;
     }
     .main-nav a:hover{
       transform:scale(1.15);
-      color:#111827;
+      color:#000000;
     }
 
     .header-right{
@@ -246,9 +245,10 @@
       fill:#ffffff;
     }
 
+    /* No more top/bottom tab gaps */
     .tab-gap,
     .bottom-gap{
-      height:38px;
+      height:0;
       background:transparent;
       width:100%;
     }
@@ -256,7 +256,6 @@
     /* MAIN BODY – white to pale blue gradient, sharp corners */
     .content-wrapper{
       background:linear-gradient(to bottom,var(--bg-frame-top),var(--bg-frame-mid),var(--bg-frame-bottom));
-      border-radius:0;
       padding:26px 22px 30px;
       width:100%;
       transition:background 0.25s ease;
@@ -267,6 +266,8 @@
       display:grid;
       grid-template-columns:1.1fr 1.1fr;
       gap:26px;
+      max-width:1050px;
+      margin:0 auto;
       transition:all 0.25s ease;
     }
 
@@ -276,6 +277,8 @@
       gap:14px;
       justify-content:flex-start;
       transition:opacity 0.25s ease;
+      position:relative;
+      z-index:1;
     }
 
     .hero-image{
@@ -356,7 +359,7 @@
     }
     .hero-meta strong{ color:#111827; }
 
-    /* Desktop-only: put image above the MayaNut/Brosimum text */
+    /* Desktop: image above text block */
     @media(min-width:881px){
       .hero-left{
         display:flex;
@@ -379,7 +382,9 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      transition:all 0.25s ease;
+      transition:all 0.35s ease;
+      position:relative;
+      z-index:2; /* above hero-left for overlap */
     }
 
     .store-header-row{
@@ -457,7 +462,7 @@
     .store-search-send svg{
       width:12px;
       height:12px;
-      stroke:#ffffff; /* icon stays white */
+      stroke:#ffffff;
       fill:none;
       stroke-width:2;
     }
@@ -570,31 +575,35 @@
       opacity:0;
     }
 
-    body.store-expanded #hero{
-      grid-template-columns:1fr;
-    }
-    body.store-expanded .hero-left{
-      display:none;
-      opacity:0;
-    }
-    body.store-expanded #store-panel{
-      grid-column:1 / -1;
-    }
-    body.store-expanded .product-card.extra-product{
-      display:flex;
-      opacity:1;
+    /* Desktop-only store expansion: slide left & overlap hero, 2x4 grid */
+    @media(min-width:881px){
+      body.store-expanded #store-panel{
+        transform:translateX(-10%) scale(1.05);
+        box-shadow:0 24px 60px rgba(15,23,42,0.35);
+      }
+      body.store-expanded .hero-left{
+        opacity:0.18;
+      }
+      body.store-expanded .product-card.extra-product{
+        display:flex;
+        opacity:1;
+      }
+      body.store-expanded #store-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+      }
     }
 
     .bottom-gap{
-      height:38px;
+      height:0;
       background:transparent;
       width:100%;
     }
 
+    /* FOOTER – same blue gradient as store/top */
     footer{
       padding:16px 22px 26px;
-      background:#bfdbfe;
-      border-radius:0 0 28px 28px;
+      background:radial-gradient(circle at top center,#e0f2fe,#bfdbfe 40%,#1d4ed8 100%);
+      border-radius:0;
       position:relative;
     }
     .footer-inner{
@@ -605,6 +614,8 @@
       column-gap:8px;
       font-size:11px;
       color:#1f2937;
+      max-width:1050px;
+      margin:0 auto;
     }
 
     .footer-left{
@@ -656,7 +667,7 @@
       gap:10px;
     }
     .footer-links a{
-      color:#374151;
+      color:#111827;
       text-decoration:none;
       border-bottom:1px dotted #9ca3af;
     }
@@ -836,6 +847,7 @@
       #hero{
         display:flex;
         flex-direction:column;
+        max-width:100%;
       }
 
       #store-panel{
@@ -920,7 +932,7 @@ FOR RICKY
         <div class="header-center">
           <nav class="main-nav">
             <a href="index.html">HOME</a>
-            <a href="index.html">STORE</a>
+            <a href="#store-panel" id="nav-store">STORE</a>
             <a href="about.html">ABOUT</a>
             <a href="research.html">RESEARCH</a>
             <a href="gallery.html">GALLERY</a>
@@ -1290,7 +1302,7 @@ FOR RICKY
       </div>
       <nav class="mobile-nav">
         <a href="index.html">HOME</a>
-        <a href="index.html">STORE</a>
+        <a href="#store-panel" id="nav-store-mobile">STORE</a>
         <a href="about.html">ABOUT</a>
         <a href="research.html">RESEARCH</a>
         <a href="gallery.html">GALLERY</a>
@@ -1439,17 +1451,53 @@ FOR RICKY
       searchSend.addEventListener('click', applyStoreFilter);
     }
 
-    // FULL STORE / COLLAPSE STORE toggle
+    const storePanel = document.getElementById('store-panel');
     const viewFullStore = document.getElementById('store-view-full');
+
+    function openOrToggleStore(oneWayOpen = false){
+      let expanded = document.body.classList.contains('store-expanded');
+
+      if(oneWayOpen){
+        if(!expanded){
+          document.body.classList.add('store-expanded');
+          expanded = true;
+        }
+      } else {
+        document.body.classList.toggle('store-expanded');
+        expanded = document.body.classList.contains('store-expanded');
+      }
+
+      if(viewFullStore){
+        viewFullStore.textContent = expanded ? 'COLLAPSE STORE' : 'VIEW FULL STORE';
+      }
+      if(storePanel){
+        storePanel.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+
+    // FULL STORE / COLLAPSE STORE toggle (desktop animation only via CSS media query)
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>{
-        const expanded = document.body.classList.toggle('store-expanded');
-        viewFullStore.textContent = expanded ? 'COLLAPSE STORE' : 'VIEW FULL STORE';
-        if(expanded){
-          const panel = document.getElementById('store-panel');
-          if(panel){
-            panel.scrollIntoView({behavior:'smooth', block:'start'});
-          }
+        openOrToggleStore(false);
+      });
+    }
+
+    // Top nav STORE links trigger store open
+    const navStoreDesktop = document.getElementById('nav-store');
+    const navStoreMobile  = document.getElementById('nav-store-mobile');
+
+    if(navStoreDesktop){
+      navStoreDesktop.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openOrToggleStore(true);
+      });
+    }
+    if(navStoreMobile){
+      navStoreMobile.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openOrToggleStore(true);
+        if(mobileMenuOverlay){
+          mobileMenuOverlay.classList.remove('active');
         }
       });
     }
@@ -1523,7 +1571,7 @@ FOR RICKY
       grid.addEventListener('mousedown', markInteraction);
 
       setInterval(()=>{
-        if(window.innerWidth > 880) return;
+        if(window.innerWidth > 880) return; // desktop: no auto-scroll needed
         const now = Date.now();
         if(now - lastInteraction < 5000) return;
 

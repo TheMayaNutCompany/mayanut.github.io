@@ -196,6 +196,31 @@
 
     .header-right{
       width:40px;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+    }
+
+    /* Mobile hamburger */
+    .mobile-menu-btn{
+      display:none;
+      width:32px;
+      height:28px;
+      border-radius:6px;
+      border:1px solid #d1d5db;
+      background:#f9fafb;
+      cursor:pointer;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:4px;
+    }
+    .mobile-menu-btn span{
+      display:block;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:#374151;
     }
 
     /* Accessibility floating button */
@@ -254,7 +279,7 @@
     }
 
     .hero-image{
-      margin-bottom:10px;
+      margin-top:10px;
     }
     .hero-image img{
       max-width:260px;
@@ -325,7 +350,7 @@
     }
 
     .hero-meta{
-      margin-top:4px;
+      margin-top:8px;
       font-size:11px;
       color:#6b7280;
     }
@@ -343,32 +368,34 @@
       transition:all 0.25s ease;
     }
 
-    /* New header row for store: arrow + centered title */
     .store-header-row{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      margin-bottom:4px;
+      margin-bottom:2px;
     }
 
     .store-back-btn{
-      width:22px;
-      height:22px;
+      width:26px;
+      height:26px;
       border-radius:999px;
-      border:1px solid #9ca3af;
+      border:1px solid #fd6c02;
       background:#1f2937;
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      padding:0;
+      margin-right:8px;
     }
     .store-back-btn svg{
-      width:12px;
-      height:12px;
-      fill:none;
+      width:22px;
+      height:22px;
+    }
+    .store-back-btn svg path{
       stroke:#ffffff;
-      stroke-width:2;
+      stroke-width:2.4;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
     }
 
     .store-title{
@@ -377,13 +404,8 @@
       letter-spacing:0.16em;
       text-transform:uppercase;
       color:#111827;
+      text-align:center;
       flex:1;
-      text-align:center; /* centered title */
-    }
-
-    .store-header-spacer{
-      width:22px; /* matches the back button width to keep center true */
-      height:22px;
     }
 
     .store-sub{
@@ -422,7 +444,7 @@
       width:22px;
       height:22px;
       border-radius:999px;
-      border:1px solid #9ca3af;
+      border:1px solid #fd6c02; /* orange border */
       background:#1f2937;
       display:flex;
       align-items:center;
@@ -432,7 +454,7 @@
     .store-search-send svg{
       width:12px;
       height:12px;
-      stroke:#ffffff;
+      stroke:#ffffff; /* icon stays white */
       fill:none;
       stroke-width:2;
     }
@@ -443,7 +465,7 @@
       top:4px;
       bottom:4px;
       width:1px;
-      background:#d1d5db;
+      background:#fd6c02; /* orange divider */
     }
 
     .store-search button#store-view-full{
@@ -804,6 +826,21 @@
       background:rgba(7,237,218,0.26);
     }
 
+    /* Mobile menu overlay nav */
+    .mobile-nav{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+    }
+    .mobile-nav a{
+      text-decoration:none;
+      color:#111827;
+      padding:6px 4px;
+    }
+
     @media(max-width:880px){
       #hero{
         display:flex;
@@ -838,6 +875,15 @@
       }
 
       .main-nav{
+        display:none;
+      }
+
+      .mobile-menu-btn{
+        display:flex;
+      }
+
+      /* hide double-arrow on mobile */
+      .store-back-btn{
         display:none;
       }
     }
@@ -897,7 +943,11 @@ FOR RICKY
           </nav>
         </div>
 
-        <div class="header-right"></div>
+        <div class="header-right">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
       </header>
 
       <div class="tab-gap"></div>
@@ -905,14 +955,8 @@ FOR RICKY
       <!-- MAIN CONTENT -->
       <div class="content-wrapper">
         <section id="hero">
-          <!-- LEFT: TEXT + IMAGE -->
+          <!-- LEFT: TEXT + IMAGE (image moved below Learn more, above meta) -->
           <div class="hero-left">
-            <div class="hero-image">
-              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
-                   loading="lazy" decoding="async" />
-            </div>
-
             <div class="hero-kicker">
               <span>MayaNut • Brosimum alicastrum</span>
             </div>
@@ -936,6 +980,12 @@ FOR RICKY
               <button class="btn" data-nav="about.html">Learn more</button>
             </div>
 
+            <div class="hero-image">
+              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
+                   loading="lazy" decoding="async" />
+            </div>
+
             <div class="hero-meta">
               Over <strong>200 seed-grown trees</strong> already potted up – this phase is about
               domestication, selecting the best quality trees for sustainable agriculture, and education.
@@ -946,14 +996,12 @@ FOR RICKY
           <!-- RIGHT: STORE -->
           <aside id="store-panel" aria-label="Future store preview">
             <div class="store-header-row">
-              <button class="store-back-btn" type="button" aria-label="Back (coming soon)">
+              <button class="store-back-btn" type="button" aria-label="Back/expand control (desktop only)">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <polyline points="14 6 8 12 14 18"></polyline>
-                  <polyline points="18 6 12 12 18 18"></polyline>
+                  <path d="M15 5L9 12L15 19M19 5L13 12L19 19"></path>
                 </svg>
               </button>
               <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
-              <div class="store-header-spacer" aria-hidden="true"></div>
             </div>
 
             <p class="store-sub">
@@ -972,7 +1020,7 @@ FOR RICKY
                   </svg>
                 </button>
               </div>
-              <button id="store-view-full" type="button">VIEW ALL PRODUCTS</button>
+              <button id="store-view-full" type="button">LEARN MORE</button>
             </div>
 
             <div class="store-grid" id="store-grid">
@@ -1252,6 +1300,25 @@ FOR RICKY
     </div>
   </div>
 
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="overlay" id="mobile-menu-overlay">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <div class="overlay-title">Menu</div>
+        <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu">&times;</button>
+      </div>
+      <nav class="mobile-nav">
+        <a href="index.html">HOME</a>
+        <a href="index.html">STORE</a>
+        <a href="about.html">ABOUT</a>
+        <a href="research.html">RESEARCH</a>
+        <a href="gallery.html">GALLERY</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">CONTACT</a>
+      </nav>
+    </div>
+  </div>
+
   <script>
     // Scroll to top on header logo and footer logo
     const topLogo   = document.getElementById('logo-top');
@@ -1276,7 +1343,16 @@ FOR RICKY
       });
     }
 
-    // Close overlays (except welcome)
+    // Mobile menu overlay
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    if(mobileMenuBtn && mobileMenuOverlay){
+      mobileMenuBtn.addEventListener('click', ()=>{
+        mobileMenuOverlay.classList.add('active');
+      });
+    }
+
+    // Close overlays (except welcome special logic)
     document.querySelectorAll('.overlay-close').forEach(btn=>{
       const targetId = btn.getAttribute('data-close');
       if(targetId !== 'welcome-overlay'){
@@ -1387,7 +1463,7 @@ FOR RICKY
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>{
         const expanded = document.body.classList.toggle('store-expanded');
-        viewFullStore.textContent = expanded ? 'COLLAPSE STORE' : 'VIEW ALL PRODUCTS';
+        viewFullStore.textContent = expanded ? 'COLLAPSE STORE' : 'LEARN MORE';
         if(expanded){
           const panel = document.getElementById('store-panel');
           if(panel){

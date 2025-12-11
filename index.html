@@ -35,7 +35,7 @@
       --bg-frame-top: #ffffff;
       --bg-frame-mid: #e5f2ff;
       --bg-frame-bottom: #dbeafe;
-      --green: #fd6c02; /* orange highlight */
+      --green: #fd6c02; /* updated orange highlight */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -95,6 +95,7 @@
       color:#e5e7eb;
       border-bottom-color:#e5e7eb;
     }
+    /* Make hero title visible in high contrast */
     body.high-contrast .hero-title,
     body.high-contrast .hero-title span{
       color:#ffffff;
@@ -135,6 +136,7 @@
       gap:10px;
       min-width:0;
       position:relative;
+      flex:0 0 260px; /* reserves space for logo + Ricky text so nav never overlaps */
     }
 
     .header-logo-block{
@@ -166,20 +168,20 @@
     .header-center{
       flex:1;
       display:flex;
+      justify-content:center;
       align-items:center;
-      padding-left:20px; /* keep nav away from logo/easter egg */
     }
 
     .main-nav{
       display:flex;
       align-items:center;
-      justify-content:space-between; /* spread across full width */
+      justify-content:space-between;
       width:100%;
-      gap:28px;
+      max-width:720px;
     }
     .main-nav a{
-      font-size:13px;               /* bigger */
-      letter-spacing:0.16em;
+      font-size:13px;
+      letter-spacing:0.18em;
       text-transform:uppercase;
       text-decoration:none;
       color:#374151;
@@ -188,7 +190,7 @@
       transition:transform 0.12s ease, color 0.12s ease;
     }
     .main-nav a:hover{
-      transform:scale(1.15); /* only hovered tab grows */
+      transform:scale(1.15);
       color:#111827;
     }
 
@@ -329,7 +331,7 @@
     }
     .hero-meta strong{ color:#111827; }
 
-    /* STORE PANEL – blue gradient with white cards */
+    /* STORE PANEL */
     #store-panel{
       border-radius:22px;
       border:1px solid #e5e7eb;
@@ -377,7 +379,6 @@
       color:#111827;
     }
 
-    /* Magnifying glass button – always visible now */
     .store-search-send{
       position:absolute;
       right:6px;
@@ -1222,6 +1223,7 @@ FOR RICKY
   </div>
 
   <script>
+    // Scroll to top on header logo and footer logo
     const topLogo   = document.getElementById('logo-top');
     const footerLogo= document.getElementById('footer-logo');
     function scrollTopSmooth(e){
@@ -1231,9 +1233,11 @@ FOR RICKY
     if(topLogo)    topLogo.addEventListener('click', scrollTopSmooth);
     if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
 
+    // Footer year
     const yearSpan = document.getElementById('year');
     if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
+    // Accessibility overlay
     const accessBtn = document.getElementById('accessibility-btn');
     const accessOverlay = document.getElementById('accessibility-overlay');
     if(accessBtn && accessOverlay){
@@ -1242,6 +1246,7 @@ FOR RICKY
       });
     }
 
+    // Close overlays (except welcome)
     document.querySelectorAll('.overlay-close').forEach(btn=>{
       const targetId = btn.getAttribute('data-close');
       if(targetId !== 'welcome-overlay'){
@@ -1252,6 +1257,7 @@ FOR RICKY
       }
     });
 
+    // Backdrop click to close (not for welcome)
     document.querySelectorAll('.overlay').forEach(ov=>{
       if(ov.id === 'welcome-overlay') return;
       ov.addEventListener('click', e=>{
@@ -1261,6 +1267,7 @@ FOR RICKY
       });
     });
 
+    // Accessibility language redirect
     const accessLang = document.getElementById('access-lang');
     if(accessLang){
       accessLang.addEventListener('change', ()=>{
@@ -1273,6 +1280,7 @@ FOR RICKY
       });
     }
 
+    // High contrast toggle
     const contrastToggle = document.getElementById('toggle-contrast');
     if(contrastToggle){
       contrastToggle.addEventListener('click', ()=>{
@@ -1281,6 +1289,7 @@ FOR RICKY
       });
     }
 
+    // Larger text toggle
     const textToggle = document.getElementById('toggle-large-text');
     if(textToggle){
       textToggle.addEventListener('click', ()=>{
@@ -1289,6 +1298,7 @@ FOR RICKY
       });
     }
 
+    // Hero CTA navigation
     document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
@@ -1298,6 +1308,7 @@ FOR RICKY
       });
     });
 
+    // Store search: opacity filter + Ricky Easter egg
     const searchInput = document.getElementById('store-search');
     const searchSend  = document.getElementById('store-search-send');
     const logoImg     = document.getElementById('logo-top');
@@ -1313,6 +1324,7 @@ FOR RICKY
         card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
       });
 
+      // Ricky Easter egg
       if(logoImg && rickyText && q.includes('ricky')){
         logoImg.src = 'ricky.jpeg';
         logoImg.alt = 'Ricky & The MayaNut Company';
@@ -1340,6 +1352,7 @@ FOR RICKY
       searchSend.addEventListener('click', applyStoreFilter);
     }
 
+    // FULL STORE / COLLAPSE STORE toggle
     const viewFullStore = document.getElementById('store-view-full');
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>{
@@ -1354,6 +1367,7 @@ FOR RICKY
       });
     }
 
+    // Quantity +/- logic
     document.querySelectorAll('.qty-control').forEach(control=>{
       const valueSpan = control.querySelector('.qty-value');
       control.addEventListener('click', (e)=>{
@@ -1368,12 +1382,14 @@ FOR RICKY
       });
     });
 
+    // ADD button popup
     document.querySelectorAll('.product-add-btn').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         alert('MayaNut products are coming in 2029! Thank you for your patience.');
       });
     });
 
+    // WELCOME overlay logic
     const welcomeOverlay = document.getElementById('welcome-overlay');
     const welcomeLang = document.getElementById('welcome-lang');
     const welcomeProceed = document.getElementById('welcome-proceed');
@@ -1399,11 +1415,12 @@ FOR RICKY
     if(welcomeOverlay){
       welcomeOverlay.addEventListener('click', e=>{
         if(e.target === welcomeOverlay){
-          // do nothing – must use buttons
+          // must use buttons; do nothing
         }
       });
     }
 
+    // MOBILE STORE AUTO-SCROLL
     function initMobileStoreCarousel(){
       const grid = document.getElementById('store-grid');
       if(!grid) return;

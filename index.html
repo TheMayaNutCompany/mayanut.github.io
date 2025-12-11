@@ -145,7 +145,7 @@
       width:100%;
     }
 
-    /* MAIN BODY – now white -> pale blue gradient, sharp corners */
+    /* MAIN BODY – white -> pale blue gradient, sharp corners */
     .content-wrapper{
       background:linear-gradient(
         to bottom,
@@ -288,7 +288,8 @@
       border-radius:999px;
       border:1px solid #d1d5db;
       font-size:12px;
-      background:white;
+      /* match outside buttons light blue */
+      background:rgba(7,237,218,0.16);
       color:#111827;
     }
     .store-search button{
@@ -432,9 +433,10 @@
       width:100%;
     }
 
+    /* FOOTER TAB – solid blue matching bottom of gradient */
     footer{
       padding:16px 22px 26px;
-      background:#ffffff;
+      background:var(--bg-frame-bottom); /* #e0f2fe */
       border-radius:0 0 28px 28px;
       position:relative;
     }
@@ -445,7 +447,7 @@
       align-items:center;
       column-gap:8px;
       font-size:11px;
-      color:#9ca3af;
+      color:#64748b;
     }
 
     .footer-left{
@@ -497,9 +499,9 @@
       gap:10px;
     }
     .footer-links a{
-      color:#6b7280;
+      color:#475569;
       text-decoration:none;
-      border-bottom:1px dotted #9ca3af;
+      border-bottom:1px dotted #94a3b8;
     }
 
     /* OVERLAYS */
@@ -638,6 +640,110 @@
     }
     .welcome-proceed:hover{
       background:rgba(7,237,218,0.26);
+    }
+
+    /* ACCESSIBILITY BUTTON + PANEL */
+    .accessibility-btn{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:46px;
+      height:46px;
+      border-radius:999px;
+      border:none;
+      background:#2563eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 30px rgba(15,23,42,0.35);
+      cursor:pointer;
+      z-index:60;
+    }
+    .accessibility-btn svg{
+      width:24px;
+      height:24px;
+      fill:#ffffff;
+    }
+
+    .accessibility-panel{
+      position:fixed;
+      right:18px;
+      bottom:74px;
+      width:260px;
+      background:#ffffff;
+      border-radius:14px;
+      box-shadow:0 18px 40px rgba(15,23,42,0.25);
+      padding:12px 14px 14px;
+      font-size:13px;
+      color:#111827;
+      display:none;
+      z-index:59;
+    }
+    .accessibility-panel-header{
+      font-weight:600;
+      margin-bottom:8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .accessibility-panel-close{
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      font-size:16px;
+      line-height:1;
+      color:#6b7280;
+    }
+    .accessibility-option{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:6px;
+    }
+    .accessibility-option input{
+      width:16px;
+      height:16px;
+    }
+
+    .accessibility-panel.active{
+      display:block;
+    }
+
+    /* Accessibility modes */
+    body.access-text-large{
+      font-size:110%;
+    }
+    body.access-high-contrast{
+      background:#020617;
+      color:#f9fafb;
+    }
+    body.access-high-contrast .content-wrapper{
+      background:linear-gradient(to bottom,#020617,#020617,#020617);
+    }
+    body.access-high-contrast .product-card{
+      background:#020617;
+      border-color:#e5e7eb;
+      color:#e5e7eb;
+    }
+    body.access-high-contrast .product-text{
+      color:#e5e7eb;
+    }
+    body.access-high-contrast .btn,
+    body.access-high-contrast .product-add-btn,
+    body.access-high-contrast .qty-control,
+    body.access-high-contrast .store-search input,
+    body.access-high-contrast .store-search button{
+      background:#111827;
+      color:#f9fafb;
+      border-color:#e5e7eb;
+    }
+    body.access-high-contrast footer{
+      background:#020617;
+      color:#e5e7eb;
+    }
+    body.access-high-contrast .footer-links a{
+      color:#e5e7eb;
+      border-bottom-color:#e5e7eb;
     }
 
     /* RESPONSIVE / MOBILE */
@@ -975,6 +1081,29 @@
     </div>
   </main>
 
+  <!-- ACCESSIBILITY BUTTON + PANEL -->
+  <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <!-- stylized person icon -->
+      <path d="M12 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 12 2zm-6 5a1 1 0 0 0 0 2h4v12a1 1 0 0 0 2 0V14h2v7a1 1 0 0 0 2 0V9h4a1 1 0 0 0 0-2H6z"></path>
+    </svg>
+  </button>
+
+  <div class="accessibility-panel" id="accessibility-panel">
+    <div class="accessibility-panel-header">
+      <span>Accessibility</span>
+      <button class="accessibility-panel-close" id="accessibility-close" aria-label="Close accessibility panel">&times;</button>
+    </div>
+    <div class="accessibility-option">
+      <input type="checkbox" id="access-text-large" />
+      <label for="access-text-large">Larger text</label>
+    </div>
+    <div class="accessibility-option">
+      <input type="checkbox" id="access-high-contrast" />
+      <label for="access-high-contrast">High contrast mode</label>
+    </div>
+  </div>
+
   <!-- WELCOME OVERLAY -->
   <div class="overlay active" id="welcome-overlay">
     <div class="overlay-panel">
@@ -1262,6 +1391,35 @@
     }
 
     window.addEventListener('load', initMobileStoreCarousel);
+
+    // ACCESSIBILITY BUTTON + PANEL LOGIC
+    const accessBtn   = document.getElementById('accessibility-btn');
+    const accessPanel = document.getElementById('accessibility-panel');
+    const accessClose = document.getElementById('accessibility-close');
+    const accessText  = document.getElementById('access-text-large');
+    const accessHC    = document.getElementById('access-high-contrast');
+
+    if(accessBtn && accessPanel){
+      accessBtn.addEventListener('click', ()=>{
+        accessPanel.classList.toggle('active');
+      });
+    }
+    if(accessClose && accessPanel){
+      accessClose.addEventListener('click', ()=>{
+        accessPanel.classList.remove('active');
+      });
+    }
+
+    if(accessText){
+      accessText.addEventListener('change', ()=>{
+        document.body.classList.toggle('access-text-large', accessText.checked);
+      });
+    }
+    if(accessHC){
+      accessHC.addEventListener('change', ()=>{
+        document.body.classList.toggle('access-high-contrast', accessHC.checked);
+      });
+    }
   </script>
 </body>
 </html>

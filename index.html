@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>The MayaNut Company – Maya Nut • Brosimum alicastrum</title>
+  <title>The MayaNut Company – MayaNut • Brosimum alicastrum</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- SEO -->
@@ -15,7 +15,7 @@
   <meta name="theme-color" content="#084ac5" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="The MayaNut Company – Maya Nut • Brosimum alicastrum" />
+  <meta property="og:title" content="The MayaNut Company – MayaNut • Brosimum alicastrum" />
   <meta property="og:description"
         content="The MayaNut Company is developing South Florida’s first Brosimum alicastrum plantation, exploring MayaNut (Maya Nut) as a future tree superfood and reforestation species." />
   <meta property="og:type" content="website" />
@@ -28,6 +28,7 @@
   <!-- Preload -->
   <link rel="preload" href="mayanut-the-maya-nut-company-logo.png" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
+  <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
 
   <style>
     :root{
@@ -77,9 +78,7 @@
       max-width:100%;
     }
 
-    /* =========================
-       HEADER + FOOTER BLUE GRADIENT (restored)
-       ========================= */
+    /* HEADER + FOOTER BLUE GRADIENT */
     .site-header,
     footer{
       background: radial-gradient(circle at top center,#e0f2fe,#bfdbfe 45%,#1d4ed8 120%);
@@ -196,14 +195,14 @@
       overflow-x:hidden;
     }
 
-    /* HERO LAYOUT */
+    /* HERO */
     #hero{
       display:grid;
       grid-template-columns:1.08fr 1fr;
       gap:26px;
       max-width:1100px;
       margin:0 auto;
-      position:relative; /* needed for desktop store overlay */
+      position:relative;
       overflow-x:hidden;
     }
 
@@ -212,7 +211,6 @@
       flex-direction:column;
       gap:14px;
       justify-content:flex-start;
-      transition:opacity 0.25s ease;
       position:relative;
       z-index:1;
     }
@@ -227,23 +225,30 @@
       gap:6px;
     }
 
+    /* UPDATED: two-line headline */
     .hero-title{
-      font-size:clamp(24px, 3vw, 30px);
-      line-height:1.1;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
+      font-size: clamp(28px, 3.4vw, 40px);
+      line-height: 1.06;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color:#000000;
-      font-style:italic;
+      font-style: italic;
     }
-    .hero-title span{
+    .hero-title .hero-topline{
+      color:#000000;
+      display:inline-block;
+    }
+    .hero-title .hero-bottomline{
+      display:block;
+      text-align:center;
+      margin-top:6px;
       color:var(--accent-blue);
       text-decoration:underline;
-      text-decoration-thickness:2px;
-      text-underline-offset:2px;
+      text-decoration-thickness:3px;
+      text-underline-offset:4px;
     }
 
-    /* Two images side-by-side (desktop only look) */
     .hero-images{
       display:flex;
       gap:10px;
@@ -311,6 +316,30 @@
       transition:all 0.35s ease;
       position:relative;
       z-index:2;
+    }
+
+    /* smoother expansion feel */
+    @media(min-width:881px){
+      #store-panel{ transition: transform .38s ease, box-shadow .38s ease, filter .38s ease; }
+      .store-grid{
+        transition: max-height .40s ease, opacity .25s ease, transform .40s ease;
+        max-height: 700px;
+        overflow: hidden;
+      }
+      body.store-expanded .store-grid{ max-height: 1400px; }
+
+      .product-card.extra-product{
+        transform: translateY(10px);
+        transition: opacity .25s ease, transform .40s ease;
+      }
+      body.store-expanded .product-card.extra-product{
+        transform: translateY(0);
+      }
+
+      body.store-expanded #store-panel{
+        transform: translateY(-2px);
+        filter: saturate(1.02);
+      }
     }
 
     .store-header-row{
@@ -402,14 +431,12 @@
       background:#ffffff;
     }
 
-    /* Product grid default */
     .store-grid{
       margin-top:10px;
       display:grid;
       gap:12px;
     }
 
-    /* Product cards */
     .product-card{
       border-radius:18px;
       background:rgba(255,255,255,0.96);
@@ -421,7 +448,7 @@
       text-align:center;
       transition:transform .15s ease, box-shadow .15s ease, opacity 0.2s ease;
       justify-content:space-between;
-      aspect-ratio: 1 / 1; /* square-ish by default */
+      aspect-ratio: 1 / 1;
     }
     .product-card:hover{
       transform:translateY(-2px);
@@ -499,14 +526,8 @@
       cursor:pointer;
     }
 
-    /* Extras hidden by default */
     .product-card.extra-product{ display:none; opacity:0; }
 
-    /* =========================
-       DESKTOP SPEC:
-       Default = 2×2 (2 cols)
-       Expanded = overlay + extra 2×2 appears LEFT overlapping hero
-       ========================= */
     @media(min-width:881px){
       #store-grid{
         grid-template-columns: repeat(2, minmax(0,1fr)); /* 2x2 */
@@ -522,7 +543,7 @@
       }
 
       body.store-expanded #store-grid{
-        grid-template-columns: repeat(4, minmax(0,1fr)); /* 4 cols: left block + right block */
+        grid-template-columns: repeat(4, minmax(0,1fr)); /* left extras + right originals */
       }
 
       body.store-expanded .product-card.extra-product{
@@ -530,13 +551,11 @@
         opacity:1;
       }
 
-      /* RIGHT block (original 4) in columns 3-4 */
       body.store-expanded #store-grid .product-card:nth-child(1){ grid-column:3; grid-row:1; }
       body.store-expanded #store-grid .product-card:nth-child(2){ grid-column:4; grid-row:1; }
       body.store-expanded #store-grid .product-card:nth-child(3){ grid-column:3; grid-row:2; }
       body.store-expanded #store-grid .product-card:nth-child(4){ grid-column:4; grid-row:2; }
 
-      /* LEFT block (extras 5-8) in columns 1-2 */
       body.store-expanded #store-grid .product-card:nth-child(5){ grid-column:1; grid-row:1; }
       body.store-expanded #store-grid .product-card:nth-child(6){ grid-column:2; grid-row:1; }
       body.store-expanded #store-grid .product-card:nth-child(7){ grid-column:1; grid-row:2; }
@@ -779,19 +798,13 @@
       padding:6px 4px;
     }
 
-    /* =========================
-       MOBILE SPEC:
-       Default = horizontal carousel of 4
-       Expanded = vertical list of SAME 4
-       ========================= */
+    /* MOBILE */
     @media(max-width:880px){
       #hero{ display:flex; flex-direction:column; }
-
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
       .content-wrapper{ padding:20px 16px 26px; }
 
-      /* Default mobile carousel */
       #store-grid{
         display:flex;
         overflow-x:auto;
@@ -805,12 +818,10 @@
       }
       .product-card{ flex:0 0 220px; }
 
-      /* Mobile expanded: ONLY 4 products shown (extras hidden) */
       body.store-expanded .product-card.extra-product{
         display:none !important;
       }
 
-      /* Mobile expanded: vertical list (scroll down, see more at once) */
       body.store-expanded #store-grid{
         display:grid !important;
         grid-template-columns: 1fr;
@@ -898,10 +909,10 @@ FOR RICKY
               <span>MayaNut • Brosimum alicastrum</span>
             </div>
 
+            <!-- UPDATED: 2 lines -->
             <h1 class="hero-title">
-              The future of<br />
-              food grows on a<br />
-              <span>forgotten tree.</span>
+              <span class="hero-topline">The future of food grows on a</span><br />
+              <span class="hero-bottomline">forgotten tree.</span>
             </h1>
 
             <div class="hero-images">
@@ -1171,6 +1182,7 @@ FOR RICKY
         <label for="welcome-lang" style="font-size:12px;">Language</label>
         <select id="welcome-lang">
           <option value="en" selected>English</option>
+          <option value="fr">Français</option>
           <option value="es">Español</option>
           <option value="zh">中文 (Mandarin)</option>
           <option value="hi">हिन्दी</option>
@@ -1193,6 +1205,7 @@ FOR RICKY
         <label for="access-lang">Language</label>
         <select id="access-lang" class="settings-lang">
           <option value="en" selected>English</option>
+          <option value="fr">Français</option>
           <option value="es">Español</option>
           <option value="zh">中文 (Mandarin)</option>
           <option value="hi">हिन्दी</option>
@@ -1286,14 +1299,26 @@ FOR RICKY
     });
   });
 
-  /* Welcome overlay */
+  /* =========================
+     WELCOME OVERLAY (show once until refresh)
+     ========================= */
+  const WELCOME_KEY = 'mayanut_welcome_dismissed';
   const welcomeOverlay = document.getElementById('welcome-overlay');
   const welcomeLang = document.getElementById('welcome-lang');
   const welcomeProceed = document.getElementById('welcome-proceed');
   const welcomeClose = document.querySelector('[data-close="welcome-overlay"]');
 
+  // If user already proceeded in this tab session, don't show again
+  if(welcomeOverlay && sessionStorage.getItem(WELCOME_KEY) === '1'){
+    welcomeOverlay.classList.remove('active');
+  }
+
   function finishWelcome(){
     if(!welcomeOverlay || !welcomeLang) return;
+
+    // Mark dismissed for this session (resets on refresh)
+    sessionStorage.setItem(WELCOME_KEY, '1');
+
     const val = welcomeLang.value;
     if(val && val !== 'en'){
       window.location.href = `index-${val}.html`;
@@ -1380,10 +1405,11 @@ FOR RICKY
   if(searchSend) searchSend.addEventListener('click', applyStoreFilter);
 
   /* =========================
-     STORE EXPAND (desktop overlay + mobile vertical list)
+     STORE EXPAND
+     - keep your layout logic
+     - add a tiny staged animation so it feels less instant
      ========================= */
   const viewFullStore = document.getElementById('store-view-full');
-  function isMobile(){ return window.innerWidth <= 880; }
 
   function setStoreButtonLabel(){
     if(!viewFullStore) return;
@@ -1393,12 +1419,20 @@ FOR RICKY
 
   function toggleStore(forceOpen=false){
     const expanded = document.body.classList.contains('store-expanded');
+
+    // Stage 1: add an "animating" class for extra smoothness
+    document.body.classList.add('store-animating');
+
     if(forceOpen){
       if(!expanded) document.body.classList.add('store-expanded');
     } else {
       document.body.classList.toggle('store-expanded');
     }
+
     setStoreButtonLabel();
+
+    // Stage 2: remove animating class after transition window
+    window.setTimeout(()=> document.body.classList.remove('store-animating'), 450);
 
     const panel = document.getElementById('store-panel');
     if(panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
@@ -1448,10 +1482,7 @@ FOR RICKY
   });
 
   /* =========================
-     MOBILE AUTO-SCROLL
-     - every 5 seconds
-     - always moves RIGHT
-     - infinite feel by rotating nodes (no clones)
+     MOBILE AUTO-SCROLL (unchanged behavior)
      ========================= */
   function initMobileStoreAutoScroll(){
     const grid = document.getElementById('store-grid');
@@ -1466,6 +1497,8 @@ FOR RICKY
 
     const GAP = 12;
 
+    function isMobile(){ return window.innerWidth <= 880; }
+
     function cardStep(){
       const first = grid.querySelector('.product-card:not(.extra-product)');
       if(!first) return 0;
@@ -1474,7 +1507,7 @@ FOR RICKY
 
     setInterval(()=>{
       if(!isMobile()) return;
-      if(document.body.classList.contains('store-expanded')) return; // expanded = vertical list
+      if(document.body.classList.contains('store-expanded')) return;
       if(Date.now() - lastInteraction < 5000) return;
 
       const step = cardStep();
@@ -1482,7 +1515,6 @@ FOR RICKY
 
       const maxScroll = grid.scrollWidth - grid.clientWidth;
 
-      // if near end, move first to end for infinite right movement
       if(grid.scrollLeft >= maxScroll - step * 0.5){
         const firstCard = grid.querySelector('.product-card:not(.extra-product)');
         if(firstCard){

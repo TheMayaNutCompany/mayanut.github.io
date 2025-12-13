@@ -20,6 +20,7 @@
 
   <link rel="icon" type="image/png" href="mayanut-the-maya-nut-company-logo.png" />
   <link rel="preload" as="image" href="mayanut-the-maya-nut-company-logo.png" />
+  <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" />
 
   <style>
     :root{
@@ -27,60 +28,69 @@
       --text-muted:#6b7280;
       --accent-blue:#084ac5;
       --border-soft:#e5e7eb;
-      --bg-page: rgba(7,237,218,0.16);
-
-      /* your “blue tabs” vibe */
-      --tab-blue1:#e0f2fe;
-      --tab-blue2:#bfdbfe;
-      --tab-blue3:#1d4ed8;
-
       --orange:#fd6c02;
+      --frame-line:#d1d5db;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    html{ background:#ffffff; }
     body{
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      background: var(--bg-page);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:#ffffff;
+      color:var(--text-main);
+      -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
+      max-width:100%;
     }
-    img{max-width:100%;display:block}
+    img{ max-width:100%; display:block; }
 
     .visually-hidden{
-      position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-      clip:rect(0,0,0,0);white-space:nowrap;border:0;
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
     body.large-text{ font-size:110%; }
     body.high-contrast{ background:#000; color:#fff; }
+    body.high-contrast .frame-wrap{ background:#000; }
+    body.high-contrast .content-wrapper{ background:#000; }
+    body.high-contrast .research-card{ background:#0b0b0b; border-color:#333; }
+    body.high-contrast .toc{ background:#0b0b0b; border-color:#333; }
+    body.high-contrast .toc a{ color:#fff; border-bottom-color:rgba(255,255,255,0.4); }
+    body.high-contrast .top-sep,
+    body.high-contrast .bottom-sep{ background:#333; }
 
-    main{
+    /* FRAME WRAPPER – left/right frames */
+    .frame-wrap{
+      max-width:1200px;
+      margin:0 auto;
+      border-left:1px solid var(--frame-line);
+      border-right:1px solid var(--frame-line);
+      background:#ffffff;
       min-height:100vh;
-      padding:20px 12px 40px; /* like your main page */
-      display:flex;
-      justify-content:center;
     }
 
-    .page-frame{
-      width:100%;
-      max-width:1050px;
-      background:transparent;
-      border-radius:28px;
-      box-shadow:0 20px 60px rgba(15,23,42,0.08);
-      overflow:visible;
-      position:relative;
-    }
-
-    /* TOP TAB + HEADER */
+    /* TOP BAR (image) */
     .site-header{
-      padding:14px 22px;
-      background: radial-gradient(circle at top center, var(--tab-blue1), var(--tab-blue2) 42%, var(--tab-blue3) 100%);
+      width:100%;
+      background-image:url("menuart-the-maya-nut-company-art.jpeg");
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      padding:16px 22px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      border-radius:28px 28px 0 0;
+      position:relative;
+      z-index:10;
+      transform:translateY(3px); /* lowered a few pixels */
+    }
+
+    .top-sep,
+    .bottom-sep{
+      width:100%;
+      height:1px;                /* thin grey transition line */
+      background:var(--frame-line);
     }
 
     .header-left{
@@ -91,32 +101,31 @@
       position:relative;
       flex:0 0 260px;
     }
-    #logo-top{
-      width:120px;
-      height:auto;
-      cursor:pointer;
-      display:block;
-    }
+    .header-logo-block{ display:flex; align-items:center; gap:10px; }
+    #logo-top{ width:120px; height:auto; cursor:pointer; display:block; }
+
     .ricky-text{
-      font-size:11px;line-height:1.3;font-weight:600;color:var(--accent-blue);
+      font-size:11px;
+      line-height:1.3;
+      font-weight:700;
+      color:var(--accent-blue);
       white-space:pre-line;
-      position:absolute;left:130px;top:0;
-      display:none;pointer-events:none;
+      position:absolute;
+      left:130px;
+      top:0;
+      display:none;
+      pointer-events:none;
+      text-shadow:0 1px 0 rgba(255,255,255,0.5);
     }
 
-    .header-center{
-      flex:1;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
-
+    .header-center{ flex:1; display:flex; justify-content:center; align-items:center; }
     .main-nav{
       display:flex;
       align-items:center;
       justify-content:space-between;
       width:100%;
       max-width:720px;
+      gap:14px;
     }
     .main-nav a{
       font-size:13px;
@@ -128,51 +137,48 @@
       display:inline-block;
       transition:transform 0.12s ease, color 0.12s ease;
       white-space:nowrap;
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
-    .main-nav a:hover{ transform:scale(1.12); color:#111827; }
+    .main-nav a:hover{ transform:scale(1.12); color:#000; }
 
-    .header-right{
-      width:40px;
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-    }
+    .header-right{ width:40px; display:flex; justify-content:flex-end; align-items:center; }
 
     .mobile-menu-btn{
       display:none;
-      width:32px;height:28px;
+      width:32px;
+      height:28px;
       border-radius:6px;
-      border:1px solid rgba(255,255,255,0.65);
-      background:rgba(255,255,255,0.25);
+      border:1px solid rgba(15,23,42,0.25);
+      background:rgba(255,255,255,0.78);
       cursor:pointer;
       align-items:center;
       justify-content:center;
       flex-direction:column;
       gap:4px;
-      backdrop-filter:blur(8px);
     }
-    .mobile-menu-btn span{ width:16px;height:2px;border-radius:999px;background:#0f172a; display:block; }
-
-    .tab-gap,
-    .bottom-gap{
-      height:38px;
-      background: radial-gradient(circle at top center, var(--tab-blue1), var(--tab-blue2) 42%, var(--tab-blue3) 100%);
-      width:100%;
+    .mobile-menu-btn span{
+      display:block;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:#0f172a;
     }
 
-    /* BODY */
+    /* BODY (white, like index) */
+    main{ min-height:100vh; }
     .content-wrapper{
-      background:linear-gradient(to bottom,#ffffff,#e5f2ff,#dbeafe);
-      border-radius:0;
+      background:#ffffff;
       padding:26px 22px 30px;
       width:100%;
+      overflow-x:hidden;
     }
 
     .page-title{
+      max-width:1100px;
+      margin:0 auto 16px;
       display:flex;
       flex-direction:column;
       gap:8px;
-      margin-bottom:16px;
     }
     .kicker{
       font-size:11px;
@@ -181,7 +187,7 @@
       color:var(--text-muted);
     }
     h1{
-      font-size: clamp(22px, 3vw, 30px);
+      font-size:clamp(22px, 3vw, 30px);
       line-height:1.15;
       font-weight:900;
       text-transform:uppercase;
@@ -197,11 +203,12 @@
     }
 
     .toc{
-      margin:18px 0 20px;
+      max-width:1100px;
+      margin:18px auto 20px;
       padding:14px;
       border-radius:18px;
       border:1px solid var(--border-soft);
-      background:rgba(255,255,255,0.75);
+      background:#ffffff;
       box-shadow:0 10px 26px rgba(15,23,42,0.06);
     }
     .toc-title{
@@ -223,13 +230,15 @@
     .toc a:hover{ border-bottom-color:#0f172a; }
 
     .research-grid{
+      max-width:1100px;
+      margin:0 auto;
       display:grid;
       grid-template-columns:1fr;
       gap:14px;
     }
     .research-card{
       border-radius:20px;
-      background:rgba(255,255,255,0.96);
+      background:#ffffff;
       border:1px solid var(--border-soft);
       padding:16px;
       box-shadow:0 12px 28px rgba(15,23,42,0.08);
@@ -262,11 +271,13 @@
     .highlight-brosimum{ color: var(--accent-blue); font-weight:700; }
     .highlight-company{ color:#111827; font-weight:800; }
 
-    /* FOOTER (bottom tab) */
+    /* BOTTOM BAR (blue gradient like index footer) */
     footer{
+      width:100%;
+      background:radial-gradient(circle at top center,#e0f2fe,#bfdbfe 45%,#1d4ed8 120%);
       padding:16px 22px 26px;
-      background: radial-gradient(circle at top center, var(--tab-blue1), var(--tab-blue2) 42%, var(--tab-blue3) 100%);
-      border-radius:0 0 28px 28px;
+      border-radius:0;
+      overflow-x:hidden;
     }
     .footer-inner{
       display:grid;
@@ -275,6 +286,8 @@
       column-gap:8px;
       font-size:11px;
       color:#0f172a;
+      max-width:1100px;
+      margin:0 auto;
     }
     .footer-left{ text-align:left; }
     .footer-center{ text-align:center; }
@@ -285,9 +298,6 @@
       align-items:center;
       gap:10px;
     }
-    .footer-logo img{
-      width:80px;height:auto; margin:0 auto; display:block; cursor:pointer;
-    }
     .footer-links{
       margin-top:4px;
       font-size:11px;
@@ -295,27 +305,36 @@
       gap:10px;
       flex-wrap:wrap;
     }
-    .footer-links a{ color:#0f172a; text-decoration:none; border-bottom:1px dotted rgba(15,23,42,0.55); }
+    .footer-links a{
+      color:#0f172a;
+      text-decoration:none;
+      border-bottom:1px dotted rgba(15,23,42,0.45);
+    }
+    .footer-logo{ display:inline-block; cursor:pointer; }
+    .footer-logo img{ width:80px; margin:0 auto; display:block; }
 
-    /* ✅ HARD-LOCK ICON SIZE (prevents “giant icons”) */
-    .footer-email, .footer-instagram{
+    /* Icon sizing (prevents “glitch”) */
+    .footer-instagram, .footer-email{
       display:inline-flex;
       align-items:center;
-      justify-content:center;
-      width:28px;
-      height:28px;
+      justify-content:flex-end;
       text-decoration:none;
-      flex:0 0 auto;
+      width:32px;
+      height:32px;
     }
-    .footer-email svg, .footer-instagram svg{
-      width:26px !important;
-      height:26px !important;
-      display:block !important;
+    .footer-instagram svg, .footer-email svg{
+      width:26px;
+      height:26px;
+      display:block;
       overflow:visible;
-      flex:0 0 auto;
+      stroke:#0f172a;
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
     }
 
-    /* Accessibility floating button (not glitched) */
+    /* Accessibility floating button */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -332,38 +351,93 @@
       z-index:70;
       box-shadow:0 10px 25px rgba(15,23,42,0.3);
     }
-    .accessibility-btn svg{ width:28px;height:28px; display:block; }
+    .accessibility-btn svg{
+      width:26px;
+      height:26px;
+      display:block;
+      stroke:#ffffff;
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
 
+    /* Overlays */
     .overlay{
-      position:fixed;inset:0;
+      position:fixed;
+      inset:0;
       background:rgba(255,255,255,0.15);
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
-      display:none;align-items:center;justify-content:center;z-index:60;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:60;
     }
     .overlay.active{ display:flex; }
     .overlay-panel{
-      width:90%;max-width:420px;background:#fff;border-radius:18px;
-      padding:18px 16px 20px;box-shadow:0 20px 60px rgba(15,23,42,0.25);
+      width:90%;
+      max-width:420px;
+      background:#ffffff;
+      border-radius:18px;
+      padding:18px 16px 20px;
+      box-shadow:0 20px 60px rgba(15,23,42,0.25);
     }
-    .overlay-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-    .overlay-title{font-size:14px;font-weight:800;}
-    .overlay-close{border:none;background:transparent;font-size:18px;cursor:pointer;line-height:1;color:#6b7280;}
+    .overlay-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .overlay-title{ font-size:14px; font-weight:800; }
+    .overlay-close{
+      border:none;
+      background:transparent;
+      font-size:18px;
+      cursor:pointer;
+      line-height:1;
+      color:#6b7280;
+    }
 
+    /* toggle */
+    .toggle-input{
+      width:40px;height:20px;border-radius:999px;border:1px solid #d1d5db;background:#e5e7eb;
+      position:relative;cursor:pointer;flex:0 0 auto;
+    }
+    .toggle-input span{
+      position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:999px;background:#ffffff;
+      transition:transform 0.2s ease;
+    }
+    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
+    .toggle-input.active span{ transform:translateX(18px); }
+
+    /* Mobile menu overlay nav */
     .mobile-nav{
-      display:flex;flex-direction:column;gap:8px;font-size:13px;
-      text-transform:uppercase;letter-spacing:0.16em;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
     }
-    .mobile-nav a{ text-decoration:none;color:#111827;padding:6px 4px; }
+    .mobile-nav a{ text-decoration:none; color:#111827; padding:6px 4px; }
 
+    /* MOBILE */
     @media(max-width:880px){
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
       .content-wrapper{ padding:20px 16px 26px; }
     }
     @media(max-width:780px){
-      .footer-inner{ grid-template-columns:1fr; row-gap:6px; text-align:center; }
-      .footer-left,.footer-center,.footer-right{ text-align:center; justify-content:center; }
+      .footer-inner{
+        grid-template-columns:1fr;
+        row-gap:6px;
+        text-align:center;
+      }
+      .footer-left, .footer-center, .footer-right{
+        text-align:center;
+        justify-content:center;
+      }
       .footer-links{ justify-content:center; }
     }
   </style>
@@ -374,12 +448,11 @@
     Research on Brosimum alicastrum (MayaNut / ramón / ojoche / breadnut) and the Brosimeae clade.
   </h2>
 
-  <main>
-    <div class="page-frame" id="top">
-
-      <!-- TOP TAB -->
-      <header class="site-header">
-        <div class="header-left">
+  <div class="frame-wrap">
+    <!-- HEADER -->
+    <header class="site-header" id="top">
+      <div class="header-left">
+        <div class="header-logo-block">
           <img
             src="mayanut-the-maya-nut-company-logo.png"
             alt="The MayaNut Company logo"
@@ -397,29 +470,32 @@ FOR RICKY
 🧡💛💙🩵
           </div>
         </div>
+      </div>
 
-        <div class="header-center">
-          <nav class="main-nav" aria-label="Main navigation">
-            <a href="index.html">HOME</a>
-            <a href="index.html#store">STORE</a>
-            <a href="about.html">ABOUT</a>
-            <a href="research.html" aria-current="page">RESEARCH</a>
-            <a href="gallery.html">GALLERY</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">CONTACT</a>
-          </nav>
-        </div>
+      <div class="header-center">
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="index.html">HOME</a>
+          <a href="index.html#store-panel">STORE</a>
+          <a href="about.html">ABOUT</a>
+          <a href="research.html" aria-current="page">RESEARCH</a>
+          <a href="gallery.html">GALLERY</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">CONTACT</a>
+        </nav>
+      </div>
 
-        <div class="header-right">
-          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-      </header>
+      <div class="header-right">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
 
-      <div class="tab-gap"></div>
+    <!-- thin grey separator -->
+    <div class="top-sep"></div>
 
-      <!-- BODY -->
+    <!-- MAIN -->
+    <main>
       <div class="content-wrapper" id="main">
         <div class="page-title">
           <div class="kicker">MayaNut • Brosimum alicastrum • Brosimeae</div>
@@ -555,76 +631,69 @@ FOR RICKY
           </article>
         </div>
       </div>
+    </main>
 
-      <div class="bottom-gap"></div>
+    <!-- thin grey separator -->
+    <div class="bottom-sep"></div>
 
-      <!-- FOOTER TAB -->
-      <footer>
-        <div class="footer-inner">
-          <div class="footer-left">
-            © <span id="year"></span> The MayaNut Company, Inc.
-            <div class="footer-links">
-              <a href="privacy.html">Privacy</a>
-              <a href="terms.html">Terms of Service</a>
-            </div>
-          </div>
-
-          <div class="footer-center">
-            <a href="#top" class="footer-logo" id="footer-logo" aria-label="Back to top">
-              <img src="mayanut-the-maya-nut-company-logo.png" alt="The MayaNut Company logo (footer)" loading="lazy" decoding="async" />
-            </a>
-          </div>
-
-          <div class="footer-right">
-            <!-- ✅ OUTLINE email icon (equal stroke) -->
-            <a class="footer-email" href="mailto:themayanutcompany@gmail.com" aria-label="Email The MayaNut Company">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="4" y="6" width="16" height="12" rx="2" ry="2" fill="none" stroke="#0f172a" stroke-width="2" />
-                <path d="M5.5 7.5L12 12.5L18.5 7.5" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-
-            <!-- Instagram icon (hard sized) -->
-            <a class="footer-instagram" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm5 2.5A5.5 5.5 0 1 0 17.5 12 5.5 5.5 0 0 0 12 6.5zm0 2A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm4.25-3.25a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0-1.25-1.25z"></path>
-              </svg>
-            </a>
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-left">
+          © <span id="year"></span> The MayaNut Company, Inc.
+          <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms of Service</a>
           </div>
         </div>
-      </footer>
 
-    </div>
-  </main>
+        <div class="footer-center">
+          <a href="#top" class="footer-logo" id="footer-logo" aria-label="Back to top">
+            <img src="mayanut-the-maya-nut-company-logo.png"
+                 alt="The MayaNut Company logo (footer)"
+                 loading="lazy" decoding="async" />
+          </a>
+        </div>
+
+        <div class="footer-right">
+          <!-- EMAIL -->
+          <a class="footer-email"
+             href="mailto:themayanutcompany@gmail.com"
+             aria-label="Email The MayaNut Company">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16v12H4z"></path>
+              <path d="M4 7l8 6 8-6"></path>
+            </svg>
+          </a>
+
+          <!-- INSTAGRAM -->
+          <a class="footer-instagram"
+             href="https://www.instagram.com/themayanutcompany"
+             target="_blank"
+             rel="noopener"
+             aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect>
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <circle cx="17.3" cy="6.7" r="0.9"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
 
   <!-- ACCESSIBILITY BUTTON -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="5.5" r="2.2" fill="#fff"></circle>
-      <path d="M5 9h14" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"></path>
-      <path d="M9 9v11m6-11v11" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"></path>
-      <path d="M9 12h6" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"></path>
+      <circle cx="12" cy="5" r="2"></circle>
+      <path d="M5 9h14"></path>
+      <path d="M10 9v12"></path>
+      <path d="M14 9v12"></path>
+      <path d="M10 13h-3"></path>
+      <path d="M14 13h3"></path>
     </svg>
   </button>
-
-  <!-- MOBILE MENU OVERLAY -->
-  <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
-    <div class="overlay-panel">
-      <div class="overlay-header">
-        <div class="overlay-title">Menu</div>
-        <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu">&times;</button>
-      </div>
-      <nav class="mobile-nav" aria-label="Mobile navigation">
-        <a href="index.html">HOME</a>
-        <a href="index.html#store">STORE</a>
-        <a href="about.html">ABOUT</a>
-        <a href="research.html" aria-current="page">RESEARCH</a>
-        <a href="gallery.html">GALLERY</a>
-        <a href="faq.html">FAQ</a>
-        <a href="contact.html">CONTACT</a>
-      </nav>
-    </div>
-  </div>
 
   <!-- ACCESSIBILITY OVERLAY -->
   <div class="overlay" id="accessibility-overlay" aria-hidden="true">
@@ -646,22 +715,47 @@ FOR RICKY
     </div>
   </div>
 
-  <script>
-    // Scroll to top on logo + footer logo
-    const topLogo = document.getElementById('logo-top');
-    const footerLogo = document.getElementById('footer-logo');
-    function scrollTopSmooth(e){
-      e.preventDefault();
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-    if(topLogo) topLogo.addEventListener('click', scrollTopSmooth);
-    if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <div class="overlay-title">Menu</div>
+        <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu">&times;</button>
+      </div>
+      <nav class="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">HOME</a>
+        <a href="index.html#store-panel">STORE</a>
+        <a href="about.html">ABOUT</a>
+        <a href="research.html" aria-current="page">RESEARCH</a>
+        <a href="gallery.html">GALLERY</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">CONTACT</a>
+      </nav>
+    </div>
+  </div>
 
-    // Footer year
+  <script>
+    /* Top logo goes HOME, footer logo scrolls TOP */
+    const topLogo = document.getElementById('logo-top');
+    if(topLogo){
+      topLogo.addEventListener('click', (e)=>{
+        e.preventDefault();
+        window.location.href = 'index.html';
+      });
+    }
+    const footerLogo = document.getElementById('footer-logo');
+    if(footerLogo){
+      footerLogo.addEventListener('click', (e)=>{
+        e.preventDefault();
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+    }
+
+    /* Footer year */
     const yearSpan = document.getElementById('year');
     if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-    // Overlays
+    /* Overlays */
     const accessBtn = document.getElementById('accessibility-btn');
     const accessOverlay = document.getElementById('accessibility-overlay');
     if(accessBtn && accessOverlay){
@@ -676,6 +770,7 @@ FOR RICKY
 
     document.querySelectorAll('.overlay-close').forEach(btn=>{
       const targetId = btn.getAttribute('data-close');
+      if(!targetId) return;
       btn.addEventListener('click', ()=>{
         const ov = document.getElementById(targetId);
         if(ov) ov.classList.remove('active');
@@ -688,7 +783,7 @@ FOR RICKY
       });
     });
 
-    // Toggles
+    /* Accessibility toggles */
     const contrastToggle = document.getElementById('toggle-contrast');
     if(contrastToggle){
       contrastToggle.addEventListener('click', ()=>{
@@ -703,6 +798,34 @@ FOR RICKY
         document.body.classList.toggle('large-text');
       });
     }
+
+    /* Ricky easter egg (optional, harmless) */
+    const logoImg     = document.getElementById('logo-top');
+    const rickyText   = document.getElementById('ricky-text');
+    const originalLogoSrc = logoImg ? logoImg.getAttribute('src') : '';
+    let rickyTimeoutId = null;
+
+    function triggerRicky(){
+      if(!logoImg || !rickyText) return;
+      logoImg.src = 'ricky.jpeg';
+      logoImg.alt = 'Ricky & The MayaNut Company';
+      rickyText.style.display = 'block';
+
+      if(rickyTimeoutId) clearTimeout(rickyTimeoutId);
+      rickyTimeoutId = setTimeout(()=>{
+        logoImg.src = originalLogoSrc;
+        logoImg.alt = 'The MayaNut Company logo';
+        rickyText.style.display = 'none';
+      }, 10000);
+    }
+    // hidden trigger: type "ricky" anywhere on the page
+    let buffer = "";
+    window.addEventListener('keydown', (e)=>{
+      if(e.key.length === 1){
+        buffer = (buffer + e.key.toLowerCase()).slice(-20);
+        if(buffer.includes("ricky")) triggerRicky();
+      }
+    });
   </script>
 </body>
 </html>

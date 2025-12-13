@@ -194,12 +194,10 @@
       overflow-x:hidden;
     }
 
-    /* HERO LAYOUT (desktop) */
+    /* HERO LAYOUT */
     #hero{
       display:grid;
       grid-template-columns:1.08fr 1fr;
-      grid-template-areas:
-        "left store";
       gap:26px;
       max-width:1100px;
       margin:0 auto;
@@ -208,11 +206,14 @@
       align-items:start;
     }
 
-    .left-stack{
-      grid-area:left;
+    .hero-left{
       display:flex;
       flex-direction:column;
       gap:14px;
+      justify-content:flex-start;
+      transition:opacity 0.25s ease;
+      position:relative;
+      z-index:1;
       min-width:0;
     }
 
@@ -226,7 +227,7 @@
       gap:6px;
     }
 
-    /* FORCE 2 LINES (shrink on small screens) */
+    /* BACK TO HOW IT WAS: 2 lines (line1 text, line2 hook) */
     .hero-title{
       font-size:clamp(22px, 3.2vw, 34px);
       line-height:1.05;
@@ -236,9 +237,8 @@
       color:#000000;
       font-style:italic;
       text-align:left;
-      margin-top:2px;
+      max-width: 520px;
     }
-    .hero-title .line1{ display:block; }
     .hero-title .hook{
       display:block;
       text-align:left;
@@ -252,8 +252,7 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
-    /* Images block (desktop normal) */
-    .hero-images-block{
+    .hero-images{
       display:flex;
       gap:10px;
       align-items:flex-start;
@@ -261,7 +260,7 @@
       margin-top:6px;
       flex-wrap:wrap;
     }
-    .hero-images-block img{
+    .hero-images img{
       width:240px;
       height:auto;
       border-radius:14px;
@@ -310,7 +309,6 @@
 
     /* STORE PANEL */
     #store-panel{
-      grid-area:store;
       border-radius:22px;
       border:1px solid #e5e7eb;
       background:radial-gradient(circle at top center,#e0f2fe,#bfdbfe 40%,#1d4ed8 100%);
@@ -322,6 +320,25 @@
       position:relative;
       z-index:2;
       min-width:0;
+    }
+
+    /* When expanded, we overlay the store but KEEP it from “crushing” layout */
+    body.store-expanded #hero{
+      padding-top: 10px;
+    }
+    body.store-expanded #store-panel{
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      z-index:20;
+      box-shadow:0 28px 70px rgba(15,23,42,0.35);
+    }
+    /* reserve space so overlay doesn’t visually “collide” */
+    body.store-expanded .hero-left{
+      opacity:0.18;
+      pointer-events:none;
+      filter: blur(0.5px);
     }
 
     .store-header-row{
@@ -413,15 +430,15 @@
       background:#ffffff;
     }
 
-    /* Product grid default (NO overlap – natural flow only) */
+    /* STORE GRID (FIXED: pure natural flow, consistent gaps, no overlap) */
     .store-grid{
       margin-top:10px;
       display:grid;
       gap:14px;
-      grid-auto-rows: 1fr;
       align-items:stretch;
     }
 
+    /* Product cards */
     .product-card{
       border-radius:18px;
       background:rgba(255,255,255,0.96);
@@ -433,8 +450,7 @@
       text-align:center;
       transition:transform .15s ease, box-shadow .15s ease, opacity 0.2s ease;
       justify-content:space-between;
-      aspect-ratio: 1 / 1;
-      min-height: 260px;
+      min-height: 270px;   /* consistent */
       height: 100%;
     }
     .product-card:hover{
@@ -516,19 +532,10 @@
     /* Extras hidden by default */
     .product-card.extra-product{ display:none; opacity:0; }
 
-    /* DESKTOP SPEC */
+    /* DESKTOP GRID */
     @media(min-width:881px){
       #store-grid{
         grid-template-columns: repeat(2, minmax(0,1fr));
-      }
-
-      body.store-expanded #store-panel{
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        z-index:20;
-        box-shadow:0 28px 70px rgba(15,23,42,0.35);
       }
 
       body.store-expanded #store-grid{
@@ -744,55 +751,20 @@
       padding:6px 4px;
     }
 
-    /* Accessibility modes */
-    body.high-contrast{
-      background:#ffffff;
-    }
-    body.high-contrast .content-wrapper{
-      background:#ffffff !important;
-    }
-    body.high-contrast, body.high-contrast *{
-      color:#000 !important;
-    }
-    body.high-contrast a{ color:#000 !important; }
-    body.large-text{
-      font-size:112%;
-    }
-
-    /* MOBILE: store top + 45/45/10 layout */
+    /* MOBILE */
     @media(max-width:880px){
+      #hero{ display:flex; flex-direction:column; }
+
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
-      .content-wrapper{ padding:16px 14px 20px; }
+      .content-wrapper{ padding:20px 16px 26px; }
 
-      /* Force hero to be a 100vh "first screen": 45 store / 45 text / 10 images peek */
-      #hero{
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "store"
-          "left"
-          "peek";
-        grid-template-rows: 45vh 45vh 10vh;
-        gap:12px;
-        min-height: 100vh;
-      }
-
-      /* store first (already in store area) */
-      #store-panel{
-        height:45vh;
-        overflow:hidden;
-      }
-      /* let store inner scroll if needed */
-      #store-panel .store-sub{ display:none; } /* keeps it clean in first screen */
-      #store-panel .store-search{ display:none; } /* keeps it clean in first screen */
-
-      /* make store grid visible and stable */
+      /* keep store cards spaced (no overlap) */
       #store-grid{
         display:flex;
         overflow-x:auto;
         -webkit-overflow-scrolling:touch;
         gap:12px;
-        padding-bottom:6px;
       }
       #store-grid::-webkit-scrollbar{ height:6px; }
       #store-grid::-webkit-scrollbar-thumb{
@@ -801,48 +773,26 @@
       }
       .product-card{
         flex:0 0 220px;
-        min-height: 240px;
-        aspect-ratio: 1 / 1;
+        min-height: 260px;
       }
+
       body.store-expanded .product-card.extra-product{
         display:none !important;
       }
 
-      /* text block in middle */
-      .left-stack{
-        height:45vh;
-        overflow:hidden;
-        padding-right:2px;
+      body.store-expanded #store-grid{
+        display:grid !important;
+        grid-template-columns: 1fr;
+        overflow-x:hidden !important;
+        overflow-y:auto !important;
+        max-height: 60vh;
+        gap:12px;
       }
 
-      /* keep title strictly 2 lines on small phones by shrinking */
-      .hero-title{ font-size:clamp(20px, 6vw, 28px); }
-      .hero-title .line1{ letter-spacing:0.04em; }
-
-      /* images peek at bottom: show top 10vh only */
-      .hero-images-peek{
-        grid-area:peek;
-        height:10vh;
-        overflow:hidden;
-        border-radius:14px;
-        position:relative;
-      }
-      .hero-images-peek::after{
-        content:"";
-        position:absolute;
-        left:0; right:0; bottom:0;
-        height:24px;
-        background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.9));
-        pointer-events:none;
-      }
-      .hero-images-peek .hero-images-block{
-        margin:0;
-        padding:0;
-      }
-      .hero-images-peek img{
-        width:48%;
-        height:auto;
-        border-radius:14px;
+      body.store-expanded .product-card{
+        flex:unset !important;
+        width:100%;
+        min-height:unset;
       }
     }
 
@@ -859,14 +809,6 @@
         justify-content:center;
       }
       .footer-links{ justify-content:center; }
-    }
-
-    /* MOBILE peek container hidden on desktop */
-    .hero-images-peek{ display:none; }
-    @media(max-width:880px){
-      /* hide full images in the text stack on mobile; show peek instead */
-      .left-stack .hero-images-block{ display:none; }
-      .hero-images-peek{ display:block; }
     }
   </style>
 </head>
@@ -919,7 +861,47 @@ FOR RICKY
       <div class="content-wrapper">
         <section id="hero">
 
-          <!-- STORE FIRST IN MOBILE VIA GRID-AREA -->
+          <!-- LEFT HERO -->
+          <div class="hero-left">
+            <div class="hero-kicker">
+              <span>MayaNut • Brosimum alicastrum</span>
+            </div>
+
+            <h1 class="hero-title">
+              The future of food grows on a
+              <span class="hook">forgotten tree.</span>
+            </h1>
+
+            <div class="hero-images">
+              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
+                   loading="eager" decoding="async" />
+              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                   alt="MayaNut fruit Brosimum alicastrum"
+                   loading="lazy" decoding="async" />
+            </div>
+
+            <p class="hero-sub">
+              <span class="name-orange">MayaNut</span> (Maya Nut) is the roasted tree-seed of
+              <span class="name-orange"><em>Brosimum alicastrum</em></span>, a tropical fruit tree in the
+              <span class="name-orange">jackfruit</span> family that helped feed ancient
+              <span class="name-orange">Mayan</span> communities – a true
+              <span class="name-orange">superfood</span> almost unknown to the modern world until
+              <span class="name-orange">TODAY!</span>
+            </p>
+
+            <div class="hero-cta-row">
+              <button class="btn" data-nav="about.html">Learn more</button>
+            </div>
+
+            <div class="hero-meta">
+              Over <strong>200 seed-grown trees</strong> already potted up – this phase is about
+              domestication, selecting the best quality trees for sustainable agriculture, and education.
+              Our store is currently in development.
+            </div>
+          </div>
+
+          <!-- RIGHT STORE -->
           <aside id="store-panel" aria-label="Future store preview">
             <div class="store-header-row">
               <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
@@ -1087,60 +1069,6 @@ FOR RICKY
               </article>
             </div>
           </aside>
-
-          <!-- TEXT STACK -->
-          <div class="left-stack">
-            <div class="hero-kicker">
-              <span>MayaNut • Brosimum alicastrum</span>
-            </div>
-
-            <h1 class="hero-title">
-              <span class="line1">The future of food grows on a</span>
-              <span class="hook">forgotten tree.</span>
-            </h1>
-
-            <!-- desktop-only full images (mobile hides this block) -->
-            <div class="hero-images-block">
-              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
-                   loading="eager" decoding="async" />
-              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                   alt="MayaNut fruit Brosimum alicastrum"
-                   loading="lazy" decoding="async" />
-            </div>
-
-            <p class="hero-sub">
-              <span class="name-orange">MayaNut</span> (Maya Nut) is the roasted tree-seed of
-              <span class="name-orange"><em>Brosimum alicastrum</em></span>, a tropical fruit tree in the
-              <span class="name-orange">jackfruit</span> family that helped feed ancient
-              <span class="name-orange">Mayan</span> communities – a true
-              <span class="name-orange">superfood</span> almost unknown to the modern world until
-              <span class="name-orange">TODAY!</span>
-            </p>
-
-            <div class="hero-cta-row">
-              <button class="btn" data-nav="about.html">Learn more</button>
-            </div>
-
-            <div class="hero-meta">
-              Over <strong>200 seed-grown trees</strong> already potted up – this phase is about
-              domestication, selecting the best quality trees for sustainable agriculture, and education.
-              Our store is currently in development.
-            </div>
-          </div>
-
-          <!-- MOBILE: 10% PEEK OF IMAGES TO SIGNAL SCROLL -->
-          <div class="hero-images-peek" aria-hidden="true">
-            <div class="hero-images-block">
-              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt=""
-                   loading="lazy" decoding="async" />
-              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                   alt=""
-                   loading="lazy" decoding="async" />
-            </div>
-          </div>
-
         </section>
       </div>
 
@@ -1235,7 +1163,7 @@ FOR RICKY
       </div>
 
       <div class="settings-version">
-        Version v2.0.5
+        Version v2.0.6
       </div>
     </div>
   </div>

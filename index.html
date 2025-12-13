@@ -44,7 +44,7 @@
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
-    html{ background:#ffffff; } /* pinch-out outside page is white */
+    html{ background:#ffffff; }
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: rgba(7,237,218,0.16);
@@ -194,25 +194,26 @@
       overflow-x:hidden;
     }
 
-    /* HERO LAYOUT */
+    /* HERO LAYOUT (desktop) */
     #hero{
       display:grid;
       grid-template-columns:1.08fr 1fr;
+      grid-template-areas:
+        "left store";
       gap:26px;
       max-width:1100px;
       margin:0 auto;
-      position:relative; /* needed for desktop store overlay */
+      position:relative;
       overflow-x:hidden;
+      align-items:start;
     }
 
-    .hero-left{
+    .left-stack{
+      grid-area:left;
       display:flex;
       flex-direction:column;
       gap:14px;
-      justify-content:flex-start;
-      transition:opacity 0.25s ease;
-      position:relative;
-      z-index:1;
+      min-width:0;
     }
 
     .hero-kicker{
@@ -225,21 +226,19 @@
       gap:6px;
     }
 
-    /* FORCE EXACTLY 2 LINES (shrink to fit; never 3 lines) */
+    /* FORCE 2 LINES (shrink on small screens) */
     .hero-title{
-      font-size:clamp(18px, 4.6vw, 34px);
+      font-size:clamp(22px, 3.2vw, 34px);
       line-height:1.05;
       font-weight:900;
       text-transform:uppercase;
-      letter-spacing:0.04em;
+      letter-spacing:0.06em;
       color:#000000;
       font-style:italic;
       text-align:left;
+      margin-top:2px;
     }
-    .hero-title .hero-lead{
-      display:block;
-      white-space:nowrap; /* line 1 stays one line */
-    }
+    .hero-title .line1{ display:block; }
     .hero-title .hook{
       display:block;
       text-align:left;
@@ -249,13 +248,12 @@
       text-underline-offset:4px;
       font-style:normal;
       font-weight:950;
-      letter-spacing:0.06em;
+      letter-spacing:0.08em;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      white-space:nowrap; /* line 2 stays one line */
     }
 
-    /* Two images side-by-side */
-    .hero-images{
+    /* Images block (desktop normal) */
+    .hero-images-block{
       display:flex;
       gap:10px;
       align-items:flex-start;
@@ -263,7 +261,7 @@
       margin-top:6px;
       flex-wrap:wrap;
     }
-    .hero-images img{
+    .hero-images-block img{
       width:240px;
       height:auto;
       border-radius:14px;
@@ -312,6 +310,7 @@
 
     /* STORE PANEL */
     #store-panel{
+      grid-area:store;
       border-radius:22px;
       border:1px solid #e5e7eb;
       background:radial-gradient(circle at top center,#e0f2fe,#bfdbfe 40%,#1d4ed8 100%);
@@ -322,6 +321,7 @@
       transition:all 0.35s ease;
       position:relative;
       z-index:2;
+      min-width:0;
     }
 
     .store-header-row{
@@ -413,19 +413,15 @@
       background:#ffffff;
     }
 
-    /* Product grid (FIXED: even spacing + never fused) */
+    /* Product grid default (NO overlap – natural flow only) */
     .store-grid{
       margin-top:10px;
       display:grid;
       gap:14px;
-      row-gap:14px;
-      column-gap:14px;
       grid-auto-rows: 1fr;
-      padding:4px;            /* makes the outer spacing match the inner */
       align-items:stretch;
     }
 
-    /* Product cards */
     .product-card{
       border-radius:18px;
       background:rgba(255,255,255,0.96);
@@ -523,8 +519,7 @@
     /* DESKTOP SPEC */
     @media(min-width:881px){
       #store-grid{
-        grid-template-columns: repeat(2, minmax(0,1fr)); /* 2x2 */
-        gap:14px; row-gap:14px; column-gap:14px;        /* force spacing */
+        grid-template-columns: repeat(2, minmax(0,1fr));
       }
 
       body.store-expanded #store-panel{
@@ -538,25 +533,12 @@
 
       body.store-expanded #store-grid{
         grid-template-columns: repeat(4, minmax(0,1fr));
-        gap:14px; row-gap:14px; column-gap:14px;        /* force spacing in expanded mode */
       }
 
       body.store-expanded .product-card.extra-product{
         display:flex;
         opacity:1;
       }
-
-      /* RIGHT block (original 4) */
-      body.store-expanded #store-grid .product-card:nth-child(1){ grid-column:3; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(2){ grid-column:4; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(3){ grid-column:3; grid-row:2; }
-      body.store-expanded #store-grid .product-card:nth-child(4){ grid-column:4; grid-row:2; }
-
-      /* LEFT block (extras 5-8) */
-      body.store-expanded #store-grid .product-card:nth-child(5){ grid-column:1; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(6){ grid-column:2; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(7){ grid-column:1; grid-row:2; }
-      body.store-expanded #store-grid .product-card:nth-child(8){ grid-column:2; grid-row:2; }
     }
 
     /* FOOTER */
@@ -712,6 +694,7 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
+      width:100%;
     }
     .toggle-input{
       width:40px;
@@ -721,6 +704,7 @@
       background:#e5e7eb;
       position:relative;
       cursor:pointer;
+      flex:0 0 auto;
     }
     .toggle-input span{
       position:absolute;
@@ -760,47 +744,105 @@
       padding:6px 4px;
     }
 
-    /* MOBILE SPEC */
-    @media(max-width:880px){
-      #hero{ display:flex; flex-direction:column; }
+    /* Accessibility modes */
+    body.high-contrast{
+      background:#ffffff;
+    }
+    body.high-contrast .content-wrapper{
+      background:#ffffff !important;
+    }
+    body.high-contrast, body.high-contrast *{
+      color:#000 !important;
+    }
+    body.high-contrast a{ color:#000 !important; }
+    body.large-text{
+      font-size:112%;
+    }
 
+    /* MOBILE: store top + 45/45/10 layout */
+    @media(max-width:880px){
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
-      .content-wrapper{ padding:20px 16px 26px; }
+      .content-wrapper{ padding:16px 14px 20px; }
 
+      /* Force hero to be a 100vh "first screen": 45 store / 45 text / 10 images peek */
+      #hero{
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "store"
+          "left"
+          "peek";
+        grid-template-rows: 45vh 45vh 10vh;
+        gap:12px;
+        min-height: 100vh;
+      }
+
+      /* store first (already in store area) */
+      #store-panel{
+        height:45vh;
+        overflow:hidden;
+      }
+      /* let store inner scroll if needed */
+      #store-panel .store-sub{ display:none; } /* keeps it clean in first screen */
+      #store-panel .store-search{ display:none; } /* keeps it clean in first screen */
+
+      /* make store grid visible and stable */
       #store-grid{
         display:flex;
         overflow-x:auto;
         -webkit-overflow-scrolling:touch;
-        gap:14px;          /* match desktop gap */
-        padding:4px;
+        gap:12px;
+        padding-bottom:6px;
       }
       #store-grid::-webkit-scrollbar{ height:6px; }
       #store-grid::-webkit-scrollbar-thumb{
         background:#d1d5db;
         border-radius:999px;
       }
-      .product-card{ flex:0 0 220px; }
-
+      .product-card{
+        flex:0 0 220px;
+        min-height: 240px;
+        aspect-ratio: 1 / 1;
+      }
       body.store-expanded .product-card.extra-product{
         display:none !important;
       }
 
-      body.store-expanded #store-grid{
-        display:grid !important;
-        grid-template-columns: 1fr;
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-        max-height: 60vh;
-        gap:14px;
-        padding:4px;
+      /* text block in middle */
+      .left-stack{
+        height:45vh;
+        overflow:hidden;
+        padding-right:2px;
       }
 
-      body.store-expanded .product-card{
-        flex:unset !important;
-        width:100%;
-        aspect-ratio:auto;
-        min-height:unset;
+      /* keep title strictly 2 lines on small phones by shrinking */
+      .hero-title{ font-size:clamp(20px, 6vw, 28px); }
+      .hero-title .line1{ letter-spacing:0.04em; }
+
+      /* images peek at bottom: show top 10vh only */
+      .hero-images-peek{
+        grid-area:peek;
+        height:10vh;
+        overflow:hidden;
+        border-radius:14px;
+        position:relative;
+      }
+      .hero-images-peek::after{
+        content:"";
+        position:absolute;
+        left:0; right:0; bottom:0;
+        height:24px;
+        background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.9));
+        pointer-events:none;
+      }
+      .hero-images-peek .hero-images-block{
+        margin:0;
+        padding:0;
+      }
+      .hero-images-peek img{
+        width:48%;
+        height:auto;
+        border-radius:14px;
       }
     }
 
@@ -817,6 +859,14 @@
         justify-content:center;
       }
       .footer-links{ justify-content:center; }
+    }
+
+    /* MOBILE peek container hidden on desktop */
+    .hero-images-peek{ display:none; }
+    @media(max-width:880px){
+      /* hide full images in the text stack on mobile; show peek instead */
+      .left-stack .hero-images-block{ display:none; }
+      .hero-images-peek{ display:block; }
     }
   </style>
 </head>
@@ -869,48 +919,7 @@ FOR RICKY
       <div class="content-wrapper">
         <section id="hero">
 
-          <!-- LEFT HERO -->
-          <div class="hero-left">
-            <div class="hero-kicker">
-              <span>MayaNut • Brosimum alicastrum</span>
-            </div>
-
-            <!-- EXACT 2 LINES -->
-            <h1 class="hero-title">
-              <span class="hero-lead">The future of food grows on a</span>
-              <span class="hook">forgotten tree.</span>
-            </h1>
-
-            <div class="hero-images">
-              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
-                   loading="eager" decoding="async" />
-              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                   alt="MayaNut fruit Brosimum alicastrum"
-                   loading="lazy" decoding="async" />
-            </div>
-
-            <p class="hero-sub">
-              <span class="name-orange">MayaNut</span> (Maya Nut) is the roasted tree-seed of
-              <span class="name-orange"><em>Brosimum alicastrum</em></span>, a tropical fruit tree in the
-              <span class="name-orange">jackfruit</span> family that helped feed ancient
-              <span class="name-orange">Mayan</span> communities – a true
-              <span class="name-orange">superfood</span> almost unknown to the modern world until
-              <span class="name-orange">TODAY!</span>
-            </p>
-
-            <div class="hero-cta-row">
-              <button class="btn" data-nav="about.html">Learn more</button>
-            </div>
-
-            <div class="hero-meta">
-              Over <strong>200 seed-grown trees</strong> already potted up – this phase is about
-              domestication, selecting the best quality trees for sustainable agriculture, and education.
-              Our store is currently in development.
-            </div>
-          </div>
-
-          <!-- RIGHT STORE -->
+          <!-- STORE FIRST IN MOBILE VIA GRID-AREA -->
           <aside id="store-panel" aria-label="Future store preview">
             <div class="store-header-row">
               <div class="store-title">Future MayaNut Powder &amp; Drinks</div>
@@ -1078,6 +1087,60 @@ FOR RICKY
               </article>
             </div>
           </aside>
+
+          <!-- TEXT STACK -->
+          <div class="left-stack">
+            <div class="hero-kicker">
+              <span>MayaNut • Brosimum alicastrum</span>
+            </div>
+
+            <h1 class="hero-title">
+              <span class="line1">The future of food grows on a</span>
+              <span class="hook">forgotten tree.</span>
+            </h1>
+
+            <!-- desktop-only full images (mobile hides this block) -->
+            <div class="hero-images-block">
+              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
+                   loading="eager" decoding="async" />
+              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                   alt="MayaNut fruit Brosimum alicastrum"
+                   loading="lazy" decoding="async" />
+            </div>
+
+            <p class="hero-sub">
+              <span class="name-orange">MayaNut</span> (Maya Nut) is the roasted tree-seed of
+              <span class="name-orange"><em>Brosimum alicastrum</em></span>, a tropical fruit tree in the
+              <span class="name-orange">jackfruit</span> family that helped feed ancient
+              <span class="name-orange">Mayan</span> communities – a true
+              <span class="name-orange">superfood</span> almost unknown to the modern world until
+              <span class="name-orange">TODAY!</span>
+            </p>
+
+            <div class="hero-cta-row">
+              <button class="btn" data-nav="about.html">Learn more</button>
+            </div>
+
+            <div class="hero-meta">
+              Over <strong>200 seed-grown trees</strong> already potted up – this phase is about
+              domestication, selecting the best quality trees for sustainable agriculture, and education.
+              Our store is currently in development.
+            </div>
+          </div>
+
+          <!-- MOBILE: 10% PEEK OF IMAGES TO SIGNAL SCROLL -->
+          <div class="hero-images-peek" aria-hidden="true">
+            <div class="hero-images-block">
+              <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                   alt=""
+                   loading="lazy" decoding="async" />
+              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                   alt=""
+                   loading="lazy" decoding="async" />
+            </div>
+          </div>
+
         </section>
       </div>
 
@@ -1172,7 +1235,7 @@ FOR RICKY
       </div>
 
       <div class="settings-version">
-        Version v2.0.4
+        Version v2.0.5
       </div>
     </div>
   </div>
@@ -1282,7 +1345,7 @@ FOR RICKY
 
   function applyStoreFilter(){
     if(!searchInput) return;
-    const q = searchInput.value.toLowerCase();
+    const q = (searchInput.value || "").toLowerCase();
     document.querySelectorAll('.product-card').forEach(card=>{
       const name = (card.dataset.name || "").toLowerCase();
       card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
@@ -1312,7 +1375,6 @@ FOR RICKY
 
   /* STORE EXPAND */
   const viewFullStore = document.getElementById('store-view-full');
-  function isMobile(){ return window.innerWidth <= 880; }
 
   function setStoreButtonLabel(){
     if(!viewFullStore) return;
@@ -1372,50 +1434,6 @@ FOR RICKY
       alert('MayaNut products are coming in 2029! Thank you for your patience.');
     });
   });
-
-  /* MOBILE AUTO-SCROLL */
-  function initMobileStoreAutoScroll(){
-    const grid = document.getElementById('store-grid');
-    if(!grid) return;
-
-    let lastInteraction = Date.now();
-    const markInteraction = ()=>{ lastInteraction = Date.now(); };
-
-    grid.addEventListener('scroll', markInteraction, {passive:true});
-    grid.addEventListener('touchstart', markInteraction, {passive:true});
-    grid.addEventListener('mousedown', markInteraction);
-
-    const GAP = 14;
-
-    function cardStep(){
-      const first = grid.querySelector('.product-card:not(.extra-product)');
-      if(!first) return 0;
-      return first.getBoundingClientRect().width + GAP;
-    }
-
-    setInterval(()=>{
-      if(!isMobile()) return;
-      if(document.body.classList.contains('store-expanded')) return;
-      if(Date.now() - lastInteraction < 5000) return;
-
-      const step = cardStep();
-      if(!step) return;
-
-      const maxScroll = grid.scrollWidth - grid.clientWidth;
-
-      if(grid.scrollLeft >= maxScroll - step * 0.5){
-        const firstCard = grid.querySelector('.product-card:not(.extra-product)');
-        if(firstCard){
-          grid.appendChild(firstCard);
-          grid.scrollLeft = Math.max(0, grid.scrollLeft - step);
-        }
-      }
-
-      grid.scrollTo({ left: grid.scrollLeft + step, behavior:'smooth' });
-    }, 5000);
-  }
-
-  window.addEventListener('load', initMobileStoreAutoScroll);
 </script>
 
 </body>

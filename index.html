@@ -29,6 +29,7 @@
   <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-comapny-image.jpeg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
+  <link rel="preload" href="ricky.jpeg" as="image" />
 
   <style>
     :root{
@@ -36,16 +37,14 @@
       --text-muted:#6b7280;
       --accent-blue:#084ac5;
       --accent-blue-dark:#1d4ed8;
-      --border-soft:#e5e7eb;
-      --orange:#fd6c02;
       --frame-line:#d1d5db;
+      --orange:#fd6c02;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
     html{ background:#ffffff; }
 
-    /* Futuristic / metallic body */
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color:var(--text-main);
@@ -66,10 +65,7 @@
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
-    /* ====== NEW: LEFT/RIGHT FRAME = THE IMAGE ======
-       Uses the image as a repeating vertical “frame” on both sides.
-       The center content stays within max-width.
-    */
+    /* Side frames (image) */
     .outer-frame{
       min-height:100vh;
       display:flex;
@@ -80,7 +76,6 @@
         transparent;
     }
 
-    /* Center content block (keeps your site readable) */
     .frame-wrap{
       width:100%;
       max-width:1200px;
@@ -145,7 +140,9 @@
     .header-logo-block{ display:flex; align-items:center; gap:10px; }
     #logo-top{ width:120px; height:auto; cursor:pointer; display:block; }
 
+    /* IMPORTANT: hidden by default; only shown during Ricky easter egg */
     .ricky-text{
+      display:none;
       font-size:11px;
       line-height:1.3;
       font-weight:800;
@@ -153,6 +150,7 @@
       white-space:pre-line;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
+    .ricky-text.show{ display:block; }
 
     .header-center{ flex:1; display:flex; justify-content:center; align-items:center; }
     .main-nav{
@@ -214,8 +212,6 @@
       gap:26px;
       max-width:1100px;
       margin:0 auto;
-      position:relative;
-      overflow-x:hidden;
     }
 
     .hero-left{
@@ -223,9 +219,6 @@
       flex-direction:column;
       gap:14px;
       justify-content:flex-start;
-      position:relative;
-      z-index:1;
-      transition:opacity .25s ease;
     }
 
     .hero-kicker{
@@ -259,6 +252,8 @@
       text-decoration:underline;
       text-decoration-thickness:2px;
       text-underline-offset:3px;
+      transform:skewX(-12deg);
+      display:inline-block;
     }
 
     .hero-images{
@@ -317,9 +312,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      transition:transform .35s ease, box-shadow .35s ease, opacity .25s ease;
       position:relative;
-      z-index:2;
     }
 
     .store-header-row{ display:flex; align-items:center; justify-content:center; margin-bottom:2px; }
@@ -410,7 +403,6 @@
       justify-content:space-between;
       transition:transform .15s ease, box-shadow .15s ease, opacity .2s ease;
       min-height:220px;
-      overflow:visible;
     }
     .product-card:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(15,23,42,0.12); }
     .product-card img{ width:80px; margin-top:4px; margin-bottom:8px; }
@@ -444,32 +436,6 @@
       text-transform:uppercase;
       cursor:pointer;
       font-weight:900;
-    }
-
-    .product-card.extra-product{ display:none; opacity:0; }
-
-    @media(min-width:881px){
-      body.store-expanded #store-panel{
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        z-index:20;
-        box-shadow:0 28px 70px rgba(15,23,42,0.35);
-      }
-      body.store-expanded #store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
-      body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
-
-      body.store-expanded #store-grid .product-card:nth-child(1){ grid-column:3; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(2){ grid-column:4; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(3){ grid-column:3; grid-row:2; }
-      body.store-expanded #store-grid .product-card:nth-child(4){ grid-column:4; grid-row:2; }
-      body.store-expanded #store-grid .product-card:nth-child(5){ grid-column:1; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(6){ grid-column:2; grid-row:1; }
-      body.store-expanded #store-grid .product-card:nth-child(7){ grid-column:1; grid-row:2; }
-      body.store-expanded #store-grid .product-card:nth-child(8){ grid-column:2; grid-row:2; }
-
-      body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
     /* Footer */
@@ -658,10 +624,7 @@
 
     /* A11y classes */
     body.large-text{ font-size:110%; }
-    body.high-contrast{
-      background:#000;
-      color:#fff;
-    }
+    body.high-contrast{ background:#000; color:#fff; }
     body.high-contrast .frame-wrap{ background:#000; }
     body.high-contrast .support-banner{ background:#000; border-bottom:1px solid #fff; }
     body.high-contrast .main-nav a,
@@ -669,7 +632,6 @@
     body.high-contrast .footer-instagram svg,
     body.high-contrast .footer-email svg{ stroke:#fff; }
 
-    /* Responsive: keep frames visible but slimmer */
     @media(max-width:980px){
       .outer-frame{
         background:
@@ -696,18 +658,6 @@
       #store-grid::-webkit-scrollbar{ height:6px; }
       #store-grid::-webkit-scrollbar-thumb{ background:#d1d5db; border-radius:999px; }
       .product-card{ flex:0 0 220px; min-height:220px; }
-
-      body.store-expanded .product-card.extra-product{ display:none !important; }
-
-      body.store-expanded #store-grid{
-        display:grid !important;
-        grid-template-columns:1fr;
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-        max-height:60vh;
-        gap:12px;
-      }
-      body.store-expanded .product-card{ flex:unset !important; width:100%; }
     }
 
     @media(max-width:780px){
@@ -727,11 +677,12 @@
 
 <body>
   <h2 class="visually-hidden">
-    MayaNut, Maya Nut, Brosimum alicastrum – a tropical tree superfood, ramón, ojoche, breadnut, and reforestation crop in South Florida.
+    MayaNut, Maya Nut, Brosimum alicastrum – a tropical tree superfood and reforestation crop in South Florida.
   </h2>
 
   <div class="outer-frame">
     <div class="frame-wrap">
+
       <!-- SUPPORT BANNER -->
       <div class="support-banner">
         Support Florida’s first MayaNut plantation:
@@ -746,6 +697,7 @@
             <img src="mayanut-the-maya-nut-company-logo.png"
                  alt="The MayaNut Company logo"
                  id="logo-top" />
+            <!-- Hidden by default -->
             <div class="ricky-text" id="ricky-text">
 🧡💛💙🩵
 THE MAYANUT COMPANY
@@ -759,7 +711,7 @@ FOR RICKY
         <div class="header-center">
           <nav class="main-nav" aria-label="Main navigation">
             <a href="index.html">HOME</a>
-            <a href="#store-panel" id="nav-store">STORE</a>
+            <a href="#store-panel">STORE</a>
             <a href="about.html">ABOUT</a>
             <a href="research.html">RESEARCH</a>
             <a href="gallery.html">GALLERY</a>
@@ -854,7 +806,7 @@ FOR RICKY
                   <div class="product-name">MayaNut Powder</div>
                   <p class="product-text">Roasted seed powder – smooth, caffeine-free, ready to mix.</p>
                   <div class="product-controls">
-                    <div class="qty-control" data-product="powder">
+                    <div class="qty-control">
                       <button class="qty-btn qty-minus" type="button">−</button>
                       <span class="qty-value">1</span>
                       <button class="qty-btn qty-plus" type="button">+</button>
@@ -871,7 +823,7 @@ FOR RICKY
                   <div class="product-name">Instant MayaNut Latte</div>
                   <p class="product-text">Future drink mix for warm, creamy cups.</p>
                   <div class="product-controls">
-                    <div class="qty-control" data-product="latte">
+                    <div class="qty-control">
                       <button class="qty-btn qty-minus" type="button">−</button>
                       <span class="qty-value">1</span>
                       <button class="qty-btn qty-plus" type="button">+</button>
@@ -888,7 +840,7 @@ FOR RICKY
                   <div class="product-name">MayaNut Baking Blend</div>
                   <p class="product-text">Blend concept for cookies, bars, and breads.</p>
                   <div class="product-controls">
-                    <div class="qty-control" data-product="baking">
+                    <div class="qty-control">
                       <button class="qty-btn qty-minus" type="button">−</button>
                       <span class="qty-value">1</span>
                       <button class="qty-btn qty-plus" type="button">+</button>
@@ -905,7 +857,7 @@ FOR RICKY
                   <div class="product-name">Cold MayaNut Drink</div>
                   <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
                   <div class="product-controls">
-                    <div class="qty-control" data-product="cold-drink">
+                    <div class="qty-control">
                       <button class="qty-btn qty-minus" type="button">−</button>
                       <span class="qty-value">1</span>
                       <button class="qty-btn qty-plus" type="button">+</button>
@@ -1011,7 +963,7 @@ FOR RICKY
         </div>
       </div>
 
-      <div class="settings-version">Version v2.1.1</div>
+      <div class="settings-version">Version v2.1.2</div>
     </div>
   </div>
 
@@ -1024,7 +976,7 @@ FOR RICKY
       </div>
       <nav class="mobile-nav" aria-label="Mobile navigation">
         <a href="index.html">HOME</a>
-        <a href="#store-panel" id="nav-store-mobile">STORE</a>
+        <a href="#store-panel">STORE</a>
         <a href="about.html">ABOUT</a>
         <a href="research.html">RESEARCH</a>
         <a href="gallery.html">GALLERY</a>
@@ -1037,12 +989,12 @@ FOR RICKY
   <script>
     /* Footer year */
     const yearSpan = document.getElementById('year');
-    if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
     /* Header logo goes HOME */
     const topLogo = document.getElementById('logo-top');
-    if(topLogo){
-      topLogo.addEventListener('click', (e)=>{
+    if (topLogo) {
+      topLogo.addEventListener('click', (e) => {
         e.preventDefault();
         window.location.href = 'index.html';
       });
@@ -1050,52 +1002,53 @@ FOR RICKY
 
     /* Footer logo scrolls TOP */
     const footerLogo = document.getElementById('footer-logo');
-    if(footerLogo){
-      footerLogo.addEventListener('click', (e)=>{
+    if (footerLogo) {
+      footerLogo.addEventListener('click', (e) => {
         e.preventDefault();
-        window.scrollTo({top:0, behavior:'smooth'});
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 
-    /* Overlays */
+    /* Overlay open/close */
     const accessBtn = document.getElementById('accessibility-btn');
     const accessOverlay = document.getElementById('accessibility-overlay');
-    if(accessBtn && accessOverlay){
-      accessBtn.addEventListener('click', ()=> accessOverlay.classList.add('active'));
+    if (accessBtn && accessOverlay) {
+      accessBtn.addEventListener('click', () => accessOverlay.classList.add('active'));
     }
 
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    if(mobileMenuBtn && mobileMenuOverlay){
-      mobileMenuBtn.addEventListener('click', ()=> mobileMenuOverlay.classList.add('active'));
+    if (mobileMenuBtn && mobileMenuOverlay) {
+      mobileMenuBtn.addEventListener('click', () => mobileMenuOverlay.classList.add('active'));
     }
 
-    document.querySelectorAll('.overlay-close').forEach(btn=>{
+    document.querySelectorAll('.overlay-close').forEach(btn => {
       const targetId = btn.getAttribute('data-close');
-      if(!targetId) return;
-      btn.addEventListener('click', ()=>{
+      if (!targetId) return;
+      btn.addEventListener('click', () => {
         const ov = document.getElementById(targetId);
-        if(ov) ov.classList.remove('active');
+        if (ov) ov.classList.remove('active');
       });
     });
 
-    document.querySelectorAll('.overlay').forEach(ov=>{
-      ov.addEventListener('click', e=>{
-        if(e.target === ov) ov.classList.remove('active');
+    document.querySelectorAll('.overlay').forEach(ov => {
+      ov.addEventListener('click', e => {
+        if (e.target === ov) ov.classList.remove('active');
       });
     });
 
     /* Accessibility toggles */
     const contrastToggle = document.getElementById('toggle-contrast');
-    if(contrastToggle){
-      contrastToggle.addEventListener('click', ()=>{
+    if (contrastToggle) {
+      contrastToggle.addEventListener('click', () => {
         contrastToggle.classList.toggle('active');
         document.body.classList.toggle('high-contrast');
       });
     }
+
     const textToggle = document.getElementById('toggle-large-text');
-    if(textToggle){
-      textToggle.addEventListener('click', ()=>{
+    if (textToggle) {
+      textToggle.addEventListener('click', () => {
         textToggle.classList.toggle('active');
         document.body.classList.toggle('large-text');
       });
@@ -1103,183 +1056,110 @@ FOR RICKY
 
     /* Language routing */
     const accessLang = document.getElementById('access-lang');
-    if(accessLang){
-      accessLang.addEventListener('change', ()=>{
+    if (accessLang) {
+      accessLang.addEventListener('change', () => {
         const val = accessLang.value;
-        if(val === 'en') window.location.href = 'index.html';
+        if (val === 'en') window.location.href = 'index.html';
         else window.location.href = `index-${val}.html`;
       });
     }
 
     /* CTA navigation */
-    document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.btn[data-nav]').forEach(btn => {
+      btn.addEventListener('click', () => {
         const dest = btn.getAttribute('data-nav');
-        if(dest) window.location.href = dest;
+        if (dest) window.location.href = dest;
       });
     });
 
-    /* Store search filter + Ricky swap (5s) */
+    /* Store search filter + Ricky easter egg (ONLY when typed) */
     const searchInput = document.getElementById('store-search');
-    const searchSend  = document.getElementById('store-search-send');
-    const clearBtn    = document.getElementById('store-search-clear');
+    const searchSend = document.getElementById('store-search-send');
+    const clearBtn = document.getElementById('store-search-clear');
 
-    const logoImg     = document.getElementById('logo-top');
+    const rickyText = document.getElementById('ricky-text');
+    const logoImg = document.getElementById('logo-top');
     const originalLogoSrc = logoImg ? logoImg.getAttribute('src') : '';
+
     let rickyTimeoutId = null;
 
-    function applyStoreFilter(){
-      if(!searchInput) return;
-      const q = searchInput.value.toLowerCase();
+    function triggerRickyEasterEgg(){
+      if (!logoImg || !rickyText) return;
 
-      document.querySelectorAll('.product-card').forEach(card=>{
+      // show text + swap logo
+      rickyText.classList.add('show');
+      logoImg.src = 'ricky.jpeg';
+      logoImg.alt = 'Ricky & The MayaNut Company';
+
+      // reset timer
+      if (rickyTimeoutId) clearTimeout(rickyTimeoutId);
+      rickyTimeoutId = setTimeout(() => {
+        rickyText.classList.remove('show');
+        logoImg.src = originalLogoSrc;
+        logoImg.alt = 'The MayaNut Company logo';
+      }, 5000);
+    }
+
+    function applyStoreFilter() {
+      if (!searchInput) return;
+      const raw = searchInput.value || '';
+      const q = raw.toLowerCase();
+
+      document.querySelectorAll('.product-card').forEach(card => {
         const name = (card.dataset.name || "").toLowerCase();
         card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
       });
 
-      if(logoImg && q.includes('ricky')){
-        logoImg.src = 'ricky.jpeg';
-        logoImg.alt = 'Ricky & The MayaNut Company';
-        if(rickyTimeoutId) clearTimeout(rickyTimeoutId);
-        rickyTimeoutId = setTimeout(()=>{
-          logoImg.src = originalLogoSrc;
-          logoImg.alt = 'The MayaNut Company logo';
-        }, 5000);
-      }
+      // Easter egg: only when "ricky" appears (case-insensitive)
+      if (q.includes('ricky')) triggerRickyEasterEgg();
     }
 
-    function clearSearch(){
-      if(!searchInput) return;
+    function clearSearch() {
+      if (!searchInput) return;
       searchInput.value = '';
       applyStoreFilter();
       searchInput.focus();
     }
 
-    if(searchInput){
+    if (searchInput) {
       searchInput.addEventListener('input', applyStoreFilter);
-      searchInput.addEventListener('keydown', e=>{
-        if(e.key === 'Enter') applyStoreFilter();
+      searchInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') applyStoreFilter();
       });
     }
 
-    if(clearBtn){
-      clearBtn.addEventListener('click', (e)=>{
+    if (clearBtn) {
+      clearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         clearSearch();
       });
     }
 
-    if(searchSend){
-      searchSend.addEventListener('click', (e)=>{
-        if(e.target && e.target.id === 'store-search-clear') return;
+    if (searchSend) {
+      searchSend.addEventListener('click', (e) => {
+        if (e.target && e.target.id === 'store-search-clear') return;
         applyStoreFilter();
       });
     }
 
-    /* Store expand */
-    const viewFullStore = document.getElementById('store-view-full');
-
-    function setStoreButtonLabel(){
-      if(!viewFullStore) return;
-      const expanded = document.body.classList.contains('store-expanded');
-      viewFullStore.textContent = expanded ? 'COLLAPSE' : 'VIEW STORE';
-    }
-
-    function toggleStore(forceOpen=false){
-      const expanded = document.body.classList.contains('store-expanded');
-      if(forceOpen){
-        if(!expanded) document.body.classList.add('store-expanded');
-      } else {
-        document.body.classList.toggle('store-expanded');
-      }
-      setStoreButtonLabel();
-    }
-
-    if(viewFullStore){
-      viewFullStore.addEventListener('click', ()=>toggleStore(false));
-      setStoreButtonLabel();
-    }
-
-    const navStore = document.getElementById('nav-store');
-    if(navStore){
-      navStore.addEventListener('click', (e)=>{
-        e.preventDefault();
-        toggleStore(true);
-      });
-    }
-
-    const navStoreMobile = document.getElementById('nav-store-mobile');
-    if(navStoreMobile){
-      navStoreMobile.addEventListener('click', (e)=>{
-        e.preventDefault();
-        toggleStore(true);
-        if(mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-      });
-    }
-
     /* Qty +/- */
-    document.querySelectorAll('.qty-control').forEach(control=>{
+    document.querySelectorAll('.qty-control').forEach(control => {
       const valueSpan = control.querySelector('.qty-value');
-      control.addEventListener('click', (e)=>{
-        if(!valueSpan) return;
+      control.addEventListener('click', (e) => {
+        if (!valueSpan) return;
         let val = parseInt(valueSpan.textContent || '1', 10);
-        if(e.target.classList.contains('qty-plus')) val += 1;
-        if(e.target.classList.contains('qty-minus')) val = Math.max(1, val - 1);
+        if (e.target.classList.contains('qty-plus')) val += 1;
+        if (e.target.classList.contains('qty-minus')) val = Math.max(1, val - 1);
         valueSpan.textContent = String(val);
       });
     });
 
     /* ADD buttons */
-    document.querySelectorAll('.product-add-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.product-add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         alert('MayaNut products are coming soon! Thank you for your patience.');
       });
     });
-
-    /* Mobile auto-scroll carousel */
-    function isMobile(){ return window.innerWidth <= 880; }
-    function initMobileStoreAutoScroll(){
-      const grid = document.getElementById('store-grid');
-      if(!grid) return;
-
-      let lastInteraction = Date.now();
-      const markInteraction = ()=>{ lastInteraction = Date.now(); };
-
-      grid.addEventListener('scroll', markInteraction, {passive:true});
-      grid.addEventListener('touchstart', markInteraction, {passive:true});
-      grid.addEventListener('mousedown', markInteraction);
-
-      const GAP = 12;
-
-      function cardStep(){
-        const first = grid.querySelector('.product-card');
-        if(!first) return 0;
-        return first.getBoundingClientRect().width + GAP;
-      }
-
-      setInterval(()=>{
-        if(!isMobile()) return;
-        if(document.body.classList.contains('store-expanded')) return;
-        if(Date.now() - lastInteraction < 5000) return;
-
-        const step = cardStep();
-        if(!step) return;
-
-        const maxScroll = grid.scrollWidth - grid.clientWidth;
-
-        if(grid.scrollLeft >= maxScroll - step * 0.5){
-          const firstCard = grid.querySelector('.product-card');
-          if(firstCard){
-            grid.appendChild(firstCard);
-            grid.scrollLeft = Math.max(0, grid.scrollLeft - step);
-          }
-        }
-
-        grid.scrollTo({ left: grid.scrollLeft + step, behavior:'smooth' });
-      }, 5000);
-    }
-
-    window.addEventListener('load', initMobileStoreAutoScroll);
   </script>
 </body>
 </html>

@@ -55,17 +55,17 @@
       --tan-orange: rgba(253,108,2,0.28);
       --tan-orange-border: rgba(253,108,2,0.45);
 
+      /* WIDER SITE + NARROWER FRAMES */
+      --max: 1800px;
+      --sideW: 170px;            /* frames narrower */
       --site-border: 20px;
-      --max: 1600px;
 
       --beige1:#ffffff;
       --beige2:#f4efe7;
       --beige3:#e7dfd1;
 
-      --storeTop:#cfe86a;  /* yellowish green */
+      --storeTop:#d7f06c;        /* more yellowish green */
       --storeBottom:#1a6800;
-
-      --cardRadius: 18px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -73,11 +73,7 @@
     body{
       font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at center,
-          var(--beige1) 0%,
-          var(--beige2) 45%,
-          var(--beige3) 100%);
+      background: radial-gradient(circle at center, var(--beige1) 0%, var(--beige2) 45%, var(--beige3) 100%);
       overflow-x:hidden;
     }
     img{max-width:100%;display:block}
@@ -92,27 +88,33 @@
       max-width: var(--max);
       margin: 0 auto;
       display:grid;
-      grid-template-columns: 240px 1fr 240px;
+      grid-template-columns: var(--sideW) 1fr var(--sideW);
       min-height: 100vh;
+      width: 100%;
     }
 
     /* side columns */
     .side{
       background: transparent;
-      padding:12px;
+      padding: 12px;
       display:flex;
+      min-width: 0;
     }
+    .side.left{ border-left: var(--site-border) solid var(--green); }
+    .side.right{ border-right: var(--site-border) solid var(--green); }
 
-    /* STACKED IMAGES: always visible, fill height */
+    /* STACKED IMAGES (fixed + guaranteed visible) */
     .stack{
       width:100%;
       display:flex;
       flex-direction:column;
       gap:12px;
       flex:1;
+      min-width:0;
     }
     .stack img{
       width:100%;
+      height: 165px;           /* ensure visible in narrow frame */
       border-radius:14px;
       object-fit:cover;
       box-shadow: 0 12px 28px rgba(15,23,42,0.18);
@@ -129,15 +131,7 @@
       min-width:0;
     }
 
-    /* add the same thick border on the OUTSIDE edges too */
-    .side.left{ border-left: var(--site-border) solid var(--green); }
-    .side.right{ border-right: var(--site-border) solid var(--green); }
-
-    .sep{
-      height:2px;
-      width:100%;
-      background: var(--green);
-    }
+    .sep{ height:2px; width:100%; background: var(--green); }
 
     /* ====== TOP TAB ====== */
     header{
@@ -149,22 +143,21 @@
       align-items:center;
       justify-content:space-between;
       gap:18px;
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
-    /* BIGGER LOGO UPPER LEFT */
     .logo-wrap{
-      width: 260px;
-      height: 108px;
+      width: 300px;
+      height: 118px;
       display:flex;
       align-items:center;
       justify-content:flex-start;
       flex:0 0 auto;
     }
     .logo{
-      width:260px;
-      height:108px;
+      width:300px;
+      height:118px;
       object-fit:contain;
       cursor:pointer;
       user-select:none;
@@ -199,18 +192,14 @@
     main{
       flex:1;
       padding: 30px 26px 34px;
-      background:
-        radial-gradient(circle at center,
-          #ffffff 0%,
-          #f3eee6 52%,
-          #e4ddcf 100%);
+      background: radial-gradient(circle at center, #ffffff 0%, #f3eee6 52%, #e4ddcf 100%);
     }
 
     .content{
-      max-width: 1120px;
+      max-width: 1280px; /* wider */
       margin: 0 auto;
       display:grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.20fr 0.80fr; /* give store more space */
       gap: 22px;
       align-items:start;
     }
@@ -248,17 +237,16 @@
       font-style: italic;
     }
 
-    /* TWO IMAGES SIDE BY SIDE (no wrap on desktop) */
     .hero-images{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap:12px;
       margin-top: 6px;
-      max-width: 640px;
+      max-width: 720px;
     }
     .hero-images img{
       width: 100%;
-      height: 210px;
+      height: 220px;
       border-radius:16px;
       object-fit:cover;
       box-shadow: 0 14px 32px rgba(15,23,42,0.22);
@@ -268,9 +256,8 @@
       font-size: 14px;
       line-height: 1.95;
       color: var(--muted);
-      max-width: 72ch;
+      max-width: 78ch;
     }
-    .hero-sub em{font-style:italic}
     .accent{color:#fd6c02;font-weight:800}
 
     .btn-row{
@@ -298,17 +285,15 @@
       border-color: rgba(253,108,2,0.55);
     }
 
-    /* ====== STORE (square-ish panel again) ======
-       Square shape feel: fixed max width + equal-ish height by layout. */
+    /* ====== STORE: square cards + no cut-off ====== */
     .store{
       border-radius: 16px;
       padding: 16px 14px 16px;
       background: linear-gradient(to bottom, var(--storeTop), var(--storeBottom));
       box-shadow: 0 18px 46px rgba(15,23,42,0.16);
       border: 1px solid rgba(255,255,255,0.35);
-      position:relative;
-      overflow:hidden;
-      max-width: 420px;
+      overflow: visible;            /* IMPORTANT: prevent clipping */
+      max-width: 520px;             /* store wider */
       justify-self:end;
     }
 
@@ -343,11 +328,7 @@
       white-space:nowrap;
     }
 
-    .store-search{
-      flex:1;
-      position:relative;
-      min-width:0;
-    }
+    .store-search{ flex:1; position:relative; min-width:0; }
     .store-search input{
       width:100%;
       padding: 9px 44px 9px 12px;
@@ -376,47 +357,50 @@
       stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
     }
 
-    /* PRODUCT GRID: 2x2 default */
     .products{
       display:grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 12px;
     }
 
-    /* PRODUCT CARDS: rounded square (not tall rectangles) */
+    /* SQUARE PRODUCT CARDS (no rectangles) */
     .product{
       background: rgba(255,255,255,0.95);
       border: 1px solid rgba(229,231,235,0.95);
       border-radius: 18px;
-      padding: 12px 12px 14px;
+      padding: 12px 12px 12px;
       text-align:center;
       display:flex;
       flex-direction:column;
       gap:8px;
-      min-height: 210px;
+      aspect-ratio: 1 / 1;        /* forces square */
+      overflow: visible;           /* no clipping */
       box-shadow: 0 12px 28px rgba(15,23,42,0.08);
     }
+
     .product img{
       width: 84px;
       height: 84px;
       object-fit:contain;
       margin: 2px auto 0;
+      flex:0 0 auto;
     }
     .divider{
       width:60%;
       height:1px;
       background: rgba(229,231,235,0.95);
       margin: 0 auto;
+      flex:0 0 auto;
     }
-    .pname{font-weight:800}
-    .pdesc{font-size:12px;line-height:1.6;color:#4b5563}
+    .pname{font-weight:800; flex:0 0 auto;}
+    .pdesc{font-size:12px;line-height:1.55;color:#4b5563; flex:1 1 auto; display:flex; align-items:center; justify-content:center;}
 
     .controls{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin-top:auto;
+      flex:0 0 auto;
     }
 
     .qty{
@@ -428,7 +412,7 @@
       background: var(--tan-orange);
       padding: 5px 10px;
       flex:1;
-      max-width: 130px;
+      max-width: 140px;
       justify-content:space-between;
     }
     .qty button{
@@ -441,11 +425,7 @@
       padding: 0 4px;
       line-height:1;
     }
-    .qty span{
-      min-width: 18px;
-      text-align:center;
-      font-weight: 900;
-    }
+    .qty span{min-width: 18px;text-align:center;font-weight: 900;}
 
     .add{
       flex:1;
@@ -458,10 +438,11 @@
       letter-spacing: .12em;
       text-transform: uppercase;
       cursor:pointer;
+      white-space:nowrap;
     }
 
     /* expanded store stays inside body */
-    .store-expanded .products{
+    body.store-expanded .products{
       grid-template-columns: repeat(4, minmax(0,1fr));
     }
 
@@ -472,7 +453,7 @@
       border-top: 4px solid var(--green);
     }
     .footer-inner{
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
       display:grid;
       grid-template-columns: 1fr auto 1fr;
@@ -491,12 +472,7 @@
       cursor:pointer;
     }
 
-    .footer-links{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:4px;
-    }
+    .footer-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
     .footer-links a{
       color:#061306;
       text-decoration:none;
@@ -560,67 +536,39 @@
       box-shadow: 0 22px 64px rgba(15,23,42,0.28);
       border:1px solid rgba(229,231,235,0.95);
     }
-    .panel-head{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom: 10px;
-    }
-    .panel-title{
-      font-weight:900;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size: 12px;
-      color:#111827;
-    }
-    .panel-close{
-      border:none;background:transparent;
-      font-size:18px;line-height:1;
-      cursor:pointer;color:#6b7280;
-    }
-    .row{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; margin: 10px 0;
-      font-size: 13px;
-      color:#111827;
-    }
+    .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .panel-title{font-weight:900;letter-spacing:.10em;text-transform:uppercase;font-size:12px;color:#111827}
+    .panel-close{border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer;color:#6b7280}
+
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0;font-size:13px;color:#111827}
     .toggle{
-      width:40px;height:20px;border-radius:999px;
-      background:#e5e7eb;border:1px solid #d1d5db;
+      width:40px;height:20px;border-radius:999px;background:#e5e7eb;border:1px solid #d1d5db;
       position:relative;cursor:pointer;flex:0 0 auto;
     }
     .toggle span{
-      width:16px;height:16px;border-radius:999px;background:#fff;
-      position:absolute; top:2px; left:2px; transition:transform .18s ease;
-      box-shadow:0 4px 10px rgba(15,23,42,0.15);
+      width:16px;height:16px;border-radius:999px;background:#fff;position:absolute;top:2px;left:2px;
+      transition:transform .18s ease; box-shadow:0 4px 10px rgba(15,23,42,0.15);
     }
-    .toggle.active{background:#22c55e;border-color:#22c55e;}
-    .toggle.active span{transform: translateX(18px);}
-
-    body.large-text{font-size:110%;}
-    body.high-contrast{background:#000;color:#fff;}
-    body.high-contrast main{background:#000;}
-    body.high-contrast a{color:#fff;}
+    .toggle.active{background:#22c55e;border-color:#22c55e}
+    .toggle.active span{transform:translateX(18px)}
 
     /* responsive */
-    @media(max-width: 1100px){
-      .frame{grid-template-columns: 190px 1fr 190px;}
-      .hero-images img{height: 190px;}
-    }
-    @media(max-width: 940px){
+    @media(max-width: 980px){
       .frame{grid-template-columns: 1fr;}
       .side{display:none;}
       .main{border-left: var(--site-border) solid var(--green); border-right: var(--site-border) solid var(--green);}
-      .content{grid-template-columns: 1fr; }
+      .content{grid-template-columns: 1fr;}
       .store{max-width: 100%; justify-self:stretch;}
-      .products{grid-template-columns: 1fr; }
-      .store-expanded .products{grid-template-columns: 1fr; }
-      nav{justify-content:center;}
+      .products{grid-template-columns: repeat(2, minmax(0,1fr));}
+      body.store-expanded .products{grid-template-columns: 1fr;}
       .header-inner{flex-direction:column; align-items:center;}
+      nav{justify-content:center;}
       .logo-wrap{justify-content:center;}
-      .hero-images{max-width: 100%;}
-      .hero-images img{height: 210px;}
     }
     @media(max-width: 520px){
       .hero-images{grid-template-columns: 1fr;}
+      .products{grid-template-columns: 1fr;}
+      .product{aspect-ratio:auto; min-height:220px;}
     }
   </style>
 </head>
@@ -647,8 +595,8 @@
               class="logo"
               src="mayanut-the-mayanut-comapny-logo.png"
               alt="The MayaNut Company logo"
-              width="260"
-              height="108"
+              width="300"
+              height="118"
               decoding="async"
               fetchpriority="high"
             />
@@ -680,7 +628,6 @@
               <span class="l3">Rediscovered.</span>
             </h1>
 
-            <!-- FIXED: two images side-by-side -->
             <div class="hero-images" aria-label="Featured images">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut tree nursery in South Florida" loading="eager" decoding="async" />
               <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut fruit (Brosimum alicastrum)" loading="lazy" decoding="async" />
@@ -723,7 +670,6 @@
             </div>
 
             <div class="products" id="products">
-              <!-- Product 1 -->
               <article class="product" data-name="mayanut powder brosimum alicastrum">
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut Powder concept" loading="lazy" decoding="async" />
                 <div class="divider" aria-hidden="true"></div>
@@ -739,7 +685,6 @@
                 </div>
               </article>
 
-              <!-- Product 2 -->
               <article class="product" data-name="instant mayanut latte drink">
                 <img src="mayanut-the-mayanut-comapny-logo.png" alt="Instant MayaNut Latte concept" loading="lazy" decoding="async" />
                 <div class="divider" aria-hidden="true"></div>
@@ -755,7 +700,6 @@
                 </div>
               </article>
 
-              <!-- Product 3 -->
               <article class="product" data-name="mayanut baking blend">
                 <img src="mayanut-the-mayanut-comapny-logo.png" alt="MayaNut Baking Blend concept" loading="lazy" decoding="async" />
                 <div class="divider" aria-hidden="true"></div>
@@ -771,7 +715,6 @@
                 </div>
               </article>
 
-              <!-- Product 4 -->
               <article class="product" data-name="cold mayanut drink">
                 <img src="mayanut-the-mayanut-comapny-logo.png" alt="Cold MayaNut Drink concept" loading="lazy" decoding="async" />
                 <div class="divider" aria-hidden="true"></div>
@@ -787,7 +730,6 @@
                 </div>
               </article>
 
-              <!-- Extras (expand) -->
               <article class="product" data-name="mayanut espresso blend" data-extra hidden>
                 <img src="mayanut-the-mayanut-comapny-logo.png" alt="MayaNut Espresso Blend concept" loading="lazy" decoding="async" />
                 <div class="divider" aria-hidden="true"></div>
@@ -865,16 +807,7 @@
           </div>
 
           <div class="footer-center">
-            <img
-              id="footer-logo"
-              class="footer-logo"
-              src="mayanut-the-mayanut-comapny-logo.png"
-              alt="The MayaNut Company logo"
-              width="88"
-              height="44"
-              loading="lazy"
-              decoding="async"
-            />
+            <img id="footer-logo" class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="88" height="44" loading="lazy" decoding="async" />
           </div>
 
           <div class="footer-right">
@@ -957,9 +890,10 @@
       });
     });
 
-    /* SIDE STACKS: ensure they actually render (fixed sizes + explicit src) */
+    /* SIDE STACKS (FIX: force visible + fallback if image fails) */
     (function fillSideStacks(){
       const SRC = "mayanuts-the-maya-nut-comapny-image.jpeg";
+      const FALLBACK = "mayanut-the-mayanut-comapny-logo.png";
 
       function createImg(){
         const img = document.createElement('img');
@@ -967,7 +901,8 @@
         img.alt = "MayaNut stacked frame image";
         img.loading = "lazy";
         img.decoding = "async";
-        img.style.height = "210px";
+        img.referrerPolicy = "no-referrer";
+        img.addEventListener('error', ()=>{ img.src = FALLBACK; });
         return img;
       }
 
@@ -975,9 +910,10 @@
         const el = document.getElementById(id);
         if(!el) return;
         el.innerHTML = "";
+
         const viewport = Math.max(window.innerHeight, 900);
-        const tileH = 222; // 210 + gap
-        const needed = Math.ceil((viewport * 1.9) / tileH);
+        const tileH = 177; // 165 + gap
+        const needed = Math.ceil((viewport * 2.2) / tileH);
 
         for(let i=0;i<needed;i++){
           el.appendChild(createImg());
@@ -992,7 +928,7 @@
         window.__stackTO = setTimeout(()=>{
           fill("left-stack");
           fill("right-stack");
-        }, 180);
+        }, 150);
       });
     })();
 
@@ -1052,7 +988,7 @@
       });
     });
 
-    /* EASTER EGG (logo swap to ricky.jpeg for 5 seconds) */
+    /* EASTER EGG (logo swap to ricky.jpeg for 5 seconds, same size) */
     const logo = document.getElementById('logo');
     const originalLogo = logo ? logo.getAttribute('src') : "";
     let eggTO = null;

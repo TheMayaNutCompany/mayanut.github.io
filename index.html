@@ -16,7 +16,7 @@
   <link rel="icon" type="image/png" href="mayanut-the-maya-nut-company-logo.png" />
 
   <link rel="preload" href="mayanut-the-maya-nut-company-logo.png" as="image" />
-  <link rel="preload" href="mayanutart-the-maya-nut-company-art.jpeg" as="image" />
+  <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-company-image.jpeg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
@@ -29,20 +29,19 @@
       --green:#1a6800;
       --green-2:#7ae78a;
 
-      --body-center:#ffffff;
-      --body-mid:#f3f4f6;
-      --body-edge:#cbd5e1;
-
-      --orange-1:#ffd1a6;
-      --orange-2:#ff8a3d;
-      --orange-3:#fd6c02;
+      --beige-1:#f6f0e6; /* light beige */
+      --beige-2:#ffffff; /* white */
 
       --frame-line: rgba(26,104,0,0.92);
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
       --sideW: 170px;
-      --gutter: 12px;
       --frameBorder: 2px;
+
+      /* Store green gradient (light -> dark) */
+      --store-g1:#bff3c6;
+      --store-g2:#38b24f;
+      --store-g3:#1a6800;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -53,11 +52,7 @@
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
-      background: radial-gradient(circle at 50% 35%,
-        var(--body-center) 0%,
-        var(--body-center) 36%,
-        var(--body-mid) 64%,
-        var(--body-edge) 100%);
+      background: radial-gradient(circle at 50% 35%, var(--beige-2) 0%, var(--beige-1) 58%, #e8edf2 100%);
     }
     img{ max-width:100%; display:block; }
 
@@ -66,9 +61,7 @@
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
-    /* =========================================
-       FULL-HEIGHT SIDE FRAMES (stacked images)
-       ========================================= */
+    /* FULL-HEIGHT SIDE FRAMES */
     .side-frames{
       position:fixed;
       inset:0;
@@ -83,7 +76,6 @@
       background:#ffffff;
       pointer-events:none;
     }
-    /* outer frame edges */
     .side.left{
       left:0;
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -92,8 +84,6 @@
       right:0;
       border-left: var(--frameBorder) solid var(--frame-line);
     }
-
-    /* stack fills entire side */
     .stack{
       position:absolute;
       inset:0;
@@ -109,10 +99,7 @@
       filter:saturate(1.07) contrast(1.03);
     }
 
-    /* =========================================
-       SITE WRAP — EXPAND TO TOUCH THE FRAMES
-       (no empty white side gaps)
-       ========================================= */
+    /* SITE WRAP */
     .frame-wrap{
       position:relative;
       z-index:2;
@@ -123,12 +110,10 @@
       background:transparent;
     }
 
-    /* Mobile: remove frames & go full width */
     @media(max-width:780px){
       .side-frames{ display:none; }
       .frame-wrap{ width:100%; margin:0; }
     }
-
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
@@ -139,9 +124,7 @@
       }
     }
 
-    /* =========================================
-       GOFUNDME BANNER
-       ========================================= */
+    /* GOFUNDME BANNER */
     .top-banner{
       width:100%;
       background: var(--green);
@@ -169,12 +152,10 @@
       white-space:nowrap;
     }
 
-    /* =========================================
-       TOP TAB — MUST USE THIS IMAGE BACKGROUND
-       ========================================= */
+    /* TOP TAB BACKGROUND IMAGE (UPDATED) */
     .site-header{
       width:100%;
-      background-image:url("mayanutart-the-maya-nut-company-art.jpeg");
+      background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
@@ -189,7 +170,6 @@
       border-right: var(--frameBorder) solid var(--frame-line);
     }
 
-    /* thin separators */
     .top-sep, .bottom-sep{
       width:100%;
       height:2px;
@@ -206,12 +186,7 @@
       position:relative;
       flex:0 0 280px;
     }
-    #logo-top{
-      width:120px;
-      height:auto;
-      cursor:pointer;
-      display:block;
-    }
+    #logo-top{ width:120px; height:auto; cursor:pointer; display:block; }
     .ricky-text{
       font-size:11px;
       line-height:1.3;
@@ -272,13 +247,11 @@
       background:#0f172a;
     }
 
-    /* =========================================
-       MAIN PANEL (outlined + shadow)
-       ========================================= */
+    /* MAIN PANEL */
     main{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
-      background: transparent;
+      background:transparent;
       box-shadow: var(--shadow);
     }
     .content-wrapper{
@@ -294,7 +267,6 @@
       gap:26px;
       max-width:1200px;
       margin:0 auto;
-      position:relative;
       overflow-x:hidden;
       align-items:start;
     }
@@ -303,9 +275,6 @@
       display:flex;
       flex-direction:column;
       gap:14px;
-      justify-content:flex-start;
-      position:relative;
-      z-index:1;
       transition:opacity .25s ease;
     }
 
@@ -314,9 +283,6 @@
       text-transform:uppercase;
       letter-spacing:0.16em;
       color:var(--text-muted);
-      display:flex;
-      align-items:center;
-      gap:6px;
       font-weight:900;
     }
 
@@ -330,7 +296,7 @@
       text-align:left;
     }
     .hero-title .line1{ display:block; font-style:italic; }
-    .hero-title .line2{ display:block; font-style:italic; }
+    .hero-title .line2{ display:block; font-style:italic; } /* no semicolon */
     .hero-title .line3{
       display:inline-block;
       margin-top:6px;
@@ -343,7 +309,6 @@
       font-weight:900;
     }
 
-    /* FORCE TWO HERO IMAGES SIDE-BY-SIDE */
     .hero-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -355,7 +320,6 @@
     .hero-images img{
       width:100%;
       aspect-ratio: 4 / 3;
-      height:auto;
       border-radius:14px;
       object-fit:cover;
       box-shadow:0 12px 30px rgba(15,23,42,0.22);
@@ -368,7 +332,7 @@
       max-width: 760px;
     }
     .hero-sub em{ font-style:italic; }
-    .hero-sub .name-orange{ color:var(--orange-3); font-weight:900; }
+    .hero-sub .name-orange{ color:#fd6c02; font-weight:900; }
 
     .hero-meta{
       margin-top:8px;
@@ -393,13 +357,11 @@
     }
     .btn:hover{ background:rgba(7,237,218,0.16); border-color:#9ca3af; }
 
-    /* =========================================
-       STORE (orange gradient)
-       ========================================= */
+    /* STORE (UPDATED TO GREEN GRADIENT) */
     #store-panel{
       border-radius:22px;
       border:1px solid rgba(255,255,255,0.45);
-      background: linear-gradient(180deg, var(--orange-1) 0%, var(--orange-2) 55%, var(--orange-3) 100%);
+      background: linear-gradient(180deg, var(--store-g1) 0%, var(--store-g2) 55%, var(--store-g3) 100%);
       padding:16px 14px 18px;
       display:flex;
       flex-direction:column;
@@ -409,12 +371,7 @@
       z-index:2;
       box-shadow: 0 14px 40px rgba(15,23,42,0.18);
     }
-    .store-header-row{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin-bottom:2px;
-    }
+    .store-header-row{ display:flex; justify-content:center; }
     .store-title{
       font-size:14px;
       font-weight:900;
@@ -440,28 +397,21 @@
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.12em;
-      background:rgba(255,255,255,0.32);
+      background:rgba(255,255,255,0.38);
       cursor:pointer;
       white-space:nowrap;
       text-align:center;
       font-weight:900;
     }
 
-    .store-search{
-      flex:1;
-      display:flex;
-      gap:6px;
-      align-items:center;
-      position:relative;
-    }
-    .store-search-input-wrapper{ position:relative; flex:1; }
+    .store-search{ flex:1; position:relative; }
     .store-search input{
       width:100%;
       padding:8px 46px 8px 10px;
       border-radius:999px;
-      border:1px solid #d1d5db;
+      border:1px solid rgba(15,23,42,0.18);
       font-size:12px;
-      background:rgba(255,255,255,0.55);
+      background:rgba(255,255,255,0.70);
       color:#111827;
       outline:none;
     }
@@ -482,29 +432,9 @@
       cursor:pointer;
       user-select:none;
     }
-    .store-search-send .search-x{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:14px;
-      height:14px;
-      line-height:14px;
-      font-size:16px;
-      color:#ffffff;
-    }
-    .store-search-send .search-divider{
-      width:1px;
-      height:14px;
-      background:#000000;
-      opacity:1;
-    }
-    .store-search-send .search-icon{
-      width:12px;
-      height:12px;
-      stroke:#ffffff;
-      fill:none;
-      stroke-width:2;
-    }
+    .store-search-send .search-x{ width:14px; height:14px; font-size:16px; color:#fff; display:inline-flex; align-items:center; justify-content:center; }
+    .store-search-send .search-divider{ width:1px; height:14px; background:#000; }
+    .store-search-send .search-icon{ width:12px; height:12px; stroke:#fff; fill:none; stroke-width:2; }
 
     .store-grid{
       margin-top:12px;
@@ -525,20 +455,14 @@
       justify-content:space-between;
       transition:transform .15s ease, box-shadow .15s ease, opacity .2s ease;
       min-height:220px;
-      overflow:visible;
     }
-    .product-card:hover{
-      transform:translateY(-2px);
-      box-shadow:0 10px 30px rgba(15,23,42,0.12);
-    }
+    .product-card:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(15,23,42,0.12); }
 
-    /* STORE IMAGES: ROUNDED SQUARE + WIDER */
     .product-card img{
       width:110px;
       aspect-ratio: 1 / 1;
-      height:auto;
       object-fit:cover;
-      border-radius:18px;     /* rounded square */
+      border-radius:18px;
       margin-top:4px;
       margin-bottom:10px;
       border:1px solid rgba(15,23,42,0.08);
@@ -549,13 +473,7 @@
     .product-name{ font-size:13px; font-weight:900; margin-bottom:4px; }
     .product-text{ font-size:12px; color:#4b5563; line-height:1.6; margin-bottom:8px; }
 
-    .product-controls{
-      width:100%;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-    }
+    .product-controls{ width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px; }
     .qty-control{
       display:inline-flex;
       align-items:center;
@@ -582,60 +500,42 @@
       cursor:pointer;
       font-weight:900;
     }
+
     .product-card.extra-product{ display:none; opacity:0; }
 
-    /* Desktop expanded: overlay and show extra 4 on LEFT */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
-        top:0;
-        left:0;
-        right:0;
+        top:0; left:0; right:0;
         z-index:20;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
       }
+      body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
+      body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
 
-      body.store-expanded .store-grid{
-        grid-template-columns:repeat(4, minmax(0,1fr));
-      }
-
-      body.store-expanded .product-card.extra-product{
-        display:flex;
-        opacity:1;
-      }
-
-      /* Right block (original 4) columns 3-4 */
       body.store-expanded .store-grid .product-card:nth-child(1){ grid-column:3; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(2){ grid-column:4; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(3){ grid-column:3; grid-row:2; }
       body.store-expanded .store-grid .product-card:nth-child(4){ grid-column:4; grid-row:2; }
 
-      /* Left block (extras 5-8) columns 1-2 */
       body.store-expanded .store-grid .product-card:nth-child(5){ grid-column:1; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(6){ grid-column:2; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(7){ grid-column:1; grid-row:2; }
       body.store-expanded .store-grid .product-card:nth-child(8){ grid-column:2; grid-row:2; }
 
-      body.store-expanded .hero-left{
-        opacity:0;
-        pointer-events:none;
-      }
+      body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* =========================================
-       BOTTOM TAB (green gradient)
-       ========================================= */
+    /* BOTTOM TAB */
     footer{
       width:100%;
       background: linear-gradient(180deg, var(--green) 0%, var(--green-2) 100%);
       padding:16px 22px 26px;
-
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-bottom: var(--frameBorder) solid var(--frame-line);
       color:#0f172a;
     }
-
     .footer-inner{
       display:grid;
       grid-template-columns:1fr auto 1fr;
@@ -647,13 +547,8 @@
     }
     .footer-left{ text-align:left; }
     .footer-center{ text-align:center; }
-    .footer-right{
-      text-align:right;
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:10px;
-    }
+    .footer-right{ text-align:right; display:flex; justify-content:flex-end; align-items:center; gap:10px; }
+
     .footer-links{
       margin-top:4px;
       font-size:11px;
@@ -689,15 +584,15 @@
       stroke-linejoin:round;
     }
 
-    /* ACCESSIBILITY BUTTON BLUE */
+    /* ACCESSIBILITY BUTTON + PROFESSIONAL ICON */
     .accessibility-btn{
       position:fixed;
       right:18px;
       bottom:18px;
-      width:46px;
-      height:46px;
+      width:48px;
+      height:48px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.25);
+      border:1px solid rgba(255,255,255,0.35);
       background:#084ac5;
       display:flex;
       align-items:center;
@@ -710,8 +605,8 @@
       width:26px;
       height:26px;
       display:block;
-      stroke:#ffffff;
       fill:none;
+      stroke:#ffffff;
       stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
@@ -739,21 +634,10 @@
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
       border:1px solid rgba(229,231,235,0.9);
     }
-    .overlay-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:10px;
-    }
+    .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
     .overlay-title{ font-size:14px; font-weight:900; }
-    .overlay-close{
-      border:none;
-      background:transparent;
-      font-size:18px;
-      cursor:pointer;
-      line-height:1;
-      color:#6b7280;
-    }
+    .overlay-close{ border:none; background:transparent; font-size:18px; cursor:pointer; line-height:1; color:#6b7280; }
+
     .settings-row{
       margin-bottom:12px;
       font-size:13px;
@@ -771,13 +655,7 @@
       width:100%;
       max-width:240px;
     }
-    .toggle-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      width:100%;
-    }
+    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
     .toggle-input{
       width:42px;
       height:22px;
@@ -790,10 +668,8 @@
     }
     .toggle-input span{
       position:absolute;
-      top:2px;
-      left:2px;
-      width:18px;
-      height:18px;
+      top:2px; left:2px;
+      width:18px; height:18px;
       border-radius:999px;
       background:#ffffff;
       transition:transform 0.2s ease;
@@ -802,7 +678,6 @@
     .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
     .toggle-input.active span{ transform:translateX(20px); }
 
-    /* MOBILE */
     @media(max-width:880px){
       #hero{ display:flex; flex-direction:column; }
       #store-panel{ order:1; }
@@ -820,7 +695,6 @@
       .product-card{ flex:0 0 220px; min-height:220px; }
 
       body.store-expanded .product-card.extra-product{ display:none !important; }
-
       body.store-expanded .store-grid{
         display:grid !important;
         grid-template-columns:1fr;
@@ -830,9 +704,6 @@
         gap:12px;
       }
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
-
-      /* hero images still side-by-side on wider phones, stack on very small */
-      .hero-images{ max-width:100%; }
     }
 
     @media(max-width:520px){
@@ -905,16 +776,12 @@ FOR RICKY
     <main>
       <div class="content-wrapper">
         <section id="hero">
-
-          <!-- HERO LEFT -->
           <div class="hero-left">
-            <div class="hero-kicker">
-              <span>MayaNut • Brosimum alicastrum</span>
-            </div>
+            <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
 
             <h1 class="hero-title">
               <span class="line1">The future of food grows</span>
-              <span class="line2">on a forgotten tree;</span>
+              <span class="line2">on a forgotten tree</span>
               <span class="line3">Rediscovered</span>
             </h1>
 
@@ -947,7 +814,6 @@ FOR RICKY
             </div>
           </div>
 
-          <!-- STORE -->
           <aside id="store-panel" aria-label="Future store preview">
             <div class="store-header-row">
               <div class="store-title">STORE - COMING SOON!</div>
@@ -957,22 +823,19 @@ FOR RICKY
               <button id="store-view-full" class="store-view-full" type="button">VIEW STORE</button>
 
               <div class="store-search">
-                <div class="store-search-input-wrapper">
-                  <input id="store-search" type="text" placeholder="Search future products…" />
-                  <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
-                    <span class="search-x" id="store-search-clear" aria-label="Clear search" title="Clear">×</span>
-                    <span class="search-divider" aria-hidden="true"></span>
-                    <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="10" cy="10" r="5"></circle>
-                      <line x1="14" y1="14" x2="20" y2="20"></line>
-                    </svg>
-                  </button>
-                </div>
+                <input id="store-search" type="text" placeholder="Search future products…" />
+                <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
+                  <span class="search-x" id="store-search-clear" aria-label="Clear search" title="Clear">×</span>
+                  <span class="search-divider" aria-hidden="true"></span>
+                  <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10" cy="10" r="5"></circle>
+                    <line x1="14" y1="14" x2="20" y2="20"></line>
+                  </svg>
+                </button>
               </div>
             </div>
 
             <div class="store-grid" id="store-grid">
-              <!-- 1 -->
               <article class="product-card" data-name="mayanut powder brosimum alicastrum">
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
                      alt="MayaNut powder concept product"
@@ -990,7 +853,6 @@ FOR RICKY
                 </div>
               </article>
 
-              <!-- 2 -->
               <article class="product-card" data-name="instant mayanut latte drink">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="Instant MayaNut latte concept"
@@ -1008,7 +870,6 @@ FOR RICKY
                 </div>
               </article>
 
-              <!-- 3 -->
               <article class="product-card" data-name="mayanut baking blend">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut baking blend concept"
@@ -1026,7 +887,6 @@ FOR RICKY
                 </div>
               </article>
 
-              <!-- 4 -->
               <article class="product-card" data-name="cold mayanut drink">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="Cold MayaNut drink concept"
@@ -1044,7 +904,6 @@ FOR RICKY
                 </div>
               </article>
 
-              <!-- EXTRA 5–8 (desktop expand only) -->
               <article class="product-card extra-product" data-name="mayanut espresso blend">
                 <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut espresso blend concept"
@@ -1114,14 +973,12 @@ FOR RICKY
               </article>
             </div>
           </aside>
-
         </section>
       </div>
     </main>
 
     <div class="bottom-sep"></div>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footer-inner">
         <div class="footer-left">
@@ -1141,20 +998,13 @@ FOR RICKY
         </div>
 
         <div class="footer-right">
-          <a class="footer-email"
-             href="mailto:themayanutcompany@gmail.com"
-             aria-label="Email The MayaNut Company">
+          <a class="footer-email" href="mailto:themayanutcompany@gmail.com" aria-label="Email The MayaNut Company">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="4" y="6" width="16" height="12" rx="2"></rect>
               <path d="M5.5 7.5L12 12.5L18.5 7.5"></path>
             </svg>
           </a>
-
-          <a class="footer-instagram"
-             href="https://www.instagram.com/themayanutcompany"
-             target="_blank"
-             rel="noopener"
-             aria-label="Instagram">
+          <a class="footer-instagram" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect>
               <circle cx="12" cy="12" r="4.2"></circle>
@@ -1168,13 +1018,15 @@ FOR RICKY
 
   <!-- ACCESSIBILITY BUTTON -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
+    <!-- clean, standard “universal access” icon -->
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="5.5" r="2.1"></circle>
-      <path d="M6 9h12"></path>
-      <path d="M10.2 9v12"></path>
-      <path d="M13.8 9v12"></path>
-      <path d="M10.2 12.2H8.3"></path>
-      <path d="M13.8 12.2H15.7"></path>
+      <circle cx="12" cy="5.25" r="2"></circle>
+      <path d="M5 8.5h14"></path>
+      <path d="M9 8.5l1.2 3.6"></path>
+      <path d="M15 8.5l-1.2 3.6"></path>
+      <path d="M10.2 12.1l-1.2 7.4"></path>
+      <path d="M13.8 12.1l1.2 7.4"></path>
+      <path d="M10.6 14h2.8"></path>
     </svg>
   </button>
 
@@ -1260,7 +1112,6 @@ FOR RICKY
           right.appendChild(img2);
         }
       }
-
       build();
       window.addEventListener("resize", build);
     })();

@@ -29,6 +29,7 @@
   <link rel="preload" href="mayanut-the-maya-nut-company-logo.png" as="image" />
   <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
+  <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-comapny-image.jpeg" as="image" />
   <link rel="preload" href="ricky.jpeg" as="image" />
 
@@ -51,17 +52,17 @@
 
       --orange:#fd6c02;
 
-      /* Banner blue + related lines */
       --banner-blue:#0b2f8f;
 
-      /* “Half the thickness of the blue banner”:
-         banner is visually “thicker”, this is the thin outline line */
-      --side-blue-line:2px;
+      /* requested thicker blue border */
+      --side-blue:20px;
 
       --frame-line:#d1d5db;
 
-      /* side image */
-      --side-image: url("mayanuts-the-maya-nut-comapny-image.jpeg");
+      /* frame collage images (stacked) */
+      --frame-img-1: url("mayanuts-the-maya-nut-comapny-image.jpeg");
+      --frame-img-2: url("maya-nut-mayanut-plant-tree-nursery.jpg");
+      --frame-img-3: url("maya-nut-mayanut-fruit-brosimum-alicastrum.jpg");
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -81,18 +82,90 @@
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
-    /* ====== BACKGROUND WRAP (side image) ====== */
+    /* ====== BACKGROUND WRAP + COLLAGE FRAME (like before) ======
+       Center site sits above a background with a few images stacked. */
     .bg-wrap{
       min-height:100vh;
-      background-image: var(--side-image);
+      position:relative;
+      overflow:hidden;
+      background:#ffffff;
+    }
+
+    /* Collage: multiple “posters” stacked, not zoomed-in */
+    .bg-wrap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        /* top-left poster */
+        linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)),
+        var(--frame-img-2);
+      background-size: cover;
+      background-position: 35% 35%;
+      filter:saturate(1.05) contrast(1.02);
+      transform: scale(1.02);
+      z-index:0;
+    }
+
+    .bg-wrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        /* 3 stacked “photos” */
+        linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.10)),
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.55), rgba(255,255,255,0) 55%),
+        radial-gradient(circle at 70% 70%, rgba(255,255,255,0.45), rgba(255,255,255,0) 60%);
+      z-index:1;
+      pointer-events:none;
+    }
+
+    /* “Photo stack” elements (absolute) */
+    .frame-collage{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+      opacity:0.95;
+    }
+    .frame-photo{
+      position:absolute;
+      width:min(520px, 42vw);
+      aspect-ratio: 4 / 3;
+      border-radius:18px;
       background-size:cover;
       background-position:center;
-      background-repeat:no-repeat;
-      padding:0;
+      box-shadow:0 20px 60px rgba(15,23,42,0.35);
+      border:1px solid rgba(255,255,255,0.55);
+      filter:saturate(1.05) contrast(1.03);
+    }
+    .frame-photo.p1{
+      left:4%;
+      top:10%;
+      transform:rotate(-6deg);
+      background-image: var(--frame-img-1);
+      background-position: 50% 45%;
+    }
+    .frame-photo.p2{
+      right:3%;
+      top:18%;
+      transform:rotate(7deg);
+      background-image: var(--frame-img-2);
+      background-position: 50% 55%;
+    }
+    .frame-photo.p3{
+      left:10%;
+      bottom:8%;
+      transform:rotate(5deg);
+      background-image: var(--frame-img-3);
+      background-position: 50% 50%;
+      width:min(560px, 46vw);
     }
 
     /* ====== MAIN SITE PANEL (centered) ====== */
     .site-panel{
+      position:relative;
+      z-index:5;
       max-width:1200px;
       margin:0 auto;
       min-height:100vh;
@@ -102,10 +175,33 @@
       border-left:1px solid var(--frame-line);
       border-right:1px solid var(--frame-line);
 
-      /* Thin BLUE line between panel and background image (left/right) */
+      /* Thick BLUE borders left/right (requested ~20px) */
       box-shadow:
-        calc(-1 * var(--side-blue-line)) 0 0 var(--banner-blue),
-         var(--side-blue-line) 0 0 var(--banner-blue);
+        calc(-1 * var(--side-blue)) 0 0 var(--banner-blue),
+         var(--side-blue) 0 0 var(--banner-blue);
+    }
+
+    /* ====== GOFUNDME BANNER (restored) ====== */
+    .donate-banner{
+      background:var(--banner-blue);
+      color:#ffffff;
+      padding:10px 16px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      font-weight:900;
+    }
+    .donate-banner a{
+      color:#ffffff;
+      text-decoration:underline;
+      text-decoration-thickness:2px;
+      text-underline-offset:3px;
+      font-weight:900;
+      white-space:nowrap;
     }
 
     /* ====== TOP HEADER ====== */
@@ -123,7 +219,7 @@
       z-index:10;
     }
 
-    /* Thin separators (grey) between header/body/footer */
+    /* Thin separators */
     .sep{
       width:100%;
       height:1px;
@@ -155,7 +251,7 @@
       position:absolute;
       left:130px;
       top:0;
-      display:none; /* IMPORTANT: not shown on load */
+      display:none; /* not shown on load */
       pointer-events:none;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
@@ -176,12 +272,12 @@
       gap:18px;
     }
     .main-nav a{
-      font-size:14px;                 /* slightly bigger */
+      font-size:14px;
       letter-spacing:0.18em;
       text-transform:uppercase;
       text-decoration:none;
       color:#0f172a;
-      font-weight:700;                /* bolder */
+      font-weight:700;
       display:inline-block;
       transition:transform 0.12s ease, color 0.12s ease;
       white-space:nowrap;
@@ -221,8 +317,6 @@
     .content-wrapper{
       padding:26px 22px 30px;
       width:100%;
-
-      /* vivid orange body background (requested) */
       background:
         radial-gradient(circle at center,
           rgba(255,255,255,0.96) 0%,
@@ -271,10 +365,7 @@
       text-align:left;
     }
     .hero-title .line1{ display:block; color:#000; }
-    .hero-title .line2{
-      display:block;
-      color:#000;
-    }
+    .hero-title .line2{ display:block; color:#000; }
     .hero-title .line3{
       display:block;
       color:var(--banner-blue);
@@ -321,7 +412,7 @@
       letter-spacing:0.14em;
       cursor:pointer;
       transition:background .16s ease,border-color .16s ease;
-      font-weight:800;
+      font-weight:900;
     }
     .btn:hover{ background:rgba(255,255,255,0.72); border-color:#9ca3af; }
 
@@ -503,8 +594,7 @@
 
     .product-card.extra-product{ display:none; opacity:0; }
 
-    /* ====== STORE EXPAND BEHAVIOR (desktop) ======
-       Expands “like before” and puts extra items on the LEFT. */
+    /* ====== STORE EXPAND (desktop) — extras on LEFT ====== */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
@@ -524,19 +614,16 @@
         opacity:1;
       }
 
-      /* Right block (original 4) in columns 3–4 */
       body.store-expanded .store-grid .product-card:nth-child(1){ grid-column:3; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(2){ grid-column:4; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(3){ grid-column:3; grid-row:2; }
       body.store-expanded .store-grid .product-card:nth-child(4){ grid-column:4; grid-row:2; }
 
-      /* Left block (extras 5–8) in columns 1–2 */
       body.store-expanded .store-grid .product-card:nth-child(5){ grid-column:1; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(6){ grid-column:2; grid-row:1; }
       body.store-expanded .store-grid .product-card:nth-child(7){ grid-column:1; grid-row:2; }
       body.store-expanded .store-grid .product-card:nth-child(8){ grid-column:2; grid-row:2; }
 
-      /* Hide hero when expanded */
       body.store-expanded .hero-left{
         opacity:0;
         pointer-events:none;
@@ -605,7 +692,7 @@
       stroke-linejoin:round;
     }
 
-    /* Accessibility button (kept clean) */
+    /* Accessibility button */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -633,7 +720,7 @@
       stroke-linejoin:round;
     }
 
-    /* Overlays (mobile menu only here) */
+    /* Overlays */
     .overlay{
       position:fixed;
       inset:0;
@@ -682,6 +769,9 @@
 
     /* ====== MOBILE ====== */
     @media(max-width:880px){
+      /* hide collage photos on small screens to avoid clutter */
+      .frame-collage{ display:none; }
+
       #hero{ display:flex; flex-direction:column; }
       #store-panel{ order:1; }
       .hero-left{ order:2; }
@@ -689,7 +779,6 @@
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
 
-      /* default carousel */
       .store-grid{
         display:flex;
         overflow-x:auto;
@@ -702,7 +791,6 @@
 
       body.store-expanded .product-card.extra-product{ display:none !important; }
 
-      /* expanded mobile = vertical list of same 4 */
       body.store-expanded .store-grid{
         display:grid !important;
         grid-template-columns:1fr;
@@ -735,7 +823,20 @@
   </h2>
 
   <div class="bg-wrap">
+    <!-- stacked “frame” photos -->
+    <div class="frame-collage" aria-hidden="true">
+      <div class="frame-photo p1"></div>
+      <div class="frame-photo p2"></div>
+      <div class="frame-photo p3"></div>
+    </div>
+
     <div class="site-panel">
+
+      <!-- GOFUNDME BANNER (restored) -->
+      <div class="donate-banner" role="region" aria-label="Fundraiser banner">
+        <span>Support Florida’s first MayaNut plantation</span>
+        <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GoFundMe</a>
+      </div>
 
       <!-- HEADER -->
       <header class="site-header" id="top">
@@ -1028,7 +1129,7 @@ FOR RICKY
     </div>
   </div>
 
-  <!-- ACCESSIBILITY BUTTON (kept; you can wire it to an overlay later) -->
+  <!-- ACCESSIBILITY BUTTON -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5" r="2"></circle>
@@ -1107,7 +1208,7 @@ FOR RICKY
       });
     });
 
-    /* Store expand (restored) */
+    /* Store expand */
     const viewFullStore = document.getElementById('store-view-full');
     function setStoreButtonLabel(){
       if(!viewFullStore) return;
@@ -1143,7 +1244,7 @@ FOR RICKY
       });
     }
 
-    /* Store search filter + Ricky easter egg (5 seconds; only on “ricky”) */
+    /* Store search filter + Ricky easter egg (5 seconds; only when “ricky”) */
     const searchInput = document.getElementById('store-search');
     const searchSend  = document.getElementById('store-search-send');
     const clearBtn    = document.getElementById('store-search-clear');
@@ -1163,7 +1264,6 @@ FOR RICKY
       });
 
       if(logoImg && rickyText && q.includes('ricky')){
-        // show only during easter egg
         rickyText.style.display = 'block';
         logoImg.src = 'ricky.jpeg';
         logoImg.alt = 'Ricky & The MayaNut Company';
@@ -1190,14 +1290,12 @@ FOR RICKY
         if(e.key === 'Enter') applyStoreFilter();
       });
     }
-
     if(clearBtn){
       clearBtn.addEventListener('click', (e)=>{
         e.stopPropagation();
         clearSearch();
       });
     }
-
     if(searchSend){
       searchSend.addEventListener('click', (e)=>{
         if(e.target && e.target.id === 'store-search-clear') return;
@@ -1224,7 +1322,7 @@ FOR RICKY
       });
     });
 
-    /* Mobile auto-scroll (kept) */
+    /* Mobile auto-scroll */
     function isMobile(){ return window.innerWidth <= 880; }
     function initMobileStoreAutoScroll(){
       const grid = document.getElementById('store-grid');

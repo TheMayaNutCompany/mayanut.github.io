@@ -51,10 +51,21 @@
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
       max-width:100%;
+
+      /* MORE DRAMATIC CIRCULAR GREY->WHITE "METALLIC" FIELD */
       background:
-        radial-gradient(900px 520px at 20% 18%, rgba(229,231,235,0.95) 0%, rgba(255,255,255,0.86) 55%, rgba(255,255,255,1) 78%),
-        radial-gradient(780px 520px at 78% 64%, rgba(203,213,225,0.72) 0%, rgba(255,255,255,0.92) 62%, rgba(255,255,255,1) 78%),
-        linear-gradient(to bottom, #f8fafc 0%, #ffffff 45%, #f8fafc 100%);
+        radial-gradient(900px 700px at 50% 32%,
+          rgba(255,255,255,1) 0%,
+          rgba(255,255,255,0.98) 22%,
+          rgba(241,245,249,0.95) 42%,
+          rgba(203,213,225,0.88) 62%,
+          rgba(148,163,184,0.78) 82%,
+          rgba(100,116,139,0.70) 100%),
+        radial-gradient(1200px 900px at 50% 45%,
+          rgba(255,255,255,0.92) 0%,
+          rgba(226,232,240,0.70) 55%,
+          rgba(148,163,184,0.55) 100%),
+        linear-gradient(to bottom, #ffffff 0%, #f8fafc 35%, #ffffff 70%, #f8fafc 100%);
       background-attachment: fixed;
     }
 
@@ -80,10 +91,10 @@
       width:100%;
       max-width:1200px;
       min-height:100vh;
-      background:rgba(255,255,255,0.78);
+      background:rgba(255,255,255,0.82);
       backdrop-filter: blur(2px);
-      border-left:1px solid rgba(209,213,219,0.90);
-      border-right:1px solid rgba(209,213,219,0.90);
+      border-left:1px solid rgba(209,213,219,0.92);
+      border-right:1px solid rgba(209,213,219,0.92);
     }
 
     .top-sep,
@@ -140,7 +151,7 @@
     .header-logo-block{ display:flex; align-items:center; gap:10px; }
     #logo-top{ width:120px; height:auto; cursor:pointer; display:block; }
 
-    /* IMPORTANT: hidden by default; only shown during Ricky easter egg */
+    /* Hidden by default; only shown during Ricky easter egg */
     .ricky-text{
       display:none;
       font-size:11px;
@@ -622,9 +633,12 @@
     }
     .mobile-nav a{ text-decoration:none; color:#111827; padding:6px 4px; font-weight:800; }
 
-    /* A11y classes */
     body.large-text{ font-size:110%; }
-    body.high-contrast{ background:#000; color:#fff; }
+
+    body.high-contrast{
+      background:#000 !important;
+      color:#fff;
+    }
     body.high-contrast .frame-wrap{ background:#000; }
     body.high-contrast .support-banner{ background:#000; border-bottom:1px solid #fff; }
     body.high-contrast .main-nav a,
@@ -686,8 +700,7 @@
       <!-- SUPPORT BANNER -->
       <div class="support-banner">
         Support Florida’s first MayaNut plantation:
-        <!-- Replace with your real GoFundMe link -->
-        <a href="https://www.gofundme.com/f/your-campaign" target="_blank" rel="noopener">GoFundMe</a>
+        <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GoFundMe</a>
       </div>
 
       <!-- HEADER -->
@@ -697,7 +710,6 @@
             <img src="mayanut-the-maya-nut-company-logo.png"
                  alt="The MayaNut Company logo"
                  id="logo-top" />
-            <!-- Hidden by default -->
             <div class="ricky-text" id="ricky-text">
 🧡💛💙🩵
 THE MAYANUT COMPANY
@@ -1080,18 +1092,14 @@ FOR RICKY
     const rickyText = document.getElementById('ricky-text');
     const logoImg = document.getElementById('logo-top');
     const originalLogoSrc = logoImg ? logoImg.getAttribute('src') : '';
-
     let rickyTimeoutId = null;
 
     function triggerRickyEasterEgg(){
       if (!logoImg || !rickyText) return;
-
-      // show text + swap logo
       rickyText.classList.add('show');
       logoImg.src = 'ricky.jpeg';
       logoImg.alt = 'Ricky & The MayaNut Company';
 
-      // reset timer
       if (rickyTimeoutId) clearTimeout(rickyTimeoutId);
       rickyTimeoutId = setTimeout(() => {
         rickyText.classList.remove('show');
@@ -1102,15 +1110,13 @@ FOR RICKY
 
     function applyStoreFilter() {
       if (!searchInput) return;
-      const raw = searchInput.value || '';
-      const q = raw.toLowerCase();
+      const q = (searchInput.value || '').toLowerCase();
 
       document.querySelectorAll('.product-card').forEach(card => {
         const name = (card.dataset.name || "").toLowerCase();
         card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
       });
 
-      // Easter egg: only when "ricky" appears (case-insensitive)
       if (q.includes('ricky')) triggerRickyEasterEgg();
     }
 

@@ -52,8 +52,6 @@
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
-
-      /* subtle white -> beige */
       background: radial-gradient(circle at 50% 28%, var(--beige-2) 0%, var(--beige-1) 100%);
     }
     img{ max-width:100%; display:block; }
@@ -192,9 +190,9 @@
       flex:0 0 300px;
     }
 
-    /* UPDATED: upper-left logo +25% */
+    /* upper-left logo +25% */
     #logo-top{
-      width:150px; /* 120 * 1.25 */
+      width:150px;
       height:auto;
       cursor:pointer;
       display:block;
@@ -235,9 +233,15 @@
       white-space:nowrap;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
       padding-bottom:2px;
+      border-bottom:2px solid transparent;
     }
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
-    .main-nav a[aria-current="page"]{ border-bottom:2px solid rgba(15,23,42,0.90); }
+
+    /* underline state */
+    .main-nav a.is-active,
+    .main-nav a[aria-current="page"]{
+      border-bottom-color: rgba(15,23,42,0.90);
+    }
 
     .header-right{ width:44px; display:flex; justify-content:flex-end; align-items:center; }
     .mobile-menu-btn{
@@ -522,6 +526,7 @@
 
     .product-card.extra-product{ display:none; opacity:0; }
 
+    /* keep store inside body; no overlap with top tab */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
@@ -547,7 +552,7 @@
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* BOTTOM TAB (UPDATED: same scheme as store gradient) */
+    /* BOTTOM TAB (same as store) */
     footer{
       width:100%;
       background: linear-gradient(180deg, var(--store-g1) 0%, var(--store-g2) 52%, var(--store-g3) 100%);
@@ -771,7 +776,7 @@ FOR RICKY
 
       <div class="header-center">
         <nav class="main-nav" aria-label="Primary navigation">
-          <a href="index.html" aria-current="page">HOME</a>
+          <a href="index.html" id="nav-home" aria-current="page">HOME</a>
           <a href="#store-panel" id="nav-store">STORE</a>
           <a href="about.html">ABOUT</a>
           <a href="research.html">RESEARCH</a>
@@ -1133,7 +1138,6 @@ FOR RICKY
 
     const topLogo = document.getElementById('logo-top');
     const footerLogo = document.getElementById('footer-logo');
-
     function scrollTopSmooth(e){
       e.preventDefault();
       window.scrollTo({top:0, behavior:'smooth'});
@@ -1199,6 +1203,22 @@ FOR RICKY
       });
     });
 
+    /* NAV underline switching */
+    const navHome = document.getElementById('nav-home');
+    const navStore = document.getElementById('nav-store');
+    function setActiveTab(which){
+      if(navHome) navHome.classList.remove('is-active');
+      if(navStore) navStore.classList.remove('is-active');
+
+      if(which === 'store'){
+        if(navStore) navStore.classList.add('is-active');
+      } else {
+        if(navHome) navHome.classList.add('is-active');
+      }
+    }
+    // default: HOME active
+    setActiveTab('home');
+
     const viewFullStore = document.getElementById('store-view-full');
     function setStoreButtonLabel(){
       if(!viewFullStore) return;
@@ -1212,13 +1232,15 @@ FOR RICKY
       } else {
         document.body.classList.toggle('store-expanded');
       }
+      const nowExpanded = document.body.classList.contains('store-expanded');
       setStoreButtonLabel();
+      setActiveTab(nowExpanded ? 'store' : 'home');
     }
+
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>toggleStore(false));
       setStoreButtonLabel();
     }
-    const navStore = document.getElementById('nav-store');
     if(navStore){
       navStore.addEventListener('click', (e)=>{ e.preventDefault(); toggleStore(true); });
     }

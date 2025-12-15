@@ -27,6 +27,8 @@
   <link rel="preload" href="mayanut-the-mayanut-comapny-logo.png" as="image" />
   <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-comapny-image.jpeg" as="image" />
+  <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
+  <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
   <link rel="preload" href="ricky.jpeg" as="image" />
 
   <!-- Structured data -->
@@ -45,7 +47,6 @@
     :root{
       --green:#1a6800;
       --green-dark:#062c00;
-      --green-mid:#0f4f00;
       --lime:#cde65a;
 
       --text:#0f172a;
@@ -55,14 +56,16 @@
       --tan-orange-border: rgba(253,108,2,0.45);
 
       --site-border: 20px;
-      --max: 1500px;
+      --max: 1600px;
 
       --beige1:#ffffff;
       --beige2:#f4efe7;
       --beige3:#e7dfd1;
 
-      --storeTop:#cfe86a;         /* slightly more yellow-green */
-      --storeBottom:#1a6800;      /* dark green */
+      --storeTop:#cfe86a;  /* yellowish green */
+      --storeBottom:#1a6800;
+
+      --cardRadius: 18px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -89,34 +92,34 @@
       max-width: var(--max);
       margin: 0 auto;
       display:grid;
-      grid-template-columns: 220px 1fr 220px;
+      grid-template-columns: 240px 1fr 240px;
       min-height: 100vh;
     }
 
-    /* side columns (stacked images) */
+    /* side columns */
     .side{
       background: transparent;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
       padding:12px;
-      border-left: var(--site-border) solid var(--green);
-      border-right: var(--site-border) solid var(--green);
+      display:flex;
     }
-    .side .stack{
+
+    /* STACKED IMAGES: always visible, fill height */
+    .stack{
+      width:100%;
       display:flex;
       flex-direction:column;
       gap:12px;
       flex:1;
     }
-    .side img{
+    .stack img{
       width:100%;
       border-radius:14px;
       object-fit:cover;
       box-shadow: 0 12px 28px rgba(15,23,42,0.18);
+      background:#fff;
     }
 
-    /* main column gets left/right green border too */
+    /* main column borders */
     .main{
       border-left: var(--site-border) solid var(--green);
       border-right: var(--site-border) solid var(--green);
@@ -126,41 +129,42 @@
       min-width:0;
     }
 
-    /* thin separator lines between top/body/footer (same green) */
+    /* add the same thick border on the OUTSIDE edges too */
+    .side.left{ border-left: var(--site-border) solid var(--green); }
+    .side.right{ border-right: var(--site-border) solid var(--green); }
+
     .sep{
       height:2px;
       width:100%;
       background: var(--green);
     }
 
-    /* ====== TOP TAB (thicker, image background) ====== */
+    /* ====== TOP TAB ====== */
     header{
       background:url("menuart-the-maya-nut-company-art.jpeg") center/cover no-repeat;
-      padding: 26px 24px; /* thicker */
-      position:relative;
+      padding: 26px 24px;
     }
-
     .header-inner{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:18px;
-      max-width: 1180px;
+      max-width: 1280px;
       margin: 0 auto;
     }
 
-    /* logo fixed-size so it never shifts during easter egg swap */
+    /* BIGGER LOGO UPPER LEFT */
     .logo-wrap{
-      width: 190px;
-      height: 84px;
+      width: 260px;
+      height: 108px;
       display:flex;
       align-items:center;
       justify-content:flex-start;
       flex:0 0 auto;
     }
     .logo{
-      width:190px;
-      height:84px;
+      width:260px;
+      height:108px;
       object-fit:contain;
       cursor:pointer;
       user-select:none;
@@ -191,7 +195,7 @@
       text-decoration-thickness:3px;
     }
 
-    /* ====== CONTENT AREA ====== */
+    /* ====== CONTENT ====== */
     main{
       flex:1;
       padding: 30px 26px 34px;
@@ -203,7 +207,7 @@
     }
 
     .content{
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       display:grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -211,7 +215,6 @@
       align-items:start;
     }
 
-    /* HERO LEFT */
     .hero{
       display:flex;
       flex-direction:column;
@@ -245,14 +248,17 @@
       font-style: italic;
     }
 
+    /* TWO IMAGES SIDE BY SIDE (no wrap on desktop) */
     .hero-images{
-      display:flex;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap:12px;
-      flex-wrap:wrap;
       margin-top: 6px;
+      max-width: 640px;
     }
     .hero-images img{
-      width: 290px;
+      width: 100%;
+      height: 210px;
       border-radius:16px;
       object-fit:cover;
       box-shadow: 0 14px 32px rgba(15,23,42,0.22);
@@ -273,8 +279,6 @@
       flex-wrap:wrap;
       margin-top:6px;
     }
-
-    /* requested: transparent faded tan-orange */
     .btn{
       background: var(--tan-orange);
       border: 1px solid var(--tan-orange-border);
@@ -288,17 +292,24 @@
       cursor:pointer;
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
     }
-    .btn:hover{transform: translateY(-1px); background: rgba(253,108,2,0.34); border-color: rgba(253,108,2,0.55);}
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(253,108,2,0.34);
+      border-color: rgba(253,108,2,0.55);
+    }
 
-    /* STORE PANEL (keep store as-is, only styles requested elsewhere) */
+    /* ====== STORE (square-ish panel again) ======
+       Square shape feel: fixed max width + equal-ish height by layout. */
     .store{
-      border-radius: 24px;
-      padding: 18px 16px 18px;
+      border-radius: 16px;
+      padding: 16px 14px 16px;
       background: linear-gradient(to bottom, var(--storeTop), var(--storeBottom));
       box-shadow: 0 18px 46px rgba(15,23,42,0.16);
       border: 1px solid rgba(255,255,255,0.35);
       position:relative;
       overflow:hidden;
+      max-width: 420px;
+      justify-self:end;
     }
 
     .store h2{
@@ -365,13 +376,14 @@
       stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
     }
 
+    /* PRODUCT GRID: 2x2 default */
     .products{
       display:grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 12px;
     }
 
-    /* rounded square again (wider) */
+    /* PRODUCT CARDS: rounded square (not tall rectangles) */
     .product{
       background: rgba(255,255,255,0.95);
       border: 1px solid rgba(229,231,235,0.95);
@@ -381,12 +393,12 @@
       display:flex;
       flex-direction:column;
       gap:8px;
-      min-height: 220px;
+      min-height: 210px;
       box-shadow: 0 12px 28px rgba(15,23,42,0.08);
     }
     .product img{
-      width: 88px;
-      height: 88px;
+      width: 84px;
+      height: 84px;
       object-fit:contain;
       margin: 2px auto 0;
     }
@@ -448,23 +460,19 @@
       cursor:pointer;
     }
 
-    /* expanded store stays inside body: we expand grid to 4 columns on wide screens,
-       but we DO NOT position it absolute or overlay header/footer. */
+    /* expanded store stays inside body */
     .store-expanded .products{
       grid-template-columns: repeat(4, minmax(0,1fr));
     }
-    .store-expanded .store{
-      margin-top: 10px;
-    }
 
-    /* FOOTER TAB (dramatic dark -> limegreen gradient; store unchanged) */
+    /* ====== FOOTER ====== */
     footer{
       padding: 20px 18px;
       background: linear-gradient(to bottom, var(--green-dark) 0%, var(--green) 40%, var(--lime) 100%);
       border-top: 4px solid var(--green);
     }
     .footer-inner{
-      max-width: 1180px;
+      max-width: 1280px;
       margin: 0 auto;
       display:grid;
       grid-template-columns: 1fr auto 1fr;
@@ -508,7 +516,7 @@
       display:block;
     }
 
-    /* ACCESSIBILITY BUTTON (blue + clean icon) */
+    /* ACCESSIBILITY BUTTON */
     .access-btn{
       position:fixed;
       right:18px;
@@ -532,7 +540,7 @@
       display:block;
     }
 
-    /* Simple overlay (accessibility panel) */
+    /* Overlay */
     .overlay{
       position:fixed; inset:0;
       background: rgba(255,255,255,0.20);
@@ -594,18 +602,25 @@
 
     /* responsive */
     @media(max-width: 1100px){
-      .frame{grid-template-columns: 170px 1fr 170px;}
+      .frame{grid-template-columns: 190px 1fr 190px;}
+      .hero-images img{height: 190px;}
     }
     @media(max-width: 940px){
       .frame{grid-template-columns: 1fr;}
       .side{display:none;}
       .main{border-left: var(--site-border) solid var(--green); border-right: var(--site-border) solid var(--green);}
       .content{grid-template-columns: 1fr; }
+      .store{max-width: 100%; justify-self:stretch;}
       .products{grid-template-columns: 1fr; }
       .store-expanded .products{grid-template-columns: 1fr; }
       nav{justify-content:center;}
       .header-inner{flex-direction:column; align-items:center;}
       .logo-wrap{justify-content:center;}
+      .hero-images{max-width: 100%;}
+      .hero-images img{height: 210px;}
+    }
+    @media(max-width: 520px){
+      .hero-images{grid-template-columns: 1fr;}
     }
   </style>
 </head>
@@ -617,14 +632,12 @@
 
   <div class="frame" id="top">
 
-    <!-- LEFT STACK (auto-filled by JS) -->
-    <aside class="side" aria-label="Side gallery">
-      <div class="stack" id="left-stack">
-        <!-- JS fills -->
-      </div>
+    <!-- LEFT STACK -->
+    <aside class="side left" aria-label="Side gallery">
+      <div class="stack" id="left-stack"></div>
     </aside>
 
-    <!-- MAIN COLUMN -->
+    <!-- MAIN -->
     <div class="main">
       <header>
         <div class="header-inner">
@@ -634,8 +647,8 @@
               class="logo"
               src="mayanut-the-mayanut-comapny-logo.png"
               alt="The MayaNut Company logo"
-              width="190"
-              height="84"
+              width="260"
+              height="108"
               decoding="async"
               fetchpriority="high"
             />
@@ -667,6 +680,7 @@
               <span class="l3">Rediscovered.</span>
             </h1>
 
+            <!-- FIXED: two images side-by-side -->
             <div class="hero-images" aria-label="Featured images">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut tree nursery in South Florida" loading="eager" decoding="async" />
               <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut fruit (Brosimum alicastrum)" loading="lazy" decoding="async" />
@@ -773,7 +787,7 @@
                 </div>
               </article>
 
-              <!-- Extras shown on expand (still inside body) -->
+              <!-- Extras (expand) -->
               <article class="product" data-name="mayanut espresso blend" data-extra hidden>
                 <img src="mayanut-the-mayanut-comapny-logo.png" alt="MayaNut Espresso Blend concept" loading="lazy" decoding="async" />
                 <div class="divider" aria-hidden="true"></div>
@@ -840,7 +854,6 @@
 
       <div class="sep" aria-hidden="true"></div>
 
-      <!-- FOOTER TAB (dramatic) -->
       <footer>
         <div class="footer-inner">
           <div class="footer-left">
@@ -883,11 +896,9 @@
       </footer>
     </div>
 
-    <!-- RIGHT STACK (auto-filled by JS) -->
-    <aside class="side" aria-label="Side gallery">
-      <div class="stack" id="right-stack">
-        <!-- JS fills -->
-      </div>
+    <!-- RIGHT STACK -->
+    <aside class="side right" aria-label="Side gallery">
+      <div class="stack" id="right-stack"></div>
     </aside>
   </div>
 
@@ -928,17 +939,17 @@
   </div>
 
   <script>
-    /* ====== YEAR ====== */
+    /* YEAR */
     const yearSpan = document.getElementById('year');
     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-    /* ====== FOOTER LOGO SCROLL TOP ====== */
+    /* FOOTER LOGO SCROLL TOP */
     const footerLogo = document.getElementById('footer-logo');
     if (footerLogo){
       footerLogo.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
     }
 
-    /* ====== HERO BUTTON NAV ====== */
+    /* HERO NAV BUTTONS */
     document.querySelectorAll('[data-nav]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
@@ -946,36 +957,30 @@
       });
     });
 
-    /* ====== AUTO-FILL SIDE STACKS TOP->BOTTOM ======
-       This repeats the same image to fill the viewport height, plus a little extra for scrolling. */
+    /* SIDE STACKS: ensure they actually render (fixed sizes + explicit src) */
     (function fillSideStacks(){
-      const srcs = [
-        "mayanuts-the-maya-nut-comapny-image.jpeg",
-        "mayanuts-the-maya-nut-comapny-image.jpeg",
-        "mayanuts-the-maya-nut-comapny-image.jpeg"
-      ];
+      const SRC = "mayanuts-the-maya-nut-comapny-image.jpeg";
 
-      function createImg(src){
+      function createImg(){
         const img = document.createElement('img');
-        img.src = src;
+        img.src = SRC;
         img.alt = "MayaNut stacked frame image";
         img.loading = "lazy";
         img.decoding = "async";
+        img.style.height = "210px";
         return img;
       }
 
-      function fill(containerId){
-        const el = document.getElementById(containerId);
+      function fill(id){
+        const el = document.getElementById(id);
         if(!el) return;
         el.innerHTML = "";
-
-        // Estimate number of tiles needed:
         const viewport = Math.max(window.innerHeight, 900);
-        const tileH = 210; // approximate visual tile height
-        const needed = Math.ceil((viewport * 1.6) / tileH);
+        const tileH = 222; // 210 + gap
+        const needed = Math.ceil((viewport * 1.9) / tileH);
 
         for(let i=0;i<needed;i++){
-          el.appendChild(createImg(srcs[i % srcs.length]));
+          el.appendChild(createImg());
         }
       }
 
@@ -983,7 +988,6 @@
       fill("right-stack");
 
       window.addEventListener('resize', ()=>{
-        // keep it light
         clearTimeout(window.__stackTO);
         window.__stackTO = setTimeout(()=>{
           fill("left-stack");
@@ -992,27 +996,26 @@
       });
     })();
 
-    /* ====== STORE: EXPAND / COLLAPSE (STAYS INSIDE BODY) ====== */
+    /* STORE EXPAND (stays inside body) */
     const storeToggle = document.getElementById('store-toggle');
-    const body = document.body;
     const extras = document.querySelectorAll('[data-extra]');
+    let isExpanded = false;
 
     function setExpandedUI(expanded){
       extras.forEach(x => x.hidden = !expanded);
       if(storeToggle) storeToggle.textContent = expanded ? "Collapse" : "View Store";
+      document.body.classList.toggle('store-expanded', expanded);
     }
 
-    let isExpanded = false;
     if(storeToggle){
       storeToggle.addEventListener('click', ()=>{
         isExpanded = !isExpanded;
-        body.classList.toggle('store-expanded', isExpanded);
         setExpandedUI(isExpanded);
       });
     }
     setExpandedUI(false);
 
-    /* ====== STORE SEARCH FILTER ====== */
+    /* STORE SEARCH FILTER */
     const storeSearch = document.getElementById('store-search');
     const storeSearchBtn = document.getElementById('store-search-btn');
 
@@ -1030,7 +1033,7 @@
     }
     if(storeSearchBtn) storeSearchBtn.addEventListener('click', filterProducts);
 
-    /* ====== QTY +/- ====== */
+    /* QTY +/- */
     document.querySelectorAll('[data-qty]').forEach(qty=>{
       const val = qty.querySelector('[data-val]');
       qty.addEventListener('click', (e)=>{
@@ -1042,16 +1045,14 @@
       });
     });
 
-    /* ====== ADD BUTTONS ====== */
+    /* ADD */
     document.querySelectorAll('[data-add]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         alert("MayaNut products are coming soon. Thank you for your patience.");
       });
     });
 
-    /* ====== EASTER EGG (ONLY when 'ricky' typed in search)
-       - swaps logo to ricky.jpeg for 5 seconds
-       - same size so header doesn't move */
+    /* EASTER EGG (logo swap to ricky.jpeg for 5 seconds) */
     const logo = document.getElementById('logo');
     const originalLogo = logo ? logo.getAttribute('src') : "";
     let eggTO = null;
@@ -1060,24 +1061,33 @@
       if(!logo) return;
       logo.src = "ricky.jpeg";
       if(eggTO) clearTimeout(eggTO);
-      eggTO = setTimeout(()=>{
-        logo.src = originalLogo;
-      }, 5000);
+      eggTO = setTimeout(()=>{ logo.src = originalLogo; }, 5000);
     }
 
-    function checkRicky(){
-      const q = (storeSearch?.value || "").trim().toLowerCase();
-      if(q.includes("ricky")) triggerRicky();
+    if(storeSearch){
+      storeSearch.addEventListener('input', ()=>{
+        const q = (storeSearch.value || "").trim().toLowerCase();
+        if(q.includes("ricky")) triggerRicky();
+      });
     }
-    if(storeSearch) storeSearch.addEventListener('input', checkRicky);
 
-    /* ====== ACCESSIBILITY OVERLAY ====== */
+    /* ACCESSIBILITY OVERLAY */
     const accessBtn = document.getElementById('access-btn');
     const accessOverlay = document.getElementById('access-overlay');
     const accessClose = document.getElementById('access-close');
 
-    function openAccess(){ if(accessOverlay){ accessOverlay.classList.add('active'); accessOverlay.setAttribute('aria-hidden','false'); } }
-    function closeAccess(){ if(accessOverlay){ accessOverlay.classList.remove('active'); accessOverlay.setAttribute('aria-hidden','true'); } }
+    function openAccess(){
+      if(accessOverlay){
+        accessOverlay.classList.add('active');
+        accessOverlay.setAttribute('aria-hidden','false');
+      }
+    }
+    function closeAccess(){
+      if(accessOverlay){
+        accessOverlay.classList.remove('active');
+        accessOverlay.setAttribute('aria-hidden','true');
+      }
+    }
 
     if(accessBtn) accessBtn.addEventListener('click', openAccess);
     if(accessClose) accessClose.addEventListener('click', closeAccess);

@@ -31,7 +31,7 @@
       --brand-green:#1a6800;
       --cta-orange:#FD6C02;
 
-      /* NEW: soft middle highlight, darker toward bottom */
+      /* tan gradient: lighter mid, darker bottom; continuous */
       --tan-top:#F1DFC6;
       --tan-mid:#F6E8D3;
       --tan-bottom:#E4C7A2;
@@ -60,26 +60,23 @@
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     img{ max-width:100%; height:auto; display:block; }
-
     html, body { min-height: 100%; height:auto; overflow-x:hidden; }
     body{
       margin:0;
-      /* NEW: middle lighter, bottom darker; no glitches across scroll */
       background: linear-gradient(to bottom,
         var(--tan-top) 0%,
         var(--tan-mid) 45%,
         var(--tan-mid) 55%,
         var(--tan-bottom) 100%
       );
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
+      background-repeat:no-repeat;
+      background-size:100% 100%;
       background-color: var(--tan-mid);
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: var(--text-body);
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
     }
-
     main, .main, .page, .container, .content, .wrapper, #app, #root{
       background: transparent !important;
     }
@@ -137,10 +134,7 @@
       font-weight:900;
       transition: color .12s ease, border-color .12s ease;
     }
-    .top-banner a:hover{
-      color: rgba(26,104,0,0.88);
-      border-bottom-color: rgba(26,104,0,0.70);
-    }
+    .top-banner a:hover{ color: rgba(26,104,0,0.88); border-bottom-color: rgba(26,104,0,0.70); }
 
     /* HEADER */
     .site-header{
@@ -159,7 +153,6 @@
       border-right: var(--frameBorder) solid var(--frame-line);
       border-bottom: 1px solid var(--line);
     }
-
     .top-sep, .bottom-sep{
       width:100%;
       height:2px;
@@ -211,10 +204,7 @@
       flex-direction:column; gap:4px;
       backdrop-filter: blur(6px);
     }
-    .mobile-menu-btn span{
-      display:block; width:18px; height:2px;
-      border-radius:999px; background:#0f172a;
-    }
+    .mobile-menu-btn span{ display:block; width:18px; height:2px; border-radius:999px; background:#0f172a; }
 
     /* MAIN */
     main{
@@ -241,11 +231,10 @@
       overflow-x:hidden;
       align-items:start;
     }
-
     .hero-left{
       display:flex;
       flex-direction:column;
-      gap:18px;
+      gap:14px;
       transition:opacity .25s ease;
     }
 
@@ -257,7 +246,7 @@
       font-weight:900;
     }
 
-    /* NEW: right-align the hero title block evenly */
+    /* FIX: left aligned title + long dash */
     .hero-title{
       font-family:"Playfair Display", Georgia, serif;
       font-weight:800;
@@ -265,32 +254,30 @@
       color: var(--text-heading);
       line-height:1.06;
       font-size:clamp(22px, 2.5vw, 32px);
-      text-align:right;
-      align-self:flex-end;
+      text-align:left;
       width:100%;
       max-width:720px;
+      padding-left:2px; /* prevents any left-side clipping */
     }
     .hero-title .line1,
     .hero-title .line2,
     .hero-title .line3{ display:block; }
 
+    /* one long dash */
     .hero-title .line2::after{
-      content:" ---";
+      content:" —";
       color: var(--text-heading);
       font-weight:800;
-      letter-spacing:0.02em;
     }
 
     .hero-title .line3{
-      display:block;
       margin-top:8px;
       color: var(--brand-green);
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
       font-weight:800;
-      padding-left:8px;
-      padding-right:8px;
+      padding-left:2px;
     }
 
     .hero-images{
@@ -298,7 +285,7 @@
       grid-template-columns: 1fr 1fr;
       gap:12px;
       align-items:start;
-      margin-top:2px;
+      margin-top:4px;
       max-width:520px;
     }
     .hero-images img{
@@ -311,23 +298,25 @@
       background:transparent;
     }
 
-    .btn-row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
+    /* restored sub text (200 trees...) */
+    .hero-meta{
+      margin-top:6px;
+      font-size:12px;
+      color: var(--text-muted);
+      line-height:1.8;
+      max-width:760px;
     }
+    .hero-meta strong{ color: var(--text-heading); }
 
-    /* CTA BUTTONS (orange only) */
-    .btn,
-    .btn-secondary,
-    .view-store-btn,
-    .btn-add{
+    .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px; }
+
+    /* ORANGE CTA buttons */
+    .btn, .btn-secondary, .view-store-btn, .btn-add{
       border:none; outline:none; box-shadow:none;
       background: var(--cta-orange);
       color:#fff;
       font-weight:900;
-      border-radius: var(--radius-btn);
+      border-radius: 999px;
       cursor:pointer;
       transition: filter .14s ease, transform .12s ease;
       background-clip: padding-box;
@@ -344,30 +333,25 @@
       transform:translateY(-1px);
     }
 
-    /* =========================
-       OUR TREES + CONNECTED TEXT
-       ========================= */
-
-    /* This wrapper makes the "hatchet" connection:
-       - Top row: left = Our Trees, right = Store
-       - Second row: a single paragraph spans full width, but is "raised" on the left
-         to visually connect under the Our Trees card. */
+    /* CONNECT WRAP */
     .connect-wrap{
       max-width:1200px;
-      margin:22px auto 0;
+      margin:16px auto 0; /* moved up */
       display:grid;
       grid-template-columns: 1.08fr 1fr;
       gap:30px;
       align-items:start;
+      position:relative;
     }
 
-    /* OUR TREES card (formerly RTrees) */
+    /* OUR TREES card moved up more */
     #our-trees{
-      border-radius: var(--radius-panel);
+      border-radius: 22px;
       border:1px solid rgba(15,23,42,0.10);
       background: rgba(255,255,255,0.55);
       box-shadow:none;
       padding:16px 16px 14px;
+      transform: translateY(-18px); /* moved up more */
     }
     .ourtrees-title{
       font-family:"Playfair Display", Georgia, serif;
@@ -399,10 +383,11 @@
       background:transparent;
     }
 
-    /* The paragraph spans full width, but we "raise" the left portion with a notch */
+    /* FIX: paragraph box fully connected + no notch glitch
+       We use one single shape with a "raised left cap" that is the SAME element. */
     .wide-paragraph{
       grid-column: 1 / -1;
-      margin-top:-14px; /* pulls paragraph up to touch cards */
+      margin-top:-30px; /* pulls up to connect */
       padding:16px 16px 16px;
       border-radius: 18px;
       border:1px solid rgba(15,23,42,0.10);
@@ -412,21 +397,27 @@
       line-height:1.9;
       font-weight:500;
       position:relative;
+      overflow:hidden;
     }
-    /* Notch effect: raises only the left side visually to "connect" to Our Trees */
+    /* Raised left cap is drawn INSIDE the same box (no separate border seams) */
     .wide-paragraph::before{
       content:"";
       position:absolute;
-      top:-14px;
+      top:0;
       left:0;
-      width: calc(50% - 15px); /* aligns with left column width-ish */
-      height:14px;
+      width: calc(50% - 15px);
+      height: 18px; /* the raise */
       background: rgba(255,255,255,0.55);
-      border-left:1px solid rgba(15,23,42,0.10);
-      border-right:1px solid rgba(15,23,42,0.10);
-      border-top:1px solid rgba(15,23,42,0.10);
-      border-top-left-radius:18px;
-      border-top-right-radius:18px;
+    }
+    /* Add a subtle inner line so it feels intentional, without breaking border */
+    .wide-paragraph::after{
+      content:"";
+      position:absolute;
+      top:18px;
+      left:0;
+      right:0;
+      height:1px;
+      background: rgba(15,23,42,0.06);
     }
 
     /* STORE */
@@ -436,7 +427,7 @@
       background-size:100% 100%;
     }
     #store-panel.store-container{
-      border-radius: var(--radius-panel);
+      border-radius: 22px;
       border:1px solid rgba(255,255,255,0.38);
       padding:16px 14px 18px;
       display:flex;
@@ -458,14 +449,7 @@
       width:100%;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
-    .store-tools{
-      margin-top:8px;
-      display:flex;
-      gap:8px;
-      align-items:center;
-      width:100%;
-      max-width:100%;
-    }
+    .store-tools{ margin-top:8px; display:flex; gap:8px; align-items:center; width:100%; max-width:100%; }
     .view-store-btn{
       flex:0 0 25%;
       padding:10px 14px;
@@ -476,11 +460,12 @@
       text-align:center;
       white-space:nowrap;
     }
+
     .store-search{ flex:1; position:relative; min-width:0; }
     .store-search input{
       width:100%;
       padding:9px 46px 9px 10px;
-      border-radius: var(--radius-btn);
+      border-radius: 999px;
       border:1px solid rgba(15,23,42,0.16);
       font-size:12px;
       background: rgba(255,255,255,0.70);
@@ -488,20 +473,15 @@
       outline:none;
     }
     .store-search-send{
-      position:absolute;
-      right:6px;
-      top:50%;
+      position:absolute; right:6px; top:50%;
       transform:translateY(-50%);
       height:24px;
-      border-radius: var(--radius-btn);
+      border-radius: 999px;
       border:1px solid rgba(15,23,42,0.16);
       background: rgba(255,255,255,0.65);
-      display:flex;
-      align-items:center;
-      gap:6px;
+      display:flex; align-items:center; gap:6px;
       padding:0 7px;
-      cursor:pointer;
-      user-select:none;
+      cursor:pointer; user-select:none;
       transition: filter .12s ease;
     }
     .store-search-send:hover{ filter: brightness(0.97); }
@@ -522,7 +502,7 @@
     }
     .product-card{
       background: rgba(255,255,255,0.92);
-      border-radius: var(--radius-card);
+      border-radius: 14px;
       border:1px solid rgba(15,23,42,0.12);
       padding:12px 12px 14px;
       display:flex;
@@ -570,6 +550,16 @@
       gap:10px;
       flex-wrap:nowrap;
     }
+
+    .qty-control{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:14px;
+      border:1px solid rgba(15,23,42,0.12);
+      background: rgba(255,255,255,0.55);
+      padding:6px 8px;
+    }
     .qty-minus, .qty-plus, .btn-add{
       width: var(--qtyBtn);
       height: var(--qtyBtn);
@@ -581,7 +571,7 @@
       padding:0;
       border-radius:12px;
       line-height:1;
-      font-weight:800;
+      font-weight:900;
       border:none;
       box-shadow:none;
     }
@@ -592,15 +582,6 @@
       transition: filter .12s ease;
     }
     .qty-minus:hover, .qty-plus:hover{ filter: brightness(0.96); }
-    .qty-control{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border-radius:14px;
-      border:1px solid rgba(15,23,42,0.12);
-      background: rgba(255,255,255,0.55);
-      padding:6px 8px;
-    }
     .qty-value{
       min-width:22px;
       text-align:center;
@@ -660,10 +641,8 @@
       font-weight:800;
       transition: color .12s ease, border-color .12s ease;
     }
-    .footer-links a:hover{
-      color: rgba(26,104,0,0.88);
-      border-bottom-color: rgba(26,104,0,0.70);
-    }
+    .footer-links a:hover{ color: rgba(26,104,0,0.88); border-bottom-color: rgba(26,104,0,0.70); }
+
     .footer-logo-wrap{ display:flex; align-items:center; justify-content:center; width:100%; }
     .footer-logo-img{
       display:block;
@@ -675,6 +654,7 @@
       border:0;
       box-shadow:none;
     }
+
     .footer-instagram, .footer-email{
       display:inline-flex;
       align-items:center;
@@ -684,8 +664,7 @@
       height:32px;
     }
     .footer-instagram svg, .footer-email svg{
-      width:26px;
-      height:26px;
+      width:26px; height:26px;
       display:block;
       overflow:visible;
       stroke: var(--brand-green);
@@ -717,8 +696,7 @@
     }
     .accessibility-btn:hover{ filter:brightness(0.94); transform:translateY(-1px); }
     .accessibility-btn svg{
-      width:26px;
-      height:26px;
+      width:26px; height:26px;
       fill:none;
       stroke:#fff;
       stroke-width:2.2;
@@ -753,14 +731,7 @@
     .overlay-title{ font-family:"Playfair Display", Georgia, serif; font-size:16px; font-weight:700; color: var(--text-heading); }
     .overlay-version{ font-size:11px; color: var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; font-weight:800; }
     .overlay-close{ border:none; background:transparent; font-size:18px; cursor:pointer; line-height:1; color: var(--text-muted); }
-    .settings-row{
-      margin-bottom:12px;
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
+    .settings-row{ margin-bottom:12px; font-size:13px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
     #accessibility-overlay label{ font-weight:800; color: var(--text-heading); }
     .settings-lang{
       border-radius:999px;
@@ -819,20 +790,14 @@
 
       .hero-images{ grid-template-columns:1fr; }
 
-      /* Connect section stacks vertically on mobile */
-      .connect-wrap{
-        grid-template-columns:1fr;
-        gap:16px;
-      }
-      .wide-paragraph{
-        margin-top:-10px;
-      }
-      .wide-paragraph::before{
-        width: 70%;
-      }
-
-      .store-grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+      /* connect wrap stacks */
+      .connect-wrap{ grid-template-columns:1fr; gap:16px; margin-top:10px; }
+      #our-trees{ transform: translateY(-10px); }
       .ourtrees-grid{ grid-template-columns:1fr; }
+      .wide-paragraph{ margin-top:-18px; }
+      .wide-paragraph::before{ width: 75%; }
+
+      .store-grid{ grid-template-columns: 1fr; gap:14px; }
 
       .footer-inner{ grid-template-columns:1fr; row-gap:8px; text-align:center; }
       .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
@@ -925,7 +890,13 @@ FOR RICKY
                    loading="lazy" decoding="async" />
             </div>
 
-            <div class="btn-row" style="margin-top:6px;">
+            <!-- RESTORED SUBTEXT ABOVE OUR TREES -->
+            <div class="hero-meta">
+              Over <strong>200 seed-grown trees</strong> currently potted up — this phase is about domestication,
+              selecting the best quality trees for sustainable agriculture, and education. Our store is currently in development.
+            </div>
+
+            <div class="btn-row">
               <button class="btn" data-nav="about.html" type="button">Learn more</button>
               <button class="btn-secondary" id="btn-ourtrees" type="button">Our Trees</button>
             </div>
@@ -1076,13 +1047,11 @@ FOR RICKY
           </aside>
         </section>
 
-        <!-- NEW CONNECTED “HATCHET” SECTION (Our Trees + Store, then one paragraph underneath) -->
-        <section class="connect-wrap" aria-label="Our Trees and Store connection">
+        <!-- CONNECTED SECTION -->
+        <section class="connect-wrap" aria-label="Our Trees connection">
           <section id="our-trees" aria-label="Our Trees">
             <div class="ourtrees-title">OUR TREES</div>
             <div class="ourtrees-grid">
-              <!-- Placeholder images (using the Seed Grown Diversity tab image you indicated) -->
-              <!-- If your real Seed Grown Diversity image file is different, replace the src below. -->
               <div class="ourtrees-card">
                 <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="Seed-grown diversity placeholder" loading="lazy" decoding="async" />
               </div>
@@ -1095,7 +1064,6 @@ FOR RICKY
             </div>
           </section>
 
-          <!-- (Store is already on the right above; this section stays here only to anchor the paragraph shape) -->
           <div></div>
 
           <p class="wide-paragraph" id="wide-paragraph">
@@ -1120,6 +1088,7 @@ FOR RICKY
 
         <div class="footer-center">
           <a href="#top" class="footer-logo-wrap" id="footer-logo" aria-label="Back to top">
+            <!-- FIX: bottom logo uses same file as upper-left -->
             <img class="footer-logo-img"
                  src="mayanut-the-mayanut-comapny-logo.png"
                  alt="The MayaNut Company logo (footer)"

@@ -53,6 +53,19 @@
       --btn-g3:#1a6800;
       --btn-border: rgba(15,23,42,0.14);
       --btn-text:#ffffff;
+
+      /* Qty +/- flat orange */
+      --qty-orange: rgba(253,108,2,0.32);
+
+      /* Store icon tile beige */
+      --icon-beige-outer:#f6f0e6;
+      --icon-beige-mid:#fbf7ef;
+      --icon-beige-inner:#ffffff;
+
+      /* Accessibility overlay green gradient */
+      --a11y-g1:#d8ff6a;
+      --a11y-g2:#7ae78a;
+      --a11y-g3:#1a6800;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -77,15 +90,10 @@
       background:#ffffff !important;
       color:#000 !important;
     }
-    body.high-contrast *{
-      text-shadow:none !important;
-      box-shadow:none !important;
-    }
+    body.high-contrast *{ text-shadow:none !important; box-shadow:none !important; }
     body.high-contrast main,
     body.high-contrast .overlay-panel,
-    body.high-contrast .product-card{
-      border-color:#000 !important;
-    }
+    body.high-contrast .product-card{ border-color:#000 !important; }
     body.high-contrast a{ color:#000 !important; }
     body.high-contrast .main-nav a{ color:#000 !important; }
     body.high-contrast .main-nav a.is-active{ border-bottom-color:#000 !important; }
@@ -116,20 +124,9 @@
       background:#ffffff;
       pointer-events:none;
     }
-    .side.left{
-      left:0;
-      border-right: var(--frameBorder) solid var(--frame-line);
-    }
-    .side.right{
-      right:0;
-      border-left: var(--frameBorder) solid var(--frame-line);
-    }
-    .stack{
-      position:absolute;
-      inset:0;
-      display:flex;
-      flex-direction:column;
-    }
+    .side.left{ left:0; border-right: var(--frameBorder) solid var(--frame-line); }
+    .side.right{ right:0; border-left: var(--frameBorder) solid var(--frame-line); }
+    .stack{ position:absolute; inset:0; display:flex; flex-direction:column; }
     .stack img{
       width:100%;
       height:220px;
@@ -139,7 +136,6 @@
       filter:saturate(1.07) contrast(1.03);
     }
 
-    /* SITE WRAP (DESKTOP with frames) */
     .frame-wrap{
       position:relative;
       z-index:2;
@@ -164,7 +160,6 @@
       letter-spacing:0.10em;
       text-transform:uppercase;
       font-weight:900;
-
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: var(--frameBorder) solid var(--frame-line);
@@ -186,7 +181,7 @@
       background-position:center;
       background-repeat:no-repeat;
 
-      padding:32px 22px; /* thick tab */
+      padding:32px 22px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -213,7 +208,6 @@
       position:relative;
       flex:0 0 300px;
     }
-
     #logo-top{
       width:150px;
       height:auto;
@@ -261,7 +255,7 @@
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
     .main-nav a.is-active{ border-bottom-color: rgba(15,23,42,0.90); }
 
-    /* RIGHT SIDE: ONLY MOBILE MENU BUTTON (removed small logo) */
+    /* RIGHT SIDE: ONLY MOBILE MENU BUTTON */
     .header-right{
       width:72px;
       display:flex;
@@ -326,6 +320,7 @@
       transition:opacity .25s ease;
     }
 
+    /* CHANGE THIS TEXT */
     .hero-kicker{
       font-size:11px;
       text-transform:uppercase;
@@ -342,12 +337,15 @@
       line-height:1.05;
       font-size:clamp(20px, 2.2vw, 28px);
       text-align:left;
+      overflow:visible; /* prevent any accidental clipping */
     }
     .hero-title .line1{ display:block; font-style:italic; }
     .hero-title .line2{ display:block; font-style:italic; }
     .hero-title .line3{
       display:inline-block;
       margin-top:6px;
+      padding-left:2px;          /* fixes the left edge of "Rediscovered." */
+      padding-right:2px;
       color:var(--green);
       font-style:italic;
       text-decoration: underline;
@@ -401,6 +399,12 @@
       color:var(--btn-text);
       font-weight:900;
       border-radius:999px;
+
+      /* FIX "thin dark line on top" */
+      box-shadow:none !important;
+      outline:none !important;
+      filter:none;
+      background-clip: padding-box;
     }
     .btn{
       padding:8px 16px;
@@ -411,6 +415,16 @@
       transition:transform .12s ease, filter .16s ease, border-color .16s ease;
     }
     .btn:hover{ transform:translateY(-1px); filter:brightness(1.03) saturate(1.02); border-color:rgba(15,23,42,0.22); }
+
+    /* eliminate UA focus ring glitch lines but keep accessible focus */
+    .btn:focus-visible,
+    .store-view-full:focus-visible,
+    .product-add-btn:focus-visible,
+    .store-search-send:focus-visible,
+    .overlay-close:focus-visible{
+      outline: 2px solid rgba(253,108,2,0.55);
+      outline-offset: 2px;
+    }
 
     .btn-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
@@ -522,6 +536,7 @@
     }
     .product-card:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(15,23,42,0.12); }
 
+    /* Store product images: beige gradient background tile */
     .product-card img{
       width:110px;
       aspect-ratio: 1 / 1;
@@ -531,6 +546,9 @@
       margin-bottom:10px;
       border:1px solid rgba(15,23,42,0.08);
       box-shadow:0 10px 24px rgba(15,23,42,0.12);
+
+      background: radial-gradient(circle at 50% 20%, var(--icon-beige-inner) 0%, var(--icon-beige-mid) 45%, var(--icon-beige-outer) 100%);
+      padding:10px; /* creates the “tile” look behind transparent PNGs */
     }
 
     .product-divider{ width:60%; height:1px; background:#e5e7eb; margin-bottom:8px; }
@@ -538,6 +556,8 @@
     .product-text{ font-size:12px; color:#4b5563; line-height:1.6; margin-bottom:8px; }
 
     .product-controls{ width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+
+    /* Qty control: keep container normal, make +/- flat transparent orange */
     .qty-control{
       display:inline-flex;
       align-items:center;
@@ -550,8 +570,20 @@
       max-width:120px;
       justify-content:space-between;
     }
-    .qty-btn{ border:none; background:transparent; cursor:pointer; font-size:14px; line-height:1; padding:0 4px; color:#111827; }
+    .qty-btn{
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      line-height:1;
+      padding:2px 6px;
+      color:#111827;
+      border-radius:999px;
+      background: var(--qty-orange); /* flat orange */
+      box-shadow:none !important;
+    }
+    .qty-btn:focus-visible{ outline:2px solid rgba(253,108,2,0.55); outline-offset:2px; }
     .qty-value{ min-width:18px; text-align:center; font-weight:900; }
+
     .product-add-btn{
       flex:1;
       padding:6px 10px;
@@ -599,12 +631,7 @@
       box-shadow:0 14px 40px rgba(15,23,42,0.10);
       backdrop-filter: blur(8px);
     }
-    .trees-head{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom:12px;
-    }
+    .trees-head{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
     .trees-kicker{
       font-size:11px;
       letter-spacing:0.16em;
@@ -641,14 +668,8 @@
       overflow:hidden;
       box-shadow:0 10px 26px rgba(15,23,42,0.10);
     }
-    .trees-card img{
-      width:100%;
-      aspect-ratio: 16 / 10;
-      object-fit:cover;
-    }
-    .trees-card .trees-card-body{
-      padding:12px 12px 14px;
-    }
+    .trees-card img{ width:100%; aspect-ratio: 16 / 10; object-fit:cover; }
+    .trees-card .trees-card-body{ padding:12px 12px 14px; }
     .trees-card h3{
       font-size:12px;
       text-transform:uppercase;
@@ -657,11 +678,7 @@
       margin-bottom:6px;
       color:#0b1220;
     }
-    .trees-card p{
-      font-size:12px;
-      line-height:1.75;
-      color:#334155;
-    }
+    .trees-card p{ font-size:12px; line-height:1.75; color:#334155; }
 
     /* BOTTOM TAB */
     footer{
@@ -721,7 +738,7 @@
       stroke-linejoin:round;
     }
 
-    /* ACCESSIBILITY BUTTON (keep blue button + icon stays blue as requested) */
+    /* ACCESSIBILITY BUTTON stays BLUE (as requested earlier) */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -762,14 +779,28 @@
       z-index:60;
     }
     .overlay.active{ display:flex; }
+
+    /* Accessibility menu: green gradient background */
+    #accessibility-overlay .overlay-panel{
+      background: linear-gradient(180deg, var(--a11y-g1) 0%, var(--a11y-g2) 55%, var(--a11y-g3) 100%);
+      border:1px solid rgba(255,255,255,0.40);
+      color:#0b1220;
+    }
+    #accessibility-overlay .overlay-title,
+    #accessibility-overlay .overlay-version,
+    #accessibility-overlay label{
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+
     .overlay-panel{
       width:90%;
       max-width:420px;
-      background:#ffffff;
       border-radius:18px;
       padding:18px 16px 20px;
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
       border:1px solid rgba(229,231,235,0.9);
+      background:#ffffff;
     }
     .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
     .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
@@ -784,7 +815,6 @@
     .overlay-close{
       width:34px;
       height:34px;
-      border-radius:999px;
       cursor:pointer;
       font-size:18px;
       line-height:1;
@@ -803,20 +833,21 @@
     }
     .settings-lang{
       border-radius:999px;
-      border:1px solid #d1d5db;
+      border:1px solid rgba(15,23,42,0.14);
       padding:6px 10px;
       font-size:12px;
-      background:rgba(7,237,218,0.10);
+      background:rgba(255,255,255,0.65);
       width:100%;
       max-width:240px;
     }
+
     .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
     .toggle-input{
       width:42px;
       height:22px;
       border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#e5e7eb;
+      border:1px solid rgba(15,23,42,0.14);
+      background:rgba(255,255,255,0.65);
       position:relative;
       cursor:pointer;
       flex:0 0 auto;
@@ -833,19 +864,11 @@
     .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
     .toggle-input.active span{ transform:translateX(20px); }
 
-    /* MOBILE: regular layout, NO FRAMES AT ALL */
+    /* MOBILE: no side frames */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
-      .frame-wrap{
-        width:100% !important;
-        margin:0 !important;
-      }
-      .top-banner,
-      .site-header,
-      .top-sep,
-      main,
-      .bottom-sep,
-      footer{
+      .frame-wrap{ width:100% !important; margin:0 !important; }
+      .top-banner, .site-header, .top-sep, main, .bottom-sep, footer{
         border-left:none !important;
         border-right:none !important;
       }
@@ -958,7 +981,8 @@ FOR RICKY
       <div class="content-wrapper">
         <section id="hero">
           <div class="hero-left">
-            <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
+            <!-- CHANGED -->
+            <div class="hero-kicker">Created by August Kokus</div>
 
             <h1 class="hero-title">
               <span class="line1">The future of food grows</span>
@@ -1036,7 +1060,7 @@ FOR RICKY
               </article>
 
               <article class="product-card" data-name="instant mayanut latte drink">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="Instant MayaNut latte concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1053,7 +1077,7 @@ FOR RICKY
               </article>
 
               <article class="product-card" data-name="mayanut baking blend">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut baking blend concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1070,7 +1094,7 @@ FOR RICKY
               </article>
 
               <article class="product-card" data-name="cold mayanut drink">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="Cold MayaNut drink concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1087,7 +1111,7 @@ FOR RICKY
               </article>
 
               <article class="product-card extra-product" data-name="mayanut espresso blend">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut espresso blend concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1104,7 +1128,7 @@ FOR RICKY
               </article>
 
               <article class="product-card extra-product" data-name="mayanut energy bar">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut energy bar concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1121,7 +1145,7 @@ FOR RICKY
               </article>
 
               <article class="product-card extra-product" data-name="mayanut ice cream">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut ice cream concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1138,7 +1162,7 @@ FOR RICKY
               </article>
 
               <article class="product-card extra-product" data-name="mayanut granola">
-                <img src="mayanut-the-mayanut-comapny-logo.png"
+                <img src="mayanut-the-maya-nut-company-logo.png"
                      alt="MayaNut granola concept"
                      loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1157,7 +1181,7 @@ FOR RICKY
           </aside>
         </section>
 
-        <!-- OUR TREES (restored) -->
+        <!-- OUR TREES -->
         <section id="our-trees" aria-label="Our trees">
           <div class="trees-head">
             <div class="trees-kicker">Our Trees</div>
@@ -1235,7 +1259,7 @@ FOR RICKY
     </footer>
   </div>
 
-  <!-- Accessibility button (kept blue) -->
+  <!-- Accessibility button stays blue -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5.25" r="2"></circle>
@@ -1253,7 +1277,7 @@ FOR RICKY
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.0.2</div>
+          <div class="overlay-version">Version 3.1.2</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>
@@ -1462,9 +1486,12 @@ FOR RICKY
       viewFullStore.addEventListener('click', ()=>toggleStore(false));
       setStoreButtonLabel();
     }
+
+    // IMPORTANT: top nav STORE forces full displayed store (as you asked)
     if(navStore){
       navStore.addEventListener('click', (e)=>{ e.preventDefault(); toggleStore(true); });
     }
+
     const navStoreMobile = document.getElementById('nav-store-mobile');
     if(navStoreMobile){
       navStoreMobile.addEventListener('click', (e)=>{

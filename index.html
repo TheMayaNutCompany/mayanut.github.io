@@ -28,99 +28,76 @@
 
   <style>
     :root{
-      /* Color discipline */
-      --brand-green:#1a6800;            /* accents + store bg only */
-      --cta-orange:#fd6c02;             /* CTAs only */
-      --parchment-top:#fbf5ea;          /* global tan background */
-      --parchment-bottom:#f1e1c9;
+      /* COLOR DISCIPLINE */
+      --brand-green:#1a6800;     /* accents only + store background only */
+      --cta-orange:#FD6C02;      /* CTAs only */
+      --tan-top:#F3E6D1;         /* global background */
+      --tan-bottom:#E7CFAE;
 
-      /* Text neutrals (no brown UI) */
-      --text-heading:#0b0f14;
-      --text-body:#1f2937;
+      --text-heading:#0b0f14;    /* near-black */
+      --text-body:#1f2937;       /* dark neutral */
       --text-muted:#4b5563;
 
-      /* Lines / frame */
-      --line: rgba(15,23,42,0.12);
-      --frameBorder: 2px;
       --frame-line: rgba(26,104,0,0.92);
+      --frameBorder: 2px;
+      --line: rgba(15,23,42,0.12);
       --shadow: 0 18px 55px rgba(15,23,42,0.16);
 
-      /* Layout */
       --sideW: 170px;
 
-      /* Radii consistency */
-      --radius-card: 18px;
+      --radius-card: 14px;
       --radius-panel: 22px;
       --radius-btn: 999px;
 
-      /* Store background: subtle vertical lime -> dark green */
-      --store-g1:#d8ff6a;
-      --store-g2:#7ae78a;
-      --store-g3:#1a6800;
+      /* STORE-ONLY GREEN GRADIENT */
+      --store-g1:#B8FF4A;
+      --store-g2:#3FDC71;
+      --store-g3:#0C5A2A;
 
-      /* Card surface over store green */
-      --card-surface: rgba(255,255,255,0.82);
-      --card-border: rgba(15,23,42,0.12);
-
-      /* CTA sizing */
-      --cta-pad-y: 10px;
-      --cta-pad-x: 14px;
-      --cta-min-h: 38px;
+      /* MATCH BUTTON SIZES */
+      --qtyBtn: 44px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
+    img{ max-width:100%; height:auto; display:block; }
 
-    /* Tan gradient must never cut off */
-    html, body{
-      height:100%;
-      min-height:100vh;
-      background: linear-gradient(to bottom, var(--parchment-top) 0%, var(--parchment-bottom) 100%);
-    }
-
+    /* =========================
+       CONTINUOUS TAN GRADIENT (GLOBAL)
+       ========================= */
+    html, body { min-height: 100%; height:auto; overflow-x:hidden; }
     body{
+      margin:0;
+      background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan-bottom) 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-color: var(--tan-top);
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color:var(--text-body);
-      -webkit-font-smoothing:antialiased;
+      color: var(--text-body);
+      -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
     }
 
-    img{ max-width:100%; display:block; }
-    button{ -webkit-tap-highlight-color: transparent; }
+    /* ENSURE WRAPPERS DON’T OVERRIDE BACKGROUND */
+    main, .main, .page, .container, .content, .wrapper, #app, #root{
+      background: transparent !important;
+    }
 
     .visually-hidden{
       position:absolute; width:1px; height:1px; padding:0; margin:-1px;
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
-    /* Full-height side frames (seed imagery only; no extra UI browns) */
-    .side-frames{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-    }
+    /* =========================
+       SIDE FRAMES (seed imagery only)
+       ========================= */
+    .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{
-      position:absolute;
-      top:0; bottom:0;
-      width:var(--sideW);
-      overflow:hidden;
-      background:#ffffff;
-      pointer-events:none;
+      position:absolute; top:0; bottom:0; width:var(--sideW);
+      overflow:hidden; background:#ffffff; pointer-events:none;
     }
-    .side.left{
-      left:0;
-      border-right: var(--frameBorder) solid var(--frame-line);
-    }
-    .side.right{
-      right:0;
-      border-left: var(--frameBorder) solid var(--frame-line);
-    }
-    .stack{
-      position:absolute;
-      inset:0;
-      display:flex;
-      flex-direction:column;
-    }
+    .side.left{ left:0; border-right: var(--frameBorder) solid var(--frame-line); }
+    .side.right{ right:0; border-left: var(--frameBorder) solid var(--frame-line); }
+    .stack{ position:absolute; inset:0; display:flex; flex-direction:column; }
     .stack img{
       width:100%;
       height:220px;
@@ -128,20 +105,20 @@
       object-fit:cover;
       border:0;
       box-shadow:none;
-      filter:none;
     }
 
     .frame-wrap{
-      position:relative;
-      z-index:2;
+      position:relative; z-index:2;
       width: calc(100vw - (var(--sideW) * 2));
       margin-left: var(--sideW);
       margin-right: var(--sideW);
       min-height:100vh;
-      background: transparent; /* must not override tan */
+      background: transparent;
     }
 
-    /* Banner (subtle separation, no big green blocks) */
+    /* =========================
+       BANNER
+       ========================= */
     .top-banner{
       width:100%;
       background: rgba(255,255,255,0.40);
@@ -151,6 +128,7 @@
       align-items:center;
       justify-content:center;
       text-align:center;
+
       font-size:12px;
       letter-spacing:0.10em;
       text-transform:uppercase;
@@ -172,16 +150,18 @@
     .top-banner a{
       color: var(--brand-green);
       text-decoration:none;
-      border-bottom:1px solid rgba(26,104,0,0.45);
+      border-bottom:1px solid rgba(26,104,0,0.35);
       font-weight:900;
-      transition: border-color .12s ease, color .12s ease;
+      transition: color .12s ease, border-color .12s ease;
     }
     .top-banner a:hover{
-      border-bottom-color: rgba(26,104,0,0.70);
       color: rgba(26,104,0,0.88);
+      border-bottom-color: rgba(26,104,0,0.70);
     }
 
-    /* Header */
+    /* =========================
+       HEADER
+       ========================= */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -254,14 +234,20 @@
       color: var(--text-heading);
       font-weight:900;
       display:inline-block;
-      transition: color 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
       white-space:nowrap;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
       padding-bottom:2px;
       border-bottom:2px solid transparent;
+      transition: transform .12s ease, color .12s ease, border-color .12s ease;
     }
-    .main-nav a:hover{ transform:scale(1.05); color: var(--brand-green); }
-    .main-nav a.is-active{ border-bottom-color: var(--brand-green); color: var(--brand-green); }
+    .main-nav a:hover{
+      transform:scale(1.05);
+      color: var(--brand-green);
+    }
+    .main-nav a.is-active{
+      border-bottom-color: var(--brand-green);
+      color: var(--brand-green);
+    }
 
     .header-right{
       width:44px;
@@ -291,21 +277,22 @@
       background:#0f172a;
     }
 
-    /* Main panel must not override tan background with solid color */
+    /* =========================
+       MAIN WRAPPER
+       ========================= */
     main{
       position:relative;
       z-index:1;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow: var(--shadow);
-      background: transparent; /* key fix */
+      background: transparent;
     }
-
     .content-wrapper{
       padding:30px 22px 34px;
       width:100%;
       overflow-x:hidden;
-      background: transparent; /* key fix */
+      background: transparent;
     }
 
     #hero{
@@ -334,11 +321,12 @@
       font-weight:900;
     }
 
+    /* Headings serif */
     .hero-title{
-      font-family: "Playfair Display", Georgia, serif;
+      font-family:"Playfair Display", Georgia, serif;
       font-weight:800;
       letter-spacing:0.02em;
-      color:var(--text-heading);
+      color: var(--text-heading);
       line-height:1.06;
       font-size:clamp(22px, 2.5vw, 32px);
       text-align:left;
@@ -348,16 +336,17 @@
     .hero-title .line3{
       display:inline-block;
       margin-top:8px;
-      color:var(--brand-green);
+      color: var(--brand-green);
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
       font-weight:800;
-      padding-left:2px;
-      padding-right:1px;
+      padding-left:6px;  /* prevents left-side R clipping */
+      padding-right:2px;
+      overflow:visible;
     }
 
-    /* Standardized image style */
+    /* Standardize image presentation (no mixed shadows) */
     .hero-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -366,37 +355,43 @@
       margin-top:2px;
       max-width:520px;
     }
-    .hero-images img,
-    .trees-card img{
+    .hero-images img{
       width:100%;
+      aspect-ratio: 4 / 3;
       border-radius:14px;
       object-fit:cover;
-      border: 1px solid rgba(15,23,42,0.10);
+      border:1px solid rgba(15,23,42,0.10);
       box-shadow:none;
-      background: transparent;
+      background:transparent;
     }
-    .hero-images img{ aspect-ratio: 4 / 3; }
 
     .hero-sub{
       font-size:14px;
       line-height:1.9;
       color: var(--text-body);
-      max-width: 760px;
+      max-width:760px;
       font-weight:500;
     }
 
-    .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .btn-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
 
-    /* CTA buttons: solid orange only; consistent hover (slight shade shift) */
+    /* =========================
+       CTA BUTTONS (orange only)
+       ========================= */
     .btn,
     .btn-secondary,
-    .store-view-full,
-    .product-add-btn{
-      border: none;
+    .view-store-btn,
+    .btn-add{
+      border:none;
       outline:none;
       box-shadow:none;
       background: var(--cta-orange);
-      color: #ffffff;
+      color:#fff;
       font-weight:900;
       border-radius: var(--radius-btn);
       cursor:pointer;
@@ -404,21 +399,23 @@
       background-clip: padding-box;
     }
     .btn, .btn-secondary{
-      padding: 10px 16px;
-      min-height: var(--cta-min-h);
+      padding:10px 16px;
+      min-height:38px;
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.14em;
     }
     .btn:hover,
     .btn-secondary:hover,
-    .store-view-full:hover,
-    .product-add-btn:hover{
-      filter: brightness(0.94);
-      transform: translateY(-1px);
+    .view-store-btn:hover,
+    .btn-add:hover{
+      filter:brightness(0.94);
+      transform:translateY(-1px);
     }
 
-    /* OUR TREES */
+    /* =========================
+       OUR TREES (added back)
+       ========================= */
     #trees{
       max-width:1200px;
       margin:22px auto 0;
@@ -429,7 +426,7 @@
       padding:16px 16px 14px;
     }
     .trees-title{
-      font-family: "Playfair Display", Georgia, serif;
+      font-family:"Playfair Display", Georgia, serif;
       font-size:16px;
       font-weight:700;
       letter-spacing:0.06em;
@@ -449,7 +446,14 @@
       border:1px solid rgba(15,23,42,0.10);
       background: rgba(255,255,255,0.55);
     }
-    .trees-card img{ aspect-ratio: 4 / 3; }
+    .trees-card img{
+      width:100%;
+      aspect-ratio: 4 / 3;
+      object-fit:cover;
+      border:0;
+      box-shadow:none;
+      background:transparent;
+    }
     .trees-cap{
       padding:10px 10px 12px;
       font-size:12px;
@@ -459,16 +463,22 @@
     }
     .trees-cap strong{ color: var(--text-heading); }
 
-    /* STORE: restore subtle vertical lime -> dark green gradient on STORE only */
-    #store-panel{
+    /* =========================
+       STORE (store-page + store-container)
+       ========================= */
+    .store-page{
+      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 45%, var(--store-g3) 100%);
+      background-repeat:no-repeat;
+      background-size:100% 100%;
+    }
+
+    #store-panel.store-container{
       border-radius: var(--radius-panel);
       border:1px solid rgba(255,255,255,0.38);
-      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 52%, var(--store-g3) 100%);
       padding:16px 14px 18px;
       display:flex;
       flex-direction:column;
       gap:10px;
-      transition:transform .35s ease, opacity .25s ease;
       position:relative;
       z-index:2;
       box-shadow:none;
@@ -492,20 +502,22 @@
       display:flex;
       gap:8px;
       align-items:center;
+      width:100%;
+      max-width:100%;
     }
 
-    /* VIEW STORE button: also orange CTA */
-    .store-view-full{
+    .view-store-btn{
       flex:0 0 25%;
-      padding: var(--cta-pad-y) var(--cta-pad-x);
-      min-height: var(--cta-min-h);
+      padding:10px 14px;
+      min-height:38px;
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.12em;
       text-align:center;
+      white-space:nowrap;
     }
 
-    .store-search{ flex:1; position:relative; }
+    .store-search{ flex:1; position:relative; min-width:0; }
     .store-search input{
       width:100%;
       padding:9px 46px 9px 10px;
@@ -534,7 +546,11 @@
       transition: filter .12s ease;
     }
     .store-search-send:hover{ filter: brightness(0.97); }
-    .store-search-send .search-x{ width:14px; height:14px; font-size:16px; color:var(--text-body); display:inline-flex; align-items:center; justify-content:center; }
+    .store-search-send .search-x{
+      width:14px; height:14px; font-size:16px;
+      color:var(--text-body);
+      display:inline-flex; align-items:center; justify-content:center;
+    }
     .store-search-send .search-divider{ width:1px; height:14px; background:rgba(15,23,42,0.18); }
     .store-search-send .search-icon{ width:12px; height:12px; stroke:var(--text-body); fill:none; stroke-width:2; }
 
@@ -543,28 +559,28 @@
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
       gap:12px;
+      width:100%;
+      max-width:100%;
     }
 
-    /* Product cards: readable on green (light neutral surface) */
+    /* PRODUCT CARDS readable on green */
     .product-card{
+      background: rgba(255,255,255,0.92);
       border-radius: var(--radius-card);
-      background: var(--card-surface);
-      border:1px solid var(--card-border);
+      border:1px solid rgba(15,23,42,0.12);
       padding:12px 12px 14px;
+
       display:flex;
       flex-direction:column;
       align-items:center;
       text-align:center;
       justify-content:space-between;
+
       transition: filter .12s ease, transform .12s ease;
-      min-height:220px;
-      overflow:hidden;
       box-shadow:none;
+      overflow:hidden;
     }
-    .product-card:hover{
-      filter: brightness(0.985);
-      transform: translateY(-2px);
-    }
+    .product-card:hover{ filter: brightness(0.985); transform: translateY(-2px); }
 
     .product-card img{
       width:110px;
@@ -575,7 +591,7 @@
       margin-bottom:10px;
       border:1px solid rgba(15,23,42,0.10);
       box-shadow:none;
-      background: transparent;
+      background:transparent;
     }
 
     .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.12); margin-bottom:8px; }
@@ -594,50 +610,85 @@
       font-weight:500;
     }
 
-    .product-controls{ width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .product-controls{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      flex-wrap:nowrap;
+    }
 
-    /* Qty control neutral */
+    /* MATCH BUTTON SIZES: ADD == - == + */
+    .qty-minus, .qty-plus, .btn-add{
+      width: var(--qtyBtn);
+      height: var(--qtyBtn);
+      min-width: var(--qtyBtn);
+      min-height: var(--qtyBtn);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      border-radius:12px;
+      line-height:1;
+      font-weight:800;
+      border:none;
+      box-shadow:none;
+    }
+
+    /* -/+ boxes: flat transparent orange (orange used only for actions) */
+    .qty-minus, .qty-plus{
+      background: rgba(253,108,2,0.18);
+      color: var(--text-body);
+      cursor:pointer;
+      transition: filter .12s ease;
+    }
+    .qty-minus:hover, .qty-plus:hover{ filter: brightness(0.96); }
+
     .qty-control{
       display:inline-flex;
       align-items:center;
-      border-radius: var(--radius-btn);
+      gap:8px;
+      border-radius:14px;
       border:1px solid rgba(15,23,42,0.12);
       background: rgba(255,255,255,0.55);
-      padding:4px 8px;
-      font-size:12px;
-      flex:1;
-      max-width:120px;
-      justify-content:space-between;
+      padding:6px 8px;
     }
-    .qty-btn{ border:none; background:transparent; cursor:pointer; font-size:14px; line-height:1; padding:0 4px; color: var(--text-body); font-weight:900; }
-    .qty-value{ min-width:18px; text-align:center; font-weight:900; color: var(--text-heading); }
+    .qty-value{
+      min-width:22px;
+      text-align:center;
+      font-weight:900;
+      color: var(--text-heading);
+    }
 
-    /* Add button bigger + consistent */
-    .product-add-btn{
-      flex:1;
-      padding: var(--cta-pad-y) var(--cta-pad-x);
-      min-height: var(--cta-min-h);
+    /* ORANGE ADD CTA (square, same size) */
+    .btn-add{
+      background: var(--cta-orange);
+      color:#fff;
+      cursor:pointer;
       font-size:11px;
-      letter-spacing:0.12em;
+      letter-spacing:0.08em;
       text-transform:uppercase;
+      transition: filter .12s ease, transform .12s ease;
     }
 
-    /* Exactly 8 products: no extra/pagination UI */
-    .product-card.extra-product{ display:flex; opacity:1; }
+    /* show/hide cards for 4/8 logic */
+    .product-card.is-hidden{ display:none !important; }
 
-    /* Expanded store layout (desktop): still show 8 (already) */
+    /* Expand-to-the-left behavior preserved (desktop) */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
         top:0; left:0; right:0;
         z-index:5;
-        box-shadow:none;
       }
       body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* Footer */
+    /* =========================
+       FOOTER (logo fix)
+       ========================= */
     footer{
       width:100%;
       background: rgba(255,255,255,0.38);
@@ -646,9 +697,8 @@
       border-right: var(--frameBorder) solid var(--frame-line);
       border-bottom: var(--frameBorder) solid var(--frame-line);
       border-top: 1px solid var(--line);
-      color: var(--text-body);
       backdrop-filter: blur(6px);
-      overflow: visible; /* prevent clipping */
+      overflow: visible; /* prevents cropping */
     }
     .footer-inner{
       display:grid;
@@ -663,43 +713,35 @@
     .footer-center{ text-align:center; }
     .footer-right{ text-align:right; display:flex; justify-content:flex-end; align-items:center; gap:10px; }
 
-    .footer-links{
-      margin-top:6px;
-      font-size:11px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .footer-links{ margin-top:6px; font-size:11px; display:flex; gap:10px; flex-wrap:wrap; }
     .footer-links a{
       color: var(--brand-green);
       text-decoration:none;
       border-bottom:1px solid rgba(26,104,0,0.35);
       font-weight:800;
-      transition: border-color .12s ease, color .12s ease;
+      transition: color .12s ease, border-color .12s ease;
     }
     .footer-links a:hover{
-      border-bottom-color: rgba(26,104,0,0.70);
       color: rgba(26,104,0,0.88);
+      border-bottom-color: rgba(26,104,0,0.70);
     }
 
-    /* Fix bottom/footer logo: no stretch/crop/blurry */
+    /* Footer logo image: NOT stretched/cropped */
     .footer-logo{
-      display:inline-flex;
+      display:flex;
       align-items:center;
       justify-content:center;
       width:100%;
-      max-width:120px;
-      margin:0 auto;
     }
     .footer-logo img{
-      width:100%;
-      max-width:90px;
+      display:block;
+      margin: 10px auto 0;
+      max-width: 220px;
+      width: 60%;
       height:auto;
-      object-fit:contain;
-      image-rendering:auto;
+      object-fit: contain;
       border:0;
       box-shadow:none;
-      display:block;
     }
 
     .footer-instagram, .footer-email{
@@ -720,22 +762,22 @@
       stroke-width:2;
       stroke-linecap:round;
       stroke-linejoin:round;
-      transition: stroke 0.12s ease;
+      transition: stroke .12s ease;
     }
-    .footer-instagram:hover svg, .footer-email:hover svg{
-      stroke: rgba(26,104,0,0.85);
-    }
+    .footer-instagram:hover svg, .footer-email:hover svg{ stroke: rgba(26,104,0,0.85); }
 
-    /* Accessibility button (CTA orange) */
+    /* =========================
+       ACCESSIBILITY BUTTON + OVERLAYS
+       ========================= */
     .accessibility-btn{
       position:fixed;
       right:18px;
       bottom:18px;
       width:48px;
       height:48px;
-      border-radius: var(--radius-btn);
+      border-radius:999px;
       border:none;
-      background: var(--cta-orange);
+      background: var(--cta-orange); /* orange action */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -748,9 +790,8 @@
     .accessibility-btn svg{
       width:26px;
       height:26px;
-      display:block;
       fill:none;
-      stroke:#ffffff;
+      stroke:#fff;
       stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
@@ -769,8 +810,7 @@
     }
     .overlay.active{ display:flex; }
 
-    #accessibility-overlay .overlay-panel,
-    #mobile-menu-overlay .overlay-panel{
+    .overlay-panel{
       width:90%;
       max-width:420px;
       border-radius:18px;
@@ -781,7 +821,12 @@
       color: var(--text-body);
     }
 
-    .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .overlay-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
     .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
     .overlay-title{
       font-family:"Playfair Display", Georgia, serif;
@@ -796,7 +841,14 @@
       text-transform:uppercase;
       font-weight:800;
     }
-    .overlay-close{ border:none; background:transparent; font-size:18px; cursor:pointer; line-height:1; color: var(--text-muted); }
+    .overlay-close{
+      border:none;
+      background:transparent;
+      font-size:18px;
+      cursor:pointer;
+      line-height:1;
+      color: var(--text-muted);
+    }
 
     .settings-row{
       margin-bottom:12px;
@@ -805,11 +857,13 @@
       justify-content:space-between;
       align-items:center;
       gap:10px;
-      color: var(--text-body);
     }
-    #accessibility-overlay label{ font-weight:800; color: var(--text-heading); }
-    #accessibility-overlay .settings-lang{
-      border-radius: var(--radius-btn);
+    #accessibility-overlay label{
+      font-weight:800;
+      color: var(--text-heading);
+    }
+    .settings-lang{
+      border-radius:999px;
       border:1px solid rgba(15,23,42,0.12);
       padding:7px 10px;
       font-size:12px;
@@ -819,12 +873,11 @@
       outline:none;
       color: var(--text-body);
     }
-
     .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
     .toggle-input{
       width:42px;
       height:22px;
-      border-radius: var(--radius-btn);
+      border-radius:999px;
       border:1px solid rgba(15,23,42,0.12);
       background:rgba(255,255,255,0.70);
       position:relative;
@@ -833,30 +886,60 @@
     }
     .toggle-input span{
       position:absolute;
-      top:2px; left:2px;
-      width:18px; height:18px;
-      border-radius: var(--radius-btn);
-      background:#ffffff;
+      top:2px;
+      left:2px;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:#fff;
       transition:transform 0.2s ease;
       box-shadow:0 2px 8px rgba(15,23,42,0.18);
     }
     .toggle-input.active{ background: rgba(26,104,0,0.20); border-color: rgba(26,104,0,0.40); }
     .toggle-input.active span{ transform:translateX(20px); }
 
-    /* Responsive */
+    /* =========================
+       MOBILE SAFETY (no horizontal overflow)
+       ========================= */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
-      .top-banner, .site-header, .top-sep, main, .bottom-sep, footer{
+
+      .top-banner,
+      .site-header,
+      .top-sep,
+      main,
+      .bottom-sep,
+      footer{
         border-left:none !important;
         border-right:none !important;
       }
-      .top-banner{ padding:12px 12px; }
+
       .top-banner .banner-inner{
         flex-direction:column;
         gap:6px;
       }
-      .top-banner .banner-text{ white-space:normal; line-height:1.25; }
+
+      #hero{ display:flex; flex-direction:column; gap:18px; }
+      #store-panel{ order:1; }
+      .hero-left{ order:2; }
+
+      .main-nav{ display:none; }
+      .mobile-menu-btn{ display:flex; }
+      .header-right{ width:auto; }
+
+      .store-grid{
+        display:grid;
+        grid-template-columns: 1fr; /* vertical, no right overflow */
+        gap:14px;
+      }
+
+      .hero-images{ grid-template-columns:1fr; }
+      .trees-grid{ grid-template-columns:1fr; }
+
+      .footer-inner{ grid-template-columns:1fr; row-gap:8px; text-align:center; }
+      .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
+      .footer-links{ justify-content:center; }
     }
 
     @media(max-width:980px){
@@ -867,37 +950,6 @@
         margin-left: var(--sideW);
         margin-right: var(--sideW);
       }
-    }
-
-    @media(max-width:880px){
-      #hero{ display:flex; flex-direction:column; }
-      #store-panel{ order:1; }
-      .hero-left{ order:2; }
-      .main-nav{ display:none; }
-      .mobile-menu-btn{ display:flex; }
-      .header-right{ width:auto; }
-
-      /* Mobile store vertical; keep within panel (no overflow right) */
-      .store-grid{
-        display:flex;
-        flex-direction:column;
-        gap:12px;
-      }
-      .product-card{ width:100%; min-height:unset; }
-
-      /* No pagination / load-more behavior */
-    }
-
-    @media(max-width:520px){
-      .hero-images{ grid-template-columns:1fr; }
-      .trees-grid{ grid-template-columns:1fr; }
-    }
-
-    @media(max-width:780px){
-      .footer-inner{ grid-template-columns:1fr; row-gap:8px; text-align:center; }
-      .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
-      .footer-links{ justify-content:center; }
-      .footer-logo{ max-width:120px; }
     }
   </style>
 </head>
@@ -977,12 +1029,8 @@ FOR RICKY
             </div>
 
             <p class="hero-sub">
-              MayaNut (Maya Nut) is the roasted tree-seed of
-              <em>Brosimum alicastrum</em>, a tropical fruit tree in the
-              jackfruit family that helped feed ancient
-              Mayan communities — a true
-              superfood almost unknown to the modern world until
-              TODAY!
+              MayaNut (Maya Nut) is the roasted tree-seed of <em>Brosimum alicastrum</em>, a tropical fruit tree that helped
+              feed ancient Mayan communities — a resilient, tree-based food crop being rediscovered today.
             </p>
 
             <div class="btn-row" style="margin-top:6px;">
@@ -998,7 +1046,7 @@ FOR RICKY
                        alt="Young MayaNut trees in nursery pots"
                        loading="lazy" decoding="async" />
                   <div class="trees-cap">
-                    <strong>Seed-grown diversity:</strong> we’re selecting for vigor, canopy, and future yield.
+                    <strong>Seed-grown diversity:</strong> selecting for vigor, canopy, and future yield.
                   </div>
                 </div>
                 <div class="trees-card">
@@ -1014,20 +1062,21 @@ FOR RICKY
                        alt="MayaNut fruit and seed source potential"
                        loading="lazy" decoding="async" />
                   <div class="trees-cap">
-                    <strong>Future selection:</strong> taste, performance, and resilience are tracked over time.
+                    <strong>Future selection:</strong> taste, performance, and resilience tracked over time.
                   </div>
                 </div>
               </div>
             </section>
           </div>
 
-          <aside id="store-panel" aria-label="Future store preview">
+          <!-- STORE: classes added per your implementation instructions -->
+          <aside id="store-panel" class="store-page store-container" aria-label="Future store preview">
             <div class="store-header-row">
               <div class="store-title">STORE - COMING SOON!</div>
             </div>
 
             <div class="store-tools">
-              <button id="store-view-full" class="store-view-full" type="button">VIEW STORE</button>
+              <button id="store-view-full" class="view-store-btn" type="button">VIEW STORE</button>
 
               <div class="store-search">
                 <input id="store-search" type="text" placeholder="Search future products…" />
@@ -1043,132 +1092,124 @@ FOR RICKY
             </div>
 
             <div class="store-grid" id="store-grid">
-              <!-- Exactly 8 products; ALL use powder image placeholder -->
+              <!-- 8 TOTAL PRODUCTS (all images forced to powder by JS) -->
               <article class="product-card" data-name="mayanut powder brosimum alicastrum">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut powder concept product" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Powder</div>
                 <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="powder">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="instant mayanut latte drink">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="Instant MayaNut latte concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Instant MayaNut Latte</div>
                 <p class="product-text">Future drink mix for warm, creamy cups.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="latte">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="mayanut baking blend">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut baking blend concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Baking Blend</div>
                 <p class="product-text">Blend concept for cookies, bars, and breads.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="cold mayanut drink">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="Cold MayaNut drink concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Cold MayaNut Drink</div>
                 <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="mayanut espresso blend">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut espresso blend concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Espresso Blend</div>
                 <p class="product-text">Deeper roast concept with caramel notes.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="espresso">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="mayanut energy bar">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut energy bar concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Energy Bar</div>
                 <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="bars">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="mayanut ice cream">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut ice cream concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Ice Cream</div>
                 <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="icecream">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
 
               <article class="product-card" data-name="mayanut granola">
-                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut granola concept" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Granola</div>
                 <p class="product-text">Breakfast granola concept built around MayaNut.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="granola">
-                    <button class="qty-btn qty-minus" type="button">−</button>
+                    <button class="qty-minus" type="button">−</button>
                     <span class="qty-value">1</span>
-                    <button class="qty-btn qty-plus" type="button">+</button>
+                    <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="product-add-btn" type="button">ADD</button>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
               </article>
             </div>
@@ -1191,7 +1232,8 @@ FOR RICKY
 
         <div class="footer-center">
           <a href="#top" class="footer-logo" id="footer-logo" aria-label="Back to top">
-            <img src="mayanut-the-maya-nut-company-logo.png"
+            <img class="footer-logo"
+                 src="mayanut-the-maya-nut-company-logo.png"
                  alt="The MayaNut Company logo (footer)"
                  loading="lazy" decoding="async" />
           </a>
@@ -1216,6 +1258,7 @@ FOR RICKY
     </footer>
   </div>
 
+  <!-- ACCESSIBILITY BUTTON -->
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5.25" r="2"></circle>
@@ -1228,6 +1271,7 @@ FOR RICKY
     </svg>
   </button>
 
+  <!-- ACCESSIBILITY OVERLAY -->
   <div class="overlay" id="accessibility-overlay" aria-hidden="true">
     <div class="overlay-panel">
       <div class="overlay-header">
@@ -1268,6 +1312,7 @@ FOR RICKY
     </div>
   </div>
 
+  <!-- MOBILE MENU OVERLAY -->
   <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
     <div class="overlay-panel">
       <div class="overlay-header">
@@ -1287,6 +1332,7 @@ FOR RICKY
   </div>
 
   <script>
+    /* Side frames fill */
     (function fillSideStacks(){
       const src = "mayanuts-the-maya-nut-company-image.jpeg";
       const left = document.getElementById("stack-left");
@@ -1316,43 +1362,31 @@ FOR RICKY
       window.addEventListener("resize", build);
     })();
 
+    /* Footer year */
     const yearSpan = document.getElementById('year');
     if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
+    /* Top logo -> home */
     const topLogo = document.getElementById('logo-top');
     if(topLogo){
-      topLogo.addEventListener('click', (e)=>{
-        e.preventDefault();
-        window.location.href = 'index.html';
-      });
+      topLogo.addEventListener('click', (e)=>{ e.preventDefault(); window.location.href='index.html'; });
     }
 
-    const footerLogo = document.getElementById('footer-logo');
-    function scrollTopSmooth(e){
-      e.preventDefault();
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-    if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
-
+    /* Our Trees button scroll */
     const treesBtn = document.getElementById('btn-our-trees');
     const treesSection = document.getElementById('trees');
     if(treesBtn && treesSection){
-      treesBtn.addEventListener('click', ()=>{
-        treesSection.scrollIntoView({behavior:'smooth', block:'start'});
-      });
+      treesBtn.addEventListener('click', ()=> treesSection.scrollIntoView({behavior:'smooth', block:'start'}));
     }
 
+    /* Overlays */
     const accessBtn = document.getElementById('accessibility-btn');
     const accessOverlay = document.getElementById('accessibility-overlay');
-    if(accessBtn && accessOverlay){
-      accessBtn.addEventListener('click', ()=> accessOverlay.classList.add('active'));
-    }
+    if(accessBtn && accessOverlay) accessBtn.addEventListener('click', ()=> accessOverlay.classList.add('active'));
 
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    if(mobileMenuBtn && mobileMenuOverlay){
-      mobileMenuBtn.addEventListener('click', ()=> mobileMenuOverlay.classList.add('active'));
-    }
+    if(mobileMenuBtn && mobileMenuOverlay) mobileMenuBtn.addEventListener('click', ()=> mobileMenuOverlay.classList.add('active'));
 
     document.querySelectorAll('.overlay-close').forEach(btn=>{
       const targetId = btn.getAttribute('data-close');
@@ -1362,13 +1396,13 @@ FOR RICKY
         if(ov) ov.classList.remove('active');
       });
     });
-
     document.querySelectorAll('.overlay').forEach(ov=>{
       ov.addEventListener('click', e=>{
         if(e.target === ov) ov.classList.remove('active');
       });
     });
 
+    /* Accessibility toggles (persist) */
     const contrastToggle = document.getElementById('toggle-contrast');
     const textToggle = document.getElementById('toggle-large-text');
 
@@ -1412,6 +1446,7 @@ FOR RICKY
       });
     }
 
+    /* Language switch */
     const accessLang = document.getElementById('access-lang');
     if(accessLang){
       accessLang.addEventListener('change', ()=>{
@@ -1421,6 +1456,7 @@ FOR RICKY
       });
     }
 
+    /* Learn more navigation */
     document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
@@ -1428,98 +1464,112 @@ FOR RICKY
       });
     });
 
-    const navHome = document.getElementById('nav-home');
-    const navStore = document.getElementById('nav-store');
-    function setActiveTab(which){
-      if(navHome) navHome.classList.remove('is-active');
-      if(navStore) navStore.classList.remove('is-active');
-      if(which === 'store'){ if(navStore) navStore.classList.add('is-active'); }
-      else { if(navHome) navHome.classList.add('is-active'); }
-    }
-    setActiveTab('home');
+    /* =========================
+       STORE RULES (per your message)
+       1) Preview shows exactly 4
+       2) View Store expands to exactly 8 (then stops)
+       3) Tan background continuous (handled by CSS)
+       4) Add button same size as -/+
+       5) Footer logo not stretched/cropped (handled by CSS)
+       6) All product images forced to powder
+       7) Mobile no horizontal overflow
+       ========================= */
+    (() => {
+      const COLLAPSED_COUNT = 4;
+      const EXPANDED_COUNT  = 8;
 
-    // Store behavior: clicking STORE opens full displayed store (desktop)
-    function toggleStore(forceOpen=false){
-      const expanded = document.body.classList.contains('store-expanded');
-      if(forceOpen){
-        if(!expanded) document.body.classList.add('store-expanded');
-      } else {
-        document.body.classList.toggle('store-expanded');
+      // Set your powder image path here
+      const POWDER_IMG_SRC = 'mayanut-powder-maya-nut-brosimum-alicastrum.png';
+
+      const storeContainer = document.querySelector('.store-container');   // #store-panel has this class
+      const viewStoreBtn   = document.querySelector('.view-store-btn');   // VIEW STORE button
+      const productCards   = Array.from(document.querySelectorAll('.product-card'));
+      const productImgs    = Array.from(document.querySelectorAll('.product-card img'));
+
+      // Force all placeholders to powder image
+      productImgs.forEach(img => {
+        img.src = POWDER_IMG_SRC;
+        img.alt = 'MayaNut powder';
+        img.addEventListener('error', () => { img.src = POWDER_IMG_SRC; });
+      });
+
+      function showCount(n){
+        productCards.forEach((card, i) => {
+          card.classList.toggle('is-hidden', i >= n);
+        });
       }
-      setActiveTab(document.body.classList.contains('store-expanded') ? 'store' : 'home');
-    }
 
-    const viewFullStore = document.getElementById('store-view-full');
-    if(viewFullStore) viewFullStore.addEventListener('click', ()=>toggleStore(false));
-    if(navStore){
-      navStore.addEventListener('click', (e)=>{ e.preventDefault(); toggleStore(true); });
-    }
-    const navStoreMobile = document.getElementById('nav-store-mobile');
-    if(navStoreMobile){
-      navStoreMobile.addEventListener('click', (e)=>{
-        e.preventDefault();
-        toggleStore(true);
-        if(mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-      });
-    }
+      // Default collapsed view = 4
+      showCount(COLLAPSED_COUNT);
+      if (storeContainer) storeContainer.classList.remove('is-expanded');
+      document.body.classList.remove('store-expanded');
 
-    // Search + Ricky easter egg
-    const searchInput = document.getElementById('store-search');
-    const searchSend  = document.getElementById('store-search-send');
-    const clearBtn    = document.getElementById('store-search-clear');
+      const navHome = document.getElementById('nav-home');
+      const navStore = document.getElementById('nav-store');
 
-    const logoImg     = document.getElementById('logo-top');
-    const rickyText   = document.getElementById('ricky-text');
-    const originalLogoSrc = logoImg ? logoImg.getAttribute('src') : '';
-    let rickyTimeoutId = null;
-
-    function applyStoreFilter(){
-      if(!searchInput) return;
-      const q = (searchInput.value || '').toLowerCase().trim();
-
-      document.querySelectorAll('.product-card').forEach(card=>{
-        const name = (card.dataset.name || "").toLowerCase();
-        card.style.opacity = (!q || name.includes(q)) ? '1' : '0.35';
-      });
-
-      if(logoImg && rickyText && q.includes('ricky')){
-        rickyText.style.display = 'block';
-        logoImg.src = 'ricky.jpeg';
-        logoImg.alt = 'Ricky & The MayaNut Company';
-
-        if(rickyTimeoutId) clearTimeout(rickyTimeoutId);
-        rickyTimeoutId = setTimeout(()=>{
-          logoImg.src = originalLogoSrc;
-          logoImg.alt = 'The MayaNut Company logo';
-          rickyText.style.display = 'none';
-        }, 5000);
+      function setActiveTab(which){
+        if(navHome) navHome.classList.remove('is-active');
+        if(navStore) navStore.classList.remove('is-active');
+        if(which === 'store'){ if(navStore) navStore.classList.add('is-active'); }
+        else { if(navHome) navHome.classList.add('is-active'); }
       }
-    }
+      setActiveTab('home');
 
-    function clearSearch(){
-      if(!searchInput) return;
-      searchInput.value = '';
-      applyStoreFilter();
-      searchInput.focus();
-    }
+      function expandStore(){
+        showCount(EXPANDED_COUNT);
+        if (storeContainer) storeContainer.classList.add('is-expanded');
+        document.body.classList.add('store-expanded');
+        setActiveTab('store');
+      }
 
-    if(searchInput){
-      searchInput.addEventListener('input', applyStoreFilter);
-      searchInput.addEventListener('keydown', e=>{
-        if(e.key === 'Enter') applyStoreFilter();
-      });
-    }
-    if(clearBtn){
-      clearBtn.addEventListener('click', (e)=>{ e.stopPropagation(); clearSearch(); });
-    }
-    if(searchSend){
-      searchSend.addEventListener('click', (e)=>{
-        if(e.target && e.target.id === 'store-search-clear') return;
-        applyStoreFilter();
-      });
-    }
+      function collapseStore(){
+        showCount(COLLAPSED_COUNT);
+        if (storeContainer) storeContainer.classList.remove('is-expanded');
+        document.body.classList.remove('store-expanded');
+        setActiveTab('home');
+      }
 
-    // Qty controls
+      // View Store expands to 8; then toggles back (RETURN)
+      if (viewStoreBtn){
+        viewStoreBtn.addEventListener('click', () => {
+          const expanded = document.body.classList.contains('store-expanded');
+          if(!expanded){
+            expandStore();
+            viewStoreBtn.textContent = 'RETURN';
+          } else {
+            collapseStore();
+            viewStoreBtn.textContent = 'VIEW STORE';
+          }
+
+          // Remove any "View More" if present
+          const viewMoreBtn = document.querySelector('.view-more-btn');
+          if (viewMoreBtn) viewMoreBtn.style.display = 'none';
+        });
+      }
+
+      // Clicking STORE in nav goes to expanded store (and scrolls to it)
+      if (navStore){
+        navStore.addEventListener('click', (e) => {
+          e.preventDefault();
+          expandStore();
+          if(viewStoreBtn) viewStoreBtn.textContent = 'RETURN';
+          document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+        });
+      }
+
+      const navStoreMobile = document.getElementById('nav-store-mobile');
+      if (navStoreMobile){
+        navStoreMobile.addEventListener('click', (e)=>{
+          e.preventDefault();
+          expandStore();
+          if(viewStoreBtn) viewStoreBtn.textContent = 'RETURN';
+          if(mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+          document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+        });
+      }
+    })();
+
+    /* Quantity controls */
     document.querySelectorAll('.qty-control').forEach(control=>{
       const valueSpan = control.querySelector('.qty-value');
       control.addEventListener('click', (e)=>{
@@ -1531,18 +1581,10 @@ FOR RICKY
       });
     });
 
-    document.querySelectorAll('.product-add-btn').forEach(btn=>{
+    /* Add buttons */
+    document.querySelectorAll('.btn-add').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         alert('MayaNut products are coming soon! Thank you for your patience.');
-      });
-    });
-
-    // Fallback: if any product image fails, swap to powder image automatically
-    const POWDER_SRC = "mayanut-powder-maya-nut-brosimum-alicastrum.png";
-    document.querySelectorAll('img.product-img').forEach(img=>{
-      img.addEventListener('error', ()=>{
-        if(img.src.includes(POWDER_SRC)) return;
-        img.src = POWDER_SRC;
       });
     });
   </script>

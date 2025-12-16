@@ -149,7 +149,7 @@
     }
     .top-banner a:hover{ filter:brightness(0.92); transform:translateY(-1px); }
 
-    /* HEADER / TOP TAB (BACK TO IMAGE) */
+    /* HEADER / TOP TAB (IMAGE BACKGROUND) */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -235,42 +235,26 @@
       width:100%;
       overflow-x:hidden;
       background: transparent;
+    }
+
+    /* RESTORE LEFT/RIGHT LAYOUT */
+    #hero{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.08fr 1fr;
+      gap:26px;
       max-width:1200px;
       margin:0 auto;
+      overflow-x:hidden;
+      align-items:start;
     }
 
-    /* HERO "banner" background like menuart (behind hero content) */
-    .hero-banner{
-      border-radius: 22px;
-      border:1px solid rgba(15,23,42,0.10);
-      background-image:url("menuart-the-maya-nut-company-art.jpeg");
-      background-size:cover;
-      background-position:center;
-      background-repeat:no-repeat;
-      padding:22px 18px 18px;
-      overflow:hidden;
-    }
-    .hero-banner::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: rgba(255,255,255,0.62);
-      pointer-events:none;
-    }
-    .hero-banner-inner{
-      position:relative;
-      z-index:2;
+    .hero-left{
       display:flex;
       flex-direction:column;
-      gap:10px;
-    }
-
-    .hero-kicker{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      color:#334155;
-      font-weight:900;
+      gap:14px;
+      min-width:0;
+      background: transparent;
     }
 
     .hero-credit{
@@ -279,6 +263,14 @@
       text-transform:uppercase;
       font-weight:900;
       color:#334155;
+    }
+
+    .hero-kicker{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      color:#334155;
+      font-weight:900;
     }
 
     .hero-title{
@@ -292,23 +284,14 @@
       max-width: 820px;
     }
 
-    /* restore "three line text" (kicker/heading + short 3-line descriptor) */
-    .hero-three-lines{
-      font-size:14px;
-      line-height:1.9;
-      color: var(--text-body);
-      max-width: 900px;
-      font-weight:500;
-    }
-
-    /* images must be BELOW header area, and sit under hero banner */
+    /* images under header (hero) */
     .hero-images{
-      margin-top:14px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px;
       align-items:start;
       max-width:720px;
+      margin-top:6px;
     }
     .hero-images img{
       width:100%;
@@ -320,9 +303,8 @@
       background:transparent;
     }
 
-    /* updated paragraph below images */
     .hero-updated-paragraph{
-      margin-top:14px;
+      margin-top:4px;
       font-size:14px;
       line-height:1.9;
       color: var(--text-body);
@@ -331,8 +313,9 @@
     }
     .hero-updated-paragraph em{ font-style:italic; }
 
-    /* Buttons (orange CTAs only) */
-    .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
+    .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+
+    /* ORANGE CTAS ONLY */
     .btn, .btn-secondary, .view-store-btn, .btn-add{
       border:none; outline:none; box-shadow:none;
       background: var(--cta-orange);
@@ -355,16 +338,16 @@
       transform:translateY(-1px);
     }
 
-    /* STORE */
+    /* STORE (right side) */
     .store-page{
       background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 45%, var(--store-g3) 100%);
       background-repeat:no-repeat;
       background-size:100% 100%;
-      border-radius: 22px;
+      border-radius: var(--radius-panel);
     }
+
     #store-panel.store-container{
-      margin-top:18px;
-      border-radius: 22px;
+      border-radius: var(--radius-panel);
       border:1px solid rgba(255,255,255,0.38);
       padding:16px 14px 18px;
       display:flex;
@@ -388,7 +371,7 @@
     }
     .store-tools{ margin-top:8px; display:flex; gap:8px; align-items:center; width:100%; max-width:100%; }
     .view-store-btn{
-      flex:0 0 25%;
+      flex:0 0 28%;
       padding:10px 14px;
       min-height:38px;
       font-size:11px;
@@ -436,9 +419,10 @@
       width:100%;
       max-width:100%;
     }
+
     .product-card{
       background: rgba(255,255,255,0.92);
-      border-radius: 14px;
+      border-radius: var(--radius-card);
       border:1px solid rgba(15,23,42,0.12);
       padding:12px 12px 14px;
       display:flex;
@@ -449,6 +433,7 @@
       transition: filter .12s ease, transform .12s ease;
       box-shadow:none;
       overflow:hidden;
+      min-height: 230px;
     }
     .product-card:hover{ filter: brightness(0.985); transform: translateY(-2px); }
     .product-card img{
@@ -477,6 +462,8 @@
       margin-bottom:10px;
       font-weight:500;
     }
+
+    /* MATCH BUTTON SIZES: ADD == - == + */
     .product-controls{
       width:100%;
       display:flex;
@@ -529,20 +516,24 @@
       font-size:11px;
       letter-spacing:0.08em;
       text-transform:uppercase;
-      transition: filter .12s ease, transform .12s ease;
     }
+
     .product-card.is-hidden{ display:none !important; }
 
+    /* EXPAND BEHAVIOR (keeps your expand-to-the-left feel) */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
-        top:0; left:0; right:0;
+        top:0;
+        left:0;
+        right:0;
         z-index:5;
       }
       body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
+      body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* FOOTER (keep as-is: symmetric green gradient) */
+    /* FOOTER (symmetric green gradient) */
     footer{
       width:100%;
       background: var(--bar-grad);
@@ -637,7 +628,7 @@
       stroke-linejoin:round;
     }
 
-    /* OVERLAYS (keep symmetric green gradient) */
+    /* OVERLAYS (symmetric green gradient) */
     .overlay{
       position:fixed;
       inset:0;
@@ -778,6 +769,11 @@
 
       .top-banner .banner-inner{ flex-direction:column; gap:6px; }
 
+      /* stack hero/store vertically on mobile to avoid overflow */
+      #hero{ display:flex; flex-direction:column; }
+      #store-panel{ order:1; }
+      .hero-left{ order:2; }
+
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
       .header-right{ width:auto; }
@@ -822,7 +818,7 @@
 
     <header class="site-header" id="top">
       <div class="header-left">
-        <img src="mayanut-the-mayanut-comapny-logo.png"
+        <img src="mayanut-the-maya-nut-company-logo.png"
              alt="The MayaNut Company logo"
              id="logo-top" />
         <div class="ricky-text" id="ricky-text">
@@ -857,11 +853,10 @@ FOR RICKY
 
     <main>
       <div class="content-wrapper">
-        <!-- HERO: menuart-style background, with "Created by..." above the 3-line text -->
-        <section class="hero-banner" style="position:relative;">
-          <div class="hero-banner-inner">
+        <section id="hero">
+          <!-- LEFT -->
+          <div class="hero-left">
             <div class="hero-credit">Created by August Kokus</div>
-
             <div class="hero-kicker">MayaNut • Brosimum alicastrum</div>
 
             <h1 class="hero-title">
@@ -870,7 +865,6 @@ FOR RICKY
               Rediscovered.
             </h1>
 
-            <!-- Images below header/hero text -->
             <div class="hero-images">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
                    alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
@@ -880,7 +874,6 @@ FOR RICKY
                    loading="lazy" decoding="async" />
             </div>
 
-            <!-- Updated paragraph BELOW the images -->
             <div class="hero-updated-paragraph" aria-label="Project description">
               Over 200 seed-grown MayaNut (<em>Brosimum alicastrum</em>) trees are currently in cultivation.<br />
               We are developing MayaNut as an agricultural crop in Florida, United States, with an emphasis on seed-grown populations for long-term cultivation and domestication.<br />
@@ -892,152 +885,152 @@ FOR RICKY
               <button class="btn-secondary" data-nav="contact.html" type="button">Contact</button>
             </div>
           </div>
-        </section>
 
-        <!-- STORE (kept visually secondary; expands as requested) -->
-        <aside id="store-panel" class="store-page store-container" aria-label="Future store preview">
-          <div class="store-header-row">
-            <div class="store-title">STORE - COMING SOON!</div>
-          </div>
-
-          <div class="store-tools">
-            <button id="store-view-full" class="view-store-btn" type="button">VIEW STORE</button>
-
-            <div class="store-search">
-              <input id="store-search" type="text" placeholder="Search future products…" />
-              <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
-                <span class="search-x" id="store-search-clear" aria-label="Clear search" title="Clear">×</span>
-                <span class="search-divider" aria-hidden="true"></span>
-                <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="10" cy="10" r="5"></circle>
-                  <line x1="14" y1="14" x2="20" y2="20"></line>
-                </svg>
-              </button>
+          <!-- RIGHT -->
+          <aside id="store-panel" class="store-page store-container" aria-label="Future store preview">
+            <div class="store-header-row">
+              <div class="store-title">STORE - COMING SOON!</div>
             </div>
-          </div>
 
-          <div class="store-grid" id="store-grid">
-            <article class="product-card" data-name="mayanut powder brosimum alicastrum">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">MayaNut Powder</div>
-              <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="powder">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
-                </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
+            <div class="store-tools">
+              <button id="store-view-full" class="view-store-btn" type="button">VIEW STORE</button>
 
-            <article class="product-card" data-name="instant mayanut latte drink">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">Instant MayaNut Latte</div>
-              <p class="product-text">Future drink mix for warm, creamy cups.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="latte">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
-                </div>
-                <button class="btn-add" type="button">ADD</button>
+              <div class="store-search">
+                <input id="store-search" type="text" placeholder="Search future products…" />
+                <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
+                  <span class="search-x" id="store-search-clear" aria-label="Clear search" title="Clear">×</span>
+                  <span class="search-divider" aria-hidden="true"></span>
+                  <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10" cy="10" r="5"></circle>
+                    <line x1="14" y1="14" x2="20" y2="20"></line>
+                  </svg>
+                </button>
               </div>
-            </article>
+            </div>
 
-            <article class="product-card" data-name="mayanut baking blend">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">MayaNut Baking Blend</div>
-              <p class="product-text">Blend concept for cookies, bars, and breads.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="baking">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
+            <div class="store-grid" id="store-grid">
+              <article class="product-card" data-name="mayanut powder brosimum alicastrum">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Powder</div>
+                <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="powder">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
+              </article>
 
-            <article class="product-card" data-name="cold mayanut drink">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">Cold MayaNut Drink</div>
-              <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="cold-drink">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
+              <article class="product-card" data-name="instant mayanut latte drink">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">Instant MayaNut Latte</div>
+                <p class="product-text">Future drink mix for warm, creamy cups.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="latte">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
+              </article>
 
-            <article class="product-card" data-name="mayanut espresso blend">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">MayaNut Espresso Blend</div>
-              <p class="product-text">Deeper roast concept with caramel notes.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="espresso">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
+              <article class="product-card" data-name="mayanut baking blend">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Baking Blend</div>
+                <p class="product-text">Blend concept for cookies, bars, and breads.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="baking">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
+              </article>
 
-            <article class="product-card" data-name="mayanut energy bar">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">MayaNut Energy Bar</div>
-              <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="bars">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
+              <article class="product-card" data-name="cold mayanut drink">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">Cold MayaNut Drink</div>
+                <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="cold-drink">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
+              </article>
 
-            <article class="product-card" data-name="mayanut ice cream">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">MayaNut Ice Cream</div>
-              <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="icecream">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
+              <article class="product-card" data-name="mayanut espresso blend">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Espresso Blend</div>
+                <p class="product-text">Deeper roast concept with caramel notes.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="espresso">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
+              </article>
 
-            <article class="product-card" data-name="mayanut granola">
-              <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
-              <div class="product-divider"></div>
-              <div class="product-name">MayaNut Granola</div>
-              <p class="product-text">Breakfast granola concept built around MayaNut.</p>
-              <div class="product-controls">
-                <div class="qty-control" data-product="granola">
-                  <button class="qty-minus" type="button">−</button>
-                  <span class="qty-value">1</span>
-                  <button class="qty-plus" type="button">+</button>
+              <article class="product-card" data-name="mayanut energy bar">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Energy Bar</div>
+                <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="bars">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
                 </div>
-                <button class="btn-add" type="button">ADD</button>
-              </div>
-            </article>
-          </div>
-        </aside>
+              </article>
+
+              <article class="product-card" data-name="mayanut ice cream">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Ice Cream</div>
+                <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="icecream">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
+                </div>
+              </article>
+
+              <article class="product-card" data-name="mayanut granola">
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <div class="product-divider"></div>
+                <div class="product-name">MayaNut Granola</div>
+                <p class="product-text">Breakfast granola concept built around MayaNut.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="granola">
+                    <button class="qty-minus" type="button">−</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-plus" type="button">+</button>
+                  </div>
+                  <button class="btn-add" type="button">ADD</button>
+                </div>
+              </article>
+            </div>
+          </aside>
+        </section>
       </div>
     </main>
 
@@ -1056,7 +1049,7 @@ FOR RICKY
         <div class="footer-center">
           <a href="#top" class="footer-logo-wrap" id="footer-logo" aria-label="Back to top">
             <img class="footer-logo-img"
-                 src="mayanut-the-mayanut-comapny-logo.png"
+                 src="mayanut-the-maya-nut-company-logo.png"
                  alt="The MayaNut Company logo (footer)"
                  loading="lazy" decoding="async" />
           </a>
@@ -1189,7 +1182,6 @@ FOR RICKY
     if(topLogo){
       topLogo.addEventListener('click', (e)=>{ e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); });
     }
-
     const footerLogo = document.getElementById('footer-logo');
     if(footerLogo){
       footerLogo.addEventListener('click', (e)=>{
@@ -1220,49 +1212,6 @@ FOR RICKY
       });
     });
 
-    const contrastToggle = document.getElementById('toggle-contrast');
-    const textToggle = document.getElementById('toggle-large-text');
-
-    function setToggle(el, on){
-      if(!el) return;
-      el.classList.toggle('active', !!on);
-      el.setAttribute('aria-checked', on ? 'true' : 'false');
-    }
-    function applyPrefs(){
-      const hc = localStorage.getItem('pref_high_contrast') === '1';
-      const lt = localStorage.getItem('pref_large_text') === '1';
-      document.body.classList.toggle('high-contrast', hc);
-      document.body.classList.toggle('large-text', lt);
-      setToggle(contrastToggle, hc);
-      setToggle(textToggle, lt);
-    }
-    applyPrefs();
-
-    function toggleContrast(){
-      const on = !document.body.classList.contains('high-contrast');
-      document.body.classList.toggle('high-contrast', on);
-      localStorage.setItem('pref_high_contrast', on ? '1' : '0');
-      setToggle(contrastToggle, on);
-    }
-    function toggleLargeText(){
-      const on = !document.body.classList.contains('large-text');
-      document.body.classList.toggle('large-text', on);
-      localStorage.setItem('pref_large_text', on ? '1' : '0');
-      setToggle(textToggle, on);
-    }
-    if(contrastToggle){
-      contrastToggle.addEventListener('click', toggleContrast);
-      contrastToggle.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleContrast(); }
-      });
-    }
-    if(textToggle){
-      textToggle.addEventListener('click', toggleLargeText);
-      textToggle.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleLargeText(); }
-      });
-    }
-
     const accessLang = document.getElementById('access-lang');
     if(accessLang){
       accessLang.addEventListener('change', ()=>{
@@ -1285,7 +1234,6 @@ FOR RICKY
       const EXPANDED_COUNT  = 8;
       const POWDER_IMG_SRC = 'mayanut-powder-maya-nut-brosimum-alicastrum.png';
 
-      const storeContainer = document.querySelector('.store-container');
       const viewStoreBtn   = document.querySelector('.view-store-btn');
       const productCards   = Array.from(document.querySelectorAll('.product-card'));
       const productImgs    = Array.from(document.querySelectorAll('.product-card img'));
@@ -1319,23 +1267,20 @@ FOR RICKY
         showCount(EXPANDED_COUNT);
         document.body.classList.add('store-expanded');
         setActiveTab('store');
+        if(viewStoreBtn) viewStoreBtn.textContent = 'RETURN';
       }
       function collapseStore(){
         showCount(COLLAPSED_COUNT);
         document.body.classList.remove('store-expanded');
         setActiveTab('home');
+        if(viewStoreBtn) viewStoreBtn.textContent = 'VIEW STORE';
       }
 
       if (viewStoreBtn){
         viewStoreBtn.addEventListener('click', () => {
           const expanded = document.body.classList.contains('store-expanded');
-          if(!expanded){
-            expandStore();
-            viewStoreBtn.textContent = 'RETURN';
-          } else {
-            collapseStore();
-            viewStoreBtn.textContent = 'VIEW STORE';
-          }
+          if(!expanded) expandStore();
+          else collapseStore();
         });
       }
 
@@ -1343,7 +1288,6 @@ FOR RICKY
         navStore.addEventListener('click', (e) => {
           e.preventDefault();
           expandStore();
-          if(viewStoreBtn) viewStoreBtn.textContent = 'RETURN';
           document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
         });
       }
@@ -1352,13 +1296,13 @@ FOR RICKY
         navStoreMobile.addEventListener('click', (e)=>{
           e.preventDefault();
           expandStore();
-          if(viewStoreBtn) viewStoreBtn.textContent = 'RETURN';
           if(mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
           document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
         });
       }
     })();
 
+    /* qty buttons */
     document.querySelectorAll('.qty-control').forEach(control=>{
       const valueSpan = control.querySelector('.qty-value');
       control.addEventListener('click', (e)=>{

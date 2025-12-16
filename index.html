@@ -30,8 +30,11 @@
     :root{
       --brand-green:#1a6800;
       --cta-orange:#FD6C02;
-      --tan-top:#F3E6D1;
-      --tan-bottom:#E7CFAE;
+
+      /* NEW: soft middle highlight, darker toward bottom */
+      --tan-top:#F1DFC6;
+      --tan-mid:#F6E8D3;
+      --tan-bottom:#E4C7A2;
 
       --text-heading:#0b0f14;
       --text-body:#1f2937;
@@ -61,10 +64,16 @@
     html, body { min-height: 100%; height:auto; overflow-x:hidden; }
     body{
       margin:0;
-      background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan-bottom) 100%);
+      /* NEW: middle lighter, bottom darker; no glitches across scroll */
+      background: linear-gradient(to bottom,
+        var(--tan-top) 0%,
+        var(--tan-mid) 45%,
+        var(--tan-mid) 55%,
+        var(--tan-bottom) 100%
+      );
       background-repeat: no-repeat;
       background-size: 100% 100%;
-      background-color: var(--tan-top);
+      background-color: var(--tan-mid);
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: var(--text-body);
       -webkit-font-smoothing: antialiased;
@@ -190,9 +199,7 @@
     .main-nav a:hover{ transform:scale(1.05); color: var(--brand-green); }
     .main-nav a.is-active{ border-bottom-color: var(--brand-green); color: var(--brand-green); }
 
-    .header-right{
-      width:44px; display:flex; justify-content:flex-end; align-items:center;
-    }
+    .header-right{ width:44px; display:flex; justify-content:flex-end; align-items:center; }
     .mobile-menu-btn{
       display:none;
       width:34px; height:30px;
@@ -250,6 +257,7 @@
       font-weight:900;
     }
 
+    /* NEW: right-align the hero title block evenly */
     .hero-title{
       font-family:"Playfair Display", Georgia, serif;
       font-weight:800;
@@ -257,21 +265,32 @@
       color: var(--text-heading);
       line-height:1.06;
       font-size:clamp(22px, 2.5vw, 32px);
-      text-align:left;
+      text-align:right;
+      align-self:flex-end;
+      width:100%;
+      max-width:720px;
     }
-    .hero-title .line1{ display:block; }
-    .hero-title .line2{ display:block; }
+    .hero-title .line1,
+    .hero-title .line2,
+    .hero-title .line3{ display:block; }
+
+    .hero-title .line2::after{
+      content:" ---";
+      color: var(--text-heading);
+      font-weight:800;
+      letter-spacing:0.02em;
+    }
+
     .hero-title .line3{
-      display:inline-block;
+      display:block;
       margin-top:8px;
       color: var(--brand-green);
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
       font-weight:800;
-      padding-left:6px;
-      padding-right:2px;
-      overflow:visible;
+      padding-left:8px;
+      padding-right:8px;
     }
 
     .hero-images{
@@ -326,18 +345,31 @@
     }
 
     /* =========================
-       RTREES (your “hatchet” top)
+       OUR TREES + CONNECTED TEXT
        ========================= */
-    #rtrees{
+
+    /* This wrapper makes the "hatchet" connection:
+       - Top row: left = Our Trees, right = Store
+       - Second row: a single paragraph spans full width, but is "raised" on the left
+         to visually connect under the Our Trees card. */
+    .connect-wrap{
       max-width:1200px;
       margin:22px auto 0;
+      display:grid;
+      grid-template-columns: 1.08fr 1fr;
+      gap:30px;
+      align-items:start;
+    }
+
+    /* OUR TREES card (formerly RTrees) */
+    #our-trees{
       border-radius: var(--radius-panel);
       border:1px solid rgba(15,23,42,0.10);
       background: rgba(255,255,255,0.55);
       box-shadow:none;
       padding:16px 16px 14px;
     }
-    .rtrees-title{
+    .ourtrees-title{
       font-family:"Playfair Display", Georgia, serif;
       font-size:16px;
       font-weight:700;
@@ -347,18 +379,18 @@
       text-align:center;
       margin-bottom:12px;
     }
-    .rtrees-grid{
+    .ourtrees-grid{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
       gap:12px;
     }
-    .rtrees-card{
+    .ourtrees-card{
       border-radius:16px;
       overflow:hidden;
       border:1px solid rgba(15,23,42,0.10);
       background: rgba(255,255,255,0.55);
     }
-    .rtrees-card img{
+    .ourtrees-card img{
       width:100%;
       aspect-ratio: 4 / 3;
       object-fit:cover;
@@ -367,10 +399,10 @@
       background:transparent;
     }
 
-    /* Full-width paragraph “handle” under store + rtrees */
+    /* The paragraph spans full width, but we "raise" the left portion with a notch */
     .wide-paragraph{
-      max-width:1200px;
-      margin:18px auto 0;
+      grid-column: 1 / -1;
+      margin-top:-14px; /* pulls paragraph up to touch cards */
       padding:16px 16px 16px;
       border-radius: 18px;
       border:1px solid rgba(15,23,42,0.10);
@@ -379,11 +411,27 @@
       font-size:14px;
       line-height:1.9;
       font-weight:500;
+      position:relative;
+    }
+    /* Notch effect: raises only the left side visually to "connect" to Our Trees */
+    .wide-paragraph::before{
+      content:"";
+      position:absolute;
+      top:-14px;
+      left:0;
+      width: calc(50% - 15px); /* aligns with left column width-ish */
+      height:14px;
+      background: rgba(255,255,255,0.55);
+      border-left:1px solid rgba(15,23,42,0.10);
+      border-right:1px solid rgba(15,23,42,0.10);
+      border-top:1px solid rgba(15,23,42,0.10);
+      border-top-left-radius:18px;
+      border-top-right-radius:18px;
     }
 
     /* STORE */
     .store-page{
-      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 45%, var(--store-g3) 100%);
+      background: linear-gradient(to bottom, #B8FF4A 0%, #3FDC71 45%, #0C5A2A 100%);
       background-repeat:no-repeat;
       background-size:100% 100%;
     }
@@ -604,7 +652,6 @@
     .footer-left{ text-align:left; color: var(--text-muted); }
     .footer-center{ text-align:center; }
     .footer-right{ text-align:right; display:flex; justify-content:flex-end; align-items:center; gap:10px; }
-
     .footer-links{ margin-top:6px; font-size:11px; display:flex; gap:10px; flex-wrap:wrap; }
     .footer-links a{
       color: var(--brand-green);
@@ -617,12 +664,7 @@
       color: rgba(26,104,0,0.88);
       border-bottom-color: rgba(26,104,0,0.70);
     }
-    .footer-logo-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:100%;
-    }
+    .footer-logo-wrap{ display:flex; align-items:center; justify-content:center; width:100%; }
     .footer-logo-img{
       display:block;
       margin: 10px auto 0;
@@ -683,6 +725,7 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
+
     .overlay{
       position:fixed;
       inset:0;
@@ -710,7 +753,6 @@
     .overlay-title{ font-family:"Playfair Display", Georgia, serif; font-size:16px; font-weight:700; color: var(--text-heading); }
     .overlay-version{ font-size:11px; color: var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; font-weight:800; }
     .overlay-close{ border:none; background:transparent; font-size:18px; cursor:pointer; line-height:1; color: var(--text-muted); }
-
     .settings-row{
       margin-bottom:12px;
       font-size:13px;
@@ -771,16 +813,26 @@
       .top-banner .banner-inner{ flex-direction:column; gap:6px; }
 
       #hero{ display:flex; flex-direction:column; gap:18px; }
-      #store-panel{ order:1; }
-      .hero-left{ order:2; }
-
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
       .header-right{ width:auto; }
 
-      .store-grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
       .hero-images{ grid-template-columns:1fr; }
-      .rtrees-grid{ grid-template-columns:1fr; }
+
+      /* Connect section stacks vertically on mobile */
+      .connect-wrap{
+        grid-template-columns:1fr;
+        gap:16px;
+      }
+      .wide-paragraph{
+        margin-top:-10px;
+      }
+      .wide-paragraph::before{
+        width: 70%;
+      }
+
+      .store-grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+      .ourtrees-grid{ grid-template-columns:1fr; }
 
       .footer-inner{ grid-template-columns:1fr; row-gap:8px; text-align:center; }
       .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
@@ -875,30 +927,8 @@ FOR RICKY
 
             <div class="btn-row" style="margin-top:6px;">
               <button class="btn" data-nav="about.html" type="button">Learn more</button>
-              <button class="btn-secondary" id="btn-rtrees" type="button">RTrees</button>
+              <button class="btn-secondary" id="btn-ourtrees" type="button">Our Trees</button>
             </div>
-
-            <!-- RTrees uses the SAME placeholder image (Seed Grown Diversity image) for all 3 -->
-            <section id="rtrees" aria-label="RTrees">
-              <div class="rtrees-title">RTREES</div>
-              <div class="rtrees-grid">
-                <div class="rtrees-card">
-                  <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                       alt="RTrees placeholder image"
-                       loading="lazy" decoding="async" />
-                </div>
-                <div class="rtrees-card">
-                  <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                       alt="RTrees placeholder image"
-                       loading="lazy" decoding="async" />
-                </div>
-                <div class="rtrees-card">
-                  <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                       alt="RTrees placeholder image"
-                       loading="lazy" decoding="async" />
-                </div>
-              </div>
-            </section>
           </div>
 
           <aside id="store-panel" class="store-page store-container" aria-label="Future store preview">
@@ -1046,10 +1076,32 @@ FOR RICKY
           </aside>
         </section>
 
-        <!-- FULL-WIDTH PARAGRAPH “HANDLE” (spans under Store + RTrees) -->
-        <p class="wide-paragraph" id="wide-paragraph">
-          MayaNut (Maya Nut) is the roasted tree-seed of <em>Brosimum alicastrum</em>, a tropical fruit tree that helped feed ancient Mayan communities — a resilient, tree-based food crop being rediscovered today.
-        </p>
+        <!-- NEW CONNECTED “HATCHET” SECTION (Our Trees + Store, then one paragraph underneath) -->
+        <section class="connect-wrap" aria-label="Our Trees and Store connection">
+          <section id="our-trees" aria-label="Our Trees">
+            <div class="ourtrees-title">OUR TREES</div>
+            <div class="ourtrees-grid">
+              <!-- Placeholder images (using the Seed Grown Diversity tab image you indicated) -->
+              <!-- If your real Seed Grown Diversity image file is different, replace the src below. -->
+              <div class="ourtrees-card">
+                <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="Seed-grown diversity placeholder" loading="lazy" decoding="async" />
+              </div>
+              <div class="ourtrees-card">
+                <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="Seed-grown diversity placeholder" loading="lazy" decoding="async" />
+              </div>
+              <div class="ourtrees-card">
+                <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="Seed-grown diversity placeholder" loading="lazy" decoding="async" />
+              </div>
+            </div>
+          </section>
+
+          <!-- (Store is already on the right above; this section stays here only to anchor the paragraph shape) -->
+          <div></div>
+
+          <p class="wide-paragraph" id="wide-paragraph">
+            MayaNut (Maya Nut) is the roasted tree-seed of <em>Brosimum alicastrum</em>, a resilient tropical food tree with deep cultural history and strong potential for sustainable agriculture and reforestation. This phase focuses on seed-grown diversity, selecting the best-performing trees, and preparing for a future product line as the orchard scales.
+          </p>
+        </section>
 
       </div>
     </main>
@@ -1068,7 +1120,6 @@ FOR RICKY
 
         <div class="footer-center">
           <a href="#top" class="footer-logo-wrap" id="footer-logo" aria-label="Back to top">
-            <!-- Footer logo now matches the top-left logo file exactly -->
             <img class="footer-logo-img"
                  src="mayanut-the-mayanut-comapny-logo.png"
                  alt="The MayaNut Company logo (footer)"
@@ -1203,11 +1254,10 @@ FOR RICKY
       topLogo.addEventListener('click', (e)=>{ e.preventDefault(); window.location.href='index.html'; });
     }
 
-    /* Scroll to RTrees */
-    const rtreesBtn = document.getElementById('btn-rtrees');
-    const rtreesSection = document.getElementById('rtrees');
-    if(rtreesBtn && rtreesSection){
-      rtreesBtn.addEventListener('click', ()=> rtreesSection.scrollIntoView({behavior:'smooth', block:'start'}));
+    const ourTreesBtn = document.getElementById('btn-ourtrees');
+    const ourTreesSection = document.getElementById('our-trees');
+    if(ourTreesBtn && ourTreesSection){
+      ourTreesBtn.addEventListener('click', ()=> ourTreesSection.scrollIntoView({behavior:'smooth', block:'start'}));
     }
 
     const footerLogo = document.getElementById('footer-logo');
@@ -1361,8 +1411,6 @@ FOR RICKY
             collapseStore();
             viewStoreBtn.textContent = 'VIEW STORE';
           }
-          const viewMoreBtn = document.querySelector('.view-more-btn');
-          if (viewMoreBtn) viewMoreBtn.style.display = 'none';
         });
       }
 

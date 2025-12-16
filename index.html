@@ -12,65 +12,76 @@
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#1a6800" />
 
-  <!-- Keep favicon/tab image as the green leaf (your existing file) -->
   <link rel="canonical" href="https://mayanut.com/" />
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
 
-  <!-- Preload critical images -->
   <link rel="preload" href="mayanut-the-mayanut-comapny-logo.png" as="image" />
   <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-company-image.jpeg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
+  <link rel="preload" href="mayanut-powder-maya-nut-brosimum-alicastrum.png" as="image" />
 
-  <!-- Typography (serif for headings, sans for body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      /* Locked primary green for accents ONLY */
-      --brand-green:#1a6800;
-
-      /* Orange ONLY for buttons/key actions */
-      --cta-orange:#fd6c02;
-
-      /* Soft parchment tan vertical body background */
-      --parchment-top:#fbf5ea;
+      /* Color discipline */
+      --brand-green:#1a6800;            /* accents + store bg only */
+      --cta-orange:#fd6c02;             /* CTAs only */
+      --parchment-top:#fbf5ea;          /* global tan background */
       --parchment-bottom:#f1e1c9;
 
-      /* Text: dark neutrals (no browns) */
-      --text-heading:#0b0f14; /* near-black */
-      --text-body:#1f2937;    /* dark neutral (not pure black) */
+      /* Text neutrals (no brown UI) */
+      --text-heading:#0b0f14;
+      --text-body:#1f2937;
       --text-muted:#4b5563;
 
-      /* Lines / subtle separation */
+      /* Lines / frame */
       --line: rgba(15,23,42,0.12);
-      --shadow: 0 18px 55px rgba(15,23,42,0.16);
-
-      /* Frames */
-      --sideW: 170px;
       --frameBorder: 2px;
       --frame-line: rgba(26,104,0,0.92);
+      --shadow: 0 18px 55px rgba(15,23,42,0.16);
 
-      /* Panels */
-      --panel-bg: rgba(255,255,255,0.62);
-      --panel-border: rgba(15,23,42,0.10);
+      /* Layout */
+      --sideW: 170px;
 
-      /* Buttons (solid orange only) */
-      --btn-text:#ffffff;
+      /* Radii consistency */
+      --radius-card: 18px;
+      --radius-panel: 22px;
+      --radius-btn: 999px;
+
+      /* Store background: subtle vertical lime -> dark green */
+      --store-g1:#d8ff6a;
+      --store-g2:#7ae78a;
+      --store-g3:#1a6800;
+
+      /* Card surface over store green */
+      --card-surface: rgba(255,255,255,0.82);
+      --card-border: rgba(15,23,42,0.12);
+
+      /* CTA sizing */
+      --cta-pad-y: 10px;
+      --cta-pad-x: 14px;
+      --cta-min-h: 38px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
-    html,body{ height:100%; }
-    html{ background:#ffffff; }
+
+    /* Tan gradient must never cut off */
+    html, body{
+      height:100%;
+      min-height:100vh;
+      background: linear-gradient(to bottom, var(--parchment-top) 0%, var(--parchment-bottom) 100%);
+    }
+
     body{
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color:var(--text-body);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
-      background: linear-gradient(to bottom, var(--parchment-top) 0%, var(--parchment-bottom) 100%);
     }
 
     img{ max-width:100%; display:block; }
@@ -81,31 +92,7 @@
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
-    /* High contrast + large text features */
-    body.high-contrast{
-      background:#ffffff !important;
-      color:#000 !important;
-    }
-    body.high-contrast *{
-      text-shadow:none !important;
-      box-shadow:none !important;
-    }
-    body.high-contrast main,
-    body.high-contrast .overlay-panel,
-    body.high-contrast .product-card{
-      border-color:#000 !important;
-    }
-    body.high-contrast a{ color:#000 !important; }
-    body.high-contrast .main-nav a{ color:#000 !important; }
-    body.high-contrast .main-nav a.is-active{ border-bottom-color:#000 !important; }
-
-    body.large-text{ font-size:112%; }
-    body.large-text .hero-sub{ font-size:15px; }
-    body.large-text .product-text{ font-size:13px; }
-    body.large-text .main-nav a{ font-size:15px; }
-    body.large-text .store-title{ font-size:15px; }
-
-    /* FULL-HEIGHT SIDE FRAMES (DESKTOP ONLY; hidden on mobile below) */
+    /* Full-height side frames (seed imagery only; no extra UI browns) */
     .side-frames{
       position:fixed;
       inset:0;
@@ -134,8 +121,6 @@
       display:flex;
       flex-direction:column;
     }
-
-    /* Preserve seed imagery exactly: no UI browns introduced; no borders/shadows on frame images */
     .stack img{
       width:100%;
       height:220px;
@@ -146,7 +131,6 @@
       filter:none;
     }
 
-    /* SITE WRAP (DESKTOP with frames) */
     .frame-wrap{
       position:relative;
       z-index:2;
@@ -154,10 +138,10 @@
       margin-left: var(--sideW);
       margin-right: var(--sideW);
       min-height:100vh;
-      background:transparent;
+      background: transparent; /* must not override tan */
     }
 
-    /* Header/Footer subtle separation (no placement/content change) */
+    /* Banner (subtle separation, no big green blocks) */
     .top-banner{
       width:100%;
       background: rgba(255,255,255,0.40);
@@ -185,15 +169,19 @@
       gap:10px;
       flex-wrap:wrap;
     }
-    .top-banner .banner-text{ white-space:nowrap; }
     .top-banner a{
       color: var(--brand-green);
       text-decoration:none;
       border-bottom:1px solid rgba(26,104,0,0.45);
       font-weight:900;
+      transition: border-color .12s ease, color .12s ease;
     }
-    .top-banner a:hover{ border-bottom-color: rgba(26,104,0,0.75); }
+    .top-banner a:hover{
+      border-bottom-color: rgba(26,104,0,0.70);
+      color: rgba(26,104,0,0.88);
+    }
 
+    /* Header */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -303,27 +291,28 @@
       background:#0f172a;
     }
 
-    /* MAIN PANEL */
+    /* Main panel must not override tan background with solid color */
     main{
       position:relative;
       z-index:1;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow: var(--shadow);
-      background: rgba(255,255,255,0.40);
+      background: transparent; /* key fix */
     }
+
     .content-wrapper{
-      padding:30px 22px 34px; /* slightly increased vertical spacing */
+      padding:30px 22px 34px;
       width:100%;
       overflow-x:hidden;
-      background: transparent;
+      background: transparent; /* key fix */
     }
 
     #hero{
       position:relative;
       display:grid;
       grid-template-columns: 1.08fr 1fr;
-      gap:30px; /* slightly increased */
+      gap:30px;
       max-width:1200px;
       margin:0 auto;
       overflow-x:hidden;
@@ -333,7 +322,7 @@
     .hero-left{
       display:flex;
       flex-direction:column;
-      gap:18px; /* increased rhythm */
+      gap:18px;
       transition:opacity .25s ease;
     }
 
@@ -345,7 +334,6 @@
       font-weight:900;
     }
 
-    /* Headings serif */
     .hero-title{
       font-family: "Playfair Display", Georgia, serif;
       font-weight:800;
@@ -355,13 +343,12 @@
       font-size:clamp(22px, 2.5vw, 32px);
       text-align:left;
     }
-    .hero-title .line1{ display:block; font-style:normal; }
-    .hero-title .line2{ display:block; font-style:normal; }
+    .hero-title .line1{ display:block; }
+    .hero-title .line2{ display:block; }
     .hero-title .line3{
       display:inline-block;
       margin-top:8px;
       color:var(--brand-green);
-      font-style:normal;
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
@@ -370,7 +357,7 @@
       padding-right:1px;
     }
 
-    /* Standardize image presentation: consistent max widths/alignment; no mixed borders/shadows */
+    /* Standardized image style */
     .hero-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -384,8 +371,8 @@
       width:100%;
       border-radius:14px;
       object-fit:cover;
-      border: 1px solid var(--panel-border);
-      box-shadow:none; /* remove mixed shadows */
+      border: 1px solid rgba(15,23,42,0.10);
+      box-shadow:none;
       background: transparent;
     }
     .hero-images img{ aspect-ratio: 4 / 3; }
@@ -397,43 +384,28 @@
       max-width: 760px;
       font-weight:500;
     }
-    .hero-sub em{ font-style:italic; }
 
-    /* Remove orange from body text; keep orange exclusive to buttons/actions */
-    .hero-sub .name-orange{ color: inherit; font-weight:700; }
+    .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 
-    .hero-meta{
-      margin-top:4px;
-      font-size:12px;
-      color:var(--text-muted);
-      max-width: 760px;
-      line-height:1.75;
-    }
-    .hero-meta strong{ color:var(--text-heading); }
-
-    /* Links: use primary green */
-    a{ color: var(--brand-green); }
-    a:hover{ color: rgba(26,104,0,0.85); }
-
-    /* Buttons: solid orange only, subtle shade shift hover */
+    /* CTA buttons: solid orange only; consistent hover (slight shade shift) */
     .btn,
     .btn-secondary,
     .store-view-full,
-    .product-add-btn,
-    .store-view-more{
-      border:1px solid rgba(0,0,0,0);
+    .product-add-btn{
+      border: none;
       outline:none;
       box-shadow:none;
       background: var(--cta-orange);
-      color: var(--btn-text);
+      color: #ffffff;
       font-weight:900;
-      border-radius:999px;
-      background-clip: padding-box;
+      border-radius: var(--radius-btn);
       cursor:pointer;
       transition: filter .14s ease, transform .12s ease;
+      background-clip: padding-box;
     }
     .btn, .btn-secondary{
-      padding:9px 16px;
+      padding: 10px 16px;
+      min-height: var(--cta-min-h);
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.14em;
@@ -441,20 +413,18 @@
     .btn:hover,
     .btn-secondary:hover,
     .store-view-full:hover,
-    .product-add-btn:hover,
-    .store-view-more:hover{
+    .product-add-btn:hover{
       filter: brightness(0.94);
       transform: translateY(-1px);
     }
-    .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 
     /* OUR TREES */
     #trees{
       max-width:1200px;
       margin:22px auto 0;
-      border-radius:22px;
-      border:1px solid var(--panel-border);
-      background: var(--panel-bg);
+      border-radius: var(--radius-panel);
+      border:1px solid rgba(15,23,42,0.10);
+      background: rgba(255,255,255,0.55);
       box-shadow:none;
       padding:16px 16px 14px;
     }
@@ -476,8 +446,8 @@
     .trees-card{
       border-radius:16px;
       overflow:hidden;
-      border:1px solid var(--panel-border);
-      background: rgba(255,255,255,0.45);
+      border:1px solid rgba(15,23,42,0.10);
+      background: rgba(255,255,255,0.55);
     }
     .trees-card img{ aspect-ratio: 4 / 3; }
     .trees-cap{
@@ -489,21 +459,22 @@
     }
     .trees-cap strong{ color: var(--text-heading); }
 
-    /* STORE (remove green gradient backgrounds; keep structure unchanged) */
+    /* STORE: restore subtle vertical lime -> dark green gradient on STORE only */
     #store-panel{
-      border-radius:22px;
-      border:1px solid var(--panel-border);
-      background: rgba(255,255,255,0.48);
+      border-radius: var(--radius-panel);
+      border:1px solid rgba(255,255,255,0.38);
+      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 52%, var(--store-g3) 100%);
       padding:16px 14px 18px;
       display:flex;
       flex-direction:column;
       gap:10px;
-      transition:transform .35s ease, box-shadow .35s ease, opacity .25s ease;
+      transition:transform .35s ease, opacity .25s ease;
       position:relative;
       z-index:2;
       box-shadow:none;
       overflow:hidden;
     }
+
     .store-header-row{ display:flex; justify-content:center; }
     .store-title{
       font-size:14px;
@@ -513,7 +484,7 @@
       color: var(--text-heading);
       text-align:center;
       width:100%;
-      text-shadow:none;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
 
     .store-tools{
@@ -522,9 +493,12 @@
       gap:8px;
       align-items:center;
     }
+
+    /* VIEW STORE button: also orange CTA */
     .store-view-full{
       flex:0 0 25%;
-      padding:9px 10px;
+      padding: var(--cta-pad-y) var(--cta-pad-x);
+      min-height: var(--cta-min-h);
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.12em;
@@ -535,32 +509,31 @@
     .store-search input{
       width:100%;
       padding:9px 46px 9px 10px;
-      border-radius:999px;
-      border:1px solid var(--panel-border);
+      border-radius: var(--radius-btn);
+      border:1px solid rgba(15,23,42,0.16);
       font-size:12px;
-      background:rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.70);
       color: var(--text-body);
       outline:none;
     }
-
-    /* Keep search control neutral (no orange/brown UI elements); icon remains neutral */
     .store-search-send{
       position:absolute;
       right:6px;
       top:50%;
       transform:translateY(-50%);
       height:24px;
-      border-radius:999px;
-      border:1px solid var(--panel-border);
-      background:rgba(255,255,255,0.55);
+      border-radius: var(--radius-btn);
+      border:1px solid rgba(15,23,42,0.16);
+      background: rgba(255,255,255,0.65);
       display:flex;
       align-items:center;
       gap:6px;
       padding:0 7px;
       cursor:pointer;
       user-select:none;
+      transition: filter .12s ease;
     }
-    .store-search-send:hover{ background:rgba(255,255,255,0.68); }
+    .store-search-send:hover{ filter: brightness(0.97); }
     .store-search-send .search-x{ width:14px; height:14px; font-size:16px; color:var(--text-body); display:inline-flex; align-items:center; justify-content:center; }
     .store-search-send .search-divider{ width:1px; height:14px; background:rgba(15,23,42,0.18); }
     .store-search-send .search-icon{ width:12px; height:12px; stroke:var(--text-body); fill:none; stroke-width:2; }
@@ -572,31 +545,35 @@
       gap:12px;
     }
 
+    /* Product cards: readable on green (light neutral surface) */
     .product-card{
-      border-radius:18px;
-      background: rgba(255,255,255,0.55);
-      border:1px solid var(--panel-border);
+      border-radius: var(--radius-card);
+      background: var(--card-surface);
+      border:1px solid var(--card-border);
       padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
       align-items:center;
       text-align:center;
       justify-content:space-between;
-      transition:transform .12s ease;
+      transition: filter .12s ease, transform .12s ease;
       min-height:220px;
       overflow:hidden;
       box-shadow:none;
     }
-    .product-card:hover{ transform:translateY(-2px); }
+    .product-card:hover{
+      filter: brightness(0.985);
+      transform: translateY(-2px);
+    }
 
     .product-card img{
       width:110px;
       aspect-ratio: 1 / 1;
       object-fit:cover;
-      border-radius:18px;
+      border-radius:16px;
       margin-top:4px;
       margin-bottom:10px;
-      border:1px solid var(--panel-border);
+      border:1px solid rgba(15,23,42,0.10);
       box-shadow:none;
       background: transparent;
     }
@@ -609,17 +586,23 @@
       color: var(--text-heading);
       margin-bottom:4px;
     }
-    .product-text{ font-size:12px; color: var(--text-muted); line-height:1.6; margin-bottom:8px; font-weight:500; }
+    .product-text{
+      font-size:12px;
+      color: var(--text-muted);
+      line-height:1.6;
+      margin-bottom:10px;
+      font-weight:500;
+    }
 
     .product-controls{ width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px; }
 
-    /* Qty boxes: neutral (no brown/orange UI). Keep simple. */
+    /* Qty control neutral */
     .qty-control{
       display:inline-flex;
       align-items:center;
-      border-radius:999px;
-      border:1px solid var(--panel-border);
-      background: rgba(255,255,255,0.45);
+      border-radius: var(--radius-btn);
+      border:1px solid rgba(15,23,42,0.12);
+      background: rgba(255,255,255,0.55);
       padding:4px 8px;
       font-size:12px;
       flex:1;
@@ -629,9 +612,20 @@
     .qty-btn{ border:none; background:transparent; cursor:pointer; font-size:14px; line-height:1; padding:0 4px; color: var(--text-body); font-weight:900; }
     .qty-value{ min-width:18px; text-align:center; font-weight:900; color: var(--text-heading); }
 
-    .product-card.extra-product{ display:none; opacity:0; }
-    .product-card.more-hidden{ display:none !important; }
+    /* Add button bigger + consistent */
+    .product-add-btn{
+      flex:1;
+      padding: var(--cta-pad-y) var(--cta-pad-x);
+      min-height: var(--cta-min-h);
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+    }
 
+    /* Exactly 8 products: no extra/pagination UI */
+    .product-card.extra-product{ display:flex; opacity:1; }
+
+    /* Expanded store layout (desktop): still show 8 (already) */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
@@ -640,22 +634,10 @@
         box-shadow:none;
       }
       body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
-      body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
-
-      body.store-expanded .store-grid .product-card:nth-child(1){ grid-column:3; grid-row:1; }
-      body.store-expanded .store-grid .product-card:nth-child(2){ grid-column:4; grid-row:1; }
-      body.store-expanded .store-grid .product-card:nth-child(3){ grid-column:3; grid-row:2; }
-      body.store-expanded .store-grid .product-card:nth-child(4){ grid-column:4; grid-row:2; }
-
-      body.store-expanded .store-grid .product-card:nth-child(5){ grid-column:1; grid-row:1; }
-      body.store-expanded .store-grid .product-card:nth-child(6){ grid-column:2; grid-row:1; }
-      body.store-expanded .store-grid .product-card:nth-child(7){ grid-column:1; grid-row:2; }
-      body.store-expanded .store-grid .product-card:nth-child(8){ grid-column:2; grid-row:2; }
-
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* Footer subtle separation */
+    /* Footer */
     footer{
       width:100%;
       background: rgba(255,255,255,0.38);
@@ -666,6 +648,7 @@
       border-top: 1px solid var(--line);
       color: var(--text-body);
       backdrop-filter: blur(6px);
+      overflow: visible; /* prevent clipping */
     }
     .footer-inner{
       display:grid;
@@ -692,15 +675,31 @@
       text-decoration:none;
       border-bottom:1px solid rgba(26,104,0,0.35);
       font-weight:800;
+      transition: border-color .12s ease, color .12s ease;
     }
-    .footer-links a:hover{ border-bottom-color: rgba(26,104,0,0.70); }
+    .footer-links a:hover{
+      border-bottom-color: rgba(26,104,0,0.70);
+      color: rgba(26,104,0,0.88);
+    }
 
-    .footer-logo img{
-      width:80px;
+    /* Fix bottom/footer logo: no stretch/crop/blurry */
+    .footer-logo{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      max-width:120px;
       margin:0 auto;
-      display:block;
+    }
+    .footer-logo img{
+      width:100%;
+      max-width:90px;
+      height:auto;
+      object-fit:contain;
+      image-rendering:auto;
       border:0;
       box-shadow:none;
+      display:block;
     }
 
     .footer-instagram, .footer-email{
@@ -727,15 +726,15 @@
       stroke: rgba(26,104,0,0.85);
     }
 
-    /* ACCESSIBILITY BUTTON (orange CTA; icon stays blue like before is NOT requested now; user asked: orange only for buttons) */
+    /* Accessibility button (CTA orange) */
     .accessibility-btn{
       position:fixed;
       right:18px;
       bottom:18px;
       width:48px;
       height:48px;
-      border-radius:999px;
-      border:1px solid rgba(0,0,0,0);
+      border-radius: var(--radius-btn);
+      border:none;
       background: var(--cta-orange);
       display:flex;
       align-items:center;
@@ -743,7 +742,6 @@
       cursor:pointer;
       z-index:70;
       box-shadow:0 10px 25px rgba(15,23,42,0.22);
-      background-clip:padding-box;
       transition: filter .14s ease, transform .12s ease;
     }
     .accessibility-btn:hover{ filter:brightness(0.94); transform:translateY(-1px); }
@@ -758,7 +756,6 @@
       stroke-linejoin:round;
     }
 
-    /* OVERLAYS */
     .overlay{
       position:fixed;
       inset:0;
@@ -772,38 +769,16 @@
     }
     .overlay.active{ display:flex; }
 
-    /* Accessibility overlay panel: neutral parchment (no green background blocks) */
-    #accessibility-overlay .overlay-panel{
-      width:90%;
-      max-width:420px;
-      border-radius:18px;
-      padding:18px 16px 20px;
-      box-shadow:0 20px 60px rgba(15,23,42,0.25);
-      border:1px solid var(--panel-border);
-      background: rgba(255,255,255,0.70);
-      color: var(--text-body);
-    }
-    #accessibility-overlay label{ font-weight:800; color: var(--text-heading); }
-    #accessibility-overlay .settings-lang{
-      border-radius:999px;
-      border:1px solid var(--panel-border);
-      padding:7px 10px;
-      font-size:12px;
-      background:rgba(255,255,255,0.70);
-      width:100%;
-      max-width:240px;
-      outline:none;
-      color: var(--text-body);
-    }
-
+    #accessibility-overlay .overlay-panel,
     #mobile-menu-overlay .overlay-panel{
       width:90%;
       max-width:420px;
-      background:rgba(255,255,255,0.78);
       border-radius:18px;
       padding:18px 16px 20px;
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
-      border:1px solid var(--panel-border);
+      border:1px solid rgba(15,23,42,0.10);
+      background: rgba(255,255,255,0.78);
+      color: var(--text-body);
     }
 
     .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
@@ -832,12 +807,25 @@
       gap:10px;
       color: var(--text-body);
     }
+    #accessibility-overlay label{ font-weight:800; color: var(--text-heading); }
+    #accessibility-overlay .settings-lang{
+      border-radius: var(--radius-btn);
+      border:1px solid rgba(15,23,42,0.12);
+      padding:7px 10px;
+      font-size:12px;
+      background:rgba(255,255,255,0.70);
+      width:100%;
+      max-width:240px;
+      outline:none;
+      color: var(--text-body);
+    }
+
     .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
     .toggle-input{
       width:42px;
       height:22px;
-      border-radius:999px;
-      border:1px solid var(--panel-border);
+      border-radius: var(--radius-btn);
+      border:1px solid rgba(15,23,42,0.12);
       background:rgba(255,255,255,0.70);
       position:relative;
       cursor:pointer;
@@ -847,7 +835,7 @@
       position:absolute;
       top:2px; left:2px;
       width:18px; height:18px;
-      border-radius:999px;
+      border-radius: var(--radius-btn);
       background:#ffffff;
       transition:transform 0.2s ease;
       box-shadow:0 2px 8px rgba(15,23,42,0.18);
@@ -855,7 +843,7 @@
     .toggle-input.active{ background: rgba(26,104,0,0.20); border-color: rgba(26,104,0,0.40); }
     .toggle-input.active span{ transform:translateX(20px); }
 
-    /* MOBILE */
+    /* Responsive */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
@@ -889,40 +877,15 @@
       .mobile-menu-btn{ display:flex; }
       .header-right{ width:auto; }
 
-      /* Mobile store vertical preview */
-      .store-tools{ display:none; }
+      /* Mobile store vertical; keep within panel (no overflow right) */
       .store-grid{
-        display:block;
-        overflow:hidden;
-        width:100%;
-        max-height: 350px;
-      }
-      .product-card{
-        width:100%;
-        min-height:unset;
-        margin:0 0 12px 0;
-      }
-
-      .mobile-store-actions{
         display:flex;
         flex-direction:column;
-        gap:10px;
-        margin-top:2px;
+        gap:12px;
       }
-      .mobile-store-actions .store-view-full,
-      .mobile-store-actions .store-view-more{
-        width:100%;
-        padding:10px 12px;
-        font-size:11px;
-        letter-spacing:0.14em;
-        text-transform:uppercase;
-      }
-      .mobile-store-actions .store-view-more[hidden]{ display:none !important; }
+      .product-card{ width:100%; min-height:unset; }
 
-      body.store-expanded #store-panel .store-grid{
-        max-height: 62vh;
-        overflow:auto;
-      }
+      /* No pagination / load-more behavior */
     }
 
     @media(max-width:520px){
@@ -931,9 +894,10 @@
     }
 
     @media(max-width:780px){
-      .footer-inner{ grid-template-columns:1fr; row-gap:6px; text-align:center; }
+      .footer-inner{ grid-template-columns:1fr; row-gap:8px; text-align:center; }
       .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
       .footer-links{ justify-content:center; }
+      .footer-logo{ max-width:120px; }
     }
   </style>
 </head>
@@ -1026,12 +990,6 @@ FOR RICKY
               <button class="btn-secondary" id="btn-our-trees" type="button">Our trees</button>
             </div>
 
-            <div class="hero-meta">
-              Over <strong>200 seed-grown trees</strong> already potted up — this phase is about
-              domestication, selecting the best quality trees for sustainable agriculture, and education.
-              Our store is currently in development.
-            </div>
-
             <section id="trees" aria-label="Our trees">
               <div class="trees-title">OUR TREES</div>
               <div class="trees-grid">
@@ -1085,10 +1043,10 @@ FOR RICKY
             </div>
 
             <div class="store-grid" id="store-grid">
+              <!-- Exactly 8 products; ALL use powder image placeholder -->
               <article class="product-card" data-name="mayanut powder brosimum alicastrum">
-                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                     alt="MayaNut powder concept product"
-                     loading="lazy" decoding="async" />
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="MayaNut powder concept product" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Powder</div>
                 <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
@@ -1103,9 +1061,8 @@ FOR RICKY
               </article>
 
               <article class="product-card" data-name="instant mayanut latte drink">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Instant MayaNut latte concept"
-                     loading="lazy" decoding="async" />
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="Instant MayaNut latte concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Instant MayaNut Latte</div>
                 <p class="product-text">Future drink mix for warm, creamy cups.</p>
@@ -1120,9 +1077,8 @@ FOR RICKY
               </article>
 
               <article class="product-card" data-name="mayanut baking blend">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut baking blend concept"
-                     loading="lazy" decoding="async" />
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="MayaNut baking blend concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Baking Blend</div>
                 <p class="product-text">Blend concept for cookies, bars, and breads.</p>
@@ -1137,9 +1093,8 @@ FOR RICKY
               </article>
 
               <article class="product-card" data-name="cold mayanut drink">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="Cold MayaNut drink concept"
-                     loading="lazy" decoding="async" />
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="Cold MayaNut drink concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Cold MayaNut Drink</div>
                 <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
@@ -1153,10 +1108,9 @@ FOR RICKY
                 </div>
               </article>
 
-              <article class="product-card extra-product more-hidden" data-name="mayanut espresso blend">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut espresso blend concept"
-                     loading="lazy" decoding="async" />
+              <article class="product-card" data-name="mayanut espresso blend">
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="MayaNut espresso blend concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Espresso Blend</div>
                 <p class="product-text">Deeper roast concept with caramel notes.</p>
@@ -1170,10 +1124,9 @@ FOR RICKY
                 </div>
               </article>
 
-              <article class="product-card extra-product more-hidden" data-name="mayanut energy bar">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut energy bar concept"
-                     loading="lazy" decoding="async" />
+              <article class="product-card" data-name="mayanut energy bar">
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="MayaNut energy bar concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Energy Bar</div>
                 <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
@@ -1187,10 +1140,9 @@ FOR RICKY
                 </div>
               </article>
 
-              <article class="product-card extra-product more-hidden" data-name="mayanut ice cream">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut ice cream concept"
-                     loading="lazy" decoding="async" />
+              <article class="product-card" data-name="mayanut ice cream">
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="MayaNut ice cream concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Ice Cream</div>
                 <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
@@ -1204,10 +1156,9 @@ FOR RICKY
                 </div>
               </article>
 
-              <article class="product-card extra-product more-hidden" data-name="mayanut granola">
-                <img src="mayanut-the-maya-nut-company-logo.png"
-                     alt="MayaNut granola concept"
-                     loading="lazy" decoding="async" />
+              <article class="product-card" data-name="mayanut granola">
+                <img class="product-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                     alt="MayaNut granola concept" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Granola</div>
                 <p class="product-text">Breakfast granola concept built around MayaNut.</p>
@@ -1220,11 +1171,6 @@ FOR RICKY
                   <button class="product-add-btn" type="button">ADD</button>
                 </div>
               </article>
-            </div>
-
-            <div class="mobile-store-actions" aria-hidden="false">
-              <button id="store-view-full-mobile" class="store-view-full" type="button">VIEW STORE</button>
-              <button id="store-view-more-mobile" class="store-view-more" type="button" hidden>VIEW MORE</button>
             </div>
           </aside>
         </section>
@@ -1325,7 +1271,7 @@ FOR RICKY
   <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
     <div class="overlay-panel">
       <div class="overlay-header">
-        <div class="overlay-title" style="font-family:'Playfair Display', Georgia, serif;font-weight:700;">Menu</div>
+        <div class="overlay-title">Menu</div>
         <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu">&times;</button>
       </div>
       <nav class="mobile-nav" aria-label="Mobile navigation" style="display:flex;flex-direction:column;gap:8px;font-size:13px;text-transform:uppercase;letter-spacing:0.16em;">
@@ -1373,7 +1319,6 @@ FOR RICKY
     const yearSpan = document.getElementById('year');
     if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-    // Top logo -> home
     const topLogo = document.getElementById('logo-top');
     if(topLogo){
       topLogo.addEventListener('click', (e)=>{
@@ -1389,7 +1334,6 @@ FOR RICKY
     }
     if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
 
-    // Our trees button scroll
     const treesBtn = document.getElementById('btn-our-trees');
     const treesSection = document.getElementById('trees');
     if(treesBtn && treesSection){
@@ -1425,7 +1369,6 @@ FOR RICKY
       });
     });
 
-    // Persisted toggles
     const contrastToggle = document.getElementById('toggle-contrast');
     const textToggle = document.getElementById('toggle-large-text');
 
@@ -1469,7 +1412,6 @@ FOR RICKY
       });
     }
 
-    // Language routing
     const accessLang = document.getElementById('access-lang');
     if(accessLang){
       accessLang.addEventListener('change', ()=>{
@@ -1496,38 +1438,7 @@ FOR RICKY
     }
     setActiveTab('home');
 
-    const viewFullStoreDesktop = document.getElementById('store-view-full');
-    const viewFullStoreMobile  = document.getElementById('store-view-full-mobile');
-    const viewMoreMobile       = document.getElementById('store-view-more-mobile');
-
-    function setStoreButtonLabel(){
-      const expanded = document.body.classList.contains('store-expanded');
-      if(viewFullStoreDesktop) viewFullStoreDesktop.textContent = expanded ? 'RETURN' : 'VIEW STORE';
-      if(viewFullStoreMobile)  viewFullStoreMobile.textContent  = expanded ? 'RETURN' : 'VIEW STORE';
-    }
-
-    function isMobile(){ return window.innerWidth <= 880; }
-
-    // Mobile pagination: reveal 4 more once
-    const moreProducts = Array.from(document.querySelectorAll('.product-card.extra-product'));
-    function setMobileMoreButtonVisibility(){
-      if(!viewMoreMobile) return;
-      const expanded = document.body.classList.contains('store-expanded');
-      if(isMobile() && expanded){
-        const anyHidden = moreProducts.some(p => p.classList.contains('more-hidden'));
-        viewMoreMobile.hidden = !anyHidden;
-      } else {
-        viewMoreMobile.hidden = true;
-      }
-    }
-    function revealMoreOnce(){
-      moreProducts.forEach(p => p.classList.remove('more-hidden'));
-      setMobileMoreButtonVisibility();
-    }
-    if(viewMoreMobile){
-      viewMoreMobile.addEventListener('click', revealMoreOnce);
-    }
-
+    // Store behavior: clicking STORE opens full displayed store (desktop)
     function toggleStore(forceOpen=false){
       const expanded = document.body.classList.contains('store-expanded');
       if(forceOpen){
@@ -1535,29 +1446,11 @@ FOR RICKY
       } else {
         document.body.classList.toggle('store-expanded');
       }
-      const nowExpanded = document.body.classList.contains('store-expanded');
-      setStoreButtonLabel();
-      setActiveTab(nowExpanded ? 'store' : 'home');
-
-      if(isMobile()){
-        if(nowExpanded){
-          moreProducts.forEach(p => p.classList.add('more-hidden'));
-        } else {
-          moreProducts.forEach(p => p.classList.add('more-hidden'));
-        }
-        setMobileMoreButtonVisibility();
-      }
+      setActiveTab(document.body.classList.contains('store-expanded') ? 'store' : 'home');
     }
 
-    if(viewFullStoreDesktop){
-      viewFullStoreDesktop.addEventListener('click', ()=>toggleStore(false));
-      setStoreButtonLabel();
-    }
-    if(viewFullStoreMobile){
-      viewFullStoreMobile.addEventListener('click', ()=>toggleStore(false));
-      setStoreButtonLabel();
-    }
-
+    const viewFullStore = document.getElementById('store-view-full');
+    if(viewFullStore) viewFullStore.addEventListener('click', ()=>toggleStore(false));
     if(navStore){
       navStore.addEventListener('click', (e)=>{ e.preventDefault(); toggleStore(true); });
     }
@@ -1570,7 +1463,7 @@ FOR RICKY
       });
     }
 
-    // Search / Ricky easter egg
+    // Search + Ricky easter egg
     const searchInput = document.getElementById('store-search');
     const searchSend  = document.getElementById('store-search-send');
     const clearBtn    = document.getElementById('store-search-clear');
@@ -1644,13 +1537,14 @@ FOR RICKY
       });
     });
 
-    window.addEventListener('resize', ()=>{
-      setStoreButtonLabel();
-      setMobileMoreButtonVisibility();
+    // Fallback: if any product image fails, swap to powder image automatically
+    const POWDER_SRC = "mayanut-powder-maya-nut-brosimum-alicastrum.png";
+    document.querySelectorAll('img.product-img').forEach(img=>{
+      img.addEventListener('error', ()=>{
+        if(img.src.includes(POWDER_SRC)) return;
+        img.src = POWDER_SRC;
+      });
     });
-
-    setStoreButtonLabel();
-    setMobileMoreButtonVisibility();
   </script>
 </body>
 </html>

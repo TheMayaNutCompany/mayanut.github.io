@@ -13,14 +13,6 @@
   <meta name="theme-color" content="#1a6800" />
   <link rel="canonical" href="https://mayanut.com/" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="The MayaNut Company – MayaNut • Brosimum alicastrum" />
-  <meta property="og:description" content="Developing MayaNut (Brosimum alicastrum) as a long-term agricultural crop in Florida." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mayanut.com/" />
-  <meta property="og:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
-
-  <!-- favicon (same file as logo) -->
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
 
   <!-- Preload (speed) -->
@@ -32,8 +24,8 @@
   <link rel="preload" href="mayanut-powder-maya-nut-brosimum-alicastrum.png" as="image" />
   <link rel="preload" href="maya-nut-store-coming-soon-image.png" as="image" />
   <link rel="preload" href="florida-image-the-maya-nut-company.png" as="image" />
-  <link rel="preload" href="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" as="image" />
   <link rel="preload" href="the-maya-nut-company-bubba-image.png" as="image" />
+  <link rel="preload" href="august-kokus-image.png" as="image" />
 
   <style>
     :root{
@@ -75,8 +67,10 @@
 
       --match: rgba(160, 255, 160, 0.45);
 
-      /* footer icon size */
-      --footerIcon: 30px;
+      --footerIcon: 26px;
+
+      /* sticky header height buffer for anchors */
+      --stickyH: 140px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -109,6 +103,9 @@
     body.large-text .main-nav a{ font-size:15px; }
     body.large-text .btn, body.large-text .store-view-full{ font-size:13px; }
 
+    /* ORANGE EMPHASIS (only for approved terms) */
+    .em-o{ color:var(--orange); font-weight:900; }
+
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{ position:absolute; top:0; bottom:0; width:var(--sideW); overflow:hidden; background:#ffffff; pointer-events:none; }
@@ -132,6 +129,13 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
+    }
+
+    /* Sticky top (fix: keep visible, do not cover content) */
+    .sticky-wrap{
+      position:sticky;
+      top:0;
+      z-index:120;
     }
 
     /* BANNER */
@@ -185,7 +189,6 @@
       align-items:center;
       justify-content:space-between;
       position:relative;
-      z-index:100;
 
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -386,23 +389,27 @@
       box-shadow: 0 14px 40px rgba(15,23,42,0.18);
       min-height:100%;
       overflow:visible; /* allow badge outside */
+      scroll-margin-top: var(--stickyH);
     }
 
-    /* store coming soon badge: TOUCH STORE OUTER LEFT WALL + TOP */
+    /* store coming soon badge: touch store OUTER LEFT wall, top-aligned */
     .store-coming-badge{
       position:absolute;
-      top:0;               /* top aligned with store */
-      left:0;              /* anchor to store */
-      transform: translateX(-100%); /* push fully outside so it touches outer wall */
+      top:0;
+      left:0;
+      transform: translateX(-100%);
       width:160px;
       z-index:4;
       pointer-events:none;
     }
+    /* FIX: remove grey/outline */
     .store-coming-badge img{
       width:100%;
       height:auto;
       border-radius:14px;
-      border:1px solid rgba(15,23,42,0.10);
+      border:none;
+      outline:none;
+      box-shadow:none;
       background:transparent;
       display:block;
     }
@@ -617,75 +624,71 @@
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* ABOUT WAVE + SECTION */
-    .wave-divider{
-      width:100%;
-      height:120px;
-      background:linear-gradient(
-        180deg,
-        var(--tan) 0%,
-        #c9efc4 40%,
-        var(--green) 100%
-      );
-      clip-path:polygon(
-        0 45%,
-        12% 48%,
-        26% 44%,
-        40% 52%,
-        56% 46%,
-        70% 50%,
-        86% 46%,
-        100% 50%,
-        100% 100%,
-        0 100%
-      );
+    /* ABOUT US DIVIDER (thin line + centered label; no wave) */
+    .about-divider{
+      max-width:1200px;
+      margin:18px auto 14px;
       display:flex;
       align-items:center;
-      justify-content:center;
-
-      border-left: var(--frameBorder) solid var(--frame-line);
-      border-right: var(--frameBorder) solid var(--frame-line);
+      gap:12px;
     }
-    .wave-divider h2{
-      color:#ffffff;
-      font-size:13px;
+    .about-divider::before,
+    .about-divider::after{
+      content:"";
+      height:2px;
+      background: var(--green);
+      flex:1;
+      border-radius:999px;
+    }
+    .about-divider span{
+      font-size:12px;
+      font-weight:900;
       letter-spacing:0.18em;
       text-transform:uppercase;
-      font-weight:900;
-      text-align:center;
-      padding:0 14px;
-      text-shadow:0 2px 10px rgba(15,23,42,0.25);
+      color:#0b1220;
+      white-space:nowrap;
     }
 
-    .about-strip{
-      background:var(--tan);
-      border-left: var(--frameBorder) solid var(--frame-line);
-      border-right: var(--frameBorder) solid var(--frame-line);
-      padding:40px 0 56px;
-    }
-    .about-inner{
+    .about-section{
       max-width:1200px;
       margin:0 auto;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:36px;
-      padding:0 22px;
+      background: transparent; /* keep tan body showing through */
     }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+
     .about-card{
+      background: rgba(255,255,255,0.88);
+      border:1px solid rgba(15,23,42,0.10);
+      border-radius:18px;
+      overflow:hidden;
       display:flex;
       flex-direction:column;
-      gap:14px;
+      box-shadow:none;
     }
-    .about-card img{
+
+    /* same ratio for both; crop, no stretching */
+    .about-photo{
       width:100%;
-      border-radius:18px;
-      border:1px solid rgba(15,23,42,0.12);
+      aspect-ratio: 16 / 10;
+      object-fit:cover;
+      display:block;
       background:#fff;
     }
-    .about-card p{
-      font-size:14px;
-      line-height:1.9;
+    /* specifically crop August from bottom (show more top) */
+    .about-photo.is-august{ object-position: center top; }
+    .about-photo.is-bubba{ object-position: center center; }
+
+    .about-body{
+      padding:12px 14px 14px;
       color:var(--text-muted);
+      font-size:13px;
+      line-height:1.75;
     }
 
     /* FOOTER */
@@ -701,7 +704,7 @@
 
     .footer-inner{
       display:grid;
-      grid-template-columns: 1fr auto 1fr; /* left | center | right */
+      grid-template-columns: 1fr auto 1fr;
       align-items:center;
       column-gap:14px;
       font-size:11px;
@@ -728,7 +731,7 @@
       text-transform:uppercase;
     }
     .footer-florida img{
-      width:30px;
+      width:26px;
       height:auto;
       display:block;
       filter: drop-shadow(0 6px 14px rgba(15,23,42,0.20));
@@ -763,7 +766,7 @@
       display:flex;
       justify-content:flex-end;
       align-items:center;
-      gap:16px;
+      gap:14px;
     }
     .footer-email svg, .footer-instagram svg{
       width:var(--footerIcon);
@@ -809,7 +812,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index:60;
+      z-index:200;
     }
     .overlay.active{ display:flex; }
 
@@ -910,13 +913,13 @@
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
-      .top-banner,.site-header,.top-sep,main,.bottom-sep,footer,.wave-divider,.about-strip{ border-left:none !important; border-right:none !important; }
+      .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
       .top-banner .banner-text{ white-space:normal; }
     }
 
     @media(max-width:980px){
-      :root{ --sideW: 120px; }
+      :root{ --sideW: 120px; --stickyH: 140px; }
       .stack img{ height:200px; flex-basis:200px; }
       .frame-wrap{
         width: calc(100vw - (var(--sideW) * 2));
@@ -953,11 +956,9 @@
       }
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
 
-      /* on mobile, hide the outside-left badge to avoid overflow */
       .store-coming-badge{ display:none; }
 
-      .about-inner{ grid-template-columns:1fr; }
-      .wave-divider{ height:90px; }
+      .about-grid{ grid-template-columns:1fr; }
     }
 
     @media(max-width:520px){
@@ -985,42 +986,44 @@
   </div>
 
   <div class="frame-wrap">
-    <div class="top-banner">
-      <div class="banner-text">SUPPORT FLORIDA’S FIRST MAYANUT FARM</div>
-      <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GOFUNDME</a>
+    <div class="sticky-wrap">
+      <div class="top-banner">
+        <div class="banner-text">SUPPORT FLORIDA’S FIRST MAYANUT FARM</div>
+        <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GOFUNDME</a>
+      </div>
+
+      <header class="site-header" id="top">
+        <div class="header-left">
+          <img src="mayanut-the-mayanut-comapny-logo.png"
+               alt="The MayaNut Company logo"
+               id="logo-top" />
+        </div>
+
+        <div class="header-center">
+          <nav class="main-nav" aria-label="Primary navigation">
+            <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
+            <a href="#store-panel" id="nav-store">STORE</a>
+            <a href="about.html">ABOUT</a>
+            <a href="research.html">RESEARCH</a>
+            <a href="contact.html">CONTACT</a>
+          </nav>
+        </div>
+
+        <div class="header-right">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="top-sep"></div>
     </div>
-
-    <header class="site-header" id="top">
-      <div class="header-left">
-        <img src="mayanut-the-mayanut-comapny-logo.png"
-             alt="The MayaNut Company logo"
-             id="logo-top" />
-      </div>
-
-      <div class="header-center">
-        <nav class="main-nav" aria-label="Primary navigation">
-          <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
-          <a href="#store-panel" id="nav-store">STORE</a>
-          <a href="about.html">ABOUT</a>
-          <a href="research.html">RESEARCH</a>
-          <a href="contact.html">CONTACT</a>
-        </nav>
-      </div>
-
-      <div class="header-right">
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </header>
-
-    <div class="top-sep"></div>
 
     <main>
       <div class="content-wrapper">
         <section id="hero">
           <div class="hero-left">
-            <div class="credit">Created by August Kokus</div>
+            <div class="credit">Created by <span class="em-o">August Kokus</span></div>
 
             <h1 class="hero-title">
               <span class="line">Introducing</span>
@@ -1040,16 +1043,15 @@
             </div>
 
             <p class="hero-sub">
-              Over 200 seed-grown <span class="o">MayaNut</span>
-              (<span class="o"><em>Brosimum alicastrum</em></span>) trees are currently in cultivation.
-              Founded in 2025, we are in the early stages of developing <span class="o">MayaNut</span>
+              Over 200 seed-grown <span class="em-o">MayaNut</span>
+              (<span class="em-o"><em>Brosimum alicastrum</em></span>) trees are currently in cultivation.
+              Founded in 2025, we are in the early stages of developing <span class="em-o">MayaNut</span>
               as a long-term agricultural crop in Florida, United States, emphasizing seed-grown populations,
               selection, and domestication.
             </p>
-
             <p class="hero-sub">
-              <span class="o"><em>Brosimum alicastrum</em></span> has been traditionally valued in Central America for its edible tree-seed.
-              As the project progresses, we are exploring pathways toward establishing a first <span class="o">MayaNut</span> farm in South Florida,
+              <span class="em-o"><em>Brosimum alicastrum</em></span> has been traditionally valued in Central America for its edible tree-seed.
+              As the project progresses, we are exploring pathways toward establishing a first <span class="em-o">MayaNut</span> farm in South Florida,
               while the current population remains maintained in cultivation as long-term land options are evaluated.
             </p>
 
@@ -1064,7 +1066,6 @@
           </div>
 
           <aside id="store-panel" aria-label="Future store preview" class="store-container">
-            <!-- badge touching outer left wall, top-aligned -->
             <div class="store-coming-badge" aria-hidden="true">
               <img src="maya-nut-store-coming-soon-image.png" alt="" />
             </div>
@@ -1212,48 +1213,46 @@
             </div>
           </aside>
         </section>
+
+        <!-- Thin green line + centered label (no wave) -->
+        <div class="about-divider" aria-hidden="true">
+          <span>About Us</span>
+        </div>
+
+        <!-- About Us section (Bubba image on LEFT; August on RIGHT) -->
+        <section class="about-section" aria-label="About us">
+          <div class="about-grid">
+            <article class="about-card">
+              <img class="about-photo is-bubba"
+                   src="the-maya-nut-company-bubba-image.png"
+                   alt="Herbert “Bubba” Humphries and the Kennesaw Fruit Company legacy"
+                   loading="lazy" decoding="async" />
+              <div class="about-body">
+                Founded in 2025 by <span class="em-o">August Kokus</span>, The MayaNut Company continues a family legacy of American fruit growing
+                that began in 1923 with Herbert “<span class="em-o">Bubba</span>” Humphries and the Kennesaw Fruit Company.
+                Drawing on that history, <span class="em-o">August Kokus</span> is introducing <span class="em-o">MayaNut</span>
+                (<span class="em-o"><em>Brosimum alicastrum</em></span>) to modern American agriculture—cultivating a resilient tropical food tree
+                that has never before been grown at scale in the United States. The work centers on restoring a forgotten tree and developing it into
+                a viable agricultural crop for the future.
+              </div>
+            </article>
+
+            <article class="about-card">
+              <img class="about-photo is-august"
+                   src="august-kokus-image.png"
+                   alt="August Kokus working in South Florida"
+                   loading="lazy" decoding="async" />
+              <div class="about-body">
+                <span class="em-o">August Kokus</span> is working in South Florida to establish <span class="em-o"><em>Brosimum alicastrum</em></span>
+                as a new agricultural staple. As the citrus industry continues to decline, Florida must look toward new perennial crops to sustain its
+                agricultural future. <span class="em-o">August Kokus</span> created The MayaNut Company to introduce people to a resilient, long-overlooked
+                food tree—and to ensure the preservation of <span class="em-o"><em>Brosimum alicastrum</em></span> for generations to come.
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
     </main>
-
-    <!-- WAVE + ABOUT SECTION -->
-    <div class="wave-divider">
-      <h2>A Little About Us</h2>
-    </div>
-
-    <section class="about-strip" aria-label="A little about us">
-      <div class="about-inner">
-        <div class="about-card">
-          <img
-            src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-            alt="August Kokus, founder of The MayaNut Company"
-            loading="lazy"
-            decoding="async"
-          />
-          <p>
-            Founded in 2025 by August Kokus, The MayaNut Company continues a family legacy of American fruit growing
-            that began in 1923 with Herbert “Bubba” Humphries and the Kennesaw Fruit Company. Drawing on that history,
-            August is introducing MayaNut (<em>Brosimum alicastrum</em>) to modern American agriculture—cultivating a resilient
-            tropical food tree that has never before been grown at scale in the United States. The work centers on restoring
-            a forgotten tree and developing it into a viable agricultural crop for the future.
-          </p>
-        </div>
-
-        <div class="about-card">
-          <img
-            src="the-maya-nut-company-bubba-image.png"
-            alt="Herbert “Bubba” Humphries and the Kennesaw Fruit Company legacy"
-            loading="lazy"
-            decoding="async"
-          />
-          <p>
-            August Kokus is working in South Florida to establish <em>Brosimum alicastrum</em> as a new agricultural staple.
-            As the citrus industry continues to decline, Florida must look toward new perennial crops to sustain its agricultural future.
-            August created The MayaNut Company to introduce people to a resilient, long-overlooked food tree—and to ensure the preservation
-            of <em>Brosimum alicastrum</em> for generations to come.
-          </p>
-        </div>
-      </div>
-    </section>
 
     <div class="bottom-sep"></div>
 
@@ -1363,6 +1362,7 @@
       </nav>
     </div>
   </div>
+
   <script>
     (function fillSideStacks(){
       const src = "mayanuts-the-maya-nut-company-image.jpeg";
@@ -1432,7 +1432,6 @@
       });
     });
 
-    // ESC closes overlays
     document.addEventListener('keydown', (e)=>{
       if(e.key !== 'Escape') return;
       document.querySelectorAll('.overlay.active').forEach(ov=>ov.classList.remove('active'));
@@ -1477,7 +1476,6 @@
       });
     }
 
-    // language switcher
     const accessLang = document.getElementById('access-lang');
     if(accessLang){
       accessLang.addEventListener('change', ()=>{
@@ -1487,7 +1485,6 @@
       });
     }
 
-    // buttons that navigate
     document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
@@ -1495,7 +1492,6 @@
       });
     });
 
-    // store expand/collapse
     const navStore = document.getElementById('nav-store');
     const navStoreMobile = document.getElementById('nav-store-mobile');
     const viewFullStore = document.getElementById('store-view-full');
@@ -1534,7 +1530,6 @@
       });
     }
 
-    // store search
     const searchInput = document.getElementById('store-search');
     const searchSend  = document.getElementById('store-search-send');
     const clearBtn    = document.getElementById('store-search-clear');
@@ -1600,7 +1595,6 @@
       });
     }
 
-    // qty controls
     document.querySelectorAll('.qty-control').forEach(control=>{
       const input = control.querySelector('.qty-input');
       function clamp(){
@@ -1624,7 +1618,6 @@
       }
     });
 
-    // add to cart (placeholder)
     document.querySelectorAll('.btn-add').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         alert('MayaNut products are coming soon! Thank you for your patience.');

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>The MayaNut Company – MayaNut • Brosimum alicastrum</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <!-- SEO (Spanish + core keywords, not stuffed) -->
+  <!-- SEO (clean, not stuffed) -->
   <meta name="description"
-        content="The MayaNut Company desarrolla MayaNut (Brosimum alicastrum) como un cultivo agrícola a largo plazo en el sur de Florida: poblaciones de semilla, selección y domesticación. Más de 200 árboles nacidos de semilla están en cultivo." />
+        content="The MayaNut Company is developing MayaNut (Brosimum alicastrum) as a long-term agricultural crop in South Florida, focused on seed-grown populations, selection, and domestication. Over 200 seed-grown trees are currently in cultivation." />
   <meta name="keywords"
-        content="MayaNut, Maya Nut, Brosimum alicastrum, ramón, ojoche, breadnut, agroforestería, sur de Florida" />
+        content="MayaNut, Maya Nut, Brosimum alicastrum, ramón, ojoche, breadnut, agroforestry, South Florida" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#1a6800" />
   <link rel="canonical" href="https://mayanut.com/" />
@@ -17,9 +17,9 @@
   <!-- favicon (same file as logo) -->
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
 
-  <!-- Social (lightweight) -->
+  <!-- Social -->
   <meta property="og:title" content="The MayaNut Company – MayaNut • Brosimum alicastrum" />
-  <meta property="og:description" content="Sur de Florida: desarrollo de MayaNut (Brosimum alicastrum) como cultivo a largo plazo. Más de 200 árboles nacidos de semilla en cultivo." />
+  <meta property="og:description" content="South Florida: developing MayaNut (Brosimum alicastrum) as a long-term crop. Seed-grown populations, selection, domestication." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mayanut.com/" />
   <meta property="og:image" content="mayanut-the-mayanut-comapny-logo.png" />
@@ -42,14 +42,14 @@
       --green:#1a6800;
       --green-deep:#0f4d1f;
 
-      /* SOLID TAN (one-piece) */
+      /* SOLID TAN / BEIGE */
       --tan:#f3e6d1;
 
       --orange:#fd6c02;
       --orange-top:#ff8a2b;   /* lighter top */
       --orange-bot:#e85b02;   /* darker bottom */
 
-      /* darker border/separator green */
+      /* darker border/separator green (matches banner outer dark) */
       --frame-line: rgba(12, 90, 42, 0.95);
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
@@ -232,7 +232,7 @@
       display:inline-block;
       transition:transform 0.12s ease, color 0.12s ease;
       white-space:nowrap;
-      text-shadow:0 1px 0 rgba(255,255,255,0.55));
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
       padding-bottom:6px;
       border-bottom:2px solid transparent;
     }
@@ -277,7 +277,13 @@
       background: transparent;
     }
 
-    /* HERO */
+    /* HERO LAYOUT:
+       - left column: text + images
+       - right column: store
+       - store-coming-soon image is ABSOLUTELY positioned so it:
+         (1) touches the LEFT side of the store
+         (2) is level with the TOP of the store
+    */
     #hero{
       position:relative;
       display:grid;
@@ -294,6 +300,8 @@
       flex-direction:column;
       gap:14px;
       min-height:100%;
+      position:relative;
+      z-index:1;
     }
 
     .credit{
@@ -302,13 +310,6 @@
       letter-spacing:0.16em;
       color:var(--text-muted);
       font-weight:900;
-    }
-
-    .hero-toprow{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:14px;
-      align-items:start;
     }
 
     h1.hero-title{
@@ -330,22 +331,7 @@
     }
     .hero-title .mayanut-dot{ color:var(--orange); font-weight:900; }
 
-    /* NEW image: move UP/DOWN by changing margin-top */
-    .hero-newimg{
-      width:160px;
-      max-width:160px;
-      margin-top:-40px; /* <-- adjust this number to move UP/DOWN */
-    }
-    .hero-newimg img{
-      width:100%;
-      height:auto;
-      border-radius:14px;
-      border:1px solid rgba(15,23,42,0.10);
-      background: transparent;
-      box-shadow:none;
-      display:block;
-    }
-
+    /* Two original images */
     .hero-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -362,6 +348,42 @@
       box-shadow:none;
       border:1px solid rgba(15,23,42,0.10);
       background:#fff;
+    }
+
+    /* STORE */
+    #store-panel{
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,0.45);
+      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 52%, var(--store-g3) 100%);
+      padding:16px 14px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      position:relative;
+      z-index:2;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.18);
+      min-height:100%;
+      overflow:hidden;
+    }
+
+    /* NEW IMAGE: anchored to store (touch left edge + level with top) */
+    .store-coming-badge{
+      position:absolute;
+      top:0;
+      left: calc(100% + 0px);   /* no gap */
+      transform: translateX(-100%); /* pull it back so it touches the store's left edge */
+      margin-left:0;
+      width:160px;              /* ~50% smaller look */
+      z-index:4;
+      pointer-events:none;
+    }
+    .store-coming-badge img{
+      width:100%;
+      height:auto;
+      border-radius:14px;
+      border:1px solid rgba(15,23,42,0.10);
+      background: transparent;  /* your PNG should be transparent */
+      display:block;
     }
 
     .hero-sub{
@@ -394,23 +416,7 @@
 
     .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; }
 
-    /* STORE */
-    #store-panel{
-      border-radius:22px;
-      border:1px solid rgba(255,255,255,0.45);
-      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 52%, var(--store-g3) 100%);
-      padding:16px 14px 18px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      position:relative;
-      z-index:2;
-      box-shadow: 0 14px 40px rgba(15,23,42,0.18);
-      min-height:100%;
-      overflow:hidden;
-    }
-
-    .store-header-row{ display:flex; justify-content:center; }
+    .store-header-row{ display:flex; justify-content:center; position:relative; }
     .store-title{
       font-size:14px;
       font-weight:900;
@@ -643,7 +649,7 @@
     .footer-left{ text-align:left; color:#0b1220; }
     .footer-florida{ display:flex; align-items:center; gap:10px; justify-content:center; }
     .footer-center{ text-align:center; justify-self:center; }
-    .footer-right{ text-align:right; display:flex; justify-content:flex-end; align-items:center; gap:14px; }
+    .footer-right{ text-align:right; display:flex; justify-content:flex-end; align-items:center; gap:16px; }
 
     .footer-links{
       margin-top:4px;
@@ -683,8 +689,9 @@
       filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
     }
 
+    /* BIGGER icons in lower right */
     .footer-email svg, .footer-instagram svg{
-      width:28px; height:28px;
+      width:34px; height:34px;
       stroke:#ffffff;
       fill:none;
       stroke-width:2;
@@ -880,7 +887,7 @@
         margin-left: var(--sideW);
         margin-right: var(--sideW);
       }
-      .hero-newimg{ width:140px; max-width:140px; }
+      .store-coming-badge{ width:140px; }
     }
 
     @media(max-width:880px){
@@ -891,6 +898,15 @@
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
 
+      /* On mobile, keep the badge inside store, top-left corner */
+      .store-coming-badge{
+        position:absolute;
+        top:0;
+        left:0;
+        transform:none;
+        width:160px;
+      }
+
       .store-grid{
         display:flex;
         overflow-x:auto;
@@ -899,19 +915,6 @@
         padding-bottom:6px;
       }
       .product-card{ flex:0 0 86%; min-height:228px; }
-
-      body.store-expanded .store-grid{
-        display:grid !important;
-        grid-template-columns:1fr;
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-        max-height:70vh;
-        gap:12px;
-      }
-      body.store-expanded .product-card{ flex:unset !important; width:100%; }
-
-      .hero-toprow{ grid-template-columns:1fr; }
-      .hero-newimg{ width:180px; max-width:180px; margin-top:0; }
     }
 
     @media(max-width:520px){
@@ -927,7 +930,7 @@
       .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
       .footer-florida{ justify-content:center; }
       .footer-links{ justify-content:center; }
-      .footer-right{ gap:16px; }
+      .footer-right{ gap:18px; }
       .top-banner{ flex-wrap:wrap; }
     }
   </style>
@@ -957,17 +960,17 @@
       </div>
 
       <div class="header-center">
-        <nav class="main-nav" aria-label="Navegación principal">
-          <a href="index-es.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
           <a href="#store-panel" id="nav-store">STORE</a>
-          <a href="about-es.html">ABOUT</a>
-          <a href="research-es.html">RESEARCH</a>
-          <a href="contact-es.html">CONTACT</a>
+          <a href="about.html">ABOUT</a>
+          <a href="research.html">RESEARCH</a>
+          <a href="contact.html">CONTACT</a>
         </nav>
       </div>
 
       <div class="header-right">
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menú">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -981,56 +984,55 @@
           <div class="hero-left">
             <div class="credit">Created by August Kokus</div>
 
-            <div class="hero-toprow">
-              <h1 class="hero-title">
-                <span class="line">Introducing</span>
-                <span class="line">South Florida to</span>
-                <span class="line">
-                  <span class="mayanut">MayaNut</span><span class="mayanut-dot">.</span>
-                </span>
-              </h1>
-
-              <div class="hero-newimg" aria-label="Imagen: tienda próximamente">
-                <img src="maya-nut-store-coming-soon-image.png"
-                     alt="MayaNut store coming soon"
-                     loading="eager"
-                     decoding="async" />
-              </div>
-            </div>
+            <h1 class="hero-title">
+              <span class="line">Introducing</span>
+              <span class="line">South Florida to</span>
+              <span class="line">
+                <span class="mayanut">MayaNut</span><span class="mayanut-dot">.</span>
+              </span>
+            </h1>
 
             <div class="hero-images">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                   alt="Vivero de MayaNut (Brosimum alicastrum) en el sur de Florida"
+                   alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
                    loading="eager" decoding="async" />
               <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                   alt="Fruto de MayaNut (Brosimum alicastrum)"
+                   alt="MayaNut fruit Brosimum alicastrum"
                    loading="lazy" decoding="async" />
             </div>
 
             <p class="hero-sub">
-              Actualmente hay más de 200 árboles <span class="o">MayaNut</span>
-              (<span class="o"><em>Brosimum alicastrum</em></span>) nacidos de semilla en cultivo.
-              Fundada en 2025, estamos en una etapa temprana desarrollando <span class="o">MayaNut</span>
-              como un cultivo agrícola a largo plazo en Florida (EE. UU.), con enfoque en poblaciones de semilla,
-              selección y domesticación.
+              Over 200 seed-grown <span class="o">MayaNut</span>
+              (<span class="o"><em>Brosimum alicastrum</em></span>) trees are currently in cultivation.
+              Founded in 2025, we are in the early stages of developing <span class="o">MayaNut</span>
+              as a long-term agricultural crop in Florida, United States, emphasizing seed-grown populations,
+              selection, and domestication.
             </p>
             <p class="hero-sub">
-              <span class="o"><em>Brosimum alicastrum</em></span> se ha valorado tradicionalmente en Centroamérica por su semilla comestible.
-              A medida que el proyecto avanza, exploramos rutas para establecer la primera granja de <span class="o">MayaNut</span>
-              en el sur de Florida, mientras la población actual se mantiene en cultivo y se evalúan opciones de tierra a largo plazo.
+              <span class="o"><em>Brosimum alicastrum</em></span> has been traditionally valued in Central America for its edible tree-seed.
+              As the project progresses, we are exploring pathways toward establishing a first <span class="o">MayaNut</span> farm in South Florida,
+              while the current population remains maintained in cultivation as long-term land options are evaluated.
             </p>
 
             <div class="hero-actions">
-              <button class="btn" data-nav="about-es.html" type="button">SABER MÁS</button>
-              <button class="btn" data-nav="contact-es.html" type="button">CONTACTO</button>
+              <button class="btn" data-nav="about.html" type="button">LEARN MORE</button>
+              <button class="btn" data-nav="contact.html" type="button">CONTACT</button>
             </div>
 
             <div class="hero-meta">
-              Vista previa de la tienda: conceptual. Las imágenes de productos se actualizarán cuando haya fotos reales.
+              Store preview is conceptual. Product imagery will be updated as real photos are available.
             </div>
           </div>
 
-          <aside id="store-panel" aria-label="Vista previa de la tienda" class="store-container">
+          <aside id="store-panel" aria-label="Future store preview" class="store-container">
+            <!-- NEW IMAGE: touches store LEFT edge, level with store TOP -->
+            <div class="store-coming-badge" aria-label="Store coming soon image">
+              <img src="maya-nut-store-coming-soon-image.png"
+                   alt="MayaNut store coming soon"
+                   loading="eager"
+                   decoding="async" />
+            </div>
+
             <div class="store-header-row">
               <div class="store-title">STORE</div>
             </div>
@@ -1039,9 +1041,9 @@
               <button id="store-view-full" class="store-view-full view-store-btn" type="button">VIEW STORE</button>
 
               <div class="store-search">
-                <input id="store-search" type="text" placeholder="Buscar productos futuros…" />
-                <button id="store-search-send" class="store-search-send" type="button" aria-label="Controles de búsqueda">
-                  <span class="search-x" id="store-search-clear" aria-label="Borrar búsqueda" title="Clear">×</span>
+                <input id="store-search" type="text" placeholder="Search future products…" />
+                <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
+                  <span class="search-x" id="store-search-clear" aria-label="Clear search" title="Clear">×</span>
                   <span class="search-divider" aria-hidden="true"></span>
                   <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="10" cy="10" r="5"></circle>
@@ -1056,14 +1058,14 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Powder</div>
-                <p class="product-text">Polvo de semilla tostada — suave, sin cafeína, listo para mezclar.</p>
+                <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="powder">
-                    <button class="qty-minus" type="button" aria-label="Disminuir cantidad">−</button>
-                    <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Cantidad" />
-                    <button class="qty-plus" type="button" aria-label="Aumentar cantidad">+</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add" type="button" aria-label="Añadir">+</button>
+                  <button class="btn-add" type="button" aria-label="Add to cart">+</button>
                 </div>
               </article>
 
@@ -1071,7 +1073,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Instant MayaNut Latte</div>
-                <p class="product-text">Concepto de mezcla para tazas cálidas y cremosas.</p>
+                <p class="product-text">Future drink mix concept for warm, creamy cups.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="latte">
                     <button class="qty-minus" type="button">−</button>
@@ -1086,7 +1088,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Baking Blend</div>
-                <p class="product-text">Concepto de mezcla para galletas, barras y panes.</p>
+                <p class="product-text">Blend concept for cookies, bars, and breads.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
                     <button class="qty-minus" type="button">−</button>
@@ -1101,7 +1103,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">Cold MayaNut Drink</div>
-                <p class="product-text">Concepto de bebida fría, suave y a base de árbol.</p>
+                <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
                     <button class="qty-minus" type="button">−</button>
@@ -1116,7 +1118,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Espresso Blend</div>
-                <p class="product-text">Concepto de tueste más profundo con notas de caramelo.</p>
+                <p class="product-text">Deeper roast concept with caramel notes.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="espresso">
                     <button class="qty-minus" type="button">−</button>
@@ -1131,7 +1133,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Energy Bar</div>
-                <p class="product-text">Concepto de barra energética con MayaNut y fruta.</p>
+                <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="bars">
                     <button class="qty-minus" type="button">−</button>
@@ -1146,7 +1148,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Ice Cream</div>
-                <p class="product-text">Concepto de postre con sabor a MayaNut tostado.</p>
+                <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="icecream">
                     <button class="qty-minus" type="button">−</button>
@@ -1161,7 +1163,7 @@
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Granola</div>
-                <p class="product-text">Concepto de granola para desayuno basada en MayaNut.</p>
+                <p class="product-text">Breakfast granola concept built around MayaNut.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="granola">
                     <button class="qty-minus" type="button">−</button>
@@ -1219,7 +1221,7 @@
     </footer>
   </div>
 
-  <button class="accessibility-btn" id="accessibility-btn" aria-label="Configuración de accesibilidad">
+  <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5.25" r="2"></circle>
       <path d="M5 8.5h14"></path>
@@ -1238,14 +1240,14 @@
           <div class="overlay-title">Accessibility &amp; Language</div>
           <div class="overlay-version">Version 3.3.4</div>
         </div>
-        <button class="overlay-close" data-close="accessibility-overlay" aria-label="Cerrar">&times;</button>
+        <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>
 
       <div class="settings-row">
         <label for="access-lang">Language</label>
         <select id="access-lang" class="settings-lang">
-          <option value="en">English</option>
-          <option value="es" selected>Español</option>
+          <option value="en" selected>English</option>
+          <option value="es">Español</option>
           <option value="ru">Русский</option>
           <option value="fr">Français</option>
           <option value="zh">中文 (Mandarin)</option>
@@ -1270,13 +1272,13 @@
       </div>
 
       <div class="access-mini-nav">
-        <button class="access-mini-toggle" id="access-mini-toggle" type="button" aria-label="Más">
+        <button class="access-mini-toggle" id="access-mini-toggle" type="button" aria-label="More links">
           MORE
           <span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
         <div class="access-mini-links" id="access-mini-links">
           <a href="accessibility.html">ACCESSIBILITY POLICY</a>
-          <a href="contact-es.html">CONTACT</a>
+          <a href="contact.html">CONTACT</a>
         </div>
       </div>
     </div>
@@ -1286,14 +1288,14 @@
     <div class="overlay-panel">
       <div class="overlay-header">
         <div class="overlay-title">Menu</div>
-        <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Cerrar">&times;</button>
+        <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu">&times;</button>
       </div>
-      <nav class="mobile-nav" aria-label="Navegación móvil">
-        <a href="index-es.html" aria-current="page">HOME</a>
+      <nav class="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html" aria-current="page">HOME</a>
         <a href="#store-panel" id="nav-store-mobile">STORE</a>
-        <a href="about-es.html">ABOUT</a>
-        <a href="research-es.html">RESEARCH</a>
-        <a href="contact-es.html">CONTACT</a>
+        <a href="about.html">ABOUT</a>
+        <a href="research.html">RESEARCH</a>
+        <a href="contact.html">CONTACT</a>
       </nav>
     </div>
   </div>
@@ -1558,7 +1560,7 @@
 
     document.querySelectorAll('.btn-add').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        alert('¡Los productos MayaNut llegan pronto! Gracias por tu paciencia.');
+        alert('MayaNut products are coming soon! Thank you for your patience.');
       });
     });
   </script>

@@ -8,7 +8,7 @@
   <meta name="description"
         content="The MayaNut Company is developing MayaNut (Brosimum alicastrum) as a long-term agricultural crop in Florida, focused on seed-grown populations, selection, and domestication." />
   <meta name="keywords"
-        content="MayaNut, Maya Nut, Brosimum alicastrum, Florida, South Florida, agroforestry, perennial crops, tropical food tree" />
+        content="MayaNut, Maya Nut, Brosimum alicastrum, Florida, South Florida, agroforestry" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#1a6800" />
   <link rel="canonical" href="https://mayanut.com/" />
@@ -16,16 +16,15 @@
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
 
   <!-- Preload (speed) -->
-  <link rel="preload" href="mayanut-the-mayanut-comapny-logo.png" as="image" />
-  <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
+  <link rel="preload" href="mayanut-the-mayanut-comapny-logo.png" as="image" fetchpriority="high" />
+  <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" fetchpriority="high" />
   <link rel="preload" href="mayanuts-the-maya-nut-company-image.jpeg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
   <link rel="preload" href="mayanut-powder-maya-nut-brosimum-alicastrum.png" as="image" />
   <link rel="preload" href="maya-nut-store-coming-soon-image.png" as="image" />
   <link rel="preload" href="florida-image-the-maya-nut-company.png" as="image" />
-  <link rel="preload" href="the-maya-nut-company-bubba-image.png" as="image" />
-  <link rel="preload" href="august-kokus-image.png" as="image" />
+  <link rel="preload" href="america-the-maya-nut-company-image.png" as="image" />
 
   <style>
     :root{
@@ -67,10 +66,8 @@
 
       --match: rgba(160, 255, 160, 0.45);
 
-      --footerIcon: 26px;
-
-      /* sticky header height buffer for anchors */
-      --stickyH: 140px;
+      /* footer icon size (bigger) */
+      --footerIcon: 30px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -103,9 +100,6 @@
     body.large-text .main-nav a{ font-size:15px; }
     body.large-text .btn, body.large-text .store-view-full{ font-size:13px; }
 
-    /* ORANGE EMPHASIS (only for approved terms) */
-    .em-o{ color:var(--orange); font-weight:900; }
-
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{ position:absolute; top:0; bottom:0; width:var(--sideW); overflow:hidden; background:#ffffff; pointer-events:none; }
@@ -131,11 +125,11 @@
       background:transparent;
     }
 
-    /* Sticky top (fix: keep visible, do not cover content) */
-    .sticky-wrap{
+    /* STICKY TOP (banner + header stay fixed while scrolling, without hiding content) */
+    .sticky-top{
       position:sticky;
       top:0;
-      z-index:120;
+      z-index:200;
     }
 
     /* BANNER */
@@ -353,25 +347,58 @@
     }
     .o{ color:var(--orange); font-weight:900; }
 
+    /* BUTTONS: background stays the same on hover; only WHITE TEXT grows slightly on desktop hover */
     .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
-    .btn{
+
+    .btn,
+    .store-view-full,
+    .btn-add{
       background: var(--cta-grad);
-      color: #fff;
+      color:#fff;
       border:none;
       border-radius: var(--r-btn);
-      padding:10px 16px;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
       cursor:pointer;
       font-weight:900;
-      transition: filter .12s ease, transform .12s ease;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn{
+      padding:10px 16px;
+      font-size:12px;
       min-height:40px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
     }
-    .btn:hover{ filter:brightness(0.96); transform: translateY(-1px); }
+
+    /* wrap label so we can scale only the text */
+    .btn .btn-label,
+    .store-view-full .btn-label,
+    .btn-add .btn-label{
+      display:inline-block;
+      transform:translateZ(0);
+      transition: transform 0.12s ease;
+      will-change: transform;
+    }
+
+    /* Desktop hover: text grows slightly; background does NOT change */
+    @media (hover:hover) and (pointer:fine){
+      .btn:hover .btn-label,
+      .store-view-full:hover .btn-label,
+      .btn-add:hover .btn-label{
+        transform: scale(1.06);
+      }
+    }
+
+    /* Active click: tiny press-down only (keeps background same) */
+    .btn:active,
+    .store-view-full:active,
+    .btn-add:active{
+      transform: translateY(1px);
+    }
 
     .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; }
 
@@ -389,10 +416,10 @@
       box-shadow: 0 14px 40px rgba(15,23,42,0.18);
       min-height:100%;
       overflow:visible; /* allow badge outside */
-      scroll-margin-top: var(--stickyH);
     }
 
-    /* store coming soon badge: touch store OUTER LEFT wall, top-aligned */
+    /* store coming soon badge: touch store OUTER LEFT wall, top-aligned
+       (also remove grey outline by setting border:none) */
     .store-coming-badge{
       position:absolute;
       top:0;
@@ -402,14 +429,11 @@
       z-index:4;
       pointer-events:none;
     }
-    /* FIX: remove grey/outline */
     .store-coming-badge img{
       width:100%;
       height:auto;
       border-radius:14px;
-      border:none;
-      outline:none;
-      box-shadow:none;
+      border:none;           /* REMOVE the grey outline */
       background:transparent;
       display:block;
     }
@@ -435,22 +459,15 @@
     }
 
     .store-view-full{
-      border:none;
-      background: var(--cta-grad);
-      color: #fff;
-      border-radius: var(--r-btn);
       padding:9px 14px;
       font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      cursor:pointer;
+      min-height:40px;
       white-space:nowrap;
       text-align:center;
-      font-weight:900;
-      min-height:40px;
-      transition: filter .12s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
-    .store-view-full:hover{ filter:brightness(0.96); }
 
     .store-search{ flex:1; min-width:240px; position:relative; }
     .store-search input{
@@ -511,7 +528,7 @@
       align-items:center;
       text-align:center;
       justify-content:space-between;
-      transition:transform .15s ease, box-shadow .15s ease, opacity .2s ease;
+      transition:opacity .2s ease;
       min-height:228px;
       width:100%;
       overflow:hidden;
@@ -572,7 +589,16 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      transition: background 0.12s ease;
     }
+
+    /* Only these get slightly darker on hover (desktop) */
+    @media (hover:hover) and (pointer:fine){
+      .qty-minus:hover, .qty-plus:hover{
+        background: rgba(255,255,255,0.52);
+      }
+    }
+
     .qty-input{
       width: var(--qtyInputW);
       height: var(--qtyBtn);
@@ -593,22 +619,16 @@
     }
 
     .btn-add{
-      width:var(--qtyBtn);
+      width:72px;
       height:var(--qtyBtn);
-      min-width:var(--qtyBtn);
+      min-width:72px;
       min-height:var(--qtyBtn);
-      border:none;
       border-radius:12px;
-      background: var(--cta-grad);
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      transition: filter .12s ease;
+      padding:0 10px;
     }
-    .btn-add:hover{ filter:brightness(0.96); }
 
     .product-card.extra-product{ display:none; opacity:0; }
     body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
@@ -624,73 +644,6 @@
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* ABOUT US DIVIDER (thin line + centered label; no wave) */
-    .about-divider{
-      max-width:1200px;
-      margin:18px auto 14px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .about-divider::before,
-    .about-divider::after{
-      content:"";
-      height:2px;
-      background: var(--green);
-      flex:1;
-      border-radius:999px;
-    }
-    .about-divider span{
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-      color:#0b1220;
-      white-space:nowrap;
-    }
-
-    .about-section{
-      max-width:1200px;
-      margin:0 auto;
-      background: transparent; /* keep tan body showing through */
-    }
-
-    .about-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      align-items:stretch;
-    }
-
-    .about-card{
-      background: rgba(255,255,255,0.88);
-      border:1px solid rgba(15,23,42,0.10);
-      border-radius:18px;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      box-shadow:none;
-    }
-
-    /* same ratio for both; crop, no stretching */
-    .about-photo{
-      width:100%;
-      aspect-ratio: 16 / 10;
-      object-fit:cover;
-      display:block;
-      background:#fff;
-    }
-    /* specifically crop August from bottom (show more top) */
-    .about-photo.is-august{ object-position: center top; }
-    .about-photo.is-bubba{ object-position: center center; }
-
-    .about-body{
-      padding:12px 14px 14px;
-      color:var(--text-muted);
-      font-size:13px;
-      line-height:1.75;
-    }
-
     /* FOOTER */
     footer{
       width:100%;
@@ -704,7 +657,7 @@
 
     .footer-inner{
       display:grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 1fr auto 1fr; /* left | center | right */
       align-items:center;
       column-gap:14px;
       font-size:11px;
@@ -718,23 +671,6 @@
       display:flex;
       flex-direction:column;
       gap:8px;
-    }
-
-    .footer-florida{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin-left:0;
-      color:#ffffff;
-      font-weight:900;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
-    }
-    .footer-florida img{
-      width:26px;
-      height:auto;
-      display:block;
-      filter: drop-shadow(0 6px 14px rgba(15,23,42,0.20));
     }
 
     .footer-links{
@@ -767,7 +703,28 @@
       justify-content:flex-end;
       align-items:center;
       gap:14px;
+      flex-wrap:wrap;
     }
+
+    /* Right-side "Based in Florida." + America image */
+    .footer-location{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:#ffffff;
+      font-weight:900;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      margin-right:10px;
+      white-space:nowrap;
+    }
+    .footer-location img{
+      width:24px;
+      height:auto;
+      display:block;
+      filter: drop-shadow(0 6px 14px rgba(15,23,42,0.20));
+    }
+
     .footer-email svg, .footer-instagram svg{
       width:var(--footerIcon);
       height:var(--footerIcon);
@@ -812,7 +769,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index:200;
+      z-index:60;
     }
     .overlay.active{ display:flex; }
 
@@ -919,7 +876,7 @@
     }
 
     @media(max-width:980px){
-      :root{ --sideW: 120px; --stickyH: 140px; }
+      :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
       .frame-wrap{
         width: calc(100vw - (var(--sideW) * 2));
@@ -956,9 +913,8 @@
       }
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
 
+      /* on mobile, hide the outside-left badge to avoid overflow */
       .store-coming-badge{ display:none; }
-
-      .about-grid{ grid-template-columns:1fr; }
     }
 
     @media(max-width:520px){
@@ -971,6 +927,7 @@
       .footer-right{ justify-content:center; }
       .footer-links{ justify-content:center; }
       .top-banner{ flex-wrap:wrap; }
+      .footer-location{ justify-content:center; margin-right:0; }
     }
   </style>
 </head>
@@ -986,7 +943,7 @@
   </div>
 
   <div class="frame-wrap">
-    <div class="sticky-wrap">
+    <div class="sticky-top">
       <div class="top-banner">
         <div class="banner-text">SUPPORT FLORIDA’S FIRST MAYANUT FARM</div>
         <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GOFUNDME</a>
@@ -1023,7 +980,7 @@
       <div class="content-wrapper">
         <section id="hero">
           <div class="hero-left">
-            <div class="credit">Created by <span class="em-o">August Kokus</span></div>
+            <div class="credit">Created by August Kokus</div>
 
             <h1 class="hero-title">
               <span class="line">Introducing</span>
@@ -1043,21 +1000,21 @@
             </div>
 
             <p class="hero-sub">
-              Over 200 seed-grown <span class="em-o">MayaNut</span>
-              (<span class="em-o"><em>Brosimum alicastrum</em></span>) trees are currently in cultivation.
-              Founded in 2025, we are in the early stages of developing <span class="em-o">MayaNut</span>
+              Over 200 seed-grown <span class="o">MayaNut</span>
+              (<span class="o"><em>Brosimum alicastrum</em></span>) trees are currently in cultivation.
+              Founded in 2025, we are in the early stages of developing <span class="o">MayaNut</span>
               as a long-term agricultural crop in Florida, United States, emphasizing seed-grown populations,
               selection, and domestication.
             </p>
             <p class="hero-sub">
-              <span class="em-o"><em>Brosimum alicastrum</em></span> has been traditionally valued in Central America for its edible tree-seed.
-              As the project progresses, we are exploring pathways toward establishing a first <span class="em-o">MayaNut</span> farm in South Florida,
+              <span class="o"><em>Brosimum alicastrum</em></span> has been traditionally valued in Central America for its edible tree-seed.
+              As the project progresses, we are exploring pathways toward establishing a first <span class="o">MayaNut</span> farm in South Florida,
               while the current population remains maintained in cultivation as long-term land options are evaluated.
             </p>
 
             <div class="hero-actions">
-              <button class="btn" data-nav="about.html" type="button">Learn more</button>
-              <button class="btn" data-nav="contact.html" type="button">Contact</button>
+              <button class="btn" data-nav="about.html" type="button"><span class="btn-label">Learn more</span></button>
+              <button class="btn" data-nav="contact.html" type="button"><span class="btn-label">Contact</span></button>
             </div>
 
             <div class="hero-meta">
@@ -1066,6 +1023,7 @@
           </div>
 
           <aside id="store-panel" aria-label="Future store preview" class="store-container">
+            <!-- badge touching outer left wall, top-aligned -->
             <div class="store-coming-badge" aria-hidden="true">
               <img src="maya-nut-store-coming-soon-image.png" alt="" />
             </div>
@@ -1075,7 +1033,9 @@
             </div>
 
             <div class="store-tools">
-              <button id="store-view-full" class="store-view-full view-store-btn" type="button">VIEW STORE</button>
+              <button id="store-view-full" class="store-view-full view-store-btn" type="button">
+                <span class="btn-label">VIEW STORE</span>
+              </button>
 
               <div class="store-search">
                 <input id="store-search" type="text" placeholder="Search future products…" />
@@ -1102,7 +1062,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add" type="button" aria-label="Add to cart">+</button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1117,7 +1077,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1132,7 +1092,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1147,7 +1107,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1162,7 +1122,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1177,7 +1137,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1192,7 +1152,7 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
 
@@ -1207,49 +1167,11 @@
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" />
                     <button class="qty-plus" type="button">+</button>
                   </div>
-                  <button class="btn-add" type="button">+</button>
+                  <button class="btn-add" type="button"><span class="btn-label">ADD</span></button>
                 </div>
               </article>
             </div>
           </aside>
-        </section>
-
-        <!-- Thin green line + centered label (no wave) -->
-        <div class="about-divider" aria-hidden="true">
-          <span>About Us</span>
-        </div>
-
-        <!-- About Us section (Bubba image on LEFT; August on RIGHT) -->
-        <section class="about-section" aria-label="About us">
-          <div class="about-grid">
-            <article class="about-card">
-              <img class="about-photo is-bubba"
-                   src="the-maya-nut-company-bubba-image.png"
-                   alt="Herbert “Bubba” Humphries and the Kennesaw Fruit Company legacy"
-                   loading="lazy" decoding="async" />
-              <div class="about-body">
-                Founded in 2025 by <span class="em-o">August Kokus</span>, The MayaNut Company continues a family legacy of American fruit growing
-                that began in 1923 with Herbert “<span class="em-o">Bubba</span>” Humphries and the Kennesaw Fruit Company.
-                Drawing on that history, <span class="em-o">August Kokus</span> is introducing <span class="em-o">MayaNut</span>
-                (<span class="em-o"><em>Brosimum alicastrum</em></span>) to modern American agriculture—cultivating a resilient tropical food tree
-                that has never before been grown at scale in the United States. The work centers on restoring a forgotten tree and developing it into
-                a viable agricultural crop for the future.
-              </div>
-            </article>
-
-            <article class="about-card">
-              <img class="about-photo is-august"
-                   src="august-kokus-image.png"
-                   alt="August Kokus working in South Florida"
-                   loading="lazy" decoding="async" />
-              <div class="about-body">
-                <span class="em-o">August Kokus</span> is working in South Florida to establish <span class="em-o"><em>Brosimum alicastrum</em></span>
-                as a new agricultural staple. As the citrus industry continues to decline, Florida must look toward new perennial crops to sustain its
-                agricultural future. <span class="em-o">August Kokus</span> created The MayaNut Company to introduce people to a resilient, long-overlooked
-                food tree—and to ensure the preservation of <span class="em-o"><em>Brosimum alicastrum</em></span> for generations to come.
-              </div>
-            </article>
-          </div>
         </section>
       </div>
     </main>
@@ -1259,11 +1181,6 @@
     <footer>
       <div class="footer-inner">
         <div class="footer-left">
-          <div class="footer-florida">
-            <img src="florida-image-the-maya-nut-company.png" alt="Florida" loading="lazy" decoding="async" />
-            <span>Based in Florida.</span>
-          </div>
-
           <div>
             © <span id="year"></span> The MayaNut Company, Inc.
           </div>
@@ -1281,12 +1198,18 @@
         </div>
 
         <div class="footer-right">
+          <div class="footer-location" aria-label="Location">
+            <span>Based in Florida.</span>
+            <img src="america-the-maya-nut-company-image.png" alt="United States" loading="lazy" decoding="async" />
+          </div>
+
           <a class="footer-email" href="mailto:themayanutcompany@gmail.com" aria-label="Email The MayaNut Company">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="4" y="6" width="16" height="12" rx="2"></rect>
               <path d="M5.5 7.5L12 12.5L18.5 7.5"></path>
             </svg>
           </a>
+
           <a class="footer-instagram" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect>
@@ -1485,6 +1408,7 @@
       });
     }
 
+    /* Learn more / Contact buttons navigate on click */
     document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dest = btn.getAttribute('data-nav');
@@ -1492,13 +1416,17 @@
       });
     });
 
+    /* Store expand/collapse */
     const navStore = document.getElementById('nav-store');
     const navStoreMobile = document.getElementById('nav-store-mobile');
     const viewFullStore = document.getElementById('store-view-full');
 
     function setStoreButtonLabel(){
       if(!viewFullStore) return;
-      viewFullStore.textContent = document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW STORE';
+      const label = viewFullStore.querySelector('.btn-label');
+      const expanded = document.body.classList.contains('store-expanded');
+      if(label) label.textContent = expanded ? 'RETURN' : 'VIEW STORE';
+      else viewFullStore.textContent = expanded ? 'RETURN' : 'VIEW STORE';
     }
     function toggleStore(forceOpen=false){
       const expanded = document.body.classList.contains('store-expanded');
@@ -1530,6 +1458,7 @@
       });
     }
 
+    /* Store search */
     const searchInput = document.getElementById('store-search');
     const searchSend  = document.getElementById('store-search-send');
     const clearBtn    = document.getElementById('store-search-clear');
@@ -1595,6 +1524,7 @@
       });
     }
 
+    /* Quantity controls */
     document.querySelectorAll('.qty-control').forEach(control=>{
       const input = control.querySelector('.qty-input');
       function clamp(){
@@ -1618,6 +1548,7 @@
       }
     });
 
+    /* ADD buttons (placeholder) */
     document.querySelectorAll('.btn-add').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         alert('MayaNut products are coming soon! Thank you for your patience.');

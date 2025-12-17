@@ -13,10 +13,8 @@
   <meta name="theme-color" content="#1a6800" />
   <link rel="canonical" href="https://mayanut.com/" />
 
-  <!-- favicon (same file as logo) -->
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
 
-  <!-- Preload (speed) -->
   <link rel="preload" href="mayanut-the-mayanut-comapny-logo.png" as="image" />
   <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-company-image.jpeg" as="image" />
@@ -37,6 +35,11 @@
       --tan:#f3e6d1;
 
       --orange:#fd6c02;
+      --orange-dark:#e95f02;
+
+      /* NEW: orange button gradient (top darker -> bottom lighter) */
+      --btn-g-top: var(--orange-dark);
+      --btn-g-bot: var(--orange);
 
       --frame-line: rgba(26,104,0,0.92);
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
@@ -44,7 +47,6 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      /* store-only gradient */
       --store-g1:#d8ff6a;
       --store-g2:#7ae78a;
       --store-g3:#1a6800;
@@ -52,18 +54,13 @@
       --r-card:18px;
       --r-btn:12px;
 
-      --cta-bg: var(--orange);
-      --cta-bg-hover: #e95f02;
-
       --card-bg: rgba(255,255,255,0.94);
 
-      /* store control sizing */
       --qtyBtn: 34px;
       --qtyInputW: 56px;
 
       --match: rgba(160, 255, 160, 0.45);
 
-      /* keep this in sync with #hero gap */
       --heroGap: 26px;
     }
 
@@ -90,7 +87,6 @@
     body.high-contrast main{ background:transparent !important; }
     body.high-contrast .product-card, body.high-contrast .overlay-panel{ border-color:#000 !important; }
 
-    /* stronger large-text mode */
     body.large-text{ font-size:122%; }
     body.large-text .hero-sub{ font-size:17px; line-height:2.0; }
     body.large-text .product-text{ font-size:14px; }
@@ -124,7 +120,7 @@
       background:transparent;
     }
 
-    /* BANNER (ONE LINE) */
+    /* BANNER */
     .top-banner{
       width:100%;
       background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
@@ -162,7 +158,7 @@
     }
     .top-banner a:hover{ opacity:0.86; }
 
-    /* HEADER (menu image background) */
+    /* HEADER */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -269,7 +265,7 @@
       background: transparent;
     }
 
-    /* HERO: keep left/right layout + new image touching store */
+    /* HERO */
     #hero{
       position:relative;
       display:grid;
@@ -286,7 +282,7 @@
       flex-direction:column;
       gap:14px;
       min-height:100%;
-      position:relative; /* needed for absolute newimg */
+      position:relative;
     }
 
     .credit{
@@ -297,11 +293,11 @@
       font-weight:900;
     }
 
-    /* IMPORTANT: title block is now a positioning anchor for the "coming soon" image */
+    /* anchor area for new image */
     .hero-toprow{
       position: relative;
       display: block;
-      padding-right: 180px; /* reserve space so text doesn't collide with image */
+      padding-right: 180px;
       min-height: 0;
     }
 
@@ -324,12 +320,12 @@
     }
     .hero-title .mayanut-dot{ color:var(--orange); font-weight:900; }
 
-    /* NEW IMAGE: touching the LEFT wall of the store, aligned to the top of the store */
+    /* NEW IMAGE: same x-axis, moved UP a bit (y-axis) */
     .hero-newimg{
       position:absolute;
-      top:0;
-      right: calc(-1 * var(--heroGap)); /* negative gap => touches store box */
-      width:160px;                      /* 50% smaller */
+      top:-14px; /* <-- raised to align with "Created by..." and store top */
+      right: calc(-1 * var(--heroGap));
+      width:160px;
       max-width:160px;
       margin:0;
       z-index:6;
@@ -340,11 +336,10 @@
       height:auto;
       border-radius:14px;
       border:1px solid rgba(15,23,42,0.10);
-      background: transparent; /* your PNG will be transparent */
+      background: transparent;
       box-shadow:none;
     }
 
-    /* The two existing images (same size, side-by-side) */
     .hero-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -372,8 +367,10 @@
     .o{ color:var(--orange); font-weight:900; }
 
     .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+
+    /* UPDATED: orange buttons are now gradient */
     .btn{
-      background: var(--orange);
+      background: linear-gradient(to bottom, var(--btn-g-top) 0%, var(--btn-g-bot) 100%);
       color: #fff;
       border:none;
       border-radius: var(--r-btn);
@@ -383,13 +380,13 @@
       letter-spacing:0.12em;
       cursor:pointer;
       font-weight:900;
-      transition: background .12s ease, transform .12s ease;
+      transition: transform .12s ease, filter .12s ease;
       min-height:40px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
     }
-    .btn:hover{ background: var(--cta-bg-hover); transform: translateY(-1px); }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(0.98) contrast(1.03); }
 
     .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; }
 
@@ -429,9 +426,10 @@
       flex-wrap:wrap;
     }
 
+    /* UPDATED: VIEW STORE button gradient */
     .store-view-full{
       border:none;
-      background: var(--orange);
+      background: linear-gradient(to bottom, var(--btn-g-top) 0%, var(--btn-g-bot) 100%);
       color: #fff;
       border-radius: var(--r-btn);
       padding:9px 14px;
@@ -443,9 +441,9 @@
       text-align:center;
       font-weight:900;
       min-height:40px;
-      transition: background .12s ease;
+      transition: filter .12s ease;
     }
-    .store-view-full:hover{ background: var(--cta-bg-hover); }
+    .store-view-full:hover{ filter: brightness(0.98) contrast(1.03); }
 
     .store-search{ flex:1; min-width:240px; position:relative; }
     .store-search input{
@@ -587,6 +585,7 @@
       margin: 0;
     }
 
+    /* UPDATED: add button gradient */
     .btn-add{
       width:var(--qtyBtn);
       height:var(--qtyBtn);
@@ -594,14 +593,16 @@
       min-height:var(--qtyBtn);
       border:none;
       border-radius:12px;
-      background: var(--orange);
+      background: linear-gradient(to bottom, var(--btn-g-top) 0%, var(--btn-g-bot) 100%);
       color:#fff;
       font-weight:900;
       cursor:pointer;
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      transition: filter .12s ease;
     }
+    .btn-add:hover{ filter: brightness(0.98) contrast(1.03); }
 
     .product-card.extra-product{ display:none; opacity:0; }
     body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
@@ -664,7 +665,6 @@
       filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
     }
 
-    /* bottom icons white */
     .footer-instagram svg, .footer-email svg{ stroke:#ffffff; }
 
     .accessibility-btn{
@@ -817,7 +817,7 @@
         margin-left: var(--sideW);
         margin-right: var(--sideW);
       }
-      .hero-newimg{ width:140px; max-width:140px; }
+      .hero-newimg{ width:140px; max-width:140px; top:-12px; }
       .hero-toprow{ padding-right: 160px; }
     }
 
@@ -848,7 +848,6 @@
       }
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
 
-      /* mobile: keep new image above the two hero images */
       .hero-toprow{ padding-right: 0; }
       .hero-newimg{
         position:relative;
@@ -932,7 +931,6 @@
                 </span>
               </h1>
 
-              <!-- NEW IMAGE (touching store; aligned with store top) -->
               <div class="hero-newimg" aria-label="Store coming soon image">
                 <img src="maya-nut-store-coming-soon-image.png"
                      alt="MayaNut store coming soon"
@@ -941,7 +939,6 @@
               </div>
             </div>
 
-            <!-- The two original images (same size, side-by-side) -->
             <div class="hero-images">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
                    alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
@@ -1057,7 +1054,7 @@
               </article>
 
               <article class="product-card extra-product" data-name="mayanut espresso blend">
-                <img src="mayanut-powder-maya-nut-brosimum alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
+                <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
                 <div class="product-name">MayaNut Espresso Blend</div>
                 <p class="product-text">Deeper roast concept with caramel notes.</p>

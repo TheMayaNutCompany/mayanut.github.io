@@ -1363,3 +1363,273 @@
       </nav>
     </div>
   </div>
+  <script>
+    (function fillSideStacks(){
+      const src = "mayanuts-the-maya-nut-company-image.jpeg";
+      const left = document.getElementById("stack-left");
+      const right = document.getElementById("stack-right");
+      if(!left || !right) return;
+
+      const isDisabled = () => window.matchMedia("(max-width: 780px)").matches;
+      const cardH = () => window.matchMedia("(max-width: 980px)").matches ? 200 : 220;
+
+      function build(){
+        if(isDisabled()) return;
+        left.innerHTML = "";
+        right.innerHTML = "";
+        const needed = Math.ceil((window.innerHeight + 240) / cardH()) + 1;
+
+        for(let i=0; i<needed; i++){
+          const img1 = document.createElement("img");
+          img1.src = src; img1.alt=""; img1.loading="eager"; img1.decoding="async";
+          left.appendChild(img1);
+
+          const img2 = document.createElement("img");
+          img2.src = src; img2.alt=""; img2.loading="eager"; img2.decoding="async";
+          right.appendChild(img2);
+        }
+      }
+      build();
+      window.addEventListener("resize", build);
+    })();
+
+    const yearSpan = document.getElementById('year');
+    if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+    const topLogo = document.getElementById('logo-top');
+    const footerLogo = document.getElementById('footer-logo');
+    function scrollTopSmooth(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    if(topLogo) topLogo.addEventListener('click', scrollTopSmooth);
+    if(footerLogo) footerLogo.addEventListener('click', scrollTopSmooth);
+
+    const accessBtn = document.getElementById('accessibility-btn');
+    const accessOverlay = document.getElementById('accessibility-overlay');
+    if(accessBtn && accessOverlay){
+      accessBtn.addEventListener('click', ()=> accessOverlay.classList.add('active'));
+    }
+
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    if(mobileMenuBtn && mobileMenuOverlay){
+      mobileMenuBtn.addEventListener('click', ()=> mobileMenuOverlay.classList.add('active'));
+    }
+
+    document.querySelectorAll('.overlay-close').forEach(btn=>{
+      const targetId = btn.getAttribute('data-close');
+      if(!targetId) return;
+      btn.addEventListener('click', ()=>{
+        const ov = document.getElementById(targetId);
+        if(ov) ov.classList.remove('active');
+      });
+    });
+
+    document.querySelectorAll('.overlay').forEach(ov=>{
+      ov.addEventListener('click', e=>{
+        if(e.target === ov) ov.classList.remove('active');
+      });
+    });
+
+    // ESC closes overlays
+    document.addEventListener('keydown', (e)=>{
+      if(e.key !== 'Escape') return;
+      document.querySelectorAll('.overlay.active').forEach(ov=>ov.classList.remove('active'));
+    });
+
+    const contrastToggle = document.getElementById('toggle-contrast');
+    const textToggle = document.getElementById('toggle-large-text');
+
+    function setToggle(el, on){
+      if(!el) return;
+      el.classList.toggle('active', !!on);
+      el.setAttribute('aria-checked', on ? 'true' : 'false');
+    }
+
+    function applyPrefs(){
+      const hc = localStorage.getItem('pref_high_contrast') === '1';
+      const lt = localStorage.getItem('pref_large_text') === '1';
+      document.body.classList.toggle('high-contrast', hc);
+      document.body.classList.toggle('large-text', lt);
+      setToggle(contrastToggle, hc);
+      setToggle(textToggle, lt);
+    }
+    applyPrefs();
+
+    function togglePref(className, key, el){
+      const on = !document.body.classList.contains(className);
+      document.body.classList.toggle(className, on);
+      localStorage.setItem(key, on ? '1' : '0');
+      setToggle(el, on);
+    }
+
+    if(contrastToggle){
+      contrastToggle.addEventListener('click', ()=>togglePref('high-contrast','pref_high_contrast',contrastToggle));
+      contrastToggle.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePref('high-contrast','pref_high_contrast',contrastToggle); }
+      });
+    }
+    if(textToggle){
+      textToggle.addEventListener('click', ()=>togglePref('large-text','pref_large_text',textToggle));
+      textToggle.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePref('large-text','pref_large_text',textToggle); }
+      });
+    }
+
+    // language switcher
+    const accessLang = document.getElementById('access-lang');
+    if(accessLang){
+      accessLang.addEventListener('change', ()=>{
+        const val = accessLang.value;
+        if(val === 'en') window.location.href = 'index.html';
+        else window.location.href = `index-${val}.html`;
+      });
+    }
+
+    // buttons that navigate
+    document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dest = btn.getAttribute('data-nav');
+        if(dest) window.location.href = dest;
+      });
+    });
+
+    // store expand/collapse
+    const navStore = document.getElementById('nav-store');
+    const navStoreMobile = document.getElementById('nav-store-mobile');
+    const viewFullStore = document.getElementById('store-view-full');
+
+    function setStoreButtonLabel(){
+      if(!viewFullStore) return;
+      viewFullStore.textContent = document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW STORE';
+    }
+    function toggleStore(forceOpen=false){
+      const expanded = document.body.classList.contains('store-expanded');
+      if(forceOpen){
+        if(!expanded) document.body.classList.add('store-expanded');
+      }else{
+        document.body.classList.toggle('store-expanded');
+      }
+      setStoreButtonLabel();
+    }
+
+    if(viewFullStore){
+      viewFullStore.addEventListener('click', ()=>toggleStore(false));
+      setStoreButtonLabel();
+    }
+    if(navStore){
+      navStore.addEventListener('click', (e)=>{
+        e.preventDefault();
+        toggleStore(true);
+        document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    }
+    if(navStoreMobile){
+      navStoreMobile.addEventListener('click', (e)=>{
+        e.preventDefault();
+        toggleStore(true);
+        document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+        if(mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+      });
+    }
+
+    // store search
+    const searchInput = document.getElementById('store-search');
+    const searchSend  = document.getElementById('store-search-send');
+    const clearBtn    = document.getElementById('store-search-clear');
+
+    function normalize(s){ return (s || '').toLowerCase().trim(); }
+
+    function clearHighlights(){
+      document.querySelectorAll('.product-card').forEach(card=>{
+        card.classList.remove('is-match');
+        card.style.opacity = '1';
+      });
+    }
+    function applyLiveFilter(){
+      if(!searchInput) return;
+      const q = normalize(searchInput.value);
+      document.querySelectorAll('.product-card').forEach(card=>{
+        const name = normalize(card.dataset.name || "");
+        card.style.opacity = (!q || name.includes(q)) ? '1' : '0.25';
+      });
+    }
+    function applySearchHighlight(){
+      if(!searchInput) return;
+      const q = normalize(searchInput.value);
+      clearHighlights();
+      if(!q) return;
+
+      let any = false;
+      document.querySelectorAll('.product-card').forEach(card=>{
+        const name = normalize(card.dataset.name || "");
+        if(name.includes(q)){
+          card.classList.add('is-match');
+          any = true;
+        }else{
+          card.style.opacity = '0.25';
+        }
+      });
+      if(!any) clearHighlights();
+    }
+    function clearSearch(){
+      if(!searchInput) return;
+      searchInput.value = '';
+      clearHighlights();
+      applyLiveFilter();
+      searchInput.focus();
+    }
+
+    if(searchInput){
+      searchInput.addEventListener('input', ()=>{ clearHighlights(); applyLiveFilter(); });
+      searchInput.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          applySearchHighlight();
+        }
+      });
+    }
+    if(clearBtn){
+      clearBtn.addEventListener('click', (e)=>{ e.stopPropagation(); clearSearch(); });
+    }
+    if(searchSend){
+      searchSend.addEventListener('click', (e)=>{
+        if(e.target && e.target.id === 'store-search-clear') return;
+        applySearchHighlight();
+      });
+    }
+
+    // qty controls
+    document.querySelectorAll('.qty-control').forEach(control=>{
+      const input = control.querySelector('.qty-input');
+      function clamp(){
+        if(!input) return;
+        let v = parseInt(input.value || '1', 10);
+        if(isNaN(v) || v < 1) v = 1;
+        if(v > 999) v = 999;
+        input.value = String(v);
+      }
+      control.addEventListener('click', (e)=>{
+        if(!input) return;
+        clamp();
+        let v = parseInt(input.value, 10);
+        if(e.target.classList.contains('qty-plus')) v += 1;
+        if(e.target.classList.contains('qty-minus')) v = Math.max(1, v - 1);
+        input.value = String(v);
+      });
+      if(input){
+        input.addEventListener('input', clamp);
+        input.addEventListener('blur', clamp);
+      }
+    });
+
+    // add to cart (placeholder)
+    document.querySelectorAll('.btn-add').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        alert('MayaNut products are coming soon! Thank you for your patience.');
+      });
+    });
+  </script>
+</body>
+</html>

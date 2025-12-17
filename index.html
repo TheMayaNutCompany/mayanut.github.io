@@ -23,6 +23,7 @@
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" as="image" />
   <link rel="preload" href="mayanut-powder-maya-nut-brosimum-alicastrum.png" as="image" />
+  <link rel="preload" href="maya-nut-store-coming-soon-image.png" as="image" />
 
   <style>
     :root{
@@ -68,33 +69,45 @@
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
-    html{ background:#ffffff; }
+    html{
+      /* FIX: ensure tan gradient never “cuts off” even if body is shorter/longer */
+      background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan-mid) 46%, var(--tan-bot) 100%);
+      background-repeat:no-repeat;
+      background-size:100% 100%;
+      background-color: var(--tan-top);
+    }
+
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
+      min-height:100vh;
 
-      /* FIX: coherent, full-height tan background */
-      background:
-        linear-gradient(to bottom,
-          var(--tan-top) 0%,
-          var(--tan-mid) 46%,
-          var(--tan-bot) 100%);
+      /* FIX: make the tan background one coherent piece across full scroll height */
+      background: transparent;
+      position: relative;
+    }
+    /* Fixed gradient layer that covers the entire viewport; page content scrolls above it */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan-mid) 46%, var(--tan-bot) 100%);
       background-repeat:no-repeat;
-      background-attachment: fixed; /* prevents “half gradient” look on tall pages */
       background-size: 100% 100%;
       background-color: var(--tan-top);
-      min-height:100vh;
     }
-    img{ max-width:100%; height:auto; display:block; }
 
+    img{ max-width:100%; height:auto; display:block; }
     .visually-hidden{
       position:absolute; width:1px; height:1px; padding:0; margin:-1px;
       overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
     body.high-contrast{ background:#ffffff !important; color:#000 !important; }
+    body.high-contrast::before{ background:#fff !important; }
     body.high-contrast *{ text-shadow:none !important; }
     body.high-contrast main{ background:#ffffff !important; }
     body.high-contrast .product-card, body.high-contrast .overlay-panel{ border-color:#000 !important; }
@@ -173,7 +186,8 @@
       background-position:center;
       background-repeat:no-repeat;
 
-      padding:18px 18px; /* FIX: less thick, still slightly thicker than logo */
+      /* FIX: slightly less thick than before, still thicker than logo */
+      padding:16px 18px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -200,8 +214,9 @@
       flex:0 0 320px;
     }
 
+    /* FIX: logo back + slightly bigger */
     #logo-top{
-      width:168px;
+      width:176px;
       height:auto;
       cursor:pointer;
       display:block;
@@ -272,6 +287,7 @@
       background: transparent;
     }
 
+    /* FIX: make left/right equal height by letting grid stretch + store min-height:100% */
     #hero{
       position:relative;
       display:grid;
@@ -311,6 +327,10 @@
     }
     .hero-title .mayanut-dot{ color:var(--orange); font-weight:900; }
 
+    /* HERO IMAGES:
+       - Top row: nursery (left) + “coming soon” image (right)
+       - Bottom row: fruit spans full width
+    */
     .hero-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -328,6 +348,9 @@
       border:1px solid rgba(15,23,42,0.10);
       background:#fff;
     }
+    .hero-images .hero-fruit{
+      grid-column: 1 / -1;
+    }
 
     .hero-sub{
       font-size:14px;
@@ -338,11 +361,12 @@
     .o{ color:var(--orange); font-weight:900; }
 
     .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+    /* FIX: Learn more / Contact = rounded rectangles */
     .btn{
       background: var(--orange);
       color: #fff;
       border:none;
-      border-radius: var(--r-btn);
+      border-radius: 14px;
       padding:10px 16px;
       font-size:12px;
       text-transform:uppercase;
@@ -395,11 +419,12 @@
       flex-wrap:wrap;
     }
 
+    /* FIX: View Store = rounded rectangle */
     .store-view-full{
       border:none;
       background: var(--orange);
       color: #fff;
-      border-radius: var(--r-btn);
+      border-radius: 14px;
       padding:9px 14px;
       font-size:12px;
       text-transform:uppercase;
@@ -479,6 +504,7 @@
     }
     .product-card.is-match{ background: linear-gradient(to bottom, rgba(255,255,255,0.96), var(--match)); }
 
+    /* FIX: all tiles use powder image already in HTML; keep styling consistent */
     .product-card img{
       width:104px;
       aspect-ratio: 1 / 1;
@@ -499,12 +525,13 @@
     .product-controls{
       width:100%;
       display:flex;
-      justify-content:center;
+      justify-content:flex-start; /* keep everything safely left */
       align-items:center;
       gap:10px;
       flex-wrap:nowrap;
     }
 
+    /* FIX: flat transparent orange container */
     .qty-control{
       display:inline-flex;
       align-items:center;
@@ -514,10 +541,12 @@
       border:1px solid rgba(253,108,2,0.35);
       background: rgba(253,108,2,0.16);
       width:100%;
-      max-width: 190px;
+      max-width: 210px;
       justify-content:center;
+      overflow:hidden;
     }
 
+    /* FIX: rounded SQUARE buttons */
     .qty-minus, .qty-plus{
       width:var(--qtyBtn);
       height:var(--qtyBtn);
@@ -525,7 +554,7 @@
       min-height:var(--qtyBtn);
       border:none;
       border-radius:12px;
-      background: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.38);
       color:#111827;
       cursor:pointer;
       font-weight:900;
@@ -533,18 +562,30 @@
       align-items:center;
       justify-content:center;
     }
+
+    /* FIX: remove spinner arrows; keep number centered */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number]{ -moz-appearance: textfield; }
+
     .qty-input{
       width: var(--qtyInputW);
       height: var(--qtyBtn);
       border-radius:12px;
       border:1px solid rgba(15,23,42,0.12);
-      background: rgba(255,255,255,0.70);
+      background: rgba(255,255,255,0.78);
       text-align:center;
       font-weight:900;
       color:#111827;
       outline:none;
+      padding:0;
+      line-height: var(--qtyBtn);
     }
 
+    /* FIX: ADD button is rounded square + not offscreen */
     .btn-add{
       width:var(--qtyBtn);
       height:var(--qtyBtn);
@@ -559,8 +600,13 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      flex: 0 0 auto;
     }
 
+    /* EXACT COUNTS:
+       - default show 4
+       - expanded show 8 (extra-product)
+    */
     .product-card.extra-product{ display:none; opacity:0; }
     body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
 
@@ -612,6 +658,7 @@
       font-weight:800;
     }
 
+    /* FIX: footer logo not stretched/cropped + same file as top */
     .footer-logo img{
       display:block;
       margin:0 auto;
@@ -627,6 +674,7 @@
       stroke:#ffffff;
     }
 
+    /* Accessibility floating button stays BLUE */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -667,6 +715,7 @@
     }
     .overlay.active{ display:flex; }
 
+    /* Panels use symmetric green gradient */
     .overlay-panel{
       width:90%;
       max-width:420px;
@@ -713,6 +762,8 @@
       color:#0b1220;
       font-weight:900;
     }
+
+    /* Language dropdown = orange with white text */
     .settings-lang{
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.35);
@@ -750,6 +801,7 @@
     .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
     .toggle-input.active span{ transform:translateX(20px); }
 
+    /* Mobile menu option differentiation */
     .mobile-nav{ display:flex; flex-direction:column; gap:10px; font-size:13px; text-transform:uppercase; letter-spacing:0.16em; }
     .mobile-nav a{
       text-decoration:none;
@@ -787,6 +839,7 @@
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
 
+      /* FIX: mobile store rail stays inside screen */
       .store-grid{
         display:flex;
         overflow-x:auto;
@@ -809,6 +862,7 @@
 
     @media(max-width:520px){
       .hero-images{ grid-template-columns:1fr; }
+      .hero-images .hero-fruit{ grid-column:auto; }
     }
 
     @media(max-width:780px){
@@ -879,15 +933,20 @@
               </span>
             </h1>
 
+            <!-- IMAGES UNDER HEADER (kept) + Added “coming soon” image as requested -->
             <div class="hero-images">
               <img src="maya-nut-mayanut-plant-tree-nursery.jpg"
                    alt="MayaNut Brosimum alicastrum tree nursery in South Florida"
                    loading="eager" decoding="async" />
-              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+              <img src="maya-nut-store-coming-soon-image.png"
+                   alt="MayaNut store coming soon"
+                   loading="lazy" decoding="async" />
+              <img class="hero-fruit" src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                    alt="MayaNut fruit Brosimum alicastrum"
                    loading="lazy" decoding="async" />
             </div>
 
+            <!-- COPY with forced new line starting at Brosimum sentence -->
             <p class="hero-sub">
               Over 200 seed-grown <span class="o">MayaNut</span>
               (<span class="o"><em>Brosimum alicastrum</em></span>) trees are currently in cultivation.
@@ -911,7 +970,7 @@
             </div>
           </div>
 
-          <aside id="store-panel" aria-label="Future store preview" class="store-container">
+          <aside id="store-panel" aria-label="Future store preview" class="store-container store-page">
             <div class="store-header-row">
               <div class="store-title">STORE - COMING SOON!</div>
             </div>
@@ -933,6 +992,7 @@
             </div>
 
             <div class="store-grid store-rail" id="store-grid">
+              <!-- DEFAULT 4 visible, EXPAND to 8 (extra-product) -->
               <article class="product-card" data-name="mayanut powder brosimum alicastrum">
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -993,6 +1053,7 @@
                 </div>
               </article>
 
+              <!-- EXPANDED 4 more (exactly 8 total) -->
               <article class="product-card extra-product" data-name="mayanut espresso blend">
                 <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" />
                 <div class="product-divider"></div>
@@ -1078,13 +1139,13 @@
 
         <div class="footer-right">
           <a class="footer-email" href="mailto:themayanutcompany@gmail.com" aria-label="Email The MayaNut Company">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke-width="2">
               <rect x="4" y="6" width="16" height="12" rx="2"></rect>
               <path d="M5.5 7.5L12 12.5L18.5 7.5"></path>
             </svg>
           </a>
           <a class="footer-instagram" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke-width="2">
               <rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect>
               <circle cx="12" cy="12" r="4.2"></circle>
               <circle cx="17.3" cy="6.7" r="0.9"></circle>
@@ -1250,6 +1311,19 @@
       document.body.classList.toggle('large-text', lt);
       setToggle(contrastToggle, hc);
       setToggle(textToggle, lt);
+
+      // High contrast improvements (buttons, panels) without redesign
+      if(hc){
+        document.querySelectorAll('.btn,.store-view-full,.btn-add').forEach(b=>{
+          b.style.outline = '2px solid #000';
+          b.style.outlineOffset = '2px';
+        });
+      }else{
+        document.querySelectorAll('.btn,.store-view-full,.btn-add').forEach(b=>{
+          b.style.outline = '';
+          b.style.outlineOffset = '';
+        });
+      }
     }
     applyPrefs();
 
@@ -1258,6 +1332,7 @@
       document.body.classList.toggle(className, on);
       localStorage.setItem(key, on ? '1' : '0');
       setToggle(el, on);
+      applyPrefs();
     }
 
     if(contrastToggle){
@@ -1297,6 +1372,17 @@
       if(!viewFullStore) return;
       viewFullStore.textContent = document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW STORE';
     }
+
+    // Default store state: collapsed shows exactly 4
+    function enforceCounts(){
+      const cards = Array.from(document.querySelectorAll('.product-card'));
+      const expanded = document.body.classList.contains('store-expanded');
+      const limit = expanded ? 8 : 4;
+      cards.forEach((c, i)=>{
+        c.style.display = (i < limit) ? '' : 'none';
+      });
+    }
+
     function toggleStore(forceOpen=false){
       const expanded = document.body.classList.contains('store-expanded');
       if(forceOpen){
@@ -1305,12 +1391,15 @@
         document.body.classList.toggle('store-expanded');
       }
       setStoreButtonLabel();
+      enforceCounts();
     }
 
     if(viewFullStore){
       viewFullStore.addEventListener('click', ()=>toggleStore(false));
       setStoreButtonLabel();
+      enforceCounts();
     }
+
     if(navStore){
       navStore.addEventListener('click', (e)=>{
         e.preventDefault();
@@ -1392,6 +1481,7 @@
       });
     }
 
+    // Quantity logic (input + plus/minus)
     document.querySelectorAll('.qty-control').forEach(control=>{
       const input = control.querySelector('.qty-input');
       function clamp(){
@@ -1420,6 +1510,9 @@
         alert('MayaNut products are coming soon! Thank you for your patience.');
       });
     });
+
+    // Final safety: re-apply counts on load
+    window.addEventListener('load', enforceCounts);
   </script>
 </body>
 </html>

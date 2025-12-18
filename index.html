@@ -1,4 +1,4 @@
-<!-- FULL INDEX (EN) — v3.3.6 -->
+<!-- FULL INDEX (EN) — v3.4.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +42,14 @@
       --orange:#fd6c02;
       --orange-dark:#e95f02;
 
+      /* NEW: creamy light text for orange buttons + footer items */
+      --cream:#ffffc5;
+
+      /* NEW: richer store card gradients (tan -> mocha) */
+      --mocha-1:#ead7bd;
+      --mocha-2:#d0b18e;
+      --mocha-3:#a6784f;
+
       --frame-line: rgba(15,77,31,0.95);
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
@@ -57,9 +65,9 @@
 
       --cta-grad: linear-gradient(to bottom, var(--orange) 0%, var(--orange-dark) 100%);
 
-      --card-bg: rgba(255,255,255,0.94);
+      /* Store cards will no longer be pure white */
+      --card-bg: linear-gradient(180deg, var(--tan) 0%, var(--mocha-1) 40%, var(--mocha-2) 78%, var(--mocha-3) 100%);
 
-      /* SMALLER STORE CONTROLS (per request) */
       --qtyBtn: 28px;
       --qtyInputW: 44px;
 
@@ -67,7 +75,8 @@
 
       --footerIcon: 30px;
 
-      --stickyOffset: 122px;
+      /* Sticky offset should cover fixed banner + header + separator */
+      --stickyOffset: 138px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -124,12 +133,23 @@
       background:transparent;
     }
 
-    /* STICKY TOP */
+    /* =========================
+       FIXED TOP (banner+header)
+       ========================= */
     .sticky-top{
-      position:sticky;
+      position:fixed;           /* changed from sticky to fixed per request */
       top:0;
+      left:0;
+      right:0;
       z-index:999;
       background:transparent;
+      pointer-events:auto;
+    }
+
+    /* When fixed, prevent content from hiding behind it */
+    .top-spacer{
+      height: var(--stickyOffset);
+      width:100%;
     }
 
     /* BANNER */
@@ -142,6 +162,7 @@
       justify-content:center;
       gap:12px;
       text-align:center;
+
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: var(--frameBorder) solid var(--frame-line);
@@ -181,6 +202,7 @@
       align-items:center;
       justify-content:space-between;
       position:relative;
+
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
     }
@@ -350,11 +372,13 @@
 
     .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
 
-    /* Buttons: no darken on hover; only text grows slightly */
+    /* =========================
+       ORANGE BUTTONS (cream text + cream outline)
+       ========================= */
     .btn{
       background: var(--cta-grad);
-      color: #fff;
-      border:none;
+      color: var(--cream);
+      border:1px solid var(--cream);  /* thin outline */
       border-radius: var(--r-btn);
       padding:10px 16px;
       font-size:12px;
@@ -391,7 +415,6 @@
       will-change: transform;
     }
 
-    /* store coming soon badge: remove outline */
     .store-coming-badge{
       position:absolute;
       top:0;
@@ -432,9 +455,9 @@
     }
 
     .store-view-full{
-      border:none;
+      border:1px solid var(--cream); /* thin outline */
       background: var(--cta-grad);
-      color: #fff;
+      color: var(--cream);
       border-radius: var(--r-btn);
       padding:9px 14px;
       font-size:12px;
@@ -461,7 +484,9 @@
       border-radius:999px;
       border:1px solid rgba(15,23,42,0.18);
       font-size:12px;
-      background:rgba(255,255,255,0.82);
+
+      /* match Whole Foods vibe: tan, not stark white */
+      background: rgba(243,230,209,0.88);
       color:#111827;
       outline:none;
     }
@@ -474,7 +499,7 @@
       height:28px;
       border-radius:999px;
       border:1px solid rgba(15,23,42,0.12);
-      background:rgba(255,255,255,0.75);
+      background:rgba(255,255,255,0.55);
       display:flex;
       align-items:center;
       gap:6px;
@@ -503,10 +528,13 @@
       width:100%;
     }
 
+    /* =========================
+       STORE CARDS (tan -> mocha gradient; not white)
+       ========================= */
     .product-card{
       border-radius: var(--r-card);
       background: var(--card-bg);
-      border:1px solid rgba(15,23,42,0.10);
+      border:1px solid rgba(15,23,42,0.14);
       padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
@@ -519,7 +547,7 @@
       overflow:hidden;
     }
     .product-card.is-match{
-      background: linear-gradient(to bottom, rgba(255,255,255,0.96), var(--match));
+      background: linear-gradient(to bottom, rgba(243,230,209,0.92), rgba(234,215,189,0.92), var(--match));
     }
 
     .product-card img{
@@ -530,15 +558,16 @@
       margin-top:4px;
       margin-bottom:10px;
       border:1px solid rgba(15,23,42,0.10);
-      background:#fff;
+
+      /* let image sit on a softer base */
+      background: rgba(255,255,255,0.72);
       box-shadow:none;
     }
 
-    .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.10); margin-bottom:8px; }
+    .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.12); margin-bottom:8px; }
     .product-name{ font-size:13px; font-weight:900; margin-bottom:4px; }
-    .product-text{ font-size:12px; color:#4b5563; line-height:1.6; margin-bottom:10px; }
+    .product-text{ font-size:12px; color:#334155; line-height:1.6; margin-bottom:10px; }
 
-    /* tighter controls so they fit */
     .product-controls{
       width:100%;
       display:flex;
@@ -554,8 +583,9 @@
       gap:6px;
       padding:5px 6px;
       border-radius:12px;
-      border:1px solid rgba(253,108,2,0.35);
-      background: rgba(253,108,2,0.16);
+
+      border:1px solid rgba(255,255,197,0.65);
+      background: rgba(253,108,2,0.18);
       width:100%;
       max-width: 160px;
       justify-content:center;
@@ -566,27 +596,27 @@
       height:var(--qtyBtn);
       min-width:var(--qtyBtn);
       min-height:var(--qtyBtn);
-      border:none;
+      border:1px solid rgba(255,255,197,0.55);
       border-radius:10px;
-      background: rgba(255,255,255,0.35);
+      background: rgba(243,230,209,0.55);
       color:#111827;
       cursor:pointer;
       font-weight:900;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      transition: filter .12s ease;
+      transition: filter .12s ease, transform .12s ease;
       font-size:14px;
       line-height:1;
     }
-    .qty-minus:hover, .qty-plus:hover{ filter:brightness(0.92); }
+    .qty-minus:hover, .qty-plus:hover{ filter:brightness(0.96); transform: translateY(-1px); }
 
     .qty-input{
       width: var(--qtyInputW);
       height: var(--qtyBtn);
       border-radius:10px;
       border:1px solid rgba(15,23,42,0.12);
-      background: rgba(255,255,255,0.70);
+      background: rgba(243,230,209,0.80);
       text-align:center;
       font-weight:900;
       color:#111827;
@@ -604,10 +634,10 @@
     .btn-add{
       min-width:60px;
       height:var(--qtyBtn);
-      border:none;
+      border:1px solid var(--cream);
       border-radius:10px;
       background: var(--cta-grad);
-      color:#fff;
+      color: var(--cream);
       font-weight:900;
       cursor:pointer;
       display:inline-flex;
@@ -634,27 +664,34 @@
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
-    /* ABOUT US DIVIDER + SECTION */
+    /* =========================
+       ABOUT DIVIDER (centered label splitting the line)
+       ========================= */
     .about-divider{
       max-width:1200px;
       margin:22px auto 14px;
       padding:0 6px;
+      display:flex;
+      align-items:center;
+      gap:14px;
     }
-    .about-divider .line{
+    .about-divider::before,
+    .about-divider::after{
+      content:"";
       height:2px;
-      width:100%;
       background: var(--green);
       border-radius:999px;
       opacity:0.9;
+      flex:1;
     }
     .about-divider .label{
-      margin-top:10px;
       text-align:center;
       font-size:12px;
       font-weight:900;
       letter-spacing:0.20em;
       text-transform:uppercase;
       color: var(--green-deep);
+      white-space:nowrap;
     }
 
     #about-us{
@@ -680,13 +717,12 @@
     }
     .about-card img{
       width:100%;
-      height:240px;               /* ensures equal card image height */
+      height:240px;
       border-radius:18px;
       object-fit:cover;
       border:1px solid rgba(15,23,42,0.10);
       background:#fff;
     }
-    /* crop AUGUST image from bottom (taller photo) */
     .about-card img.crop-bottom{
       object-position: center 22%;
     }
@@ -704,6 +740,7 @@
       width:100%;
       background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
       padding:16px 22px 26px;
+
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-bottom: var(--frameBorder) solid var(--frame-line);
@@ -728,11 +765,12 @@
       gap:8px;
     }
 
+    /* NEW: cream color for "Based in Florida" */
     .footer-based{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      color:#ffffff;
+      color: var(--cream);
       font-weight:900;
       letter-spacing:0.06em;
       text-transform:uppercase;
@@ -784,10 +822,12 @@
       align-items:center;
       gap:14px;
     }
+
+    /* NEW: cream icons */
     .footer-email svg, .footer-instagram svg{
       width:var(--footerIcon);
       height:var(--footerIcon);
-      stroke:#ffffff;
+      stroke: var(--cream);
       fill:none;
       stroke-width:2;
     }
@@ -883,8 +923,10 @@
       border:1px solid rgba(255,255,255,0.35);
       padding:8px 12px;
       font-size:12px;
-      background: linear-gradient(to bottom, var(--orange) 0%, var(--orange-dark) 100%);
-      color:#ffffff;
+
+      /* also cream outline feel */
+      background: var(--cta-grad);
+      color: var(--cream);
       width:100%;
       max-width:240px;
       font-weight:900;
@@ -926,13 +968,26 @@
       background: rgba(255,255,255,0.14);
     }
 
+    /* Fixed header must respect side-frame borders when present */
+    @media(min-width:781px){
+      .sticky-top{
+        padding-left: var(--sideW);
+        padding-right: var(--sideW);
+      }
+    }
+
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
+
+      /* with fixed header on mobile, remove frame borders */
       .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
+      .sticky-top{ padding-left:0; padding-right:0; }
+
       html,body{ overflow-x:hidden; }
       .top-banner .banner-text{ white-space:normal; }
-      :root{ --stickyOffset: 140px; }
+
+      :root{ --stickyOffset: 154px; }
     }
 
     @media(max-width:980px){
@@ -1003,40 +1058,44 @@
     <div class="side right"><div class="stack" id="stack-right"></div></div>
   </div>
 
-  <div class="frame-wrap">
-    <div class="sticky-top">
-      <div class="top-banner">
-        <div class="banner-text">SUPPORT FLORIDA’S FIRST MAYANUT FARM</div>
-        <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GOFUNDME</a>
-      </div>
-
-      <header class="site-header" id="top">
-        <div class="header-left">
-          <img src="mayanut-the-mayanut-comapny-logo.png"
-               alt="The MayaNut Company logo"
-               id="logo-top" />
-        </div>
-
-        <div class="header-center">
-          <nav class="main-nav" aria-label="Primary navigation">
-            <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
-            <a href="#store-panel" id="nav-store">STORE</a>
-            <a href="about.html">ABOUT</a>
-            <a href="research.html">RESEARCH</a>
-            <a href="contact.html">CONTACT</a>
-          </nav>
-        </div>
-
-        <div class="header-right">
-          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-      </header>
-
-      <div class="top-sep"></div>
+  <!-- FIXED TOP -->
+  <div class="sticky-top">
+    <div class="top-banner">
+      <div class="banner-text">SUPPORT FLORIDA’S FIRST MAYANUT FARM</div>
+      <a href="https://gofund.me/7d3ac2d02" target="_blank" rel="noopener">GOFUNDME</a>
     </div>
 
+    <header class="site-header" id="top">
+      <div class="header-left">
+        <img src="mayanut-the-mayanut-comapny-logo.png"
+             alt="The MayaNut Company logo"
+             id="logo-top" />
+      </div>
+
+      <div class="header-center">
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
+          <a href="#store-panel" id="nav-store">STORE</a>
+          <a href="about.html">ABOUT</a>
+          <a href="research.html">RESEARCH</a>
+          <a href="contact.html">CONTACT</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="top-sep"></div>
+  </div>
+
+  <!-- Spacer so content isn't hidden under fixed top -->
+  <div class="top-spacer" aria-hidden="true"></div>
+
+  <div class="frame-wrap">
     <main>
       <div class="content-wrapper">
         <section id="hero">
@@ -1235,13 +1294,11 @@
         </section>
 
         <div class="about-divider">
-          <div class="line"></div>
           <div class="label">About Us</div>
         </div>
 
         <section id="about-us" aria-label="About us">
           <div class="about-grid">
-            <!-- LEFT CARD: Bubba image + requested LEFT paragraph -->
             <article class="about-card">
               <img src="the-maya-nut-company-bubba-image.png"
                    alt="Herbert “Bubba” Humphries"
@@ -1255,7 +1312,6 @@
               </p>
             </article>
 
-            <!-- RIGHT CARD: August image (correct file) + restored RIGHT paragraph -->
             <article class="about-card">
               <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                    class="crop-bottom"
@@ -1337,7 +1393,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.3.6</div>
+          <div class="overlay-version">Version 3.4.2</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>
@@ -1419,6 +1475,7 @@
 
     const topLogo = document.getElementById('logo-top');
     const footerLogo = document.getElementById('footer-logo');
+
     function scrollTopSmooth(e){
       e.preventDefault();
       window.scrollTo({top:0, behavior:'smooth'});

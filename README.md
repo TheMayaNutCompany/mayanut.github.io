@@ -2,12 +2,12 @@
 *MayaNut (Maya Nut) • Brosimum alicastrum • Tropical agroforestry • Reforestation*
 
 <p align="center">
-  <img src="https://mayanut.com/mayanut-the-maya-nut-company-logo.png" width="200" alt="The MayaNut Company Logo">
+  <img src="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" width="200" alt="The MayaNut Company Logo">
 </p>
 
 **Website:** https://mayanut.com
 
-This repository contains the source for **The MayaNut Company** website — a fast, static, multi-page site built to introduce **MayaNut** (*Brosimum alicastrum*; also known as *ramón*, *ojoche*, *breadnut*) and to support a **store-first experience** as products come online.
+This repository contains the source for **The MayaNut Company** website — a fast, static, multi-page site built to introduce **MayaNut** (*Brosimum alicastrum*; also known as *ramón* and *ojoche*) and to support a **store-first experience** as products come online.
 
 The goal is simple: when people arrive, they should quickly find **products** first — and deeper learning second (for those who want it).
 
@@ -16,10 +16,10 @@ The goal is simple: when people arrive, they should quickly find **products** fi
 ## Status
 
 - 🚧 **Active development**
-- 🌍 **Multi-language structure** (English live; more in progress)
+- 🌍 **Multi-language structure** (English live; additional languages in progress)
 - ⚡ **Static hosting** (GitHub Pages)
 - ⛓️ **No dependencies** (vanilla HTML/CSS/JS)
-- 🔍 **SEO-ready** (metadata, semantic markup, alt text, canonical links)
+- 🔍 **SEO-ready** (metadata, semantic markup, alt text, canonical links, structured data)
 
 ---
 
@@ -36,14 +36,14 @@ Primary fieldwork and trials are based in **South Florida, USA**.
 
 ## Key features (current)
 
-- Store-first homepage layout with a clean product grid
-- Mobile-first responsive UI
-- Multi-page navigation (Home, About, Research, Gallery, FAQ, Contact)
+- Store-first homepage layout with a clean product grid (concept preview)
+- Responsive UI for desktop and mobile
+- Multi-page navigation (Home, About, Research, Gallery, Contact, Privacy, Terms)
 - Accessibility panel + language selection UI
-- Image optimization via `loading="lazy"` + `decoding="async"` (where applicable)
-- Basic SEO foundations (titles/descriptions, canonical, OG tags, structured data)
+- Image performance via `loading="lazy"` + `decoding="async"` (where applicable)
+- SEO foundations (titles/descriptions, canonical, Open Graph/Twitter tags, structured data)
 
-> Note: Any “store” elements may be **conceptual** until production is live.
+> Note: “Store” elements may be **conceptual** until production is live.
 
 ---
 
@@ -58,7 +58,7 @@ Primary fieldwork and trials are based in **South Florida, USA**.
 
 ## Repository structure (typical)
 
-> Your repo may differ slightly — keep this section aligned with your actual files.
+> Keep this section aligned with your actual files.
 
 ```txt
 /
@@ -66,7 +66,6 @@ Primary fieldwork and trials are based in **South Florida, USA**.
 ├─ about.html
 ├─ research.html
 ├─ gallery.html
-├─ faq.html
 ├─ contact.html
 ├─ privacy.html
 ├─ terms.html
@@ -75,6 +74,6 @@ Primary fieldwork and trials are based in **South Florida, USA**.
 ├─ sitemap.xml
 ├─ README.md
 │
-├─ mayanut-the-maya-nut-company-logo.png
+├─ mayanut-the-mayanut-comapny-logo.png
 ├─ menuart-the-maya-nut-company-art.jpeg
 └─ (images and media assets)

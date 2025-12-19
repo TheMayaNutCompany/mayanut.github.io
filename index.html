@@ -1,4 +1,4 @@
-<!-- FULL INDEX (EN) — v3.4.5 (footer “Based in Florida” black + store expands left on desktop) -->
+<!-- FULL INDEX (EN) — v3.4.6 (thin header + safe-area fix + greyish-tan store cards + bigger footer flag) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,11 +135,12 @@
 
       --footerIcon: 30px;
 
-      --stickyOffset: 122px;
+      /* THINNER header + tuned anchor offset */
+      --stickyOffset: 112px;
 
       /* header lock */
       --headerPadX: 16px;
-      --headerPadY: 12px;
+      --headerPadY: 5px; /* was 12px */
       --leftColW: 220px;
       --rightColW: 44px;
       --navMaxW: 720px;
@@ -233,11 +234,11 @@
       background:transparent;
     }
 
-    /* BANNER */
+    /* BANNER (safe-area so nothing is hidden “under the tab”) */
     .top-banner{
       width:100%;
       background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
-      padding:8px 14px;
+      padding: calc(8px + env(safe-area-inset-top)) 14px 8px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -278,14 +279,21 @@
       background-position:center;
       background-repeat:no-repeat;
 
-      padding: var(--headerPadY) var(--headerPadX) !important;
+      /* thin header + safe-area */
+      padding-top: calc(var(--headerPadY) + env(safe-area-inset-top)) !important;
+      padding-right: var(--headerPadX) !important;
+      padding-bottom: var(--headerPadY) !important;
+      padding-left: var(--headerPadX) !important;
 
       display:flex;
       align-items:center;
       justify-content:space-between;
       position:relative;
+
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
+
+      z-index:1000; /* keep above separators so dropdown never clips */
     }
 
     .top-sep, .bottom-sep{
@@ -294,6 +302,9 @@
       background:var(--green);
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
+
+      position:relative;
+      z-index:5;
     }
 
     .header-left{
@@ -341,7 +352,7 @@
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
     .main-nav a.is-active{ border-bottom-color: var(--cream); }
 
-    /* Dropdown menus */
+    /* Dropdown menus (green gradient pop under tabs) */
     .submenu{
       position:absolute;
       top:100%;
@@ -649,7 +660,15 @@
 
     .product-card{
       border-radius: var(--r-card);
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+
+      /* greyish-tan gradient (less muddy, more “grey/tan”) */
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.95) 0%,
+        rgba(210, 196, 176, 0.60) 60%,
+        rgba(138, 116, 95, 0.42) 100%
+      );
+
       border:1px solid rgba(15,23,42,0.10);
       padding:12px 12px 14px;
       display:flex;
@@ -703,6 +722,7 @@
       justify-content:center;
     }
 
+    /* plus/minus orange like ADD (already correct) */
     .qty-minus, .qty-plus{
       width:var(--qtyBtn);
       height:var(--qtyBtn);
@@ -769,9 +789,9 @@
       body.store-expanded #store-panel{
         position:absolute;
         top:0;
-        right:0;      /* anchor to right */
-        left:auto;    /* allow it to grow left */
-        width:100%;   /* fills the hero width, expanding left */
+        right:0;
+        left:auto;
+        width:100%;
         z-index:5;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
       }
@@ -885,12 +905,12 @@
       gap:8px;
     }
 
-    /* FIX: make “Based / in / Florida” black */
+    /* “Based / in / Florida” black */
     .footer-based{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      color:#000;               /* changed */
+      color:#000;
       font-weight:900;
       letter-spacing:0.06em;
       text-transform:uppercase;
@@ -898,13 +918,13 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
     .footer-based img.flag{
-      width:24px;
+      width:32px; /* bigger */
       height:auto;
       display:block;
       filter: drop-shadow(0 6px 14px rgba(15,23,42,0.20));
     }
     .footer-based img.florida{
-      width:26px;
+      width:30px; /* slight bump to match */
       height:auto;
       display:block;
       filter: drop-shadow(0 6px 14px rgba(15,23,42,0.20));
@@ -1134,7 +1154,7 @@
       .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
       .top-banner .banner-text{ white-space:normal; }
-      :root{ --stickyOffset: 140px; }
+      :root{ --stickyOffset: 130px; } /* a touch higher for mobile */
       .content-wrapper{ padding-left:16px; padding-right:16px; }
     }
 
@@ -1572,7 +1592,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.4.5</div>
+          <div class="overlay-version">Version 3.4.6</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>

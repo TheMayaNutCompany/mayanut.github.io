@@ -101,13 +101,13 @@
       --btn-tx: #0f172a;
 
       /* Header sizing (slim) */
-      --headerPadY: 1px;
+      --headerPadY: 1px;        /* keep slim */
       --headerPadX: 16px;
       --logoW: 172px;
 
       /* Store */
       --store-collapsed: 380px;
-      --store-expanded: 640px;
+      --store-expanded: 640px; /* expands left (anchored right) */
       --store-radius: 26px;
 
       /* Store greens */
@@ -206,9 +206,12 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      overflow-x:hidden;
     }
 
+    @media(max-width:780px){
+      .side-frames{ display:none; }
+      .frame-wrap{ width:100%; margin:0; }
+    }
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
@@ -217,10 +220,6 @@
         margin-left: var(--sideW);
         margin-right: var(--sideW);
       }
-    }
-    @media(max-width:780px){
-      .side-frames{ display:none; }
-      .frame-wrap{ width:100%; margin:0; }
     }
 
     /* TOP BANNER */
@@ -236,7 +235,6 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: var(--frameBorder) solid var(--frame-line);
-      flex-wrap:wrap; /* mobile-safe */
     }
     .top-banner .banner-text{
       font-size:12px;
@@ -260,9 +258,6 @@
       background:transparent;
     }
     .top-banner a:hover{ opacity:0.86; }
-    @media(max-width:420px){
-      .top-banner .banner-text{ white-space:normal; }
-    }
 
     /* HEADER (slim) */
     .site-header{
@@ -373,7 +368,7 @@
       background:#0f172a;
     }
 
-    /* Ricky banner */
+    /* Rick y easter under menu bars (shows below header, inside main) */
     .ricky-banner{
       display:none;
       width:100%;
@@ -397,7 +392,6 @@
       text-transform:uppercase;
       font-size:12px;
       color:#0f172a;
-      flex-wrap:wrap;
     }
     .ricky-banner .hearts{ letter-spacing:0.35em; }
     .ricky-banner.active{ display:block; }
@@ -467,7 +461,9 @@
       margin-bottom:10px;
     }
 
-    .hero-title .mayanut{ color:var(--accent-orange); }
+    .hero-title .mayanut{
+      color:var(--accent-orange);
+    }
 
     .hero-copy{
       font-size:14px;
@@ -504,7 +500,7 @@
       letter-spacing:0.16em;
       text-transform:uppercase;
       font-weight:900;
-      color:#000;
+      color:#000; /* Based in Florida black */
       line-height:1.2;
       white-space:pre-line;
     }
@@ -552,13 +548,14 @@
       color: var(--cream);
     }
 
+    /* Store open button */
     .btn-store{
       background: linear-gradient(90deg, var(--store-lime) 0%, var(--store-mid) 50%, var(--store-dark) 100%);
       border-color: rgba(0,0,0,0.18);
       color:#000;
     }
 
-    /* ABOUT SECTION */
+    /* ABOUT SECTION (A LITTLE ABOUT US) */
     .about-mini{
       border-radius: 28px;
       border:1px solid rgba(15,23,42,0.10);
@@ -583,6 +580,7 @@
       justify-content:stretch;
       position:relative;
       overflow:hidden;
+      /* green backgrounds restored */
       background: linear-gradient(180deg, var(--about-dk) 0%, var(--about-mid) 45%, var(--about-pale) 100%);
     }
 
@@ -591,6 +589,7 @@
       width:100%;
       height:100%;
       object-fit:cover;
+      mix-blend-mode: normal;
       filter: saturate(1.06) contrast(1.05);
       opacity:0.92;
     }
@@ -601,6 +600,7 @@
       justify-content:center;
       gap:10px;
       padding:16px 16px 16px;
+      /* paragraph background green (pale) restored */
       background: linear-gradient(180deg, #e9ffea 0%, var(--about-pale) 100%);
       border-left: 1px solid rgba(0,0,0,0.12);
       border-right: 1px solid rgba(0,0,0,0.12);
@@ -614,11 +614,12 @@
 
     .about-mini-actions{
       display:flex;
-      justify-content:flex-end;
+      justify-content:flex-end; /* aligned to the right */
       align-items:center;
       margin-top:4px;
     }
 
+    /* About us button (orange, cream text+outline) */
     .btn-about{
       border-radius: 14px;
       padding:10px 14px;
@@ -639,14 +640,15 @@
     }
     .btn-about:hover{ transform: translateY(-1px); }
 
+    /* highlights */
     .highlight-brosimum{ color:var(--accent-blue); font-weight:900; }
     .highlight-mayanut{ color:var(--accent-orange); font-weight:900; }
     .highlight-august{ font-weight:900; color:#000; }
 
-    /* STORE DRAWER */
+    /* STORE DRAWER (fixed right, expands left) */
     .store-drawer{
       position:fixed;
-      top: 110px;
+      top: 110px; /* below sticky header+banner area, adjusted by JS */
       right: 0;
       width: var(--store-collapsed);
       height: calc(100vh - 130px);
@@ -655,13 +657,18 @@
       box-shadow: 0 24px 60px rgba(15,23,42,0.32);
       border: 2px solid rgba(0,0,0,0.20);
       overflow:hidden;
-      transform: translateX(calc(100% - 56px));
+      transform: translateX(calc(100% - 56px)); /* collapsed as a tab */
       transition: transform .35s var(--ease), width .35s var(--ease);
       background: linear-gradient(180deg, var(--store-lime) 0%, var(--store-mid) 45%, var(--store-dark) 100%);
-      will-change: transform;
     }
-    .store-drawer.open{ transform: translateX(0); }
-    .store-drawer.expanded{ width: var(--store-expanded); }
+
+    .store-drawer.open{
+      transform: translateX(0);
+    }
+
+    .store-drawer.expanded{
+      width: var(--store-expanded); /* expands left while anchored right */
+    }
 
     .store-tab{
       position:absolute;
@@ -677,8 +684,6 @@
       justify-content:center;
       cursor:pointer;
       backdrop-filter: blur(8px);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
     .store-tab span{
       writing-mode: vertical-rl;
@@ -694,10 +699,10 @@
       height:100%;
       display:flex;
       flex-direction:column;
-      padding-left: 64px;
-      min-width:0;
+      padding-left: 64px; /* room for tab */
     }
 
+    /* store header */
     .store-head{
       display:flex;
       align-items:center;
@@ -707,7 +712,6 @@
       border-bottom:1px solid rgba(0,0,0,0.18);
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(10px);
-      min-width:0;
     }
 
     .store-left{
@@ -715,9 +719,9 @@
       align-items:center;
       gap:10px;
       min-width:0;
-      flex:1 1 auto;
     }
 
+    /* Return button goes left when expanded; always far left within store head */
     .store-back{
       width:36px;
       height:36px;
@@ -772,14 +776,13 @@
       align-items:center;
       gap:10px;
       flex:0 0 auto;
-      min-width:0;
     }
 
+    /* Search (short length) */
     .store-search{
       position:relative;
-      width: 190px;
+      width: 190px; /* stays short */
       flex:0 0 auto;
-      min-width:0;
     }
     .store-search input{
       width:100%;
@@ -793,7 +796,6 @@
       color:#0f172a;
       outline:none;
       font-size:12px;
-      min-width:0;
     }
     .store-search button{
       position:absolute;
@@ -819,6 +821,7 @@
       stroke-linejoin:round;
     }
 
+    /* Close X (orange) */
     .store-close{
       width:36px;
       height:36px;
@@ -841,6 +844,7 @@
       stroke-linejoin:round;
     }
 
+    /* Cart button (upper right corner of store) */
     .cart-btn{
       position:relative;
       width:44px;
@@ -856,7 +860,7 @@
       flex:0 0 auto;
     }
     .cart-btn svg{
-      width:22px;
+      width:22px; /* cart symbol bigger */
       height:22px;
       fill:none;
       stroke:#000;
@@ -868,7 +872,7 @@
       position:absolute;
       top:6px;
       right:6px;
-      width:14px;
+      width:14px;   /* black circle smaller */
       height:14px;
       border-radius:999px;
       background:#000;
@@ -878,16 +882,16 @@
       font-weight:900;
       font-size:9px;
       line-height:1;
-      color: var(--cream);
+      color: var(--cream); /* cream 0 */
       letter-spacing:0;
-      transform: translate(0,0);
+      transform: translate(0,0); /* keep close */
     }
 
+    /* Store body */
     .store-body{
       flex:1;
       overflow:auto;
       padding:12px 12px 16px;
-      -webkit-overflow-scrolling: touch;
     }
 
     .store-section-title{
@@ -922,6 +926,7 @@
       white-space:nowrap;
     }
 
+    /* Product grid */
     .products{
       display:grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
@@ -932,12 +937,11 @@
       border-radius: 20px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,0.18);
-      background: linear-gradient(180deg, var(--opt-1) 0%, var(--opt-2) 55%, var(--opt-3) 100%);
+      background: linear-gradient(180deg, var(--opt-1) 0%, var(--opt-2) 55%, var(--opt-3) 100%); /* white->grey */
       box-shadow: 0 10px 22px rgba(15,23,42,0.16);
       display:flex;
       flex-direction:column;
-      min-height: 184px;
-      min-width:0;
+      min-height: 184px; /* consistent size closed/open */
     }
 
     .product-top{
@@ -965,8 +969,6 @@
       letter-spacing:0.10em;
       font-size:11px;
       color:#0f172a;
-      text-align:center;
-      padding:0 8px;
     }
 
     .product-mid{
@@ -975,7 +977,6 @@
       flex-direction:column;
       gap:6px;
       flex:1;
-      min-width:0;
     }
 
     .product-name{
@@ -1005,14 +1006,13 @@
       display:flex;
       align-items:center;
       gap:6px;
-      min-width:0;
     }
 
     .qty-btn{
       width:30px;
       height:30px;
       border-radius:10px;
-      background: linear-gradient(to bottom, var(--accent-orange) 0%, var(--accent-orange-deep) 100%);
+      background: linear-gradient(to bottom, var(--accent-orange) 0%, var(--accent-orange-deep) 100%); /* plus/minus orange */
       border:1px solid var(--cream);
       cursor:pointer;
       display:flex;
@@ -1041,10 +1041,9 @@
       align-items:center;
       justify-content:center;
       font-weight:900;
-      color:#000;
+      color:#000; /* keep number black */
       font-size:12px;
       letter-spacing:0.04em;
-      flex:0 0 auto;
     }
 
     .add-btn{
@@ -1064,9 +1063,9 @@
       justify-content:center;
       box-shadow: 0 8px 16px rgba(15,23,42,0.18);
       white-space:nowrap;
-      flex:0 0 auto;
     }
 
+    /* Store footer note */
     .store-foot{
       padding:12px 12px 14px;
       border-top:1px solid rgba(0,0,0,0.18);
@@ -1076,7 +1075,6 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      flex-wrap:wrap;
     }
     .store-foot .note{
       font-size:11px;
@@ -1098,7 +1096,7 @@
       opacity:0.95;
     }
 
-    /* Toast */
+    /* Toast message */
     .toast{
       position:fixed;
       left:50%;
@@ -1147,12 +1145,12 @@
     }
     .footer-left{
       text-align:left;
-      font-weight:400;
       color:#000;
+      font-weight:400; /* regular */
     }
     .footer-left .copyright{
-      color:#000;           /* © 2025... all black */
-      font-weight:400;
+      color:#000;
+      font-weight:400; /* not bold */
     }
     .footer-center{ text-align:center; }
     .footer-right{
@@ -1173,7 +1171,7 @@
       color:#000;
       text-decoration:none;
       border-bottom:1px dotted rgba(0,0,0,0.45);
-      font-weight:400;
+      font-weight:400; /* regular */
     }
     .footer-logo img{
       width:80px;
@@ -1218,7 +1216,6 @@
       cursor:pointer;
       z-index:70;
       box-shadow:0 10px 25px rgba(15,23,42,0.35);
-      -webkit-tap-highlight-color: transparent;
     }
     .accessibility-btn svg{
       width:26px;
@@ -1242,27 +1239,22 @@
       align-items:center;
       justify-content:center;
       z-index:var(--z-overlay);
-      padding:16px; /* mobile-safe */
     }
     .overlay.active{ display:flex; }
     .overlay-panel{
-      width:100%;
+      width:90%;
       max-width:440px;
       background:#ffffff;
       border-radius:18px;
       padding:18px 16px 20px;
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
       border:1px solid rgba(229,231,235,0.9);
-      max-height: calc(100vh - 32px);
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
     }
     .overlay-header{
       display:flex;
       justify-content:space-between;
       align-items:center;
       margin-bottom:10px;
-      gap:10px;
     }
     .overlay-title{ font-size:14px; font-weight:900; color:#0f172a; }
     .overlay-close{
@@ -1274,7 +1266,6 @@
       color:#6b7280;
       width:34px; height:34px;
       border-radius:10px;
-      flex:0 0 auto;
     }
     .overlay-close:hover{ background:rgba(15,23,42,0.06); }
 
@@ -1285,7 +1276,6 @@
       justify-content:space-between;
       align-items:center;
       gap:10px;
-      flex-wrap:wrap;
     }
     .settings-lang{
       border-radius:999px;
@@ -1333,7 +1323,6 @@
       position:relative;
       cursor:pointer;
       flex:0 0 auto;
-      -webkit-tap-highlight-color: transparent;
     }
     .toggle-input span{
       position:absolute;
@@ -1357,6 +1346,7 @@
       text-transform:uppercase;
     }
 
+    /* Mobile menu overlay nav */
     .mobile-nav{
       display:flex;
       flex-direction:column;
@@ -1395,25 +1385,23 @@
       .footer-inner{ grid-template-columns:1fr; row-gap:10px; text-align:center; }
       .footer-left, .footer-center, .footer-right{ text-align:center; justify-content:center; }
       .footer-links{ justify-content:center; }
-
       .about-mini-grid{ grid-template-columns: 1fr; }
       .about-mini-left, .about-mini-right{ min-height: 220px; }
       .about-mini-center{ border-left:none; border-right:none; }
-
-      /* Mobile store becomes bottom drawer (prevents off-screen glitches) */
       .store-drawer{
         right: 0;
         left: 0;
         width: 100%;
         border-radius: 26px 26px 0 0;
-        transform: translateY(calc(100% - 64px));
+        transform: translateY(calc(100% - 64px)); /* collapsed tab bottom-style on mobile */
         height: 70vh;
         top: auto;
         bottom: 0;
       }
-      .store-drawer.open{ transform: translateY(0); }
-      .store-drawer.expanded{ width:100%; }
-
+      .store-drawer.open{
+        transform: translateY(0);
+      }
+      .store-drawer.expanded{ width:100%; } /* never off-screen */
       .store-tab{
         top: 10px;
         left: 10px;
@@ -1425,29 +1413,8 @@
         transform:none;
         letter-spacing:0.14em;
       }
-
       .store-inner{ padding-left: 64px; }
       .products{ grid-template-columns: 1fr 1fr; }
-    }
-
-    /* Extra small fixes (common cause of "mobile is glitched": store header overflow) */
-    @media(max-width:480px){
-      .content-wrapper{ padding:22px 14px 30px; }
-      .store-head{ flex-wrap:wrap; }
-      .store-right{
-        width:100%;
-        justify-content:space-between;
-      }
-      .store-search{
-        flex:1 1 auto;
-        width:auto;
-        min-width:0;
-      }
-      .store-search input{ min-width:0; }
-      .store-left{ flex:1 1 auto; }
-    }
-    @media(max-width:420px){
-      .products{ grid-template-columns: 1fr; }
     }
 
     /* Feature toggles */
@@ -1527,7 +1494,7 @@
 
     <div class="top-sep"></div>
 
-    <!-- RICKY BANNER -->
+    <!-- RICKY BANNER (shows under menu bars) -->
     <div class="ricky-banner" id="ricky-banner" aria-live="polite">
       <div class="ricky-banner-inner">
         <span class="hearts">🧡💛💙🩵</span>
@@ -1581,7 +1548,7 @@
             </div>
           </section>
 
-          <!-- A LITTLE ABOUT US -->
+          <!-- A LITTLE ABOUT US (green backgrounds restored) -->
           <section class="about-mini" aria-label="A little about us">
             <div class="about-mini-grid">
               <div class="about-mini-left">
@@ -1718,6 +1685,7 @@
         </div>
 
         <div class="products" aria-label="Store products">
+          <!-- Product cards (consistent sizing) -->
           <div class="product">
             <div class="product-top"><span>MayaNut Flour</span></div>
             <div class="product-mid">
@@ -1798,46 +1766,18 @@
             </div>
           </div>
 
-          <!-- Minimal extra placeholders (avoid massive HTML bloat) -->
-          <div class="product">
-            <div class="product-top"><span>Concept Product</span></div>
-            <div class="product-mid">
-              <div class="product-name">Concept Product</div>
-              <div class="product-desc">Store item placeholder.</div>
-              <div class="qty-row">
-                <div class="qty-controls">
-                  <button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity">
-                    <svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg>
-                  </button>
-                  <div class="qty-box">0</div>
-                  <button class="qty-btn js-store-action" type="button" aria-label="Increase quantity">
-                    <svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg>
-                  </button>
-                </div>
-                <button class="add-btn js-store-action" type="button">Add</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="product">
-            <div class="product-top"><span>Concept Product</span></div>
-            <div class="product-mid">
-              <div class="product-name">Concept Product</div>
-              <div class="product-desc">Store item placeholder.</div>
-              <div class="qty-row">
-                <div class="qty-controls">
-                  <button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity">
-                    <svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg>
-                  </button>
-                  <div class="qty-box">0</div>
-                  <button class="qty-btn js-store-action" type="button" aria-label="Increase quantity">
-                    <svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg>
-                  </button>
-                </div>
-                <button class="add-btn js-store-action" type="button">Add</button>
-              </div>
-            </div>
-          </div>
+          <!-- Additional placeholders to keep sizing stable (repeat pattern) -->
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
+          <div class="product"><div class="product-top"><span>Product</span></div><div class="product-mid"><div class="product-name">Concept Product</div><div class="product-desc">Store item placeholder.</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn js-store-action" type="button" aria-label="Decrease quantity"><svg viewBox="0 0 24 24"><path d="M6 12h12"></path></svg></button><div class="qty-box">0</div><button class="qty-btn js-store-action" type="button" aria-label="Increase quantity"><svg viewBox="0 0 24 24"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg></button></div><button class="add-btn js-store-action" type="button">Add</button></div></div></div>
         </div>
       </div>
 
@@ -1957,6 +1897,7 @@
           img1.alt = "";
           img1.decoding = "async";
           img1.loading = (i < 2) ? "eager" : "lazy";
+          img1.fetchPriority = "low";
           left.appendChild(img1);
 
           const img2 = document.createElement("img");
@@ -1964,6 +1905,7 @@
           img2.alt = "";
           img2.decoding = "async";
           img2.loading = (i < 2) ? "eager" : "lazy";
+          img2.fetchPriority = "low";
           right.appendChild(img2);
         }
       }
@@ -2084,20 +2026,21 @@
       });
     }
 
-    /* Ricky banner toggled by URL param q=ricky */
+    /* Ricky easter egg banner toggled by URL param q=ricky (auto hides when removed) */
     const rickyBanner = document.getElementById('ricky-banner');
     function syncRicky(){
       if(!rickyBanner) return;
       const params = new URLSearchParams(window.location.search);
       const q = (params.get('q') || '').toLowerCase();
-      rickyBanner.classList.toggle('active', q.includes('ricky'));
+      const on = q.includes('ricky');
+      rickyBanner.classList.toggle('active', on);
     }
     syncRicky();
     window.addEventListener('popstate', syncRicky);
     window.addEventListener('hashchange', syncRicky);
     setInterval(syncRicky, 600);
 
-    /* Store positioning below sticky elements (desktop only) */
+    /* Store positioning below sticky elements */
     (function placeStore(){
       const drawer = document.getElementById('store-drawer');
       const banner = document.querySelector('.top-banner');
@@ -2106,7 +2049,7 @@
 
       function apply(){
         const isMobile = window.matchMedia("(max-width: 780px)").matches;
-        if(isMobile) return;
+        if(isMobile) return; // mobile uses bottom positioning
         const h = Math.round(banner.getBoundingClientRect().height + header.getBoundingClientRect().height + 10);
         drawer.style.top = h + "px";
         drawer.style.height = `calc(100vh - ${h + 18}px)`;
@@ -2127,6 +2070,7 @@
     function openStore(){
       if(!drawer) return;
       drawer.classList.add('open');
+      // desktop expand left; mobile stays full width and no off-screen
       if(!window.matchMedia("(max-width: 780px)").matches){
         drawer.classList.add('expanded');
       }else{
@@ -2142,7 +2086,9 @@
 
     function toggleStore(){
       if(!drawer) return;
-      drawer.classList.contains('open') ? closeStore() : openStore();
+      const isOpen = drawer.classList.contains('open');
+      if(isOpen) closeStore();
+      else openStore();
     }
 
     if(tab){
@@ -2154,23 +2100,23 @@
     if(btnViewStore){
       btnViewStore.addEventListener('click', ()=>{
         openStore();
-        showToast();
+        showToast(); /* unified message */
       });
     }
     if(btnClose){
       btnClose.addEventListener('click', ()=>{
         closeStore();
-        showToast();
+        showToast(); /* unified message */
       });
     }
     if(btnBack){
       btnBack.addEventListener('click', ()=>{
         closeStore();
-        showToast();
+        showToast(); /* unified message */
       });
     }
 
-    /* Unified store message */
+    /* Unified store message for add/plus/minus/cart/search/close */
     const toast = document.getElementById('toast');
     let toastTimer = null;
     function showToast(){
@@ -2211,7 +2157,7 @@
       });
     }
 
-    /* Keep store sizing stable on resize */
+    /* Keep store sizing stable on resize (desktop expands left, mobile full width) */
     window.addEventListener('resize', ()=>{
       if(!drawer) return;
       const isMobile = window.matchMedia("(max-width: 780px)").matches;

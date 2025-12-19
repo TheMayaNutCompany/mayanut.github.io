@@ -109,12 +109,11 @@
       --headerPadY: 28px;
       --headerH: 104px;
 
-      /* NEW: brown/tan gradients like store icons */
-      --brown-deep: rgba(120, 94, 70, 0.65);
-      --brown-mid:  rgba(210, 180, 140, 0.55);
-      --tan-lite:   rgba(246, 240, 230, 0.88);
-      --card-border: rgba(15,23,42,0.10);
-      --card-shadow: 0 10px 30px rgba(15,23,42,0.10);
+      /* About gradients (brown -> tan) */
+      --about-brownA: rgba(111,95,80,0.46);
+      --about-brownB: rgba(138,116,95,0.55);
+      --about-tanA: rgba(243,230,209,0.86);
+      --about-tanB: rgba(243,230,209,0.92);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -198,7 +197,7 @@
       }
     }
 
-    /* TOP BANNER */
+    /* TOP BANNER (match index gradient feel) */
     .top-banner{
       width:100%;
       background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
@@ -371,6 +370,7 @@
       gap:18px;
     }
 
+    /* prevent sticky header overlap on anchors if you add them later */
     section[id]{ scroll-margin-top: calc(var(--headerH) + 18px); }
 
     .page-head{
@@ -402,33 +402,36 @@
       max-width: 880px;
     }
 
-    /* ABOUT CARDS (UPDATED) */
+    /* ===== ABOUT CARDS (FIXED: alternating, and image-right keeps text BESIDE it) ===== */
     .about-card{
       display:grid;
-      grid-template-columns: 180px 1fr;
+      grid-template-columns: 180px 1fr;   /* default: image-left, text-right */
       gap:18px;
       padding:18px;
       border-radius:22px;
-      border:1px solid var(--card-border);
-      box-shadow: var(--card-shadow);
+      border:1px solid rgba(15,23,42,0.10);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.10);
       backdrop-filter: blur(8px);
-
-      /* LEFT image -> darker near image (left) fading to tan */
-      background: linear-gradient(90deg,
-        var(--brown-deep) 0%,
-        var(--brown-mid) 30%,
-        var(--tan-lite) 74%,
-        rgba(255,255,255,0.70) 100%);
+      align-items:center;
     }
-    .about-card.flip{
-      grid-template-columns: 1fr 180px;
 
-      /* RIGHT image -> darker near image (right) fading to tan */
-      background: linear-gradient(90deg,
-        rgba(255,255,255,0.70) 0%,
-        var(--tan-lite) 26%,
-        var(--brown-mid) 70%,
-        var(--brown-deep) 100%);
+    /* Gradient fades away from the image toward tan */
+    .about-card.card-left{
+      background: linear-gradient(
+        90deg,
+        var(--about-brownB) 0%,
+        var(--about-tanA) 54%,
+        var(--about-tanB) 100%
+      );
+    }
+    .about-card.card-right{
+      grid-template-columns: 1fr 180px;   /* text-left, image-right */
+      background: linear-gradient(
+        270deg,
+        var(--about-brownB) 0%,
+        var(--about-tanA) 54%,
+        var(--about-tanB) 100%
+      );
     }
 
     .about-card img{
@@ -440,13 +443,13 @@
       border:1px solid rgba(15,23,42,0.10);
       background:#fff;
     }
-    .about-card.flip img{
-      grid-column:2;
-      justify-self:end;
-    }
-    .about-card.flip .about-text{
-      grid-column:1;
-    }
+
+    /* Lock grid placement so it never drops below on desktop */
+    .about-card.card-left img{ grid-column:1; }
+    .about-card.card-left .about-text{ grid-column:2; }
+
+    .about-card.card-right .about-text{ grid-column:1; }
+    .about-card.card-right img{ grid-column:2; }
 
     .about-text h2{
       font-size:14px;
@@ -459,7 +462,7 @@
     .about-text p{
       font-size:15px;
       line-height:1.85;
-      color:#273244;
+      color:#334155;
       margin-bottom:10px;
       max-width: 860px;
     }
@@ -484,7 +487,11 @@
       font-weight:900;
       backdrop-filter: blur(6px);
     }
-    .btn:hover{ transform:translateY(-1px); background: rgba(246,240,230,0.70); border-color: rgba(15,23,42,0.22); }
+    .btn:hover{
+      transform:translateY(-1px);
+      background: rgba(246,240,230,0.70);
+      border-color: rgba(15,23,42,0.22);
+    }
 
     /* FOOTER */
     footer{
@@ -724,11 +731,23 @@
     @media(max-width:880px){
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
-      .about-card{ grid-template-columns:1fr; }
-      .about-card.flip{ grid-template-columns:1fr; }
-      .about-card img{ width:220px; height:220px; justify-self:start; }
-      .about-card.flip img{ grid-column:auto; justify-self:start; }
-      .about-card.flip .about-text{ grid-column:auto; }
+
+      .about-card,
+      .about-card.card-right{
+        grid-template-columns: 1fr;
+      }
+      .about-card img{
+        width:220px;
+        height:220px;
+        justify-self:center;
+      }
+      .about-card.card-left img,
+      .about-card.card-right img,
+      .about-card.card-left .about-text,
+      .about-card.card-right .about-text{
+        grid-column:auto;
+      }
+
       .header-left{ flex:0 0 auto; }
     }
 
@@ -786,7 +805,7 @@
     <header class="site-header" id="top">
       <div class="header-left">
         <div class="ricky-holder" aria-hidden="false">
-          <img src="mayanut-the-mayanut-comapny-logo.png"
+          <img src="mayanut-the-maya-nut-company-logo.png"
                alt="The MayaNut Company logo"
                id="logo-top"
                decoding="async"
@@ -833,8 +852,8 @@ FOR RICKY
             </p>
           </div>
 
-          <!-- CARD 1 (image left, text right) -->
-          <section class="about-card">
+          <!-- CARD 1 (image LEFT, text RIGHT) -->
+          <section class="about-card card-left">
             <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                  alt="August Kokus with MayaNut trees"
                  loading="eager" decoding="async" fetchpriority="high" />
@@ -848,11 +867,8 @@ FOR RICKY
             </div>
           </section>
 
-          <!-- CARD 2 (image right, text left) -->
-          <section class="about-card flip">
-            <img src="maya-nut-mayanut-plant-tree-moraceae.jpg"
-                 alt="MayaNut tree (Moraceae family)"
-                 loading="lazy" decoding="async" />
+          <!-- CARD 2 (image RIGHT, text LEFT) -->
+          <section class="about-card card-right">
             <div class="about-text">
               <h2>Why MayaNut</h2>
               <p>
@@ -864,10 +880,13 @@ FOR RICKY
                 <span class="highlight-mayanut">MayaNut</span> as a durable, tree-based staple.
               </p>
             </div>
+            <img src="maya-nut-mayanut-plant-tree-moraceae.jpg"
+                 alt="MayaNut tree (Moraceae family)"
+                 loading="lazy" decoding="async" />
           </section>
 
-          <!-- CARD 3 (image left, text right) -->
-          <section class="about-card">
+          <!-- CARD 3 (image LEFT, text RIGHT) -->
+          <section class="about-card card-left">
             <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                  alt="MayaNut fruit on the tree"
                  loading="lazy" decoding="async" />
@@ -884,11 +903,8 @@ FOR RICKY
             </div>
           </section>
 
-          <!-- CARD 4 (image right, text left) -->
-          <section class="about-card flip">
-            <img src="mayanuts-the-maya-nut-company-image.jpeg"
-                 alt="MayaNut seeds (reference image)"
-                 loading="lazy" decoding="async" />
+          <!-- CARD 4 (image RIGHT, text LEFT) -->
+          <section class="about-card card-right">
             <div class="about-text">
               <h2>Mission</h2>
               <p>
@@ -900,10 +916,14 @@ FOR RICKY
                 The current phase focuses on building planting stock, documenting performance, and preparing for Florida’s first dedicated
                 <span class="highlight-mayanut">MayaNut</span> farm.
               </p>
+
               <div style="margin-top:10px;">
                 <button class="btn" type="button" onclick="window.location.href='contact.html'">Contact</button>
               </div>
             </div>
+            <img src="mayanuts-the-maya-nut-company-image.jpeg"
+                 alt="MayaNut seeds (reference image)"
+                 loading="lazy" decoding="async" />
           </section>
 
         </div>
@@ -925,7 +945,7 @@ FOR RICKY
 
         <div class="footer-center">
           <a href="#top" class="footer-logo" id="footer-logo" aria-label="Back to top">
-            <img src="mayanut-the-mayanut-comapny-logo.png"
+            <img src="mayanut-the-maya-nut-company-logo.png"
                  alt="The MayaNut Company logo (footer)"
                  loading="lazy" decoding="async" />
           </a>
@@ -1011,7 +1031,7 @@ FOR RICKY
         </div>
       </div>
 
-      <div class="settings-version">Version v3.1.0</div>
+      <div class="settings-version">Version v3.0.3</div>
     </div>
   </div>
 

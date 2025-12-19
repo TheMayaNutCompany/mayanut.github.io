@@ -1,4 +1,4 @@
-<!-- FULL INDEX (EN) — v3.4.3 (SEO + cleanup + store green gradient restored) -->
+<!-- FULL INDEX (EN) — v3.4.4 (header lock + store no-scroll + ricky easter egg + accessibility icon fix) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,9 +124,9 @@
       --frameBorder: 2px;
 
       /* STORE (restored lime→dark green gradient) */
-      --store-g1: #7fe06e;       /* lime */
-      --store-g2: #2a8b2f;       /* mid green */
-      --store-g3: var(--green-deep); /* dark green */
+      --store-g1: #7fe06e;            /* lime */
+      --store-g2: #2a8b2f;            /* mid green */
+      --store-g3: var(--green-deep);  /* dark green */
 
       --r-card:18px;
       --r-btn:12px;
@@ -143,6 +143,13 @@
       --footerIcon: 30px;
 
       --stickyOffset: 122px;
+
+      /* ===== HEADER LOCK (prevents nav drift across pages) ===== */
+      --headerPadX: 16px;     /* matches your existing header padding */
+      --headerPadY: 12px;
+      --leftColW: 220px;      /* consistent left column */
+      --rightColW: 44px;      /* consistent right column */
+      --navMaxW: 720px;       /* consistent nav width */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -278,7 +285,10 @@
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      padding:12px 16px;
+
+      /* lock */
+      padding: var(--headerPadY) var(--headerPadX) !important;
+
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -298,9 +308,10 @@
     .header-left{
       display:flex;
       align-items:center;
-      min-width:0;
+      min-width: var(--leftColW) !important;
+      width: var(--leftColW) !important;
+      flex: 0 0 var(--leftColW) !important;
       position:relative;
-      flex:0 0 auto;
     }
 
     #logo-top{
@@ -311,13 +322,13 @@
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
     }
 
-    .header-center{ flex:1; display:flex; justify-content:center; align-items:center; }
+    .header-center{ flex:1; display:flex; justify-content:center; align-items:center; min-width:0; }
     .main-nav{
       display:flex;
       align-items:center;
       justify-content:space-between;
       width:100%;
-      max-width:720px;
+      max-width: var(--navMaxW) !important;
       gap:18px;
     }
 
@@ -377,10 +388,16 @@
     @media (hover:hover) and (pointer:fine){
       .nav-item:hover .submenu{ display:flex; }
     }
-    /* Keyboard accessibility (no layout change): show submenu on focus */
     .nav-item:focus-within .submenu{ display:flex; }
 
-    .header-right{ width:44px; display:flex; justify-content:flex-end; align-items:center; }
+    .header-right{
+      width: var(--rightColW) !important;
+      min-width: var(--rightColW) !important;
+      flex: 0 0 var(--rightColW) !important;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+    }
     .mobile-menu-btn{
       display:none;
       width:34px;
@@ -943,6 +960,51 @@
       stroke-width:2;
     }
 
+    /* ===== RICKY EASTER EGG (fixed; never overlaps menu) ===== */
+    .ricky-egg{
+      position:fixed;
+      left: calc(var(--sideW) + 14px);
+      bottom: 86px;
+      display:none;
+      align-items:center;
+      gap:10px;
+      z-index:80;
+      pointer-events:none;
+      max-width: 520px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(15,23,42,0.14);
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow:0 18px 55px rgba(15,23,42,0.18);
+    }
+    .ricky-egg img{
+      width:46px;
+      height:46px;
+      object-fit:cover;
+      border-radius:12px;
+      border:1px solid rgba(15,23,42,0.12);
+      background:#fff;
+    }
+    .ricky-egg .ricky-text{
+      font-size:12px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      font-weight:900;
+      color:#0b1220;
+      white-space:nowrap;
+    }
+    @media(max-width:780px){
+      .ricky-egg{
+        left: 14px;
+        bottom: 84px;
+      }
+    }
+    @media(max-width:520px){
+      .ricky-egg{ display:none !important; }
+    }
+
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -959,12 +1021,16 @@
       z-index:70;
       box-shadow:0 10px 25px rgba(15,23,42,0.35);
     }
+    /* FIXED: clean, consistent icon rendering */
     .accessibility-btn svg{
       width:26px;
       height:26px;
       display:block;
-      fill:#ffffff;
-      stroke:none;
+      fill:none;
+      stroke:#ffffff;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
     }
 
     .overlay{
@@ -1172,7 +1238,8 @@
         <div class="header-center">
           <nav class="main-nav" aria-label="Primary navigation">
             <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
-            <a href="#store-panel" id="nav-store">STORE</a>
+            <!-- FIX: store should not scroll; no anchor -->
+            <a href="#" id="nav-store">STORE</a>
             <a href="about.html">ABOUT</a>
 
             <span class="nav-item">
@@ -1492,9 +1559,22 @@
     </footer>
   </div>
 
+  <!-- RICKY EASTER EGG -->
+  <div class="ricky-egg" id="ricky-egg" aria-hidden="true">
+    <img src="ricky.jpeg" alt="" />
+    <div class="ricky-text" id="ricky-text">THE MAYANUT COMPANY GROWS ON FOR RICKY</div>
+  </div>
+
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
+    <!-- Clean icon (stroke-based) -->
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.8c1.35 0 2.45 1.1 2.45 2.45S13.35 7.7 12 7.7 9.55 6.6 9.55 5.25 10.65 2.8 12 2.8zM4.6 9.2c0-.6.48-1.08 1.08-1.08h12.64c.6 0 1.08.48 1.08 1.08s-.48 1.08-1.08 1.08h-4.6l.75 2.3c.14.43-.06.9-.48 1.08l-1.18.5 1.04 6.2c.08.52-.28 1-.8 1.08-.52.08-1-.28-1.08-.8l-.86-5.18h-.66l-.86 5.18c-.08.52-.56.88-1.08.8-.52-.08-.88-.56-.8-1.08l1.04-6.2-1.18-.5c-.42-.18-.62-.65-.48-1.08l.75-2.3H5.68c-.6 0-1.08-.48-1.08-1.08z"/>
+      <circle cx="12" cy="5" r="2"></circle>
+      <path d="M4.8 9h14.4"></path>
+      <path d="M9.2 9l1.4 4.2"></path>
+      <path d="M14.8 9l-1.4 4.2"></path>
+      <path d="M10.4 13.2l-1.4 8"></path>
+      <path d="M13.6 13.2l1.4 8"></path>
+      <path d="M10.8 16h2.4"></path>
     </svg>
   </button>
 
@@ -1503,7 +1583,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.4.3</div>
+          <div class="overlay-version">Version 3.4.4</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>
@@ -1542,7 +1622,8 @@
       </div>
       <nav class="mobile-nav" aria-label="Mobile navigation">
         <a href="index.html" aria-current="page">HOME</a>
-        <a href="#store-panel" id="nav-store-mobile">STORE</a>
+        <!-- FIX: store should not scroll; no anchor -->
+        <a href="#" id="nav-store-mobile">STORE</a>
         <a href="about.html">ABOUT</a>
         <a href="research.html">RESEARCH</a>
         <a href="contact.html">CONTACT</a>
@@ -1594,14 +1675,18 @@
       document.getElementById('logo-top')?.addEventListener('click', scrollTopSmooth);
       document.getElementById('footer-logo')?.addEventListener('click', scrollTopSmooth);
 
-      /* Overlays (deduped) */
+      /* Overlays (with aria-hidden sync) */
       function openOverlay(id){
         const ov = document.getElementById(id);
-        if(ov) ov.classList.add('active');
+        if(!ov) return;
+        ov.classList.add('active');
+        ov.setAttribute('aria-hidden','false');
       }
       function closeOverlay(id){
         const ov = document.getElementById(id);
-        if(ov) ov.classList.remove('active');
+        if(!ov) return;
+        ov.classList.remove('active');
+        ov.setAttribute('aria-hidden','true');
       }
 
       document.getElementById('accessibility-btn')?.addEventListener('click', ()=>openOverlay('accessibility-overlay'));
@@ -1615,13 +1700,19 @@
 
       document.querySelectorAll('.overlay').forEach(ov=>{
         ov.addEventListener('click', e=>{
-          if(e.target === ov) ov.classList.remove('active');
+          if(e.target === ov){
+            ov.classList.remove('active');
+            ov.setAttribute('aria-hidden','true');
+          }
         });
       });
 
       document.addEventListener('keydown', (e)=>{
         if(e.key !== 'Escape') return;
-        document.querySelectorAll('.overlay.active').forEach(ov=>ov.classList.remove('active'));
+        document.querySelectorAll('.overlay.active').forEach(ov=>{
+          ov.classList.remove('active');
+          ov.setAttribute('aria-hidden','true');
+        });
       });
 
       /* Accessibility prefs */
@@ -1679,7 +1770,7 @@
         });
       });
 
-      /* Store expand */
+      /* Store expand (NO SCROLL from STORE nav) */
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
       const viewFullStore = document.getElementById('store-view-full');
@@ -1704,14 +1795,12 @@
 
       navStore?.addEventListener('click', (e)=>{
         e.preventDefault();
-        toggleStore(true);
-        document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+        toggleStore(true); /* no scroll */
       });
 
       navStoreMobile?.addEventListener('click', (e)=>{
         e.preventDefault();
-        toggleStore(true);
-        document.getElementById('store-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+        toggleStore(true); /* no scroll */
         closeOverlay('mobile-menu-overlay');
       });
 
@@ -1776,6 +1865,17 @@
         if(e.target && e.target.id === 'store-search-clear') return;
         applySearchHighlight();
       });
+
+      /* Ricky easter egg (only when search exactly "ricky") */
+      const rickyEgg = document.getElementById('ricky-egg');
+      function evalRicky(){
+        if(!searchInput || !rickyEgg) return;
+        const on = normalize(searchInput.value) === 'ricky';
+        rickyEgg.style.display = on ? 'flex' : 'none';
+        rickyEgg.setAttribute('aria-hidden', on ? 'false' : 'true');
+      }
+      searchInput?.addEventListener('input', evalRicky);
+      evalRicky();
 
       /* Quantity controls */
       document.querySelectorAll('.qty-control').forEach(control=>{

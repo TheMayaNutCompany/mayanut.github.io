@@ -1,6 +1,4 @@
-<!-- FULL INDEX (EN) — v3.5.0 (store cart badge + unified store messaging + gradients + about button + header thickness tweak) -->
-<!-- NOTE: This is a single-file index.html. Replace your existing index.html with this entire file. -->
-
+<!-- FULL INDEX (EN) — v3.6.0 (slim header, ricky-under-nav live, store fixed tools, consistent product sizing, unified store-dev notice, cart badge) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,13 +57,8 @@
         "url": "https://mayanut.com/",
         "logo": "https://mayanut.com/mayanut-the-mayanut-comapny-logo.png",
         "foundingDate": "2025",
-        "founder": {
-          "@type": "Person",
-          "name": "August Kokus"
-        },
-        "sameAs": [
-          "https://www.instagram.com/themayanutcompany"
-        ],
+        "founder": { "@type": "Person", "name": "August Kokus" },
+        "sameAs": ["https://www.instagram.com/themayanutcompany"],
         "contactPoint": [{
           "@type": "ContactPoint",
           "contactType": "customer support",
@@ -125,22 +118,15 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      /* STORE panel vivid lime -> dark green */
-      --store-lime:#b8ff6a;
-      --store-mid:#3ee06a;
-      --store-deep:var(--green-deep);
-
-      /* Product card bg white -> medium -> dark grey */
-      --prod-g1: rgba(255,255,255,0.92);
-      --prod-g2: rgba(170,170,170,0.55);
-      --prod-g3: rgba(55,55,55,0.40);
+      /* STORE (vivid lime→dark green) */
+      --store-g1: #7fe06e;
+      --store-g2: #2a8b2f;
+      --store-g3: #0f4d1f;
 
       --r-card:18px;
       --r-btn:12px;
 
       --cta-grad: linear-gradient(to bottom, var(--orange) 0%, var(--orange-dark) 100%);
-
-      --card-bg: rgba(255,255,255,0.94);
 
       --qtyBtn: 28px;
       --qtyInputW: 44px;
@@ -149,31 +135,14 @@
 
       --footerIcon: 30px;
 
-      --stickyOffset: 122px;
+      --stickyOffset: 108px;
 
-      /* HEADER LOCK */
+      /* Header lock */
       --headerPadX: 16px;
-      --headerPadY: 12px;
-
+      --headerPadY: 1px;   /* SLIM */
       --leftColW: 220px;
       --rightColW: 44px;
       --navMaxW: 720px;
-
-      /* Header thickness tweak: +2px over logo height perception */
-      --headerExtraY: 2px;
-
-      /* About section gradients */
-      --about-g-top: #0f4d1f;
-      --about-g-bot: #d8f6d8;
-
-      /* About paragraph fill (single pale green) */
-      --about-para: #e6ffe6;
-
-      /* Cart button */
-      --cartBtn: 36px;
-      --cartRad: 14px;
-      --cartBadge: 11px;
-      --cartBadgeFont: 7px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -189,20 +158,12 @@
     }
     img{ max-width:100%; height:auto; display:block; }
 
-    /* Skip link */
     .skip-link{
-      position:absolute;
-      left:-999px;
-      top:10px;
-      background:#fff;
-      color:#000;
-      padding:10px 12px;
-      border-radius:12px;
+      position:absolute; left:-999px; top:10px;
+      background:#fff; color:#000;
+      padding:10px 12px; border-radius:12px;
       border:2px solid var(--green);
-      z-index:2000;
-      font-weight:900;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
+      z-index:2000; font-weight:900; letter-spacing:0.08em; text-transform:uppercase;
     }
     .skip-link:focus{ left:12px; }
 
@@ -309,8 +270,8 @@
       background-position:center;
       background-repeat:no-repeat;
 
-      /* header thickness tweak */
-      padding: calc(var(--headerPadY) + var(--headerExtraY)) var(--headerPadX) !important;
+      /* SLIM HEADER */
+      padding: var(--headerPadY) var(--headerPadX) !important;
 
       display:flex;
       align-items:center;
@@ -345,7 +306,16 @@
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
     }
 
-    .header-center{ flex:1; display:flex; justify-content:center; align-items:center; min-width:0; }
+    .header-center{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-width:0;
+      flex-direction:column; /* allow ricky under nav */
+      gap:8px;
+    }
+
     .main-nav{
       display:flex;
       align-items:center;
@@ -373,6 +343,7 @@
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
     .main-nav a.is-active{ border-bottom-color: var(--cream); }
 
+    /* Dropdown menus */
     .submenu{
       position:absolute;
       top:100%;
@@ -441,6 +412,40 @@
       background:#0f172a;
     }
 
+    /* RICKY UNDER NAV (shows only when search === "ricky") */
+    .ricky-under-nav{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:16px;
+      border:1px solid rgba(15,23,42,0.14);
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow:0 12px 34px rgba(15,23,42,0.16);
+      max-width: 560px;
+    }
+    .ricky-under-nav img{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      object-fit:cover;
+      border:1px solid rgba(15,23,42,0.12);
+      background:#fff;
+    }
+    .ricky-under-text{
+      font-size:11px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      font-weight:900;
+      color:#0b1220;
+      text-align:center;
+      line-height:1.25;
+      white-space:normal;
+    }
+
     main{
       position:relative;
       z-index:1;
@@ -477,15 +482,14 @@
       min-height:100%;
     }
 
-    /* Requested: "Created by August Kokus" grey */
     .credit{
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:0.16em;
-      color:#8a96a8;
+      color:#6b7280; /* grey */
       font-weight:900;
     }
-    .credit .brand-orange{ color:#8a96a8 !important; }
+    .credit .brand-orange{ color:var(--orange); }
 
     h1.hero-title{
       font-weight:900;
@@ -558,7 +562,7 @@
     #store-panel{
       border-radius:22px;
       border:1px solid rgba(15,23,42,0.10);
-      background: linear-gradient(to bottom, var(--store-lime) 0%, var(--store-mid) 52%, var(--store-deep) 100%);
+      background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 55%, var(--store-g3) 100%);
       padding:16px 14px 18px;
       display:flex;
       flex-direction:column;
@@ -590,55 +594,49 @@
       display:block;
     }
 
-    /* Cart button in upper-right corner of store */
+    /* Cart button (top-right) */
     .store-cart-btn{
       position:absolute;
       top:12px;
       right:12px;
-      width:var(--cartBtn);
-      height:var(--cartBtn);
-      border-radius:var(--cartRad);
-      border:1px solid var(--cream);
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border:2px solid var(--cream);
       background: var(--cta-grad);
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
       z-index:6;
-      box-shadow:0 10px 22px rgba(15,23,42,0.18);
+      box-shadow:0 12px 26px rgba(15,23,42,0.18);
     }
-    .store-cart-btn:hover{ transform: translateY(-1px); }
-
-    .cart-icon{
-      width:19px;
-      height:19px;
-      display:block;
-      fill:none;
+    .store-cart-btn svg{
+      width:22px; height:22px;
       stroke:#000;
-      stroke-width:2;
+      fill:none;
+      stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
     .cart-badge{
       position:absolute;
-      top:7px;
-      right:7px;
-      width:var(--cartBadge);
-      height:var(--cartBadge);
+      top:6px;
+      right:6px;
+      width:16px;
+      height:16px;
       border-radius:999px;
       background:#000;
-      color:var(--cream);
-      font-size:var(--cartBadgeFont);
-      font-weight:900;
       display:flex;
       align-items:center;
       justify-content:center;
+      font-size:9px;
+      font-weight:900;
+      color: var(--cream);
       line-height:1;
-      user-select:none;
-      pointer-events:none;
     }
 
-    .store-header-row{ display:flex; justify-content:center; }
+    .store-header-row{ display:flex; justify-content:center; position:relative; }
     .store-title{
       font-size:14px;
       font-weight:900;
@@ -648,15 +646,16 @@
       text-align:center;
       width:100%;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      padding-top:2px;
     }
 
+    /* Tools row: return button far left, search fixed short */
     .store-tools{
       margin-top:6px;
       display:flex;
-      gap:8px;
+      gap:10px;
       align-items:center;
-      flex-wrap:wrap;
+      flex-wrap:nowrap;
+      justify-content:space-between;
     }
 
     .store-view-full{
@@ -677,24 +676,25 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      margin-right:auto; /* FAR LEFT */
     }
     .store-view-full:hover{ transform: translateY(-1px); }
     .store-view-full:hover .btn-text{ transform: scale(1.05); }
     .store-view-full .btn-text{ display:inline-block; transition: transform .12s ease; }
 
-    .store-search{ flex:1; min-width:240px; position:relative; }
+    .store-search{ flex:0 0 300px; min-width:300px; position:relative; }
     .store-search input{
       width:100%;
       padding:10px 52px 10px 12px;
       border-radius:999px;
-      border:1px solid rgba(15,23,42,0.18);
+      border:2px solid var(--cream);
       font-size:12px;
-      background:rgba(255,255,255,0.82);
+      background: rgba(255,255,197,0.70);
       color:#111827;
       outline:none;
     }
 
-    /* Search control button: orange background + cream outline */
+    /* Orange button for X + magnifier */
     .store-search-send{
       position:absolute;
       right:6px;
@@ -702,7 +702,7 @@
       transform:translateY(-50%);
       height:28px;
       border-radius:999px;
-      border:1px solid var(--cream);
+      border:2px solid var(--cream);
       background: var(--cta-grad);
       display:flex;
       align-items:center;
@@ -712,18 +712,17 @@
       user-select:none;
     }
 
-    /* X: cream */
     .search-x{
       width:18px; height:18px;
       font-size:18px; line-height:1;
-      color:var(--cream);
+      color:#000;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       border-radius:999px;
     }
-    .search-divider{ width:1px; height:16px; background:rgba(255,255,197,0.65); }
-    .search-icon{ width:14px; height:14px; stroke:var(--cream); fill:none; stroke-width:2; }
+    .search-divider{ width:1px; height:16px; background: rgba(0,0,0,0.35); }
+    .search-icon{ width:14px; height:14px; stroke:#000; fill:none; stroke-width:2.4; }
 
     .store-grid{
       margin-top:12px;
@@ -733,9 +732,10 @@
       width:100%;
     }
 
+    /* Store options background: white → medium → dark grey gradient */
     .product-card{
       border-radius: var(--r-card);
-      background: linear-gradient(to bottom, var(--prod-g1) 0%, var(--prod-g2) 60%, var(--prod-g3) 100%);
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(160,160,160,0.55) 60%, rgba(70,70,70,0.38) 100%);
       border:1px solid rgba(15,23,42,0.10);
       padding:12px 12px 14px;
       display:flex;
@@ -749,7 +749,7 @@
       overflow:hidden;
     }
     .product-card.is-match{
-      background: linear-gradient(to bottom, rgba(255,255,255,0.92), var(--match));
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--match));
     }
 
     .product-card img{
@@ -766,7 +766,7 @@
 
     .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.10); margin-bottom:8px; }
     .product-name{ font-size:13px; font-weight:900; margin-bottom:4px; }
-    .product-text{ font-size:12px; color:#111827; line-height:1.6; margin-bottom:10px; }
+    .product-text{ font-size:12px; color:#334155; line-height:1.6; margin-bottom:10px; }
 
     .product-controls{
       width:100%;
@@ -783,7 +783,7 @@
       gap:6px;
       padding:5px 6px;
       border-radius:12px;
-      border:1px solid rgba(255,255,197,0.65);
+      border:2px solid var(--cream);
       background: rgba(255,255,197,0.22);
       width:100%;
       max-width: 160px;
@@ -795,7 +795,7 @@
       height:var(--qtyBtn);
       min-width:var(--qtyBtn);
       min-height:var(--qtyBtn);
-      border:1px solid var(--cream);
+      border:2px solid var(--cream);
       border-radius:10px;
       background: var(--cta-grad);
       color: var(--cream);
@@ -814,11 +814,11 @@
       width: var(--qtyInputW);
       height: var(--qtyBtn);
       border-radius:10px;
-      border:1px solid rgba(15,23,42,0.12);
-      background: rgba(255,255,255,0.70);
+      border:2px solid var(--cream);
+      background: rgba(255,255,197,0.75);
       text-align:center;
       font-weight:900;
-      color:#000;
+      color:#000; /* keep number black */
       outline:none;
       appearance: textfield;
       -moz-appearance: textfield;
@@ -833,7 +833,7 @@
     .btn-add{
       min-width:60px;
       height:var(--qtyBtn);
-      border:1px solid var(--cream);
+      border:2px solid var(--cream);
       border-radius:10px;
       background: var(--cta-grad);
       color: var(--cream);
@@ -852,18 +852,24 @@
     .product-card.extra-product{ display:none; opacity:0; }
     body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
 
+    /* Expanded mode: KEEP THE SAME SIZES + SAME 2-col grid + keep hero visible */
     @media(min-width:881px){
       body.store-expanded #store-panel{
-        position:absolute;
-        top:0; left:0; right:0;
-        z-index:5;
-        box-shadow:0 28px 70px rgba(15,23,42,0.35);
+        position:relative;
+        top:auto; left:auto; right:auto;
+        z-index:2;
+        box-shadow: 0 14px 40px rgba(15,23,42,0.18);
       }
-      body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
-      body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
+      body.store-expanded .store-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+      body.store-expanded .hero-left{
+        opacity:1;
+        pointer-events:auto;
+      }
     }
 
-    /* ABOUT US divider */
+    /* ABOUT US */
     .about-divider{
       max-width:1200px;
       margin:22px auto 14px;
@@ -879,6 +885,12 @@
       border-radius:999px;
       opacity:0.9;
     }
+    .about-divider .label-wrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
     .about-divider .label{
       text-align:center;
       font-size:12px;
@@ -888,6 +900,25 @@
       color: var(--green-deep);
       white-space:nowrap;
     }
+    /* About Us button: orange w/ cream text + outline; slightly left */
+    .about-us-btn{
+      border-radius:14px;
+      border:2px solid var(--cream);
+      background: var(--cta-grad);
+      color: var(--cream);
+      font-weight:900;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      font-size:11px;
+      padding:8px 12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transform: translateX(-6px);
+      transition: transform .12s ease;
+    }
+    .about-us-btn:hover{ transform: translateX(-6px) translateY(-1px); }
 
     #about-us{
       max-width:1200px;
@@ -900,21 +931,21 @@
       gap:16px;
       align-items:stretch;
     }
-
-    /* About cards: green gradient behind image and text areas (not outlines) */
     .about-card{
+      background: transparent;
+      border:1px solid rgba(15,23,42,0.10);
       border-radius:22px;
-      padding:14px 14px 16px;
+      padding:0;
       box-shadow: 0 14px 40px rgba(15,23,42,0.10);
       display:flex;
       flex-direction:column;
-      gap:10px;
-
-      border:1px solid rgba(15,23,42,0.10);
-      background: linear-gradient(to bottom, var(--about-g-top) 0%, var(--about-g-bot) 100%);
+      overflow:hidden;
     }
-
-    /* Image stays normal; gradient behind it comes from the card itself */
+    /* Image background gradient: dark green top → pale green bottom */
+    .about-img-wrap{
+      padding:12px;
+      background: linear-gradient(to bottom, #0f4d1f 0%, #2a8b2f 42%, #c8f6c6 100%);
+    }
     .about-card img{
       width:100%;
       height:240px;
@@ -925,55 +956,25 @@
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
 
-    /* Paragraph: single pale green fill stretching full width */
+    /* Paragraph background: single pale green across */
     .about-text{
+      padding:14px 14px 16px;
       font-size:13px;
       line-height:1.75;
-      color:#0f172a;
-      background: var(--about-para);
-      border-radius:16px;
-      padding:12px 12px;
-      border:1px solid rgba(15,23,42,0.10);
+      color:#2b3442;
+      background:#d8f8d6;
     }
     .about-text strong{ color: var(--orange); font-weight:900; }
     .about-text em{ color: var(--orange); font-weight:900; font-style:italic; }
-
-    .about-actions{
-      display:flex;
-      justify-content:flex-start; /* slightly left */
-      margin-top:10px;
-    }
-
-    /* About button: orange with cream text + outline */
-    .about-us-btn{
-      background: var(--cta-grad);
-      color: var(--cream);
-      border:1px solid var(--cream);
-      border-radius:14px;
-      padding:10px 14px;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      cursor:pointer;
-      font-weight:900;
-      min-height:40px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      transition: transform .12s ease;
-    }
-    .about-us-btn:hover{ transform: translateY(-1px); }
-    .about-us-btn:hover .btn-text{ transform: scale(1.05); }
-    .about-us-btn .btn-text{ display:inline-block; transition: transform .12s ease; }
 
     .about-long{
       margin-top:14px;
       padding:14px 14px 16px;
       border-radius:22px;
       border:1px solid rgba(15,23,42,0.10);
-      background: linear-gradient(to bottom, var(--about-g-top) 0%, var(--about-para) 100%);
+      background:#d8f8d6;
       box-shadow: 0 14px 40px rgba(15,23,42,0.08);
-      color:#0f172a;
+      color:#2b3442;
       font-size:13px;
       line-height:1.75;
     }
@@ -1001,7 +1002,7 @@
 
     .footer-left{
       text-align:left;
-      color:#0b1220;
+      color:#000; /* copyright line black */
       display:flex;
       flex-direction:column;
       gap:8px;
@@ -1072,49 +1073,12 @@
       stroke-width:2;
     }
 
-    /* Ricky */
-    .ricky-egg{
-      position:fixed;
-      left: calc(var(--sideW) + 14px);
-      bottom: 86px;
-      display:none;
-      align-items:center;
-      gap:10px;
-      z-index:80;
-      pointer-events:none;
-      max-width: 520px;
-      padding:10px 12px;
-      border-radius:16px;
-      border:1px solid rgba(15,23,42,0.14);
-      background: rgba(255,255,255,0.86);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow:0 18px 55px rgba(15,23,42,0.18);
-    }
-    .ricky-egg img{
-      width:46px;
-      height:46px;
-      object-fit:cover;
-      border-radius:12px;
-      border:1px solid rgba(15,23,42,0.12);
-      background:#fff;
-    }
-    .ricky-egg .ricky-text{
-      font-size:12px;
-      letter-spacing:0.16em;
-      text-transform:uppercase;
+    .created-by{
+      color:#6b7280; /* grey */
       font-weight:900;
-      color:#0b1220;
-      white-space:nowrap;
-    }
-    @media(max-width:780px){
-      .ricky-egg{
-        left: 14px;
-        bottom: 84px;
-      }
-    }
-    @media(max-width:520px){
-      .ricky-egg{ display:none !important; }
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      font-size:10px;
     }
 
     .accessibility-btn{
@@ -1251,13 +1215,14 @@
       background: rgba(255,255,255,0.14);
     }
 
+    /* Responsive */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
       .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
       .top-banner .banner-text{ white-space:normal; }
-      :root{ --stickyOffset: 140px; }
+      :root{ --stickyOffset: 128px; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
     }
 
@@ -1280,6 +1245,12 @@
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
 
+      .store-tools{
+        flex-wrap:wrap;
+        justify-content:flex-start;
+      }
+      .store-search{ flex:0 0 260px; min-width:260px; }
+
       .store-grid{
         display:flex;
         overflow-x:auto;
@@ -1294,24 +1265,30 @@
         scroll-snap-align:start;
       }
 
+      /* Expanded on mobile: vertical list; sizes unchanged */
       body.store-expanded .store-grid{
-        display:grid !important;
-        grid-template-columns:1fr;
+        display:flex !important;
+        flex-direction:column !important;
         overflow-x:hidden !important;
         overflow-y:auto !important;
         max-height:70vh;
         gap:12px;
+        padding-bottom:0;
       }
-      body.store-expanded .product-card{ flex:unset !important; width:100%; }
+      body.store-expanded .product-card{ flex:0 0 auto !important; width:100%; }
 
       .store-coming-badge{ display:none; }
 
       .about-grid{ grid-template-columns:1fr; }
       .about-card img{ height:240px; }
+
+      .store-cart-btn{ width:42px; height:42px; }
+      .store-cart-btn svg{ width:21px; height:21px; }
     }
 
     @media(max-width:520px){
       .hero-images{ grid-template-columns:1fr; }
+      .store-search{ flex:1 1 100%; min-width:0; }
     }
 
     @media(max-width:780px){
@@ -1370,6 +1347,12 @@
               </div>
             </span>
           </nav>
+
+          <!-- Ricky (under nav; live show/hide based on search === "ricky") -->
+          <div class="ricky-under-nav" id="ricky-egg" aria-hidden="true">
+            <img src="ricky.jpeg" alt="" />
+            <div class="ricky-under-text">THE MAYANUT COMPANY GROWS ON FOR RICKY</div>
+          </div>
         </div>
 
         <div class="header-right">
@@ -1430,12 +1413,13 @@
 
           <aside id="store-panel" aria-label="Future store preview" class="store-container">
             <!-- Cart button -->
-            <button class="store-cart-btn" id="store-cart-btn" type="button" aria-label="Cart (store in development)">
+            <button class="store-cart-btn" id="store-cart-btn" type="button" aria-label="Cart">
               <span class="cart-badge" id="cart-badge">0</span>
-              <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="9" cy="20" r="1.25"></circle>
-                <circle cx="18" cy="20" r="1.25"></circle>
-                <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 8H7.2"></path>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 7h15l-1.2 7.2a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.6L6 7Z"></path>
+                <path d="M6 7 5.4 4.8A1.6 1.6 0 0 0 3.9 3.6H2.6"></path>
+                <circle cx="9.5" cy="19" r="1"></circle>
+                <circle cx="17.5" cy="19" r="1"></circle>
               </svg>
             </button>
 
@@ -1473,11 +1457,11 @@
                 <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="powder">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1488,11 +1472,11 @@
                 <p class="product-text">Future drink mix concept for warm, creamy cups.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="latte">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1503,11 +1487,11 @@
                 <p class="product-text">Blend concept for cookies, bars, and breads.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1518,11 +1502,11 @@
                 <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1533,11 +1517,11 @@
                 <p class="product-text">Deeper roast concept with caramel notes.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="espresso">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1548,11 +1532,11 @@
                 <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="bars">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1563,11 +1547,11 @@
                 <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="icecream">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1578,11 +1562,11 @@
                 <p class="product-text">Breakfast granola concept built around MayaNut.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="granola">
-                    <button class="qty-minus store-action" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
                     <input class="qty-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus store-action" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
                   </div>
-                  <button class="btn-add store-action" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
+                  <button class="btn-add" type="button" aria-label="Add to cart"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
             </div>
@@ -1591,16 +1575,21 @@
 
         <div class="about-divider">
           <div class="line"></div>
-          <div class="label">A Little About Us</div>
+          <div class="label-wrap">
+            <div class="label">A Little About Us</div>
+            <button class="about-us-btn" id="about-us-btn" type="button">ABOUT US</button>
+          </div>
           <div class="line"></div>
         </div>
 
         <section id="about-us" aria-label="A little about us">
           <div class="about-grid">
             <article class="about-card">
-              <img src="the-maya-nut-company-bubba-image.png"
-                   alt="Herbert “Bubba” Humphries"
-                   loading="lazy" decoding="async" />
+              <div class="about-img-wrap">
+                <img src="the-maya-nut-company-bubba-image.png"
+                     alt="Herbert “Bubba” Humphries"
+                     loading="lazy" decoding="async" />
+              </div>
               <p class="about-text">
                 Founded in 2025 by <strong><span class="brand-orange">August Kokus</span></strong>, <span class="brand-orange">The MayaNut Company</span> builds on a family legacy of American fruit growing that dates back generations.
                 August’s great-grandfather, Herbert “<strong>Bubba</strong>” Humphries, was an early pioneer of citrus cultivation in Florida in the early 1920s.
@@ -1610,22 +1599,18 @@
             </article>
 
             <article class="about-card">
-              <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                   class="crop-bottom"
-                   alt="August Kokus"
-                   loading="lazy" decoding="async" />
+              <div class="about-img-wrap">
+                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                     class="crop-bottom"
+                     alt="August Kokus"
+                     loading="lazy" decoding="async" />
+              </div>
               <p class="about-text">
                 <strong><span class="brand-orange">August Kokus</span></strong> is working in South Florida to establish <em class="brand-orange">Brosimum alicastrum</em> as a new agricultural staple.
                 As the citrus industry continues to decline, Florida must look toward new perennial crops to sustain its agricultural future.
                 <strong><span class="brand-orange">August</span></strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree—and to ensure the preservation of
                 <em class="brand-orange">Brosimum alicastrum</em> for generations to come.
               </p>
-
-              <div class="about-actions">
-                <button class="about-us-btn" type="button" data-nav="about.html">
-                  <span class="btn-text">About Us</span>
-                </button>
-              </div>
             </article>
           </div>
 
@@ -1652,8 +1637,8 @@
             <img class="florida" src="florida-image-the-maya-nut-company.png" alt="Florida" loading="lazy" decoding="async" />
           </div>
 
-          <!-- Requested: © line all black -->
-          <div style="color:#000;">© <span id="year"></span> The MayaNut Company, Inc.</div>
+          <div>© <span id="year"></span> The MayaNut Company, Inc.</div>
+          <div class="created-by">Created by August Kokus</div>
 
           <div class="footer-links">
             <a href="privacy.html">Privacy</a>
@@ -1686,12 +1671,6 @@
     </footer>
   </div>
 
-  <!-- RICKY EASTER EGG -->
-  <div class="ricky-egg" id="ricky-egg" aria-hidden="true">
-    <img src="ricky.jpeg" alt="" />
-    <div class="ricky-text" id="ricky-text">THE MAYANUT COMPANY GROWS ON FOR RICKY</div>
-  </div>
-
   <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5" r="2"></circle>
@@ -1709,7 +1688,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.5.0</div>
+          <div class="overlay-version">Version 3.6.0</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close accessibility">&times;</button>
       </div>
@@ -1758,9 +1737,7 @@
 
   <script>
     (function(){
-      const STORE_MSG = "Our Store is currently in development, thank you for your patience.";
-
-      /* Side frames */
+      /* Side frames (performance-safe) */
       function fillSideStacks(){
         const src = "mayanuts-the-maya-nut-company-image.jpeg";
         const left = document.getElementById("stack-left");
@@ -1801,6 +1778,11 @@
       }
       document.getElementById('logo-top')?.addEventListener('click', scrollTopSmooth);
       document.getElementById('footer-logo')?.addEventListener('click', scrollTopSmooth);
+
+      /* About Us button */
+      document.getElementById('about-us-btn')?.addEventListener('click', ()=>{
+        window.location.href = 'about.html';
+      });
 
       /* Overlays */
       function openOverlay(id){
@@ -1890,14 +1872,14 @@
       }
 
       /* Button navigation */
-      document.querySelectorAll('[data-nav]').forEach(btn=>{
+      document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const dest = btn.getAttribute('data-nav');
           if(dest) window.location.href = dest;
         });
       });
 
-      /* Store expand */
+      /* Store expand (NO SCROLL from STORE nav) */
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
       const viewFullStore = document.getElementById('store-view-full');
@@ -1915,15 +1897,6 @@
           document.body.classList.toggle('store-expanded');
         }
         setStoreButtonLabel();
-
-        // underline behavior: Home <-> Store
-        const home = document.getElementById('nav-home');
-        const store = document.getElementById('nav-store');
-        if(home && store){
-          const on = document.body.classList.contains('store-expanded');
-          home.classList.toggle('is-active', !on);
-          store.classList.toggle('is-active', on);
-        }
       }
 
       viewFullStore?.addEventListener('click', ()=>toggleStore(false));
@@ -1940,10 +1913,25 @@
         closeOverlay('mobile-menu-overlay');
       });
 
+      /* Unified store notice (throttled) */
+      const STORE_DEV_MSG = 'Our Store is currently in development, thank you for your patience.';
+      let lastStoreMsgAt = 0;
+      function notifyStoreDev(){
+        const now = Date.now();
+        if(now - lastStoreMsgAt < 2500) return;
+        lastStoreMsgAt = now;
+        alert(STORE_DEV_MSG);
+      }
+
+      /* Cart button */
+      const cartBtn = document.getElementById('store-cart-btn');
+      cartBtn?.addEventListener('click', notifyStoreDev);
+
       /* Store search */
       const searchInput = document.getElementById('store-search');
       const searchSend  = document.getElementById('store-search-send');
       const clearBtn    = document.getElementById('store-search-clear');
+      const rickyEgg = document.getElementById('ricky-egg');
 
       function normalize(s){ return (s || '').toLowerCase().trim(); }
 
@@ -1984,11 +1972,23 @@
         searchInput.value = '';
         clearHighlights();
         applyLiveFilter();
+        evalRicky();
         searchInput.focus();
       }
 
+      function evalRicky(){
+        if(!searchInput || !rickyEgg) return;
+        const on = normalize(searchInput.value) === 'ricky';
+        rickyEgg.style.display = on ? 'flex' : 'none';
+        rickyEgg.setAttribute('aria-hidden', on ? 'false' : 'true');
+      }
+
       if(searchInput){
-        searchInput.addEventListener('input', ()=>{ clearHighlights(); applyLiveFilter(); });
+        searchInput.addEventListener('input', ()=>{
+          clearHighlights();
+          applyLiveFilter();
+          evalRicky();
+        });
         searchInput.addEventListener('keydown', (e)=>{
           if(e.key === 'Enter'){
             e.preventDefault();
@@ -2001,19 +2001,9 @@
         if(e.target && e.target.id === 'store-search-clear') return;
         applySearchHighlight();
       });
-
-      /* Ricky easter egg */
-      const rickyEgg = document.getElementById('ricky-egg');
-      function evalRicky(){
-        if(!searchInput || !rickyEgg) return;
-        const on = normalize(searchInput.value) === 'ricky';
-        rickyEgg.style.display = on ? 'flex' : 'none';
-        rickyEgg.setAttribute('aria-hidden', on ? 'false' : 'true');
-      }
-      searchInput?.addEventListener('input', evalRicky);
       evalRicky();
 
-      /* Quantity controls (keep working visually; message is unified) */
+      /* Quantity controls (adjust + show unified message on +/-) */
       document.querySelectorAll('.qty-control').forEach(control=>{
         const input = control.querySelector('.qty-input');
         function clamp(){
@@ -2027,148 +2017,34 @@
           if(!input) return;
           clamp();
           let v = parseInt(input.value, 10);
-          if(e.target.classList.contains('qty-plus')) v += 1;
-          if(e.target.classList.contains('qty-minus')) v = Math.max(1, v - 1);
+
+          const isPlus = e.target.classList && e.target.classList.contains('qty-plus');
+          const isMinus = e.target.classList && e.target.classList.contains('qty-minus');
+
+          if(isPlus) v += 1;
+          if(isMinus) v = Math.max(1, v - 1);
+
           input.value = String(v);
+
+          if(isPlus || isMinus) notifyStoreDev();
         });
         input?.addEventListener('input', clamp);
         input?.addEventListener('blur', clamp);
       });
 
-      /* Unified store message:
-         clicking ADD, plus, minus, or cart shows the same message. */
-      function showStoreMsg(){
-        alert(STORE_MSG);
-      }
-
-      // Cart click
-      document.getElementById('store-cart-btn')?.addEventListener('click', showStoreMsg);
-
-      // Add buttons
+      /* Add buttons (unified message) */
       document.querySelectorAll('.btn-add').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{ e.preventDefault(); showStoreMsg(); });
+        btn.addEventListener('click', notifyStoreDev);
       });
 
-      // Plus/minus clicks
-      document.querySelectorAll('.qty-plus, .qty-minus').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{ e.preventDefault(); showStoreMsg(); });
+      /* Search controls also show unified message */
+      document.getElementById('store-search-send')?.addEventListener('click', (e)=>{
+        if(e.target && e.target.id === 'store-search-clear') return;
+        notifyStoreDev();
       });
+      document.getElementById('store-search-clear')?.addEventListener('click', notifyStoreDev);
 
-      // Also: clicking the STORE nav triggers store panel open, not message.
-
-      // Keep badge at 0 (future-ready)
-      const badge = document.getElementById('cart-badge');
-      if(badge) badge.textContent = '0';
     })();
   </script>
-
-  <!-- ========================================================================================================= -->
-  <!-- FILLER COMMENTS (safe, no effect) — kept here so you can add future sections without changing layout.     -->
-  <!-- If you truly want a much longer file length, leave this block in place.                                  -->
-  <!-- ========================================================================================================= -->
-  <!--
-  LINE PADDING 0001
-  LINE PADDING 0002
-  LINE PADDING 0003
-  LINE PADDING 0004
-  LINE PADDING 0005
-  LINE PADDING 0006
-  LINE PADDING 0007
-  LINE PADDING 0008
-  LINE PADDING 0009
-  LINE PADDING 0010
-  LINE PADDING 0011
-  LINE PADDING 0012
-  LINE PADDING 0013
-  LINE PADDING 0014
-  LINE PADDING 0015
-  LINE PADDING 0016
-  LINE PADDING 0017
-  LINE PADDING 0018
-  LINE PADDING 0019
-  LINE PADDING 0020
-  LINE PADDING 0021
-  LINE PADDING 0022
-  LINE PADDING 0023
-  LINE PADDING 0024
-  LINE PADDING 0025
-  LINE PADDING 0026
-  LINE PADDING 0027
-  LINE PADDING 0028
-  LINE PADDING 0029
-  LINE PADDING 0030
-  LINE PADDING 0031
-  LINE PADDING 0032
-  LINE PADDING 0033
-  LINE PADDING 0034
-  LINE PADDING 0035
-  LINE PADDING 0036
-  LINE PADDING 0037
-  LINE PADDING 0038
-  LINE PADDING 0039
-  LINE PADDING 0040
-  LINE PADDING 0041
-  LINE PADDING 0042
-  LINE PADDING 0043
-  LINE PADDING 0044
-  LINE PADDING 0045
-  LINE PADDING 0046
-  LINE PADDING 0047
-  LINE PADDING 0048
-  LINE PADDING 0049
-  LINE PADDING 0050
-  LINE PADDING 0051
-  LINE PADDING 0052
-  LINE PADDING 0053
-  LINE PADDING 0054
-  LINE PADDING 0055
-  LINE PADDING 0056
-  LINE PADDING 0057
-  LINE PADDING 0058
-  LINE PADDING 0059
-  LINE PADDING 0060
-  LINE PADDING 0061
-  LINE PADDING 0062
-  LINE PADDING 0063
-  LINE PADDING 0064
-  LINE PADDING 0065
-  LINE PADDING 0066
-  LINE PADDING 0067
-  LINE PADDING 0068
-  LINE PADDING 0069
-  LINE PADDING 0070
-  LINE PADDING 0071
-  LINE PADDING 0072
-  LINE PADDING 0073
-  LINE PADDING 0074
-  LINE PADDING 0075
-  LINE PADDING 0076
-  LINE PADDING 0077
-  LINE PADDING 0078
-  LINE PADDING 0079
-  LINE PADDING 0080
-  LINE PADDING 0081
-  LINE PADDING 0082
-  LINE PADDING 0083
-  LINE PADDING 0084
-  LINE PADDING 0085
-  LINE PADDING 0086
-  LINE PADDING 0087
-  LINE PADDING 0088
-  LINE PADDING 0089
-  LINE PADDING 0090
-  LINE PADDING 0091
-  LINE PADDING 0092
-  LINE PADDING 0093
-  LINE PADDING 0094
-  LINE PADDING 0095
-  LINE PADDING 0096
-  LINE PADDING 0097
-  LINE PADDING 0098
-  LINE PADDING 0099
-  LINE PADDING 0100
-
-  (Add more padding lines here as needed.)
-  -->
 </body>
 </html>

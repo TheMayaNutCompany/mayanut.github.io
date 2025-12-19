@@ -33,7 +33,7 @@
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
 
   <!-- Preload (speed) -->
-  <link rel="preload" href="mayanut-the-mayanut-comapny-logo.png" as="image" fetchpriority="high" />
+  <link rel="preload" href="mayanut-the-maya-nut-company-logo.png" as="image" fetchpriority="high" />
   <link rel="preload" href="menuart-the-maya-nut-company-art.jpeg" as="image" />
   <link rel="preload" href="mayanuts-the-maya-nut-company-image.jpeg" as="image" />
   <link rel="preload" href="maya-nut-mayanut-plant-tree-nursery.jpg" as="image" fetchpriority="high" />
@@ -55,7 +55,7 @@
         "@id": "https://mayanut.com/#org",
         "name": "The MayaNut Company, Inc.",
         "url": "https://mayanut.com/",
-        "logo": "https://mayanut.com/mayanut-the-mayanut-comapny-logo.png",
+        "logo": "https://mayanut.com/mayanut-the-maya-nut-company-logo.png",
         "foundingDate": "2025",
         "founder": {
           "@type": "Person",
@@ -864,6 +864,74 @@
       color:var(--text-muted);
       font-size:13px;
       line-height:1.75;
+      position:relative; /* for the button placement */
+    }
+
+    /* === MICRO CHANGES (NO LAYOUT CHANGE) === */
+
+    /* 1) Footer copyright all black (only that specific line) */
+    .footer-left > div:nth-of-type(2){
+      color:#000 !important;
+    }
+    .footer-left > div:nth-of-type(2) .brand-orange{
+      color:#000 !important;
+      font-weight:900;
+    }
+
+    /* 2) Created by August Kokus all grey (keeps structure) */
+    .credit, .credit *{
+      color: var(--text-muted) !important;
+    }
+
+    /* 3) Orange background for X and magnifying glass control area (no size change) */
+    .store-search-send{
+      background: var(--cta-grad) !important;
+      border-color: rgba(255,255,255,0.55) !important;
+    }
+    .store-search-send .search-x{ color: var(--cream) !important; }
+    .store-search-send .search-divider{ background: rgba(255,255,255,0.55) !important; }
+    .store-search-send .search-icon{
+      stroke: var(--cream) !important;
+    }
+
+    /* 4) ABOUT US button inserted + paragraph indented to the right */
+    .about-long{
+      padding-right: 190px;      /* creates room on the right without shifting overall layout */
+    }
+    .about-long .about-us-btn{
+      position:absolute;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      background: var(--cta-grad);
+      color: var(--cream);
+      border:1px solid var(--cream);
+      border-radius: var(--r-btn);
+      padding:10px 16px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      cursor:pointer;
+      font-weight:900;
+      min-height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .12s ease;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+    .about-long .about-us-btn:hover{ transform:translateY(-50%) translateY(-1px); }
+
+    @media(max-width:780px){
+      .about-long{
+        padding-right:14px; /* avoid crowding on mobile */
+      }
+      .about-long .about-us-btn{
+        position:static;
+        transform:none;
+        margin-top:12px;
+      }
     }
 
     /* FOOTER */
@@ -1507,6 +1575,9 @@
             <span class="brand-orange">The MayaNut Company</span> is actively working to establish <span class="brand-orange">Brosimum alicastrum</span> as a long-term agricultural food staple.
             <span class="brand-orange">August Kokus</span> is developing this species for agricultural and scientific purposes.
             He sees the majestic beauty of the <span class="brand-orange">MayaNut</span>, and hopes others will too.
+
+            <!-- ABOUT US button (right side) -->
+            <a class="about-us-btn" href="about.html" aria-label="About us"><span class="btn-text">ABOUT US</span></a>
           </div>
         </section>
 
@@ -1771,6 +1842,7 @@
       });
 
       /* Store expand (NO SCROLL from STORE nav) */
+      const navHome = document.getElementById('nav-home');
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
       const viewFullStore = document.getElementById('store-view-full');
@@ -1780,6 +1852,14 @@
         viewFullStore.querySelector('.btn-text').textContent =
           document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW STORE';
       }
+
+      function setNavUnderline(){
+        if(!navHome || !navStore) return;
+        const expanded = document.body.classList.contains('store-expanded');
+        navHome.classList.toggle('is-active', !expanded);
+        navStore.classList.toggle('is-active', expanded);
+      }
+
       function toggleStore(forceOpen=false){
         const expanded = document.body.classList.contains('store-expanded');
         if(forceOpen){
@@ -1788,10 +1868,12 @@
           document.body.classList.toggle('store-expanded');
         }
         setStoreButtonLabel();
+        setNavUnderline();
       }
 
-      viewFullStore?.addEventListener('click', ()=>toggleStore(false));
-      setStoreButtonLabel();
+      viewFullStore?.addEventListener('click', ()=>{
+        toggleStore(false);
+      });
 
       navStore?.addEventListener('click', (e)=>{
         e.preventDefault();
@@ -1803,6 +1885,9 @@
         toggleStore(true); /* no scroll */
         closeOverlay('mobile-menu-overlay');
       });
+
+      setStoreButtonLabel();
+      setNavUnderline();
 
       /* Store search */
       const searchInput = document.getElementById('store-search');

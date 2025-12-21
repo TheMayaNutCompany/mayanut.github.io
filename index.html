@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
 
-  <title>The MayaNut Company</title>
+  <title>MayaNut (Brosimum alicastrum) in South Florida | The MayaNut Company</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <!-- Primary SEO -->
@@ -102,15 +102,17 @@
       --green-deep:#0f4d1f;
 
       --tan:#f3e6d1;
+
       --orange:#fd6c02;
       --orange-dark:#e95f02;
+
       --cream:#ffffc5;
 
       --frame-line: rgba(15,77,31,0.95);
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
       --sideW: 170px;
-      --frameBorder: 2px; /* frame border thickness */
+      --frameBorder: 2px; /* thickness reference */
 
       /* STORE (lime → dark green vivid) */
       --store-g1: #7fe06e;
@@ -137,6 +139,10 @@
       --leftColW: 220px;
       --rightColW: 44px;
       --navMaxW: 720px;
+
+      /* outlines (match frame thickness) */
+      --outlineW: var(--frameBorder);
+      --outlineC: var(--frame-line);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -183,42 +189,59 @@
     .brand-orange{ color:var(--orange); font-weight:900; }
     em.brand-orange{ font-style:italic; }
 
-    /* Accessibility modes (refined, non-glitchy) */
+    /* Accessibility modes (refined / non-glitchy) */
     body.high-contrast{
       background:#ffffff !important;
       color:#000 !important;
     }
+    body.high-contrast *{ text-shadow:none !important; }
     body.high-contrast .top-banner,
     body.high-contrast footer,
     body.high-contrast .overlay-panel{
-      background:#fff !important;
+      background:#ffffff !important;
       border-color:#000 !important;
-      box-shadow:none !important;
+    }
+    body.high-contrast .top-sep,
+    body.high-contrast .bottom-sep{
+      background:#000 !important;
     }
     body.high-contrast .site-header{
       background-image:none !important;
       background:#fff !important;
-      border-color:#000 !important;
     }
     body.high-contrast .product-card,
     body.high-contrast .about-card,
-    body.high-contrast .about-long,
     body.high-contrast #store-panel{
       background:#fff !important;
       border-color:#000 !important;
-      box-shadow:none !important;
     }
-    body.high-contrast .main-nav a{ color:#000 !important; text-shadow:none !important; }
-    body.high-contrast .top-sep, body.high-contrast .bottom-sep{ background:#000 !important; }
-    body.high-contrast .footer-email svg, body.high-contrast .footer-instagram svg{ stroke:#000 !important; }
+    body.high-contrast .btn,
+    body.high-contrast .store-view-full,
+    body.high-contrast .store-search-send,
+    body.high-contrast .cart-btn{
+      background:#000 !important;
+      color:#fff !important;
+      border-color:#000 !important;
+    }
+    body.high-contrast .store-search input{
+      background:#fff !important;
+      border-color:#000 !important;
+      color:#000 !important;
+    }
+    body.high-contrast .search-icon,
+    body.high-contrast .cart-icon,
+    body.high-contrast .footer-email svg,
+    body.high-contrast .footer-instagram svg{
+      stroke:#fff !important;
+    }
 
     body.large-text{ font-size:120%; }
     body.large-text .hero-sub{ font-size:16px; }
     body.large-text .product-text{ font-size:13px; }
     body.large-text .main-nav a{ font-size:15px; }
-    body.large-text .btn, body.large-text .store-view-full{ font-size:13px; }
-    body.large-text .overlay-title{ font-size:16px; }
-    body.large-text .settings-row{ font-size:14px; }
+    body.large-text .btn,
+    body.large-text .store-view-full,
+    body.large-text .store-search input{ font-size:13px; }
 
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
@@ -269,7 +292,7 @@
     }
     .top-banner .banner-text{
       font-size:12px;
-      letter-spacing:0.06em;
+      letter-spacing:0.08em;
       text-transform:uppercase;
       font-weight:900;
       color:#000;
@@ -359,10 +382,7 @@
       border-bottom:2px solid transparent;
     }
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
-
-    /* ACTIVE underline */
     .main-nav a.is-active{ border-bottom-color: var(--cream); }
-    body.store-expanded #nav-store{ border-bottom-color: var(--cream); }
 
     /* Dropdown menus */
     .submenu{
@@ -394,7 +414,10 @@
       transform:none !important;
       text-shadow:none;
     }
-    .submenu a:hover{ background: rgba(255,255,255,0.22); color:#000; }
+    .submenu a:hover{
+      background: rgba(255,255,255,0.22);
+      color:#000;
+    }
     @media (hover:hover) and (pointer:fine){
       .nav-item:hover .submenu{ display:flex; }
     }
@@ -473,7 +496,10 @@
       color:var(--text-muted);
       font-weight:900;
     }
-    .credit .created-name{ color:#6b7280; font-weight:900; }
+    .credit .creator-name{
+      color:#6b7280; /* grey only for August Kokus */
+      font-weight:900;
+    }
 
     h1.hero-title{
       font-weight:900;
@@ -506,24 +532,24 @@
       aspect-ratio: 4 / 3;
       border-radius:14px;
       object-fit:cover;
-      border: var(--frameBorder) solid var(--frame-line);
+      border: var(--outlineW) solid var(--outlineC);
       background:#fff;
     }
 
-    /* REMOVE paragraph backgrounds (make them plain text) */
+    /* No backgrounds behind these two paragraphs (per request) */
     .hero-sub{
       font-size:14px;
       line-height:1.9;
       color:var(--text-muted);
       max-width: 760px;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-      box-shadow: none;
+      background:transparent;
+      border:none;
+      padding:0;
+      border-radius:0;
+      box-shadow:none;
     }
 
-    .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:2px; }
+    .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
 
     .btn{
       background: var(--cta-grad);
@@ -551,7 +577,7 @@
     /* STORE */
     #store-panel{
       border-radius:22px;
-      border: var(--frameBorder) solid var(--frame-line);
+      border: var(--outlineW) solid var(--outlineC); /* thicker outline to match frame */
       background: linear-gradient(to bottom, var(--store-g1) 0%, var(--store-g2) 55%, var(--store-g3) 100%);
       padding:16px 14px 18px;
       display:flex;
@@ -600,8 +626,7 @@
       display:flex;
       gap:8px;
       align-items:center;
-      flex-wrap:nowrap;
-      width:100%;
+      flex-wrap:nowrap; /* keep on one line (desktop) */
     }
 
     .store-view-full{
@@ -628,10 +653,12 @@
     .store-view-full:hover .btn-text{ transform: scale(1.05); }
     .store-view-full .btn-text{ display:inline-block; transition: transform .12s ease; }
 
+    /* Search bar stays same short length even when store expands */
     .store-search{
-      flex: 0 0 260px;
-      max-width: 260px;
-      min-width: 220px;
+      flex: 0 0 300px;   /* fixed width */
+      width:300px;
+      max-width:300px;
+      min-width:300px;
       position:relative;
     }
     .store-search input{
@@ -652,8 +679,8 @@
       transform:translateY(-50%);
       height:28px;
       border-radius:999px;
-      border:1px solid rgba(15,23,42,0.12);
-      background: var(--orange);
+      border:1px solid rgba(255,255,255,0.55);
+      background: var(--orange); /* orange */
       display:flex;
       align-items:center;
       gap:6px;
@@ -661,39 +688,41 @@
       cursor:pointer;
       user-select:none;
     }
+
     .search-x{
       width:18px; height:18px;
       font-size:18px; line-height:1;
-      color:#000;
+      color:#000; /* black icon */
       display:inline-flex;
       align-items:center;
       justify-content:center;
       border-radius:999px;
-      font-weight:900;
     }
     .search-divider{ width:1px; height:16px; background:rgba(0,0,0,0.35); }
-    .search-icon{ width:14px; height:14px; stroke:#000; fill:none; stroke-width:2; }
+    .search-icon{ width:14px; height:14px; stroke:#000; fill:none; stroke-width:2; } /* black icon */
 
-    .store-cart{
+    /* Cart button (icon only) */
+    .cart-btn{
+      position:relative;
       flex: 0 0 auto;
       width:40px;
       height:40px;
-      border-radius:12px;
+      border-radius:14px;
       border:1px solid var(--cream);
-      background: var(--cta-grad);
+      background: var(--orange);
+      cursor:pointer;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      position:relative;
-      cursor:pointer;
-      user-select:none;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.18);
     }
-    .store-cart svg{
+    .cart-btn:active{ transform: translateY(1px); }
+    .cart-icon{
       width:20px;
       height:20px;
       stroke:#000;
       fill:none;
-      stroke-width:2.2;
+      stroke-width:2;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
@@ -705,13 +734,13 @@
       height:18px;
       border-radius:999px;
       background:#000;
-      border:2px solid var(--cream);
+      border:1px solid var(--cream);
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:10px;
+      font-size:11px;
       font-weight:900;
-      color:var(--cream);
+      color: var(--cream);
       line-height:1;
     }
 
@@ -839,6 +868,7 @@
     .product-card.extra-product{ display:none; opacity:0; }
     body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
 
+    /* DESKTOP: expand store LEFTWARD (anchored to the right edge) */
     @media(min-width:881px){
       #hero{ overflow:visible; }
       body.store-expanded #store-panel{
@@ -892,14 +922,16 @@
       align-items:stretch;
     }
     .about-card{
-      background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
-      border: var(--frameBorder) solid var(--frame-line);
       border-radius:22px;
       padding:14px 14px 16px;
-      box-shadow: 0 14px 40px rgba(15,23,42,0.10);
+      box-shadow: 0 14px 40px rgba(15,23,42,0.12);
       display:flex;
       flex-direction:column;
       gap:10px;
+      border:1px solid rgba(15,23,42,0.10);
+
+      /* green gradient background back */
+      background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
     }
     .about-card img{
       width:100%;
@@ -915,10 +947,12 @@
       font-size:13px;
       line-height:1.75;
       color:#0b1220;
-      background: rgba(255,255,255,0.62);
-      border-radius:16px;
+      font-weight:800;
+      text-shadow:0 1px 0 rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.55);
+      border:1px solid rgba(255,255,255,0.55);
       padding:10px 12px;
-      border:1px solid rgba(15,23,42,0.10);
+      border-radius:16px;
     }
     .about-text strong{ color: var(--orange); font-weight:900; }
     .about-text em{ color: var(--orange); font-weight:900; font-style:italic; }
@@ -927,45 +961,49 @@
       margin-top:14px;
       padding:14px 14px 16px;
       border-radius:22px;
-      border: var(--frameBorder) solid var(--frame-line);
+      border:1px solid rgba(15,23,42,0.10);
+      box-shadow: 0 14px 40px rgba(15,23,42,0.10);
+
+      /* same beautiful green background family */
       background: linear-gradient(90deg, var(--green-deep) 0%, #2a8b2f 22%, #7fe06e 50%, #2a8b2f 78%, var(--green-deep) 100%);
-      box-shadow: 0 14px 40px rgba(15,23,42,0.08);
+      color:#0b1220;
+
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
-      color:#0b1220;
+      gap:12px;
     }
     .about-long .about-long-text{
-      flex:1 1 auto;
-      min-width:0;
       font-size:13px;
       line-height:1.75;
-      background: rgba(255,255,255,0.62);
-      border-radius:16px;
+      font-weight:900;
+      text-shadow:0 1px 0 rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.55);
+      border:1px solid rgba(255,255,255,0.55);
       padding:10px 12px;
-      border:1px solid rgba(15,23,42,0.10);
+      border-radius:16px;
+      flex:1;
     }
     .about-us-btn{
-      flex:0 0 auto;
+      flex: 0 0 auto;
+      border-radius:999px;
+      border:1px solid var(--cream);
+      background: var(--orange);
+      color: var(--cream);
+      padding:10px 14px;
+      font-size:12px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      font-weight:900;
+      cursor:pointer;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:10px 14px;
       min-height:40px;
-      border-radius:14px;
-      border:1px solid var(--cream);
-      background: var(--cta-grad);
-      color: var(--cream);
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      cursor:pointer;
       white-space:nowrap;
-      transition: transform .12s ease, opacity .12s ease;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.18);
     }
-    .about-us-btn:hover{ transform: translateY(-1px); opacity:0.96; }
+    .about-us-btn:hover{ transform: translateY(-1px); }
 
     /* FOOTER */
     footer{
@@ -975,7 +1013,7 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-bottom: var(--frameBorder) solid var(--frame-line);
-      color:#000;
+      color:#0f172a;
     }
 
     .footer-inner{
@@ -994,7 +1032,8 @@
       display:flex;
       flex-direction:column;
       gap:8px;
-      font-weight:900;
+      font-weight:900; /* bold everything in footer left */
+      letter-spacing:0.02em;
     }
 
     .footer-based{
@@ -1003,7 +1042,7 @@
       gap:8px;
       color:#000;
       font-weight:900;
-      letter-spacing:0.10em;
+      letter-spacing:0.06em;
       text-transform:uppercase;
       flex-wrap:wrap;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
@@ -1033,7 +1072,7 @@
     .footer-links a{
       color:#000;
       text-decoration:none;
-      border-bottom:1px dotted rgba(15,23,42,0.45);
+      border-bottom:1px dotted rgba(0,0,0,0.55);
       font-weight:900;
     }
 
@@ -1208,8 +1247,8 @@
 
     .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
     .toggle-input{
-      width:42px;
-      height:22px;
+      width:46px;
+      height:24px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.55);
       background:rgba(255,255,255,0.35);
@@ -1220,14 +1259,14 @@
     .toggle-input span{
       position:absolute;
       top:2px; left:2px;
-      width:18px; height:18px;
+      width:20px; height:20px;
       border-radius:999px;
       background:#ffffff;
       transition:transform 0.2s ease;
       box-shadow:0 2px 8px rgba(15,23,42,0.18);
     }
     .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
-    .toggle-input.active span{ transform:translateX(20px); }
+    .toggle-input.active span{ transform:translateX(22px); }
 
     .mobile-nav{ display:flex; flex-direction:column; gap:10px; font-size:13px; text-transform:uppercase; letter-spacing:0.16em; }
     .mobile-nav a{
@@ -1269,16 +1308,19 @@
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
 
+      /* store tools wrap nicely on mobile */
       .store-tools{
         flex-wrap:wrap;
-        justify-content:space-between;
+        justify-content:flex-start;
       }
       .store-search{
-        flex:1 1 100%;
+        flex: 1 1 100%;
+        width:100%;
         max-width:100%;
+        min-width:0;
       }
-      .store-cart{
-        margin-left:auto;
+      .cart-btn{
+        order:3;
       }
 
       .store-grid{
@@ -1295,6 +1337,7 @@
         scroll-snap-align:start;
       }
 
+      /* MOBILE: expanded store stays inside viewport */
       body.store-expanded .store-grid{
         display:grid !important;
         grid-template-columns:1fr;
@@ -1311,9 +1354,8 @@
       .store-coming-badge{ display:none; }
       .about-grid{ grid-template-columns:1fr; }
       .about-card img{ height:240px; }
-
       .about-long{ flex-direction:column; align-items:stretch; }
-      .about-us-btn{ width:100%; justify-content:center; }
+      .about-us-btn{ width:100%; }
     }
 
     @media(max-width:520px){
@@ -1361,9 +1403,8 @@
             <span class="nav-item">
               <a href="research.html" aria-haspopup="true" aria-expanded="false">RESEARCH</a>
               <div class="submenu" aria-label="Research submenu" role="menu">
-                <a role="menuitem" href="research.html#species">Brosimum alicastrum</a>
-                <a role="menuitem" href="research.html#nutrition">Nutrition</a>
-                <a role="menuitem" href="research.html#cultivation">Cultivation</a>
+                <a role="menuitem" href="research.html#main">Information Database</a>
+                <a role="menuitem" href="research.html#gallery">Gallery</a>
               </div>
             </span>
 
@@ -1372,7 +1413,6 @@
               <div class="submenu" aria-label="Contact submenu" role="menu">
                 <a role="menuitem" href="contact.html#email">Email</a>
                 <a role="menuitem" href="contact.html#instagram">Instagram</a>
-                <a role="menuitem" href="contact.html#inquiries">Inquiries</a>
                 <a role="menuitem" href="contact.html#faq">FAQ</a>
               </div>
             </span>
@@ -1393,7 +1433,7 @@
       <div class="content-wrapper">
         <section id="hero">
           <div class="hero-left">
-            <div class="credit">Created by <span class="created-name">August Kokus</span></div>
+            <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
 
             <h1 class="hero-title">
               <span class="line">Introducing</span>
@@ -1419,7 +1459,6 @@
               as a long-term agricultural crop in Florida, United States, emphasizing seed-grown populations,
               selection, and domestication.
             </p>
-
             <p class="hero-sub">
               <span class="brand-orange"><em>Brosimum alicastrum</em></span> has been traditionally valued in Central America for its edible tree-seed.
               As the project progresses, we are exploring pathways toward establishing a first <span class="brand-orange">MayaNut</span> farm in South Florida,
@@ -1463,14 +1502,14 @@
                 </button>
               </div>
 
-              <button class="store-cart" id="store-cart" type="button" aria-label="Cart (coming soon)">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M6 7h15l-1.5 8.5H8.2L6 7Z"></path>
-                  <path d="M6 7 5 4H2"></path>
-                  <circle cx="9" cy="20" r="1.6"></circle>
-                  <circle cx="18" cy="20" r="1.6"></circle>
+              <button class="cart-btn" id="cart-btn" type="button" aria-label="Cart">
+                <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 6h15l-2 9H7L6 6z"></path>
+                  <path d="M6 6L5 3H2"></path>
+                  <circle cx="9" cy="20" r="1.5"></circle>
+                  <circle cx="18" cy="20" r="1.5"></circle>
                 </svg>
-                <span class="cart-badge" id="cart-badge">0</span>
+                <span class="cart-badge" id="cart-count" aria-label="Cart items">0</span>
               </button>
             </div>
 
@@ -1638,7 +1677,7 @@
               <span class="brand-orange">August Kokus</span> is developing this species for agricultural and scientific purposes.
               He sees the majestic beauty of the <span class="brand-orange">MayaNut</span>, and hopes others will too.
             </div>
-            <a class="about-us-btn" href="about.html">About Us</a>
+            <button class="about-us-btn" type="button" data-nav="about.html"><span class="btn-text">About Us</span></button>
           </div>
         </section>
 
@@ -1724,8 +1763,11 @@
         <select id="access-lang" class="settings-lang">
           <option value="en" selected>English</option>
           <option value="es">Español</option>
+          <option value="fr">Français</option>
           <option value="ru">Русский</option>
+          <option value="zh">中文</option>
           <option value="ja">日本語</option>
+          <option value="hi">हिन्दी</option>
         </select>
       </div>
 
@@ -1752,12 +1794,11 @@
         <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu">&times;</button>
       </div>
       <nav class="mobile-nav" aria-label="Mobile navigation">
-        <a href="index.html" aria-current="page">HOME</a>
+        <a href="index.html" id="nav-home-mobile" aria-current="page">HOME</a>
         <a href="#" id="nav-store-mobile">STORE</a>
         <a href="about.html">ABOUT</a>
         <a href="research.html">RESEARCH</a>
         <a href="contact.html">CONTACT</a>
-        <a href="contact.html#faq">FAQ</a>
       </nav>
     </div>
   </div>
@@ -1800,10 +1841,7 @@
         e.preventDefault();
         window.scrollTo({top:0, behavior:'smooth'});
       }
-      document.getElementById('logo-top')?.addEventListener('click', (e)=>{
-        e.preventDefault();
-        window.location.href = 'index.html';
-      });
+      document.getElementById('logo-top')?.addEventListener('click', scrollTopSmooth);
       document.getElementById('footer-logo')?.addEventListener('click', scrollTopSmooth);
 
       function openOverlay(id){
@@ -1890,15 +1928,38 @@
         });
       }
 
-      document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
+      document.querySelectorAll('[data-nav]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const dest = btn.getAttribute('data-nav');
           if(dest) window.location.href = dest;
         });
       });
 
+      /* NAV underline logic: STORE only when expanded, HOME when not */
+      const navHome = document.getElementById('nav-home');
       const navStore = document.getElementById('nav-store');
+      const navHomeMobile = document.getElementById('nav-home-mobile');
       const navStoreMobile = document.getElementById('nav-store-mobile');
+
+      function setActiveNav(which){
+        const all = [navHome, navStore];
+        all.forEach(a=>{
+          if(!a) return;
+          a.classList.remove('is-active');
+          a.removeAttribute('aria-current');
+        });
+
+        if(which === 'store'){
+          navStore?.classList.add('is-active');
+          navStore?.setAttribute('aria-current','page');
+          navHomeMobile?.removeAttribute('aria-current');
+        }else{
+          navHome?.classList.add('is-active');
+          navHome?.setAttribute('aria-current','page');
+          navHomeMobile?.setAttribute('aria-current','page');
+        }
+      }
+
       const viewFullStore = document.getElementById('store-view-full');
 
       function setStoreButtonLabel(){
@@ -1906,18 +1967,24 @@
         viewFullStore.querySelector('.btn-text').textContent =
           document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW STORE';
       }
-      function toggleStore(forceOpen=false){
-        const expanded = document.body.classList.contains('store-expanded');
-        if(forceOpen){
-          if(!expanded) document.body.classList.add('store-expanded');
-        }else{
-          document.body.classList.toggle('store-expanded');
-        }
+
+      function setStoreExpanded(on){
+        document.body.classList.toggle('store-expanded', !!on);
         setStoreButtonLabel();
+        setActiveNav(on ? 'store' : 'home');
       }
 
-      viewFullStore?.addEventListener('click', ()=>toggleStore(false));
+      function toggleStore(forceOpen=false){
+        const expanded = document.body.classList.contains('store-expanded');
+        if(forceOpen) setStoreExpanded(true);
+        else setStoreExpanded(!expanded);
+      }
+
+      // initial
       setStoreButtonLabel();
+      setActiveNav('home');
+
+      viewFullStore?.addEventListener('click', ()=>toggleStore(false));
 
       navStore?.addEventListener('click', (e)=>{
         e.preventDefault();
@@ -1930,6 +1997,16 @@
         closeOverlay('mobile-menu-overlay');
       });
 
+      // Clicking HOME collapses store and restores underline to HOME
+      navHome?.addEventListener('click', ()=>{
+        setStoreExpanded(false);
+      });
+      navHomeMobile?.addEventListener('click', ()=>{
+        setStoreExpanded(false);
+        closeOverlay('mobile-menu-overlay');
+      });
+
+      /* Store search */
       const searchInput = document.getElementById('store-search');
       const searchSend  = document.getElementById('store-search-send');
       const clearBtn    = document.getElementById('store-search-clear');
@@ -1991,6 +2068,7 @@
         applySearchHighlight();
       });
 
+      /* Ricky easter egg */
       const rickyEgg = document.getElementById('ricky-egg');
       function evalRicky(){
         if(!searchInput || !rickyEgg) return;
@@ -2001,6 +2079,7 @@
       searchInput?.addEventListener('input', evalRicky);
       evalRicky();
 
+      /* Quantity controls */
       document.querySelectorAll('.qty-control').forEach(control=>{
         const input = control.querySelector('.qty-input');
         function clamp(){
@@ -2022,14 +2101,24 @@
         input?.addEventListener('blur', clamp);
       });
 
+      /* Add to cart (increments badge, no checkout yet) */
+      const cartCountEl = document.getElementById('cart-count');
+      let cartCount = 0;
+      function setCartCount(n){
+        cartCount = Math.max(0, n|0);
+        if(cartCountEl) cartCountEl.textContent = String(cartCount);
+      }
+      setCartCount(0);
+
       document.querySelectorAll('.btn-add').forEach(btn=>{
         btn.addEventListener('click', ()=>{
+          setCartCount(cartCount + 1);
           alert('MayaNut products are coming soon! Thank you for your patience.');
         });
       });
 
-      document.getElementById('store-cart')?.addEventListener('click', ()=>{
-        alert('Cart is coming soon.');
+      document.getElementById('cart-btn')?.addEventListener('click', ()=>{
+        alert('Cart is a preview for now. Products are coming soon.');
       });
     })();
   </script>

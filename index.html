@@ -1,4 +1,4 @@
-<!-- FULL INDEX (EN) — v3.5.4 -->
+<!-- FULL INDEX (EN) — v3.5.4 (UPDATED) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -154,6 +154,7 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
+      /* STORE gradient: lime -> dark green (requested) */
       --store-g1: #7fe06e;
       --store-g2: #2a8b2f;
       --store-g3: var(--green-deep);
@@ -184,13 +185,28 @@
 
       --a11y-blue:#084ac5;
 
-      /* Shared green gradient used in About paragraph panels + About-long */
-      --panel-green-grad: linear-gradient(
+      /* About paragraph panels: lime -> dark (requested) */
+      --about-grad: linear-gradient(
+        90deg,
+        #7fe06e 0%,
+        #4ac454 28%,
+        #2a8b2f 62%,
+        var(--green-deep) 100%
+      );
+
+      /* Bottom tab/footer: dark -> lime (requested) */
+      --footer-grad: linear-gradient(
         90deg,
         var(--green-deep) 0%,
-        #2a8b2f 22%,
-        #7fe06e 50%,
-        #2a8b2f 78%,
+        #2a8b2f 42%,
+        #7fe06e 100%
+      );
+
+      /* Top banner/header accent (kept clean) */
+      --top-grad: linear-gradient(
+        90deg,
+        #7fe06e 0%,
+        #2a8b2f 55%,
         var(--green-deep) 100%
       );
     }
@@ -293,7 +309,7 @@
     /* BANNER */
     .top-banner{
       width:100%;
-      background: var(--panel-green-grad);
+      background: var(--top-grad);
       padding:8px 14px;
       display:flex;
       align-items:center;
@@ -408,7 +424,7 @@
       padding:10px 10px;
       border-radius:14px;
       border:1px solid rgba(15,77,31,0.60);
-      background: var(--panel-green-grad);
+      background: var(--top-grad);
       box-shadow: 0 18px 55px rgba(15,23,42,0.22);
       display:none;
       flex-direction:column;
@@ -574,7 +590,7 @@
     .btn{
       background: var(--cta-grad);
       color: var(--cream);
-      border:1px solid var(--cream);          /* requested outline */
+      border:1px solid var(--cream);
       border-radius: var(--r-btn);
       padding:10px 16px;
       font-size:12px;
@@ -971,7 +987,6 @@
       align-items:stretch;
     }
 
-    /* ABOUT cards: keep image clean; apply gradient to the paragraph background (requested) */
     .about-card{
       border-radius:22px;
       padding:14px;
@@ -992,14 +1007,14 @@
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
 
-    /* Paragraph background updated to match bottom paragraph gradient */
+    /* About paragraph background: lime -> dark (requested) */
     .about-text{
       font-size:13px;
       line-height:1.75;
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
 
-      background: var(--panel-green-grad);
+      background: var(--about-grad);
       border-radius:18px;
       padding:12px 12px 13px;
       border:1px solid rgba(255,255,255,0.22);
@@ -1007,7 +1022,7 @@
     .about-text strong{ color: var(--orange); font-weight:900; }
     .about-text em{ color: var(--orange); font-weight:900; font-style:italic; }
 
-    /* Bottom about paragraph with right-side stacked buttons */
+    /* Bottom about paragraph: lime -> dark (kept consistent with about panels) */
     .about-long{
       margin-top:14px;
       padding:14px 14px 16px;
@@ -1017,7 +1032,7 @@
       font-size:13px;
       line-height:1.75;
 
-      background: var(--panel-green-grad);
+      background: var(--about-grad);
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
 
@@ -1052,10 +1067,10 @@
       white-space:nowrap;
     }
 
-    /* FOOTER */
+    /* FOOTER (bottom tab): dark -> lime (requested) */
     footer{
       width:100%;
-      background: var(--panel-green-grad);
+      background: var(--footer-grad);
       padding:16px 22px 26px;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -1198,7 +1213,7 @@
       padding:18px 16px 18px;
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
       border:1px solid rgba(229,231,235,0.9);
-      background: var(--panel-green-grad);
+      background: var(--top-grad);
     }
     .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
     .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
@@ -1334,7 +1349,6 @@
       .about-nav{ margin-left:0; width:100%; flex-direction:row; }
       .about-nav a{ flex:1; }
 
-      /* allow hero title lines to wrap on small screens */
       .hero-title .line{ white-space:normal; overflow:visible; text-overflow:clip; }
     }
 
@@ -1464,7 +1478,6 @@
           <div class="hero-left">
             <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
 
-            <!-- UPDATED HERO TITLE -->
             <h1 class="hero-title" aria-label="The Future of Agriculture in South Florida. Growing MayaNut as a New Sustainable Food Source.">
               <span class="line topline">The Future of Agriculture in South Florida</span>
               <span class="line bottomline">Growing MayaNut as a New Sustainable Food Source.</span>
@@ -2012,7 +2025,7 @@
         });
       });
 
-      /* Store expansion + nav underline logic */
+      /* Store expansion + underline logic */
       const navHome = document.getElementById('nav-home');
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
@@ -2038,6 +2051,11 @@
         const nowOpen = document.body.classList.contains('store-expanded');
         setStoreButtonLabel();
         setActiveNav(nowOpen ? 'store' : 'home');
+        if(!nowOpen){
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }else{
+          document.getElementById('store-panel')?.scrollIntoView({ behavior:'smooth', block:'start' });
+        }
       }
       viewFullStore?.addEventListener('click', ()=>toggleStore(false));
       navStore?.addEventListener('click', (e)=>{ e.preventDefault(); toggleStore(true); });

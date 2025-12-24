@@ -1,4 +1,4 @@
-<!-- FULL INDEX (EN) — v3.5.7 -->
+<!-- FULL INDEX (EN) — v3.5.8 (font refinement + mobile/desktop title lock) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +47,12 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="theme-color" content="#1a6800" />
+
+  <!-- Preconnect + Fonts (posher/elegant hero font) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Playfair Display for hero; Inter for UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&display=swap" rel="stylesheet" />
 
   <!-- Preload critical -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" fetchpriority="high" />
@@ -187,13 +193,17 @@
         #2a8b2f 78%,
         var(--green-deep) 100%
       );
+
+      /* Typography */
+      --font-ui: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-hero: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
     html{ background: var(--tan); }
     body{
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-ui);
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
@@ -376,7 +386,7 @@
 
     .nav-item{ position:relative; display:inline-flex; align-items:center; }
     .main-nav a{
-      font-size:14px;
+      font-size:13px;
       letter-spacing:0.18em;
       text-transform:uppercase;
       text-decoration:none;
@@ -505,15 +515,19 @@
     }
     .credit .creator-name{ color: var(--text-muted); font-weight:900; }
 
+    /* HERO TITLE: posher + consistent on mobile/desktop */
     h1.hero-title{
-      font-weight:900;
-      letter-spacing:0.02em;
-      line-height:1.05;
+      font-family: var(--font-hero);
+      font-weight:800;
+      letter-spacing:0.01em;
+      line-height:1.08;
       margin-right: 6px;
       width:100%;
       max-width: 100%;
-      font-size: clamp(22px, 2.55vw, 34px);
+      font-size: clamp(26px, 2.7vw, 40px);
       color:#000;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Force EXACTLY 2 lines, no ellipsis, no truncation */
@@ -529,12 +543,24 @@
       color:#000;
     }
     .hero-title .line.bottomline{
-      margin-top:2px;
+      margin-top:4px;
       font-style:italic;
       color:var(--orange);
       text-decoration: underline;
       text-decoration-thickness: 2px;
-      text-underline-offset: 3px;
+      text-underline-offset: 4px;
+    }
+
+    /* Mobile-specific tightening so it always stays as intended */
+    @media(max-width:880px){
+      h1.hero-title{
+        font-size: clamp(24px, 7vw, 34px);
+        line-height:1.10;
+      }
+      .hero-title .line.bottomline{
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
     }
 
     .hero-images{
@@ -564,6 +590,7 @@
       border: 1px solid rgba(156,163,175,0.75);
       padding: 12px 12px 12px;
       border-radius: 18px;
+      font-weight:600; /* refined */
     }
 
     .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
@@ -584,12 +611,13 @@
       align-items:center;
       justify-content:center;
       transition: transform .12s ease;
+      font-family: var(--font-ui);
     }
     .btn:hover{ transform: translateY(-1px); }
     .btn:hover .btn-text{ transform: scale(1.05); }
     .btn .btn-text{ display:inline-block; transition: transform .12s ease; }
 
-    .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; }
+    .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; font-weight:600; }
 
     /* STORE */
     #store-panel{
@@ -618,6 +646,7 @@
       text-align:center;
       width:100%;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      font-family: var(--font-ui);
     }
 
     .store-tools{
@@ -647,6 +676,7 @@
       align-items:center;
       justify-content:center;
       flex:0 0 auto;
+      font-family: var(--font-ui);
     }
     .store-view-full:hover{ transform: translateY(-1px); }
     .store-view-full .btn-text{ display:inline-block; transition: transform .12s ease; }
@@ -662,6 +692,7 @@
       background:rgba(255,255,255,0.82);
       color:#111827;
       outline:none;
+      font-family: var(--font-ui);
     }
 
     .store-search-send{
@@ -730,6 +761,7 @@
       justify-content:center;
       border:1px solid rgba(15,23,42,0.20);
       line-height:1;
+      font-family: var(--font-ui);
     }
 
     .sort-wrap{ display:none; position:relative; flex:0 0 auto; }
@@ -750,6 +782,7 @@
       align-items:center;
       gap:6px;
       white-space:nowrap;
+      font-family: var(--font-ui);
     }
     .sort-btn svg{
       width:14px; height:14px;
@@ -771,6 +804,7 @@
       padding:8px;
       display:none;
       z-index:50;
+      font-family: var(--font-ui);
     }
     .sort-menu button{
       width:100%;
@@ -785,6 +819,7 @@
       text-transform:uppercase;
       font-size:11px;
       color:#0b1220;
+      font-family: var(--font-ui);
     }
     .sort-menu button:hover{ background: rgba(15,77,31,0.10); }
     .sort-wrap.open .sort-menu{ display:block; }
@@ -811,6 +846,7 @@
       min-height:228px;
       width:100%;
       overflow:hidden;
+      font-family: var(--font-ui);
     }
     .product-card.is-match{
       background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--match-blue));
@@ -832,7 +868,7 @@
 
     .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.10); margin-bottom:8px; }
     .product-name{ font-size:13px; font-weight:900; margin-bottom:4px; }
-    .product-text{ font-size:12px; color:#4b5563; line-height:1.6; margin-bottom:10px; }
+    .product-text{ font-size:12px; color:#4b5563; line-height:1.6; margin-bottom:10px; font-weight:600; }
 
     .product-controls{
       width:100%;
@@ -873,6 +909,7 @@
       transition: transform .12s ease;
       font-size:14px;
       line-height:1;
+      font-family: var(--font-ui);
     }
     .qty-minus:hover, .qty-plus:hover{ transform: translateY(-1px); }
 
@@ -889,6 +926,7 @@
       appearance: textfield;
       -moz-appearance: textfield;
       font-size:12px;
+      font-family: var(--font-ui);
     }
     .qty-input::-webkit-outer-spin-button,
     .qty-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
@@ -909,6 +947,7 @@
       font-size:11px;
       letter-spacing:0.10em;
       text-transform:uppercase;
+      font-family: var(--font-ui);
     }
 
     .product-card.extra-product{ display:none; opacity:0; }
@@ -954,6 +993,7 @@
       text-transform:uppercase;
       color: var(--green-deep);
       white-space:nowrap;
+      font-family: var(--font-ui);
     }
 
     #about-us{
@@ -977,6 +1017,7 @@
       gap:10px;
       background: transparent;
       border:1px solid rgba(15,23,42,0.10);
+      font-family: var(--font-ui);
     }
     .about-card img{
       width:100%;
@@ -992,7 +1033,7 @@
       font-size:14px;
       line-height:1.9;
       color:#000;
-      font-weight:800;
+      font-weight:700;
       letter-spacing:0.01em;
 
       background: var(--panel-green-grad);
@@ -1022,7 +1063,7 @@
       box-shadow: 0 14px 40px rgba(15,23,42,0.08);
       font-size:14px;
       line-height:1.9;
-      font-weight:800;
+      font-weight:700;
       letter-spacing:0.01em;
 
       background: var(--panel-green-grad);
@@ -1035,6 +1076,7 @@
       position:relative;
       overflow:hidden;
       text-shadow:none;
+      font-family: var(--font-ui);
     }
     .about-long::before{
       content:"";
@@ -1069,6 +1111,7 @@
       text-transform:uppercase;
       font-size:12px;
       white-space:nowrap;
+      font-family: var(--font-ui);
     }
 
     /* FOOTER */
@@ -1080,6 +1123,7 @@
       border-right: var(--frameBorder) solid var(--frame-line);
       border-bottom: var(--frameBorder) solid var(--frame-line);
       color:#0f172a;
+      font-family: var(--font-ui);
     }
 
     .footer-inner{
@@ -1218,6 +1262,7 @@
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
       border:1px solid rgba(229,231,235,0.9);
       background: var(--panel-green-grad);
+      font-family: var(--font-ui);
     }
     .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
     .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
@@ -1325,7 +1370,7 @@
     .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
     .toggle-input.active span{ transform:translateX(20px); }
 
-    .mobile-nav{ display:flex; flex-direction:column; gap:10px; font-size:13px; text-transform:uppercase; letter-spacing:0.16em; }
+    .mobile-nav{ display:flex; flex-direction:column; gap:10px; font-size:13px; text-transform:uppercase; letter-spacing:0.16em; font-family: var(--font-ui); }
     .mobile-nav a{
       text-decoration:none;
       color:#0b1220;
@@ -1480,8 +1525,9 @@
           <div class="hero-left">
             <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
 
+            <!-- LOCKED title for desktop + mobile (same markup, same text) -->
             <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You 🫵">
-              <span class="line topline">Aromatic & Delicious.</span>
+              <span class="line topline">Aromatic &amp; Delicious.</span>
               <span class="line bottomline">Introducing MayaNut to You 🫵</span>
             </h1>
 
@@ -1830,7 +1876,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.5.7</div>
+          <div class="overlay-version">Version 3.5.8</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close">&times;</button>
       </div>
@@ -2206,7 +2252,7 @@
 
       function getSortKey(title){
         const t = (title || '').toLowerCase().trim();
-        const tokens = t.split(/\s+/).filter(Boolean);
+        const tokens = t.split(/\\s+/).filter(Boolean);
         if(tokens.length <= 1) return t;
         if(tokens[0] === 'mayanut') return tokens.slice(1).join(' ');
         return t;

@@ -1,4 +1,4 @@
-<!-- FULL INDEX (EN) — v3.5.9 -->
+<!-- FULL INDEX (EN) — v3.5.10 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -195,6 +195,9 @@
     body.large-text .hero-sub{ font-size:16px; }
     body.large-text .product-text{ font-size:13px; }
     body.large-text .main-nav a{ font-size:15px; }
+
+    /* overlay: prevent background scroll when open */
+    body.overlay-open{ overflow:hidden; }
 
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
@@ -447,37 +450,34 @@
       white-space:nowrap;
     }
 
-    /* Line 2: extend to width of the two images (same max-width) */
+    /* Line 2: slim + slight slant, orange, underlined, aligned to title */
     .hero-title .line.bottomline{
       display:block;
       width:100%;
       max-width:760px;
       margin-top:6px;
 
-      font-family: var(--font-pretty);
+      font-family: var(--font-slim);
       font-style: italic;
-      font-weight: 700;
+      font-weight: 800;
 
-      /* slightly smaller + bolder, one line */
-      font-size: clamp(18px, 1.9vw, 26px);
+      /* slightly smaller than line 1, stays on one line */
+      font-size: clamp(17px, 1.75vw, 24px);
       line-height:1.05;
 
       color:var(--orange);
+
+      /* underline (thin) */
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
 
       white-space:nowrap;
       overflow:hidden;
+      text-overflow:clip;
 
-      /* This stretches the line visually to match the image row width */
-      text-align: justify;
-      text-align-last: left;
-    }
-    .hero-title .line.bottomline::after{
-      content:"";
-      display:inline-block;
-      width:100%;
+      /* REMOVE justify trick so it starts/ends perfectly aligned */
+      text-align:left;
     }
 
     .hero-images{
@@ -1087,22 +1087,11 @@
       justify-content:center;
     }
 
-    .a11y-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .a11y-top{ display:flex; align-items:center; justify-content:flex-start; gap:10px; margin-bottom:10px; }
     .a11y-logo{ width:120px; height:auto; filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16)); border-radius:12px; }
-    .a11y-quick{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .a11y-quick a{
-      text-decoration:none;
-      padding:8px 10px;
-      border-radius:12px;
-      background: rgba(255,255,255,0.14);
-      border:1px solid rgba(10, 60, 20, 0.55);
-      color:#0b1220;
-      font-weight:900;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      white-space:nowrap;
-    }
+
+    /* IMPORTANT: remove the duplicate quick-links row in the a11y overlay */
+    .a11y-quick{ display:none !important; }
 
     .settings-row{
       margin-bottom:12px;
@@ -1167,10 +1156,20 @@
       .frame-wrap{ width:100% !important; margin:0 !important; }
       .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
-      :root{ --stickyOffset: 140px; }
+      :root{ --stickyOffset: 170px; } /* slightly higher so anchors don’t tuck under sticky */
       .content-wrapper{ padding-left:16px; padding-right:16px; }
-      .store-tools{ flex-wrap:wrap; }
-      .store-search{ min-width: 100%; }
+
+      /* mobile store tools layout: no overflow/glitch */
+      .store-tools{
+        display:grid;
+        grid-template-columns: 1fr 40px;
+        gap:10px;
+        align-items:center;
+      }
+      #store-view-full{ grid-column: 1 / -1; width:100%; }
+      .store-search{ grid-column: 1 / 2; min-width:0 !important; }
+      .cart-btn{ grid-column: 2 / 3; width:40px; height:40px; justify-self:end; }
+      body.store-expanded .sort-wrap{ grid-column: 1 / -1; width:100%; }
 
       .about-long{ flex-direction:column; }
       .about-nav{ margin-left:0; width:100%; flex-direction:row; }
@@ -1218,12 +1217,6 @@
 
       .about-grid{ grid-template-columns:1fr; }
       .about-card img{ height:240px; }
-
-      /* On mobile, don't force justify trick; keep normal left-aligned */
-      .hero-title .line.bottomline{
-        text-align:left;
-      }
-      .hero-title .line.bottomline::after{ display:none; }
     }
     @media(max-width:520px){
       .hero-images{ grid-template-columns:1fr; }
@@ -1634,20 +1627,14 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.5.9</div>
+          <div class="overlay-version">Version 3.5.10</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close">&times;</button>
       </div>
 
-      <div class="a11y-top" aria-label="Quick links">
+      <div class="a11y-top" aria-label="Logo">
         <img class="a11y-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
-        <div class="a11y-quick">
-          <a href="index.html" aria-current="page">Home</a>
-          <a href="about.html">About</a>
-          <a href="research.html">Research</a>
-          <a href="contact.html">Contact</a>
-          <a href="contact.html#faq">FAQ</a>
-        </div>
+        <!-- removed duplicate quick links row on purpose -->
       </div>
 
       <nav class="mobile-nav" aria-label="Menu links" style="margin-bottom:12px;">
@@ -1750,18 +1737,25 @@
         window.scrollTo({top:0, behavior:'smooth'});
       });
 
+      function anyOverlayOpen(){
+        return !!document.querySelector('.overlay.active');
+      }
+
       function openOverlay(id){
         const ov = document.getElementById(id);
         if(!ov) return;
         ov.classList.add('active');
         ov.setAttribute('aria-hidden','false');
+        document.body.classList.add('overlay-open');
       }
       function closeOverlay(id){
         const ov = document.getElementById(id);
         if(!ov) return;
         ov.classList.remove('active');
         ov.setAttribute('aria-hidden','true');
+        if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
       }
+
       document.getElementById('accessibility-btn')?.addEventListener('click', ()=>openOverlay('accessibility-overlay'));
       document.getElementById('mobile-menu-btn')?.addEventListener('click', ()=>openOverlay('mobile-menu-overlay'));
 
@@ -1770,20 +1764,24 @@
         if(!targetId) return;
         btn.addEventListener('click', ()=>closeOverlay(targetId));
       });
+
       document.querySelectorAll('.overlay').forEach(ov=>{
         ov.addEventListener('click', e=>{
           if(e.target === ov){
             ov.classList.remove('active');
             ov.setAttribute('aria-hidden','true');
+            if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
           }
         });
       });
+
       document.addEventListener('keydown', (e)=>{
         if(e.key !== 'Escape') return;
         document.querySelectorAll('.overlay.active').forEach(ov=>{
           ov.classList.remove('active');
           ov.setAttribute('aria-hidden','true');
         });
+        document.body.classList.remove('overlay-open');
       });
 
       const contrastToggle = document.getElementById('toggle-contrast');

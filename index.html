@@ -1,9 +1,9 @@
 <!-- FULL INDEX (EN) — v3.6.2 — UPDATED:
-     1) Adds Instagram + Email icons inside Accessibility overlay.
-     2) Accessibility overlay logo is clickable and returns Home (and closes overlay).
-     3) STORE tab (top nav + overlays): scrolls to absolute top first, then opens store, then scrolls store into view.
-     4) Accessibility version label set to 3.6.2.
-     5) Fixes duplicate/typo store button IDs (keeps ONLY #store-view-full).
+     - Accessibility overlay icons (email/instagram) are icon-only (#ffffc5), no boxes.
+     - Voice Read Mode toggle added with one-time instructional popup (15s) + darkened backdrop.
+     - Selection speak button appears near selected text (icon #ffffc5) and reads via Web Speech API.
+     - STORE nav scrolls to top then opens store and aligns it under sticky header.
+     - Logo click (header + accessibility) returns HOME.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -1062,6 +1062,7 @@
       box-shadow:0 20px 60px rgba(15,23,42,0.25);
       border:1px solid rgba(229,231,235,0.9);
       background: var(--panel-green-grad);
+      position:relative;
     }
     .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
     .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
@@ -1082,7 +1083,7 @@
       justify-content:center;
     }
 
-    /* A11Y TOP: logo + social icons */
+    /* A11Y top row: logo (click home) + icon-only email/instagram */
     .a11y-top{
       display:flex;
       align-items:center;
@@ -1107,22 +1108,21 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:40px;
-      height:40px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.14);
+      width:auto;
+      height:auto;
+      border:none;
+      background:transparent;
+      padding:0;
+      border-radius:0;
+      text-decoration:none;
     }
-    .a11y-email:hover, .a11y-instagram:hover{ background: rgba(255,255,255,0.22); }
     .a11y-email svg, .a11y-instagram svg{
-      width:28px;
-      height:28px;
-      stroke:#ffffff;
+      width:30px;
+      height:30px;
+      stroke:#ffffc5;
       fill:none;
       stroke-width:2;
     }
-
-    .a11y-quick{ display:none !important; }
 
     .settings-row{
       margin-bottom:12px;
@@ -1181,6 +1181,94 @@
       border-radius:12px;
       background: rgba(255,255,255,0.14);
     }
+
+    /* Selection Speak Button */
+    .speak-pop{
+      position:fixed;
+      z-index:10000;
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.25);
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(15,23,42,0.35);
+      user-select:none;
+    }
+    .speak-pop svg{
+      width:20px;
+      height:20px;
+      stroke:#ffffc5;
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    /* One-time Voice Read Mode instructional popup */
+    .vo-hint-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:10020;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding:18px;
+    }
+    .vo-hint-overlay.active{ display:flex; }
+
+    .vo-hint-card{
+      width: min(520px, 95vw);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.25);
+      background: rgba(15, 23, 42, 0.65);
+      box-shadow:0 22px 70px rgba(0,0,0,0.45);
+      padding:14px 14px 14px;
+      color:#ffffc5;
+      position:relative;
+    }
+    .vo-hint-title{
+      font-weight:900;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      margin-bottom:8px;
+      color:#ffffc5;
+    }
+    .vo-hint-text{
+      font-size:13px;
+      line-height:1.7;
+      font-weight:800;
+      color:#ffffc5;
+      opacity:0.98;
+    }
+    .vo-hint-x{
+      position:absolute;
+      right:10px;
+      top:10px;
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.10);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#cbd5e1; /* grey x */
+      font-size:16px;
+      line-height:1;
+      user-select:none;
+    }
+    .vo-hint-x:hover{ background: rgba(255,255,255,0.16); }
 
     @media(max-width:780px){
       .side-frames{ display:none !important; }
@@ -1380,7 +1468,8 @@
             </div>
 
             <div class="store-tools" aria-label="Store controls">
-              <!-- FIXED: keep only ONE button with id store-view-full -->
+              <button id="store-view_full" class="store-view-full" type="button" style="display:none;"></button>
+
               <button id="store-view-full" class="store-view-full" type="button">
                 <span class="btn-text">VIEW FULL STORE</span>
               </button>
@@ -1652,7 +1741,7 @@
     </svg>
   </button>
 
-  <!-- ACCESSIBILITY OVERLAY -->
+  <!-- Accessibility Overlay -->
   <div class="overlay" id="accessibility-overlay" aria-hidden="true">
     <div class="overlay-panel" role="dialog" aria-modal="true" aria-label="Accessibility and language">
       <div class="overlay-header">
@@ -1664,7 +1753,7 @@
       </div>
 
       <div class="a11y-top" aria-label="Logo and social">
-        <a href="index.html" id="a11y-logo-link" class="a11y-logo-link" aria-label="Back to Home">
+        <a class="a11y-logo-link" href="index.html" aria-label="Home">
           <img class="a11y-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
         </a>
 
@@ -1714,16 +1803,25 @@
         </div>
       </div>
 
-      <div class="settings-row" style="margin-bottom:0;">
+      <div class="settings-row">
         <div class="toggle-row">
           <label for="toggle-large-text">Larger text</label>
           <div class="toggle-input" id="toggle-large-text" role="switch" aria-checked="false" tabindex="0"><span></span></div>
         </div>
       </div>
+
+      <!-- NEW: Voice Read Mode -->
+      <div class="settings-row" style="margin-bottom:0;">
+        <div class="toggle-row">
+          <label for="toggle-voiceover">Voice Read Mode</label>
+          <div class="toggle-input" id="toggle-voiceover" role="switch" aria-checked="false" tabindex="0"><span></span></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- MOBILE MENU OVERLAY -->
+  <!-- Mobile Menu Overlay -->
   <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
     <div class="overlay-panel" role="dialog" aria-modal="true" aria-label="Menu">
       <div class="overlay-header">
@@ -1738,6 +1836,29 @@
         <a href="contact.html">CONTACT</a>
         <a href="contact.html#faq">FAQ</a>
       </nav>
+    </div>
+  </div>
+
+  <!-- Selection Speak Button -->
+  <button class="speak-pop" id="speak-pop" type="button" aria-label="Speak selected text">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 10v4"></path>
+      <path d="M7 8v8"></path>
+      <path d="M10 6v12"></path>
+      <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path>
+      <path d="M17 7c3 3 3 7 0 10"></path>
+    </svg>
+  </button>
+
+  <!-- One-time Voice Read Mode Hint (darkens background) -->
+  <div class="vo-hint-overlay" id="vo-hint" aria-hidden="true">
+    <div class="vo-hint-card" role="dialog" aria-modal="true" aria-label="Voice Read Mode instructions">
+      <div class="vo-hint-title">Voice Read Mode</div>
+      <div class="vo-hint-text">
+        Make sure your volume is set to a comfortable level.
+        Highlight any text you want read, then click the small speaker icon that appears next to your selection.
+      </div>
+      <div class="vo-hint-x" id="vo-hint-x" aria-label="Close">×</div>
     </div>
   </div>
 
@@ -1777,6 +1898,7 @@
       const yearSpan = document.getElementById('year');
       if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
+      // logo click = home
       document.getElementById('logo-top')?.addEventListener('click', (e)=>{
         e.preventDefault();
         window.location.href = 'index.html';
@@ -1789,7 +1911,6 @@
       function anyOverlayOpen(){
         return !!document.querySelector('.overlay.active');
       }
-
       function openOverlay(id){
         const ov = document.getElementById(id);
         if(!ov) return;
@@ -1803,13 +1924,6 @@
         ov.classList.remove('active');
         ov.setAttribute('aria-hidden','true');
         if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
-      }
-      function closeAllOverlays(){
-        document.querySelectorAll('.overlay.active').forEach(ov=>{
-          ov.classList.remove('active');
-          ov.setAttribute('aria-hidden','true');
-        });
-        document.body.classList.remove('overlay-open');
       }
 
       document.getElementById('accessibility-btn')?.addEventListener('click', ()=>openOverlay('accessibility-overlay'));
@@ -1833,43 +1947,18 @@
 
       document.addEventListener('keydown', (e)=>{
         if(e.key !== 'Escape') return;
-        closeAllOverlays();
+        document.querySelectorAll('.overlay.active').forEach(ov=>{
+          ov.classList.remove('active');
+          ov.setAttribute('aria-hidden','true');
+        });
+        document.body.classList.remove('overlay-open');
+
+        hideSpeakPop();
+        hideVoiceHint(true);
+        if(window.speechSynthesis) window.speechSynthesis.cancel();
       });
 
-      const contrastToggle = document.getElementById('toggle-contrast');
-      const textToggle = document.getElementById('toggle-large-text');
-
-      function setToggle(el, on){
-        if(!el) return;
-        el.classList.toggle('active', !!on);
-        el.setAttribute('aria-checked', on ? 'true' : 'false');
-      }
-      function applyPrefs(){
-        const hc = localStorage.getItem('pref_high_contrast') === '1';
-        const lt = localStorage.getItem('pref_large_text') === '1';
-        document.body.classList.toggle('high-contrast', hc);
-        document.body.classList.toggle('large-text', lt);
-        setToggle(contrastToggle, hc);
-        setToggle(textToggle, lt);
-      }
-      applyPrefs();
-
-      function togglePref(className, key, el){
-        const on = !document.body.classList.contains(className);
-        document.body.classList.toggle(className, on);
-        localStorage.setItem(key, on ? '1' : '0');
-        setToggle(el, on);
-      }
-      function bindSwitch(el, className, key){
-        if(!el) return;
-        el.addEventListener('click', ()=>togglePref(className, key, el));
-        el.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePref(className, key, el); }
-        });
-      }
-      bindSwitch(contrastToggle,'high-contrast','pref_high_contrast');
-      bindSwitch(textToggle,'large-text','pref_large_text');
-
+      // Language switch
       const accessLang = document.getElementById('access-lang');
       if(accessLang){
         accessLang.addEventListener('change', ()=>{
@@ -1879,6 +1968,7 @@
         });
       }
 
+      // Buttons with data-nav
       document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const dest = btn.getAttribute('data-nav');
@@ -1886,21 +1976,7 @@
         });
       });
 
-      // A11Y logo: close overlay + go home/scroll top
-      const a11yLogoLink = document.getElementById('a11y-logo-link');
-      if(a11yLogoLink){
-        a11yLogoLink.addEventListener('click', (e)=>{
-          const isHome = /index(\.html)?$/i.test(window.location.pathname) || window.location.pathname.endsWith('/');
-          if(isHome){
-            e.preventDefault();
-            closeOverlay('accessibility-overlay');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }else{
-            closeOverlay('accessibility-overlay');
-          }
-        });
-      }
-
+      // Store open helpers
       const navHome = document.getElementById('nav-home');
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
@@ -1918,7 +1994,6 @@
         if(!span) return;
         span.textContent = document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW FULL STORE';
       }
-
       function toggleStore(forceOpen){
         const expanded = document.body.classList.contains('store-expanded');
         if(forceOpen){
@@ -1931,22 +2006,16 @@
         setActiveNav(nowOpen ? 'store' : 'home');
       }
 
-      // Updated: absolute top -> open store -> scroll store into view
       function openStoreFromNav(){
         closeOverlay('mobile-menu-overlay');
         closeOverlay('accessibility-overlay');
 
-        // Hard top snap first
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Smooth reinforcement + open
-        requestAnimationFrame(()=>{
-          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-          window.setTimeout(()=>{
-            toggleStore(true);
-            storePanel?.scrollIntoView({ behavior:'smooth', block:'start' });
-          }, 260);
-        });
+        window.setTimeout(()=>{
+          toggleStore(true);
+          storePanel?.scrollIntoView({ behavior:'smooth', block:'start' });
+        }, 260);
       }
 
       viewFullStore?.addEventListener('click', ()=>toggleStore(false));
@@ -1958,11 +2027,13 @@
       setStoreButtonLabel();
       setActiveNav('home');
 
+      // Store coming soon
       const cartBtn = document.getElementById('cart-btn');
       function comingSoon(){ alert('Store coming soon — products are not available yet. Thank you for your patience.'); }
       cartBtn?.addEventListener('click', comingSoon);
       document.querySelectorAll('.btn-buy').forEach(btn=>btn.addEventListener('click', comingSoon));
 
+      // Qty controls
       document.querySelectorAll('.qty-control').forEach(control=>{
         const input = control.querySelector('.qty-input');
         function clamp(){
@@ -1984,6 +2055,7 @@
         input?.addEventListener('blur', clamp);
       });
 
+      // Search highlight
       const searchInput = document.getElementById('store-search');
       const searchSend  = document.getElementById('store-search-send');
       const clearBtn    = document.getElementById('store-search-clear');
@@ -2047,6 +2119,7 @@
         applyHighlight();
       });
 
+      // Sort
       const sortWrap = document.getElementById('sort-wrap');
       const sortBtn = document.getElementById('sort-btn');
       const sortMenu = document.getElementById('sort-menu');
@@ -2075,7 +2148,7 @@
 
       function getSortKey(title){
         const t = (title || '').toLowerCase().trim();
-        const tokens = t.split(/\\s+/).filter(Boolean);
+        const tokens = t.split(/\s+/).filter(Boolean);
         if(tokens.length <= 1) return t;
         if(tokens[0] === 'mayanut') return tokens.slice(1).join(' ');
         return t;
@@ -2113,6 +2186,211 @@
           closeSort();
         });
       });
+
+      // ===== Accessibility preferences =====
+      const contrastToggle = document.getElementById('toggle-contrast');
+      const textToggle = document.getElementById('toggle-large-text');
+      const voiceToggle = document.getElementById('toggle-voiceover');
+
+      function setToggle(el, on){
+        if(!el) return;
+        el.classList.toggle('active', !!on);
+        el.setAttribute('aria-checked', on ? 'true' : 'false');
+      }
+
+      function applyPrefs(){
+        const hc = localStorage.getItem('pref_high_contrast') === '1';
+        const lt = localStorage.getItem('pref_large_text') === '1';
+        const vo = localStorage.getItem('pref_voiceover') === '1';
+
+        document.body.classList.toggle('high-contrast', hc);
+        document.body.classList.toggle('large-text', lt);
+
+        setToggle(contrastToggle, hc);
+        setToggle(textToggle, lt);
+        setToggle(voiceToggle, vo);
+      }
+      applyPrefs();
+
+      function togglePrefClass(className, key, el){
+        const on = !document.body.classList.contains(className);
+        document.body.classList.toggle(className, on);
+        localStorage.setItem(key, on ? '1' : '0');
+        setToggle(el, on);
+      }
+      function bindSwitchClass(el, className, key){
+        if(!el) return;
+        el.addEventListener('click', ()=>togglePrefClass(className, key, el));
+        el.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePrefClass(className, key, el); }
+        });
+      }
+      bindSwitchClass(contrastToggle,'high-contrast','pref_high_contrast');
+      bindSwitchClass(textToggle,'large-text','pref_large_text');
+
+      // ===== Voice Read Mode (one-time popup + selection speaker) =====
+      const speakPop = document.getElementById('speak-pop');
+      const voHint = document.getElementById('vo-hint');
+      const voHintX = document.getElementById('vo-hint-x');
+
+      let voHintTimer = null;
+
+      function voiceEnabled(){
+        return localStorage.getItem('pref_voiceover') === '1';
+      }
+
+      function hideSpeakPop(){
+        if(!speakPop) return;
+        speakPop.style.display = 'none';
+        speakPop.dataset.text = '';
+      }
+
+      function hideVoiceHint(cancelOnly){
+        if(voHintTimer){ window.clearTimeout(voHintTimer); voHintTimer = null; }
+        if(!voHint) return;
+        voHint.classList.remove('active');
+        voHint.setAttribute('aria-hidden','true');
+        if(cancelOnly) return;
+      }
+
+      function showVoiceHintOnce(){
+        // only show once per user on this browser
+        const alreadyShown = localStorage.getItem('pref_voice_hint_shown') === '1';
+        if(alreadyShown) return;
+
+        if(!voHint) return;
+        voHint.classList.add('active');
+        voHint.setAttribute('aria-hidden','false');
+
+        localStorage.setItem('pref_voice_hint_shown','1');
+
+        // auto-hide after 15 seconds
+        voHintTimer = window.setTimeout(()=>hideVoiceHint(false), 15000);
+      }
+
+      function setVoice(on){
+        localStorage.setItem('pref_voiceover', on ? '1' : '0');
+        setToggle(voiceToggle, on);
+
+        if(on){
+          // show the hint only the first time ever for this browser
+          showVoiceHintOnce();
+        }else{
+          hideSpeakPop();
+          hideVoiceHint(false);
+          if(window.speechSynthesis) window.speechSynthesis.cancel();
+        }
+      }
+
+      (function bindVoiceSwitch(){
+        if(!voiceToggle) return;
+        voiceToggle.addEventListener('click', ()=>{
+          const on = localStorage.getItem('pref_voiceover') !== '1';
+          setVoice(on);
+        });
+        voiceToggle.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            const on = localStorage.getItem('pref_voiceover') !== '1';
+            setVoice(on);
+          }
+        });
+      })();
+
+      // hint close behaviors
+      voHintX?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        hideVoiceHint(false);
+      });
+      voHint?.addEventListener('click', (e)=>{
+        if(e.target === voHint) hideVoiceHint(false);
+      });
+
+      // selection logic
+      function getSelectedText(){
+        const sel = window.getSelection();
+        if(!sel || sel.rangeCount === 0) return '';
+        return (sel.toString() || '').trim();
+      }
+      function validSelectionTarget(){
+        const ae = document.activeElement;
+        if(!ae) return true;
+        const tag = (ae.tagName || '').toLowerCase();
+        if(tag === 'input' || tag === 'textarea' || ae.isContentEditable) return false;
+        return true;
+      }
+
+      function positionSpeakPop(rect){
+        if(!speakPop) return;
+        const pad = 8;
+        let x = rect.right + pad;
+        let y = rect.top - 2;
+
+        const w = 38, h = 38;
+        if(x + w > window.innerWidth - 8) x = rect.left - w - pad;
+        if(x < 8) x = 8;
+        if(y < 8) y = rect.bottom + pad;
+        if(y + h > window.innerHeight - 8) y = window.innerHeight - h - 8;
+
+        speakPop.style.left = x + 'px';
+        speakPop.style.top = y + 'px';
+        speakPop.style.display = 'flex';
+      }
+
+      function updateSpeakPop(){
+        if(!voiceEnabled()) { hideSpeakPop(); return; }
+        if(!validSelectionTarget()) { hideSpeakPop(); return; }
+
+        const sel = window.getSelection();
+        if(!sel || sel.rangeCount === 0){ hideSpeakPop(); return; }
+
+        const text = getSelectedText();
+        if(!text || text.length < 2){ hideSpeakPop(); return; }
+
+        try{
+          const range = sel.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          if(!rect || (rect.width === 0 && rect.height === 0)){ hideSpeakPop(); return; }
+          speakPop.dataset.text = text;
+          positionSpeakPop(rect);
+        }catch(_){
+          hideSpeakPop();
+        }
+      }
+
+      function speakText(text){
+        if(!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+        window.speechSynthesis.cancel();
+
+        const u = new SpeechSynthesisUtterance(text);
+        const htmlLang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
+        u.lang = htmlLang;
+
+        window.speechSynthesis.speak(u);
+      }
+
+      document.addEventListener('selectionchange', ()=>{
+        window.clearTimeout(window.__vo_to);
+        window.__vo_to = window.setTimeout(updateSpeakPop, 80);
+      }, { passive:true });
+
+      document.addEventListener('mouseup', ()=>{
+        window.setTimeout(updateSpeakPop, 60);
+      }, { passive:true });
+
+      document.addEventListener('scroll', ()=>{
+        if(speakPop && speakPop.style.display === 'flex') updateSpeakPop();
+      }, { passive:true });
+
+      speakPop?.addEventListener('click', ()=>{
+        const t = (speakPop.dataset.text || '').trim();
+        if(!t) return;
+        speakText(t);
+      });
+
+      // If voice is already enabled from prior visit, do NOT show hint again
+      // (hint is hard one-time via localStorage anyway)
+
     })();
   </script>
 </body>

@@ -4,6 +4,7 @@
      - Selection speak button appears near selected text (icon #ffffc5) and reads via Web Speech API.
      - STORE nav scrolls to top then opens store and aligns it under sticky header.
      - Logo click (header + accessibility) returns HOME.
+     - Contact email updated everywhere to: info@mayanut.com
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +66,7 @@
         "foundingDate":"2025",
         "founder":{"@type":"Person","name":"August Kokus"},
         "sameAs":["https://www.instagram.com/themayanutcompany"],
-        "contactPoint":[{"@type":"ContactPoint","contactType":"customer support","email":"themayanutcompany@gmail.com"}],
+        "contactPoint":[{"@type":"ContactPoint","contactType":"customer support","email":"info@mayanut.com"}],
         "address":{"@type":"PostalAddress","addressRegion":"Florida","addressCountry":"US"}
       },
       {"@type":"WebSite","@id":"https://mayanut.com/#website","url":"https://mayanut.com/","name":"The MayaNut Company","publisher":{"@id":"https://mayanut.com/#org"}},
@@ -522,6 +523,7 @@
       align-items:center;
       justify-content:center;
       transition: transform .12s ease;
+      text-decoration:none;
     }
     .btn:hover{ transform: translateY(-1px); }
     .btn:hover .btn-text{ transform: scale(1.05); }
@@ -1711,7 +1713,7 @@
         </div>
 
         <div class="footer-right">
-          <a class="footer-email" href="mailto:themayanutcompany@gmail.com" aria-label="Email The MayaNut Company">
+          <a class="footer-email" href="mailto:info@mayanut.com" aria-label="Email The MayaNut Company">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="4" y="6" width="16" height="12" rx="2"></rect>
               <path d="M5.5 7.5L12 12.5L18.5 7.5"></path>
@@ -1758,7 +1760,7 @@
         </a>
 
         <div class="a11y-social" aria-label="Social links">
-          <a class="a11y-email" href="mailto:themayanutcompany@gmail.com" aria-label="Email The MayaNut Company">
+          <a class="a11y-email" href="mailto:info@mayanut.com" aria-label="Email The MayaNut Company">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="4" y="6" width="16" height="12" rx="2"></rect>
               <path d="M5.5 7.5L12 12.5L18.5 7.5"></path>
@@ -1810,7 +1812,7 @@
         </div>
       </div>
 
-      <!-- NEW: Voice Read Mode -->
+      <!-- Voice Read Mode -->
       <div class="settings-row" style="margin-bottom:0;">
         <div class="toggle-row">
           <label for="toggle-voiceover">Voice Read Mode</label>
@@ -1850,7 +1852,7 @@
     </svg>
   </button>
 
-  <!-- One-time Voice Read Mode Hint (darkens background) -->
+  <!-- One-time Voice Read Mode Hint -->
   <div class="vo-hint-overlay" id="vo-hint" aria-hidden="true">
     <div class="vo-hint-card" role="dialog" aria-modal="true" aria-label="Voice Read Mode instructions">
       <div class="vo-hint-title">Voice Read Mode</div>
@@ -2254,7 +2256,6 @@
       }
 
       function showVoiceHintOnce(){
-        // only show once per user on this browser
         const alreadyShown = localStorage.getItem('pref_voice_hint_shown') === '1';
         if(alreadyShown) return;
 
@@ -2264,7 +2265,6 @@
 
         localStorage.setItem('pref_voice_hint_shown','1');
 
-        // auto-hide after 15 seconds
         voHintTimer = window.setTimeout(()=>hideVoiceHint(false), 15000);
       }
 
@@ -2273,7 +2273,6 @@
         setToggle(voiceToggle, on);
 
         if(on){
-          // show the hint only the first time ever for this browser
           showVoiceHintOnce();
         }else{
           hideSpeakPop();
@@ -2297,7 +2296,6 @@
         });
       })();
 
-      // hint close behaviors
       voHintX?.addEventListener('click', (e)=>{
         e.preventDefault();
         hideVoiceHint(false);
@@ -2306,7 +2304,6 @@
         if(e.target === voHint) hideVoiceHint(false);
       });
 
-      // selection logic
       function getSelectedText(){
         const sel = window.getSelection();
         if(!sel || sel.rangeCount === 0) return '';
@@ -2387,9 +2384,6 @@
         if(!t) return;
         speakText(t);
       });
-
-      // If voice is already enabled from prior visit, do NOT show hint again
-      // (hint is hard one-time via localStorage anyway)
 
     })();
   </script>

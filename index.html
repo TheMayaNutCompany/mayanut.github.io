@@ -1,9 +1,16 @@
-<!-- FULL INDEX (EN) — v3.8.3
-     Updates per request:
-     1) 🫵 slightly bigger (no structural change): emoji given larger font-size.
-     2) Top banner + separators less tall (logo size unchanged).
-     3) Mobile header: logo locked to lower-left of header; hamburger immediately to the right of logo.
-     4) Header + banner do NOT move with scroll (not sticky/fixed). Content no longer needs sticky offset.
+<!-- FULL INDEX (EN) — v3.8.4
+  Updates:
+  1) Desktop: menu tabs centered vertically in header (not hugging bottom).
+  2) Footer: logo left; to its right a 3-line stack (Based in Florida / Privacy+Terms / Copyright).
+  3) Auditory Mode:
+     - Metallic orange speaker squares appear on big paragraphs (2 hero paragraphs + 3 “A Little About Us” paragraphs).
+     - Clicking speaker reads that paragraph.
+     - Clicking any button/CTA reads its label (Auditory Mode only).
+     - Plus/Minus speak “plus/minus”; at 1 -> “1 Minimum Amount”; at 99 -> “You have reached the limit”.
+     - Inline lime-green help message appears while Accessibility panel is open and Auditory Mode is ON.
+     - “i” info icon next to Voice Read Mode shows same message on hover/click.
+  4) Easter egg: typing Ricky/ricky in store search replaces hero heading block with “Never Forget Ricky 🧡” + ricky.jpeg.
+  5) Image loading: keep explicit width/height, eager above-the-fold, preloads, decoding async.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +24,6 @@
   <meta name="keywords" content="MayaNut, Brosimum alicastrum, South Florida agriculture, roasted MayaNut, MayaNut powder, food tree, perennial crop, Florida farm, tropical food crops" />
   <meta name="author" content="The MayaNut Company, Inc." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
   <link rel="canonical" href="https://mayanut.com/" />
   <link rel="sitemap" type="application/xml" href="https://mayanut.com/sitemap.xml" />
@@ -47,16 +53,14 @@
 
   <!-- Icons -->
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
-  <link rel="manifest" href="site.webmanifest" />
   <meta name="theme-color" content="#1a6800" />
 
-  <!-- Preloads -->
+  <!-- Preloads (helps reduce “glitchy” image loads) -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" fetchpriority="high" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" fetchpriority="high" />
   <link rel="preload" as="image" href="maya-nut-mayanut-plant-tree-nursery.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" />
+  <link rel="preload" as="image" href="ricky.jpeg" />
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -183,6 +187,7 @@
       min-height:100vh;
     }
     img{ max-width:100%; height:auto; display:block; }
+    button{ font-family: inherit; }
 
     .skip-link{
       position:absolute;
@@ -226,6 +231,7 @@
 
     body.overlay-open{ overflow:hidden; }
 
+    /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{ position:absolute; top:0; bottom:0; width:var(--sideW); overflow:hidden; background:#ffffff; pointer-events:none; }
     .side.left{ left:0; border-right: var(--frameBorder) solid var(--frame-line); }
@@ -240,6 +246,7 @@
       filter:saturate(1.07) contrast(1.03);
     }
 
+    /* CENTER WRAP */
     .frame-wrap{
       position:relative;
       z-index:2;
@@ -248,24 +255,20 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      padding-top: 0; /* header is not fixed */
+      padding-top: 0; /* header is NOT fixed */
     }
 
-    /* Header is NOT sticky/fixed */
+    /* Top area is NOT sticky/fixed */
     .sticky-top{
       position:relative;
-      top:auto;
-      left:auto;
-      right:auto;
       z-index:10;
       background:transparent;
     }
 
-    /* Less tall top banner */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:6px 14px; /* reduced */
+      padding:6px 14px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -284,28 +287,26 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
 
-    /* Less tall header (logo size unchanged) */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      padding: 8px 16px !important; /* reduced */
+      padding: 8px 16px !important;
       display:flex;
-      align-items:flex-end; /* helps “lower-left corner” on mobile */
+      align-items:center;               /* (1) center vertically on desktop */
       justify-content:space-between;
       position:relative;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow:0 10px 24px rgba(15,23,42,0.10);
-      min-height: 74px; /* keep a stable bar height while shorter */
+      min-height: 74px;
     }
 
-    /* Less tall separators */
     .top-sep, .bottom-sep{
       width:100%;
-      height:1px; /* reduced */
+      height:1px;
       background:var(--green);
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -313,13 +314,13 @@
 
     .header-left{
       display:flex;
-      align-items:flex-end;
+      align-items:center;               /* (1) center vertically */
       min-width: 220px !important;
       width: 220px !important;
       flex: 0 0 220px !important;
     }
     #logo-top{
-      width:172px; /* unchanged */
+      width:172px;
       height:auto;
       cursor:pointer;
       display:block;
@@ -397,7 +398,7 @@
       flex: 0 0 44px !important;
       display:flex;
       justify-content:flex-end;
-      align-items:flex-end;
+      align-items:center;               /* (1) center vertically */
     }
 
     /* Hamburger button */
@@ -456,6 +457,62 @@
       min-height:100%;
       min-width:0;
       max-width:760px;
+      position:relative;
+    }
+
+    /* HERO HEADING BLOCK (for Ricky swap) */
+    #hero-head{ display:block; }
+    #ricky-egg{
+      display:none;
+      border-radius: 22px;
+      border: 1px solid var(--frame-line);
+      background: var(--panel-green-grad);
+      padding: 14px 14px;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.10);
+      position:relative;
+      overflow:hidden;
+      color:#000;
+    }
+    #ricky-egg::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,0.18);
+      pointer-events:none;
+    }
+    .ricky-inner{
+      position:relative;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .ricky-text{
+      font-weight:950;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      line-height:1.4;
+      font-size:14px;
+      color:#000;
+      flex:1;
+      min-width:0;
+    }
+    .ricky-sub{
+      margin-top:6px;
+      font-weight:850;
+      letter-spacing:0.01em;
+      text-transform:none;
+      font-size:13px;
+      opacity:0.95;
+    }
+    .ricky-img{
+      width:92px;
+      height:92px;
+      border-radius:18px;
+      border: 1px solid var(--frame-line);
+      object-fit:cover;
+      background:#fff;
+      flex:0 0 auto;
     }
 
     .credit{
@@ -509,7 +566,6 @@
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
     }
-    /* Slightly larger emoji, no structural changes */
     .hero-title .line.bottomline .emoji{
       display:inline;
       font-size: 1.18em;
@@ -533,6 +589,8 @@
       object-fit:cover;
       border: var(--outlineW) solid var(--frame-line);
       background:#fff;
+      content-visibility:auto;
+      contain-intrinsic-size: 760px 570px;
     }
 
     .hero-sub{
@@ -544,6 +602,7 @@
       border: 1px solid rgba(156,163,175,0.75);
       padding: 12px 12px 12px;
       border-radius: 18px;
+      position:relative; /* for audio speaker overlap */
     }
 
     .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
@@ -585,6 +644,7 @@
 
     .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; }
 
+    /* STORE PANEL */
     #store-panel{
       border-radius: var(--outlineR);
       border: var(--outlineW) solid var(--frame-line);
@@ -1001,6 +1061,7 @@
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
+    /* ABOUT SECTION */
     .about-divider{
       max-width:1200px;
       margin:22px auto 14px;
@@ -1046,6 +1107,8 @@
       object-fit:cover;
       border: var(--outlineW) solid var(--frame-line);
       background:#fff;
+      content-visibility:auto;
+      contain-intrinsic-size: 1200px 800px;
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
 
@@ -1129,6 +1192,7 @@
     }
     .about-nav a span{ position:relative; }
 
+    /* FOOTER (2) */
     footer{
       width:100%;
       background: var(--panel-green-grad);
@@ -1149,17 +1213,12 @@
     }
     .footer-left{
       display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-weight:950;
-      min-width:0;
-      color:#000;
-    }
-    .footer-topline{
-      display:flex;
+      flex-direction:row;
       align-items:center;
       gap:12px;
-      flex-wrap:wrap;
+      min-width:0;
+      color:#000;
+      font-weight:950;
     }
     .footer-logo-mark{
       width:120px;
@@ -1167,6 +1226,13 @@
       display:block;
       filter: drop-shadow(0 8px 16px rgba(15,23,42,0.14));
       border-radius:12px;
+      flex:0 0 auto;
+    }
+    .footer-info-stack{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
     }
     .footer-based{
       display:inline-flex;
@@ -1183,12 +1249,12 @@
     .footer-based img.florida{ width:26px; height:auto; display:block; filter: drop-shadow(0 6px 14px rgba(15,23,42,0.20)); margin-left:2px; }
 
     .footer-links{
-      font-size:11px;
       display:flex;
       gap:12px;
       flex-wrap:wrap;
       align-items:center;
       font-weight:950;
+      letter-spacing:0.02em;
     }
     .footer-links a{ color:#000; text-decoration:none; border-bottom:1px dotted rgba(15,23,42,0.45); font-weight:950; }
 
@@ -1234,6 +1300,7 @@
       z-index:1;
     }
 
+    /* ACCESSIBILITY BUTTON */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -1252,6 +1319,7 @@
     }
     .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
+    /* OVERLAYS */
     .overlay{
       position:fixed;
       inset:0;
@@ -1325,11 +1393,7 @@
       border-radius:12px;
       cursor:pointer;
     }
-    .a11y-social{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+    .a11y-social{ display:flex; align-items:center; gap:10px; }
 
     .settings-row{
       margin-bottom:12px;
@@ -1398,6 +1462,83 @@
       color:#15803d;
     }
 
+    /* Voice info icon + tooltip + inline hint */
+    .voice-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .info-dot{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,0.25);
+      background: rgba(255,255,255,0.65);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:950;
+      cursor:pointer;
+      line-height:1;
+      position:relative;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+    }
+    .info-tooltip{
+      position:absolute;
+      right:0;
+      top: calc(100% + 8px);
+      width:min(360px, 80vw);
+      border-radius:14px;
+      border:1px solid var(--frame-line);
+      background: var(--panel-green-grad);
+      box-shadow:0 18px 55px rgba(15,23,42,0.22);
+      padding:10px 10px;
+      color:#000;
+      font-size:12px;
+      line-height:1.6;
+      letter-spacing:0.01em;
+      display:none;
+      z-index:9999;
+    }
+    .info-tooltip::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,0.18);
+      pointer-events:none;
+      border-radius:14px;
+    }
+    .info-tooltip .t{ position:relative; font-weight:850; }
+    .info-dot.show-tip .info-tooltip{ display:block; }
+    .info-dot:hover .info-tooltip{ display:block; }
+
+    .vo-inline-hint{
+      display:none;
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid var(--frame-line);
+      background: var(--panel-green-grad);
+      padding:10px 10px;
+      color:#000;
+      font-size:12px;
+      line-height:1.65;
+      font-weight:850;
+      position:relative;
+      overflow:hidden;
+    }
+    .vo-inline-hint::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,0.18);
+      pointer-events:none;
+    }
+    .vo-inline-hint > div{ position:relative; }
+
+    /* Mobile nav inside overlays */
     .mobile-nav{
       display:flex;
       flex-direction:column;
@@ -1416,6 +1557,7 @@
       background: rgba(255,255,255,0.14);
     }
 
+    /* Selection speak button */
     .speak-pop{
       position:fixed;
       z-index:10000;
@@ -1445,68 +1587,50 @@
       stroke-linejoin:round;
     }
 
-    .vo-hint-overlay{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:10020;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      padding:18px;
-    }
-    .vo-hint-overlay.active{ display:flex; }
-
-    .vo-hint-card{
-      width: min(520px, 95vw);
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.25);
-      background: rgba(15, 23, 42, 0.65);
-      box-shadow:0 22px 70px rgba(0,0,0,0.45);
-      padding:14px 14px 14px;
-      color:#ffffc5;
-      position:relative;
-    }
-    .vo-hint-title{
-      font-weight:950;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      margin-bottom:8px;
-      color:#ffffc5;
-    }
-    .vo-hint-text{
-      font-size:13px;
-      line-height:1.7;
-      font-weight:850;
-      color:#ffffc5;
-      opacity:0.98;
-    }
-    .vo-hint-x{
+    /* AUDITORY PARAGRAPH SPEAKER (3) */
+    .audio-speaker{
       position:absolute;
-      right:10px;
-      top:10px;
-      width:28px;
-      height:28px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.20);
-      background: rgba(255,255,255,0.10);
-      cursor:pointer;
-      display:flex;
+      top:0;
+      left:0;
+      transform: translate(-38%, -38%); /* half outside */
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border: var(--btn-outline);
+      background: var(--metal-orange);
+      display:none;                    /* shown only when voice mode ON */
       align-items:center;
       justify-content:center;
-      color:#cbd5e1;
-      font-size:16px;
-      line-height:1;
+      box-shadow:0 14px 32px rgba(15,23,42,0.22);
+      cursor:pointer;
+      z-index:4;
+      overflow:hidden;
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
     }
-    .vo-hint-x:hover{ background: rgba(255,255,255,0.16); }
+    .audio-speaker::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .audio-speaker svg{
+      width:22px;
+      height:22px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
+    body.voice-on .audio-speaker{ display:flex; }
 
-    /* Mobile fixes */
+    /* MOBILE */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top:0; }
@@ -1514,7 +1638,7 @@
       html,body{ overflow-x:hidden; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
 
-      /* Header layout: logo pinned bottom-left; hamburger right next to it */
+      /* Mobile header layout: logo pinned bottom-left; hamburger right next to it */
       .site-header{
         align-items:flex-end;
         justify-content:flex-start;
@@ -1524,6 +1648,7 @@
         width:auto !important;
         min-width:0 !important;
         flex:0 0 auto !important;
+        align-items:flex-end !important;
       }
       .header-center{ display:none !important; }
       .header-right{
@@ -1555,6 +1680,8 @@
       .footer-inner{ grid-template-columns:1fr; gap:14px; }
       .footer-right{ justify-content:flex-start; }
       .footer-logo-mark{ width:110px; }
+      .footer-left{ flex-direction:column; align-items:flex-start; }
+      .footer-info-stack{ width:100%; }
     }
 
     @media(max-width:980px){
@@ -1679,16 +1806,31 @@
       <div class="content-wrapper">
         <section id="hero" aria-label="Home hero">
           <div class="hero-left">
-            <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
 
-            <div class="hero-title-wrap">
-              <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
-                <span class="line topline">Aromatic &amp; Delicious.</span>
-                <span class="line bottomline">
-                  <span class="underline-text">Introducing MayaNut to You</span>
-                  <span class="emoji" aria-hidden="true"> 🫵</span>
-                </span>
-              </h1>
+            <!-- Default hero heading block -->
+            <div id="hero-head">
+              <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
+
+              <div class="hero-title-wrap">
+                <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
+                  <span class="line topline">Aromatic &amp; Delicious.</span>
+                  <span class="line bottomline">
+                    <span class="underline-text">Introducing MayaNut to You</span>
+                    <span class="emoji" aria-hidden="true"> 🫵</span>
+                  </span>
+                </h1>
+              </div>
+            </div>
+
+            <!-- Ricky Easter egg (hidden until search == ricky) -->
+            <div id="ricky-egg" aria-label="Ricky tribute">
+              <div class="ricky-inner">
+                <div class="ricky-text">
+                  Never Forget Ricky 🧡
+                  <div class="ricky-sub">Type “Ricky” again to see this tribute.</div>
+                </div>
+                <img class="ricky-img" src="ricky.jpeg" alt="Ricky" width="92" height="92" decoding="async" loading="eager" fetchpriority="high" />
+              </div>
             </div>
 
             <div class="hero-images">
@@ -1706,28 +1848,30 @@
                 alt="MayaNut fruit on the tree (Brosimum alicastrum)"
                 width="760"
                 height="570"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchpriority="high"
               />
             </div>
 
-            <p class="hero-sub">
+            <!-- (3) audio speaker will be injected into these -->
+            <p class="hero-sub audio-paragraph" data-audio="hero-1">
               Over <strong style="color:#000;">200</strong> seed-grown <span class="brand-orange">MayaNut</span>
               (<em class="brand-orange">Brosimum alicastrum</em>) trees are currently in cultivation.
               Founded in 2025, we are developing <span class="brand-orange">MayaNut</span> as a long-term agricultural crop in Florida, United States,
               emphasizing seed-grown populations, selection, and domestication.
             </p>
 
-            <p class="hero-sub">
+            <p class="hero-sub audio-paragraph" data-audio="hero-2">
               <em class="brand-orange">Brosimum alicastrum</em> has been traditionally valued in Central America for its edible tree-seed.
               As the project progresses, we are exploring pathways toward establishing a first <span class="brand-orange">MayaNut</span> farm in South Florida,
               while the current population remains maintained in cultivation as long-term land options are evaluated.
             </p>
 
             <div class="hero-actions">
-              <button class="btn" data-nav="about.html" type="button"><span class="btn-text">Learn more</span></button>
-              <button class="btn" data-nav="contact.html" type="button"><span class="btn-text">Contact</span></button>
-              <button class="btn" data-nav="contact.html#faq" type="button"><span class="btn-text">FAQ</span></button>
+              <button class="btn" data-nav="about.html" type="button" aria-label="Learn more"><span class="btn-text">Learn more</span></button>
+              <button class="btn" data-nav="contact.html" type="button" aria-label="Contact"><span class="btn-text">Contact</span></button>
+              <button class="btn" data-nav="contact.html#faq" type="button" aria-label="FAQ"><span class="btn-text">FAQ</span></button>
             </div>
 
             <div class="hero-meta">Store preview is conceptual. Products are coming soon.</div>
@@ -1739,12 +1883,12 @@
             </div>
 
             <div class="store-tools" aria-label="Store controls">
-              <button id="store-view-full" class="store-view-full" type="button">
+              <button id="store-view-full" class="store-view-full" type="button" aria-label="View full store">
                 <span class="btn-text">VIEW FULL STORE</span>
               </button>
 
               <div class="sort-wrap" id="sort-wrap">
-                <button class="sort-btn" id="sort-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                <button class="sort-btn" id="sort-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Sort">
                   SORT
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M8 10l4 4 4-4"></path>
@@ -1764,6 +1908,8 @@
                   type="text"
                   placeholder="The MayaNut Company | America's Premier MayaNut Farm — Try MayaNut Today!"
                   aria-label="Search future products"
+                  autocomplete="off"
+                  spellcheck="false"
                 />
                 <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
                   <span class="search-x" id="store-search-clear" aria-label="Clear search" title="Clear">×</span>
@@ -1793,9 +1939,9 @@
                 <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="powder">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1808,9 +1954,9 @@
                 <p class="product-text">Future drink mix concept for warm, creamy cups.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="latte">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1823,9 +1969,9 @@
                 <p class="product-text">Blend concept for cookies, bars, and breads.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1838,9 +1984,9 @@
                 <p class="product-text">Chilled, smooth, tree-based drink concept.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1853,9 +1999,9 @@
                 <p class="product-text">Deeper roast concept with caramel notes.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="espresso">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1868,9 +2014,9 @@
                 <p class="product-text">Energy bar concept combining MayaNut and fruit.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="bars">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1883,9 +2029,9 @@
                 <p class="product-text">Dessert concept with roasted MayaNut flavor.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="icecream">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1898,9 +2044,9 @@
                 <p class="product-text">Breakfast granola concept built around MayaNut.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="granola">
-                    <button class="qty-minus" type="button" aria-label="Decrease quantity">−</button>
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
-                    <button class="qty-plus" type="button" aria-label="Increase quantity">+</button>
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
                   <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
                 </div>
@@ -1919,7 +2065,7 @@
           <div class="about-grid">
             <article class="about-card">
               <img src="the-maya-nut-company-bubba-image.jpg" alt="Herbert “Bubba” Humphries" width="1200" height="800" loading="lazy" decoding="async" />
-              <p class="about-text">
+              <p class="about-text audio-paragraph" data-audio="about-1">
                 Founded in 2025 by <strong>August Kokus</strong>, <span class="brand-orange">The MayaNut Company</span>
                 builds on a family legacy of American fruit growing that dates back generations. August’s great-grandfather, Herbert “<strong>Bubba</strong>”
                 Humphries, was an early pioneer of citrus cultivation in Florida in the early 1920s. Drawing on that history,
@@ -1930,7 +2076,7 @@
 
             <article class="about-card">
               <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" class="crop-bottom" alt="August Kokus" width="1200" height="800" loading="lazy" decoding="async" />
-              <p class="about-text">
+              <p class="about-text audio-paragraph" data-audio="about-2">
                 <strong>August Kokus</strong> is working in South Florida to establish
                 <em class="brand-orange">Brosimum alicastrum</em> as a new agricultural staple.
                 As the citrus industry continues to decline, Florida must look toward new perennial crops to sustain its agricultural future.
@@ -1940,7 +2086,7 @@
             </article>
           </div>
 
-          <div class="about-long">
+          <div class="about-long audio-paragraph" data-audio="about-3">
             <div class="about-long-text">
               <span class="brand-orange">The MayaNut Company</span> is actively working to establish <span class="brand-orange">Brosimum alicastrum</span>
               as a long-term agricultural food staple. <span class="brand-orange">August Kokus</span> is developing this species for agricultural and scientific
@@ -1951,8 +2097,8 @@
             </div>
 
             <div class="about-nav" aria-label="Quick navigation">
-              <a href="about.html"><span>About Us</span></a>
-              <a href="research.html"><span>Research</span></a>
+              <a href="about.html" aria-label="About Us"><span>About Us</span></a>
+              <a href="research.html" aria-label="Research"><span>Research</span></a>
             </div>
           </div>
         </section>
@@ -1963,22 +2109,23 @@
 
     <footer>
       <div class="footer-inner">
-        <div class="footer-left">
-          <div class="footer-topline" aria-label="Footer logo and location">
-            <img class="footer-logo-mark" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
+        <div class="footer-left" aria-label="Footer company info">
+          <img class="footer-logo-mark" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
+
+          <div class="footer-info-stack">
             <div class="footer-based" aria-label="Based in Florida">
               <img class="flag" src="american-flag-the-maya-nut-company.svg" alt="United States flag" loading="lazy" decoding="async" />
               <span>Based</span><span>in</span><span>Florida</span>
               <img class="florida" src="florida-image-the-maya-nut-company.png" alt="Florida silhouette" loading="lazy" decoding="async" />
             </div>
-          </div>
 
-          <div class="footer-links" aria-label="Footer links">
-            <a href="privacy.html" id="link-privacy">Privacy</a>
-            <a href="terms.html" id="link-terms">Terms of Service</a>
-          </div>
+            <div class="footer-links" aria-label="Footer links">
+              <a href="privacy.html" id="link-privacy">Privacy</a>
+              <a href="terms.html" id="link-terms">Terms of Service</a>
+            </div>
 
-          <div>© <span id="year"></span> The MayaNut Company, Inc.</div>
+            <div>© <span id="year"></span> The MayaNut Company, Inc.</div>
+          </div>
         </div>
 
         <div class="footer-right" aria-label="Footer social links">
@@ -2025,7 +2172,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.8.3</div>
+          <div class="overlay-version">Version 3.8.4</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
       </div>
@@ -2099,10 +2246,28 @@
 
       <div class="settings-row" style="margin-bottom:0;">
         <div class="toggle-row">
-          <label for="toggle-voiceover">Voice Read Mode</label>
+          <span class="voice-label">
+            <span>Voice Read Mode</span>
+            <span class="info-dot" id="voice-info" aria-label="Voice Read Mode info" tabindex="0">i
+              <span class="info-tooltip" id="voice-tip" aria-hidden="true">
+                <span class="t">
+                  Click on the speaker icons to hear each paragraph, click buttons to hear what they say, or highlight text for reading.
+                  Make sure your volume is comfortable (not too loud or too soft).
+                </span>
+              </span>
+            </span>
+          </span>
+
           <div class="toggle-input" id="toggle-voiceover" role="switch" aria-checked="false" tabindex="0">
             <span class="knob" data-off="OFF" data-on="ON">OFF</span>
           </div>
+        </div>
+      </div>
+
+      <div class="vo-inline-hint" id="vo-inline-hint" aria-label="Voice Read Mode instructions">
+        <div>
+          Click on the speaker icons to hear each paragraph, click buttons to hear what they say, or highlight text for reading.
+          Make sure your volume is comfortable (not too loud or too soft).
         </div>
       </div>
 
@@ -2138,20 +2303,9 @@
     </svg>
   </button>
 
-  <!-- One-time Voice Read Mode Hint -->
-  <div class="vo-hint-overlay" id="vo-hint" aria-hidden="true">
-    <div class="vo-hint-card" role="dialog" aria-modal="true" aria-label="Voice Read Mode instructions">
-      <div class="vo-hint-title">Voice Read Mode</div>
-      <div class="vo-hint-text">
-        Make sure your volume is set to a comfortable level.
-        Highlight any text you want read, then click the small speaker icon that appears next to your selection.
-      </div>
-      <div class="vo-hint-x" id="vo-hint-x" aria-label="Close">×</div>
-    </div>
-  </div>
-
   <script defer>
     (function(){
+      // ===== Side frames =====
       function fillSideStacks(){
         const src = "mayanuts-the-maya-nut-company-image.jpeg";
         const left = document.getElementById("stack-left");
@@ -2187,14 +2341,11 @@
       }
       fillSideStacks();
 
+      // ===== Year =====
       const yearSpan = document.getElementById('year');
       if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-      document.getElementById('logo-top')?.addEventListener('click', (e)=>{
-        e.preventDefault();
-        window.location.href = 'index.html';
-      });
-
+      // ===== Overlay utils =====
       function anyOverlayOpen(){ return !!document.querySelector('.overlay.active'); }
       function openOverlay(id){
         const ov = document.getElementById(id);
@@ -2202,6 +2353,9 @@
         ov.classList.add('active');
         ov.setAttribute('aria-hidden','false');
         document.body.classList.add('overlay-open');
+
+        // Voice hint stays while Accessibility is open (only if voice mode ON)
+        if(id === 'accessibility-overlay') refreshVoiceInlineHint(true);
       }
       function closeOverlay(id){
         const ov = document.getElementById(id);
@@ -2209,6 +2363,9 @@
         ov.classList.remove('active');
         ov.setAttribute('aria-hidden','true');
         if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
+
+        // Hide inline voice hint when leaving accessibility overlay
+        if(id === 'accessibility-overlay') refreshVoiceInlineHint(false);
       }
 
       document.getElementById('accessibility-btn')?.addEventListener('click', ()=>openOverlay('accessibility-overlay'));
@@ -2226,12 +2383,14 @@
             ov.classList.remove('active');
             ov.setAttribute('aria-hidden','true');
             if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
+            if(ov.id === 'accessibility-overlay') refreshVoiceInlineHint(false);
           }
         });
       });
 
       document.addEventListener('keydown', (e)=>{
         if(e.key !== 'Escape') return;
+
         document.querySelectorAll('.overlay.active').forEach(ov=>{
           ov.classList.remove('active');
           ov.setAttribute('aria-hidden','true');
@@ -2239,11 +2398,13 @@
         document.body.classList.remove('overlay-open');
 
         hideSpeakPop();
-        hideVoiceHint(true);
         if(window.speechSynthesis) window.speechSynthesis.cancel();
+
+        refreshVoiceInlineHint(false);
+        closeInfoTooltip();
       });
 
-      // ===== Language-aware routing =====
+      // ===== Language routing =====
       const LANGS = ['en','es','zh','hi','ar'];
       function getLangFromHtml(){
         const l = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
@@ -2312,6 +2473,12 @@
         });
       }
 
+      // ===== Navigation button routing =====
+      document.getElementById('logo-top')?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        window.location.href = 'index.html';
+      });
+
       document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const dest = btn.getAttribute('data-nav');
@@ -2319,7 +2486,7 @@
         });
       });
 
-      // ===== Store open + alignment (header is not sticky now) =====
+      // ===== Store open =====
       const navHome = document.getElementById('nav-home');
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
@@ -2331,14 +2498,12 @@
         if(navHome) navHome.classList.toggle('is-active', which === 'home');
         if(navStore) navStore.classList.toggle('is-active', which === 'store');
       }
-
       function setStoreButtonLabel(){
         if(!viewFullStore) return;
         const span = viewFullStore.querySelector('.btn-text');
         if(!span) return;
         span.textContent = document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW FULL STORE';
       }
-
       function toggleStore(forceOpen){
         const expanded = document.body.classList.contains('store-expanded');
         if(forceOpen){
@@ -2350,7 +2515,6 @@
         setStoreButtonLabel();
         setActiveNav(nowOpen ? 'store' : 'home');
       }
-
       function alignStoreTop(){
         if(!storePanel) return;
         window.requestAnimationFrame(()=>{
@@ -2359,7 +2523,6 @@
           window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
         });
       }
-
       function openStoreTop(){
         closeOverlay('mobile-menu-overlay');
         closeOverlay('accessibility-overlay');
@@ -2388,13 +2551,90 @@
         window.setTimeout(()=>alignStoreTop(), 60);
       })();
 
-      // Store coming soon
+      // ===== Speech (Auditory mode) =====
+      function speakText(text){
+        if(!text) return;
+        if(!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+
+        window.speechSynthesis.cancel();
+
+        const u = new SpeechSynthesisUtterance(String(text).trim());
+        u.lang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
+        window.speechSynthesis.speak(u);
+      }
+
+      function voiceEnabled(){ return localStorage.getItem('pref_voiceover') === '1'; }
+
+      function setVoiceUI(on){
+        document.body.classList.toggle('voice-on', !!on);
+        ensureParagraphSpeakers();
+      }
+
+      // Insert speaker buttons into big paragraphs (only once)
+      function ensureParagraphSpeakers(){
+        const blocks = document.querySelectorAll('.audio-paragraph');
+        blocks.forEach(block=>{
+          if(block.querySelector('.audio-speaker')) return;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'audio-speaker';
+          btn.setAttribute('aria-label', 'Play paragraph audio');
+          btn.innerHTML = `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M11 5L7 9H4v6h3l4 4V5z"></path>
+              <path d="M15 9c1.6 1.6 1.6 4.4 0 6"></path>
+              <path d="M18 7c3 3 3 7 0 10"></path>
+            </svg>
+          `;
+          btn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            if(!voiceEnabled()) return;
+            const txt = block.innerText || '';
+            speakText(txt);
+          });
+
+          block.insertBefore(btn, block.firstChild);
+        });
+      }
+
+      // Speak button labels (auditory mode only)
+      document.addEventListener('click', (e)=>{
+        if(!voiceEnabled()) return;
+
+        const t = e.target;
+        if(!t) return;
+
+        // Avoid double-speaking when special handlers run
+        if(t.closest('.audio-speaker')) return;
+        if(t.closest('.qty-plus, .qty-minus')) return;
+        if(t.closest('#store-search-clear')) return;
+
+        const btn = t.closest('button');
+        const a = t.closest('a');
+
+        if(btn){
+          const label = btn.getAttribute('aria-label') || btn.textContent || '';
+          if(label.trim()) speakText(label.trim());
+          return;
+        }
+        if(a){
+          const label = a.getAttribute('aria-label') || a.textContent || '';
+          if(label.trim()) speakText(label.trim());
+          return;
+        }
+      }, true);
+
+      // ===== Store coming soon =====
       const cartBtn = document.getElementById('cart-btn');
-      function comingSoon(){ alert('Store coming soon — products are not available yet. Thank you for your patience.'); }
+      function comingSoon(){
+        alert('Store coming soon — products are not available yet. Thank you for your patience.');
+      }
       cartBtn?.addEventListener('click', comingSoon);
       document.querySelectorAll('.btn-buy').forEach(btn=>btn.addEventListener('click', comingSoon));
 
-      // Qty controls
+      // ===== Qty controls with auditory edge-cases =====
       function clampQty(input){
         if(!input) return;
         let v = parseInt(String(input.value || '1'), 10);
@@ -2402,16 +2642,33 @@
         if(v > 99) v = 99;
         input.value = String(v);
       }
-      function setQty(input, val){
-        if(!input) return;
-        const v = Math.max(1, Math.min(99, val));
-        input.value = String(v);
-      }
+
       function stepQty(input, delta){
         if(!input) return;
         clampQty(input);
-        const v = parseInt(input.value, 10);
-        setQty(input, v + delta);
+
+        let v = parseInt(input.value, 10);
+        if(delta < 0){
+          if(v <= 1){
+            if(voiceEnabled()) speakText('1 Minimum Amount');
+            input.value = '1';
+            return;
+          }
+          v = v - 1;
+          input.value = String(v);
+          if(voiceEnabled()) speakText('minus');
+          return;
+        }
+        if(delta > 0){
+          if(v >= 99){
+            if(voiceEnabled()) speakText('You have reached the limit');
+            input.value = '99';
+            return;
+          }
+          v = v + 1;
+          input.value = String(v);
+          if(voiceEnabled()) speakText('plus');
+        }
       }
 
       function bindHoldStep(btn, input, delta){
@@ -2492,12 +2749,22 @@
         bindHoldStep(minus, input, -1);
       });
 
-      // Search highlight
+      // ===== Search highlight + Ricky Easter egg =====
       const searchInput = document.getElementById('store-search');
       const searchSend  = document.getElementById('store-search-send');
       const clearBtn    = document.getElementById('store-search-clear');
 
+      const heroHead = document.getElementById('hero-head');
+      const rickyEgg = document.getElementById('ricky-egg');
+
       function normalize(s){ return (s || '').toLowerCase().trim(); }
+
+      function setRickyMode(on){
+        if(!heroHead || !rickyEgg) return;
+        heroHead.style.display = on ? 'none' : 'block';
+        rickyEgg.style.display = on ? 'block' : 'none';
+      }
+
       function clearStates(){
         document.querySelectorAll('.product-card').forEach(card=>{
           card.classList.remove('is-match','is-nonmatch');
@@ -2507,6 +2774,10 @@
       function applyLive(){
         if(!searchInput) return;
         const q = normalize(searchInput.value);
+
+        // Ricky Easter egg exact-match only
+        setRickyMode(q === 'ricky');
+
         document.querySelectorAll('.product-card').forEach(card=>{
           const name = normalize(card.dataset.name || "");
           const ok = (!q || name.includes(q));
@@ -2536,6 +2807,7 @@
       function clearSearch(){
         if(!searchInput) return;
         searchInput.value = '';
+        setRickyMode(false);
         clearStates();
         applyLive();
         searchInput.focus();
@@ -2556,7 +2828,7 @@
         applyHighlight();
       });
 
-      // Sort
+      // ===== Sort =====
       const sortWrap = document.getElementById('sort-wrap');
       const sortBtn = document.getElementById('sort-btn');
       const sortMenu = document.getElementById('sort-menu');
@@ -2612,7 +2884,6 @@
           comingSoon();
           return;
         }
-
         [...pinned, ...extra].forEach(c=>storeGrid.appendChild(c));
       }
 
@@ -2624,10 +2895,12 @@
         });
       });
 
-      // Accessibility preferences
+      // ===== Accessibility toggles =====
       const contrastToggle = document.getElementById('toggle-contrast');
       const textToggle = document.getElementById('toggle-large-text');
       const voiceToggle = document.getElementById('toggle-voiceover');
+      const voInlineHint = document.getElementById('vo-inline-hint');
+      const voiceInfo = document.getElementById('voice-info');
 
       function setToggle(el, on){
         if(!el) return;
@@ -2650,6 +2923,8 @@
         setToggle(contrastToggle, hc);
         setToggle(textToggle, lt);
         setToggle(voiceToggle, vo);
+
+        setVoiceUI(vo);
       }
       applyPrefs();
 
@@ -2669,48 +2944,23 @@
       bindSwitchClass(contrastToggle,'high-contrast','pref_high_contrast');
       bindSwitchClass(textToggle,'large-text','pref_large_text');
 
-      // Voice Read Mode (unchanged)
-      const speakPop = document.getElementById('speak-pop');
-      const voHint = document.getElementById('vo-hint');
-      const voHintX = document.getElementById('vo-hint-x');
-      let voHintTimer = null;
-
-      function voiceEnabled(){ return localStorage.getItem('pref_voiceover') === '1'; }
-
-      function hideSpeakPop(){
-        if(!speakPop) return;
-        speakPop.style.display = 'none';
-        speakPop.dataset.text = '';
-      }
-
-      function hideVoiceHint(){
-        if(voHintTimer){ window.clearTimeout(voHintTimer); voHintTimer = null; }
-        if(!voHint) return;
-        voHint.classList.remove('active');
-        voHint.setAttribute('aria-hidden','true');
-      }
-
-      function showVoiceHintOnce(){
-        const alreadyShown = localStorage.getItem('pref_voice_hint_shown') === '1';
-        if(alreadyShown) return;
-
-        if(!voHint) return;
-        voHint.classList.add('active');
-        voHint.setAttribute('aria-hidden','false');
-
-        localStorage.setItem('pref_voice_hint_shown','1');
-        voHintTimer = window.setTimeout(()=>hideVoiceHint(), 15000);
+      function refreshVoiceInlineHint(isAccessOpen){
+        const on = voiceEnabled();
+        if(!voInlineHint) return;
+        voInlineHint.style.display = (isAccessOpen && on) ? 'block' : 'none';
       }
 
       function setVoice(on){
         localStorage.setItem('pref_voiceover', on ? '1' : '0');
         setToggle(voiceToggle, on);
+        setVoiceUI(on);
 
-        if(on){
-          showVoiceHintOnce();
-        }else{
+        // Show hint only while accessibility overlay is open
+        const accessOpen = document.getElementById('accessibility-overlay')?.classList.contains('active');
+        refreshVoiceInlineHint(!!accessOpen);
+
+        if(!on){
           hideSpeakPop();
-          hideVoiceHint();
           if(window.speechSynthesis) window.speechSynthesis.cancel();
         }
       }
@@ -2730,8 +2980,35 @@
         });
       })();
 
-      voHintX?.addEventListener('click', (e)=>{ e.preventDefault(); hideVoiceHint(); });
-      voHint?.addEventListener('click', (e)=>{ if(e.target === voHint) hideVoiceHint(); });
+      // ===== Voice info tooltip behavior =====
+      function closeInfoTooltip(){
+        voiceInfo?.classList.remove('show-tip');
+      }
+      voiceInfo?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        voiceInfo.classList.toggle('show-tip');
+      });
+      voiceInfo?.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          voiceInfo.classList.toggle('show-tip');
+        }
+      });
+      document.addEventListener('click', (e)=>{
+        if(!voiceInfo) return;
+        if(voiceInfo.contains(e.target)) return;
+        closeInfoTooltip();
+      });
+
+      // ===== Selection highlight speak button (kept) =====
+      const speakPop = document.getElementById('speak-pop');
+
+      function hideSpeakPop(){
+        if(!speakPop) return;
+        speakPop.style.display = 'none';
+        speakPop.dataset.text = '';
+      }
 
       function getSelectedText(){
         const sel = window.getSelection();
@@ -2784,17 +3061,6 @@
         }
       }
 
-      function speakText(text){
-        if(!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
-        window.speechSynthesis.cancel();
-
-        const u = new SpeechSynthesisUtterance(text);
-        const htmlLang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
-        u.lang = htmlLang;
-
-        window.speechSynthesis.speak(u);
-      }
-
       document.addEventListener('selectionchange', ()=>{
         window.clearTimeout(window.__vo_to);
         window.__vo_to = window.setTimeout(updateSpeakPop, 80);
@@ -2812,12 +3078,17 @@
         speakText(t);
       });
 
-      function hideVoiceHint(){ /* kept for escape handler */ 
-        if(voHintTimer){ window.clearTimeout(voHintTimer); voHintTimer = null; }
-        if(!voHint) return;
-        voHint.classList.remove('active');
-        voHint.setAttribute('aria-hidden','true');
-      }
+      // Initialize paragraph speakers if voice already enabled
+      ensureParagraphSpeakers();
+      setVoiceUI(voiceEnabled());
+
+      // ===== Improve perceived image load: decode header bg faster =====
+      // (No-op if browser ignores; harmless)
+      (function warmup(){
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = 'menuart-the-maya-nut-company-art.jpeg';
+      })();
 
     })();
   </script>

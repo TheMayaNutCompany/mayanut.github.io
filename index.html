@@ -1,16 +1,9 @@
-<!-- FULL INDEX (EN) — v3.8.2
-     - Fixed header + banner (pinned).
-     - Store opens aligned to top (never half cut off); from other pages use index.html?store=1 (or index-es.html?store=1).
-     - 2 languages: EN + ES (Español buttons in header + accessibility).
-     - Sort dropdown: green gradient + thin dark-green separators.
-     - Underline stops before emoji; 🫵 slightly bigger.
-     - Banner text: 🇺🇸 America's Premier MayaNut Farm — Try MayaNut Today!
-     - Document title matches request.
-     - Thin dark-green outline: product cards + product images/placeholders + store search + Español buttons + About paragraphs.
-     - Footer: logo left, 3-line stack to its right; icons on right; footer logo scrolls to top (no refresh).
-     - Voice mode default OFF; speaker buttons for major paragraphs; selection speak; voice info tooltip stays within screen.
-     - Voice mode reads buttons + plus/minus; min/max messages.
-     - Easter egg: typing "Ricky" in store search swaps hero for tribute.
+<!-- FULL INDEX (EN) — v3.8.3
+     - Header/nav spacing balanced (HOME↔logo matches CONTACT↔Español).
+     - Mobile: hamburger + language in upper-right (language to the right of bars).
+     - Mobile hero renders first; store preview below (no “half/half” landing glitch).
+     - Cohesive vertical spacing between hero elements/paragraphs/images.
+     - Safer sticky top on mobile (safe-area padding + recalculated offsets).
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +176,10 @@
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
-    html{ background: var(--tan); }
+    html{
+      background: var(--tan);
+      scroll-padding-top: calc(var(--stickyOffset) + 12px);
+    }
     body{
       font-family: var(--font-sans);
       color:var(--text-main);
@@ -269,16 +265,16 @@
       background:transparent;
       left: var(--sideW);
       right: var(--sideW);
+      padding-top: env(safe-area-inset-top);
     }
     @media(max-width:780px){
       .sticky-top{ left:0; right:0; }
     }
 
-    /* Make banner + header a little less tall (logo unchanged) */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:6px 14px; /* reduced */
+      padding:6px 14px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -302,7 +298,7 @@
       flex-wrap:wrap;
     }
     .banner-flag{
-      font-size:18px; /* bigger 🇺🇸 */
+      font-size:18px;
       line-height:1;
       transform: translateY(1px);
     }
@@ -313,9 +309,9 @@
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      padding: 8px 16px; /* reduced */
+      padding: 8px 16px;
       display:flex;
-      align-items:center; /* keep tabs centered vertically */
+      align-items:center;
       justify-content:space-between;
       position:relative;
       border-left: var(--frameBorder) solid var(--frame-line);
@@ -331,6 +327,7 @@
       border-right: var(--frameBorder) solid var(--frame-line);
     }
 
+    /* Balanced left/right header widths for symmetric spacing */
     .header-left{
       display:flex;
       align-items:center;
@@ -348,15 +345,22 @@
       -webkit-user-select:none;
     }
 
-    .header-center{ flex:1; display:flex; justify-content:center; align-items:center; min-width:0; }
+    .header-center{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-width:0;
+      padding: 0 22px; /* keeps CONTACT away from Español */
+    }
 
     .main-nav{
       display:flex;
-      align-items:center;           /* vertically centered */
-      justify-content:center;       /* centered horizontally */
+      align-items:center;
+      justify-content:center;
       width:100%;
-      max-width: 760px;
-      gap:18px;
+      max-width: 720px; /* slightly tighter width => more edge breathing room */
+      gap:24px;         /* more spacing between menu options */
     }
     .main-nav a{
       font-family: var(--font-menu);
@@ -418,12 +422,11 @@
       align-items:center;
       justify-content:flex-end;
       gap:10px;
-      width: 190px;
-      min-width: 190px;
-      flex: 0 0 190px;
+      width: 220px;       /* match left width */
+      min-width: 220px;
+      flex: 0 0 220px;
     }
 
-    /* Español button (header) */
     .lang-pill{
       height:34px;
       padding:0 14px;
@@ -495,7 +498,6 @@
       background: transparent;
     }
 
-    /* Anchor offset under fixed header */
     #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
     #hero{
@@ -512,10 +514,19 @@
     .hero-left{
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:18px; /* more consistent vertical rhythm */
       min-height:100%;
       min-width:0;
       max-width:760px;
+    }
+
+    /* Ensure hero blocks don't "touch" */
+    #hero-normal, #hero-ricky{
+      display:flex;
+      flex-direction:column;
+      gap:18px; /* cohesive spacing between all hero elements */
+      width:100%;
+      min-width:0;
     }
 
     .credit{
@@ -524,7 +535,7 @@
       letter-spacing:0.16em;
       color:var(--text-muted);
       font-weight:950;
-      margin-top:-6px; /* raise slightly */
+      margin-top:-6px;
     }
 
     .hero-title-wrap{ width:100%; max-width:760px; }
@@ -565,14 +576,12 @@
       text-overflow:clip;
       text-align:left;
     }
-    /* underline stops before emoji */
     .underline-text{
       display:inline-block;
       text-decoration: underline;
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
     }
-    /* 🫵 slightly bigger without layout changes */
     .poke{
       font-size: 1.14em;
       line-height: 1;
@@ -585,7 +594,7 @@
       grid-template-columns: 1fr 1fr;
       gap:12px;
       align-items:start;
-      margin-top:6px;
+      margin-top:2px;
       max-width:760px;
       width:100%;
     }
@@ -600,10 +609,9 @@
       transform: translateZ(0);
     }
 
-    /* Paragraph blocks (with speaker button) */
     .speak-block{
       position:relative;
-      overflow:visible; /* allow speaker overlap */
+      overflow:visible;
     }
     .hero-sub{
       font-size:14px;
@@ -614,10 +622,9 @@
       border: 1px solid rgba(156,163,175,0.75);
       padding: 12px 12px 12px;
       border-radius: 18px;
-      border-color: var(--frame-line); /* thin dark green outline */
+      border-color: var(--frame-line);
     }
 
-    /* Speaker button (appears only when voice mode on) */
     .para-speak{
       position:absolute;
       top: var(--aBtnOffset);
@@ -658,7 +665,7 @@
     }
     body.voice-on .para-speak{ display:flex; }
 
-    .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+    .hero-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:2px; }
 
     .btn{
       background: var(--metal-orange);
@@ -695,7 +702,7 @@
     .btn:hover .btn-text{ transform: scale(1.05); }
     .btn .btn-text{ display:inline-block; transition: transform .12s ease; position:relative; }
 
-    .hero-meta{ margin-top:8px; font-size:11px; color:#5b6677; max-width: 760px; }
+    .hero-meta{ margin-top:0; font-size:11px; color:#5b6677; max-width: 760px; }
 
     #store-panel{
       border-radius: var(--outlineR);
@@ -775,7 +782,7 @@
     .store-search{ flex:1; min-width:220px; position:relative; max-width:100%; }
     .store-search input{
       width:100%;
-      padding:10px 84px 10px 12px; /* extra right padding (no overlap) */
+      padding:10px 84px 10px 12px;
       border-radius:999px;
       border:1px solid var(--frame-line);
       font-size:12px;
@@ -836,7 +843,7 @@
       justify-content:center;
       cursor:pointer;
       flex:0 0 auto;
-      overflow:visible; /* badge not clipped */
+      overflow:visible;
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
@@ -907,10 +914,9 @@
     }
     .sort-btn svg{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; position:relative; }
 
-    /* Sort dropdown: green gradient + separators */
     .sort-menu{
       position:absolute;
-      top:38px;  /* directly under SORT */
+      top:38px;
       right:0;
       width:220px;
       border-radius:14px;
@@ -940,7 +946,7 @@
     .sort-menu button:not(:last-child)::after{
       content:"";
       position:absolute;
-      left:10px; right:10px; bottom:-2px; /* line not touching walls */
+      left:10px; right:10px; bottom:-2px;
       height:1px;
       background: rgba(12, 90, 42, 0.75);
       border-radius:999px;
@@ -1182,9 +1188,9 @@
       background: var(--panel-green-grad);
       border-radius:18px;
       padding:13px 14px 14px;
-      border:1px solid var(--frame-line); /* thin green outline around paragraphs */
+      border:1px solid var(--frame-line);
       position:relative;
-      overflow:visible; /* prevent speaker cut-off */
+      overflow:visible;
       text-shadow:none;
     }
     .about-text::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; border-radius:18px; }
@@ -1194,7 +1200,7 @@
       margin-top:14px;
       padding:14px 14px 16px;
       border-radius:22px;
-      border:1px solid var(--frame-line); /* thin green outline */
+      border:1px solid var(--frame-line);
       box-shadow: 0 14px 40px rgba(15,23,42,0.08);
       font-size:14px;
       line-height:1.9;
@@ -1207,7 +1213,7 @@
       align-items:flex-start;
       justify-content:space-between;
       position:relative;
-      overflow:visible; /* prevent speaker cut-off */
+      overflow:visible;
       text-shadow:none;
     }
     .about-long::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; border-radius:22px; }
@@ -1253,7 +1259,6 @@
     }
     .about-nav a span{ position:relative; }
 
-    /* ===== Footer layout + social pills ===== */
     footer{
       width:100%;
       background: var(--panel-green-grad);
@@ -1296,7 +1301,7 @@
       display:flex;
       flex-direction:column;
       gap:6px;
-      padding-top:4px; /* aligns with logo */
+      padding-top:4px;
       min-width:0;
     }
     .footer-based{
@@ -1363,7 +1368,6 @@
       z-index:1;
     }
 
-    /* ===== Floating accessibility button + overlays ===== */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -1477,7 +1481,6 @@
       position:relative;
     }
 
-    /* Español button inside accessibility (full width, not touching walls) */
     .a11y-lang-btn{
       width:100%;
       height:40px;
@@ -1551,7 +1554,6 @@
       color:#15803d;
     }
 
-    /* Voice mode info icon + tooltip (kept on-screen) */
     .info-dot{
       width:18px; height:18px;
       border-radius:999px;
@@ -1608,7 +1610,6 @@
       background: rgba(255,255,255,0.14);
     }
 
-    /* Selection Speak Button (highlight-to-read) */
     .speak-pop{
       position:fixed;
       z-index:10000;
@@ -1638,7 +1639,6 @@
       stroke-linejoin:round;
     }
 
-    /* Ricky easter egg */
     .ricky-wrap{
       display:flex;
       gap:12px;
@@ -1689,7 +1689,6 @@
       font-size:13px;
       opacity:0.95;
     }
-    /* simple “connector” feel */
     .ricky-connector{
       width:10px;
       border-radius:999px;
@@ -1701,7 +1700,6 @@
       margin-bottom:10px;
     }
 
-    /* Mobile fixes */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
@@ -1754,11 +1752,17 @@
     }
     @media(max-width:880px){
       #hero{ display:flex; flex-direction:column; }
-      #store-panel{ order:1; }
-      .hero-left{ order:2; opacity:1 !important; pointer-events:auto !important; max-width:100%; }
+
+      /* Mobile: show hero first, store second (prevents “half/half” landing) */
+      .hero-left{ order:1; opacity:1 !important; pointer-events:auto !important; max-width:100%; }
+      #store-panel{ order:2; }
 
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
+
+      /* Mobile header: bars then language, both upper-right */
+      #mobile-menu-btn{ order:1; }
+      #lang-pill-top{ order:2; }
 
       .store-grid{
         display:flex;
@@ -1872,7 +1876,6 @@
       <div class="content-wrapper">
         <section id="hero" aria-label="Home hero">
           <div class="hero-left" id="hero-left">
-            <!-- Normal hero content (swapped by Ricky easter egg) -->
             <div id="hero-normal">
               <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
 
@@ -1950,7 +1953,6 @@
               <div class="hero-meta">Store preview is conceptual. Products are coming soon.</div>
             </div>
 
-            <!-- Ricky tribute (hidden unless search == "ricky") -->
             <div id="hero-ricky" style="display:none;">
               <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
 
@@ -2267,7 +2269,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.8.2</div>
+          <div class="overlay-version">Version 3.8.3</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
       </div>
@@ -2437,6 +2439,7 @@
       }
       updateStickyOffset();
       window.addEventListener('resize', ()=>{ updateStickyOffset(); }, { passive:true });
+      window.addEventListener('load', ()=>{ updateStickyOffset(); window.setTimeout(updateStickyOffset, 120); }, { passive:true });
 
       /* ===== Footer year ===== */
       const yearSpan = document.getElementById('year');
@@ -2476,10 +2479,7 @@
       document.querySelectorAll('.overlay-close').forEach(btn=>{
         const targetId = btn.getAttribute('data-close');
         if(!targetId) return;
-        btn.addEventListener('click', ()=>{
-          closeOverlay(targetId);
-          // voice hint stays until leaving accessibility; handled by tooltip state
-        });
+        btn.addEventListener('click', ()=>{ closeOverlay(targetId); });
       });
 
       document.querySelectorAll('.overlay').forEach(ov=>{
@@ -2783,8 +2783,8 @@
 
       function showRicky(on){
         if(!heroNormal || !heroRicky) return;
-        heroNormal.style.display = on ? 'none' : 'block';
-        heroRicky.style.display  = on ? 'block' : 'none';
+        heroNormal.style.display = on ? 'none' : 'flex';
+        heroRicky.style.display  = on ? 'flex' : 'none';
       }
 
       function clearStates(){
@@ -2797,7 +2797,6 @@
         if(!searchInput) return;
         const q = normalize(searchInput.value);
 
-        // Ricky trigger (exact match)
         showRicky(q === 'ricky');
 
         document.querySelectorAll('.product-card').forEach(card=>{
@@ -2845,7 +2844,6 @@
             applyHighlight();
           }
         });
-        // initial
         applyLive();
       }
       clearBtn?.addEventListener('click', (e)=>{ e.stopPropagation(); clearSearch(); });
@@ -2940,7 +2938,7 @@
       function applyPrefs(){
         const hc = localStorage.getItem('pref_high_contrast') === '1';
         const lt = localStorage.getItem('pref_large_text') === '1';
-        const vo = localStorage.getItem('pref_voiceover') === '1'; // default OFF unless saved ON
+        const vo = localStorage.getItem('pref_voiceover') === '1';
 
         document.body.classList.toggle('high-contrast', hc);
         document.body.classList.toggle('large-text', lt);
@@ -2992,7 +2990,7 @@
         });
       })();
 
-      /* ===== Voice info tooltip (kept on-screen) ===== */
+      /* ===== Voice info tooltip ===== */
       const infoDot = document.getElementById('voice-info');
       const infoTip = document.getElementById('voice-tip');
       const voiceRow = document.getElementById('voice-row');
@@ -3050,7 +3048,6 @@
         window.speechSynthesis.speak(u);
       }
 
-      /* Paragraph speaker buttons */
       document.querySelectorAll('[data-speak-btn]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           if(!voiceEnabled()) return;
@@ -3061,20 +3058,15 @@
         });
       });
 
-      /* In voice mode: clicking buttons/links speaks them (except paragraph speaker handled above) */
       document.addEventListener('click', (e)=>{
         if(!voiceEnabled()) return;
 
         const t = e.target;
         if(!t) return;
 
-        // ignore para speaker buttons (already handled)
         if(t.closest && t.closest('.para-speak')) return;
-
-        // handle plus/minus explicitly (already spoken on qty step; avoid double)
         if(t.classList && (t.classList.contains('qty-plus') || t.classList.contains('qty-minus'))) return;
 
-        // speak other interactive controls
         const clickable = (t.closest && t.closest('button, a')) ? t.closest('button, a') : null;
         if(!clickable) return;
 
@@ -3083,7 +3075,7 @@
         if(txt) speakText(txt);
       }, true);
 
-      /* ===== Highlight-to-speak (selection speaker) ===== */
+      /* ===== Highlight-to-speak ===== */
       const speakPop = document.getElementById('speak-pop');
 
       function hideSpeakPop(){

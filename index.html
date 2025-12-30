@@ -1,13 +1,16 @@
-<!-- FULL INDEX (EN) — v3.8.0
-     - Fixed header (pinned).
-     - Store opens aligned to top (never half cut off).
-     - Store link from other pages: use index-[lang].html?store=1 (auto-opens store at top).
+<!-- FULL INDEX (EN) — v3.8.2
+     - Fixed header (pinned) + dynamic height offset (prevents top cut-off).
+     - Store opens aligned to top under header (never half cut off).
+     - Home closes store + scrolls to top under header.
+     - Store link from other pages: index-[lang].html?store=1 (auto-opens store at top).
      - Language routing goes to translated equivalents (about-es.html, research-zh.html, etc.).
      - Cart badge not clipped.
      - Product images + placeholders: thin dark-green outline.
      - Store search + language selector: thin dark-green outline; no overlap with X/magnifier.
-     - Footer: left = logo + Based in Florida + Privacy/Terms under; right = Email + X + Instagram (metallic orange pill).
-     - Accessibility overlay: same social pill icons incl. X.
+     - Footer: logo left, stacked text to its right (Based in Florida / Privacy+Terms / Copyright),
+               icons on right (Email + X + Instagram) metallic orange.
+     - About section uses lime→dark-green gradient family like store.
+     - Accessibility overlay includes same social icons incl. X.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -137,14 +140,8 @@
       --match-blue: rgba(0, 255, 234, 0.28);
       --nonmatch-red: rgba(255, 0, 0, 0.16);
 
-      --footerIcon: 30px;
-
-      /* Used to offset fixed header */
-      --stickyOffset: 122px;
-
-      --headerPadX: 16px;
-      --headerPadY: 12px;
-      --navMaxW: 720px;
+      /* dynamic offset for fixed header */
+      --stickyOffset: 140px;
 
       --outlineW: 2px;
       --outlineR: 16px;
@@ -448,7 +445,7 @@
       background: transparent;
     }
 
-    /* Store anchor offset under fixed header */
+    /* anchor offset under fixed header */
     #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
     #hero{
@@ -665,9 +662,9 @@
     .store-search{ flex:1; min-width:220px; position:relative; max-width:100%; }
     .store-search input{
       width:100%;
-      padding:10px 84px 10px 12px; /* extra right padding to prevent overlap */
+      padding:10px 84px 10px 12px; /* prevent overlap */
       border-radius:999px;
-      border:1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       font-size:12px;
       background:rgba(255,255,255,0.82);
       color:#111827;
@@ -726,7 +723,7 @@
       justify-content:center;
       cursor:pointer;
       flex:0 0 auto;
-      overflow:visible; /* IMPORTANT: badge not clipped */
+      overflow:visible;
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
@@ -836,7 +833,7 @@
     .product-card{
       border-radius: var(--r-card);
       background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
-      border:1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
@@ -858,7 +855,7 @@
       border-radius:16px;
       margin-top:4px;
       margin-bottom:10px;
-      border: 1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       background:#fff;
     }
     .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.10); margin-bottom:8px; }
@@ -1037,13 +1034,14 @@
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
 
+    /* MATCH STORE-LIKE GRADIENTS */
     .about-text{
       font-size:14px;
       line-height:1.9;
       color:#000;
       font-weight:850;
       letter-spacing:0.01em;
-      background: var(--panel-green-grad);
+      background: var(--store-green-grad);
       border-radius:18px;
       padding:13px 14px 14px;
       border:1px solid rgba(255,255,255,0.22);
@@ -1051,7 +1049,7 @@
       overflow:hidden;
       text-shadow:none;
     }
-    .about-text::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; }
+    .about-text::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.14); pointer-events:none; }
     .about-text > *{ position:relative; }
 
     .about-long{
@@ -1064,7 +1062,7 @@
       line-height:1.9;
       font-weight:850;
       letter-spacing:0.01em;
-      background: var(--panel-green-grad);
+      background: var(--store-green-grad);
       color:#000;
       display:flex;
       gap:12px;
@@ -1074,7 +1072,7 @@
       overflow:hidden;
       text-shadow:none;
     }
-    .about-long::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; }
+    .about-long::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.14); pointer-events:none; }
     .about-long > *{ position:relative; }
     .about-long .about-long-text{ flex:1; min-width:0; }
 
@@ -1136,19 +1134,14 @@
       max-width:1200px;
       margin:0 auto;
     }
+
     .footer-left{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-weight:950;
-      min-width:0;
-      color:#000;
-    }
-    .footer-topline{
       display:flex;
       align-items:center;
       gap:12px;
-      flex-wrap:wrap;
+      min-width:0;
+      color:#000;
+      font-weight:950;
     }
     .footer-logo-mark{
       width:120px;
@@ -1156,7 +1149,15 @@
       display:block;
       filter: drop-shadow(0 8px 16px rgba(15,23,42,0.14));
       border-radius:12px;
+      flex:0 0 auto;
     }
+    .footer-stack{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
+    }
+
     .footer-based{
       display:inline-flex;
       align-items:center;
@@ -1204,6 +1205,7 @@
       -webkit-user-select:none;
       touch-action:manipulation;
       text-decoration:none;
+      flex:0 0 auto;
     }
     .icon-pill::before{
       content:"";
@@ -1221,6 +1223,8 @@
       stroke-width:2;
       position:relative;
       z-index:1;
+      stroke-linecap:round;
+      stroke-linejoin:round;
     }
 
     /* ===== Floating accessibility button + overlays ===== */
@@ -1334,7 +1338,7 @@
 
     .settings-lang{
       border-radius:999px;
-      border:1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       padding:10px 12px;
       font-size:12px;
       background:rgba(255,255,255,0.82);
@@ -1502,7 +1506,6 @@
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
       .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
-      :root{ --stickyOffset: 170px; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
 
       .store-tools{
@@ -1591,7 +1594,7 @@
   </div>
 
   <div class="frame-wrap">
-    <div class="sticky-top">
+    <div class="sticky-top" id="sticky-top">
       <div class="top-banner">
         <div class="banner-text">WELCOME TO MAYANUT.COM — MAYANUT IS A ROASTED, DELICIOUS FOOD</div>
       </div>
@@ -1612,10 +1615,7 @@
         <div class="header-center">
           <nav class="main-nav" aria-label="Primary navigation">
             <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
-
-            <!-- IMPORTANT: This link supports opening the store from other pages via ?store=1 -->
             <a href="index.html?store=1" id="nav-store">STORE</a>
-
             <a href="about.html" id="nav-about">ABOUT</a>
 
             <span class="nav-item">
@@ -1929,21 +1929,21 @@
     <footer>
       <div class="footer-inner">
         <div class="footer-left">
-          <div class="footer-topline" aria-label="Footer logo and location">
-            <img class="footer-logo-mark" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
+          <img class="footer-logo-mark" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
+          <div class="footer-stack" aria-label="Footer text">
             <div class="footer-based" aria-label="Based in Florida">
               <img class="flag" src="american-flag-the-maya-nut-company.svg" alt="United States flag" loading="lazy" decoding="async" />
               <span>Based</span><span>in</span><span>Florida</span>
               <img class="florida" src="florida-image-the-maya-nut-company.png" alt="Florida silhouette" loading="lazy" decoding="async" />
             </div>
-          </div>
 
-          <div class="footer-links" aria-label="Footer links">
-            <a href="privacy.html" id="link-privacy">Privacy</a>
-            <a href="terms.html" id="link-terms">Terms of Service</a>
-          </div>
+            <div class="footer-links" aria-label="Footer links">
+              <a href="privacy.html" id="link-privacy">Privacy</a>
+              <a href="terms.html" id="link-terms">Terms of Service</a>
+            </div>
 
-          <div>© <span id="year"></span> The MayaNut Company, Inc.</div>
+            <div>© <span id="year"></span> The MayaNut Company, Inc.</div>
+          </div>
         </div>
 
         <div class="footer-right" aria-label="Footer social links">
@@ -1990,7 +1990,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.8.0</div>
+          <div class="overlay-version">Version 3.8.2</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
       </div>
@@ -2117,6 +2117,16 @@
 
   <script defer>
     (function(){
+      // ===== Dynamic header offset (prevents top cut-off) =====
+      const stickyTop = document.getElementById('sticky-top');
+      function syncStickyOffset(){
+        const h = stickyTop ? Math.ceil(stickyTop.getBoundingClientRect().height) : 0;
+        document.documentElement.style.setProperty('--stickyOffset', Math.max(0, h) + 'px');
+      }
+      syncStickyOffset();
+      window.addEventListener('resize', syncStickyOffset, { passive:true });
+      window.addEventListener('load', syncStickyOffset, { passive:true });
+
       function fillSideStacks(){
         const src = "mayanuts-the-maya-nut-company-image.jpeg";
         const left = document.getElementById("stack-left");
@@ -2221,13 +2231,11 @@
       function getPageKey(){
         const p = (location.pathname || '').split('/').pop() || 'index.html';
         const base = p.replace(/\?.*$/,'').replace(/#.*$/,'');
-        // known pages
         const known = ['index','about','research','contact','privacy','terms'];
         for(const k of known){
           const re = new RegExp(`^${k}(?:-(en|es|zh|hi|ar))?\\.html$`, 'i');
           if(re.test(base)) return k;
         }
-        // fallback
         return 'index';
       }
 
@@ -2245,7 +2253,6 @@
 
       const currentLang = getLangFromHtml();
 
-      // Update nav hrefs to language equivalents (prevents going to EN from translated pages)
       function applyLangLinks(){
         const ids = [
           ['nav-home','index'], ['nav-about','about'], ['nav-research','research'], ['nav-contact','contact'],
@@ -2262,18 +2269,15 @@
           else el.setAttribute('href', href);
         });
 
-        // Store links: always point to index-[lang].html?store=1
         const storeHref = buildPageUrl('index', currentLang) + '?store=1';
         document.getElementById('nav-store')?.setAttribute('href', storeHref);
         document.getElementById('nav-store-mobile')?.setAttribute('href', storeHref);
         document.getElementById('nav-store-a11y')?.setAttribute('href', storeHref);
 
-        // A11y logo link home
         document.querySelector('.a11y-logo-link')?.setAttribute('href', buildPageUrl('index', currentLang));
       }
       applyLangLinks();
 
-      // Language switch selector: go to same pageKey in selected language
       const accessLang = document.getElementById('access-lang');
       if(accessLang){
         accessLang.value = currentLang;
@@ -2285,7 +2289,6 @@
         });
       }
 
-      // Buttons with data-nav (keep these language-agnostic for EN index)
       document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const dest = btn.getAttribute('data-nav');
@@ -2300,11 +2303,12 @@
       const navStoreA11y = document.getElementById('nav-store-a11y');
       const viewFullStore = document.getElementById('store-view-full');
       const storePanel = document.getElementById('store-panel');
-      const stickyTop = document.querySelector('.sticky-top');
 
       function headerHeight(){
-        if(!stickyTop) return 0;
-        return stickyTop.getBoundingClientRect().height || 0;
+        syncStickyOffset();
+        const v = getComputedStyle(document.documentElement).getPropertyValue('--stickyOffset').trim();
+        const n = parseInt(v.replace('px',''), 10);
+        return isNaN(n) ? 0 : n;
       }
 
       function setActiveNav(which){
@@ -2331,13 +2335,12 @@
         setActiveNav(nowOpen ? 'store' : 'home');
       }
 
-      function alignStoreTop(){
+      function alignStoreTop(behavior){
         if(!storePanel) return;
-        // ensure layout is updated before measuring
         window.requestAnimationFrame(()=>{
           const rect = storePanel.getBoundingClientRect();
           const y = window.scrollY + rect.top - (headerHeight() + 12);
-          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+          window.scrollTo({ top: Math.max(0, y), behavior: behavior || 'smooth' });
         });
       }
 
@@ -2345,33 +2348,46 @@
         closeOverlay('mobile-menu-overlay');
         closeOverlay('accessibility-overlay');
         toggleStore(true);
-
-        // Align store to top under fixed header (no mid-page landing)
-        alignStoreTop();
+        alignStoreTop('smooth');
       }
 
-      // In-page store open (prevent navigation when already on index)
+      function goHomeTop(){
+        closeOverlay('mobile-menu-overlay');
+        closeOverlay('accessibility-overlay');
+        document.body.classList.remove('store-expanded');
+        setStoreButtonLabel();
+        setActiveNav('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Intercept clicks on index to prevent partial landing
       navStore?.addEventListener('click', (e)=>{ e.preventDefault(); openStoreTop(); });
       navStoreMobile?.addEventListener('click', (e)=>{ e.preventDefault(); openStoreTop(); });
       navStoreA11y?.addEventListener('click', (e)=>{ e.preventDefault(); openStoreTop(); });
 
+      navHome?.addEventListener('click', (e)=>{
+        // on index, keep it in-page: close store and go to top
+        e.preventDefault();
+        goHomeTop();
+      });
+
       viewFullStore?.addEventListener('click', ()=>{
         const willOpen = !document.body.classList.contains('store-expanded');
         toggleStore(false);
-        if(willOpen) alignStoreTop();
+        if(willOpen) alignStoreTop('smooth');
+        else setActiveNav('home');
       });
 
       setStoreButtonLabel();
       setActiveNav('home');
 
-      // Auto-open store if arriving from another page with ?store=1 or #store
+      // Auto-open store if arriving with ?store=1 or #store
       (function autoOpenStoreFromUrl(){
         const u = new URL(window.location.href);
         const want = (u.searchParams.get('store') === '1') || (u.hash && u.hash.toLowerCase() === '#store');
         if(!want) return;
-        // open immediately, then align after a short frame
         toggleStore(true);
-        window.setTimeout(()=>alignStoreTop(), 60);
+        window.setTimeout(()=>alignStoreTop('auto'), 40);
       })();
 
       // Store coming soon
@@ -2380,7 +2396,7 @@
       cartBtn?.addEventListener('click', comingSoon);
       document.querySelectorAll('.btn-buy').forEach(btn=>btn.addEventListener('click', comingSoon));
 
-      // ==== Qty controls (click + press-and-hold accelerate), 1..99 ====
+      // Qty controls (press and hold accelerate)
       function clampQty(input){
         if(!input) return;
         let v = parseInt(String(input.value || '1'), 10);
@@ -2399,7 +2415,6 @@
         const v = parseInt(input.value, 10);
         setQty(input, v + delta);
       }
-
       function bindHoldStep(btn, input, delta){
         if(!btn || !input) return;
         let t = null;
@@ -2411,12 +2426,10 @@
           if(active) return;
           active = true;
           count = 0;
-
           stepQty(input, delta);
 
           const tick = ()=>{
             if(!active) return;
-
             count++;
             stepQty(input, delta);
 
@@ -2431,7 +2444,6 @@
             }
             t = window.setTimeout(tick, interval);
           };
-
           t = window.setTimeout(tick, 260);
         };
 
@@ -2681,11 +2693,10 @@
       function showVoiceHintOnce(){
         const alreadyShown = localStorage.getItem('pref_voice_hint_shown') === '1';
         if(alreadyShown) return;
-
         if(!voHint) return;
+
         voHint.classList.add('active');
         voHint.setAttribute('aria-hidden','false');
-
         localStorage.setItem('pref_voice_hint_shown','1');
         voHintTimer = window.setTimeout(()=>hideVoiceHint(), 15000);
       }

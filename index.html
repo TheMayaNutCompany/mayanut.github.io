@@ -1,18 +1,9 @@
-<!-- FULL INDEX (EN) — v3.8.2
-     - Fixed header (pinned) + dynamic sticky offset (prevents top cut-off).
-     - Store opens aligned to top (never half cut off).
-     - Store link from other pages: use index-[lang].html?store=1 (auto-opens store at top).
-     - Language routing goes to translated equivalents (about-es.html, research-zh.html, etc.).
-     - Cart badge not clipped.
-     - Product images + placeholders: thin dark-green outline.
-     - Store search + language selector: thin dark-green outline; no overlap with X/magnifier.
-     - Sort dropdown: green gradient background + thin inset separators + drops directly under SORT.
-     - Hero underline stops before emoji (underline ends at “You”).
-     - Banner text updated.
-     - Store search placeholder updated.
-     - About-us paragraphs: thin dark green outline around the paragraph boxes.
-     - Footer: left = logo + Based in Florida + Privacy/Terms under + copyright; right = Email + X + Instagram (metallic orange pill).
-     - Accessibility overlay: same social pill icons incl. X.
+<!-- FULL INDEX (EN) — v3.8.3
+     Updates per request:
+     1) 🫵 slightly bigger (no structural change): emoji given larger font-size.
+     2) Top banner + separators less tall (logo size unchanged).
+     3) Mobile header: logo locked to lower-left of header; hamburger immediately to the right of logo.
+     4) Header + banner do NOT move with scroll (not sticky/fixed). Content no longer needs sticky offset.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +12,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <title>The MayaNut Company | America's Premier MayaNut Farm</title>
+  <title>The MayaNut Company | America's Premier MayaNut Farm — Try MayaNut Today!</title>
   <meta name="description" content="The MayaNut Company introduces MayaNut (Brosimum alicastrum) in South Florida—seed-grown trees, research, updates, and a future store for roasted MayaNut foods." />
   <meta name="keywords" content="MayaNut, Brosimum alicastrum, South Florida agriculture, roasted MayaNut, MayaNut powder, food tree, perennial crop, Florida farm, tropical food crops" />
   <meta name="author" content="The MayaNut Company, Inc." />
@@ -142,9 +133,6 @@
       --match-blue: rgba(0, 255, 234, 0.28);
       --nonmatch-red: rgba(255, 0, 0, 0.16);
 
-      /* Default; overridden dynamically by JS to prevent cut-off */
-      --stickyOffset: 122px;
-
       --outlineW: 2px;
       --outlineR: 16px;
 
@@ -260,26 +248,24 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      padding-top: var(--stickyOffset); /* dynamic */
+      padding-top: 0; /* header is not fixed */
     }
 
-    /* ===== FIXED HEADER (pinned) ===== */
+    /* Header is NOT sticky/fixed */
     .sticky-top{
-      position:fixed;
-      top:0;
-      z-index:999;
+      position:relative;
+      top:auto;
+      left:auto;
+      right:auto;
+      z-index:10;
       background:transparent;
-      left: var(--sideW);
-      right: var(--sideW);
-    }
-    @media(max-width:780px){
-      .sticky-top{ left:0; right:0; }
     }
 
+    /* Less tall top banner */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:8px 14px;
+      padding:6px 14px; /* reduced */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -294,29 +280,32 @@
       text-transform:uppercase;
       font-weight:900;
       color:#000;
-      line-height:1.25;
+      line-height:1.2;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
 
+    /* Less tall header (logo size unchanged) */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      padding: 12px 16px !important;
+      padding: 8px 16px !important; /* reduced */
       display:flex;
-      align-items:center;
+      align-items:flex-end; /* helps “lower-left corner” on mobile */
       justify-content:space-between;
       position:relative;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow:0 10px 24px rgba(15,23,42,0.10);
+      min-height: 74px; /* keep a stable bar height while shorter */
     }
 
+    /* Less tall separators */
     .top-sep, .bottom-sep{
       width:100%;
-      height:2px;
+      height:1px; /* reduced */
       background:var(--green);
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -324,13 +313,13 @@
 
     .header-left{
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       min-width: 220px !important;
       width: 220px !important;
       flex: 0 0 220px !important;
     }
     #logo-top{
-      width:172px;
+      width:172px; /* unchanged */
       height:auto;
       cursor:pointer;
       display:block;
@@ -359,7 +348,7 @@
       transition:transform 0.12s ease, color 0.12s ease;
       white-space:nowrap;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
-      padding-bottom:7px;
+      padding-bottom:6px;
       border-bottom:2px solid transparent;
     }
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
@@ -408,8 +397,10 @@
       flex: 0 0 44px !important;
       display:flex;
       justify-content:flex-end;
-      align-items:center;
+      align-items:flex-end;
     }
+
+    /* Hamburger button */
     .mobile-menu-btn{
       display:none;
       width:34px;
@@ -446,9 +437,6 @@
       overflow-x:hidden;
       background: transparent;
     }
-
-    /* Store anchor offset under fixed header */
-    #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
     #hero{
       position:relative;
@@ -498,7 +486,6 @@
       white-space:nowrap;
     }
 
-    /* Underline stops before emoji */
     .hero-title .line.bottomline{
       display:block;
       width:100%;
@@ -522,7 +509,13 @@
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
     }
-    .hero-title .line.bottomline .emoji{ display:inline; }
+    /* Slightly larger emoji, no structural changes */
+    .hero-title .line.bottomline .emoji{
+      display:inline;
+      font-size: 1.18em;
+      line-height: 1;
+      vertical-align: -0.06em;
+    }
 
     .hero-images{
       display:grid;
@@ -670,9 +663,9 @@
     .store-search{ flex:1; min-width:220px; position:relative; max-width:100%; }
     .store-search input{
       width:100%;
-      padding:10px 84px 10px 12px; /* extra right padding to prevent overlap */
+      padding:10px 84px 10px 12px;
       border-radius:999px;
-      border:1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       font-size:12px;
       background:rgba(255,255,255,0.82);
       color:#111827;
@@ -731,7 +724,7 @@
       justify-content:center;
       cursor:pointer;
       flex:0 0 auto;
-      overflow:visible; /* IMPORTANT: badge not clipped */
+      overflow:visible;
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
@@ -801,7 +794,6 @@
     }
     .sort-btn svg{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; position:relative; }
 
-    /* Sort dropdown: green gradient + inset separators + drops under SORT */
     .sort-menu{
       position:absolute;
       top: calc(100% + 6px);
@@ -856,7 +848,7 @@
     .product-card{
       border-radius: var(--r-card);
       background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
-      border:1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
@@ -878,7 +870,7 @@
       border-radius:16px;
       margin-top:4px;
       margin-bottom:10px;
-      border: 1px solid var(--frame-line); /* thin dark-green outline */
+      border: 1px solid var(--frame-line);
       background:#fff;
     }
     .product-divider{ width:60%; height:1px; background:rgba(15,23,42,0.10); margin-bottom:8px; }
@@ -1057,7 +1049,6 @@
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
 
-    /* About paragraphs: thin dark green outline */
     .about-text{
       font-size:14px;
       line-height:1.9;
@@ -1067,7 +1058,7 @@
       background: var(--panel-green-grad);
       border-radius:18px;
       padding:13px 14px 14px;
-      border:1px solid var(--frame-line); /* requested outline */
+      border:1px solid var(--frame-line);
       position:relative;
       overflow:hidden;
       text-shadow:none;
@@ -1079,7 +1070,7 @@
       margin-top:14px;
       padding:14px 14px 16px;
       border-radius:22px;
-      border:1px solid var(--frame-line); /* requested outline */
+      border:1px solid var(--frame-line);
       box-shadow: 0 14px 40px rgba(15,23,42,0.08);
       font-size:14px;
       line-height:1.9;
@@ -1138,7 +1129,6 @@
     }
     .about-nav a span{ position:relative; }
 
-    /* ===== Footer layout + social pills ===== */
     footer{
       width:100%;
       background: var(--panel-green-grad);
@@ -1244,7 +1234,6 @@
       z-index:1;
     }
 
-    /* ===== Floating accessibility button + overlays ===== */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -1355,7 +1344,7 @@
 
     .settings-lang{
       border-radius:999px;
-      border:1px solid var(--frame-line); /* thin dark-green outline */
+      border:1px solid var(--frame-line);
       padding:10px 12px;
       font-size:12px;
       background:rgba(255,255,255,0.82);
@@ -1520,10 +1509,32 @@
     /* Mobile fixes */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
+      .frame-wrap{ width:100% !important; margin:0 !important; padding-top:0; }
       .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
+
+      /* Header layout: logo pinned bottom-left; hamburger right next to it */
+      .site-header{
+        align-items:flex-end;
+        justify-content:flex-start;
+        gap:10px;
+      }
+      .header-left{
+        width:auto !important;
+        min-width:0 !important;
+        flex:0 0 auto !important;
+      }
+      .header-center{ display:none !important; }
+      .header-right{
+        width:auto !important;
+        min-width:0 !important;
+        flex:0 0 auto !important;
+        justify-content:flex-start !important;
+        align-items:flex-end !important;
+        margin-left:0 !important;
+      }
+      .mobile-menu-btn{ display:flex; }
 
       .store-tools{
         display:grid;
@@ -1545,6 +1556,7 @@
       .footer-right{ justify-content:flex-start; }
       .footer-logo-mark{ width:110px; }
     }
+
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
@@ -1553,11 +1565,8 @@
         margin-left: var(--sideW);
         margin-right: var(--sideW);
       }
-      .sticky-top{
-        left: var(--sideW);
-        right: var(--sideW);
-      }
     }
+
     @media(max-width:880px){
       #hero{ display:flex; flex-direction:column; }
       #store-panel{ order:1; }
@@ -2016,7 +2025,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.8.2</div>
+          <div class="overlay-version">Version 3.8.3</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
       </div>
@@ -2143,17 +2152,6 @@
 
   <script defer>
     (function(){
-      // ===== Dynamic sticky offset (prevents header cut-off) =====
-      const stickyTop = document.querySelector('.sticky-top');
-      function updateStickyOffset(){
-        if(!stickyTop) return;
-        const h = Math.ceil(stickyTop.getBoundingClientRect().height || 0);
-        if(h > 0) document.documentElement.style.setProperty('--stickyOffset', h + 'px');
-      }
-      updateStickyOffset();
-      window.addEventListener('resize', updateStickyOffset, { passive:true });
-      window.addEventListener('load', updateStickyOffset, { passive:true });
-
       function fillSideStacks(){
         const src = "mayanuts-the-maya-nut-company-image.jpeg";
         const left = document.getElementById("stack-left");
@@ -2197,9 +2195,7 @@
         window.location.href = 'index.html';
       });
 
-      function anyOverlayOpen(){
-        return !!document.querySelector('.overlay.active');
-      }
+      function anyOverlayOpen(){ return !!document.querySelector('.overlay.active'); }
       function openOverlay(id){
         const ov = document.getElementById(id);
         if(!ov) return;
@@ -2247,7 +2243,7 @@
         if(window.speechSynthesis) window.speechSynthesis.cancel();
       });
 
-      // ===== Language-aware routing (translated pages go to translated equivalents) =====
+      // ===== Language-aware routing =====
       const LANGS = ['en','es','zh','hi','ar'];
       function getLangFromHtml(){
         const l = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
@@ -2323,18 +2319,13 @@
         });
       });
 
-      // ===== Store open + alignment (top, never cut off) =====
+      // ===== Store open + alignment (header is not sticky now) =====
       const navHome = document.getElementById('nav-home');
       const navStore = document.getElementById('nav-store');
       const navStoreMobile = document.getElementById('nav-store-mobile');
       const navStoreA11y = document.getElementById('nav-store-a11y');
       const viewFullStore = document.getElementById('store-view-full');
       const storePanel = document.getElementById('store-panel');
-
-      function headerHeight(){
-        if(!stickyTop) return 0;
-        return Math.ceil(stickyTop.getBoundingClientRect().height || 0);
-      }
 
       function setActiveNav(which){
         if(navHome) navHome.classList.toggle('is-active', which === 'home');
@@ -2364,7 +2355,7 @@
         if(!storePanel) return;
         window.requestAnimationFrame(()=>{
           const rect = storePanel.getBoundingClientRect();
-          const y = window.scrollY + rect.top - (headerHeight() + 12);
+          const y = window.scrollY + rect.top - 12;
           window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
         });
       }
@@ -2403,7 +2394,7 @@
       cartBtn?.addEventListener('click', comingSoon);
       document.querySelectorAll('.btn-buy').forEach(btn=>btn.addEventListener('click', comingSoon));
 
-      // ==== Qty controls (click + press-and-hold accelerate), 1..99 ====
+      // Qty controls
       function clampQty(input){
         if(!input) return;
         let v = parseInt(String(input.value || '1'), 10);
@@ -2633,7 +2624,7 @@
         });
       });
 
-      // ===== Accessibility preferences =====
+      // Accessibility preferences
       const contrastToggle = document.getElementById('toggle-contrast');
       const textToggle = document.getElementById('toggle-large-text');
       const voiceToggle = document.getElementById('toggle-voiceover');
@@ -2678,15 +2669,13 @@
       bindSwitchClass(contrastToggle,'high-contrast','pref_high_contrast');
       bindSwitchClass(textToggle,'large-text','pref_large_text');
 
-      // ===== Voice Read Mode (one-time popup + selection speaker) =====
+      // Voice Read Mode (unchanged)
       const speakPop = document.getElementById('speak-pop');
       const voHint = document.getElementById('vo-hint');
       const voHintX = document.getElementById('vo-hint-x');
       let voHintTimer = null;
 
-      function voiceEnabled(){
-        return localStorage.getItem('pref_voiceover') === '1';
-      }
+      function voiceEnabled(){ return localStorage.getItem('pref_voiceover') === '1'; }
 
       function hideSpeakPop(){
         if(!speakPop) return;
@@ -2741,13 +2730,8 @@
         });
       })();
 
-      voHintX?.addEventListener('click', (e)=>{
-        e.preventDefault();
-        hideVoiceHint();
-      });
-      voHint?.addEventListener('click', (e)=>{
-        if(e.target === voHint) hideVoiceHint();
-      });
+      voHintX?.addEventListener('click', (e)=>{ e.preventDefault(); hideVoiceHint(); });
+      voHint?.addEventListener('click', (e)=>{ if(e.target === voHint) hideVoiceHint(); });
 
       function getSelectedText(){
         const sel = window.getSelection();
@@ -2816,9 +2800,7 @@
         window.__vo_to = window.setTimeout(updateSpeakPop, 80);
       }, { passive:true });
 
-      document.addEventListener('mouseup', ()=>{
-        window.setTimeout(updateSpeakPop, 60);
-      }, { passive:true });
+      document.addEventListener('mouseup', ()=>{ window.setTimeout(updateSpeakPop, 60); }, { passive:true });
 
       document.addEventListener('scroll', ()=>{
         if(speakPop && speakPop.style.display === 'flex') updateSpeakPop();
@@ -2829,6 +2811,13 @@
         if(!t) return;
         speakText(t);
       });
+
+      function hideVoiceHint(){ /* kept for escape handler */ 
+        if(voHintTimer){ window.clearTimeout(voHintTimer); voHintTimer = null; }
+        if(!voHint) return;
+        voHint.classList.remove('active');
+        voHint.setAttribute('aria-hidden','true');
+      }
 
     })();
   </script>

@@ -256,7 +256,6 @@
       .sticky-top{ left:0; right:0; }
     }
 
-    /* Thin single-line banner */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
@@ -289,7 +288,6 @@
     }
     .banner-flag{ font-size:16px; line-height:1; transform: translateY(1px); flex:0 0 auto; }
 
-    /* Make header background image more visible (less padding, no bulky overlay) */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -343,7 +341,6 @@
       padding: 0 22px;
     }
 
-    /* More spaced top tabs */
     .main-nav{
       display:flex;
       align-items:center;
@@ -489,9 +486,7 @@
 
     #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
-    /* HERO: grid areas so mobile order is:
-       credit+title -> store -> paragraphs -> (spacer on desktop only) -> images -> buttons -> meta
-    */
+    /* HERO: tighten vertical rhythm and align bottom of images with bottom of store */
     #hero{
       position:relative;
       display:grid;
@@ -499,22 +494,31 @@
       grid-template-areas:
         "top   store"
         "paras store"
-        "spacer store"
         "images store"
-        "actions store"
-        "meta  store";
-      gap:26px;
+        "actions store";
+      gap:18px 26px;
       max-width:1200px;
       margin:0 auto;
-      align-items:start;
+      align-items:stretch;               /* key for bottom alignment */
     }
 
     .hero-top{ grid-area: top; display:flex; flex-direction:column; gap:10px; max-width:760px; }
     .hero-paras{ grid-area: paras; display:flex; flex-direction:column; gap:12px; max-width:760px; }
-    .hero-spacer{ grid-area: spacer; display:none; }
-    .hero-images{ grid-area: images; display:grid; grid-template-columns: 1fr 1fr; gap:12px; max-width:760px; width:100%; }
-    .hero-actions{ grid-area: actions; display:flex; gap:10px; flex-wrap:wrap; }
-    .hero-meta{ grid-area: meta; font-size:11px; color:#5b6677; max-width:760px; }
+    .hero-images{ grid-area: images; display:grid; grid-template-columns: 1fr 1fr; gap:12px; max-width:760px; width:100%; align-content:start; }
+    .hero-actions{ grid-area: actions; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start; }
+
+    /* Make left column distribute space so images end at store bottom */
+    .hero-left{
+      display:grid;
+      grid-template-rows: auto auto 1fr auto;  /* images expand to meet store bottom */
+      grid-template-areas:
+        "top"
+        "paras"
+        "images"
+        "actions";
+      gap:18px;
+      min-height:100%;
+    }
 
     .credit{
       font-size:11px;
@@ -564,16 +568,6 @@
     }
     .poke{ font-size: 1.14em; line-height: 1; transform: translateY(1px); display:inline-block; }
 
-    /* Desktop spacer to push images lower (scroll to see full images) */
-    @media(min-width:881px){
-      .hero-spacer{
-        display:block;
-        height: 14vh;
-        min-height: 110px;
-        max-height: 190px;
-      }
-    }
-
     /* Expand button on all images */
     .img-zoom-wrap{
       position:relative;
@@ -588,7 +582,7 @@
       width:34px;
       height:34px;
       border-radius:12px;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       display:flex;
       align-items:center;
@@ -649,7 +643,7 @@
       width: var(--aBtn);
       height: var(--aBtn);
       border-radius: var(--aBtnR);
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       display:none;
       align-items:center;
@@ -685,7 +679,7 @@
     .btn{
       background: var(--metal-orange);
       color: var(--cream);
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       border-radius: var(--r-btn);
       padding:10px 16px;
       font-size:12px;
@@ -732,6 +726,8 @@
       box-shadow: 0 14px 40px rgba(15,23,42,0.18);
       overflow:visible;
       will-change: transform;
+      height:100%;
+      align-self:stretch;
     }
 
     .store-header-row{ display:flex; justify-content:center; }
@@ -757,7 +753,7 @@
     }
 
     .store-view-full{
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       color: var(--cream);
       border-radius: var(--r-btn);
@@ -812,7 +808,7 @@
       transform:translateY(-50%);
       height:28px;
       border-radius:999px;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       display:flex;
       align-items:center;
@@ -850,7 +846,7 @@
       width:36px;
       height:36px;
       border-radius:12px;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       display:inline-flex;
       align-items:center;
@@ -898,7 +894,7 @@
     .sort-btn{
       height:36px;
       border-radius:12px;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       color: var(--cream);
       font-weight:950;
@@ -1042,7 +1038,7 @@
       height:var(--qtyBtn);
       min-width:var(--qtyBtn);
       min-height:var(--qtyBtn);
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       border-radius:10px;
       background: var(--metal-orange);
       color: var(--cream);
@@ -1090,7 +1086,7 @@
     .btn-buy{
       min-width:60px;
       height:var(--qtyBtn);
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       border-radius:10px;
       background: var(--metal-orange);
       color: var(--cream);
@@ -1125,7 +1121,6 @@
     .product-card.extra-product{ display:none; opacity:0; }
     body.store-expanded .product-card.extra-product{ display:flex; opacity:1; }
 
-    /* Expanded store overlay on desktop */
     @media(min-width:881px){
       body.store-expanded #store-panel{
         position:absolute;
@@ -1137,15 +1132,7 @@
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
       }
       body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
-      body.store-expanded .hero-top,
-      body.store-expanded .hero-paras,
-      body.store-expanded .hero-spacer,
-      body.store-expanded .hero-images,
-      body.store-expanded .hero-actions,
-      body.store-expanded .hero-meta{
-        opacity:0;
-        pointer-events:none;
-      }
+      body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
     }
 
     /* ABOUT */
@@ -1255,7 +1242,7 @@
       padding:10px 14px;
       border-radius:12px;
       background: var(--metal-orange);
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       color: var(--cream);
       font-weight:950;
       letter-spacing:0.12em;
@@ -1354,7 +1341,7 @@
       width:44px;
       height:44px;
       border-radius:14px;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       display:inline-flex;
       align-items:center;
@@ -1436,7 +1423,7 @@
     .overlay-version{ font-size:11px; color:#0b1220; letter-spacing:0.08em; text-transform:uppercase; font-weight:950; opacity:0.92; }
 
     .overlay-close{
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       width:34px;
       height:34px;
@@ -1499,7 +1486,7 @@
       width:100%;
       height:40px;
       border-radius:14px;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       color: var(--cream);
       font-weight:950;
@@ -1669,7 +1656,7 @@
     }
     .img-viewer-close{
       pointer-events:auto;
-      border: var(--btn-outline);
+      border: 1px solid var(--cream);
       background: var(--metal-orange);
       width:38px;
       height:38px;
@@ -1770,15 +1757,7 @@
       .cart-btn{ grid-column: 2 / 3; width:44px; height:44px; justify-self:end; }
       body.store-expanded .sort-wrap{ grid-column: 1 / -1; width:100%; justify-content:flex-end; }
 
-      .about-long{ flex-direction:column; }
-      .about-nav{ margin-left:0; width:100%; flex-direction:row; }
-      .about-nav a{ flex:1; }
-
-      .footer-inner{ grid-template-columns:1fr; gap:14px; }
-      .footer-right{ justify-content:flex-start; }
-      .footer-logo-mark{ width:110px; }
-
-      /* Mobile: single column hero; keep strict order: top -> store -> paras -> images -> actions -> meta */
+      /* Mobile: single column hero; still even spacing */
       #hero{
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -1786,13 +1765,12 @@
           "store"
           "paras"
           "images"
-          "actions"
-          "meta";
+          "actions";
         gap:16px;
+        align-items:start;
       }
-      .hero-spacer{ display:none !important; }
+      .hero-left{ display:block; }
 
-      /* Mobile store carousel */
       .store-grid{
         display:flex;
         overflow-x:auto;
@@ -1868,9 +1846,7 @@
         <div class="header-center">
           <nav class="main-nav" aria-label="Primary navigation">
             <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
-
             <a href="index.html?store=1" id="nav-store">STORE</a>
-
             <a href="about.html" id="nav-about">ABOUT</a>
 
             <span class="nav-item">
@@ -1911,15 +1887,81 @@
       <div class="content-wrapper">
 
         <section id="hero" aria-label="Hero">
-          <div class="hero-top">
-            <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
-            <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
-              <span class="line topline">Aromatic &amp; Delicious.</span>
-              <span class="line bottomline">
-                <span class="underline-text">Introducing MayaNut to You</span>
-                <span class="poke" aria-hidden="true">🫵</span>
-              </span>
-            </h1>
+          <div class="hero-left" aria-label="Hero left content">
+            <div class="hero-top">
+              <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
+              <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
+                <span class="line topline">Aromatic &amp; Delicious.</span>
+                <span class="line bottomline">
+                  <span class="underline-text">Introducing MayaNut to You</span>
+                  <span class="poke" aria-hidden="true">🫵</span>
+                </span>
+              </h1>
+            </div>
+
+            <div class="hero-paras">
+              <div class="speak-block" data-speak="para-hero-1">
+                <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-hero-1">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
+                </button>
+                <p class="hero-sub" id="para-hero-1">
+                  Over <strong style="color:#000;">200</strong> seed-grown <span class="brand-orange">MayaNut</span>
+                  (<em class="brand-orange">Brosimum alicastrum</em>) trees are currently in cultivation.
+                  Founded in 2025, we are in the early stages of developing <span class="brand-orange">MayaNut</span> as a long-term agricultural crop in Florida, United States,
+                  emphasizing seed-grown populations, selection, and domestication.
+                </p>
+              </div>
+
+              <div class="speak-block" data-speak="para-hero-2">
+                <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-hero-2">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
+                </button>
+                <p class="hero-sub" id="para-hero-2">
+                  <em class="brand-orange">Brosimum alicastrum</em> has been traditionally valued in Central America for its edible tree-seed.
+                  As the project progresses, we are exploring pathways toward establishing a first <span class="brand-orange">MayaNut</span> farm in South Florida,
+                  while the current population remains maintained in cultivation as long-term land options are evaluated.
+                </p>
+              </div>
+            </div>
+
+            <div class="hero-images" aria-label="Hero images">
+              <div class="img-zoom-wrap">
+                <img
+                  src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                  alt="Seed-grown MayaNut (Brosimum alicastrum) trees in a nursery, cultivated in South Florida"
+                  width="760"
+                  height="570"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                  class="zoomable"
+                />
+                <button class="zoom-btn" type="button" aria-label="Expand image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
+                </button>
+              </div>
+
+              <div class="img-zoom-wrap">
+                <img
+                  src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                  alt="MayaNut fruit on the tree (Brosimum alicastrum)"
+                  width="760"
+                  height="570"
+                  loading="lazy"
+                  decoding="async"
+                  class="zoomable"
+                />
+                <button class="zoom-btn" type="button" aria-label="Expand image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <button class="btn" data-nav="about.html" type="button" aria-label="Learn more"><span class="btn-text">Learn More</span></button>
+              <button class="btn" data-nav="contact.html" type="button" aria-label="Contact"><span class="btn-text">Contact</span></button>
+              <button class="btn" data-nav="contact.html#faq" type="button" aria-label="FAQ"><span class="btn-text">FAQ</span></button>
+            </div>
           </div>
 
           <aside id="store-panel" aria-label="Store preview">
@@ -2109,74 +2151,6 @@
               </article>
             </div>
           </aside>
-
-          <div class="hero-paras">
-            <div class="speak-block" data-speak="para-hero-1">
-              <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-hero-1">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
-              </button>
-              <p class="hero-sub" id="para-hero-1">
-                Over <strong style="color:#000;">200</strong> seed-grown <span class="brand-orange">MayaNut</span>
-                (<em class="brand-orange">Brosimum alicastrum</em>) trees are currently in cultivation.
-                Founded in 2025, we are in the early stages of developing <span class="brand-orange">MayaNut</span> as a long-term agricultural crop in Florida, United States,
-                emphasizing seed-grown populations, selection, and domestication.
-              </p>
-            </div>
-
-            <div class="speak-block" data-speak="para-hero-2">
-              <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-hero-2">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
-              </button>
-              <p class="hero-sub" id="para-hero-2">
-                <em class="brand-orange">Brosimum alicastrum</em> has been traditionally valued in Central America for its edible tree-seed.
-                As the project progresses, we are exploring pathways toward establishing a first <span class="brand-orange">MayaNut</span> farm in South Florida,
-                while the current population remains maintained in cultivation as long-term land options are evaluated.
-              </p>
-            </div>
-          </div>
-
-          <div class="hero-spacer" aria-hidden="true"></div>
-
-          <div class="hero-images" aria-label="Hero images">
-            <div class="img-zoom-wrap">
-              <img
-                src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                alt="Seed-grown MayaNut (Brosimum alicastrum) trees in a nursery, cultivated in South Florida"
-                width="760"
-                height="570"
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-                class="zoomable"
-              />
-              <button class="zoom-btn" type="button" aria-label="Expand image">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
-              </button>
-            </div>
-
-            <div class="img-zoom-wrap">
-              <img
-                src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                alt="MayaNut fruit on the tree (Brosimum alicastrum)"
-                width="760"
-                height="570"
-                loading="lazy"
-                decoding="async"
-                class="zoomable"
-              />
-              <button class="zoom-btn" type="button" aria-label="Expand image">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <button class="btn" data-nav="about.html" type="button" aria-label="Learn more"><span class="btn-text">Learn More</span></button>
-            <button class="btn" data-nav="contact.html" type="button" aria-label="Contact"><span class="btn-text">Contact</span></button>
-            <button class="btn" data-nav="contact.html#faq" type="button" aria-label="FAQ"><span class="btn-text">FAQ</span></button>
-          </div>
-
-          <div class="hero-meta">Store preview is conceptual. Products will be available soon.</div>
         </section>
 
         <div class="about-divider" aria-hidden="true">
@@ -2425,7 +2399,6 @@
 
   <script defer>
     (function(){
-      /* Side frame filler */
       function fillSideStacks(){
         const src = "mayanuts-the-maya-nut-company-image.jpeg";
         const left = document.getElementById("stack-left");
@@ -2515,7 +2488,7 @@
         });
       });
 
-      /* Language toggle */
+      /* Language toggle (unchanged) */
       const LANGS = ['en','es'];
       function getLangFromHtml(){
         const l = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();

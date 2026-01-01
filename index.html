@@ -89,9 +89,9 @@
       --green:#1a6800;
       --green-deep:#0f4d1f;
 
-      /* base tan + subtle top dark fade inside frame */
       --tan:#f3e6d1;
-      --tan-top:#e7d5b6;
+      --tan-top:#c9a981; /* darker brown at top */
+      --tan-top2:#e7d5b6;
 
       --orange:#fd6c02;
       --orange-dark:#e95f02;
@@ -261,7 +261,7 @@
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:5px 12px;
+      padding:6px 12px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -271,7 +271,7 @@
       border-top: var(--frameBorder) solid var(--frame-line);
     }
     .top-banner .banner-text{
-      font-size:12px;
+      font-size:13px;
       letter-spacing:0.06em;
       text-transform:uppercase;
       font-weight:950;
@@ -288,7 +288,7 @@
       gap:8px;
     }
     .banner-flag{
-      font-size:1.35em;
+      font-size:1.45em;
       line-height:1;
       transform: translateY(1px);
       display:inline-block;
@@ -375,6 +375,8 @@
     .main-nav a.is-active{ border-bottom-color: var(--cream); }
 
     .nav-item{ position:relative; display:inline-flex; align-items:center; }
+
+    /* Submenu: outlined thin dark green + no hover gap (bridge) */
     .submenu{
       position:absolute;
       top:100%;
@@ -383,7 +385,7 @@
       min-width:220px;
       padding:10px 10px;
       border-radius:14px;
-      border:1px solid rgba(15,77,31,0.60);
+      border:2px solid var(--frame-line);
       background: var(--panel-green-grad);
       box-shadow: 0 18px 55px rgba(15,23,42,0.22);
       display:none;
@@ -391,6 +393,14 @@
       gap:8px;
       margin-top:10px;
       z-index:9999;
+    }
+    .submenu::before{
+      content:"";
+      position:absolute;
+      left:0; right:0;
+      top:-12px;
+      height:12px;
+      background:transparent;
     }
     .submenu a{
       border-bottom:none !important;
@@ -476,14 +486,20 @@
       background:#0f172a;
     }
 
-    /* MAIN: subtle darker tan at top inside frame */
+    /* MAIN: darker brown to tan by ~20% */
     main{
       position:relative;
       z-index:1;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow: var(--shadow);
-      background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan) 22%, var(--tan) 100%);
+      background: linear-gradient(
+        to bottom,
+        var(--tan-top) 0%,
+        var(--tan-top2) 10%,
+        var(--tan) 22%,
+        var(--tan) 100%
+      );
     }
     .content-wrapper{
       padding:26px 22px 30px;
@@ -529,6 +545,16 @@
       gap:10px;
       flex-wrap:wrap;
       align-items:flex-end;
+    }
+
+    /* Slide-in animation (medium pace) */
+    .hero-top{
+      opacity:0;
+      transform: translateX(-42px);
+      animation: heroSlideIn 0.85s ease-out 0.12s forwards;
+    }
+    @keyframes heroSlideIn{
+      to{ opacity:1; transform: translateX(0); }
     }
 
     .credit{
@@ -639,14 +665,28 @@
     }
 
     .speak-block{ position:relative; overflow:visible; }
+
+    /* Retro italic + green gradient text for the top paragraph */
     .hero-sub{
+      font-family: var(--font-pretty);
+      font-style: italic;
       font-size:14px;
       line-height:1.9;
-      color:var(--text-muted);
-      background: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.62);
       border: 1px solid var(--frame-line);
       padding: 12px 12px 12px;
       border-radius: 18px;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-sub .gtext{
+      background: linear-gradient(180deg, var(--store-g1) 0%, #58d979 45%, var(--store-g3) 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      font-weight: 850;
+      letter-spacing: 0.01em;
     }
 
     .para-speak{
@@ -935,13 +975,15 @@
     }
     .sort-btn svg{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; position:relative; }
 
+    /* Sort popup left-aligned to the sort button */
     .sort-menu{
       position:absolute;
       top:38px;
-      right:0;
+      left:0;
+      right:auto;
       width:220px;
       border-radius:14px;
-      border:1px solid rgba(15,77,31,0.75);
+      border:2px solid var(--frame-line);
       background: var(--store-green-grad);
       box-shadow:0 18px 55px rgba(15,23,42,0.22);
       padding:8px;
@@ -1125,20 +1167,21 @@
     .btn-buy:hover .btn-text{ transform: scale(1.05); }
     .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
 
-    /* Expand to LEFT on desktop/tablet; only down on mobile */
+    /* Expand to cover left side on desktop/tablet; only down on mobile */
     @media(min-width:781px){
+      body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
         position:absolute;
         top:0;
-        right:0;
         left:0;
+        right:0;
         width:auto;
         z-index:6;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
         min-height:100%;
       }
       body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
-      body.store-expanded .hero-left{ opacity:0; pointer-events:none; }
+      body.store-expanded .hero-left{ opacity:0; pointer-events:none; height:0; overflow:hidden; }
     }
 
     /* ABOUT */
@@ -1578,7 +1621,7 @@
       top: calc(100% + 8px);
       width: min(380px, 92vw);
       border-radius:14px;
-      border:1px solid rgba(15,77,31,0.75);
+      border:2px solid var(--frame-line);
       background: var(--store-green-grad);
       box-shadow:0 18px 55px rgba(15,23,42,0.22);
       padding:10px 10px;
@@ -1606,7 +1649,7 @@
       color:#0b1220;
       padding:10px 10px;
       font-weight:950;
-      border:1px solid rgba(10, 60, 20, 0.75);
+      border:2px solid var(--frame-line);
       border-radius:12px;
       background: rgba(255,255,255,0.14);
     }
@@ -1787,8 +1830,7 @@
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
       body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
-      /* banner emoji scale on mobile */
-      .banner-flag{ font-size:1.28em; }
+      .banner-flag{ font-size:1.35em; }
     }
 
     @media(max-width:880px){
@@ -1804,6 +1846,7 @@
       .hero-title .line.topline{ white-space:normal; }
       .hero-title .line.bottomline{ white-space:normal; overflow:visible; align-items:flex-start; }
       .img-viewer-caption{ display:none; }
+      .hero-top{ animation-duration:0.9s; }
     }
   </style>
 </head>
@@ -1897,7 +1940,9 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
                 </button>
                 <p class="hero-sub" id="para-hero-1">
-                  MayaNut is an ancient, elusive seed from the tropical tree <em class="brand-orange">Brosimum alicastrum</em>. For centuries, the Mayan people used this seed as food, but hasn't until recently been rediscovered which we will soon offer for sale. Discover the soothing flavor of <span class="brand-orange">MayaNut</span>, a chocolate and coffee tasting powder, which can be used in a variety of tasty foods, drinks, and other products. Founded in 2025, we are in the early stages of growing <span class="brand-orange">MayaNut</span> as a long-term agricultural crop in Florida, United States, prioritizing the development of <span class="brand-orange">MayaNut</span> (<em class="brand-orange">Brosimum alicastrum</em>) farms to benefit South Florida agriculture and create a new industry from the ground up, literally.
+                  <span class="gtext">
+                    MayaNut is an ancient, elusive seed from the tropical tree <em class="brand-orange">Brosimum alicastrum</em>. For centuries, the Mayan people used this seed as food, but hasn’t until recently been rediscovered—which we will soon offer for sale. Discover the soothing flavor of <span class="brand-orange">MayaNut</span>, a chocolate and coffee tasting powder, which can be used in a variety of tasty foods, drinks, and other products. Founded in 2025, we are in the early stages of growing <span class="brand-orange">MayaNut</span> as a long-term agricultural crop in Florida, United States, prioritizing the development of <span class="brand-orange">MayaNut</span> (<em class="brand-orange">Brosimum alicastrum</em>) farms to benefit South Florida agriculture and create a new industry from the ground up, literally.
+                  </span>
                 </p>
               </div>
             </div>
@@ -1988,6 +2033,7 @@
             </div>
 
             <div class="store-grid" id="store-grid">
+              <!-- 8 items for expanded desktop (2 rows of 4) -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
                   <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
@@ -2048,6 +2094,74 @@
                 <p class="product-text">Future concept — smooth, tree-based, and refreshing.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
+                    <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
+                  </div>
+                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                </div>
+              </article>
+
+              <article class="product-card" data-name="pods" data-title="Brew Pods">
+                <div class="img-zoom-wrap store-thumb">
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut brew pods concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                </div>
+                <div class="product-divider"></div>
+                <div class="product-name"><span class="brand-orange">MayaNut</span> Brew Pods</div>
+                <p class="product-text">Concept pods for quick brewing — simple and smooth.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="pods">
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
+                    <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
+                  </div>
+                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                </div>
+              </article>
+
+              <article class="product-card" data-name="cocoa blend" data-title="Cocoa Blend">
+                <div class="img-zoom-wrap store-thumb">
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cocoa blend concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                </div>
+                <div class="product-divider"></div>
+                <div class="product-name"><span class="brand-orange">MayaNut</span> Cocoa Blend</div>
+                <p class="product-text">Future concept for rich, dessert-ready mixes.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="cocoa">
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
+                    <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
+                  </div>
+                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                </div>
+              </article>
+
+              <article class="product-card" data-name="shirt" data-title="T-Shirt">
+                <div class="img-zoom-wrap store-thumb">
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut t-shirt concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                </div>
+                <div class="product-divider"></div>
+                <div class="product-name"><span class="brand-orange">MayaNut</span> T-Shirt</div>
+                <p class="product-text">Future merch concept — clean, simple, iconic.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="shirt">
+                    <button class="qty-minus" type="button" aria-label="Minus">−</button>
+                    <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
+                    <button class="qty-plus" type="button" aria-label="Plus">+</button>
+                  </div>
+                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                </div>
+              </article>
+
+              <article class="product-card" data-name="mug" data-title="Mug">
+                <div class="img-zoom-wrap store-thumb">
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut mug concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                </div>
+                <div class="product-divider"></div>
+                <div class="product-name"><span class="brand-orange">MayaNut</span> Mug</div>
+                <p class="product-text">Concept merch — for warm cups and future brews.</p>
+                <div class="product-controls">
+                  <div class="qty-control" data-product="mug">
                     <button class="qty-minus" type="button" aria-label="Minus">−</button>
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
@@ -2186,7 +2300,7 @@
       <div class="overlay-header">
         <div class="overlay-title-wrap">
           <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.9.0</div>
+          <div class="overlay-version">Version 3.9.1</div>
         </div>
         <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
       </div>

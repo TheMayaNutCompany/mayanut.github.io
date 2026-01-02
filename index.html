@@ -1,4 +1,4 @@
-<!-- BLOCK 1 / 2 (do not request block 2 until ready) -->
+<!-- BLOCK 1 / 2 (v4.0.2) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,8 +89,9 @@
       --text-muted:#556070;
 
       --green:#1a6800;
-      --green-deep:#0b3b17; /* darker to improve readability */
+      --green-deep:#0b3b17;
       --frame-line: rgba(12, 90, 42, 0.95);
+      --outline-green: #0c5a2a;
 
       --tan:#f3e6d1;
       --tan-top:#c9a981;
@@ -121,7 +122,7 @@
       --match-blue: rgba(0, 255, 234, 0.28);
       --nonmatch-red: rgba(255, 0, 0, 0.16);
 
-      --stickyOffset: 132px;
+      --stickyOffset: 126px; /* slightly smaller to reduce top spacing */
 
       --outlineW: 2px;
       --outlineR: 16px;
@@ -158,10 +159,8 @@
       --font-slim: ui-serif, "Times New Roman", Times, Georgia, serif;
       --font-menu: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      /* match store search input background */
       --para-bg: rgba(255,255,255,0.82);
 
-      /* speak pop style */
       --speakPopSize: 38px;
       --speakPopR: 14px;
     }
@@ -210,7 +209,6 @@
     body.high-contrast{ background:#ffffff !important; color:#000 !important; }
     body.high-contrast *{ text-shadow:none !important; }
     body.large-text{ font-size:120%; }
-
     body.overlay-open{ overflow:hidden; }
 
     /* SIDE FRAMES (stacked mayanuts image) */
@@ -255,20 +253,22 @@
       .sticky-top{ left:0; right:0; }
     }
 
+    /* TOP BANNER (smaller + thin green line bottom) */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:6px 12px;
+      padding:4px 10px; /* smaller */
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
-      border-top: var(--frameBorder) solid var(--frame-line);
+      border-top: 2px solid var(--green);
+      border-bottom: 2px solid var(--green);
     }
     .top-banner .banner-text{
-      font-size:13px;
+      font-size:12px; /* smaller */
       letter-spacing:0.06em;
       text-transform:uppercase;
       font-weight:950;
@@ -285,7 +285,7 @@
       gap:8px;
     }
     .banner-flag{
-      font-size:1.45em;
+      font-size:1.35em;
       line-height:1;
       transform: translateY(1px);
       display:inline-block;
@@ -656,7 +656,7 @@
       transform: translateZ(0);
     }
 
-    /* Paragraph boxes (same font/color as top paragraphs; background matches store search box) */
+    /* Paragraph boxes (same font/color; bolder; unified green text) */
     .hero-sub,
     .about-text{
       font-family: var(--font-pretty);
@@ -670,8 +670,8 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       position:relative;
       overflow:hidden;
-      color: var(--green-deep); /* dark green text only */
-      font-weight: 850;
+      color: var(--outline-green);
+      font-weight: 900;
       letter-spacing: 0.01em;
     }
 
@@ -931,9 +931,7 @@
       z-index:2;
     }
 
-    /* PRODUCT GRID:
-       - Default (collapsed): 2x2 (show only first 4)
-       - Expanded: 2 rows of 4 (8 items) and expands left on desktop */
+    /* PRODUCT GRID */
     .store-grid{
       margin-top:12px;
       display:grid;
@@ -963,7 +961,7 @@
     .product-card.is-nonmatch{ background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--nonmatch-red)); }
 
     .product-card .img-zoom-wrap{ width:104px; height:104px; margin-top:4px; margin-bottom:10px; }
-    .product-card .zoom-btn{ display:none !important; } /* store thumbs have no expand */
+    .product-card .zoom-btn{ display:none !important; }
 
     .product-card img{
       width:104px;
@@ -1085,7 +1083,6 @@
     .btn-buy:hover .btn-text{ transform: scale(1.05); }
     .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
 
-    /* Expanded store layout on desktop: expand to the left (cover hero-left) */
     @media(min-width:781px){
       body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
@@ -1097,10 +1094,9 @@
         z-index:6;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
         min-height:100%;
+        background: var(--store-green-grad);
       }
-      body.store-expanded .store-grid{
-        grid-template-columns:repeat(4, minmax(0,1fr));
-      }
+      body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
       body.store-expanded .hero-left{
         opacity:0;
         pointer-events:none;
@@ -1109,7 +1105,7 @@
       }
     }
 
-    /* ABOUT DIVIDER */
+    /* ABOUT DIVIDER (more showy) */
     .about-divider{
       max-width:1200px;
       margin:22px auto 14px;
@@ -1123,31 +1119,38 @@
       flex:1;
       background: var(--green);
       border-radius:999px;
-      opacity:0.9;
+      opacity:0.95;
     }
     .about-divider .label{
       text-align:center;
       font-size:12px;
       font-weight:950;
-      letter-spacing:0.20em;
+      letter-spacing:0.22em;
       text-transform:uppercase;
-      color: var(--green-deep);
+      color: var(--outline-green);
       white-space:nowrap;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid var(--frame-line);
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.10);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
     }
 
     #about-us{ max-width:1200px; margin:0 auto; padding:12px 6px 0; }
     .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:stretch; }
     .about-card{
       border-radius:22px;
-      padding:14px;
+      padding:0; /* remove “tan frame” feeling */
       box-shadow: 0 14px 40px rgba(15,23,42,0.10);
       display:flex;
       flex-direction:column;
       gap:10px;
       background: transparent;
-      border:1px solid rgba(15,23,42,0.10);
+      border:none;
       height:100%;
     }
+    .about-card .img-zoom-wrap{ border-radius:18px; }
     .about-card img{
       width:100%;
       height:240px;
@@ -1159,74 +1162,14 @@
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
 
-    /* Ensure about cards equal visual height (same image + text box sizing) */
+    /* keep both about paragraphs visually same height */
     .about-card .about-text{
       flex:1;
       display:block;
-      min-height: 180px;
+      min-height: 204px;
     }
 
-    .about-long{
-      margin-top:14px;
-      padding:14px 14px 16px;
-      border-radius:22px;
-      border:1px solid var(--frame-line);
-      box-shadow: 0 14px 40px rgba(15,23,42,0.08);
-      font-size:14px;
-      line-height:1.9;
-      font-weight:850;
-      letter-spacing:0.01em;
-      background: var(--para-bg);
-      color: var(--green-deep);
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      justify-content:space-between;
-      position:relative;
-      overflow:visible;
-    }
-
-    .about-long .about-long-text{ flex:1; min-width:0; font-family: var(--font-pretty); font-style: italic; }
-    .about-nav{
-      flex:0 0 auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-left:10px;
-    }
-    .about-nav a{
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:40px;
-      padding:10px 14px;
-      border-radius:12px;
-      background: var(--metal-orange);
-      border: 1px solid var(--cream);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      font-size:12px;
-      white-space:nowrap;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .about-nav a::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .about-nav a span{ position:relative; }
-
-    /* Accessibility floating button */
+    /* Accessibility floating button (standard icon + inner white ring) */
     .accessibility-btn{
       position:fixed;
       right:18px;
@@ -1244,10 +1187,19 @@
       box-shadow:0 10px 25px rgba(15,23,42,0.35);
       user-select:none;
       -webkit-user-select:none;
+      overflow:hidden;
     }
-    .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .accessibility-btn::after{
+      content:"";
+      position:absolute;
+      inset:6px; /* inner ring offset */
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,0.92);
+      pointer-events:none;
+    }
+    .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; position:relative; z-index:1; }
 
-    /* Desktop: right-side drawer with left 2/3 dimmed */
+    /* Overlay dim: cover EVERYTHING (no slit) */
     .a11y-overlay{
       position:fixed;
       inset:0;
@@ -1260,8 +1212,10 @@
       inset:0;
       background: rgba(0,0,0,0.0);
     }
+    .a11y-overlay.active .a11y-dim{
+      background: rgba(0,0,0,0.30);
+    }
 
-    /* Desktop drawer */
     .a11y-drawer{
       position:absolute;
       top:0;
@@ -1279,25 +1233,6 @@
     }
     .a11y-overlay.active .a11y-drawer{ transform: translateX(0); }
 
-    .a11y-overlay.active .a11y-dim{
-      background: rgba(0,0,0,0.22);
-    }
-    /* Force dim to feel like left 2/3 (desktop) */
-    @media(min-width:781px){
-      .a11y-dim{
-        background: rgba(0,0,0,0.0);
-      }
-      .a11y-overlay.active .a11y-dim{
-        background: linear-gradient(
-          90deg,
-          rgba(0,0,0,0.30) 0%,
-          rgba(0,0,0,0.30) 66%,
-          rgba(0,0,0,0.0) 66%
-        );
-      }
-    }
-
-    /* Mobile: center modal (keep popup behavior) */
     @media(max-width:780px){
       .a11y-drawer{
         position:absolute;
@@ -1312,27 +1247,12 @@
       }
       .a11y-overlay.active .a11y-drawer{ transform: translate(-50%, -50%) scale(1); }
       .a11y-overlay.active .a11y-dim{
-        background: rgba(255,255,255,0.18);
+        background: rgba(0,0,0,0.28);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
       }
     }
 
-    .a11y-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-    }
-    .a11y-head .title{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      color:#0b1220;
-    }
-    .a11y-head .title .t1{ font-weight:950; font-size:14px; }
-    .a11y-head .title .t2{ font-weight:950; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.92; }
     .a11y-close{
       border: 1px solid var(--cream);
       background: var(--metal-orange);
@@ -1362,323 +1282,6 @@
       mix-blend-mode: soft-light;
     }
     .a11y-close span{ position:relative; }
-
-    .a11y-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .a11y-logo-link{ display:inline-flex; align-items:center; text-decoration:none; }
-    .a11y-logo{
-      width:120px;
-      height:auto;
-      filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
-      border-radius:12px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-    }
-
-    .a11y-social{ display:flex; align-items:center; gap:10px; }
-    .icon-pill{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      position:relative;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      text-decoration:none;
-    }
-    .icon-pill::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .icon-pill svg{
-      width:22px;
-      height:22px;
-      stroke:var(--cream);
-      fill:none;
-      stroke-width:2;
-      position:relative;
-      z-index:1;
-    }
-
-    .mobile-nav{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      margin: 10px 0 12px;
-    }
-    .mobile-nav a{
-      text-decoration:none;
-      color:#0b1220;
-      padding:10px 10px;
-      font-weight:950;
-      border:2px solid var(--frame-line);
-      border-radius:12px;
-      background: rgba(255,255,255,0.14);
-    }
-
-    .settings-row{
-      margin-bottom:12px;
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color:#0b1220;
-      font-weight:950;
-      position:relative;
-    }
-
-    .a11y-lang-btn{
-      width:100%;
-      height:40px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .a11y-lang-btn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .a11y-lang-btn span{ position:relative; }
-
-    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
-    .toggle-input{
-      width:54px;
-      height:26px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: rgba(255, 0, 0, 0.16);
-      position:relative;
-      cursor:pointer;
-      flex:0 0 auto;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .toggle-input .knob{
-      position:absolute;
-      top:2px; left:2px;
-      width:22px; height:22px;
-      border-radius:999px;
-      background: var(--cream);
-      transition:transform 0.2s ease;
-      box-shadow:0 2px 8px rgba(15,23,42,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:9px;
-      font-weight:950;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      user-select:none;
-      color:#b91c1c;
-    }
-    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
-    .toggle-input.active .knob{ transform:translateX(28px); color:#15803d; }
-
-    .info-dot{
-      width:18px; height:18px;
-      border-radius:999px;
-      border:1px solid rgba(15,77,31,0.55);
-      background: rgba(255,255,255,0.70);
-      color:#0b1220;
-      font-weight:950;
-      font-size:12px;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      flex:0 0 auto;
-    }
-    .info-tip{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      width: min(380px, 92vw);
-      border-radius:14px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 55px rgba(15,23,42,0.22);
-      padding:10px 10px;
-      display:none;
-      z-index:80;
-      color:#0b1220;
-      font-size:12px;
-      line-height:1.6;
-      font-weight:900;
-    }
-    .info-tip strong{ letter-spacing:0.10em; text-transform:uppercase; font-size:11px; display:block; margin-bottom:6px; }
-    .info-tip .small{ opacity:0.92; font-weight:900; }
-    .info-tip.active{ display:block; }
-
-    /* Full image viewer (kept for non-store images) */
-    .img-viewer-overlay{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 16px;
-    }
-    .img-viewer-overlay.active{ display:flex; }
-    .img-viewer-panel{
-      position:relative;
-      width: min(1100px, 96vw);
-      max-height: 92vh;
-      border-radius: 18px;
-      border: 2px solid rgba(255,255,255,0.20);
-      background: rgba(255,255,255,0.10);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
-      overflow:hidden;
-    }
-    .img-viewer-topbar{
-      position:absolute;
-      top:10px;
-      right:10px;
-      left:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      pointer-events:none;
-      z-index:2;
-    }
-    .img-viewer-caption{
-      pointer-events:none;
-      color: rgba(255,255,255,0.92);
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      max-width: 70%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .img-viewer-close{
-      pointer-events:auto;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      width:38px;
-      height:38px;
-      border-radius:14px;
-      cursor:pointer;
-      color: var(--cream);
-      font-size:20px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      box-shadow:0 14px 40px rgba(0,0,0,0.25);
-    }
-    .img-viewer-close::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .img-viewer-close span{ position:relative; }
-    .img-viewer-img{
-      width:100%;
-      height:100%;
-      max-height: 92vh;
-      object-fit: contain;
-      display:block;
-      border-radius:18px;
-      touch-action: pan-x pan-y;
-      background: rgba(0,0,0,0.18);
-    }
-
-    /* Selection Speak Button (metallic orange square with #ffffc5 outline, icon like others) */
-    .speak-pop{
-      position:fixed;
-      z-index:10000;
-      width:var(--speakPopSize);
-      height:var(--speakPopSize);
-      border-radius:var(--speakPopR);
-      border:1px solid var(--cream);
-      background: var(--metal-orange);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 12px 30px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      overflow:hidden;
-    }
-    .speak-pop::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .speak-pop svg{
-      width:20px;
-      height:20px;
-      stroke: var(--cream);
-      fill:none;
-      stroke-width:2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      position:relative;
-      z-index:1;
-    }
 
     /* Responsive */
     @media(max-width:980px){
@@ -1736,7 +1339,7 @@
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
       body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
-      .banner-flag{ font-size:1.35em; }
+      .banner-flag{ font-size:1.25em; }
     }
 
     @media(max-width:880px){
@@ -1751,7 +1354,6 @@
       .hero-images{ grid-template-columns:1fr; }
       .hero-title .line.topline{ white-space:normal; }
       .hero-title .line.bottomline{ white-space:normal; overflow:visible; align-items:flex-start; }
-      .img-viewer-caption{ display:none; }
       .hero-top{ animation-duration:0.9s; }
     }
   </style>
@@ -1931,7 +1533,6 @@
             </div>
 
             <div class="store-grid" id="store-grid">
-              <!-- Default shows first 4 (2x2). Expanded shows all 8 (2 rows x 4 on desktop). -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
                   <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" />
@@ -1945,7 +1546,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1962,7 +1563,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1979,7 +1580,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -1996,7 +1597,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2013,7 +1614,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2030,7 +1631,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2047,7 +1648,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2064,7 +1665,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
             </div>
@@ -2073,7 +1674,7 @@
 
         <div class="about-divider" aria-hidden="true">
           <div class="line"></div>
-          <div class="label">A little about us</div>
+          <div class="label">A LITTLE ABOUT US</div>
           <div class="line"></div>
         </div>
 
@@ -2121,602 +1722,271 @@
                   <strong>August Kokus</strong> is working in South Florida to establish <em class="brand-orange">Brosimum alicastrum</em>
                   as a new agricultural cornerstone. As the citrus industry continues to decline, Florida must look toward new long-term perennial crops to support its agricultural future.
                   <strong>August</strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree—while helping ensure the preservation of <em class="brand-orange">Brosimum alicastrum</em> for future generations.
+                  We hope you love <span class="brand-orange">MayaNut</span> as much as we do.
                 </p>
               </div>
             </article>
           </div>
-
-          <div class="about-long speak-block" data-speak="para-about-3">
-            <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-3">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 10v4"></path><path d="M7 8v8"></path><path d="M10 6v12"></path>
-                <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path><path d="M17 7c3 3 3 7 0 10"></path>
-              </svg>
-            </button>
-
-            <div class="about-long-text" id="para-about-3">
-              <span class="brand-orange">The MayaNut Company</span> actively works to establish <span class="brand-orange">Brosimum alicastrum</span>
-              as a long-term agricultural food source. <span class="brand-orange">August Kokus</span> develops this species for both agricultural and scientific aims.
-              <br /><br />
-              By growing these trees, we can do something new and unique that nobody else thought to do.
-              We hope you love <span class="brand-orange">MayaNut</span> as much as we do!
-            </div>
-
-            <div class="about-nav" aria-label="Quick navigation">
-              <a href="about.html"><span>About</span></a>
-              <a href="research.html"><span>Research</span></a>
-            </div>
-          </div>
         </section>
 
-        <!-- BLOCK 1 ENDS HERE; BLOCK 2 continues with: bottom separator, footer, cart overlay, accessibility drawer markup, image viewer, selection speaker, and full JS -->
+        <!-- BLOCK 1 ENDS HERE; BLOCK 2 continues with: footer (new bottom tab layout), cart overlay, accessibility drawer markup + hover eye tips, image viewer topbar + gallery button, selection speaker, and full JS (including hard scroll-to-top fix). -->
       </div><!-- /.content-wrapper -->
     </main>
 
     <div class="bottom-sep"></div>
 
     <!-- (BLOCK 2 will continue after this line) -->
-<!-- BLOCK 2 / 2 -->
+<!-- BLOCK 2 / 2 (v4.0.2) -->
+    <!-- FOOTER / BOTTOM TAB (store-style green gradient; logo left; text next; socials right) -->
     <footer id="site-footer" aria-label="Footer">
-      <section class="footer-wrap">
-        <div class="newsletter" id="newsletter">
-          <div class="newsletter-left">
-            <div class="newsletter-title">Newsletter</div>
-            <div class="newsletter-sub">Get occasional updates about MayaNut products, research, and farm progress.</div>
-          </div>
-
-          <form class="newsletter-form" id="newsletter-form" autocomplete="on">
-            <label class="sr-only" for="newsletter-email">Email</label>
-            <input id="newsletter-email" type="email" name="email" placeholder="Your email" inputmode="email" autocomplete="email" required />
-            <button class="metal-btn newsletter-btn" type="submit" aria-label="Subscribe">
-              <span class="btn-text">SUBSCRIBE</span>
-            </button>
-          </form>
-
-          <div class="newsletter-note" id="newsletter-note" role="status" aria-live="polite"></div>
-        </div>
-
-        <!-- bottom tab (logo left + 3 stacked lines on right) -->
-        <div class="footer-tab" role="navigation" aria-label="Footer navigation">
-          <a class="footer-logo" href="#top" aria-label="Back to top">
-            <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="140" height="52" decoding="async" loading="lazy" />
-          </a>
-
-          <button class="footer-tab-btn" id="footer-tab-btn" type="button" aria-label="Open footer links">
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-
-        <div class="footer-bottom" id="footer-bottom">
-          <div class="footer-left">
-            <div class="footer-base">Based in Florida</div>
+      <div class="footer-bar">
+        <div class="footer-left">
+          <img
+            src="mayanut-the-mayanut-comapny-logo.png"
+            alt="The MayaNut Company logo"
+            class="footer-logo"
+            width="140"
+            height="52"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="footer-text">
+            <div>Based in Florida — 2026</div>
             <div class="footer-links">
-              <a href="privacy.html" aria-label="Privacy">Privacy</a>
+              <a href="privacy.html" class="footer-link">Privacy</a>
               <span class="dot">•</span>
-              <a href="terms.html" aria-label="Terms">Terms</a>
+              <a href="terms.html" class="footer-link">Terms of Service</a>
               <span class="dot">•</span>
-              <a href="sitemap.xml" aria-label="Sitemap">Sitemap</a>
-            </div>
-          </div>
-
-          <div class="footer-right" aria-label="Social links">
-            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                <circle cx="12" cy="12" r="4.2"></circle>
-                <circle cx="17.3" cy="6.7" r="0.9"></circle>
-              </svg>
-            </a>
-
-            <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4.5 6.5h15v11h-15z"></path>
-                <path d="M4.5 7l7.5 6 7.5-6"></path>
-              </svg>
-            </a>
-
-            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 5l14 14"></path>
-                <path d="M19 5L5 19"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
-    </footer>
-
-    <!-- CART / CHECKOUT OVERLAY (right side drawer; left 2/3 dimmed) -->
-    <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
-      <div class="cart-dim" id="cart-dim" tabindex="-1" aria-label="Close cart"></div>
-
-      <aside class="cart-drawer" id="cart-drawer" aria-label="Cart drawer" role="dialog" aria-modal="true">
-        <div class="cart-head">
-          <div class="cart-title">
-            <div class="t1">Cart</div>
-            <div class="t2">Future Checkout</div>
-          </div>
-          <button class="a11y-close" id="cart-close" type="button" aria-label="Close cart"><span>×</span></button>
-        </div>
-
-        <div class="cart-body">
-          <div class="cart-empty" id="cart-empty">
-            Your cart is empty.
-          </div>
-
-          <div class="cart-items" id="cart-items" aria-label="Cart items"></div>
-
-          <div class="cart-summary" id="cart-summary">
-            <div class="cart-row">
-              <span class="label">Items</span>
-              <span class="value" id="cart-summary-items">0</span>
-            </div>
-            <div class="cart-row">
-              <span class="label">Status</span>
-              <span class="value">Coming soon</span>
+              <a href="sitemap.html" class="footer-link">Sitemap</a>
             </div>
           </div>
         </div>
 
-        <div class="cart-foot">
-          <button class="metal-btn cart-checkout" id="cart-checkout" type="button" aria-label="Proceed to checkout">
-            <span class="btn-text">PROCEED TO CHECKOUT</span>
-          </button>
-          <div class="cart-note" id="cart-note" role="status" aria-live="polite"></div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- ACCESSIBILITY OVERLAY -->
-    <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility menu" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="5" r="2"></circle>
-        <path d="M7 8h10"></path>
-        <path d="M12 8v12"></path>
-        <path d="M8 11l4 2"></path>
-        <path d="M16 11l-4 2"></path>
-        <path d="M9 20l3-7 3 7"></path>
-      </svg>
-    </button>
-
-    <div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
-      <div class="a11y-dim" id="a11y-dim" tabindex="-1" aria-label="Close accessibility"></div>
-
-      <aside class="a11y-drawer" id="a11y-drawer" role="dialog" aria-modal="true" aria-label="Accessibility drawer">
-        <div class="a11y-head">
-          <div class="title">
-            <div class="t1">Accessibility</div>
-            <div class="t2">Settings & Tools</div>
-          </div>
-          <button class="a11y-close" id="a11y-close" type="button" aria-label="Close"><span>×</span></button>
-        </div>
-
-        <div class="a11y-top">
-          <a class="a11y-logo-link" href="#top" aria-label="Back to top">
-            <img class="a11y-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="120" height="44" decoding="async" loading="lazy" />
+        <div class="footer-right" aria-label="Social links">
+          <a class="icon-sq" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="6" y="6" width="12" height="12" rx="3"></rect>
+              <circle cx="12" cy="12" r="3.2"></circle>
+              <circle cx="16.5" cy="7.8" r="0.8"></circle>
+            </svg>
           </a>
 
-          <div class="a11y-social" aria-label="Social icons">
-            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                <circle cx="12" cy="12" r="4.2"></circle>
-                <circle cx="17.3" cy="6.7" r="0.9"></circle>
-              </svg>
-            </a>
+          <a class="icon-sq" href="mailto:info@mayanut.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16v12H4z"></path>
+              <path d="M4 7l8 6 8-6"></path>
+            </svg>
+          </a>
 
-            <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4.5 6.5h15v11h-15z"></path>
-                <path d="M4.5 7l7.5 6 7.5-6"></path>
-              </svg>
-            </a>
-          </div>
+          <a class="icon-sq" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 18L18 6"></path>
+              <path d="M7 6h4l6 12h-4z"></path>
+            </svg>
+          </a>
         </div>
-
-        <nav class="mobile-nav" id="mobile-nav" aria-label="Menu">
-          <a href="index.html">HOME</a>
-          <a href="index.html?store=1">STORE</a>
-          <a href="about.html">ABOUT</a>
-          <a href="research.html">RESEARCH</a>
-          <a href="contact.html">CONTACT</a>
-        </nav>
-
-        <button class="a11y-lang-btn" id="a11y-lang-btn" type="button" aria-label="Switch to Español">
-          <span>ESPAÑOL</span>
-        </button>
-
-        <div class="settings-row" id="row-contrast">
-          <div class="toggle-row">
-            <span>High contrast</span>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="info-dot" data-tip="tip-contrast" aria-label="Info">i</span>
-              <div class="toggle-input" id="toggle-contrast" role="switch" aria-checked="false" tabindex="0">
-                <div class="knob">off</div>
-              </div>
-            </div>
-          </div>
-          <div class="info-tip" id="tip-contrast" role="tooltip">
-            <strong>High contrast</strong>
-            <div class="small">Increases contrast and reduces visual noise for clarity.</div>
-          </div>
-        </div>
-
-        <div class="settings-row" id="row-large">
-          <div class="toggle-row">
-            <span>Large text</span>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="info-dot" data-tip="tip-large" aria-label="Info">i</span>
-              <div class="toggle-input" id="toggle-large" role="switch" aria-checked="false" tabindex="0">
-                <div class="knob">off</div>
-              </div>
-            </div>
-          </div>
-          <div class="info-tip" id="tip-large" role="tooltip">
-            <strong>Large text</strong>
-            <div class="small">Boosts text size across the page for easier reading.</div>
-          </div>
-        </div>
-
-        <div class="settings-row" id="row-voice">
-          <div class="toggle-row">
-            <span>Voice tools</span>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="info-dot" data-tip="tip-voice" aria-label="Info">i</span>
-              <div class="toggle-input" id="toggle-voice" role="switch" aria-checked="false" tabindex="0">
-                <div class="knob">off</div>
-              </div>
-            </div>
-          </div>
-          <div class="info-tip" id="tip-voice" role="tooltip">
-            <strong>Voice tools</strong>
-            <div class="small">Shows speaker buttons and a selection speaker icon for text-to-speech.</div>
-          </div>
-        </div>
-
-        <div class="settings-row" id="row-reduce">
-          <div class="toggle-row">
-            <span>Reduce motion</span>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="info-dot" data-tip="tip-reduce" aria-label="Info">i</span>
-              <div class="toggle-input" id="toggle-reduce" role="switch" aria-checked="false" tabindex="0">
-                <div class="knob">off</div>
-              </div>
-            </div>
-          </div>
-          <div class="info-tip" id="tip-reduce" role="tooltip">
-            <strong>Reduce motion</strong>
-            <div class="small">Minimizes animations and transitions for comfort.</div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- IMAGE VIEWER -->
-    <div class="img-viewer-overlay" id="img-viewer" aria-hidden="true">
-      <div class="img-viewer-panel" role="dialog" aria-modal="true" aria-label="Image viewer">
-        <div class="img-viewer-topbar">
-          <div class="img-viewer-caption" id="img-viewer-caption">Image</div>
-          <button class="img-viewer-close" id="img-viewer-close" type="button" aria-label="Close image viewer"><span>×</span></button>
-        </div>
-        <img class="img-viewer-img" id="img-viewer-img" alt="" src="" />
       </div>
-    </div>
-
-    <!-- SELECTION SPEAK BUTTON -->
-    <button class="speak-pop" id="speak-pop" type="button" aria-label="Speak selection">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 10v4"></path><path d="M7 8v8"></path><path d="M10 6v12"></path>
-        <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path><path d="M17 7c3 3 3 7 0 10"></path>
-      </svg>
-    </button>
-
+    </footer>
   </div><!-- /.frame-wrap -->
 
-  <style>
-    /* Footer + Cart overlay + Utilities */
-    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
+    <div class="cart-dim" id="cart-dim"></div>
+    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-label="Cart">
+      <div class="cart-head">
+        <div class="cart-title">Your Cart</div>
+        <button class="a11y-close" id="cart-close" type="button" aria-label="Close cart"><span>×</span></button>
+      </div>
+      <div class="cart-body" id="cart-body">
+        <div class="cart-empty">Your cart is empty.</div>
+      </div>
+      <div class="cart-foot">
+        <button class="metal-btn" id="cart-checkout" type="button" aria-label="Checkout (coming soon)">
+          <span class="btn-text">CHECKOUT (SOON)</span>
+        </button>
+      </div>
+    </aside>
+  </div>
 
-    #site-footer{
+  <!-- ACCESSIBILITY BUTTON -->
+  <button class="accessibility-btn" id="a11y-btn" type="button" aria-label="Accessibility options">
+    <!-- Standard “person” accessibility icon -->
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="5.2" r="1.7"></circle>
+      <path d="M6.5 8.7c3.7 1.4 7.3 1.4 11 0"></path>
+      <path d="M9.2 10.2l1.1 4.1"></path>
+      <path d="M14.8 10.2l-1.1 4.1"></path>
+      <path d="M10.4 14.3l-1.8 5.1"></path>
+      <path d="M13.6 14.3l1.8 5.1"></path>
+    </svg>
+  </button>
+
+  <!-- ACCESSIBILITY OVERLAY + DRAWER (fix overlap, full-screen dim, no slit) -->
+  <div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
+    <div class="a11y-dim" id="a11y-dim"></div>
+
+    <aside class="a11y-drawer" role="dialog" aria-modal="true" aria-label="Accessibility settings">
+      <div class="a11y-head">
+        <div class="a11y-title">Accessibility</div>
+        <button class="a11y-close" id="a11y-close" type="button" aria-label="Close accessibility panel"><span>×</span></button>
+      </div>
+
+      <div class="a11y-row">
+        <div class="a11y-left">
+          <span class="a11y-label">High Contrast</span>
+        </div>
+        <div class="a11y-right">
+          <button class="eye-tip" type="button" tabindex="0" aria-label="Info: High Contrast" data-tip="High contrast makes text and elements easier to see.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+          <label class="switch">
+            <input type="checkbox" id="toggle-contrast" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="a11y-row">
+        <div class="a11y-left">
+          <span class="a11y-label">Large Text</span>
+        </div>
+        <div class="a11y-right">
+          <button class="eye-tip" type="button" tabindex="0" aria-label="Info: Large Text" data-tip="Large text increases readability across the site.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+          <label class="switch">
+            <input type="checkbox" id="toggle-large" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="a11y-row">
+        <div class="a11y-left">
+          <span class="a11y-label">Voice Tools</span>
+        </div>
+        <div class="a11y-right">
+          <button class="eye-tip" type="button" tabindex="0" aria-label="Info: Voice Tools"
+            data-tip="Voice tools read text aloud. Make sure your volume is adequate. You can also highlight text to play it.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+          <label class="switch">
+            <input type="checkbox" id="toggle-voice" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="a11y-row">
+        <div class="a11y-left">
+          <span class="a11y-label">Reduce Motion</span>
+        </div>
+        <div class="a11y-right">
+          <button class="eye-tip" type="button" tabindex="0" aria-label="Info: Reduce Motion"
+            data-tip="Reduce motion minimizes animations for a calmer experience.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+          <label class="switch">
+            <input type="checkbox" id="toggle-motion" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="a11y-note">
+        v4.0.2
+      </div>
+    </aside>
+
+    <!-- tooltip (positioned southeast of eye) -->
+    <div class="a11y-tip" id="a11y-tip" role="tooltip" aria-hidden="true"></div>
+  </div>
+
+  <!-- IMAGE VIEWER (thin green outline; no blurred filler; top bar: title left, go to gallery, X fixed right) -->
+  <div class="img-viewer" id="img-viewer" aria-hidden="true">
+    <div class="img-dim" id="img-dim"></div>
+    <div class="img-frame" role="dialog" aria-modal="true" aria-label="Expanded image">
+      <div class="img-topbar">
+        <div class="img-title" id="img-title">Image</div>
+        <a class="img-gallery-btn" id="img-gallery-btn" href="research.html#gallery" aria-label="Go to Gallery">Go to Gallery</a>
+        <button class="img-close" id="img-close" type="button" aria-label="Close image"><span>×</span></button>
+      </div>
+      <div class="img-body">
+        <img id="img-full" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Footer styles */
+    .footer-bar{
+      width:100%;
+      background: var(--store-green-grad);
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
-      background: linear-gradient(to bottom, rgba(255,255,255,0.40), rgba(255,255,255,0.15));
-      box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
-    }
-    .footer-wrap{
-      max-width:1200px;
-      margin:0 auto;
-      padding: 18px 22px 18px;
-    }
-    .newsletter{
-      border-radius:22px;
-      border:1px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow: 0 14px 40px rgba(15,23,42,0.10);
-      padding: 14px 14px 14px;
+      padding:12px 14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
+      gap:16px;
     }
-    .newsletter-left{ display:flex; flex-direction:column; gap:4px; min-width: 240px; }
-    .newsletter-title{
-      font-weight:950;
-      letter-spacing:0.16em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-    }
-    .newsletter-sub{
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:850;
-      letter-spacing:0.01em;
-      color: var(--green-deep);
-      font-size:13px;
-      line-height:1.6;
-      text-shadow:0 1px 0 rgba(255,255,255,0.45);
-    }
-    .newsletter-form{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex:1;
-      justify-content:flex-end;
-      min-width: 260px;
-    }
-    .newsletter-form input{
-      width: min(360px, 58vw);
-      height:40px;
-      border-radius:999px;
-      border:1px solid var(--frame-line);
-      background: var(--para-bg);
-      padding: 0 12px;
-      font-weight:900;
-      font-size:12px;
-      outline:none;
-      color:#111827;
-    }
-    .newsletter-btn{ height:40px; min-width:140px; }
-    .newsletter-note{
-      width:100%;
-      font-weight:950;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      margin-top:6px;
-      min-height: 16px;
+    @media(max-width:780px){
+      .footer-bar{ border-left:none; border-right:none; }
     }
 
-    .footer-tab{
-      margin-top:14px;
-      border-radius:18px;
-      border:1px solid var(--frame-line);
-      background: rgba(255,255,255,0.75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 12px 30px rgba(15,23,42,0.10);
-      padding: 10px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .footer-logo img{
-      display:block;
+    .footer-left{ display:flex; align-items:center; gap:14px; min-width:0; }
+    .footer-logo{
       width:140px;
       height:auto;
-      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.14));
+      flex:0 0 auto;
+      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+      user-select:none;
+      -webkit-user-select:none;
     }
-    .footer-tab-btn{
-      width:44px;
-      height:36px;
-      border-radius:14px;
-      border:1px solid rgba(15,23,42,0.18);
-      background: rgba(255,255,255,0.82);
-      cursor:pointer;
+    .footer-text{
       display:flex;
-      align-items:center;
-      justify-content:center;
       flex-direction:column;
       gap:4px;
-    }
-    .footer-tab-btn span{
-      display:block;
-      width:18px;
-      height:2px;
-      border-radius:999px;
-      background:#0f172a;
-    }
-
-    .footer-bottom{
-      margin-top:10px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      padding: 6px 2px 0;
-    }
-    .footer-left{ display:flex; flex-direction:column; gap:6px; }
-    .footer-base{
+      font-family: var(--font-menu);
       font-weight:950;
-      font-size:11px;
-      letter-spacing:0.16em;
+      letter-spacing:0.08em;
       text-transform:uppercase;
       color:#0b1220;
-      opacity:0.95;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      font-size:12px;
+      line-height:1.35;
+      min-width:0;
+      white-space:nowrap;
     }
-    .footer-links{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      flex-wrap:wrap;
-      color:#0b1220;
-    }
-    .footer-links a{
+    .footer-links{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .footer-link{
       color:#0b1220;
       text-decoration:none;
-      border-bottom:1px solid rgba(11,18,32,0.28);
+      border-bottom:2px solid transparent;
       padding-bottom:2px;
     }
-    .footer-links a:hover{ border-bottom-color: rgba(11,18,32,0.72); }
-    .footer-links .dot{ opacity:0.7; }
-    .footer-right{ display:flex; gap:10px; align-items:flex-end; }
+    .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
+    .dot{ opacity:0.7; }
 
-    @media(max-width:780px){
-      #site-footer{ border-left:none; border-right:none; }
-      .footer-wrap{ padding-left:16px; padding-right:16px; }
-      .newsletter-form{ justify-content:flex-start; width:100%; }
-      .newsletter-form input{ width:100%; }
-      .newsletter-btn{ width:100%; }
-      .footer-bottom{ flex-direction:column; align-items:flex-start; gap:10px; }
-      .footer-right{ align-self:flex-end; }
-    }
+    .footer-right{ display:flex; align-items:center; gap:10px; flex:0 0 auto; }
 
-    /* Cart overlay + drawer */
-    .cart-overlay{
-      position:fixed;
-      inset:0;
-      display:none;
-      z-index:90;
-    }
-    .cart-overlay.active{ display:block; }
-    .cart-dim{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,0.0);
-      transition: background .18s ease;
-    }
-    .cart-drawer{
-      position:absolute;
-      top:0;
-      right:0;
-      height:100%;
-      width:min(420px, 34vw);
-      max-width:460px;
-      background: var(--panel-green-grad);
-      border-left: 2px solid var(--frame-line);
-      box-shadow: -18px 0 55px rgba(15,23,42,0.28);
-      padding:16px 14px;
-      transform: translateX(102%);
-      transition: transform .18s ease;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .cart-overlay.active .cart-drawer{ transform: translateX(0); }
-
-    @media(min-width:781px){
-      .cart-overlay.active .cart-dim{
-        background: linear-gradient(
-          90deg,
-          rgba(0,0,0,0.30) 0%,
-          rgba(0,0,0,0.30) 66%,
-          rgba(0,0,0,0.0) 66%
-        );
-      }
-    }
-    @media(max-width:780px){
-      .cart-drawer{
-        width:min(460px, 92vw);
-        max-width: 92vw;
-        border-left: 2px solid var(--frame-line);
-      }
-      .cart-overlay.active .cart-dim{
-        background: rgba(0,0,0,0.25);
-      }
-    }
-
-    .cart-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-    .cart-title{ display:flex; flex-direction:column; gap:2px; color:#0b1220; }
-    .cart-title .t1{ font-weight:950; font-size:14px; }
-    .cart-title .t2{ font-weight:950; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.92; }
-
-    .cart-body{
-      flex:1;
-      min-height: 120px;
-      border-radius:18px;
-      border:2px solid rgba(10,60,20,0.55);
-      background: rgba(255,255,255,0.18);
-      padding:12px 10px;
-      overflow:auto;
-    }
-    .cart-empty{
-      font-weight:950;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:#0b1220;
-      opacity:0.9;
-    }
-    .cart-items{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .cart-item{
+    .icon-sq{
+      width:40px; height:40px;
       border-radius:14px;
-      border:1px solid rgba(10,60,20,0.55);
-      background: rgba(255,255,255,0.20);
-      padding:10px 10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .cart-item .left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      min-width:0;
-    }
-    .cart-item .name{
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
-      color:#0b1220;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 240px;
-    }
-    .cart-item .meta{
-      font-weight:900;
-      font-size:11px;
-      color:#0b1220;
-      opacity:0.92;
-      letter-spacing:0.04em;
-    }
-    .cart-item .right{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex:0 0 auto;
-    }
-    .cart-item .remove{
-      width:34px;
-      height:34px;
-      border-radius:12px;
       border:1px solid var(--cream);
       background: var(--metal-orange);
-      cursor:pointer;
-      display:flex;
+      display:inline-flex;
       align-items:center;
       justify-content:center;
+      text-decoration:none;
       position:relative;
       overflow:hidden;
+      box-shadow:0 10px 24px rgba(15,23,42,0.18);
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
     }
-    .cart-item .remove::before{
+    .icon-sq::before{
       content:"";
       position:absolute;
       inset:0;
@@ -2724,705 +1994,775 @@
       pointer-events:none;
       mix-blend-mode: soft-light;
     }
-    .cart-item .remove span{ position:relative; color:var(--cream); font-size:18px; line-height:1; font-weight:950; }
+    .icon-sq svg{
+      width:20px; height:20px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
 
-    .cart-summary{
-      margin-top:12px;
-      border-top: 1px solid rgba(10,60,20,0.35);
-      padding-top:10px;
+    /* CART overlay styles */
+    .cart-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      z-index:75;
+    }
+    .cart-overlay.active{ display:block; }
+    .cart-dim{ position:absolute; inset:0; background: rgba(0,0,0,0.26); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .cart-drawer{
+      position:absolute;
+      top:0; right:0;
+      width:min(420px, 92vw);
+      height:100%;
+      background: var(--panel-green-grad);
+      border-left: 2px solid var(--frame-line);
+      box-shadow: -18px 0 55px rgba(15,23,42,0.28);
+      padding:16px 14px;
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:12px;
+      overflow:auto;
     }
-    .cart-row{
+    .cart-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .cart-title{
+      font-weight:950;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      font-size:14px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .cart-body{
+      background: rgba(255,255,255,0.14);
+      border:1px solid rgba(10, 60, 20, 0.55);
+      border-radius:16px;
+      padding:12px;
+      flex:1;
+      overflow:auto;
+    }
+    .cart-empty{ font-weight:900; color:#0b1220; opacity:0.85; }
+    .cart-item{
       display:flex;
       align-items:center;
       justify-content:space-between;
+      gap:10px;
+      padding:10px 8px;
+      border-bottom:1px solid rgba(15,23,42,0.12);
+    }
+    .cart-item:last-child{ border-bottom:none; }
+    .cart-item .name{ font-weight:950; color:#0b1220; }
+    .cart-item .qty{ font-weight:950; color:#0b1220; opacity:0.9; }
+    .cart-foot{ display:flex; justify-content:flex-end; }
+
+    /* A11Y drawer styles */
+    .a11y-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+    .a11y-title{
+      font-weight:950;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      font-size:14px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .a11y-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.14);
+      border:1px solid rgba(10, 60, 20, 0.55);
+      margin-top:10px;
+    }
+    .a11y-left{ display:flex; align-items:center; gap:10px; }
+    .a11y-label{
+      font-weight:950;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .a11y-right{ display:flex; align-items:center; gap:10px; }
+
+    .switch{
+      position:relative;
+      width:44px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .switch input{ opacity:0; width:0; height:0; }
+    .slider{
+      position:absolute;
+      inset:0;
+      border-radius:999px;
+      background: rgba(255,255,255,0.55);
+      border:1px solid rgba(15,23,42,0.25);
+      cursor:pointer;
+      transition: .15s ease;
+    }
+    .slider:before{
+      content:"";
+      position:absolute;
+      height:18px; width:18px;
+      left:3px; top:50%;
+      transform:translateY(-50%);
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(15,23,42,0.20);
+      transition: .15s ease;
+    }
+    .switch input:checked + .slider{
+      background: rgba(253,108,2,0.55);
+      border-color: rgba(253,108,2,0.65);
+    }
+    .switch input:checked + .slider:before{ transform: translate(20px, -50%); }
+
+    /* Eye icon moved to right of words (in right column before switch) */
+    .eye-tip{
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      flex:0 0 auto;
+    }
+    .eye-tip::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .eye-tip svg{
+      width:18px; height:18px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
+
+    /* Tooltip like store dropdown; southeast of eye */
+    .a11y-tip{
+      position:fixed;
+      display:none;
+      max-width: 280px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:2px solid var(--frame-line);
+      background: var(--panel-green-grad);
+      box-shadow: 0 18px 55px rgba(15,23,42,0.22);
+      color:#0b1220;
+      font-weight:900;
+      font-size:12px;
+      line-height:1.35;
+      z-index:95;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .a11y-tip.active{ display:block; }
+
+    .a11y-note{
+      margin-top:14px;
+      padding:10px 10px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.14);
+      border:1px solid rgba(10, 60, 20, 0.55);
+      font-weight:950;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      font-size:11px;
+      color:#0b1220;
+      text-align:center;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+
+    /* IMAGE viewer (no blur filler; outline; fixed top bar positions) */
+    .img-viewer{
+      position:fixed;
+      inset:0;
+      display:none;
+      z-index:90;
+    }
+    .img-viewer.active{ display:block; }
+    .img-dim{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,0.32);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .img-frame{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform: translate(-50%, -50%);
+      width:min(980px, 92vw);
+      max-height: 86vh;
+      background: rgba(255,255,255,0.12);
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      box-shadow: 0 28px 70px rgba(15,23,42,0.45);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .img-topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      background: rgba(255,255,255,0.14);
+      border-bottom:1px solid rgba(10, 60, 20, 0.55);
+    }
+    .img-title{
+      flex:1;
+      min-width:0;
+      font-weight:950;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .img-gallery-btn{
+      flex:0 0 auto;
+      height:34px;
+      padding:0 12px;
+      border-radius:12px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
       font-weight:950;
       letter-spacing:0.10em;
       text-transform:uppercase;
       font-size:11px;
-      color:#0b1220;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .img-gallery-btn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .img-gallery-btn{ margin-left:auto; }
+    .img-close{
+      flex:0 0 auto;
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      font-weight:950;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1;
+      font-size:18px;
+    }
+    .img-close::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .img-close span{ position:relative; }
+
+    .img-body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      overflow:auto;
+      background: transparent;
+    }
+    #img-full{
+      max-width:100%;
+      max-height:72vh;
+      border-radius:16px;
+      border:2px solid var(--frame-line);
+      background:#fff;
+      object-fit:contain; /* no filler */
     }
 
-    .cart-foot{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .cart-checkout{
-      width:100%;
-      min-height:44px;
-      justify-content:center;
-    }
-    .cart-note{
-      min-height:16px;
-      font-weight:950;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    /* Mobile footer stacking */
+    @media(max-width:780px){
+      .footer-bar{ flex-direction:column; align-items:flex-start; }
+      .footer-right{ align-self:flex-end; }
+      .footer-text{ white-space:normal; }
     }
 
     /* Reduce motion */
-    body.reduce-motion *,
-    body.reduce-motion *::before,
-    body.reduce-motion *::after{
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-      scroll-behavior: auto !important;
-    }
+    body.reduce-motion *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
   </style>
 
   <script>
     (function(){
-      "use strict";
-
-      // Ensure page starts at top on load (even after hash/state)
-      window.addEventListener("load", function(){
-        if (!location.hash) window.scrollTo(0,0);
+      // ----- HARD FIX: ensure page starts at very top -----
+      // Prevent browser restoring scroll on refresh/back
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      // Always jump to top after load/layout
+      function forceTop(){
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+      window.addEventListener('load', function(){
+        forceTop();
+        // run again after one frame to handle image/layout shifts
+        requestAnimationFrame(forceTop);
+        setTimeout(forceTop, 60);
       });
 
-      const $ = (sel, root=document) => root.querySelector(sel);
-      const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-      // Side frame image stacks
-      function buildStacks(){
-        const src = "mayanuts-the-maya-nut-company-image.jpeg";
-        const left = $("#stack-left");
-        const right = $("#stack-right");
-        if(!left || !right) return;
-
-        left.innerHTML = "";
-        right.innerHTML = "";
-
-        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-        const tileH = 220;
-        const count = Math.max(8, Math.ceil(vh / tileH) + 2);
-
+      // ----- Side frames stacked images -----
+      const sideSrc = "mayanuts-the-maya-nut-company-image.jpeg";
+      const leftStack = document.getElementById("stack-left");
+      const rightStack = document.getElementById("stack-right");
+      function fillStack(el){
+        if(!el) return;
+        const count = 20;
         for(let i=0;i<count;i++){
-          const imgL = new Image();
-          imgL.src = src;
-          imgL.alt = "";
-          imgL.loading = "lazy";
-          imgL.decoding = "async";
-          left.appendChild(imgL);
-
-          const imgR = new Image();
-          imgR.src = src;
-          imgR.alt = "";
-          imgR.loading = "lazy";
-          imgR.decoding = "async";
-          right.appendChild(imgR);
+          const im = document.createElement("img");
+          im.src = sideSrc;
+          im.alt = "";
+          im.loading = "lazy";
+          im.decoding = "async";
+          el.appendChild(im);
         }
       }
-      buildStacks();
-      window.addEventListener("resize", () => {
-        clearTimeout(window.__stackT);
-        window.__stackT = setTimeout(buildStacks, 120);
-      });
+      fillStack(leftStack);
+      fillStack(rightStack);
 
-      // Logo back to top
-      const logoTop = $("#logo-top");
-      if(logoTop){
-        logoTop.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: document.body.classList.contains("reduce-motion") ? "auto" : "smooth" });
+      // ----- Language pill -----
+      const langBtn = document.getElementById("lang-pill-top");
+      if(langBtn){
+        langBtn.addEventListener("click", function(){
+          window.location.href = "index-es.html";
         });
       }
 
-      // Simple nav buttons (hero actions)
-      $$("[data-nav]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const href = btn.getAttribute("data-nav");
-          if(href) location.href = href;
-        });
+      // ----- Simple nav buttons (hero actions) -----
+      document.querySelectorAll("[data-nav]").forEach(btn=>{
+        btn.addEventListener("click", ()=> window.location.href = btn.getAttribute("data-nav"));
       });
 
-      // Language buttons (placeholder route)
-      function goSpanish(){
-        location.href = "index-es.html";
-      }
-      const langTop = $("#lang-pill-top");
-      const langA11y = $("#a11y-lang-btn");
-      if(langTop) langTop.addEventListener("click", goSpanish);
-      if(langA11y) langA11y.addEventListener("click", goSpanish);
-
-      // Mobile menu button opens accessibility drawer (single place for navigation)
-      const mobileMenuBtn = $("#mobile-menu-btn");
-      if(mobileMenuBtn){
-        mobileMenuBtn.addEventListener("click", () => openA11y());
-      }
-
-      // Store expand toggle
-      const viewFull = $("#store-view-full");
+      // ----- Store: view full store (fix “glitched” expanded state + ensure green background + tools visible) -----
+      const viewFull = document.getElementById("store-view-full");
       if(viewFull){
-        viewFull.addEventListener("click", () => {
+        viewFull.addEventListener("click", ()=>{
           document.body.classList.toggle("store-expanded");
           const expanded = document.body.classList.contains("store-expanded");
-          viewFull.querySelector(".btn-text").textContent = expanded ? "CLOSE FULL STORE" : "VIEW FULL STORE";
-          // keep store visible
-          if(expanded){
-            $("#store-panel")?.scrollIntoView({ behavior: document.body.classList.contains("reduce-motion") ? "auto" : "smooth", block: "start" });
-          }
+          viewFull.querySelector(".btn-text").textContent = expanded ? "CLOSE STORE" : "VIEW FULL STORE";
         });
       }
 
-      // Search filtering (visual match / nonmatch)
-      const searchInput = $("#store-search");
-      const clearBtn = $("#store-search-clear");
-      const searchSend = $("#store-search-send");
-      const cards = () => $$("#store-grid .product-card");
-
+      // ----- Store: search highlight match/nonmatch -----
+      const searchInput = document.getElementById("store-search");
+      const searchClear = document.getElementById("store-search-clear");
+      const productCards = Array.from(document.querySelectorAll(".product-card"));
       function applySearch(){
         const q = (searchInput?.value || "").trim().toLowerCase();
-        cards().forEach(c => {
-          c.classList.remove("is-match","is-nonmatch");
+        productCards.forEach(card=>{
+          card.classList.remove("is-match","is-nonmatch");
           if(!q) return;
-          const hay = (c.getAttribute("data-name") || "") + " " + (c.getAttribute("data-title") || "");
-          const ok = hay.toLowerCase().includes(q);
-          c.classList.add(ok ? "is-match" : "is-nonmatch");
+          const hay = (card.getAttribute("data-name")||"") + " " + (card.getAttribute("data-title")||"") + " " + card.textContent;
+          if(hay.toLowerCase().includes(q)) card.classList.add("is-match");
+          else card.classList.add("is-nonmatch");
         });
       }
-
-      function clearSearch(){
-        if(!searchInput) return;
-        searchInput.value = "";
-        applySearch();
-        searchInput.focus();
-      }
-
       if(searchInput){
         searchInput.addEventListener("input", applySearch);
-        searchInput.addEventListener("keydown", (e) => {
-          if(e.key === "Enter"){
-            e.preventDefault();
+      }
+      if(searchClear){
+        searchClear.addEventListener("click", (e)=>{
+          e.preventDefault();
+          if(searchInput){
+            searchInput.value = "";
             applySearch();
-          }
-          if(e.key === "Escape"){
-            e.preventDefault();
-            clearSearch();
+            searchInput.focus();
           }
         });
       }
-      if(clearBtn){
-        clearBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          clearSearch();
-        });
-      }
-      if(searchSend){
-        searchSend.addEventListener("click", (e) => {
-          e.preventDefault();
-          applySearch();
-        });
-      }
 
-      // Qty buttons: press & hold, clamp 1..99
-      function clampQty(n){
-        n = parseInt(n, 10);
-        if(Number.isNaN(n)) n = 1;
-        if(n < 1) n = 1;
-        if(n > 99) n = 99;
-        return n;
-      }
-
-      function setQty(input, value){
-        input.value = String(clampQty(value));
-      }
-
-      function stepQty(input, delta){
-        const cur = clampQty(input.value);
-        setQty(input, cur + delta);
-      }
-
-      function attachHold(btn, input, delta){
-        let t = null;
-        let i = null;
-
-        const start = (e) => {
-          e.preventDefault();
-          stepQty(input, delta);
-
-          // slow start then accelerate
-          let speed = 260;
-          t = setTimeout(() => {
-            i = setInterval(() => {
-              stepQty(input, delta);
-              speed = Math.max(50, speed - 10);
-              if(speed === 50){
-                // keep interval stable
-              }
-            }, 60);
-          }, 280);
-        };
-
-        const stop = () => {
-          if(t) clearTimeout(t);
-          if(i) clearInterval(i);
-          t = null; i = null;
-        };
-
-        btn.addEventListener("mousedown", start);
-        btn.addEventListener("touchstart", start, { passive:false });
-
-        ["mouseup","mouseleave","touchend","touchcancel"].forEach(ev => {
-          btn.addEventListener(ev, stop);
-        });
-      }
-
-      $$(".qty-control").forEach(ctrl => {
-        const minus = $(".qty-minus", ctrl);
-        const plus = $(".qty-plus", ctrl);
-        const input = $(".qty-input", ctrl);
-
-        if(!minus || !plus || !input) return;
-
-        input.addEventListener("input", () => setQty(input, input.value));
-        input.addEventListener("blur", () => setQty(input, input.value));
-
-        // click
-        minus.addEventListener("click", (e) => { e.preventDefault(); stepQty(input, -1); });
-        plus.addEventListener("click", (e) => { e.preventDefault(); stepQty(input, +1); });
-
-        // hold
-        attachHold(minus, input, -1);
-        attachHold(plus, input, +1);
-      });
-
-      // Cart state
-      const cart = new Map(); // key -> { title, qty }
-      const cartBadge = $("#cart-badge");
-      const cartBtn = $("#cart-btn");
-      const cartOverlay = $("#cart-overlay");
-      const cartDim = $("#cart-dim");
-      const cartClose = $("#cart-close");
-      const cartItems = $("#cart-items");
-      const cartEmpty = $("#cart-empty");
-      const cartSummaryItems = $("#cart-summary-items");
-      const cartCheckout = $("#cart-checkout");
-      const cartNote = $("#cart-note");
+      // ----- Cart: basic counter + drawer -----
+      const cartBtn = document.getElementById("cart-btn");
+      const cartBadge = document.getElementById("cart-badge");
+      const cartOverlay = document.getElementById("cart-overlay");
+      const cartDim = document.getElementById("cart-dim");
+      const cartClose = document.getElementById("cart-close");
+      const cartBody = document.getElementById("cart-body");
+      let cart = {}; // { key: qty }
 
       function cartCount(){
-        let total = 0;
-        cart.forEach(v => total += v.qty);
-        return total;
+        return Object.values(cart).reduce((a,b)=>a+b,0);
       }
-
       function renderCart(){
-        const total = cartCount();
-        if(cartBadge) cartBadge.textContent = String(total);
-        if(cartSummaryItems) cartSummaryItems.textContent = String(total);
-
-        if(!cartItems || !cartEmpty) return;
-
-        cartItems.innerHTML = "";
-        if(total === 0){
-          cartEmpty.style.display = "block";
+        const count = cartCount();
+        if(cartBadge) cartBadge.textContent = String(count);
+        if(!cartBody) return;
+        cartBody.innerHTML = "";
+        if(count === 0){
+          const empty = document.createElement("div");
+          empty.className = "cart-empty";
+          empty.textContent = "Your cart is empty.";
+          cartBody.appendChild(empty);
           return;
         }
-        cartEmpty.style.display = "none";
-
-        cart.forEach((v, k) => {
+        Object.entries(cart).forEach(([k,qty])=>{
           const row = document.createElement("div");
           row.className = "cart-item";
-
-          const left = document.createElement("div");
-          left.className = "left";
-
           const name = document.createElement("div");
           name.className = "name";
-          name.textContent = v.title;
-
-          const meta = document.createElement("div");
-          meta.className = "meta";
-          meta.textContent = "Quantity: " + v.qty;
-
-          left.appendChild(name);
-          left.appendChild(meta);
-
-          const right = document.createElement("div");
-          right.className = "right";
-
-          const remove = document.createElement("button");
-          remove.className = "remove";
-          remove.type = "button";
-          remove.setAttribute("aria-label", "Remove item");
-          const x = document.createElement("span");
-          x.textContent = "×";
-          remove.appendChild(x);
-          remove.addEventListener("click", () => {
-            cart.delete(k);
-            renderCart();
-          });
-
-          right.appendChild(remove);
-
-          row.appendChild(left);
-          row.appendChild(right);
-
-          cartItems.appendChild(row);
+          name.textContent = k;
+          const q = document.createElement("div");
+          q.className = "qty";
+          q.textContent = "×" + qty;
+          row.appendChild(name);
+          row.appendChild(q);
+          cartBody.appendChild(row);
         });
       }
-
       function openCart(){
         if(!cartOverlay) return;
         cartOverlay.classList.add("active");
-        cartOverlay.setAttribute("aria-hidden","false");
         document.body.classList.add("overlay-open");
-        cartNote && (cartNote.textContent = "");
-        // focus
-        setTimeout(() => { cartClose?.focus(); }, 0);
+        cartOverlay.setAttribute("aria-hidden","false");
       }
-
       function closeCart(){
         if(!cartOverlay) return;
         cartOverlay.classList.remove("active");
-        cartOverlay.setAttribute("aria-hidden","true");
         document.body.classList.remove("overlay-open");
+        cartOverlay.setAttribute("aria-hidden","true");
       }
+      if(cartBtn) cartBtn.addEventListener("click", ()=>{ renderCart(); openCart(); });
+      if(cartDim) cartDim.addEventListener("click", closeCart);
+      if(cartClose) cartClose.addEventListener("click", closeCart);
 
-      if(cartBtn) cartBtn.addEventListener("click", () => openCart());
-      if(cartDim) cartDim.addEventListener("click", () => closeCart());
-      if(cartClose) cartClose.addEventListener("click", () => closeCart());
+      // Add to cart buttons
+      document.querySelectorAll(".product-card").forEach(card=>{
+        const title = card.getAttribute("data-title") || "Item";
+        const minus = card.querySelector(".qty-minus");
+        const plus = card.querySelector(".qty-plus");
+        const input = card.querySelector(".qty-input");
+        const addBtn = card.querySelector(".btn-buy");
 
-      document.addEventListener("keydown", (e) => {
-        if(e.key === "Escape"){
-          if(cartOverlay?.classList.contains("active")) closeCart();
-          if($("#a11y-overlay")?.classList.contains("active")) closeA11y();
-          if($("#img-viewer")?.classList.contains("active")) closeViewer();
+        function clampQty(v){
+          v = parseInt(v,10);
+          if(isNaN(v) || v < 1) v = 1;
+          if(v > 99) v = 99;
+          return v;
         }
-      });
+        if(minus) minus.addEventListener("click", ()=>{
+          if(!input) return;
+          input.value = clampQty(parseInt(input.value,10)-1);
+        });
+        if(plus) plus.addEventListener("click", ()=>{
+          if(!input) return;
+          input.value = clampQty(parseInt(input.value,10)+1);
+        });
+        if(input) input.addEventListener("change", ()=>{ input.value = clampQty(input.value); });
 
-      // Add to cart when BUY pressed
-      $$("#store-grid .product-card").forEach(card => {
-        const buy = $(".btn-buy", card);
-        const qty = $(".qty-input", card);
-        if(!buy || !qty) return;
-
-        buy.addEventListener("click", () => {
-          const title = (card.getAttribute("data-title") || "MayaNut Item").trim();
-          const key = (card.getAttribute("data-name") || title).toLowerCase();
-          const add = clampQty(qty.value);
-
-          const cur = cart.get(key);
-          const nextQty = clampQty((cur ? cur.qty : 0) + add);
-          cart.set(key, { title, qty: nextQty });
-
+        if(addBtn) addBtn.addEventListener("click", ()=>{
+          const qty = clampQty(input ? input.value : 1);
+          cart[title] = (cart[title] || 0) + qty;
           renderCart();
-          // small feedback: open cart
-          openCart();
         });
       });
 
-      // Checkout button behavior
-      if(cartCheckout){
-        cartCheckout.addEventListener("click", () => {
-          if(cartNote) cartNote.textContent = "This function is not available yet.";
-        });
-      }
-
-      // Footer tab button toggles footer links visibility on small screens
-      const footerTabBtn = $("#footer-tab-btn");
-      const footerBottom = $("#footer-bottom");
-      function toggleFooter(){
-        if(!footerBottom) return;
-        footerBottom.classList.toggle("open");
-        const open = footerBottom.classList.contains("open");
-        footerBottom.style.display = open ? "flex" : "";
-      }
-      if(footerTabBtn){
-        footerTabBtn.addEventListener("click", toggleFooter);
-      }
-      // On mobile default show; on desktop always show
-      function footerResponsive(){
-        if(!footerBottom) return;
-        if(window.matchMedia("(max-width: 780px)").matches){
-          // keep visible by default
-          footerBottom.style.display = "flex";
-        }else{
-          footerBottom.style.display = "flex";
-        }
-      }
-      footerResponsive();
-      window.addEventListener("resize", () => {
-        clearTimeout(window.__footerT);
-        window.__footerT = setTimeout(footerResponsive, 120);
-      });
-
-      // Newsletter submit
-      const newsletterForm = $("#newsletter-form");
-      const newsletterNote = $("#newsletter-note");
-      if(newsletterForm){
-        newsletterForm.addEventListener("submit", (e) => {
-          e.preventDefault();
-          if(newsletterNote) newsletterNote.textContent = "Thank you. Newsletter is coming soon.";
-          newsletterForm.reset();
-        });
-      }
-
-      // Accessibility drawer
-      const a11yBtn = $("#accessibility-btn");
-      const a11yOverlay = $("#a11y-overlay");
-      const a11yDim = $("#a11y-dim");
-      const a11yClose = $("#a11y-close");
+      // ----- Accessibility drawer (fix overlap + full-screen dim) -----
+      const a11yBtn = document.getElementById("a11y-btn");
+      const a11yOverlay = document.getElementById("a11y-overlay");
+      const a11yDim = document.getElementById("a11y-dim");
+      const a11yClose = document.getElementById("a11y-close");
 
       function openA11y(){
         if(!a11yOverlay) return;
         a11yOverlay.classList.add("active");
         a11yOverlay.setAttribute("aria-hidden","false");
         document.body.classList.add("overlay-open");
-        setTimeout(() => a11yClose?.focus(), 0);
       }
       function closeA11y(){
         if(!a11yOverlay) return;
         a11yOverlay.classList.remove("active");
         a11yOverlay.setAttribute("aria-hidden","true");
         document.body.classList.remove("overlay-open");
-        // close info tips
-        $$(".info-tip").forEach(t => t.classList.remove("active"));
+        hideTip();
       }
 
       if(a11yBtn) a11yBtn.addEventListener("click", openA11y);
       if(a11yDim) a11yDim.addEventListener("click", closeA11y);
       if(a11yClose) a11yClose.addEventListener("click", closeA11y);
 
-      // Info tips
-      $$(".info-dot").forEach(dot => {
-        dot.addEventListener("click", (e) => {
-          e.preventDefault();
-          const id = dot.getAttribute("data-tip");
-          if(!id) return;
-          const tip = $("#"+id);
-          if(!tip) return;
-          const willOpen = !tip.classList.contains("active");
-          $$(".info-tip").forEach(t => t.classList.remove("active"));
-          if(willOpen) tip.classList.add("active");
-        });
-      });
+      // toggles
+      const tContrast = document.getElementById("toggle-contrast");
+      const tLarge = document.getElementById("toggle-large");
+      const tVoice = document.getElementById("toggle-voice");
+      const tMotion = document.getElementById("toggle-motion");
 
-      // Toggles
-      function setSwitch(el, on){
-        if(!el) return;
-        el.classList.toggle("active", !!on);
-        el.setAttribute("aria-checked", on ? "true" : "false");
-        const knob = $(".knob", el);
-        if(knob){
-          knob.textContent = on ? "on" : "off";
-        }
+      function setClass(toggle, cls){
+        if(!toggle) return;
+        if(toggle.checked) document.body.classList.add(cls);
+        else document.body.classList.remove(cls);
       }
+      if(tContrast) tContrast.addEventListener("change", ()=> setClass(tContrast, "high-contrast"));
+      if(tLarge) tLarge.addEventListener("change", ()=> setClass(tLarge, "large-text"));
+      if(tVoice) tVoice.addEventListener("change", ()=> setClass(tVoice, "voice-on"));
+      if(tMotion) tMotion.addEventListener("change", ()=> setClass(tMotion, "reduce-motion"));
 
-      const tContrast = $("#toggle-contrast");
-      const tLarge = $("#toggle-large");
-      const tVoice = $("#toggle-voice");
-      const tReduce = $("#toggle-reduce");
+      // ----- Eye tooltips (SE position, store-style dropdown) -----
+      const tipEl = document.getElementById("a11y-tip");
+      let tipTimer = null;
 
-      function bindToggle(el, onChange){
-        if(!el) return;
-        const act = () => onChange(!el.classList.contains("active"));
-        el.addEventListener("click", act);
-        el.addEventListener("keydown", (e) => {
-          if(e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            act();
-          }
-        });
-      }
+      function showTip(anchor, text){
+        if(!tipEl) return;
+        tipEl.textContent = text;
+        tipEl.classList.add("active");
+        tipEl.setAttribute("aria-hidden","false");
 
-      bindToggle(tContrast, (on) => {
-        setSwitch(tContrast, on);
-        document.body.classList.toggle("high-contrast", on);
-      });
-
-      bindToggle(tLarge, (on) => {
-        setSwitch(tLarge, on);
-        document.body.classList.toggle("large-text", on);
-      });
-
-      bindToggle(tVoice, (on) => {
-        setSwitch(tVoice, on);
-        document.body.classList.toggle("voice-on", on);
-        if(!on) hideSpeakPop();
-      });
-
-      bindToggle(tReduce, (on) => {
-        setSwitch(tReduce, on);
-        document.body.classList.toggle("reduce-motion", on);
-      });
-
-      // Image viewer (only for images with .zoomable and not data-nozoom)
-      const viewer = $("#img-viewer");
-      const viewerImg = $("#img-viewer-img");
-      const viewerCaption = $("#img-viewer-caption");
-      const viewerClose = $("#img-viewer-close");
-
-      function openViewer(src, caption){
-        if(!viewer || !viewerImg) return;
-        viewerImg.src = src;
-        viewerImg.alt = caption || "Image";
-        if(viewerCaption) viewerCaption.textContent = caption || "Image";
-        viewer.classList.add("active");
-        viewer.setAttribute("aria-hidden","false");
-        document.body.classList.add("overlay-open");
-        setTimeout(() => viewerClose?.focus(), 0);
-      }
-      function closeViewer(){
-        if(!viewer) return;
-        viewer.classList.remove("active");
-        viewer.setAttribute("aria-hidden","true");
-        document.body.classList.remove("overlay-open");
-        if(viewerImg) viewerImg.src = "";
-      }
-
-      if(viewerClose) viewerClose.addEventListener("click", closeViewer);
-      if(viewer){
-        viewer.addEventListener("click", (e) => {
-          if(e.target === viewer) closeViewer();
-        });
-      }
-
-      $$(".zoomable").forEach(img => {
-        // ignore if inside store (no zoom) or explicitly no zoom
-        if(img.closest("#store-panel")) return;
-        if(img.hasAttribute("data-nozoom")) return;
-
-        const wrap = img.closest(".img-zoom-wrap");
-        const btn = wrap ? $(".zoom-btn", wrap) : null;
-
-        const caption = img.getAttribute("alt") || "Image";
-        const src = img.getAttribute("src");
-
-        const open = () => {
-          if(!src) return;
-          openViewer(src, caption);
-        };
-
-        img.style.cursor = "pointer";
-        img.addEventListener("click", open);
-        if(btn) btn.addEventListener("click", (e) => { e.preventDefault(); open(); });
-      });
-
-      // Paragraph speak buttons (demo: uses Web Speech API if available)
-      function speakText(text){
-        try{
-          if(!("speechSynthesis" in window) || !window.SpeechSynthesisUtterance) return false;
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(text);
-          u.rate = 1.0;
-          u.pitch = 1.0;
-          u.volume = 1.0;
-          window.speechSynthesis.speak(u);
-          return true;
-        }catch(_){
-          return false;
-        }
-      }
-
-      $$("[data-speak-btn]").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          const id = btn.getAttribute("data-speak-btn");
-          if(!id) return;
-          const p = $("#"+id);
-          const text = (p ? p.textContent : "").trim();
-          if(text) speakText(text);
-        });
-      });
-
-      // Selection speak pop (appears to right of highlight; metallic orange square)
-      const speakPop = $("#speak-pop");
-      let lastSelectionText = "";
-
-      function hideSpeakPop(){
-        if(!speakPop) return;
-        speakPop.style.display = "none";
-        lastSelectionText = "";
-      }
-
-      function showSpeakPop(rect, text){
-        if(!speakPop) return;
-        // position just to the right of selection rect
+        const r = anchor.getBoundingClientRect();
         const pad = 8;
-        const x = Math.min(window.innerWidth - 12 - parseInt(getComputedStyle(speakPop).width,10), rect.right + pad);
-        const y = Math.max(12, rect.top + (rect.height/2) - 18);
+        // southeast: below-right of eye, not touching
+        let x = r.right + pad;
+        let y = r.bottom + pad;
+
+        // keep on-screen
+        const maxX = window.innerWidth - tipEl.offsetWidth - 10;
+        const maxY = window.innerHeight - tipEl.offsetHeight - 10;
+        if(x > maxX) x = Math.max(10, r.left - tipEl.offsetWidth - pad);
+        if(y > maxY) y = Math.max(10, r.top - tipEl.offsetHeight - pad);
+
+        tipEl.style.left = x + "px";
+        tipEl.style.top = y + "px";
+      }
+      function hideTip(){
+        if(!tipEl) return;
+        tipEl.classList.remove("active");
+        tipEl.setAttribute("aria-hidden","true");
+      }
+
+      document.querySelectorAll(".eye-tip").forEach(btn=>{
+        const text = btn.getAttribute("data-tip") || "";
+        const enter = ()=>{
+          clearTimeout(tipTimer);
+          showTip(btn, text);
+        };
+        const leave = ()=>{
+          clearTimeout(tipTimer);
+          tipTimer = setTimeout(hideTip, 120);
+        };
+        btn.addEventListener("mouseenter", enter);
+        btn.addEventListener("mouseleave", leave);
+        btn.addEventListener("focus", enter);
+        btn.addEventListener("blur", leave);
+        btn.addEventListener("click", (e)=>{ e.preventDefault(); enter(); });
+      });
+
+      // ----- Image viewer (thin green outline; no blur filler; X fixed right; gallery button left of X) -----
+      const imgViewer = document.getElementById("img-viewer");
+      const imgDim = document.getElementById("img-dim");
+      const imgClose = document.getElementById("img-close");
+      const imgFull = document.getElementById("img-full");
+      const imgTitle = document.getElementById("img-title");
+
+      function openImg(src, alt){
+        if(!imgViewer || !imgFull) return;
+        imgFull.src = src;
+        imgFull.alt = alt || "";
+        if(imgTitle) imgTitle.textContent = (alt || "Image").toUpperCase();
+        imgViewer.classList.add("active");
+        imgViewer.setAttribute("aria-hidden","false");
+        document.body.classList.add("overlay-open");
+      }
+      function closeImg(){
+        if(!imgViewer) return;
+        imgViewer.classList.remove("active");
+        imgViewer.setAttribute("aria-hidden","true");
+        document.body.classList.remove("overlay-open");
+        if(imgFull) imgFull.src = "";
+      }
+      if(imgDim) imgDim.addEventListener("click", closeImg);
+      if(imgClose) imgClose.addEventListener("click", closeImg);
+
+      // open via zoom buttons
+      document.querySelectorAll(".img-zoom-wrap").forEach(wrap=>{
+        const img = wrap.querySelector("img.zoomable");
+        const btn = wrap.querySelector(".zoom-btn");
+        if(!img || !btn) return;
+        btn.addEventListener("click", (e)=>{
+          e.preventDefault();
+          openImg(img.getAttribute("src"), img.getAttribute("alt"));
+        });
+      });
+
+      // ----- Voice tools: paragraph speak buttons + selection speak -----
+      const synth = window.speechSynthesis;
+      function speakText(text){
+        if(!("speechSynthesis" in window)) return;
+        try{ synth.cancel(); }catch(e){}
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 1.0;
+        u.pitch = 1.0;
+        synth.speak(u);
+      }
+
+      // paragraph speak button
+      document.querySelectorAll("[data-speak-btn]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          if(!document.body.classList.contains("voice-on")) return;
+          const id = btn.getAttribute("data-speak-btn");
+          const el = document.getElementById(id);
+          if(el) speakText(el.textContent.trim());
+        });
+      });
+
+      // selection speak bubble (only when voice-on)
+      const speakPop = document.createElement("button");
+      speakPop.type = "button";
+      speakPop.className = "select-speak";
+      speakPop.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 10v4"></path><path d="M7 8v8"></path><path d="M10 6v12"></path>
+          <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path><path d="M17 7c3 3 3 7 0 10"></path>
+        </svg>`;
+      document.body.appendChild(speakPop);
+
+      const speakPopStyle = document.createElement("style");
+      speakPopStyle.textContent = `
+        .select-speak{
+          position:fixed;
+          display:none;
+          width: var(--speakPopSize);
+          height: var(--speakPopSize);
+          border-radius: var(--speakPopR);
+          border: 1px solid var(--cream);
+          background: var(--metal-orange);
+          box-shadow:0 10px 24px rgba(15,23,42,0.20);
+          cursor:pointer;
+          z-index:96;
+          overflow:hidden;
+        }
+        .select-speak::before{
+          content:"";
+          position:absolute;
+          inset:0;
+          background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+          pointer-events:none;
+          mix-blend-mode: soft-light;
+        }
+        .select-speak svg{
+          width:18px; height:18px;
+          stroke: var(--cream);
+          fill:none;
+          stroke-width:2;
+          stroke-linecap:round;
+          stroke-linejoin:round;
+          position:relative;
+          z-index:1;
+        }
+      `;
+      document.head.appendChild(speakPopStyle);
+
+      function hideSpeakPop(){ speakPop.style.display = "none"; }
+      function showSpeakPop(x,y){
         speakPop.style.left = x + "px";
         speakPop.style.top = y + "px";
         speakPop.style.display = "flex";
-        lastSelectionText = text;
+        speakPop.style.alignItems = "center";
+        speakPop.style.justifyContent = "center";
       }
 
-      function selectionRect(sel){
-        try{
-          if(!sel || sel.rangeCount === 0) return null;
-          const r = sel.getRangeAt(0);
-          const rects = r.getClientRects();
-          if(rects && rects.length){
-            // Use last rect for end-of-selection
-            return rects[rects.length - 1];
-          }
-          const rect = r.getBoundingClientRect();
-          if(rect && rect.width) return rect;
-          return null;
-        }catch(_){
-          return null;
-        }
-      }
-
-      function onSelectionChange(){
-        if(!document.body.classList.contains("voice-on")){
-          hideSpeakPop();
-          return;
-        }
+      document.addEventListener("selectionchange", ()=>{
+        if(!document.body.classList.contains("voice-on")) { hideSpeakPop(); return; }
         const sel = window.getSelection();
         if(!sel) { hideSpeakPop(); return; }
         const text = (sel.toString() || "").trim();
-        if(!text || text.length < 2){
-          hideSpeakPop();
-          return;
+        if(text.length < 3){ hideSpeakPop(); return; }
+
+        // position near selection rect
+        let rect = null;
+        try{
+          const range = sel.getRangeAt(0);
+          rect = range.getBoundingClientRect();
+        }catch(e){ rect = null; }
+        if(!rect || rect.width === 0){
+          hideSpeakPop(); return;
         }
-        const rect = selectionRect(sel);
-        if(!rect){ hideSpeakPop(); return; }
-
-        // avoid if selection is inside inputs/buttons
-        const anchor = sel.anchorNode;
-        if(anchor && anchor.parentElement){
-          const p = anchor.parentElement.closest("input,textarea,button,select");
-          if(p){ hideSpeakPop(); return; }
-        }
-
-        showSpeakPop(rect, text);
-      }
-
-      document.addEventListener("selectionchange", () => {
-        clearTimeout(window.__selT);
-        window.__selT = setTimeout(onSelectionChange, 40);
+        const x = Math.min(window.innerWidth - 50, Math.max(10, rect.right + 10));
+        const y = Math.min(window.innerHeight - 50, Math.max(10, rect.top - 10));
+        showSpeakPop(x, y);
       });
 
-      if(speakPop){
-        speakPop.addEventListener("click", (e) => {
-          e.preventDefault();
-          if(lastSelectionText) speakText(lastSelectionText);
-          hideSpeakPop();
+      speakPop.addEventListener("click", ()=>{
+        const sel = window.getSelection();
+        const text = sel ? (sel.toString() || "").trim() : "";
+        if(text) speakText(text);
+      });
+
+      // hide on scroll/resize
+      window.addEventListener("scroll", hideSpeakPop, { passive:true });
+      window.addEventListener("resize", hideSpeakPop);
+
+      // ----- Mobile menu button (simple: scroll to top + focus nav fallback) -----
+      const mobileBtn = document.getElementById("mobile-menu-btn");
+      if(mobileBtn){
+        mobileBtn.addEventListener("click", ()=>{
+          // simplest: jump to top so user sees header; real mobile menu can be added later
+          window.scrollTo({ top: 0, behavior: document.body.classList.contains("reduce-motion") ? "auto" : "smooth" });
         });
       }
 
-      // Close selection speak pop on click elsewhere
-      document.addEventListener("mousedown", (e) => {
-        if(!speakPop) return;
-        if(e.target === speakPop || speakPop.contains(e.target)) return;
-        hideSpeakPop();
+      // ----- ESC to close overlays -----
+      document.addEventListener("keydown", (e)=>{
+        if(e.key !== "Escape") return;
+        if(imgViewer && imgViewer.classList.contains("active")) closeImg();
+        if(a11yOverlay && a11yOverlay.classList.contains("active")) closeA11y();
+        if(cartOverlay && cartOverlay.classList.contains("active")) closeCart();
       });
 
-      // Initialize UI state
-      renderCart();
-
-      // Honor prefers-reduced-motion by default
-      if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-        document.body.classList.add("reduce-motion");
-        setSwitch(tReduce, true);
-      }
-
+      // ----- Newsletter rectangle request -----
+      // If your newsletter section exists on this page in other versions, it can be given the same outline
+      // (left for your next edit if you re-add a newsletter block on this page).
     })();
   </script>
 

@@ -5,6 +5,17 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
+  <!-- Prevent hero animation from replaying after refresh -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("hero_anim_played") === "1") {
+          document.documentElement.classList.add("anim-skip");
+        }
+      } catch (_) {}
+    })();
+  </script>
+
   <title>The MayaNut Company | America’s Premier MayaNut Farm</title>
   <meta name="description" content="The MayaNut Company is building America’s premier MayaNut (Brosimum alicastrum) farm in South Florida—growing seed-grown trees, developing products, and creating a new industry from the ground up." />
   <meta name="keywords" content="MayaNut, Brosimum alicastrum, South Florida agriculture, MayaNut powder, Florida farm, tropical agriculture, perennial crop, roasted MayaNut, caffeine-free" />
@@ -39,9 +50,12 @@
   <link rel="manifest" href="site.webmanifest" />
   <meta name="theme-color" content="#1a6800" />
 
+  <!-- Image perf -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" fetchpriority="high" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" fetchpriority="high" />
   <link rel="preload" as="image" href="maya-nut-mayanut-plant-tree-nursery.jpg" fetchpriority="high" />
+  <link rel="preconnect" href="https://www.instagram.com" crossorigin />
+  <link rel="preconnect" href="https://x.com" crossorigin />
 
   <script type="application/ld+json">
   {
@@ -90,7 +104,7 @@
       --green-deep:#0f4d1f;
 
       --tan:#f3e6d1;
-      --tan-top:#c9a981; /* darker brown at top */
+      --tan-top:#b89063; /* darker top */
       --tan-top2:#e7d5b6;
 
       --orange:#fd6c02;
@@ -118,8 +132,6 @@
 
       --match-blue: rgba(0, 255, 234, 0.28);
       --nonmatch-red: rgba(255, 0, 0, 0.16);
-
-      --stickyOffset: 132px;
 
       --outlineW: 2px;
       --outlineR: 16px;
@@ -165,7 +177,7 @@
     html,body{ height:100%; min-height:100%; }
     html{
       background: var(--tan);
-      scroll-padding-top: calc(var(--stickyOffset) + 12px);
+      scroll-padding-top: 140px;
     }
     body{
       font-family: var(--font-sans);
@@ -199,6 +211,7 @@
       border-radius: 10px;
     }
 
+    /* Keep class for elsewhere, but do not use in hero paragraph */
     .brand-orange{ color:var(--orange); font-weight:900; }
     em.brand-orange{ font-style:italic; }
 
@@ -212,10 +225,13 @@
       border-color:#000 !important;
       box-shadow:none !important;
     }
-    body.large-text{ font-size:120%; }
+    body.large-text{ font-size:125%; }
     body.large-text .hero-sub{ font-size:16px; }
     body.large-text .product-text{ font-size:13px; }
     body.large-text .main-nav a{ font-size:15px; }
+    body.large-text .store-title{ font-size:15px; }
+    body.large-text .about-text{ font-size:15px; }
+    body.large-text .footer-inner{ font-size:12px; }
 
     body.overlay-open{ overflow:hidden; }
 
@@ -241,23 +257,21 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      padding-top: var(--stickyOffset);
+      padding-top: 0; /* prevents initial cut-off/jump */
     }
 
+    /* Sticky instead of fixed to prevent layout jump and top text cut-off */
     .sticky-top{
-      position:fixed;
+      position:sticky;
       top:0;
       z-index:999;
       background:transparent;
-      left: var(--sideW);
-      right: var(--sideW);
       padding-top: env(safe-area-inset-top);
     }
     @media(max-width:780px){
       .sticky-top{ left:0; right:0; }
     }
 
-    /* Banner slightly bigger; flag emoji larger */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
@@ -269,6 +283,7 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: var(--frameBorder) solid var(--frame-line);
+      border-bottom: 0; /* removes tan seam */
     }
     .top-banner .banner-text{
       font-size:13px;
@@ -307,6 +322,7 @@
       position:relative;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
+      border-top: 0; /* removes tan seam */
       box-shadow:0 10px 24px rgba(15,23,42,0.10);
     }
 
@@ -316,9 +332,6 @@
       background:var(--green);
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
-    }
-    @media(max-width:780px){
-      .top-sep{ height:1px; }
     }
 
     .header-left{
@@ -347,7 +360,6 @@
       padding: 0 22px;
     }
 
-    /* top menu tabs slightly further apart */
     .main-nav{
       display:flex;
       align-items:center;
@@ -376,7 +388,6 @@
 
     .nav-item{ position:relative; display:inline-flex; align-items:center; }
 
-    /* Submenu: outlined thin dark green + no hover gap (bridge) */
     .submenu{
       position:absolute;
       top:100%;
@@ -486,7 +497,6 @@
       background:#0f172a;
     }
 
-    /* MAIN: darker brown to tan by ~20% */
     main{
       position:relative;
       z-index:1;
@@ -496,8 +506,8 @@
       background: linear-gradient(
         to bottom,
         var(--tan-top) 0%,
-        var(--tan-top2) 10%,
-        var(--tan) 22%,
+        var(--tan-top2) 6%,
+        var(--tan) 18%,
         var(--tan) 100%
       );
     }
@@ -507,8 +517,6 @@
       overflow-x:hidden;
       background: transparent;
     }
-
-    #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
     /* HERO */
     #hero{
@@ -547,11 +555,17 @@
       align-items:flex-end;
     }
 
-    /* Slide-in animation (medium pace) */
+    /* Animation slower + only once (localStorage) */
     .hero-top{
       opacity:0;
       transform: translateX(-42px);
-      animation: heroSlideIn 0.85s ease-out 0.12s forwards;
+      animation: heroSlideIn 1.2s ease-out 0.12s forwards;
+      will-change: transform, opacity;
+    }
+    .anim-skip .hero-top{
+      opacity:1 !important;
+      transform:none !important;
+      animation:none !important;
     }
     @keyframes heroSlideIn{
       to{ opacity:1; transform: translateX(0); }
@@ -591,7 +605,7 @@
       font-weight: 800;
       font-size: clamp(17px, 1.75vw, 24px);
       line-height:1.05;
-      color:var(--orange);
+      color:#0f4d1f;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:clip;
@@ -605,7 +619,6 @@
     }
     .poke{ font-size: 1.14em; line-height: 1; transform: translateY(1px); display:inline-block; }
 
-    /* Expand button: upper LEFT for non-store images */
     .img-zoom-wrap{
       position:relative;
       display:block;
@@ -616,8 +629,6 @@
       position:absolute;
       left:10px;
       top:10px;
-      right:auto;
-      bottom:auto;
       width:34px;
       height:34px;
       border-radius:12px;
@@ -652,7 +663,6 @@
       position:relative;
       z-index:1;
     }
-    .zoom-btn:active{ transform: translateY(1px); }
 
     .hero-images img{
       width:100%;
@@ -666,7 +676,6 @@
 
     .speak-block{ position:relative; overflow:visible; }
 
-    /* Retro italic + green gradient text for the top paragraph */
     .hero-sub{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -680,12 +689,10 @@
       position:relative;
       overflow:hidden;
     }
+    /* Darker green (about 20% lime / 80% dark) and no orange words */
     .hero-sub .gtext{
-      background: linear-gradient(180deg, var(--store-g1) 0%, #58d979 45%, var(--store-g3) 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      font-weight: 850;
+      color:#0f4d1f;
+      font-weight: 900;
       letter-spacing: 0.01em;
     }
 
@@ -776,9 +783,7 @@
       position:relative;
       z-index:2;
       box-shadow: 0 14px 40px rgba(15,23,42,0.18);
-      overflow:visible;
-      will-change: transform;
-      height:100%;
+      overflow:hidden; /* keeps it from getting visually “too tall” */
       align-self:stretch;
     }
 
@@ -975,12 +980,10 @@
     }
     .sort-btn svg{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; position:relative; }
 
-    /* Sort popup left-aligned to the sort button */
     .sort-menu{
       position:absolute;
       top:38px;
       left:0;
-      right:auto;
       width:220px;
       border-radius:14px;
       border:2px solid var(--frame-line);
@@ -1006,14 +1009,6 @@
       position:relative;
     }
     .sort-menu button:hover{ background: rgba(255,255,255,0.16); }
-    .sort-menu button:not(:last-child)::after{
-      content:"";
-      position:absolute;
-      left:10px; right:10px; bottom:-2px;
-      height:1px;
-      background: rgba(12, 90, 42, 0.75);
-      border-radius:999px;
-    }
     .sort-wrap.open .sort-menu{ display:block; }
 
     .store-grid{
@@ -1023,6 +1018,8 @@
       gap:12px;
       width:100%;
     }
+    /* Always show 4 (2x2) when not expanded */
+    body:not(.store-expanded) .product-card:nth-child(n+5){ display:none; }
 
     .product-card{
       border-radius: var(--r-card);
@@ -1043,10 +1040,7 @@
     .product-card.is-nonmatch{ background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--nonmatch-red)); }
 
     .product-card .img-zoom-wrap{ width:104px; height:104px; margin-top:4px; margin-bottom:10px; }
-
-    /* Store images: remove expand icons entirely */
-    .product-card .zoom-btn{ display:none !important; }
-
+    .product-card .zoom-btn{ display:none !important; } /* no expand icons in store */
     .product-card img{
       width:104px;
       height:104px;
@@ -1082,11 +1076,10 @@
       max-width: 160px;
       justify-content:center;
     }
+
     .qty-minus, .qty-plus{
-      width:var(--qtyBtn);
-      height:var(--qtyBtn);
-      min-width:var(--qtyBtn);
-      min-height:var(--qtyBtn);
+      width:28px;
+      height:28px;
       border: 1px solid var(--cream);
       border-radius:10px;
       background: var(--metal-orange);
@@ -1116,8 +1109,8 @@
     .qty-minus:hover, .qty-plus:hover{ transform: translateY(-1px); filter:saturate(1.04) contrast(1.04); }
 
     .qty-input{
-      width: var(--qtyInputW);
-      height: var(--qtyBtn);
+      width: 44px;
+      height: 28px;
       border-radius:10px;
       border:1px solid rgba(15,23,42,0.12);
       background: rgba(255,255,255,0.70);
@@ -1134,7 +1127,7 @@
 
     .btn-buy{
       min-width:60px;
-      height:var(--qtyBtn);
+      height:28px;
       border: 1px solid var(--cream);
       border-radius:10px;
       background: var(--metal-orange);
@@ -1164,10 +1157,9 @@
       mix-blend-mode: soft-light;
     }
     .btn-buy:hover{ transform: translateY(-1px); filter:saturate(1.04) contrast(1.04); }
-    .btn-buy:hover .btn-text{ transform: scale(1.05); }
-    .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
+    .btn-buy .btn-text{ position:relative; display:inline-block; }
 
-    /* Expand to cover left side on desktop/tablet; only down on mobile */
+    /* Expanded: overlay wide, show 8 in 2 rows (4x2) */
     @media(min-width:781px){
       body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
@@ -1178,10 +1170,10 @@
         width:auto;
         z-index:6;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
-        min-height:100%;
       }
       body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; height:0; overflow:hidden; }
+      body.store-expanded .product-card{ display:flex; }
     }
 
     /* ABOUT */
@@ -1219,7 +1211,7 @@
       box-shadow: 0 14px 40px rgba(15,23,42,0.10);
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:12px;
       background: transparent;
       border:1px solid rgba(15,23,42,0.10);
     }
@@ -1238,57 +1230,35 @@
       font-size:14px;
       line-height:1.9;
       color:#000;
-      font-weight:850;
+      font-weight:900;
       letter-spacing:0.01em;
       background: var(--panel-green-grad);
       border-radius:18px;
-      padding:13px 14px 14px;
+      padding:13px 14px 54px; /* room for bottom-right button */
       border:1px solid var(--frame-line);
       position:relative;
       overflow:visible;
       text-shadow:none;
     }
-    .about-text::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; border-radius:18px; }
+    .about-text::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,0.18);
+      pointer-events:none;
+      border-radius:18px;
+    }
     .about-text > *{ position:relative; }
 
-    .about-long{
-      margin-top:14px;
-      padding:14px 14px 16px;
-      border-radius:22px;
-      border:1px solid var(--frame-line);
-      box-shadow: 0 14px 40px rgba(15,23,42,0.08);
-      font-size:14px;
-      line-height:1.9;
-      font-weight:850;
-      letter-spacing:0.01em;
-      background: var(--panel-green-grad);
-      color:#000;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      justify-content:space-between;
-      position:relative;
-      overflow:visible;
-      text-shadow:none;
-    }
-    .about-long::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; border-radius:22px; }
-    .about-long > *{ position:relative; }
-    .about-long .about-long-text{ flex:1; min-width:0; }
-
-    .about-nav{
-      flex:0 0 auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-left:10px;
-    }
-    .about-nav a{
-      text-decoration:none;
+    .about-cta{
+      position:absolute;
+      right:12px;
+      bottom:10px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:40px;
-      padding:10px 14px;
+      min-height:38px;
+      padding:8px 12px;
       border-radius:12px;
       background: var(--metal-orange);
       border: 1px solid var(--cream);
@@ -1297,433 +1267,14 @@
       letter-spacing:0.12em;
       text-transform:uppercase;
       font-size:12px;
-      white-space:nowrap;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .about-nav a::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .about-nav a span{ position:relative; }
-
-    /* Footer */
-    footer{
-      width:100%;
-      background: var(--panel-green-grad);
-      padding:16px 22px 22px;
-      border-left: var(--frameBorder) solid var(--frame-line);
-      border-right: var(--frameBorder) solid var(--frame-line);
-      border-bottom: var(--frameBorder) solid var(--frame-line);
-      color:#0f172a;
-    }
-    .footer-inner{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      align-items:center;
-      column-gap:14px;
-      font-size:11px;
-      max-width:1200px;
-      margin:0 auto;
-    }
-    .footer-left{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
-      color:#000;
-      font-weight:950;
-    }
-    .footer-logo-mark{
-      width:120px;
-      height:auto;
-      display:block;
-      filter: drop-shadow(0 8px 16px rgba(15,23,42,0.14));
-      border-radius:12px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      flex:0 0 auto;
-    }
-    .footer-stack{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .footer-based{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      flex-wrap:wrap;
-    }
-    .footer-links{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .footer-links a{
-      color:#000;
       text-decoration:none;
-      border-bottom:1px dotted rgba(15,23,42,0.45);
-      font-weight:950;
-    }
-    .footer-right{
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:12px;
-    }
-
-    .icon-pill{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      position:relative;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      text-decoration:none;
-    }
-    .icon-pill::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .icon-pill svg{
-      width:22px;
-      height:22px;
-      stroke:var(--cream);
-      fill:none;
-      stroke-width:2;
-      position:relative;
-      z-index:1;
-    }
-
-    /* Accessibility button + overlays */
-    .accessibility-btn{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      width:48px;
-      height:48px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.35);
-      background:var(--a11y-blue);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      z-index:70;
-      box-shadow:0 10px 25px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-    .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(255,255,255,0.18);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:60;
-      padding:16px;
-    }
-    .overlay.active{ display:flex; }
-
-    .overlay-panel{
-      width:100%;
-      max-width:460px;
-      border-radius:18px;
-      padding:18px 16px 18px;
-      box-shadow:0 20px 60px rgba(15,23,42,0.25);
-      border: var(--outlineW) solid var(--frame-line);
-      background: var(--store-green-grad);
-      position:relative;
-    }
-    .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
-    .overlay-title{ font-size:14px; font-weight:950; color:#0b1220; }
-    .overlay-version{ font-size:11px; color:#0b1220; letter-spacing:0.08em; text-transform:uppercase; font-weight:950; opacity:0.92; }
-
-    .overlay-close{
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      width:34px;
-      height:34px;
-      border-radius:12px;
-      cursor:pointer;
-      line-height:1;
-      color: var(--cream);
-      font-size:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
       overflow:hidden;
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
-    }
-    .overlay-close::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .overlay-close span{ position:relative; }
-
-    .a11y-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .a11y-logo-link{ display:inline-flex; align-items:center; text-decoration:none; }
-    .a11y-logo{
-      width:120px;
-      height:auto;
-      filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
-      border-radius:12px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .a11y-social{ display:flex; align-items:center; gap:10px; }
-
-    .settings-row{
-      margin-bottom:12px;
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color:#0b1220;
-      font-weight:950;
-      position:relative;
-    }
-
-    .a11y-lang-btn{
-      width:100%;
-      height:40px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .a11y-lang-btn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .a11y-lang-btn span{ position:relative; }
-
-    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
-
-    .toggle-input{
-      width:54px;
-      height:26px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: rgba(255, 0, 0, 0.16);
-      position:relative;
-      cursor:pointer;
-      flex:0 0 auto;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .toggle-input .knob{
-      position:absolute;
-      top:2px; left:2px;
-      width:22px; height:22px;
-      border-radius:999px;
-      background: var(--cream);
-      transition:transform 0.2s ease;
-      box-shadow:0 2px 8px rgba(15,23,42,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:9px;
-      font-weight:950;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      user-select:none;
-      color:#b91c1c;
-    }
-    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
-    .toggle-input.active .knob{ transform:translateX(28px); color:#15803d; }
-
-    .info-dot{
-      width:18px; height:18px;
-      border-radius:999px;
-      border:1px solid rgba(15,77,31,0.55);
-      background: rgba(255,255,255,0.70);
-      color:#0b1220;
-      font-weight:950;
-      font-size:12px;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      flex:0 0 auto;
-    }
-    .info-tip{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      width: min(380px, 92vw);
-      border-radius:14px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 55px rgba(15,23,42,0.22);
-      padding:10px 10px;
-      display:none;
-      z-index:80;
-      color:#0b1220;
-      font-size:12px;
-      line-height:1.6;
-      font-weight:900;
-    }
-    .info-tip strong{ letter-spacing:0.10em; text-transform:uppercase; font-size:11px; display:block; margin-bottom:6px; }
-    .info-tip .small{ opacity:0.92; font-weight:900; }
-    .info-tip.active{ display:block; }
-
-    .mobile-nav{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-    }
-    .mobile-nav a{
-      text-decoration:none;
-      color:#0b1220;
-      padding:10px 10px;
-      font-weight:950;
-      border:2px solid var(--frame-line);
-      border-radius:12px;
-      background: rgba(255,255,255,0.14);
-    }
-
-    /* Full image viewer */
-    .img-viewer-overlay{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 16px;
-    }
-    .img-viewer-overlay.active{ display:flex; }
-    .img-viewer-panel{
-      position:relative;
-      width: min(1100px, 96vw);
-      max-height: 92vh;
-      border-radius: 18px;
-      border: 2px solid rgba(255,255,255,0.20);
-      background: rgba(255,255,255,0.10);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
-      overflow:hidden;
-    }
-    .img-viewer-topbar{
-      position:absolute;
-      top:10px;
-      right:10px;
-      left:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      pointer-events:none;
       z-index:2;
     }
-    .img-viewer-caption{
-      pointer-events:none;
-      color: rgba(255,255,255,0.92);
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      max-width: 70%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .img-viewer-close{
-      pointer-events:auto;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      width:38px;
-      height:38px;
-      border-radius:14px;
-      cursor:pointer;
-      color: var(--cream);
-      font-size:20px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      box-shadow:0 14px 40px rgba(0,0,0,0.25);
-    }
-    .img-viewer-close::before{
+    .about-cta::before{
       content:"";
       position:absolute;
       inset:0;
@@ -1731,46 +1282,63 @@
       pointer-events:none;
       mix-blend-mode: soft-light;
     }
-    .img-viewer-close span{ position:relative; }
-    .img-viewer-img{
-      width:100%;
-      height:100%;
-      max-height: 92vh;
-      object-fit: contain;
-      display:block;
-      border-radius:18px;
-      touch-action: pan-x pan-y;
-      background: rgba(0,0,0,0.18);
-    }
+    .about-cta span{ position:relative; }
 
-    /* Selection Speak Button */
-    .speak-pop{
-      position:fixed;
-      z-index:10000;
-      width:38px;
-      height:38px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.25);
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 12px 30px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
+    .about-bottom-img img{ height:210px; }
+
+    /* Newsletter strip */
+    .newsletter-strip{
+      max-width:1200px;
+      margin:18px auto 0;
+      border-radius:18px;
+      border: var(--outlineW) solid var(--frame-line);
+      overflow:hidden;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.10);
+      background-image:url("menuart-the-maya-nut-company-art.jpeg");
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
     }
-    .speak-pop svg{
-      width:20px;
-      height:20px;
-      stroke:#ffffc5;
-      fill:none;
-      stroke-width:2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
+    .newsletter-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 12px; /* similar thickness to menu tab area */
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      background: rgba(255,255,255,0.30);
+    }
+    .newsletter-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .newsletter-logo{
+      width:120px;
+      height:auto;
+      filter: drop-shadow(0 8px 16px rgba(15,23,42,0.14));
+      border-radius:12px;
+    }
+    .newsletter-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      min-width:0;
+    }
+    .newsletter-input{
+      width:min(320px, 54vw);
+      height:40px;
+      border-radius:999px;
+      border:1px solid var(--frame-line);
+      padding:0 14px;
+      background: rgba(255,255,255,0.82);
+      outline:none;
+      font-weight:850;
+      color:#0b1220;
     }
 
     /* Responsive */
@@ -1782,13 +1350,12 @@
         margin-left: var(--sideW);
         margin-right: var(--sideW);
       }
-      .sticky-top{ left: var(--sideW); right: var(--sideW); }
     }
 
     @media(max-width:780px){
       .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
-      .top-banner,.site-header,.top-sep,main,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
+      .frame-wrap{ width:100% !important; margin:0 !important; padding-top:0; }
+      .top-banner,.site-header,.top-sep,main,.bottom-sep{ border-left:none !important; border-right:none !important; }
       html,body{ overflow-x:hidden; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
 
@@ -1804,49 +1371,36 @@
       #store-view-full{ grid-column: 1 / -1; width:100%; }
       .store-search{ grid-column: 1 / 2; min-width:0 !important; }
       .cart-btn{ grid-column: 2 / 3; width:44px; height:44px; justify-self:end; }
-      body.store-expanded .sort-wrap{ grid-column: 1 / -1; width:100%; justify-content:flex-end; }
 
       #hero{ grid-template-columns: 1fr; gap:16px; align-items:start; }
 
       .store-grid{
-        display:flex;
-        overflow-x:auto;
-        -webkit-overflow-scrolling:touch;
+        display:grid;
+        grid-template-columns: 1fr 1fr; /* keep 2x2 feel */
         gap:12px;
-        padding-bottom:10px;
-        scroll-snap-type:x mandatory;
       }
-      .product-card{ flex:0 0 88%; min-height:228px; scroll-snap-align:start; }
 
       body.store-expanded .store-grid{
-        display:grid !important;
-        grid-template-columns:1fr;
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-        max-height:70vh;
-        gap:12px;
-        width:100%;
+        grid-template-columns: 1fr 1fr; /* still 4 across not possible on mobile; keep tidy */
       }
-      body.store-expanded .product-card{ flex:unset !important; width:100%; }
-      body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
-      .banner-flag{ font-size:1.35em; }
+      .about-grid{ grid-template-columns:1fr; }
+      .newsletter-inner{ flex-direction:column; align-items:flex-start; gap:10px; }
+      .newsletter-right{ width:100%; justify-content:flex-start; }
+      .newsletter-input{ width:100%; }
     }
 
     @media(max-width:880px){
       .site-header{ padding:6px 12px; }
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
-      .about-grid{ grid-template-columns:1fr; }
-      .about-card img{ height:240px; }
     }
 
     @media(max-width:520px){
       .hero-images{ grid-template-columns:1fr; }
       .hero-title .line.topline{ white-space:normal; }
       .hero-title .line.bottomline{ white-space:normal; overflow:visible; align-items:flex-start; }
-      .img-viewer-caption{ display:none; }
-      .hero-top{ animation-duration:0.9s; }
+      .hero-top{ animation-duration:1.25s; }
     }
   </style>
 </head>
@@ -1923,7 +1477,7 @@
       <div class="content-wrapper">
         <section id="hero" aria-label="Hero">
           <div class="hero-left" aria-label="Hero left content">
-            <div class="hero-top">
+            <div class="hero-top" id="hero-top">
               <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
               <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
                 <span class="line topline">Aromatic &amp; Delicious.</span>
@@ -1941,7 +1495,7 @@
                 </button>
                 <p class="hero-sub" id="para-hero-1">
                   <span class="gtext">
-                    MayaNut is an ancient, elusive seed from the tropical tree <em class="brand-orange">Brosimum alicastrum</em>. For centuries, the Mayan people used this seed as food, but hasn’t until recently been rediscovered—which we will soon offer for sale. Discover the soothing flavor of <span class="brand-orange">MayaNut</span>, a chocolate and coffee tasting powder, which can be used in a variety of tasty foods, drinks, and other products. Founded in 2025, we are in the early stages of growing <span class="brand-orange">MayaNut</span> as a long-term agricultural crop in Florida, United States, prioritizing the development of <span class="brand-orange">MayaNut</span> (<em class="brand-orange">Brosimum alicastrum</em>) farms to benefit South Florida agriculture and create a new industry from the ground up, literally.
+                    MayaNut is an ancient, elusive seed from the tropical tree Brosimum alicastrum. For centuries, the Mayan people used this seed as food. We will soon offer it for sale. Discover the soothing flavor of MayaNut, a chocolate and coffee tasting powder used in foods, drinks, and future products. Founded in 2025, we are growing MayaNut as a long-term agricultural crop in Florida, United States, prioritizing the development of Brosimum alicastrum farms to strengthen South Florida agriculture and create a new industry from the ground up.
                   </span>
                 </p>
               </div>
@@ -2033,13 +1587,13 @@
             </div>
 
             <div class="store-grid" id="store-grid">
-              <!-- 8 items for expanded desktop (2 rows of 4) -->
+              <!-- Keep 8 items in DOM; CSS shows 4 by default and all 8 when expanded -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Powder</div>
+                <div class="product-name">MayaNut Powder</div>
                 <p class="product-text">Roasted seed powder — smooth, caffeine-free, ready to mix.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="powder">
@@ -2053,10 +1607,10 @@
 
               <article class="product-card" data-name="instant latte" data-title="Instant Latte">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut instant latte concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut instant latte concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Instant Latte</div>
+                <div class="product-name">MayaNut Instant Latte</div>
                 <p class="product-text">Future concept for warm, creamy cups.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="latte">
@@ -2070,10 +1624,10 @@
 
               <article class="product-card" data-name="baking blend" data-title="Baking Blend">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut baking blend concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut baking blend concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Baking Blend</div>
+                <div class="product-name">MayaNut Baking Blend</div>
                 <p class="product-text">Concept for cookies, bars, and breads.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
@@ -2087,10 +1641,10 @@
 
               <article class="product-card" data-name="cold drink" data-title="Cold Drink">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cold drink concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cold drink concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Cold Drink</div>
+                <div class="product-name">MayaNut Cold Drink</div>
                 <p class="product-text">Future concept — smooth, tree-based, and refreshing.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cold-drink">
@@ -2104,10 +1658,10 @@
 
               <article class="product-card" data-name="pods" data-title="Brew Pods">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut brew pods concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut brew pods concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Brew Pods</div>
+                <div class="product-name">MayaNut Brew Pods</div>
                 <p class="product-text">Concept pods for quick brewing — simple and smooth.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="pods">
@@ -2121,10 +1675,10 @@
 
               <article class="product-card" data-name="cocoa blend" data-title="Cocoa Blend">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cocoa blend concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cocoa blend concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Cocoa Blend</div>
+                <div class="product-name">MayaNut Cocoa Blend</div>
                 <p class="product-text">Future concept for rich, dessert-ready mixes.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="cocoa">
@@ -2138,10 +1692,10 @@
 
               <article class="product-card" data-name="shirt" data-title="T-Shirt">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut t-shirt concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut t-shirt concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> T-Shirt</div>
+                <div class="product-name">MayaNut T-Shirt</div>
                 <p class="product-text">Future merch concept — clean, simple, iconic.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="shirt">
@@ -2155,10 +1709,10 @@
 
               <article class="product-card" data-name="mug" data-title="Mug">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut mug concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut mug concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
-                <div class="product-name"><span class="brand-orange">MayaNut</span> Mug</div>
+                <div class="product-name">MayaNut Mug</div>
                 <p class="product-text">Concept merch — for warm cups and future brews.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="mug">
@@ -2188,17 +1742,22 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
                 </button>
               </div>
+
               <div class="speak-block" data-speak="para-about-1">
                 <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-1">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
                 </button>
                 <p class="about-text" id="para-about-1">
-                  Founded in 2025 by <strong>August Kokus</strong>, <span class="brand-orange">The MayaNut Company</span>
-                  stands on a multi-generation family tradition of fruit cultivation in the United States. August’s great-grandfather,
-                  Herbert “<strong>Bubba</strong>” Humphries, was an early pioneer of Florida citrus in the early 1920s.
-                  Building on that history, <strong>August Kokus</strong> is introducing a new crop—
-                  <strong><span class="brand-orange">MayaNut</span></strong> (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture.
+                  Founded in 2025 by <strong>August Kokus</strong>, The MayaNut Company builds on a multi-generation family tradition of fruit cultivation in the United States. August’s great-grandfather, Herbert “<strong>Bubba</strong>” Humphries, helped pioneer Florida citrus in the early 1920s. That same long-term farming mindset guides the company’s mission: establish Brosimum alicastrum as a resilient, long-term agricultural food source.
+                  <a class="about-cta" href="about.html" aria-label="Go to About page"><span>About</span></a>
                 </p>
+              </div>
+
+              <div class="about-bottom-img img-zoom-wrap">
+                <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut trees in nursery (additional photo)" width="1200" height="800" loading="lazy" decoding="async" class="zoomable" />
+                <button class="zoom-btn" type="button" aria-label="Expand image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
+                </button>
               </div>
             </article>
 
@@ -2209,906 +1768,35 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
                 </button>
               </div>
+
               <div class="speak-block" data-speak="para-about-2">
                 <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-2">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
                 </button>
                 <p class="about-text" id="para-about-2">
-                  <strong>August Kokus</strong> is working in South Florida to establish <em class="brand-orange">Brosimum alicastrum</em>
-                  as a new agricultural cornerstone. As the citrus industry continues to decline, Florida must look toward new long-term perennial crops to support its agricultural future.
-                  <strong>August</strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree—while helping ensure the preservation of <em class="brand-orange">Brosimum alicastrum</em> for future generations.
+                  <strong>August Kokus</strong> is developing Brosimum alicastrum for both agricultural and scientific aims in South Florida. As citrus continues to decline, Florida needs new long-term perennial crops to support its agricultural future. By growing these trees, we can do something new and unique that nobody else thought to do—while helping preserve the species for future generations.
+                  <a class="about-cta" href="research.html" aria-label="Go to Research page"><span>Research</span></a>
                 </p>
+              </div>
+
+              <div class="about-bottom-img img-zoom-wrap">
+                <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut fruit on tree (additional photo)" width="1200" height="800" loading="lazy" decoding="async" class="zoomable" />
+                <button class="zoom-btn" type="button" aria-label="Expand image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
+                </button>
               </div>
             </article>
           </div>
 
-          <div class="about-long speak-block" data-speak="para-about-3">
-            <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-3">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
-            </button>
-
-            <div class="about-long-text" id="para-about-3">
-              <span class="brand-orange">The MayaNut Company</span> actively works to establish <span class="brand-orange">Brosimum alicastrum</span>
-              as a long-term agricultural food source. <span class="brand-orange">August Kokus</span> develops this species for both agricultural and scientific aims.
-              <br /><br />
-              By growing these trees, we can do something new and unique that nobody else thought to do.
-              We hope you love <span class="brand-orange">MayaNut</span> as much as we do!
-            </div>
-
-            <div class="about-nav" aria-label="Quick navigation">
-              <a href="about.html"><span>About</span></a>
-              <a href="research.html"><span>Research</span></a>
+          <div class="newsletter-strip" aria-label="Newsletter signup">
+            <div class="newsletter-inner">
+              <div class="newsletter-left">
+                <img class="newsletter-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="120" height="45" loading="lazy" decoding="async" />
+              </div>
+              <div class="newsletter-right">
+                <input class="newsletter-input" id="newsletter-email" type="email" autocomplete="email" inputmode="email" placeholder="Sign up for our newsletter" aria-label="Email for newsletter signup" />
+                <button class="btn" id="newsletter-subscribe" type="button" aria-label="Subscribe"><span class="btn-text">Subscribe</span></button>
+              </div>
             </div>
           </div>
         </section>
-
-      </div>
-    </main>
-
-    <div class="bottom-sep"></div>
-
-    <footer>
-      <div class="footer-inner">
-        <div class="footer-left">
-          <img class="footer-logo-mark" id="logo-footer" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="120" height="45" loading="lazy" decoding="async" data-nozoom="1" />
-          <div class="footer-stack" aria-label="Footer info">
-            <div class="footer-based" aria-label="Based in Florida">
-              <img class="flag" src="american-flag-the-maya-nut-company.svg" alt="United States flag" width="24" height="16" loading="lazy" decoding="async" data-nozoom="1" />
-              <span>Based in Florida</span>
-              <img class="florida" src="florida-image-the-maya-nut-company.png" alt="Florida silhouette" width="26" height="20" loading="lazy" decoding="async" data-nozoom="1" />
-            </div>
-            <div class="footer-links" aria-label="Footer links">
-              <a href="privacy.html" id="link-privacy">Privacy</a>
-              <a href="terms.html" id="link-terms">Terms of Service</a>
-            </div>
-            <div>© 2026 The MayaNut Company, Inc.</div>
-          </div>
-        </div>
-
-        <div class="footer-right" aria-label="Footer social">
-          <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email The MayaNut Company">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"></rect><path d="M5.5 7.5L12 12.5L18.5 7.5"></path></svg>
-          </a>
-
-          <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X (Twitter) @mayanutcompany">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4.2l3.1 4.3L17.2 5H20l-5.4 7.1L20.6 19H16.5l-3.5-4.8L8.9 19H6l5.9-7.7L6 5z"></path></svg>
-          </a>
-
-          <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.3" cy="6.7" r="0.9"></circle></svg>
-          </a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="5" r="2"></circle>
-      <path d="M4.8 9h14.4"></path>
-      <path d="M9.2 9l1.4 4.2"></path>
-      <path d="M14.8 9l-1.4 4.2"></path>
-      <path d="M10.4 13.2l-1.4 8"></path>
-      <path d="M13.6 13.2l1.4 8"></path>
-      <path d="M10.8 16h2.4"></path>
-    </svg>
-  </button>
-
-  <!-- Accessibility Overlay -->
-  <div class="overlay" id="accessibility-overlay" aria-hidden="true">
-    <div class="overlay-panel" role="dialog" aria-modal="true" aria-label="Accessibility and language">
-      <div class="overlay-header">
-        <div class="overlay-title-wrap">
-          <div class="overlay-title">Accessibility &amp; Language</div>
-          <div class="overlay-version">Version 3.9.1</div>
-        </div>
-        <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
-      </div>
-
-      <div class="a11y-top" aria-label="Logo and social">
-        <a class="a11y-logo-link" href="index.html" aria-label="Home">
-          <img class="a11y-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="120" height="45" loading="lazy" decoding="async" data-nozoom="1" />
-        </a>
-
-        <div class="a11y-social" aria-label="Social links">
-          <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email The MayaNut Company">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"></rect><path d="M5.5 7.5L12 12.5L18.5 7.5"></path></svg>
-          </a>
-          <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X (Twitter) @mayanutcompany">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4.2l3.1 4.3L17.2 5H20l-5.4 7.1L20.6 19H16.5l-3.5-4.8L8.9 19H6l5.9-7.7L6 5z"></path></svg>
-          </a>
-          <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.3" cy="6.7" r="0.9"></circle></svg>
-          </a>
-        </div>
-      </div>
-
-      <nav class="mobile-nav" aria-label="Menu links" style="margin-bottom:12px;">
-        <a href="index.html" aria-current="page" id="nav-home-a11y">HOME</a>
-        <a href="index.html?store=1" id="nav-store-a11y">STORE</a>
-        <a href="about.html" id="nav-about-a11y">ABOUT</a>
-        <a href="research.html" id="nav-research-a11y">RESEARCH</a>
-        <a href="contact.html" id="nav-contact-a11y">CONTACT</a>
-        <a href="contact.html#faq" id="nav-faq-a11y">FAQ</a>
-      </nav>
-
-      <div class="settings-row" aria-label="Español button">
-        <button class="a11y-lang-btn" id="lang-pill-a11y" type="button" aria-label="Switch to Español">
-          <span>ESPAÑOL</span>
-        </button>
-      </div>
-
-      <div class="settings-row">
-        <div class="toggle-row">
-          <label for="toggle-contrast">High Contrast Mode</label>
-          <div class="toggle-input" id="toggle-contrast" role="switch" aria-checked="false" tabindex="0">
-            <span class="knob" data-off="OFF" data-on="ON">OFF</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-row">
-        <div class="toggle-row">
-          <label for="toggle-large-text">Larger Text</label>
-          <div class="toggle-input" id="toggle-large-text" role="switch" aria-checked="false" tabindex="0">
-            <span class="knob" data-off="OFF" data-on="ON">OFF</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-row" id="voice-row" style="margin-bottom:0;">
-        <div class="toggle-row" style="align-items:center;">
-          <label for="toggle-voiceover">Voice Reading Mode</label>
-          <span class="info-dot" id="voice-info" aria-label="Voice mode info" title="Info">i</span>
-          <div class="toggle-input" id="toggle-voiceover" role="switch" aria-checked="false" tabindex="0">
-            <span class="knob" data-off="OFF" data-on="ON">OFF</span>
-          </div>
-        </div>
-
-        <div class="info-tip" id="voice-tip" aria-hidden="true">
-          <strong>How to use voice reading</strong>
-          <div class="small">
-            Click the paragraph speaker icons to hear audio. Click buttons to hear their labels.
-            You can also highlight text and click the small speaker that appears.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile Menu Overlay -->
-  <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
-    <div class="overlay-panel" role="dialog" aria-modal="true" aria-label="Menu">
-      <div class="overlay-header">
-        <div class="overlay-title">Menu</div>
-        <button class="overlay-close" data-close="mobile-menu-overlay" aria-label="Close menu"><span>&times;</span></button>
-      </div>
-      <nav class="mobile-nav" aria-label="Mobile navigation">
-        <a href="index.html" aria-current="page" id="nav-home-mobile">HOME</a>
-        <a href="index.html?store=1" id="nav-store-mobile">STORE</a>
-        <a href="about.html" id="nav-about-mobile">ABOUT</a>
-        <a href="research.html" id="nav-research-mobile">RESEARCH</a>
-        <a href="contact.html" id="nav-contact-mobile">CONTACT</a>
-        <a href="contact.html#faq" id="nav-faq-mobile">FAQ</a>
-      </nav>
-      <div style="margin-top:12px;">
-        <button class="a11y-lang-btn" id="lang-pill-mobile" type="button" aria-label="Switch to Español">
-          <span>ESPAÑOL</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Full Image Viewer Overlay -->
-  <div class="img-viewer-overlay" id="img-viewer" aria-hidden="true">
-    <div class="img-viewer-panel" role="dialog" aria-modal="true" aria-label="Image viewer">
-      <div class="img-viewer-topbar">
-        <div class="img-viewer-caption" id="img-viewer-caption"></div>
-        <button class="img-viewer-close" id="img-viewer-close" type="button" aria-label="Close image viewer"><span>&times;</span></button>
-      </div>
-      <img class="img-viewer-img" id="img-viewer-img" alt="" />
-    </div>
-  </div>
-
-  <!-- Selection Speak Button -->
-  <button class="speak-pop" id="speak-pop" type="button" aria-label="Speak selected text">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 10v4"></path><path d="M7 8v8"></path><path d="M10 6v12"></path><path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path><path d="M17 7c3 3 3 7 0 10"></path>
-    </svg>
-  </button>
-
-  <script defer>
-    (function(){
-      function fillSideStacks(){
-        const src = "mayanuts-the-maya-nut-company-image.jpeg";
-        const left = document.getElementById("stack-left");
-        const right = document.getElementById("stack-right");
-        if(!left || !right) return;
-
-        const isDisabled = () => window.matchMedia("(max-width: 780px)").matches;
-        const cardH = () => window.matchMedia("(max-width: 980px)").matches ? 200 : 220;
-
-        function build(){
-          if(isDisabled()){
-            left.innerHTML = "";
-            right.innerHTML = "";
-            return;
-          }
-          left.innerHTML = "";
-          right.innerHTML = "";
-          const needed = Math.ceil((window.innerHeight + 240) / cardH()) + 1;
-          for(let i=0; i<needed; i++){
-            const img1 = document.createElement("img");
-            img1.src = src; img1.alt=""; img1.decoding="async";
-            img1.loading = (i < 2) ? "eager" : "lazy";
-            left.appendChild(img1);
-
-            const img2 = document.createElement("img");
-            img2.src = src; img2.alt=""; img2.decoding="async";
-            img2.loading = (i < 2) ? "eager" : "lazy";
-            right.appendChild(img2);
-          }
-        }
-        build();
-        window.addEventListener("resize", build, { passive:true });
-      }
-      fillSideStacks();
-
-      const stickyTop = document.getElementById('sticky-top');
-      function updateStickyOffset(){
-        if(!stickyTop) return;
-        const h = Math.ceil(stickyTop.getBoundingClientRect().height || 0);
-        document.documentElement.style.setProperty('--stickyOffset', (h + 6) + 'px');
-      }
-      updateStickyOffset();
-      window.addEventListener('resize', ()=>{ updateStickyOffset(); }, { passive:true });
-      window.addEventListener('load', ()=>{ updateStickyOffset(); window.setTimeout(updateStickyOffset, 120); }, { passive:true });
-
-      function scrollTopSmooth(){ window.scrollTo({ top: 0, behavior: 'smooth' }); }
-      document.getElementById('logo-top')?.addEventListener('click', (e)=>{ e.preventDefault(); scrollTopSmooth(); });
-      document.getElementById('logo-footer')?.addEventListener('click', (e)=>{ e.preventDefault(); scrollTopSmooth(); });
-
-      function anyOverlayOpen(){
-        return !!document.querySelector('.overlay.active') || document.getElementById('img-viewer')?.classList.contains('active');
-      }
-      function openOverlay(id){
-        const ov = document.getElementById(id);
-        if(!ov) return;
-        ov.classList.add('active');
-        ov.setAttribute('aria-hidden','false');
-        document.body.classList.add('overlay-open');
-      }
-      function closeOverlay(id){
-        const ov = document.getElementById(id);
-        if(!ov) return;
-        ov.classList.remove('active');
-        ov.setAttribute('aria-hidden','true');
-        if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
-      }
-
-      document.getElementById('accessibility-btn')?.addEventListener('click', ()=>openOverlay('accessibility-overlay'));
-      document.getElementById('mobile-menu-btn')?.addEventListener('click', ()=>openOverlay('mobile-menu-overlay'));
-
-      document.querySelectorAll('.overlay-close').forEach(btn=>{
-        const targetId = btn.getAttribute('data-close');
-        if(!targetId) return;
-        btn.addEventListener('click', ()=>{ closeOverlay(targetId); });
-      });
-
-      document.querySelectorAll('.overlay').forEach(ov=>{
-        ov.addEventListener('click', e=>{
-          if(e.target === ov){
-            ov.classList.remove('active');
-            ov.setAttribute('aria-hidden','true');
-            if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
-          }
-        });
-      });
-
-      /* Language toggle (en/es) */
-      const LANGS = ['en','es'];
-      function getLangFromHtml(){
-        const l = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
-        return LANGS.includes(l) ? l : 'en';
-      }
-      function getLangSuffix(lang){ return (lang === 'en') ? '' : `-${lang}`; }
-
-      function getPageKey(){
-        const p = (location.pathname || '').split('/').pop() || 'index.html';
-        const base = p.replace(/\?.*$/,'').replace(/#.*$/,'');
-        const known = ['index','about','research','contact','privacy','terms'];
-        for(const k of known){
-          const re = new RegExp(`^${k}(?:-(en|es))?\\.html$`, 'i');
-          if(re.test(base)) return k;
-        }
-        return 'index';
-      }
-      function buildPageUrl(pageKey, lang){
-        const suf = getLangSuffix(lang);
-        return `${pageKey}${suf}.html`;
-      }
-      function preserveStoreParam(url){
-        const u = new URL(url, window.location.origin);
-        const cur = new URL(window.location.href);
-        if(cur.searchParams.get('store') === '1') u.searchParams.set('store','1');
-        return u.pathname + (u.search ? u.search : '') + (u.hash ? u.hash : '');
-      }
-
-      const currentLang = getLangFromHtml();
-
-      function applyLangLinks(){
-        const ids = [
-          ['nav-home','index'], ['nav-about','about'], ['nav-research','research'], ['nav-contact','contact'],
-          ['nav-home-mobile','index'], ['nav-about-mobile','about'], ['nav-research-mobile','research'], ['nav-contact-mobile','contact'], ['nav-faq-mobile','contact'],
-          ['nav-home-a11y','index'], ['nav-about-a11y','about'], ['nav-research-a11y','research'], ['nav-contact-a11y','contact'], ['nav-faq-a11y','contact'],
-          ['link-privacy','privacy'], ['link-terms','terms']
-        ];
-        ids.forEach(([id, key])=>{
-          const el = document.getElementById(id);
-          if(!el) return;
-          const href = buildPageUrl(key, currentLang);
-          if(id.includes('faq')) el.setAttribute('href', href + '#faq');
-          else el.setAttribute('href', href);
-        });
-
-        const storeHref = buildPageUrl('index', currentLang) + '?store=1';
-        document.getElementById('nav-store')?.setAttribute('href', storeHref);
-        document.getElementById('nav-store-mobile')?.setAttribute('href', storeHref);
-        document.getElementById('nav-store-a11y')?.setAttribute('href', storeHref);
-
-        document.querySelector('.a11y-logo-link')?.setAttribute('href', buildPageUrl('index', currentLang));
-      }
-      applyLangLinks();
-
-      function toggleLanguage(){
-        const pageKey = getPageKey();
-        const nextLang = (currentLang === 'en') ? 'es' : 'en';
-        const dest = buildPageUrl(pageKey, nextLang);
-        window.location.href = preserveStoreParam(dest);
-      }
-      document.getElementById('lang-pill-top')?.addEventListener('click', toggleLanguage);
-      document.getElementById('lang-pill-a11y')?.addEventListener('click', toggleLanguage);
-      document.getElementById('lang-pill-mobile')?.addEventListener('click', toggleLanguage);
-
-      /* Nav buttons */
-      document.querySelectorAll('.btn[data-nav]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const dest = btn.getAttribute('data-nav');
-          if(dest) window.location.href = dest;
-        });
-      });
-
-      /* Store expand + underline logic */
-      const navHome = document.getElementById('nav-home');
-      const navStore = document.getElementById('nav-store');
-      const navStoreMobile = document.getElementById('nav-store-mobile');
-      const navStoreA11y = document.getElementById('nav-store-a11y');
-      const viewFullStore = document.getElementById('store-view-full');
-      const storePanel = document.getElementById('store-panel');
-
-      function headerHeight(){
-        if(!stickyTop) return 0;
-        return stickyTop.getBoundingClientRect().height || 0;
-      }
-      function setActiveNav(which){
-        if(navHome) navHome.classList.toggle('is-active', which === 'home');
-        if(navStore) navStore.classList.toggle('is-active', which === 'store');
-      }
-      function setStoreButtonLabel(){
-        if(!viewFullStore) return;
-        const span = viewFullStore.querySelector('.btn-text');
-        if(!span) return;
-        span.textContent = document.body.classList.contains('store-expanded') ? 'RETURN' : 'VIEW FULL STORE';
-      }
-      function toggleStore(forceOpen){
-        const expanded = document.body.classList.contains('store-expanded');
-        if(forceOpen){
-          if(!expanded) document.body.classList.add('store-expanded');
-        }else{
-          document.body.classList.toggle('store-expanded');
-        }
-        const nowOpen = document.body.classList.contains('store-expanded');
-        setStoreButtonLabel();
-        setActiveNav(nowOpen ? 'store' : 'home');
-      }
-      function alignStoreTop(){
-        if(!storePanel) return;
-        window.requestAnimationFrame(()=>{
-          const rect = storePanel.getBoundingClientRect();
-          const y = window.scrollY + rect.top - (headerHeight() + 12);
-          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-        });
-      }
-      function openStoreTop(){
-        closeOverlay('mobile-menu-overlay');
-        closeOverlay('accessibility-overlay');
-        toggleStore(true);
-        alignStoreTop();
-      }
-      navStore?.addEventListener('click', (e)=>{ e.preventDefault(); openStoreTop(); });
-      navStoreMobile?.addEventListener('click', (e)=>{ e.preventDefault(); openStoreTop(); });
-      navStoreA11y?.addEventListener('click', (e)=>{ e.preventDefault(); openStoreTop(); });
-
-      viewFullStore?.addEventListener('click', ()=>{
-        const willOpen = !document.body.classList.contains('store-expanded');
-        toggleStore(false);
-        if(willOpen) alignStoreTop();
-      });
-
-      setStoreButtonLabel();
-      setActiveNav('home');
-
-      (function autoOpenStoreFromUrl(){
-        const u = new URL(window.location.href);
-        const want = (u.searchParams.get('store') === '1') || (u.hash && u.hash.toLowerCase() === '#store');
-        if(!want) return;
-        toggleStore(true);
-        window.setTimeout(()=>alignStoreTop(), 60);
-      })();
-
-      function comingSoon(){ alert('Store coming soon — products are not available yet. Thanks for your patience.'); }
-      document.getElementById('cart-btn')?.addEventListener('click', comingSoon);
-      document.querySelectorAll('.btn-buy').forEach(btn=>btn.addEventListener('click', comingSoon));
-
-      /* Quantity */
-      function clampQty(input){
-        if(!input) return;
-        let v = parseInt(String(input.value || '1'), 10);
-        if(isNaN(v) || v < 1) v = 1;
-        if(v > 99) v = 99;
-        input.value = String(v);
-      }
-      function setQty(input, val){
-        if(!input) return;
-        const v = Math.max(1, Math.min(99, val));
-        input.value = String(v);
-      }
-      function voiceEnabled(){
-        return localStorage.getItem('pref_voiceover') === '1';
-      }
-      function speakText(text){
-        if(!voiceEnabled()) return;
-        if(!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
-        const t = (text || "").toString().trim();
-        if(!t) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(t);
-        u.lang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();
-        window.speechSynthesis.speak(u);
-      }
-      function stepQty(input, delta){
-        if(!input) return;
-        clampQty(input);
-        const v = parseInt(input.value, 10);
-        const next = v + delta;
-        if(next < 1){
-          setQty(input, 1);
-          if(voiceEnabled()) speakText("1. Minimum quantity");
-          return;
-        }
-        if(next > 99){
-          setQty(input, 99);
-          if(voiceEnabled()) speakText("You've reached the limit");
-          return;
-        }
-        setQty(input, next);
-        if(voiceEnabled()) speakText(delta > 0 ? "plus" : "minus");
-      }
-      function bindHoldStep(btn, input, delta){
-        if(!btn || !input) return;
-        let t = null;
-        let active = false;
-        let count = 0;
-
-        const start = (e)=>{
-          e.preventDefault();
-          if(active) return;
-          active = true;
-          count = 0;
-          stepQty(input, delta);
-
-          const tick = ()=>{
-            if(!active) return;
-            count++;
-            stepQty(input, delta);
-
-            let interval = 140;
-            if(count > 6) interval = 90;
-            if(count > 18) interval = 60;
-
-            const v = parseInt(input.value, 10);
-            if((delta > 0 && v >= 99) || (delta < 0 && v <= 1)){
-              stop();
-              return;
-            }
-            t = window.setTimeout(tick, interval);
-          };
-          t = window.setTimeout(tick, 260);
-        };
-
-        const stop = ()=>{
-          if(!active) return;
-          active = false;
-          if(t){ window.clearTimeout(t); t = null; }
-        };
-
-        btn.addEventListener('mousedown', start);
-        document.addEventListener('mouseup', stop);
-        btn.addEventListener('mouseleave', stop);
-
-        btn.addEventListener('touchstart', start, { passive:false });
-        btn.addEventListener('touchend', stop, { passive:true });
-        btn.addEventListener('touchcancel', stop, { passive:true });
-
-        btn.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' '){
-            e.preventDefault();
-            stepQty(input, delta);
-          }
-        });
-      }
-      document.querySelectorAll('.qty-control').forEach(control=>{
-        const input = control.querySelector('.qty-input');
-        const plus  = control.querySelector('.qty-plus');
-        const minus = control.querySelector('.qty-minus');
-
-        if(input){
-          input.addEventListener('input', ()=>clampQty(input));
-          input.addEventListener('blur',  ()=>clampQty(input));
-        }
-        control.addEventListener('click', (e)=>{
-          const t = e.target;
-          if(!input || !t || !t.classList) return;
-          if(t.classList.contains('qty-plus')) stepQty(input, +1);
-          if(t.classList.contains('qty-minus')) stepQty(input, -1);
-        });
-        bindHoldStep(plus,  input, +1);
-        bindHoldStep(minus, input, -1);
-      });
-
-      /* Search */
-      const searchInput = document.getElementById('store-search');
-      const searchSend  = document.getElementById('store-search-send');
-      const clearBtn    = document.getElementById('store-search-clear');
-
-      function normalize(s){ return (s || '').toLowerCase().trim(); }
-      function clearStates(){
-        document.querySelectorAll('.product-card').forEach(card=>{
-          card.classList.remove('is-match','is-nonmatch');
-          card.style.opacity = '1';
-        });
-      }
-      function applyLive(){
-        if(!searchInput) return;
-        const q = normalize(searchInput.value);
-        document.querySelectorAll('.product-card').forEach(card=>{
-          const name = normalize(card.dataset.name || "");
-          const ok = (!q || name.includes(q));
-          card.classList.toggle('is-nonmatch', !!q && !ok);
-          card.style.opacity = ok ? '1' : '0.40';
-        });
-      }
-      function applyHighlight(){
-        if(!searchInput) return;
-        const q = normalize(searchInput.value);
-        clearStates();
-        if(!q) return;
-
-        let any = false;
-        document.querySelectorAll('.product-card').forEach(card=>{
-          const name = normalize(card.dataset.name || "");
-          if(name.includes(q)){
-            card.classList.add('is-match');
-            any = true;
-          }else{
-            card.classList.add('is-nonmatch');
-            card.style.opacity = '0.40';
-          }
-        });
-        if(!any) clearStates();
-      }
-      function clearSearch(){
-        if(!searchInput) return;
-        searchInput.value = '';
-        clearStates();
-        applyLive();
-        searchInput.focus();
-      }
-
-      if(searchInput){
-        searchInput.addEventListener('input', ()=>{ clearStates(); applyLive(); });
-        searchInput.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter'){
-            e.preventDefault();
-            applyHighlight();
-          }
-        });
-        applyLive();
-      }
-      clearBtn?.addEventListener('click', (e)=>{ e.stopPropagation(); clearSearch(); });
-      searchSend?.addEventListener('click', (e)=>{
-        if(e.target && e.target.id === 'store-search-clear') return;
-        applyHighlight();
-      });
-
-      /* Sort */
-      const sortWrap = document.getElementById('sort-wrap');
-      const sortBtn = document.getElementById('sort-btn');
-      const sortMenu = document.getElementById('sort-menu');
-      const storeGrid = document.getElementById('store-grid');
-
-      function closeSort(){
-        if(!sortWrap || !sortBtn) return;
-        sortWrap.classList.remove('open');
-        sortBtn.setAttribute('aria-expanded','false');
-      }
-      function openSort(){
-        if(!sortWrap || !sortBtn) return;
-        sortWrap.classList.add('open');
-        sortBtn.setAttribute('aria-expanded','true');
-      }
-      sortBtn?.addEventListener('click', (e)=>{
-        e.preventDefault();
-        if(!sortWrap) return;
-        sortWrap.classList.contains('open') ? closeSort() : openSort();
-      });
-      document.addEventListener('click', (e)=>{
-        if(!sortWrap) return;
-        if(sortWrap.contains(e.target)) return;
-        closeSort();
-      });
-
-      function getSortKey(title){
-        const t = (title || '').toLowerCase().trim();
-        const tokens = t.split(/\s+/).filter(Boolean);
-        if(tokens.length <= 1) return t;
-        if(tokens[0] === 'mayanut') return tokens.slice(1).join(' ');
-        return t;
-      }
-      function sortCards(mode){
-        if(!storeGrid) return;
-        const cards = Array.from(storeGrid.querySelectorAll('.product-card'));
-
-        function sorter(a,b,dir){
-          const ka = getSortKey(a.dataset.title || a.querySelector('.product-name')?.textContent || '');
-          const kb = getSortKey(b.dataset.title || b.querySelector('.product-name')?.textContent || '');
-          return dir * ka.localeCompare(kb);
-        }
-
-        if(mode === 'az'){
-          cards.sort((a,b)=>sorter(a,b, 1));
-        }else if(mode === 'za'){
-          cards.sort((a,b)=>sorter(a,b,-1));
-        }else{
-          comingSoon();
-          return;
-        }
-        cards.forEach(c=>storeGrid.appendChild(c));
-      }
-
-      sortMenu?.querySelectorAll('button[data-sort]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const mode = btn.getAttribute('data-sort');
-          sortCards(mode);
-          closeSort();
-        });
-      });
-
-      /* Accessibility toggles */
-      const contrastToggle = document.getElementById('toggle-contrast');
-      const textToggle = document.getElementById('toggle-large-text');
-      const voiceToggle = document.getElementById('toggle-voiceover');
-
-      function setToggle(el, on){
-        if(!el) return;
-        el.classList.toggle('active', !!on);
-        el.setAttribute('aria-checked', on ? 'true' : 'false');
-        const knob = el.querySelector('.knob');
-        if(knob){
-          knob.textContent = on ? (knob.dataset.on || 'ON') : (knob.dataset.off || 'OFF');
-        }
-      }
-
-      function applyPrefs(){
-        const hc = localStorage.getItem('pref_high_contrast') === '1';
-        const lt = localStorage.getItem('pref_large_text') === '1';
-        const vo = localStorage.getItem('pref_voiceover') === '1';
-
-        document.body.classList.toggle('high-contrast', hc);
-        document.body.classList.toggle('large-text', lt);
-        document.body.classList.toggle('voice-on', vo);
-
-        setToggle(contrastToggle, hc);
-        setToggle(textToggle, lt);
-        setToggle(voiceToggle, vo);
-      }
-      applyPrefs();
-
-      function togglePrefClass(className, key, el){
-        const on = !document.body.classList.contains(className);
-        document.body.classList.toggle(className, on);
-        localStorage.setItem(key, on ? '1' : '0');
-        setToggle(el, on);
-      }
-      function bindSwitchClass(el, className, key){
-        if(!el) return;
-        el.addEventListener('click', ()=>togglePrefClass(className, key, el));
-        el.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePrefClass(className, key, el); }
-        });
-      }
-      bindSwitchClass(contrastToggle,'high-contrast','pref_high_contrast');
-      bindSwitchClass(textToggle,'large-text','pref_large_text');
-
-      function setVoice(on){
-        localStorage.setItem('pref_voiceover', on ? '1' : '0');
-        document.body.classList.toggle('voice-on', on);
-        setToggle(voiceToggle, on);
-        if(!on && window.speechSynthesis) window.speechSynthesis.cancel();
-      }
-      (function bindVoiceSwitch(){
-        if(!voiceToggle) return;
-        voiceToggle.addEventListener('click', ()=>{
-          const on = !(localStorage.getItem('pref_voiceover') === '1');
-          setVoice(on);
-        });
-        voiceToggle.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' '){
-            e.preventDefault();
-            const on = !(localStorage.getItem('pref_voiceover') === '1');
-            setVoice(on);
-          }
-        });
-      })();
-
-      const infoDot = document.getElementById('voice-info');
-      const infoTip = document.getElementById('voice-tip');
-
-      function clampTipToScreen(){
-        if(!infoTip) return;
-        const rect = infoTip.getBoundingClientRect();
-        const pad = 10;
-        let dx = 0;
-        if(rect.right > window.innerWidth - pad) dx = (window.innerWidth - pad) - rect.right;
-        if(rect.left < pad) dx = pad - rect.left;
-        infoTip.style.transform = dx ? `translateX(${dx}px)` : '';
-      }
-      function toggleTip(force){
-        if(!infoTip) return;
-        const on = (typeof force === 'boolean') ? force : !infoTip.classList.contains('active');
-        infoTip.classList.toggle('active', on);
-        infoTip.setAttribute('aria-hidden', on ? 'false' : 'true');
-        if(on) window.setTimeout(clampTipToScreen, 0);
-      }
-      infoDot?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); toggleTip(); });
-      infoDot?.addEventListener('mouseenter', ()=>{ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches) toggleTip(true); });
-      infoDot?.addEventListener('mouseleave', ()=>{ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches) toggleTip(false); });
-      document.addEventListener('click', (e)=>{ if(!infoTip || !infoDot) return; if(infoTip.contains(e.target) || infoDot.contains(e.target)) return; toggleTip(false); });
-      window.addEventListener('resize', ()=>{ if(infoTip?.classList.contains('active')) clampTipToScreen(); }, { passive:true });
-
-      document.querySelectorAll('[data-speak-btn]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          if(!(localStorage.getItem('pref_voiceover') === '1')) return;
-          const id = btn.getAttribute('data-speak-btn');
-          const el = id ? document.getElementById(id) : null;
-          if(!el) return;
-          speakText(el.textContent || '');
-        });
-      });
-
-      /* Image viewer */
-      const viewer = document.getElementById('img-viewer');
-      const viewerImg = document.getElementById('img-viewer-img');
-      const viewerCap = document.getElementById('img-viewer-caption');
-      const viewerClose = document.getElementById('img-viewer-close');
-
-      function openImageViewer(img){
-        if(!viewer || !viewerImg) return;
-        const src = img?.dataset?.zoomSrc || img?.currentSrc || img?.src;
-        if(!src) return;
-        viewerImg.src = src;
-        viewerImg.alt = img.alt || 'Expanded image';
-        if(viewerCap) viewerCap.textContent = (img.alt || '').trim() || 'Image';
-        viewer.classList.add('active');
-        viewer.setAttribute('aria-hidden','false');
-        document.body.classList.add('overlay-open');
-      }
-      function closeImageViewer(){
-        if(!viewer) return;
-        viewer.classList.remove('active');
-        viewer.setAttribute('aria-hidden','true');
-        if(viewerImg){ viewerImg.src = ''; viewerImg.alt = ''; }
-        if(viewerCap) viewerCap.textContent = '';
-        if(!anyOverlayOpen()) document.body.classList.remove('overlay-open');
-      }
-      viewerClose?.addEventListener('click', closeImageViewer);
-      viewer?.addEventListener('click', (e)=>{ if(e.target === viewer) closeImageViewer(); });
-
-      document.querySelectorAll('.zoom-btn').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-          e.preventDefault(); e.stopPropagation();
-          const wrap = btn.closest('.img-zoom-wrap');
-          const img = wrap ? wrap.querySelector('img.zoomable') : null;
-          if(img) openImageViewer(img);
-        });
-        btn.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' '){
-            e.preventDefault();
-            const wrap = btn.closest('.img-zoom-wrap');
-            const img = wrap ? wrap.querySelector('img.zoomable') : null;
-            if(img) openImageViewer(img);
-          }
-        });
-      });
-
-      document.addEventListener('keydown', (e)=>{
-        if(e.key !== 'Escape') return;
-        document.querySelectorAll('.overlay.active').forEach(ov=>{
-          ov.classList.remove('active');
-          ov.setAttribute('aria-hidden','true');
-        });
-        closeImageViewer();
-        document.body.classList.remove('overlay-open');
-        if(window.speechSynthesis) window.speechSynthesis.cancel();
-      });
-
-      /* Selection speak */
-      const speakPop = document.getElementById('speak-pop');
-      function hideSpeakPop(){
-        if(!speakPop) return;
-        speakPop.style.display = 'none';
-        speakPop.dataset.text = '';
-      }
-      function getSelectedText(){
-        const sel = window.getSelection();
-        if(!sel || sel.rangeCount === 0) return '';
-        return (sel.toString() || '').trim();
-      }
-      function validSelectionTarget(){
-        const ae = document.activeElement;
-        if(!ae) return true;
-        const tag = (ae.tagName || '').toLowerCase();
-        if(tag === 'input' || tag === 'textarea' || ae.isContentEditable) return false;
-        return true;
-      }
-      function positionSpeakPop(rect){
-        if(!speakPop) return;
-        const pad = 8;
-        let x = rect.right + pad;
-        let y = rect.top - 2;
-        const w = 38, h = 38;
-        if(x + w > window.innerWidth - 8) x = rect.left - w - pad;
-        if(x < 8) x = 8;
-        if(y < 8) y = rect.bottom + pad;
-        if(y + h > window.innerHeight - 8) y = window.innerHeight - h - 8;
-        speakPop.style.left = x + 'px';
-        speakPop.style.top = y + 'px';
-        speakPop.style.display = 'flex';
-      }
-      function updateSpeakPop(){
-        if(!(localStorage.getItem('pref_voiceover') === '1')) { hideSpeakPop(); return; }
-        if(!validSelectionTarget()) { hideSpeakPop(); return; }
-        const sel = window.getSelection();
-        if(!sel || sel.rangeCount === 0){ hideSpeakPop(); return; }
-        const text = getSelectedText();
-        if(!text || text.length < 2){ hideSpeakPop(); return; }
-        try{
-          const range = sel.getRangeAt(0);
-          const rect = range.getBoundingClientRect();
-          if(!rect || (rect.width === 0 && rect.height === 0)){ hideSpeakPop(); return; }
-          speakPop.dataset.text = text;
-          positionSpeakPop(rect);
-        }catch(_){ hideSpeakPop(); }
-      }
-      document.addEventListener('selectionchange', ()=>{
-        window.clearTimeout(window.__vo_to);
-        window.__vo_to = window.setTimeout(updateSpeakPop, 80);
-      }, { passive:true });
-      document.addEventListener('mouseup', ()=>{ window.setTimeout(updateSpeakPop, 60); }, { passive:true });
-      document.addEventListener('scroll', ()=>{ if(speakPop && speakPop.style.display === 'flex') updateSpeakPop(); }, { passive:true });
-      speakPop?.addEventListener('click', ()=>{ const t = (speakPop.dataset.text || '').trim(); if(!t) return; speakText(t); });
-
-    })();
-  </script>
-</body>
-</html>

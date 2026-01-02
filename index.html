@@ -1,4 +1,4 @@
-<!-- PART 1 / 2 -->
+<!-- BLOCK 1 / 2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,15 +34,12 @@
   <meta name="twitter:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
 
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
-  <link rel="manifest" href="site.webmanifest" />
   <meta name="theme-color" content="#1a6800" />
 
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" fetchpriority="high" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" fetchpriority="high" />
   <link rel="preload" as="image" href="maya-nut-mayanut-plant-tree-nursery.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="mayanuts-the-maya-nut-company-image.jpeg" fetchpriority="high" />
 
   <script type="application/ld+json">
   {
@@ -89,6 +86,7 @@
 
       --green:#1a6800;
       --green-deep:#0f4d1f;
+      --green-darker:#0a3a17;
 
       --tan:#f3e6d1;
       --tan-top:#c9a981;
@@ -116,9 +114,6 @@
 
       --qtyBtn: 28px;
       --qtyInputW: 44px;
-
-      --match-blue: rgba(0, 255, 234, 0.28);
-      --nonmatch-red: rgba(255, 0, 0, 0.16);
 
       --stickyOffset: 132px;
 
@@ -161,13 +156,7 @@
       --aBtnR: 12px;
       --aBtnOffset: -12px;
 
-      /* NEW: make hero paragraph background match store search bar */
-      --searchbar-bg: rgba(255,255,255,0.82);
-
-      /* NEW: darker green for hero paragraph text gradient (stronger/darker) */
-      --hero-g1: #0f4d1f;
-      --hero-g2: #1a6800;
-      --hero-g3: #0b3a16;
+      --speakPopSize: 38px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -216,7 +205,8 @@
     body.high-contrast .product-card,
     body.high-contrast .overlay-panel,
     body.high-contrast .about-card,
-    body.high-contrast #store-panel{
+    body.high-contrast #store-panel,
+    body.high-contrast .cart-panel{
       background:#fff !important;
       border-color:#000 !important;
       box-shadow:none !important;
@@ -228,7 +218,7 @@
 
     body.overlay-open{ overflow:hidden; }
 
-    /* Side frames */
+    /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{ position:absolute; top:0; bottom:0; width:var(--sideW); overflow:hidden; background:#ffffff; pointer-events:none; }
     .side.left{ left:0; border-right: var(--frameBorder) solid var(--frame-line); }
@@ -326,7 +316,9 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
     }
-    @media(max-width:780px){ .top-sep{ height:1px; } }
+    @media(max-width:780px){
+      .top-sep{ height:1px; }
+    }
 
     .header-left{
       display:flex;
@@ -421,7 +413,9 @@
       font-weight:950;
     }
     .submenu a:hover{ background: rgba(255,255,255,0.22); color:#000; }
-    @media (hover:hover) and (pointer:fine){ .nav-item:hover .submenu{ display:flex; } }
+    @media (hover:hover) and (pointer:fine){
+      .nav-item:hover .submenu{ display:flex; }
+    }
     .nav-item:focus-within .submenu{ display:flex; }
 
     .header-right{
@@ -510,8 +504,6 @@
       background: transparent;
     }
 
-    #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
-
     /* HERO */
     #hero{
       position:relative;
@@ -554,7 +546,9 @@
       transform: translateX(-42px);
       animation: heroSlideIn 0.85s ease-out 0.12s forwards;
     }
-    @keyframes heroSlideIn{ to{ opacity:1; transform: translateX(0); } }
+    @keyframes heroSlideIn{
+      to{ opacity:1; transform: translateX(0); }
+    }
 
     .credit{
       font-size:11px;
@@ -614,8 +608,6 @@
       position:absolute;
       left:10px;
       top:10px;
-      right:auto;
-      bottom:auto;
       width:34px;
       height:34px;
       border-radius:12px;
@@ -650,7 +642,6 @@
       position:relative;
       z-index:1;
     }
-    .zoom-btn:active{ transform: translateY(1px); }
 
     .hero-images img{
       width:100%;
@@ -664,26 +655,21 @@
 
     .speak-block{ position:relative; overflow:visible; }
 
-    /* HERO PARAGRAPH: background matches store search bar; darker/stronger green text */
+    /* TOP PARAGRAPH: dark green text (no gradient), background matches store search box */
     .hero-sub{
       font-family: var(--font-pretty);
       font-style: italic;
       font-size:14px;
       line-height:1.9;
-      background: var(--searchbar-bg);
+      background: rgba(255,255,255,0.82); /* same as store search box */
       border: 1px solid var(--frame-line);
       padding: 12px 12px 12px;
       border-radius: 18px;
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       position:relative;
       overflow:hidden;
-    }
-    .hero-sub .gtext{
-      background: linear-gradient(180deg, var(--hero-g1) 0%, var(--hero-g2) 45%, var(--hero-g3) 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      font-weight: 950;
+      color: var(--green-darker);
+      font-weight: 850;
       letter-spacing: 0.01em;
     }
 
@@ -846,7 +832,7 @@
       border-radius:999px;
       border:1px solid var(--frame-line);
       font-size:12px;
-      background: var(--searchbar-bg);
+      background:rgba(255,255,255,0.82);
       color:#111827;
       outline:none;
     }
@@ -938,81 +924,7 @@
       z-index:2;
     }
 
-    .sort-wrap{ display:none; position:relative; flex:0 0 auto; }
-    body.store-expanded .sort-wrap{ display:inline-flex; }
-
-    .sort-btn{
-      height:36px;
-      border-radius:12px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-      padding:0 10px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      white-space:nowrap;
-      overflow:hidden;
-      position:relative;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .sort-btn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .sort-btn svg{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; position:relative; }
-
-    .sort-menu{
-      position:absolute;
-      top:38px;
-      left:0;
-      right:auto;
-      width:220px;
-      border-radius:14px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 55px rgba(15,23,42,0.22);
-      padding:8px;
-      display:none;
-      z-index:60;
-    }
-    .sort-menu button{
-      width:100%;
-      text-align:left;
-      border:none;
-      background:transparent;
-      padding:10px 10px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:950;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:#0b1220;
-      position:relative;
-    }
-    .sort-menu button:hover{ background: rgba(255,255,255,0.16); }
-    .sort-menu button:not(:last-child)::after{
-      content:"";
-      position:absolute;
-      left:10px; right:10px; bottom:-2px;
-      height:1px;
-      background: rgba(12, 90, 42, 0.75);
-      border-radius:999px;
-    }
-    .sort-wrap.open .sort-menu{ display:block; }
-
+    /* STORE GRID: starts 2x2; expanded becomes 2 rows of 4 on desktop */
     .store-grid{
       margin-top:12px;
       display:grid;
@@ -1036,12 +948,8 @@
       width:100%;
       overflow:hidden;
     }
-    .product-card.is-match{ background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--match-blue)); }
-    .product-card.is-nonmatch{ background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--nonmatch-red)); }
-
     .product-card .img-zoom-wrap{ width:104px; height:104px; margin-top:4px; margin-bottom:10px; }
-    .product-card .zoom-btn{ display:none !important; }
-
+    .product-card .zoom-btn{ display:none !important; } /* no expand in store */
     .product-card img{
       width:104px;
       height:104px;
@@ -1159,9 +1067,9 @@
       mix-blend-mode: soft-light;
     }
     .btn-buy:hover{ transform: translateY(-1px); filter:saturate(1.04) contrast(1.04); }
-    .btn-buy:hover .btn-text{ transform: scale(1.05); }
-    .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
+    .btn-buy .btn-text{ position:relative; display:inline-block; }
 
+    /* EXPAND STORE TO LEFT (desktop): store becomes overlay on left, hero hidden, still within page */
     @media(min-width:781px){
       body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
@@ -1178,7 +1086,7 @@
       body.store-expanded .hero-left{ opacity:0; pointer-events:none; height:0; overflow:hidden; }
     }
 
-    /* ABOUT */
+    /* ABOUT SECTION */
     .about-divider{
       max-width:1200px;
       margin:22px auto 14px;
@@ -1226,24 +1134,27 @@
       background:#fff;
       transform: translateZ(0);
     }
-    .about-card img.crop-bottom{ object-position: center 22%; }
 
+    /* ABOUT PARAGRAPHS: same font/color as top paragraph + same background as store search box */
     .about-text{
+      font-family: var(--font-pretty);
+      font-style: italic;
       font-size:14px;
       line-height:1.9;
-      color:#000;
-      font-weight:850;
-      letter-spacing:0.01em;
-      background: var(--panel-green-grad);
-      border-radius:18px;
-      padding:13px 14px 14px;
-      border:1px solid var(--frame-line);
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--frame-line);
+      border-radius: 18px;
+      padding: 12px 12px 12px;
+      color: var(--green-darker);
+      font-weight: 850;
+      letter-spacing: 0.01em;
       position:relative;
       overflow:visible;
-      text-shadow:none;
+      /* equal height across the two cards */
+      min-height: 180px;
+      display:flex;
+      align-items:flex-start;
     }
-    .about-text::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; border-radius:18px; }
-    .about-text > *{ position:relative; }
 
     .about-long{
       margin-top:14px;
@@ -1251,22 +1162,22 @@
       border-radius:22px;
       border:1px solid var(--frame-line);
       box-shadow: 0 14px 40px rgba(15,23,42,0.08);
+      font-family: var(--font-pretty);
+      font-style: italic;
       font-size:14px;
       line-height:1.9;
       font-weight:850;
       letter-spacing:0.01em;
-      background: var(--panel-green-grad);
-      color:#000;
+      background: rgba(255,255,255,0.82);
+      color: var(--green-darker);
       display:flex;
       gap:12px;
       align-items:flex-start;
       justify-content:space-between;
       position:relative;
       overflow:visible;
-      text-shadow:none;
     }
-    .about-long::before{ content:""; position:absolute; inset:0; background: rgba(255,255,255,0.18); pointer-events:none; border-radius:22px; }
-    .about-long > *{ position:relative; }
+
     .about-long .about-long-text{ flex:1; min-width:0; }
 
     .about-nav{
@@ -1308,7 +1219,7 @@
     }
     .about-nav a span{ position:relative; }
 
-    /* Footer */
+    /* FOOTER */
     footer{
       width:100%;
       background: var(--panel-green-grad);
@@ -1318,74 +1229,40 @@
       border-bottom: var(--frameBorder) solid var(--frame-line);
       color:#0f172a;
     }
-    .footer-inner{ max-width:1200px; margin:0 auto; }
-    .footer-newsletter{
+
+    .newsletter{
+      max-width:1200px;
+      margin:0 auto 14px;
+      padding:12px 14px;
       border-radius:18px;
-      border:1px solid rgba(12, 90, 42, 0.70);
+      border:1px solid rgba(12, 90, 42, 0.65);
       background: rgba(255,255,255,0.18);
-      box-shadow: 0 10px 26px rgba(15,23,42,0.10);
-      padding:14px 14px 14px;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
     }
-    .footer-newsletter .nl-title{
+    .newsletter h3{
       font-size:12px;
       font-weight:950;
-      letter-spacing:0.18em;
+      letter-spacing:0.20em;
       text-transform:uppercase;
       color:#000;
-      margin-bottom:10px;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      margin-bottom:6px;
     }
-    .nl-row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .nl-row input{
-      flex:1;
-      min-width:220px;
-      height:44px;
-      border-radius:999px;
-      border:1px solid var(--frame-line);
-      background: var(--searchbar-bg);
-      padding:0 14px;
-      font-weight:850;
-      outline:none;
-    }
-    .nl-row button{
-      height:44px;
-      padding:0 14px;
-      border-radius:14px;
-      border:1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      cursor:pointer;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      white-space:nowrap;
-    }
-    .nl-row button::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
+    .newsletter p{
+      font-size:12px;
+      line-height:1.6;
+      color:#0b1220;
+      font-weight:900;
+      opacity:0.95;
     }
 
-    .footer-bottombar{
-      margin-top:14px;
+    .footer-inner{
       display:grid;
       grid-template-columns: 1fr auto;
       align-items:center;
       column-gap:14px;
       font-size:11px;
+      max-width:1200px;
+      margin:0 auto;
     }
     .footer-left{
       display:flex;
@@ -1439,7 +1316,6 @@
       align-items:center;
       gap:12px;
     }
-
     .icon-pill{
       width:44px;
       height:44px;
@@ -1475,28 +1351,7 @@
       z-index:1;
     }
 
-    /* Accessibility FAB */
-    .accessibility-btn{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      width:48px;
-      height:48px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.35);
-      background:var(--a11y-blue);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      z-index:70;
-      box-shadow:0 10px 25px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-    /* Overlay base (kept for mobile menu + image viewer) */
+    /* OVERLAYS (generic) */
     .overlay{
       position:fixed;
       inset:0;
@@ -1521,56 +1376,8 @@
       background: var(--store-green-grad);
       position:relative;
     }
-
-    /* NEW: Desktop accessibility drawer (right side) + left 2/3 dim */
-    .a11y-drawer{
-      position:fixed;
-      inset:0;
-      z-index:80;
-      display:none;
-      pointer-events:none;
-    }
-    .a11y-drawer.active{ display:block; pointer-events:auto; }
-    .a11y-dim{
-      position:absolute;
-      left:0;
-      top:0;
-      bottom:0;
-      width:66.666%;
-      background: rgba(0,0,0,0.20);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-    }
-    .a11y-panel{
-      position:absolute;
-      right:0;
-      top:0;
-      bottom:0;
-      width: min(520px, 34.5vw);
-      min-width: 420px;
-      max-width: 560px;
-      background: var(--panel-green-grad);
-      border-left: 2px solid var(--frame-line);
-      box-shadow: -18px 0 70px rgba(15,23,42,0.30);
-      padding:16px 16px 18px;
-      overflow:auto;
-      transform: translateX(102%);
-      transition: transform 220ms ease;
-    }
-    .a11y-drawer.active .a11y-panel{ transform: translateX(0); }
-    @media(max-width:980px){
-      .a11y-dim{ width:60%; }
-      .a11y-panel{ width: min(520px, 40vw); min-width: 380px; }
-    }
-    @media(max-width:780px){
-      .a11y-drawer{ display:none !important; }
-    }
-
     .overlay-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .overlay-title-wrap{ display:flex; flex-direction:column; gap:2px; }
     .overlay-title{ font-size:14px; font-weight:950; color:#0b1220; }
-    .overlay-version{ font-size:11px; color:#0b1220; letter-spacing:0.08em; text-transform:uppercase; font-weight:950; opacity:0.92; }
-
     .overlay-close{
       border: 1px solid var(--cream);
       background: var(--metal-orange);
@@ -1598,143 +1405,6 @@
       pointer-events:none;
       mix-blend-mode: soft-light;
     }
-    .overlay-close span{ position:relative; }
-
-    .a11y-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .a11y-logo-link{ display:inline-flex; align-items:center; text-decoration:none; }
-    .a11y-logo{
-      width:120px;
-      height:auto;
-      filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
-      border-radius:12px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .a11y-social{ display:flex; align-items:center; gap:10px; }
-
-    .settings-row{
-      margin-bottom:12px;
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color:#0b1220;
-      font-weight:950;
-      position:relative;
-    }
-
-    .a11y-lang-btn{
-      width:100%;
-      height:40px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .a11y-lang-btn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .a11y-lang-btn span{ position:relative; }
-
-    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
-
-    .toggle-input{
-      width:54px;
-      height:26px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: rgba(255, 0, 0, 0.16);
-      position:relative;
-      cursor:pointer;
-      flex:0 0 auto;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .toggle-input .knob{
-      position:absolute;
-      top:2px; left:2px;
-      width:22px; height:22px;
-      border-radius:999px;
-      background: var(--cream);
-      transition:transform 0.2s ease;
-      box-shadow:0 2px 8px rgba(15,23,42,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:9px;
-      font-weight:950;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      user-select:none;
-      color:#b91c1c;
-    }
-    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
-    .toggle-input.active .knob{ transform:translateX(28px); color:#15803d; }
-
-    .info-dot{
-      width:18px; height:18px;
-      border-radius:999px;
-      border:1px solid rgba(15,77,31,0.55);
-      background: rgba(255,255,255,0.70);
-      color:#0b1220;
-      font-weight:950;
-      font-size:12px;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      flex:0 0 auto;
-    }
-    .info-tip{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      width: min(380px, 92vw);
-      border-radius:14px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 55px rgba(15,23,42,0.22);
-      padding:10px 10px;
-      display:none;
-      z-index:80;
-      color:#0b1220;
-      font-size:12px;
-      line-height:1.6;
-      font-weight:900;
-    }
-    .info-tip strong{ letter-spacing:0.10em; text-transform:uppercase; font-size:11px; display:block; margin-bottom:6px; }
-    .info-tip .small{ opacity:0.92; font-weight:900; }
-    .info-tip.active{ display:block; }
 
     .mobile-nav{
       display:flex;
@@ -1752,6 +1422,156 @@
       border:2px solid var(--frame-line);
       border-radius:12px;
       background: rgba(255,255,255,0.14);
+    }
+
+    /* ACCESSIBILITY BUTTON */
+    .accessibility-btn{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:48px;
+      height:48px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:var(--a11y-blue);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:70;
+      box-shadow:0 10px 25px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* CART: right side with left 2/3 darkened */
+    .cart-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      z-index:1200;
+    }
+    .cart-overlay.active{ display:block; }
+    .cart-dim{
+      position:absolute;
+      inset:0;
+      background: rgba(15,23,42,0.55);
+    }
+    .cart-panel{
+      position:absolute;
+      top:0;
+      right:0;
+      height:100%;
+      width:min(420px, 92vw);
+      background: rgba(255,255,255,0.92);
+      border-left: 2px solid rgba(12, 90, 42, 0.65);
+      box-shadow: -18px 0 55px rgba(15,23,42,0.35);
+      display:flex;
+      flex-direction:column;
+      padding:14px 14px 16px;
+    }
+    .cart-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:6px 6px 12px;
+      border-bottom:1px solid rgba(15,23,42,0.12);
+    }
+    .cart-header h2{
+      font-size:14px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      font-weight:950;
+      color:#0b1220;
+    }
+    .cart-header button{
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      font-size:20px;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+    .cart-header button::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      mix-blend-mode: soft-light;
+      pointer-events:none;
+    }
+    .cart-items{
+      flex:1;
+      overflow:auto;
+      padding:12px 6px;
+    }
+    .cart-empty{
+      font-weight:900;
+      color:#0b1220;
+      opacity:0.85;
+      line-height:1.6;
+      font-size:12px;
+    }
+    .cart-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(12, 90, 42, 0.45);
+      background: rgba(255,255,255,0.70);
+      margin-bottom:10px;
+    }
+    .cart-row .name{
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      color:#0b1220;
+      line-height:1.35;
+    }
+    .cart-row .qty{
+      font-weight:950;
+      font-size:12px;
+      color:#0b1220;
+      opacity:0.9;
+      margin-top:6px;
+    }
+    .cart-footer{
+      padding:10px 6px 0;
+      border-top:1px solid rgba(15,23,42,0.12);
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+    }
+    .cart-footer .checkout-btn{
+      height:42px;
+      border-radius:14px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      font-weight:950;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      padding:0 14px;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+    .cart-footer .checkout-btn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      mix-blend-mode: soft-light;
+      pointer-events:none;
     }
 
     /* Full image viewer */
@@ -1843,17 +1663,15 @@
       background: rgba(0,0,0,0.18);
     }
 
-    /* Selection Speak Button */
+    /* Selection Speak Button: metallic orange rounded square w/ ffffc5 outline */
     .speak-pop{
       position:fixed;
       z-index:10000;
-      width:38px;
-      height:38px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.25);
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      width: var(--speakPopSize);
+      height: var(--speakPopSize);
+      border-radius:14px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
       display:none;
       align-items:center;
       justify-content:center;
@@ -1862,15 +1680,26 @@
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
+      overflow:hidden;
+    }
+    .speak-pop::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
     }
     .speak-pop svg{
       width:20px;
       height:20px;
-      stroke:#ffffc5;
+      stroke: var(--cream);
       fill:none;
       stroke-width:2;
       stroke-linecap:round;
       stroke-linejoin:round;
+      position:relative;
+      z-index:1;
     }
 
     /* Responsive */
@@ -1904,7 +1733,6 @@
       #store-view-full{ grid-column: 1 / -1; width:100%; }
       .store-search{ grid-column: 1 / 2; min-width:0 !important; }
       .cart-btn{ grid-column: 2 / 3; width:44px; height:44px; justify-self:end; }
-      body.store-expanded .sort-wrap{ grid-column: 1 / -1; width:100%; justify-content:flex-end; }
 
       #hero{ grid-template-columns: 1fr; gap:16px; align-items:start; }
 
@@ -1931,9 +1759,6 @@
       body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
       .banner-flag{ font-size:1.35em; }
-
-      .footer-bottombar{ grid-template-columns:1fr; row-gap:12px; }
-      .footer-right{ justify-content:flex-start; }
     }
 
     @media(max-width:880px){
@@ -1942,6 +1767,7 @@
       .mobile-menu-btn{ display:flex; }
       .about-grid{ grid-template-columns:1fr; }
       .about-card img{ height:240px; }
+      .about-text{ min-height: unset; }
     }
 
     @media(max-width:520px){
@@ -1957,7 +1783,7 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <!-- Side Frames (stacked seed image filled by JS) -->
+  <!-- SIDE FRAMES -->
   <div class="side-frames" aria-hidden="true">
     <div class="side left"><div class="stack" id="stack-left"></div></div>
     <div class="side right"><div class="stack" id="stack-right"></div></div>
@@ -2044,13 +1870,7 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
                 </button>
                 <p class="hero-sub" id="para-hero-1">
-                  <span class="gtext">
-                    MayaNut is an ancient, elusive seed from the tropical tree <em class="brand-orange">Brosimum alicastrum</em>.
-                    For centuries, the Mayan people used this seed as food, but it has only recently been rediscovered—soon to be offered for sale.
-                    Discover a soothing, chocolate-and-coffee tasting roasted seed powder that can be used in foods, drinks, and future products.
-                    Founded in 2025, we are in the early stages of growing MayaNut as a long-term agricultural crop in Florida, United States,
-                    developing farms to strengthen South Florida agriculture and build a new industry from the ground up.
-                  </span>
+                  MayaNut is an ancient, elusive seed from the tropical tree <em class="brand-orange">Brosimum alicastrum</em>. For centuries, the Mayan people used this seed as food, but it has only recently been rediscovered—soon to be offered for sale. Discover a soothing, chocolate-and-coffee tasting roasted seed powder that can be used in foods, drinks, and future products. Founded in 2025, we are in the early stages of growing MayaNut as a long-term agricultural crop in Florida, United States, developing farms to strengthen South Florida agriculture and build a new industry from the ground up.
                 </p>
               </div>
             </div>
@@ -2105,19 +1925,6 @@
                 <span class="btn-text">VIEW FULL STORE</span>
               </button>
 
-              <div class="sort-wrap" id="sort-wrap">
-                <button class="sort-btn" id="sort-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Sort">
-                  SORT
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 10l4 4 4-4"></path></svg>
-                </button>
-                <div class="sort-menu" id="sort-menu" role="menu" aria-label="Sort options">
-                  <button type="button" data-sort="az" role="menuitem" aria-label="Sort A to Z">A–Z</button>
-                  <button type="button" data-sort="za" role="menuitem" aria-label="Sort Z to A">Z–A</button>
-                  <button type="button" data-sort="pl" role="menuitem" aria-label="Sort low price">Low price</button>
-                  <button type="button" data-sort="ph" role="menuitem" aria-label="Sort high price">High price</button>
-                </div>
-              </div>
-
               <div class="store-search">
                 <input id="store-search" type="text" placeholder="Search future MayaNut products & merch" aria-label="Search future MayaNut products and merch" />
                 <button id="store-search-send" class="store-search-send" type="button" aria-label="Search controls">
@@ -2141,9 +1948,10 @@
             </div>
 
             <div class="store-grid" id="store-grid">
+              <!-- 8 items (start shows 4; expanded shows all 8 on desktop) -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Powder</div>
@@ -2158,9 +1966,9 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="instant latte" data-title="Instant Latte">
+              <article class="product-card" data-name="mayanut instant latte" data-title="MayaNut Instant Latte">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut instant latte concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut instant latte concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Instant Latte</div>
@@ -2175,13 +1983,13 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="baking blend" data-title="Baking Blend">
+              <article class="product-card" data-name="mayanut baking blend" data-title="MayaNut Baking Blend">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut baking blend concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut baking blend concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Baking Blend</div>
-                <p class="product-text">Concept for cookies, bars, and breads.</p>
+                <p class="product-text">Concept for cookies, bars, and baked goods.</p>
                 <div class="product-controls">
                   <div class="qty-control" data-product="baking">
                     <button class="qty-minus" type="button" aria-label="Minus">−</button>
@@ -2192,9 +2000,9 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="cold drink" data-title="Cold Drink">
+              <article class="product-card" data-name="mayanut cold drink" data-title="MayaNut Cold Drink">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cold drink concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cold drink concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Cold Drink</div>
@@ -2209,9 +2017,9 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="pods" data-title="Brew Pods">
+              <article class="product-card" data-name="mayanut brew pods" data-title="MayaNut Brew Pods">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut brew pods concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut brew pods concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Brew Pods</div>
@@ -2226,9 +2034,9 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="cocoa blend" data-title="Cocoa Blend">
+              <article class="product-card" data-name="mayanut cocoa blend" data-title="MayaNut Cocoa Blend">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cocoa blend concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut cocoa blend concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Cocoa Blend</div>
@@ -2243,9 +2051,9 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="shirt" data-title="T-Shirt">
+              <article class="product-card" data-name="mayanut t-shirt" data-title="MayaNut T-Shirt">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut t-shirt concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut t-shirt concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> T-Shirt</div>
@@ -2260,9 +2068,9 @@
                 </div>
               </article>
 
-              <article class="product-card" data-name="mug" data-title="Mug">
+              <article class="product-card" data-name="mayanut mug" data-title="MayaNut Mug">
                 <div class="img-zoom-wrap store-thumb">
-                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut mug concept" width="104" height="104" loading="lazy" decoding="async" class="zoomable" />
+                  <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut mug concept" width="104" height="104" loading="lazy" decoding="async" />
                 </div>
                 <div class="product-divider"></div>
                 <div class="product-name"><span class="brand-orange">MayaNut</span> Mug</div>
@@ -2300,22 +2108,142 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
                 </button>
                 <p class="about-text" id="para-about-1">
-                  Founded in 2025 by <strong>August Kokus</strong>, <span class="brand-orange">The MayaNut Company</span>
-                  stands on a multi-generation family tradition of fruit cultivation in the United States. August’s great-grandfather,
-                  Herbert “<strong>Bubba</strong>” Humphries, was an early pioneer of Florida citrus in the early 1920s.
-                  Building on that history, <strong>August Kokus</strong> is introducing a new crop—
-                  <strong><span class="brand-orange">MayaNut</span></strong> (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture.
+                  Founded in 2025 by <strong>August Kokus</strong>, <span class="brand-orange">The MayaNut Company</span> stands on a multi-generation family tradition of fruit cultivation in the United States. Building on that history, <strong>August Kokus</strong> is introducing a new crop—<strong><span class="brand-orange">MayaNut</span></strong> (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture.
                 </p>
               </div>
             </article>
 
             <article class="about-card">
               <div class="img-zoom-wrap">
-                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" class="crop-bottom" alt="August Kokus" width="1200" height="800" loading="lazy" decoding="async" class="zoomable" />
+                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" alt="August Kokus" width="1200" height="800" loading="lazy" decoding="async" class="zoomable" />
                 <button class="zoom-btn" type="button" aria-label="Expand image">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
                 </button>
               </div>
               <div class="speak-block" data-speak="para-about-2">
                 <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-2">
-                  <svg viewBox="0 0 24 24
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
+                </button>
+                <p class="about-text" id="para-about-2">
+                  <strong>August Kokus</strong> is working in South Florida to establish <em class="brand-orange">Brosimum alicastrum</em> as a new agricultural cornerstone. As the citrus industry continues to decline, Florida must look toward new long-term perennial crops to support its agricultural future. <strong>August</strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="about-long speak-block" data-speak="para-about-3">
+            <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-3">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4"></path><path d="M8 9v6"></path><path d="M11 8v8"></path><path d="M15 10c1.6 1.6 1.6 3.4 0 5"></path><path d="M18 8c3 3 3 7 0 10"></path></svg>
+            </button>
+
+            <div class="about-long-text" id="para-about-3">
+              <span class="brand-orange">The MayaNut Company</span> actively works to establish <span class="brand-orange">Brosimum alicastrum</span> as a long-term agricultural food source. <span class="brand-orange">August Kokus</span> develops this species for both agricultural and scientific aims.
+              <br /><br />
+              By growing these trees, we can do something new and unique that nobody else thought to do. We hope you love <span class="brand-orange">MayaNut</span> as much as we do.
+            </div>
+
+            <div class="about-nav" aria-label="Quick navigation">
+              <a href="about.html"><span>About</span></a>
+              <a href="research.html"><span>Research</span></a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="bottom-sep"></div>
+
+    <footer>
+      <div class="newsletter" aria-label="Newsletter">
+        <h3>Newsletter</h3>
+        <p>One or two emails per month. Occasional updates on MayaNut farming, product development, and site updates.</p>
+      </div>
+
+      <div class="footer-inner">
+        <div class="footer-left">
+          <img class="footer-logo-mark" id="logo-footer" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="120" height="45" loading="lazy" decoding="async" data-nozoom="1" />
+          <div class="footer-stack" aria-label="Footer info">
+            <div class="footer-based" aria-label="Based in Florida">
+              <span>Based in Florida</span>
+            </div>
+            <div class="footer-links" aria-label="Footer links">
+              <a href="privacy.html" id="link-privacy">Privacy</a>
+              <a href="terms.html" id="link-terms">Terms of Service</a>
+              <a href="sitemap.xml" id="link-sitemap">Sitemap</a>
+            </div>
+            <div>© 2026 The MayaNut Company, Inc.</div>
+          </div>
+        </div>
+
+        <div class="footer-right" aria-label="Footer social">
+          <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email The MayaNut Company">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"></rect><path d="M5.5 7.5L12 12.5L18.5 7.5"></path></svg>
+          </a>
+
+          <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X (Twitter) @mayanutcompany">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4.2l3.1 4.3L17.2 5H20l-5.4 7.1L20.6 19H16.5l-3.5-4.8L8.9 19H6l5.9-7.7L6 5z"></path></svg>
+          </a>
+
+          <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.3" cy="6.7" r="0.9"></circle></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility settings">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="5" r="2"></circle>
+      <path d="M4.8 9h14.4"></path>
+      <path d="M9.2 9l1.4 4.2"></path>
+      <path d="M14.8 9l-1.4 4.2"></path>
+      <path d="M10.4 13.2l-1.4 8"></path>
+      <path d="M13.6 13.2l1.4 8"></path>
+      <path d="M10.8 16h2.4"></path>
+    </svg>
+  </button>
+
+  <!-- Accessibility Overlay -->
+  <div class="overlay" id="accessibility-overlay" aria-hidden="true">
+    <div class="overlay-panel" role="dialog" aria-modal="true" aria-label="Accessibility and language">
+      <div class="overlay-header">
+        <div class="overlay-title">Accessibility &amp; Language</div>
+        <button class="overlay-close" data-close="accessibility-overlay" aria-label="Close"><span>&times;</span></button>
+      </div>
+
+      <nav class="mobile-nav" aria-label="Menu links" style="margin-bottom:12px;">
+        <a href="index.html" aria-current="page" id="nav-home-a11y">HOME</a>
+        <a href="index.html?store=1" id="nav-store-a11y">STORE</a>
+        <a href="about.html" id="nav-about-a11y">ABOUT</a>
+        <a href="research.html" id="nav-research-a11y">RESEARCH</a>
+        <a href="contact.html" id="nav-contact-a11y">CONTACT</a>
+        <a href="contact.html#faq" id="nav-faq-a11y">FAQ</a>
+      </nav>
+
+      <button class="lang-pill" id="lang-pill-a11y" type="button" aria-label="Switch to Español" style="width:100%; justify-content:center;">
+        <span>ESPAÑOL</span>
+      </button>
+
+      <div style="height:12px;"></div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; font-weight:950;">
+          <span>High Contrast Mode</span>
+          <button class="btn" id="toggle-contrast" type="button" aria-label="Toggle high contrast"><span class="btn-text">OFF</span></button>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; font-weight:950;">
+          <span>Larger Text</span>
+          <button class="btn" id="toggle-large-text" type="button" aria-label="Toggle larger text"><span class="btn-text">OFF</span></button>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; font-weight:950;">
+          <span>Voice Reading Mode</span>
+          <button class="btn" id="toggle-voiceover" type="button" aria-label="Toggle voice reading"><span class="btn-text">OFF</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="overlay" id="mobile-menu-overlay" aria-hidden="true">
+    <

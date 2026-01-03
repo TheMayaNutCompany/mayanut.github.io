@@ -89,7 +89,7 @@
       --text-muted:#556070;
 
       --green:#1a6800;
-      --green-deep:#0b3b17;
+      --green-deep:#0b3b17; /* darker to improve readability */
       --frame-line: rgba(12, 90, 42, 0.95);
 
       --tan:#f3e6d1;
@@ -158,10 +158,16 @@
       --font-slim: ui-serif, "Times New Roman", Times, Georgia, serif;
       --font-menu: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
+      /* match store search input background */
       --para-bg: rgba(255,255,255,0.82);
 
+      /* speak pop style */
       --speakPopSize: 38px;
       --speakPopR: 14px;
+
+      /* FIXED CART FAB (matches other metallic buttons) */
+      --cartFabSize: 48px;
+      --cartFabGap: 12px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -211,6 +217,7 @@
 
     body.overlay-open{ overflow:hidden; }
 
+    /* SIDE FRAMES (stacked mayanuts image) */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{
       position:absolute; top:0; bottom:0; width:var(--sideW);
@@ -502,6 +509,7 @@
 
     #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
+    /* HERO LAYOUT */
     #hero{
       position:relative;
       display:grid;
@@ -595,6 +603,7 @@
     }
     .poke{ font-size: 1.14em; line-height: 1; transform: translateY(1px); display:inline-block; }
 
+    /* Image zoom buttons for non-store images */
     .img-zoom-wrap{
       position:relative;
       display:block;
@@ -651,6 +660,7 @@
       transform: translateZ(0);
     }
 
+    /* Paragraph boxes (same font/color as top paragraphs; background matches store search box) */
     .hero-sub,
     .about-text{
       font-family: var(--font-pretty);
@@ -664,11 +674,12 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       position:relative;
       overflow:hidden;
-      color: var(--green-deep);
+      color: var(--green-deep); /* dark green text only */
       font-weight: 850;
       letter-spacing: 0.01em;
     }
 
+    /* speaker icon buttons in paragraphs (shown only when voice mode on) */
     .speak-block{ position:relative; overflow:visible; }
 
     .para-speak{
@@ -747,6 +758,7 @@
     .btn:hover .btn-text{ transform: scale(1.05); }
     .btn .btn-text{ display:inline-block; transition: transform .12s ease; position:relative; }
 
+    /* STORE PANEL */
     #store-panel{
       border-radius: var(--outlineR);
       border: var(--outlineW) solid var(--frame-line);
@@ -818,9 +830,10 @@
     .store-search{ flex:1; min-width:220px; position:relative; max-width:100%; }
     .store-search input{
       width:100%;
-      padding:10px 84px 10px 12px;
+      /* FIX: extra right padding prevents the placeholder text from hiding under the X + magnifier */
+      padding:10px 104px 10px 12px;
       border-radius:999px;
-      border:1px solid var(--frame-line);
+      border:1px solid var(--frame-line); /* thin dark green outline */
       font-size:12px;
       background: var(--para-bg);
       color:#111827;
@@ -863,9 +876,10 @@
       justify-content:center;
       border-radius:999px;
       position:relative;
+      flex:0 0 auto;
     }
-    .search-divider{ width:1px; height:16px; background: rgba(255,255,255,0.55); position:relative; }
-    .search-icon{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; position:relative; }
+    .search-divider{ width:1px; height:16px; background: rgba(255,255,255,0.55); position:relative; flex:0 0 auto; }
+    .search-icon{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; position:relative; flex:0 0 auto; }
 
     .cart-btn{
       position:relative;
@@ -923,6 +937,66 @@
       z-index:2;
     }
 
+    /* FIXED CART BUTTON (always available like your other version) */
+    .cart-fab{
+      position:fixed;
+      right:18px;
+      bottom: calc(18px + var(--cartFabSize) + var(--cartFabGap)); /* sits above accessibility button */
+      width: var(--cartFabSize);
+      height: var(--cartFabSize);
+      border-radius: 16px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:75;
+      box-shadow:0 12px 30px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      overflow:hidden;
+    }
+    .cart-fab::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .cart-fab svg{
+      width:20px; height:20px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
+    .cart-fab-badge{
+      position:absolute;
+      top:-6px;
+      right:-6px;
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      background: var(--cream);
+      color:#000;
+      font-weight:950;
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(15,23,42,0.20);
+      line-height:1;
+      pointer-events:none;
+      z-index:2;
+    }
+
+    /* PRODUCT GRID */
     .store-grid{
       margin-top:12px;
       display:grid;
@@ -936,6 +1010,7 @@
     .product-card{
       border-radius: var(--r-card);
       background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+      /* FIX: thin dark green outline to match the rest */
       border:1px solid var(--frame-line);
       padding:12px 12px 14px;
       display:flex;
@@ -952,13 +1027,14 @@
     .product-card.is-nonmatch{ background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--nonmatch-red)); }
 
     .product-card .img-zoom-wrap{ width:104px; height:104px; margin-top:4px; margin-bottom:10px; }
-    .product-card .zoom-btn{ display:none !important; }
+    .product-card .zoom-btn{ display:none !important; } /* store thumbs have no expand */
 
     .product-card img{
       width:104px;
       height:104px;
       object-fit:cover;
       border-radius:16px;
+      /* FIX: thin dark green outline on placeholders/images */
       border: 1px solid var(--frame-line);
       background:#fff;
       flex:0 0 auto;
@@ -1074,6 +1150,7 @@
     .btn-buy:hover .btn-text{ transform: scale(1.05); }
     .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
 
+    /* Expanded store layout on desktop: expand to the left (cover hero-left) */
     @media(min-width:781px){
       body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
@@ -1097,6 +1174,7 @@
       }
     }
 
+    /* ABOUT DIVIDER */
     .about-divider{
       max-width:1200px;
       margin:22px auto 14px;
@@ -1212,9 +1290,457 @@
     }
     .about-nav a span{ position:relative; }
 
-    /* Accessibility button intentionally NOT removed in block 1;
-       markup + JS remain in block 2 exactly as provided. */
+    /* Accessibility floating button */
+    .accessibility-btn{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:48px;
+      height:48px;
+      border-radius:16px; /* match square-metal look */
+      border:1px solid var(--cream);
+      background: var(--a11y-blue);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:70;
+      box-shadow:0 10px 25px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
+    /* Desktop: right-side drawer with left 2/3 dimmed */
+    .a11y-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      z-index:80;
+    }
+    .a11y-overlay.active{ display:block; }
+    .a11y-dim{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,0.0);
+    }
+
+    /* Desktop drawer */
+    .a11y-drawer{
+      position:absolute;
+      top:0;
+      right:0;
+      height:100%;
+      width:min(420px, 34vw);
+      max-width:460px;
+      background: var(--panel-green-grad);
+      border-left: 2px solid var(--frame-line);
+      box-shadow: -18px 0 55px rgba(15,23,42,0.28);
+      padding:16px 14px;
+      transform: translateX(102%);
+      transition: transform .18s ease;
+      overflow:auto;
+    }
+    .a11y-overlay.active .a11y-drawer{ transform: translateX(0); }
+
+    .a11y-overlay.active .a11y-dim{
+      background: rgba(0,0,0,0.22);
+    }
+    @media(min-width:781px){
+      .a11y-dim{ background: rgba(0,0,0,0.0); }
+      .a11y-overlay.active .a11y-dim{
+        background: linear-gradient(
+          90deg,
+          rgba(0,0,0,0.30) 0%,
+          rgba(0,0,0,0.30) 66%,
+          rgba(0,0,0,0.0) 66%
+        );
+      }
+    }
+
+    @media(max-width:780px){
+      .a11y-drawer{
+        position:absolute;
+        top:50%;
+        left:50%;
+        right:auto;
+        height:auto;
+        width:min(460px, 92vw);
+        transform: translate(-50%, -50%) scale(0.98);
+        border:2px solid var(--frame-line);
+        border-radius:18px;
+      }
+      .a11y-overlay.active .a11y-drawer{ transform: translate(-50%, -50%) scale(1); }
+      .a11y-overlay.active .a11y-dim{
+        background: rgba(255,255,255,0.18);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+    }
+
+    .a11y-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .a11y-head .title{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      color:#0b1220;
+    }
+    .a11y-head .title .t1{ font-weight:950; font-size:14px; }
+    .a11y-head .title .t2{ font-weight:950; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.92; }
+    .a11y-close{
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      cursor:pointer;
+      line-height:1;
+      color: var(--cream);
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      flex:0 0 auto;
+    }
+    .a11y-close::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .a11y-close span{ position:relative; }
+
+    .a11y-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .a11y-logo-link{ display:inline-flex; align-items:center; text-decoration:none; }
+    .a11y-logo{
+      width:120px;
+      height:auto;
+      filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
+      border-radius:12px;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .a11y-social{ display:flex; align-items:center; gap:10px; }
+    .icon-pill{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      text-decoration:none;
+    }
+    .icon-pill::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .icon-pill svg{
+      width:22px;
+      height:22px;
+      stroke:var(--cream);
+      fill:none;
+      stroke-width:2;
+      position:relative;
+      z-index:1;
+    }
+
+    .mobile-nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      margin: 10px 0 12px;
+    }
+    .mobile-nav a{
+      text-decoration:none;
+      color:#0b1220;
+      padding:10px 10px;
+      font-weight:950;
+      border:2px solid var(--frame-line);
+      border-radius:12px;
+      background: rgba(255,255,255,0.14);
+    }
+
+    .settings-row{
+      margin-bottom:12px;
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color:#0b1220;
+      font-weight:950;
+      position:relative;
+    }
+
+    .a11y-lang-btn{
+      width:100%;
+      height:40px;
+      border-radius:14px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      font-weight:950;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+    }
+    .a11y-lang-btn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .a11y-lang-btn span{ position:relative; }
+
+    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
+    .toggle-input{
+      width:54px;
+      height:26px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: rgba(255, 0, 0, 0.16);
+      position:relative;
+      cursor:pointer;
+      flex:0 0 auto;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+    }
+    .toggle-input .knob{
+      position:absolute;
+      top:2px; left:2px;
+      width:22px; height:22px;
+      border-radius:999px;
+      background: var(--cream);
+      transition:transform 0.2s ease;
+      box-shadow:0 2px 8px rgba(15,23,42,0.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:9px;
+      font-weight:950;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      user-select:none;
+      color:#b91c1c;
+    }
+    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
+    .toggle-input.active .knob{ transform:translateX(28px); color:#15803d; }
+
+    .info-dot{
+      width:18px; height:18px;
+      border-radius:999px;
+      border:1px solid rgba(15,77,31,0.55);
+      background: rgba(255,255,255,0.70);
+      color:#0b1220;
+      font-weight:950;
+      font-size:12px;
+      line-height:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+      flex:0 0 auto;
+    }
+    .info-tip{
+      position:absolute;
+      right:0;
+      top: calc(100% + 8px);
+      width: min(380px, 92vw);
+      border-radius:14px;
+      border:2px solid var(--frame-line);
+      background: var(--store-green-grad);
+      box-shadow:0 18px 55px rgba(15,23,42,0.22);
+      padding:10px 10px;
+      display:none;
+      z-index:80;
+      color:#0b1220;
+      font-size:12px;
+      line-height:1.6;
+      font-weight:900;
+    }
+    .info-tip strong{ letter-spacing:0.10em; text-transform:uppercase; font-size:11px; display:block; margin-bottom:6px; }
+    .info-tip .small{ opacity:0.92; font-weight:900; }
+    .info-tip.active{ display:block; }
+
+    /* Full image viewer (kept for non-store images) */
+    .img-viewer-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+    .img-viewer-overlay.active{ display:flex; }
+    .img-viewer-panel{
+      position:relative;
+      width: min(1100px, 96vw);
+      max-height: 92vh;
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      overflow:hidden;
+    }
+    .img-viewer-topbar{
+      position:absolute;
+      top:10px;
+      right:10px;
+      left:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      pointer-events:none;
+      z-index:2;
+    }
+    .img-viewer-caption{
+      pointer-events:none;
+      color: rgba(255,255,255,0.92);
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      max-width: 70%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .img-viewer-close{
+      pointer-events:auto;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      cursor:pointer;
+      color: var(--cream);
+      font-size:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      box-shadow:0 14px 40px rgba(0,0,0,0.25);
+    }
+    .img-viewer-close::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .img-viewer-close span{ position:relative; }
+    .img-viewer-img{
+      width:100%;
+      height:100%;
+      max-height: 92vh;
+      object-fit: contain;
+      display:block;
+      border-radius:18px;
+      touch-action: pan-x pan-y;
+      background: rgba(0,0,0,0.18);
+    }
+
+    /* Selection Speak Button */
+    .speak-pop{
+      position:fixed;
+      z-index:10000;
+      width:var(--speakPopSize);
+      height:var(--speakPopSize);
+      border-radius:var(--speakPopR);
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      overflow:hidden;
+    }
+    .speak-pop::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .speak-pop svg{
+      width:20px;
+      height:20px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
+
+    /* Responsive */
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
@@ -1271,6 +1797,10 @@
       body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
       .banner-flag{ font-size:1.35em; }
+
+      /* keep fixed cart above a11y on mobile too */
+      .cart-fab{ right:16px; bottom: calc(16px + var(--cartFabSize) + var(--cartFabGap)); }
+      .accessibility-btn{ right:16px; bottom:16px; }
     }
 
     @media(max-width:880px){
@@ -1285,6 +1815,7 @@
       .hero-images{ grid-template-columns:1fr; }
       .hero-title .line.topline{ white-space:normal; }
       .hero-title .line.bottomline{ white-space:normal; overflow:visible; align-items:flex-start; }
+      .img-viewer-caption{ display:none; }
       .hero-top{ animation-duration:0.9s; }
     }
   </style>
@@ -1464,6 +1995,7 @@
             </div>
 
             <div class="store-grid" id="store-grid">
+              <!-- Default shows first 4 (2x2). Expanded shows all 8 (2 rows x 4 on desktop). -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
                   <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" />
@@ -1688,5 +2220,256 @@
     <div class="bottom-sep"></div>
 
     <!-- (BLOCK 2 will continue after this line) -->
-</body>
-</html>
+<!-- BLOCK 2 / 2 -->
+
+<!-- bottom separator already present above -->
+
+<footer id="site-footer" aria-label="Footer">
+  <section class="footer-wrap">
+    <div class="newsletter" id="newsletter">
+      <div class="newsletter-left">
+        <div class="newsletter-title">Newsletter</div>
+        <div class="newsletter-sub">
+          Get occasional updates about MayaNut products, research, and farm progress.
+        </div>
+      </div>
+
+      <form class="newsletter-form" id="newsletter-form" autocomplete="on">
+        <label class="sr-only" for="newsletter-email">Email</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          placeholder="Your email"
+          inputmode="email"
+          autocomplete="email"
+          required
+        />
+        <button class="metal-btn newsletter-btn" type="submit" aria-label="Subscribe">
+          <span class="btn-text">SUBSCRIBE</span>
+        </button>
+      </form>
+
+      <div class="newsletter-note" id="newsletter-note" role="status" aria-live="polite"></div>
+    </div>
+
+    <!-- footer tab -->
+    <div class="footer-tab" role="navigation" aria-label="Footer navigation">
+      <a class="footer-logo" href="#top" aria-label="Back to top">
+        <img
+          src="mayanut-the-mayanut-comapny-logo.png"
+          alt="The MayaNut Company logo"
+          width="140"
+          height="52"
+          decoding="async"
+          loading="lazy"
+        />
+      </a>
+
+      <button
+        class="footer-tab-btn"
+        id="footer-tab-btn"
+        type="button"
+        aria-label="Open footer links"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="footer-bottom" id="footer-bottom">
+      <div class="footer-left">
+        <div class="footer-base">Based in Florida</div>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy</a>
+          <span class="dot">•</span>
+          <a href="terms.html">Terms</a>
+          <span class="dot">•</span>
+          <a href="sitemap.xml">Sitemap</a>
+        </div>
+      </div>
+
+      <div class="footer-right" aria-label="Social links">
+        <a
+          class="icon-pill"
+          href="https://www.instagram.com/themayanutcompany"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <circle cx="17.3" cy="6.7" r="0.9"></circle>
+          </svg>
+        </a>
+
+        <a
+          class="icon-pill"
+          href="mailto:info@mayanut.com"
+          aria-label="Email info@mayanut.com"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.5 6.5h15v11h-15z"></path>
+            <path d="M4.5 7l7.5 6 7.5-6"></path>
+          </svg>
+        </a>
+
+        <a
+          class="icon-pill"
+          href="https://x.com/mayanutcompany"
+          target="_blank"
+          rel="noopener"
+          aria-label="X"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 5l14 14"></path>
+            <path d="M19 5L5 19"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" aria-hidden="true">
+  <div class="cart-dim" id="cart-dim" tabindex="-1" aria-label="Close cart"></div>
+
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true">
+    <div class="cart-head">
+      <div class="cart-title">
+        <div class="t1">Cart</div>
+        <div class="t2">Future Checkout</div>
+      </div>
+      <button class="a11y-close" id="cart-close" type="button" aria-label="Close cart">
+        <span>×</span>
+      </button>
+    </div>
+
+    <div class="cart-body">
+      <div class="cart-empty" id="cart-empty">Your cart is empty.</div>
+      <div class="cart-items" id="cart-items"></div>
+
+      <div class="cart-summary">
+        <div class="cart-row">
+          <span class="label">Items</span>
+          <span class="value" id="cart-summary-items">0</span>
+        </div>
+        <div class="cart-row">
+          <span class="label">Status</span>
+          <span class="value">Coming soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-foot">
+      <button class="metal-btn cart-checkout" id="cart-checkout" type="button">
+        <span class="btn-text">PROCEED TO CHECKOUT</span>
+      </button>
+      <div class="cart-note" id="cart-note" role="status" aria-live="polite"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- ACCESSIBILITY BUTTON -->
+<button
+  class="accessibility-btn"
+  id="accessibility-btn"
+  type="button"
+  aria-label="Accessibility menu"
+>
+  <!-- professional person icon + inner white ring -->
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/>
+    <circle cx="12" cy="6" r="2"></circle>
+    <path d="M7 10h10"></path>
+    <path d="M12 10v8"></path>
+    <path d="M8 13l4 2"></path>
+    <path d="M16 13l-4 2"></path>
+  </svg>
+</button>
+
+<!-- ACCESSIBILITY OVERLAY -->
+<div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
+  <div class="a11y-dim" id="a11y-dim" tabindex="-1" aria-label="Close accessibility"></div>
+
+  <aside class="a11y-drawer" id="a11y-drawer" role="dialog" aria-modal="true">
+    <div class="a11y-head">
+      <div class="title">
+        <div class="t1">Accessibility</div>
+        <div class="t2">Settings & Tools</div>
+      </div>
+      <button class="a11y-close" id="a11y-close" type="button" aria-label="Close">
+        <span>×</span>
+      </button>
+    </div>
+
+    <button class="a11y-lang-btn" id="a11y-lang-btn" type="button">
+      <span>ESPAÑOL</span>
+    </button>
+
+    <div class="settings-row">
+      <span>High contrast</span>
+      <div class="toggle-input" id="toggle-contrast" role="switch" aria-checked="false">
+        <div class="knob">off</div>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span>Large text</span>
+      <div class="toggle-input" id="toggle-large" role="switch" aria-checked="false">
+        <div class="knob">off</div>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span>Voice tools</span>
+      <div class="toggle-input" id="toggle-voice" role="switch" aria-checked="false">
+        <div class="knob">off</div>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span>Reduce motion</span>
+      <div class="toggle-input" id="toggle-reduce" role="switch" aria-checked="false">
+        <div class="knob">off</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div class="img-viewer-overlay" id="img-viewer" aria-hidden="true">
+  <div class="img-viewer-panel" role="dialog" aria-modal="true">
+    <div class="img-viewer-topbar">
+      <div class="img-viewer-caption" id="img-viewer-caption"></div>
+
+      <div style="display:flex; gap:8px;">
+        <a
+          href="research.html#gallery"
+          class="metal-btn"
+          style="height:38px; padding:0 12px;"
+        >
+          <span class="btn-text">GO TO GALLERY</span>
+        </a>
+
+        <button class="img-viewer-close" id="img-viewer-close" type="button">
+          <span>×</span>
+        </button>
+      </div>
+    </div>
+
+    <img class="img-viewer-img" id="img-viewer-img" alt="" />
+  </div>
+</div>
+
+<!-- SELECTION SPEAK -->
+<button class="speak-pop" id="speak-pop" type="button" aria-label="Speak selection">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M4 10v4"></path>
+    <path d="M7 8v8"></path>
+    <path d="M10 6v12"></path>
+    <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path>
+    <path d="M17 7c3 3 3 7 0 10"></path>
+  </svg>
+</button>

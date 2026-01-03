@@ -38,7 +38,8 @@
       --store-g2:#7ae78a;
       --store-g3:#1a6800;
 
-      --stickyOffset: 160px;
+      --r-card:18px;
+      --r-btn:12px;
 
       --a11y-blue:#084ac5;
 
@@ -73,17 +74,11 @@
       --font-menu: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --para-bg: rgba(255,255,255,0.82);
-
-      --hc-bg: rgba(255,255,255,0.92);
-      --hc-border: rgba(0,0,0,0.75);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
-    html{
-      background: var(--tan);
-      scroll-padding-top: calc(var(--stickyOffset) + 12px);
-    }
+    html{ background: var(--tan); }
     body{
       font-family: var(--font-sans);
       color:var(--text-main);
@@ -93,23 +88,6 @@
       min-height:100vh;
     }
     img{ max-width:100%; height:auto; display:block; }
-
-    /* A11Y toggles (applied by JS) */
-    body.a11y-large{ font-size:18px; }
-    body.a11y-contrast .hero-sub,
-    body.a11y-contrast .product-card,
-    body.a11y-contrast .about-us,
-    body.a11y-contrast .footer-panel{
-      background: var(--hc-bg) !important;
-      border-color: var(--hc-border) !important;
-      color:#000 !important;
-      text-shadow:none !important;
-    }
-    body.a11y-reduce *{
-      scroll-behavior:auto !important;
-      transition:none !important;
-      animation:none !important;
-    }
 
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
@@ -137,17 +115,17 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      padding-top: var(--stickyOffset);
+      padding-top: 0; /* ✅ NOT STICKY */
     }
 
-    /* STICKY HEADER */
+    /* ✅ HEADER NOT STICKY (top tab should NOT follow user) */
     .sticky-top{
-      position:fixed;
-      top:0;
-      z-index:999;
+      position:relative;
+      top:auto;
+      left:auto;
+      right:auto;
+      z-index:10;
       background:transparent;
-      left: var(--sideW);
-      right: var(--sideW);
       padding-top: env(safe-area-inset-top);
     }
 
@@ -212,6 +190,7 @@
       min-width: 220px;
       width: 220px;
       flex: 0 0 220px;
+      justify-content:flex-start; /* ✅ left aligned */
     }
     #logo-top{
       width:172px;
@@ -221,6 +200,7 @@
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       user-select:none;
       -webkit-user-select:none;
+      margin-left:0; /* ✅ left aligned */
     }
 
     .header-center{
@@ -369,7 +349,7 @@
         var(--tan) 100%
       );
     }
-    .content-wrapper{ padding:26px 22px 30px; width:100%; overflow-x:hidden; background:transparent; }
+    .content-wrapper{ padding:26px 22px 22px; width:100%; overflow-x:hidden; background:transparent; }
 
     /* HERO */
     #hero{
@@ -491,7 +471,7 @@
       align-self:stretch;
     }
 
-    /* expanded: grows LEFT (overlays hero-left) */
+    /* Expanded store overlays LEFT across hero (grows leftward) */
     body.store-expanded #hero{ position:relative; }
     body.store-expanded #store-panel{
       position:absolute;
@@ -611,34 +591,20 @@
       z-index:2;
     }
 
-    /* STORE GRID:
-       - default: 1x1 (single visible card, full width)
-       - expanded: 4 in a row */
+    /* ✅ STORE LAYOUT (as requested):
+       - default: 2 options side-by-side (2 columns, show 2 cards)
+       - expanded: 4 all in a row (4 columns, show all 4)
+    */
     .store-grid{
       margin-top:12px;
       display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap:12px;
       width:100%;
     }
-    #store-grid .product-card:nth-child(n+2){ display:none; }
+    #store-grid .product-card:nth-child(n+3){ display:none; } /* show only 2 by default */
     body.store-expanded #store-grid .product-card{ display:flex; }
     body.store-expanded .store-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; }
-
-    .product-card{
-      border-radius: 18px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
-      border:1px solid var(--frame-line);
-      padding:12px 12px 14px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      justify-content:space-between;
-      min-height:228px;
-      width:100%;
-      overflow:hidden;
-    }
 
     .store-close-row{
       display:none;
@@ -660,7 +626,22 @@
       text-overflow:ellipsis;
     }
 
-    /* SECTION BETWEEN MAIN AND FOOTER: A LITTLE ABOUT US */
+    .product-card{
+      border-radius: 18px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+      border:1px solid var(--frame-line);
+      padding:12px 12px 14px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      justify-content:space-between;
+      min-height:228px;
+      width:100%;
+      overflow:hidden;
+    }
+
+    /* BETWEEN SECTION (A LITTLE ABOUT US) */
     .between-wrap{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -673,6 +654,7 @@
       padding: 18px 22px 18px;
     }
 
+    /* ✅ Make it look like the simple section you asked for: title + 2 paragraphs (top) + 2 images (bottom) */
     .about-us{
       border-radius:18px;
       border:2px solid var(--frame-line);
@@ -689,11 +671,12 @@
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
       margin-bottom:10px;
+      text-align:left;
     }
     .about-us .about-text{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
       margin-bottom:14px;
     }
     .about-us .about-text p{
@@ -725,7 +708,7 @@
       background:#fff;
     }
 
-    /* FOOTER (newsletter + bottom info fused into one rectangle) */
+    /* FOOTER (newsletter + bottom info fused) */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -761,7 +744,15 @@
     }
     .footer-panel > *{ position:relative; z-index:1; }
 
-    .footer-left{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .footer-left{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+      justify-content:flex-start;
+      align-items:flex-start; /* ✅ left aligned */
+      text-align:left;
+    }
     .footer-left .line{
       font-weight:950;
       font-size:11px;
@@ -836,7 +827,7 @@
       z-index:1;
     }
 
-    /* FLOATING ACCESSIBILITY BUTTON (lower right; no cart beside it) */
+    /* Floating accessibility (lower right; only icon) */
     .fab{
       position:fixed;
       z-index:70;
@@ -867,7 +858,7 @@
       stroke-linejoin:round;
     }
 
-    /* DRAWERS / OVERLAYS */
+    /* Overlays/drawers */
     .overlay{
       position:fixed;
       inset:0;
@@ -955,7 +946,6 @@
     .a11y-desc{ font-size:12px; color:#334155; margin-top:4px; line-height:1.55; }
     .a11y-left{ display:flex; flex-direction:column; min-width:0; }
 
-    /* OFF / ON toggle labels */
     .toggle{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
     .toggle .state{
       font-weight:950;
@@ -1016,8 +1006,11 @@
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
-      .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
-      .sticky-top{ left: var(--sideW); right: var(--sideW); }
+      .frame-wrap{
+        width: calc(100vw - (var(--sideW) * 2));
+        margin-left: var(--sideW);
+        margin-right: var(--sideW);
+      }
     }
 
     @media(max-width:880px){
@@ -1027,7 +1020,7 @@
 
     @media(max-width:780px){
       .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
+      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: 0; }
       .top-banner,.site-header,.top-sep,main,.between-wrap,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
       .between-inner, .footer-wrap{ padding-left:16px; padding-right:16px; }
@@ -1040,8 +1033,6 @@
       .store-sort select{ width:100%; min-width:0; }
 
       body.store-expanded .store-grid{ grid-template-columns: 1fr; }
-
-      .about-us .about-text{ grid-template-columns: 1fr; }
       .about-us .about-images{ grid-template-columns: 1fr; }
 
       .footer-panel{ grid-template-columns: 1fr; }
@@ -1054,21 +1045,6 @@
 
   <script>
     document.documentElement.classList.add("anim-prep");
-    (function(){
-      function setStickyOffset(){
-        var sticky = document.getElementById("sticky-top");
-        if(!sticky) return;
-        var h = Math.ceil(sticky.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--stickyOffset", (h + 12) + "px");
-      }
-      window.addEventListener("load", setStickyOffset, { once:true });
-      window.addEventListener("resize", function(){
-        clearTimeout(window.__stickyT);
-        window.__stickyT = setTimeout(setStickyOffset, 60);
-      });
-      window.addEventListener("pageshow", setStickyOffset);
-      document.addEventListener("DOMContentLoaded", setStickyOffset);
-    })();
   </script>
 </head>
 
@@ -1257,10 +1233,9 @@
       </div>
     </main>
 
-    <!-- SECTION BETWEEN MAIN AND BOTTOM PART -->
+    <!-- A LITTLE ABOUT US (between main and bottom) -->
     <section class="between-wrap" aria-label="About section wrapper">
       <div class="between-inner">
-
         <section class="about-us" id="about-us" aria-label="A Little About Us">
           <div class="about-title">A Little About Us</div>
 
@@ -1292,7 +1267,6 @@
             />
           </div>
         </section>
-
       </div>
     </section>
 
@@ -1350,7 +1324,7 @@
     </footer>
   </div>
 
-  <!-- Accessibility (lower right; no cart beside it) -->
+  <!-- Accessibility (lower right only) -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4a2 2 0 1 0 0.01 0z"></path>
@@ -1456,20 +1430,19 @@
   </aside>
 
   <script>
-    // HERO animation
+    // Hero animation
     window.addEventListener("load", () => {
       const heroTop = document.getElementById("hero-top");
       if(heroTop) heroTop.classList.add("hero-animate");
       document.documentElement.classList.remove("anim-prep");
     });
 
-    // Side-frame stacks (all tiles use the requested image)
+    // Side-frame stacks (✅ requested image)
     (function(){
       const src = "mayanuts-the-maya-nut-company-image.jpeg";
       const left = document.getElementById("stack-left");
       const right = document.getElementById("stack-right");
       if(!left || !right) return;
-
       function fill(stack){
         let html = "";
         for(let i=0;i<10;i++){
@@ -1511,7 +1484,7 @@
     document.getElementById("mobile-menu-btn").addEventListener("click", () => openDrawer(menuDrawer));
     document.getElementById("menu-close").addEventListener("click", closeAllDrawers);
 
-    // Store expand
+    // Store expand (2 cards -> expanded 4 in row overlaying left)
     const btnExpand = document.getElementById("store-view-full");
     const btnCloseStore = document.getElementById("store-close");
     function setStoreExpanded(on){
@@ -1535,7 +1508,7 @@
       sorted.forEach(el => grid.appendChild(el));
     });
 
-    // BUY buttons -> add to cart badge
+    // BUY buttons -> cart badge
     let cartCount = 0;
     const badge = document.getElementById("cart-badge");
     document.querySelectorAll(".buy-btn").forEach(btn => {
@@ -1552,7 +1525,7 @@
       e.target.reset();
     });
 
-    // A11Y toggle binding
+    // A11Y toggles
     function bindSwitch(switchEl, bodyClass){
       function apply(on){
         switchEl.classList.toggle("on", on);

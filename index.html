@@ -11,7 +11,7 @@
   <link rel="canonical" href="https://mayanut.com/index-es.html" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <meta name="keywords" content="MayaNut, Maya Nut, Brosimum alicastrum, ramón, ojoche, árbol tropical, agricultura de Florida, granja en Florida, Homestead Florida, cultivo tropical, agroforestería, polvo tostado, sin cafeína, investigación, productos, reforestación, cultivo sostenible" />
+  <meta name="keywords" content="MayaNut, Maya Nut, Brosimum alicastrum, ramón, ojoche, árbol tropical, agricultura de Florida, granja en Florida, Homestead Florida, cultivo tropical, agroforestería, polvo tostado, sin cafeína, investigación, productos, cultivo sostenible" />
 
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
   <link rel="apple-touch-icon" href="mayanut-the-mayanut-comapny-logo.png" />
@@ -160,7 +160,6 @@
       width:100%;
       max-width:100%;
     }
-    .banner-flag{ display:none; } /* removed emoji slot */
 
     .site-header{
       width:100%;
@@ -483,7 +482,11 @@
       will-change: transform, opacity;
     }
 
-    /* Expanded overlay base */
+    /* Expanded: overlay + slide-in animation (1s to the left) */
+    @keyframes storeSlideInLeft{
+      from{ opacity:0; transform: translateX(72px); }
+      to{ opacity:1; transform: translateX(0); }
+    }
     body.store-expanded #hero{ position:relative; }
     body.store-expanded #store-panel{
       position:absolute;
@@ -493,15 +496,7 @@
       z-index:50;
       height:auto;
       box-shadow: 0 24px 70px rgba(15,23,42,0.28);
-    }
-
-    /* Slide-in animation (1s) when opening */
-    body.store-animating-in #store-panel{
-      animation: storeSlideIn 1s ease-out both;
-    }
-    @keyframes storeSlideIn{
-      from{ transform: translateX(42px); opacity:0; }
-      to{ transform: translateX(0); opacity:1; }
+      animation: storeSlideInLeft 1s ease-out both;
     }
 
     .store-title{
@@ -704,14 +699,39 @@
     body.store-expanded #store-grid .product-card{ display:flex; }
     body.store-expanded .store-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; }
 
+    /* Full-store top row: logo left (same size feel), label center-ish, close right */
     .store-close-row{
       display:none;
       align-items:center;
-      justify-content:space-between;
       gap:10px;
       margin-top:4px;
+      width:100%;
     }
-    body.store-expanded .store-close-row{ display:flex; }
+    body.store-expanded .store-close-row{ display:grid; grid-template-columns: auto 1fr auto; align-items:center; }
+
+    .store-mini-logo{
+      width:64px;
+      height:auto;
+      border-radius:14px;
+      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .store-close-label{
+      font-weight:950;
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      text-align:center;
+      opacity:0.95;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      padding:0 6px;
+    }
 
     .product-card{
       border-radius: 18px;
@@ -755,6 +775,7 @@
       gap:8px;
       padding-top:4px;
     }
+
     .u-row{
       width:100%;
       display:grid;
@@ -797,13 +818,15 @@
       overflow:hidden;
       display:flex;
       align-items:center;
-      justify-content:space-between; /* add left, qty right */
+      justify-content:space-between;
       padding:0 10px;
       user-select:none;
       -webkit-user-select:none;
       gap:10px;
     }
     .add-btn .add-text{ position:relative; display:inline-block; text-align:left; }
+
+    /* qty background matches search */
     .add-btn .qty-chip{
       position:relative;
       height:24px;
@@ -980,8 +1003,9 @@
     }
     .footer-toprow{ display:flex; align-items:flex-start; gap:12px; }
 
+    /* Bigger left-aligned footer logo */
     .footer-logo{
-      width:72px;
+      width:88px;
       height:auto;
       border-radius:16px;
       flex:0 0 auto;
@@ -1231,12 +1255,15 @@
       .between-inner, .footer-wrap{ padding-left:16px; padding-right:16px; }
 
       #hero{ grid-template-columns: 1fr; gap:16px; align-items:start; }
-      body.store-expanded #store-panel{ position:relative; width:auto; right:auto; top:auto; }
+      body.store-expanded #store-panel{ position:relative; width:auto; right:auto; top:auto; animation:none; }
 
       .store-tools{ grid-template-columns: 1fr; gap:10px; }
       .store-sort{ justify-content:flex-start; width:100%; }
       .store-sort select{ width:100%; min-width:0; }
       body.store-expanded .store-grid{ grid-template-columns: 1fr; }
+
+      body.store-expanded .store-close-row{ grid-template-columns: auto 1fr auto; }
+      .store-close-label{ text-align:left; }
 
       .about-us .about-grid{ grid-template-columns: 1fr; }
 
@@ -1321,10 +1348,15 @@
         <section id="hero" aria-label="Hero">
           <div class="hero-left" aria-label="Contenido izquierdo del hero">
             <div class="hero-top" id="hero-top">
-              <img class="hero-mini-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="Logo de The MayaNut Company" id="hero-logo-home" />
+              <img
+                class="hero-mini-logo"
+                src="mayanut-the-mayanut-comapny-logo.png"
+                alt="Logo de The MayaNut Company"
+                id="hero-logo-home"
+              />
               <div class="hero-top-text">
                 <div class="credit">Creado por <span class="creator-name">August Kokus</span></div>
-                <h1 class="hero-title" aria-label="Aromático y delicioso. Presentando MayaNut para ti">
+                <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
                   <span class="line topline">Aromático &amp; Delicioso.</span>
                   <span class="line bottomline">
                     <span class="underline-text">Presentando MayaNut para ti</span> 🫵
@@ -1375,7 +1407,13 @@
             </div>
 
             <div class="store-search" aria-label="Buscar en la tienda">
-              <input id="store-search" type="text" placeholder="Buscar productos o merch de MayaNut..." autocomplete="off" aria-label="Buscar productos o merch de MayaNut" />
+              <input
+                id="store-search"
+                type="text"
+                placeholder="Buscar productos o merch de MayaNut..."
+                autocomplete="off"
+                aria-label="Buscar productos o merch de MayaNut"
+              />
               <div class="search-capsule" aria-hidden="false">
                 <button class="cap-btn" id="search-clear" type="button" aria-label="Borrar búsqueda">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1393,10 +1431,15 @@
               </div>
             </div>
 
-            <div class="store-close-row" aria-label="Fila para cerrar tienda completa">
-              <div style="font-weight:950;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0b1220;text-shadow:0 1px 0 rgba(255,255,255,0.35);">
-                Vista completa (4 artículos)
-              </div>
+            <!-- Full store row -->
+            <div class="store-close-row" aria-label="Fila superior de tienda completa">
+              <img
+                class="store-mini-logo"
+                src="mayanut-the-mayanut-comapny-logo.png"
+                alt="Logo de The MayaNut Company"
+                id="store-logo-home"
+              />
+              <div class="store-close-label">Vista completa (4 artículos)</div>
               <button id="store-close" class="metal-btn" type="button" aria-label="Cerrar tienda completa" style="min-width:120px;">CERRAR</button>
             </div>
 
@@ -1661,24 +1704,15 @@
     // Home logo clicks
     document.getElementById("hero-logo-home").addEventListener("click", () => { window.location.href = "index-es.html"; });
     document.getElementById("footer-logo-home").addEventListener("click", () => { window.location.href = "index-es.html"; });
+    document.getElementById("store-logo-home").addEventListener("click", () => { window.location.href = "index-es.html"; });
 
-    // Store expand + animation (1s slide)
+    // Store expand (animation handled via CSS on class)
     const btnExpand = document.getElementById("store-view-full");
     const btnCloseStore = document.getElementById("store-close");
-
     function setStoreExpanded(on){
-      if(on){
-        document.body.classList.add("store-expanded");
-        document.body.classList.add("store-animating-in");
-        setTimeout(() => document.body.classList.remove("store-animating-in"), 1050);
-        btnExpand.textContent = "TIENDA ABIERTA";
-      }else{
-        document.body.classList.remove("store-expanded");
-        document.body.classList.remove("store-animating-in");
-        btnExpand.textContent = "VER TIENDA COMPLETA";
-      }
+      document.body.classList.toggle("store-expanded", !!on);
+      btnExpand.textContent = on ? "TIENDA ABIERTA" : "VER TIENDA COMPLETA";
     }
-
     btnExpand.addEventListener("click", () => setStoreExpanded(!document.body.classList.contains("store-expanded")));
     btnCloseStore.addEventListener("click", () => setStoreExpanded(false));
 
@@ -1852,7 +1886,7 @@
     }
 
     document.querySelectorAll(".speakable").forEach(el => {
-      el.addEventListener("click", (e) => {
+      el.addEventListener("click", () => {
         if(!document.body.classList.contains("modo-voz")) return;
         const txt = el.innerText.replace(/\s+/g," ").trim();
         if(txt) speakText(txt);

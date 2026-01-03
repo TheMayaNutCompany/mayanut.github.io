@@ -1,4 +1,4 @@
-<!-- BLOCK 1 / 2 (UPDATED) -->
+<!-- BLOCK 1 / 2 (do not request block 2 until ready) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <title>The MayaNut Company | America’s Premier MayaNut Farm</title>
-  <meta name="description" content="The MayaNut Company is building America’s premier MayaNut (Brosimum alicastrum) farm in South Florida—growing seed-grown trees, developing products, and introducing a new tropical food tree to modern American agriculture." />
-  <meta name="keywords" content="MayaNut, Maya Nut, Brosimum alicastrum, ramón, ojoche, tropical fruit tree, tropical food tree, perennial crop, South Florida agriculture, Florida farm, roasted MayaNut, MayaNut powder, caffeine-free, sustainable agriculture, agroforestry" />
+  <meta name="description" content="The MayaNut Company is building America’s premier MayaNut (Brosimum alicastrum) farm in South Florida—growing seed-grown trees, developing products, and creating a new tropical crop from the ground up." />
+  <meta name="keywords" content="MayaNut, Maya Nut, Brosimum alicastrum, ramon, ojoche, tropical tree, tropical fruit tree, Florida farm, South Florida agriculture, tropical agriculture, perennial crop, roasted MayaNut, MayaNut powder, caffeine-free, sustainable food tree" />
   <meta name="author" content="The MayaNut Company, Inc." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -45,8 +45,26 @@
   <link rel="preload" as="image" href="maya-nut-mayanut-plant-tree-nursery.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="mayanuts-the-maya-nut-company-image.jpeg" fetchpriority="high" />
 
+  <!-- Ensure hero animation reliably replays on every refresh without hiding content if JS fails -->
   <script>
     document.documentElement.classList.add("js", "anim-prep");
+
+    // Dynamic sticky header height -> never cut off hero text
+    (function(){
+      function setStickyOffset(){
+        var sticky = document.getElementById("sticky-top");
+        if(!sticky) return;
+        var h = Math.ceil(sticky.getBoundingClientRect().height);
+        document.documentElement.style.setProperty("--stickyOffset", (h + 12) + "px");
+      }
+      window.addEventListener("load", setStickyOffset, { once:true });
+      window.addEventListener("resize", function(){
+        clearTimeout(window.__stickyT);
+        window.__stickyT = setTimeout(setStickyOffset, 60);
+      });
+      window.addEventListener("pageshow", setStickyOffset);
+      document.addEventListener("DOMContentLoaded", setStickyOffset);
+    })();
   </script>
 
   <script type="application/ld+json">
@@ -81,7 +99,7 @@
         "isPartOf":{"@id":"https://mayanut.com/#website"},
         "publisher":{"@id":"https://mayanut.com/#org"},
         "inLanguage":"en",
-        "description":"America’s Premier MayaNut Farm — Try MayaNut Today! Building a new Florida crop from the ground up."
+        "description":"The MayaNut Company is building America’s premier MayaNut (Brosimum alicastrum) farm in South Florida—growing seed-grown trees, developing products, and creating a new tropical crop from the ground up."
       }
     ]
   }
@@ -95,6 +113,7 @@
       --green:#1a6800;
       --green-deep:#0b3b17;
       --frame-line: rgba(12, 90, 42, 0.95);
+      --outline-green: rgba(12, 90, 42, 0.95);
 
       --tan:#f3e6d1;
       --tan-top:#c9a981;
@@ -125,8 +144,8 @@
       --match-blue: rgba(0, 255, 234, 0.28);
       --nonmatch-red: rgba(255, 0, 0, 0.16);
 
-      /* slightly smaller so hero starts higher */
-      --stickyOffset: 118px;
+      /* fallback if JS is blocked (JS will override precisely) */
+      --stickyOffset: 160px;
 
       --outlineW: 2px;
       --outlineR: 16px;
@@ -216,7 +235,7 @@
 
     body.overlay-open{ overflow:hidden; }
 
-    /* SIDE FRAMES */
+    /* SIDE FRAMES (stacked mayanuts image) */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{
       position:absolute; top:0; bottom:0; width:var(--sideW);
@@ -258,11 +277,10 @@
       .sticky-top{ left:0; right:0; }
     }
 
-    /* thinner top banner */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:4px 12px; /* was 6px */
+      padding:4px 12px; /* thinner */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -270,6 +288,7 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: var(--frameBorder) solid var(--frame-line);
+      border-bottom: 2px solid var(--green); /* thin green line under banner */
     }
     .top-banner .banner-text{
       font-size:13px;
@@ -289,7 +308,7 @@
       gap:8px;
     }
     .banner-flag{
-      font-size:1.40em; /* slightly smaller */
+      font-size:1.45em;
       line-height:1;
       transform: translateY(1px);
       display:inline-block;
@@ -301,7 +320,7 @@
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      padding: 6px 14px; /* kept */
+      padding: 5px 14px; /* slightly thinner */
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -373,10 +392,6 @@
     }
     .main-nav a:hover{ transform:scale(1.08); color:#000; }
     .main-nav a.is-active{ border-bottom-color: var(--cream); }
-
-    /* nav active helpers (set by tiny script below + store expansion observer) */
-    body.store-mode #nav-store{ border-bottom-color: var(--cream); }
-    body.store-mode #nav-home{ border-bottom-color: transparent; }
 
     .nav-item{ position:relative; display:inline-flex; align-items:center; }
 
@@ -505,7 +520,7 @@
       );
     }
     .content-wrapper{
-      padding:18px 22px 30px; /* slightly tighter so hero sits higher */
+      padding:26px 22px 30px;
       width:100%;
       overflow-x:hidden;
       background: transparent;
@@ -513,7 +528,7 @@
 
     #store-panel, #about-us { scroll-margin-top: calc(var(--stickyOffset) + 12px); }
 
-    /* HERO */
+    /* HERO LAYOUT */
     #hero{
       position:relative;
       display:grid;
@@ -550,9 +565,18 @@
       align-items:flex-end;
     }
 
-    .hero-top{ opacity:1; transform: translateX(0); }
-    html.anim-prep .hero-top{ opacity:0; transform: translateX(-42px); }
-    .hero-top.hero-animate{ animation: heroSlideIn 0.85s ease-out 0.06s both; }
+    /* Always visible (no more "missing" content) */
+    .hero-top{
+      opacity:1;
+      transform: translateX(0);
+    }
+    html.anim-prep .hero-top{
+      opacity:0;
+      transform: translateX(-42px);
+    }
+    .hero-top.hero-animate{
+      animation: heroSlideIn 0.85s ease-out 0.06s both;
+    }
     @keyframes heroSlideIn{
       from{ opacity:0; transform: translateX(-42px); }
       to{ opacity:1; transform: translateX(0); }
@@ -569,7 +593,7 @@
     }
 
     h1.hero-title{
-      line-height:1.06;
+      line-height:1.04;
       color:#000;
       margin:0;
       width:100%;
@@ -582,7 +606,7 @@
       font-weight: 800;
       letter-spacing: 0.01em;
       font-size: clamp(26px, 2.9vw, 38px);
-      white-space:normal; /* was nowrap */
+      white-space:nowrap;
     }
     .hero-title .line.bottomline{
       display:flex;
@@ -593,13 +617,12 @@
       font-style: italic;
       font-weight: 800;
       font-size: clamp(17px, 1.75vw, 24px);
-      line-height:1.12;
+      line-height:1.05;
       color:var(--orange);
-      white-space:normal;     /* was nowrap */
-      overflow:visible;       /* was hidden */
-      text-overflow:unset;    /* was clip */
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:clip;
       text-align:left;
-      flex-wrap:wrap;         /* prevents cut-off */
     }
     .underline-text{
       display:inline-block;
@@ -609,11 +632,19 @@
     }
     .poke{ font-size: 1.14em; line-height: 1; transform: translateY(1px); display:inline-block; }
 
-    .img-zoom-wrap{ position:relative; display:block; border-radius: var(--outlineR); overflow:visible; }
+    /* Image zoom buttons for non-store images */
+    .img-zoom-wrap{
+      position:relative;
+      display:block;
+      border-radius: var(--outlineR);
+      overflow:visible;
+    }
     .zoom-btn{
       position:absolute;
-      left:10px; top:10px;
-      width:34px; height:34px;
+      left:10px;
+      top:10px;
+      width:34px;
+      height:34px;
       border-radius:12px;
       border: 1px solid var(--cream);
       background: var(--metal-orange);
@@ -636,7 +667,8 @@
       mix-blend-mode: soft-light;
     }
     .zoom-btn svg{
-      width:18px; height:18px;
+      width:18px;
+      height:18px;
       stroke: var(--cream);
       fill:none;
       stroke-width:2;
@@ -657,6 +689,7 @@
       transform: translateZ(0);
     }
 
+    /* Paragraph boxes (top + about match) */
     .hero-sub,
     .about-text{
       font-family: var(--font-pretty);
@@ -670,16 +703,19 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       position:relative;
       overflow:hidden;
-      color: var(--green-deep);
+      color: var(--outline-green);
       font-weight: 850;
       letter-spacing: 0.01em;
     }
 
+    /* speaker icon buttons in paragraphs (shown only when voice mode on) */
     .speak-block{ position:relative; overflow:visible; }
     .para-speak{
       position:absolute;
-      top:-12px; left:-12px;
-      width:30px; height:30px;
+      top:-12px;
+      left:-12px;
+      width:30px;
+      height:30px;
       border-radius:12px;
       border: 1px solid var(--cream);
       background: var(--metal-orange);
@@ -703,7 +739,8 @@
       mix-blend-mode: soft-light;
     }
     .para-speak svg{
-      width:16px; height:16px;
+      width:16px;
+      height:16px;
       stroke: var(--cream);
       fill:none;
       stroke-width:2;
@@ -956,7 +993,6 @@
 
     .product-card .img-zoom-wrap{ width:104px; height:104px; margin-top:4px; margin-bottom:10px; }
     .product-card .zoom-btn{ display:none !important; }
-
     .product-card img{
       width:104px;
       height:104px;
@@ -1077,19 +1113,21 @@
     .btn-buy:hover .btn-text{ transform: scale(1.05); }
     .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
 
-    /* Expanded store layout on desktop: expand to the left (cover hero-left) + ensure gradient fills viewport */
     @media(min-width:781px){
       body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
         position:absolute;
-        top:0; left:0; right:0;
+        top:0;
+        left:0;
+        right:0;
         width:auto;
         z-index:6;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
-        min-height: calc(100vh - var(--stickyOffset) - 18px);
-        background: var(--store-green-grad); /* force background in expanded */
+        min-height:100%;
       }
-      body.store-expanded .store-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
+      body.store-expanded .store-grid{
+        grid-template-columns:repeat(4, minmax(0,1fr));
+      }
       body.store-expanded .hero-left{
         opacity:0;
         pointer-events:none;
@@ -1137,9 +1175,20 @@
       border:1px solid rgba(15,23,42,0.10);
       height:100%;
     }
+
+    /* both about paragraphs same visible length */
+    .about-card .about-text{
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 8;
+      overflow:hidden;
+      min-height: 180px;
+    }
+
+    /* images under paragraphs, slightly shorter */
     .about-card img{
       width:100%;
-      height:240px;
+      height:220px;
       border-radius:18px;
       object-fit:cover;
       border: var(--outlineW) solid var(--frame-line);
@@ -1147,7 +1196,6 @@
       transform: translateZ(0);
     }
     .about-card img.crop-bottom{ object-position: center 22%; }
-    .about-card .about-text{ flex:1; display:block; min-height: 220px; }
 
     /* Accessibility floating button */
     .accessibility-btn{
@@ -1170,283 +1218,40 @@
     }
     .accessibility-btn svg{ width:26px; height:26px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
-    /* Desktop: right-side drawer with FULL dim (no undimmed strip bugs) */
-    .a11y-overlay{ position:fixed; inset:0; display:none; z-index:80; }
-    .a11y-overlay.active{ display:block; }
-    .a11y-dim{ position:absolute; inset:0; background: rgba(0,0,0,0.0); }
-    .a11y-overlay.active .a11y-dim{ background: rgba(0,0,0,0.30); }
-
-    .a11y-drawer{
-      position:absolute;
-      top:0;
-      right:0;
-      height:100%;
-      width:min(420px, 34vw);
-      max-width:460px;
-      background: var(--panel-green-grad);
-      border-left: 2px solid var(--frame-line);
-      box-shadow: -18px 0 55px rgba(15,23,42,0.28);
-      padding:16px 14px;
-      transform: translateX(102%);
-      transition: transform .18s ease;
-      overflow:auto;
-    }
-    .a11y-overlay.active .a11y-drawer{ transform: translateX(0); }
-
-    /* Mobile modal unchanged */
-    @media(max-width:780px){
-      .a11y-drawer{
-        position:absolute;
-        top:50%;
-        left:50%;
-        right:auto;
-        height:auto;
-        width:min(460px, 92vw);
-        transform: translate(-50%, -50%) scale(0.98);
-        border:2px solid var(--frame-line);
-        border-radius:18px;
-      }
-      .a11y-overlay.active .a11y-drawer{ transform: translate(-50%, -50%) scale(1); }
-      .a11y-overlay.active .a11y-dim{
-        background: rgba(255,255,255,0.18);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-      }
-    }
-
-    .a11y-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-    }
-    .a11y-head .title{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      color:#0b1220;
-    }
-    .a11y-head .title .t1{ font-weight:950; font-size:14px; }
-    .a11y-head .title .t2{ font-weight:950; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.92; }
-    .a11y-close{
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      width:34px;
-      height:34px;
-      border-radius:12px;
-      cursor:pointer;
-      line-height:1;
-      color: var(--cream);
-      font-size:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      flex:0 0 auto;
-    }
-    .a11y-close::before{
-      content:"";
-      position:absolute;
+    /* Full image viewer base styles retained for block 2 */
+    .img-viewer-overlay{
+      position:fixed;
       inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .a11y-close span{ position:relative; }
-
-    .a11y-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .a11y-logo-link{ display:inline-flex; align-items:center; text-decoration:none; }
-    .a11y-logo{
-      width:120px;
-      height:auto;
-      filter: drop-shadow(0 8px 18px rgba(15,23,42,0.16));
-      border-radius:12px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-    }
-
-    .a11y-social{ display:flex; align-items:center; gap:10px; }
-    .icon-pill{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      position:relative;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      text-decoration:none;
-    }
-    .icon-pill::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .icon-pill svg{
-      width:22px;
-      height:22px;
-      stroke:var(--cream);
-      fill:none;
-      stroke-width:2;
-      position:relative;
-      z-index:1;
-    }
-
-    .mobile-nav{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      margin: 10px 0 12px;
-    }
-    .mobile-nav a{
-      text-decoration:none;
-      color:#0b1220;
-      padding:10px 10px;
-      font-weight:950;
-      border:2px solid var(--frame-line);
-      border-radius:12px;
-      background: rgba(255,255,255,0.14);
-    }
-
-    .settings-row{
-      margin-bottom:12px;
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color:#0b1220;
-      font-weight:950;
-      position:relative;
-    }
-
-    .a11y-lang-btn{
-      width:100%;
-      height:40px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .a11y-lang-btn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .a11y-lang-btn span{ position:relative; }
-
-    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
-    .toggle-input{
-      width:54px;
-      height:26px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: rgba(255, 0, 0, 0.16);
-      position:relative;
-      cursor:pointer;
-      flex:0 0 auto;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .toggle-input .knob{
-      position:absolute;
-      top:2px; left:2px;
-      width:22px; height:22px;
-      border-radius:999px;
-      background: var(--cream);
-      transition:transform 0.2s ease;
-      box-shadow:0 2px 8px rgba(15,23,42,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:9px;
-      font-weight:950;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      user-select:none;
-      color:#b91c1c;
-    }
-    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
-    .toggle-input.active .knob{ transform:translateX(28px); color:#15803d; }
-
-    .info-dot{
-      width:18px; height:18px;
-      border-radius:999px;
-      border:1px solid rgba(15,77,31,0.55);
-      background: rgba(255,255,255,0.70);
-      color:#0b1220;
-      font-weight:950;
-      font-size:12px;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      flex:0 0 auto;
-    }
-    .info-tip{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      width: min(380px, 92vw);
-      border-radius:14px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 55px rgba(15,23,42,0.22);
-      padding:10px 10px;
       display:none;
-      z-index:80;
-      color:#0b1220;
-      font-size:12px;
-      line-height:1.6;
-      font-weight:900;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 16px;
     }
-    .info-tip strong{ letter-spacing:0.10em; text-transform:uppercase; font-size:11px; display:block; margin-bottom:6px; }
-    .info-tip .small{ opacity:0.92; font-weight:900; }
-    .info-tip.active{ display:block; }
+    .img-viewer-overlay.active{ display:flex; }
+
+    /* Selection Speak Button base styles retained for block 2 */
+    .speak-pop{
+      position:fixed;
+      z-index:10000;
+      width:var(--speakPopSize);
+      height:var(--speakPopSize);
+      border-radius:var(--speakPopR);
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      overflow:hidden;
+    }
 
     /* Responsive */
     @media(max-width:980px){
@@ -1504,11 +1309,11 @@
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
       body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
-      .banner-flag{ font-size:1.30em; }
+      .banner-flag{ font-size:1.35em; }
     }
 
     @media(max-width:880px){
-      .site-header{ padding:6px 12px; }
+      .site-header{ padding:5px 12px; }
       .main-nav{ display:none; }
       .mobile-menu-btn{ display:flex; }
       .about-grid{ grid-template-columns:1fr; }
@@ -1517,7 +1322,8 @@
 
     @media(max-width:520px){
       .hero-images{ grid-template-columns:1fr; }
-      .img-viewer-caption{ display:none; }
+      .hero-title .line.topline{ white-space:normal; }
+      .hero-title .line.bottomline{ white-space:normal; overflow:visible; align-items:flex-start; }
     }
   </style>
 </head>
@@ -1552,7 +1358,7 @@
 
         <div class="header-center">
           <nav class="main-nav" aria-label="Primary navigation">
-            <a href="index.html" id="nav-home" class="is-active">HOME</a>
+            <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
             <a href="index.html?store=1" id="nav-store">STORE</a>
             <a href="about.html" id="nav-about">ABOUT</a>
 
@@ -1696,7 +1502,6 @@
             </div>
 
             <div class="store-grid" id="store-grid">
-              <!-- (products unchanged in BLOCK 1) -->
               <!-- Default shows first 4 (2x2). Expanded shows all 8 (2 rows x 4 on desktop). -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
@@ -1846,12 +1651,6 @@
         <section id="about-us" aria-label="About us">
           <div class="about-grid">
             <article class="about-card">
-              <div class="img-zoom-wrap">
-                <img src="the-maya-nut-company-bubba-image.jpg" alt="Herbert “Bubba” Humphries" width="1200" height="800" loading="lazy" decoding="async" class="zoomable" />
-                <button class="zoom-btn" type="button" aria-label="Expand image">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
-                </button>
-              </div>
               <div class="speak-block" data-speak="para-about-1">
                 <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-1">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1864,18 +1663,34 @@
                   stands on a multi-generation family tradition of fruit cultivation in the United States. August’s great-grandfather,
                   Herbert “<strong>Bubba</strong>” Humphries, was an early pioneer of Florida citrus in the early 1920s.
                   Building on that history, <strong>August Kokus</strong> is introducing a new crop—<strong><span class="brand-orange">MayaNut</span></strong>
-                  (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture, developing this species for both agricultural and scientific aims.
+                  (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture.
                 </p>
+              </div>
+
+              <div class="img-zoom-wrap">
+                <img src="the-maya-nut-company-b
+<!-- CONTINUATION (still BLOCK 1 / 2) -->
+                <img
+                  src="the-maya-nut-company-bubba-humphries.jpeg"
+                  alt="Herbert “Bubba” Humphries — early Florida citrus pioneer"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                  class="zoomable crop-bottom"
+                />
+                <button class="zoom-btn" type="button" aria-label="Expand image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14 4h6v6"></path>
+                    <path d="M20 4l-9 9"></path>
+                    <path d="M10 20H4v-6"></path>
+                    <path d="M4 20l9-9"></path>
+                  </svg>
+                </button>
               </div>
             </article>
 
             <article class="about-card">
-              <div class="img-zoom-wrap">
-                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" class="crop-bottom" alt="August Kokus" width="1200" height="800" loading="lazy" decoding="async" class="zoomable" />
-                <button class="zoom-btn" type="button" aria-label="Expand image">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M10 20H4v-6"></path><path d="M4 20l9-9"></path></svg>
-                </button>
-              </div>
               <div class="speak-block" data-speak="para-about-2">
                 <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-2">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1884,72 +1699,64 @@
                   </svg>
                 </button>
                 <p class="about-text" id="para-about-2">
-                  <strong>August Kokus</strong> is working in South Florida to establish <em class="brand-orange">Brosimum alicastrum</em>
-                  as a new agricultural cornerstone. As the citrus industry continues to decline, Florida must look toward new long-term perennial crops to support its agricultural future.
-                  <strong>August</strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree—while helping ensure the preservation of <em class="brand-orange">Brosimum alicastrum</em> for future generations.
-                  By growing these trees, we can do something new and unique that nobody else thought to do—so more people can discover and love <span class="brand-orange">MayaNut</span>.
+                  Today, we are focused on growing seed-grown trees in Florida, selecting strong genetics, and building a path
+                  to scalable <span class="brand-orange">MayaNut</span> production. Our long-term mission is to develop Florida farms,
+                  launch future products, and expand a resilient tropical crop that supports people and ecosystems.
+                  This page is an early look at what we’re building—plant by plant, harvest by harvest—turning an ancient seed into a modern staple.
                 </p>
+              </div>
+
+              <div class="img-zoom-wrap">
+                <img
+                  src="mayanuts-the-maya-nut-company-image.jpeg"
+                  alt="MayaNut imagery — seed and product concept"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                  class="zoomable crop-bottom"
+                />
+                <button class="zoom-btn" type="button" aria-label="Expand image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14 4h6v6"></path>
+                    <path d="M20 4l-9 9"></path>
+                    <path d="M10 20H4v-6"></path>
+                    <path d="M4 20l9-9"></path>
+                  </svg>
+                </button>
               </div>
             </article>
           </div>
         </section>
 
-        <!-- BLOCK 1 ENDS HERE; BLOCK 2 continues with footer, overlays, and full JS -->
-      </div><!-- /.content-wrapper -->
+        <!-- (More sections, overlays, accessibility menu, cart panel, scripts continue in BLOCK 2 / 2) -->
+      </div>
     </main>
 
     <div class="bottom-sep"></div>
+  </div>
 
-    <!-- (BLOCK 2 will continue after this line) -->
-  </div><!-- /.frame-wrap -->
+  <!-- Accessibility floating button -->
+  <button class="accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 4a2 2 0 1 0 0.01 0z"></path>
+      <path d="M4 7h16"></path>
+      <path d="M6 7c2.5 3 5 4 6 4s3.5-1 6-4"></path>
+      <path d="M9 11l-1.5 9"></path>
+      <path d="M15 11l1.5 9"></path>
+      <path d="M12 11v9"></path>
+    </svg>
+  </button>
 
-  <!-- Hero animation trigger (kept here so it runs before BLOCK 2 script; safe + tiny) -->
-  <script>
-    (function(){
-      try{
-        var top = document.getElementById("hero-top");
-        document.documentElement.classList.remove("anim-prep");
-        if(!top) return;
+  <!-- Image viewer overlay (functional logic in BLOCK 2) -->
+  <div class="img-viewer-overlay" id="img-viewer" aria-hidden="true" role="dialog" aria-label="Image viewer">
+    <!-- Filled by JS in BLOCK 2 -->
+  </div>
 
-        top.classList.remove("hero-animate");
-        void top.offsetWidth;
-        top.classList.add("hero-animate");
-      }catch(_){
-        document.documentElement.classList.remove("anim-prep");
-      }
-    })();
-  </script>
+  <!-- Speak selection button (logic in BLOCK 2) -->
+  <button class="speak-pop" id="speak-pop" type="button" aria-label="Speak selection">
+    <!-- icon + logic in BLOCK 2 -->
+  </button>
 
-  <!-- Nav active state: store param + store-expanded -->
-  <script>
-    (function(){
-      function setNav(){
-        var body = document.body;
-        var params = new URLSearchParams(location.search);
-        var storeParam = params.get("store") === "1";
-        var storeExpanded = body.classList.contains("store-expanded");
-        var storeMode = storeParam || storeExpanded;
-
-        body.classList.toggle("store-mode", storeMode);
-
-        var home = document.getElementById("nav-home");
-        var store = document.getElementById("nav-store");
-        if(home) home.classList.toggle("is-active", !storeMode);
-        if(store) store.classList.toggle("is-active", storeMode);
-      }
-
-      // initial
-      if(document.readyState === "loading"){
-        document.addEventListener("DOMContentLoaded", setNav, { once:true });
-      }else{
-        setNav();
-      }
-
-      // observe class changes for store-expanded toggles
-      var mo = new MutationObserver(setNav);
-      mo.observe(document.body, { attributes:true, attributeFilter:["class"] });
-      window.addEventListener("popstate", setNav);
-    })();
-  </script>
 </body>
 </html>

@@ -35,9 +35,11 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      --store-g1:#d8ff6a;
-      --store-g2:#7ae78a;
+      /* ✅ UPDATED: richer store gradient */
+      --store-g1:#e4ff7f;
+      --store-g2:#86f0a0;
       --store-g3:#1a6800;
+      --store-g4:#0b3b17;
 
       --r-card:18px;
       --r-btn:12px;
@@ -55,6 +57,9 @@
 
       --a11y-blue:#084ac5;
 
+      /* ✅ NEW: how far store expands left (desktop) */
+      --storeExpandLeft: 260px;
+
       --panel-green-grad: linear-gradient(
         90deg,
         var(--green-deep) 0%,
@@ -67,8 +72,9 @@
       --store-green-grad: linear-gradient(
         to bottom,
         var(--store-g1) 0%,
-        var(--store-g2) 52%,
-        var(--store-g3) 100%
+        var(--store-g2) 46%,
+        var(--store-g3) 78%,
+        var(--store-g4) 100%
       );
 
       --metal-orange: linear-gradient(
@@ -131,6 +137,7 @@
       min-height:100vh;
       background:transparent;
       padding-top: var(--stickyOffset);
+      overflow-x:hidden; /* ✅ helps prevent any bleed into frames */
     }
 
     /* STICKY HEADER */
@@ -166,7 +173,6 @@
       line-height:1.12;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
 
-      /* center-lock */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -384,6 +390,8 @@
         var(--tan) 22%,
         var(--tan) 100%
       );
+      overflow:hidden; /* ✅ prevent shadows from bleeding into frames */
+      clip-path: inset(0); /* ✅ hard-clip (prevents "overlap into frames") */
     }
     .content-wrapper{
       padding:26px 22px 30px;
@@ -520,6 +528,16 @@
       overflow:visible;
       height:100%;
       align-self:stretch;
+
+      /* ✅ smooth expand animation */
+      transition: width 220ms ease, margin-left 220ms ease, transform 220ms ease;
+    }
+
+    /* ✅ EXPAND LEFT (desktop/tablet only) */
+    body.store-expanded #store-panel{
+      width: calc(100% + var(--storeExpandLeft));
+      margin-left: calc(var(--storeExpandLeft) * -1);
+      z-index:10;
     }
 
     .store-title{
@@ -533,7 +551,6 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
 
-    /* ✅ FIX: RESTORE STORE SORT TAB */
     .store-tools{
       margin-top:6px;
       display:grid;
@@ -645,19 +662,31 @@
       z-index:2;
     }
 
+    /* ✅ COLLAPSED: 1 ROW TALL (2 products visible) */
     .store-grid{
       margin-top:12px;
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
       gap:12px;
       width:100%;
+      align-items:stretch;
     }
-    #store-grid .product-card:nth-child(n+5){ display:none; }
-    body.store-expanded #store-grid .product-card:nth-child(n+5){ display:flex; }
+    #store-grid .product-card:nth-child(n+3){ display:none; }
+
+    /* ✅ EXPANDED: 4 options in ONE ROW */
+    body.store-expanded #store-grid{
+      grid-template-columns:repeat(4, minmax(0,1fr));
+    }
+    body.store-expanded #store-grid .product-card{ display:flex; }
 
     .product-card{
       border-radius: 18px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.95) 0%,
+        rgba(156,163,175,0.55) 60%,
+        rgba(55,65,81,0.40) 100%
+      );
       border:1px solid var(--frame-line);
       padding:12px 12px 14px;
       display:flex;
@@ -687,7 +716,6 @@
       -webkit-user-select:none;
     }
 
-    /* ✅ FIX: ACCESSIBILITY LEFT */
     .accessibility-btn{
       left:18px;
       bottom:18px;
@@ -703,7 +731,6 @@
       stroke-linejoin:round;
     }
 
-    /* ✅ FIX: CART ALSO ON LEFT (separate from store cart icon) */
     .cart-fab{
       left:18px;
       bottom:76px;
@@ -722,21 +749,24 @@
       top:-6px; right:-6px;
     }
 
-    /* NEWSLETTER + FOOTER (keep contained; icons at lower right) */
+    /* ✅ FOOTER: HARD CLIP SO NOTHING BLEEDS INTO SIDE FRAMES */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       background: linear-gradient(to bottom, rgba(255,255,255,0.40), rgba(255,255,255,0.15));
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
+      overflow:hidden;       /* ✅ stops overlap into frames */
+      clip-path: inset(0);   /* ✅ hard clip (esp. shadows) */
+      isolation:isolate;     /* ✅ ensures effects stay contained */
     }
 
     .footer-wrap{
       max-width:1200px;
       margin:0 auto;
       padding: 18px 22px 18px;
+      overflow:hidden; /* ✅ */
     }
 
-    /* ✅ FIX: NEWSLETTER NEVER OVERLAPS (hard containment) */
     .newsletter{
       position:relative;
       border-radius:22px;
@@ -749,9 +779,9 @@
       justify-content:space-between;
       gap:12px;
       flex-wrap:wrap;
-      overflow:hidden; /* KEY */
+      overflow:hidden;
       min-height: 88px;
-      contain: layout paint; /* KEY */
+      contain: layout paint;
     }
     .newsletter-blur{
       position:absolute;
@@ -842,7 +872,6 @@
     .footer-left a{ color:#0b1220; text-decoration:none; border-bottom:1px solid rgba(11,18,32,0.28); padding-bottom:2px; }
     .footer-left a:hover{ border-bottom-color: rgba(11,18,32,0.72); }
 
-    /* ✅ FIX: ICONS LOWER RIGHT */
     .footer-right{
       display:flex;
       gap:10px;
@@ -876,7 +905,7 @@
 
     /* RESPONSIVE */
     @media(max-width:980px){
-      :root{ --sideW: 120px; }
+      :root{ --sideW: 120px; --storeExpandLeft: 180px; }
       .stack img{ height:200px; flex-basis:200px; }
       .frame-wrap{
         width: calc(100vw - (var(--sideW) * 2));
@@ -884,6 +913,9 @@
         margin-right: var(--sideW);
       }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
+
+      /* keep expanded row usable */
+      body.store-expanded #store-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
     }
 
     @media(max-width:880px){
@@ -899,12 +931,19 @@
 
       #hero{ grid-template-columns: 1fr; gap:16px; align-items:start; }
 
+      /* ✅ on mobile, expanded is stacked; no left-expansion */
+      body.store-expanded #store-panel{ width:100%; margin-left:0; }
+
       .store-tools{
         grid-template-columns: 1fr;
         gap:10px;
       }
       .store-sort{ justify-content:flex-start; width:100%; }
       .store-sort select{ width:100%; min-width:0; }
+
+      /* ✅ on mobile, show 1 row (2 items) collapsed; expanded = 2x2 */
+      body.store-expanded #store-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+
       .newsletter-form{ justify-content:flex-start; width:100%; max-width:100%; }
       .newsletter-form input{ width:100%; }
       .newsletter-btn{ width:100%; }
@@ -1007,7 +1046,6 @@
         <section id="hero" aria-label="Hero">
           <div class="hero-left" aria-label="Hero left content">
 
-            <!-- ✅ FIX: RESTORED 3 LINES (Created by / Aromatic / Introducing) -->
             <div class="hero-top" id="hero-top">
               <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
               <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
@@ -1023,7 +1061,6 @@
               A soothing roasted seed powder with chocolate-and-coffee notes—future-ready for foods, drinks, and new products.
             </p>
 
-            <!-- HERO IMAGES (these stay as you had them) -->
             <div class="hero-images" aria-label="Hero images">
               <img
                 src="maya-nut-mayanut-plant-tree-nursery.jpg"
@@ -1044,9 +1081,8 @@
           <aside id="store-panel" aria-label="Store">
             <div class="store-title">STORE — COMING SOON</div>
 
-            <!-- ✅ FIX: SORT TAB RESTORED -->
             <div class="store-tools" aria-label="Store controls">
-              <button id="store-view-full" class="metal-btn" type="button" aria-label="View full store">
+              <button id="store-view-full" class="metal-btn" type="button" aria-label="View full store" aria-pressed="false">
                 VIEW FULL STORE
               </button>
 
@@ -1119,7 +1155,6 @@
 
     <div class="bottom-sep"></div>
 
-    <!-- FOOTER (newsletter contained + icons lower right) -->
     <footer aria-label="Footer">
       <div class="footer-wrap">
 
@@ -1148,7 +1183,6 @@
             </div>
           </div>
 
-          <!-- ✅ FIX: ICONS LOWER RIGHT -->
           <div class="footer-right" aria-label="Social links">
             <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1178,7 +1212,6 @@
     </footer>
   </div>
 
-  <!-- ✅ FIX: ACCESSIBILITY LEFT -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4a2 2 0 1 0 0.01 0z"></path>
@@ -1190,7 +1223,6 @@
     </svg>
   </button>
 
-  <!-- ✅ FIX: CART ALSO LEFT (floating) -->
   <button class="fab cart-fab" id="cart-fab" type="button" aria-label="Cart">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M6 7h15l-1.5 8H8L6 5H3"></path>
@@ -1200,16 +1232,6 @@
     <span class="cart-badge" id="cart-badge-fab" aria-label="Cart quantity">0</span>
   </button>
 
-  <!-- ✅ BLOCK 2 will include:
-       - Accessibility drawer with menu tabs + Spanish + toggles (as before)
-       - Cart overlay + checkout button => "This function is unavailable yet."
-       - Mobile menu drawer
-       - Store sort logic + store expand logic
-       - Newsletter submit logic
-       - Side-frame stack population
-       - Restore full “good” version behaviors
-  -->
-
   <script>
     // Restore hero animation on load
     window.addEventListener("load", () => {
@@ -1217,6 +1239,25 @@
       if(heroTop) heroTop.classList.add("hero-animate");
       document.documentElement.classList.remove("anim-prep");
     });
+
+    // ✅ Store expand/collapse (expands LEFT, shows 4 in one row on desktop)
+    (function(){
+      const btn = document.getElementById("store-view-full");
+      if(!btn) return;
+
+      function sync(){
+        const expanded = document.body.classList.contains("store-expanded");
+        btn.setAttribute("aria-pressed", expanded ? "true" : "false");
+        btn.textContent = expanded ? "CLOSE STORE" : "VIEW FULL STORE";
+      }
+
+      btn.addEventListener("click", () => {
+        document.body.classList.toggle("store-expanded");
+        sync();
+      });
+
+      sync();
+    })();
   </script>
 
 <!-- END BLOCK 1 / 2 -->

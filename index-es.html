@@ -130,7 +130,7 @@
       padding-top: env(safe-area-inset-top);
     }
 
-    /* Top banner (thin) */
+    /* Top banner */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
@@ -356,11 +356,12 @@
     .hero-left{ display:flex; flex-direction:column; gap:16px; align-self:stretch; min-height:100%; }
 
     .hero-top{ display:flex; align-items:center; gap:12px; max-width:760px; }
+    /* bigger top logo */
     .hero-mini-logo{
-      width:74px;
+      width:86px;
       height:auto;
       flex:0 0 auto;
-      border-radius:14px;
+      border-radius:16px;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       cursor:pointer;
       user-select:none;
@@ -443,9 +444,7 @@
       font-size:16px;
       line-height:1.95;
     }
-    body.alto-contraste{
-      filter: contrast(1.12) saturate(1.06);
-    }
+    body.alto-contraste{ filter: contrast(1.12) saturate(1.06); }
 
     .hero-images{
       display:grid;
@@ -491,6 +490,7 @@
     body.store-expanded #store-panel{
       position:absolute;
       top:0;
+      left:0;
       right:0;
       width:100%;
       z-index:50;
@@ -619,7 +619,9 @@
       z-index:2;
     }
 
-    /* Search bar with right-side: X | magnifier */
+    /* Search bar with right-side: X | magnifier (NOW METALLIC ORANGE) */
+    @keyframes placeholderBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0.25;} }
+
     .store-search{
       position:relative;
       width:100%;
@@ -638,8 +640,8 @@
       color:#111827;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
     }
-    @keyframes placeholderBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0.25;} }
-    .store-search input.blink::placeholder{ animation: placeholderBlink 0.9s infinite; }
+    /* always blinking placeholder text */
+    .store-search input::placeholder{ animation: placeholderBlink 0.9s infinite; }
 
     .search-capsule{
       position:absolute;
@@ -652,17 +654,18 @@
       gap:0;
       padding:0 8px;
       border-radius:999px;
-      background: rgba(255,255,255,0.45);
-      border:1px solid rgba(12, 90, 42, 0.35);
+      background: var(--metal-orange);
+      border: 1px solid var(--cream);
       backdrop-filter: blur(6px);
-      box-shadow: 0 10px 20px rgba(15,23,42,0.10);
+      box-shadow: 0 10px 20px rgba(15,23,42,0.12);
+      overflow:hidden;
     }
     .cap-btn{
       width:28px;
       height:28px;
       border-radius:999px;
-      border:1px solid rgba(12, 90, 42, 0.22);
-      background: rgba(255,255,255,0.70);
+      border:1px solid rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.06);
       cursor:pointer;
       display:flex;
       align-items:center;
@@ -673,7 +676,7 @@
     .cap-btn svg{
       width:14px;
       height:14px;
-      stroke: rgba(15,23,42,0.85);
+      stroke: var(--cream);
       fill:none;
       stroke-width:2;
       stroke-linecap:round;
@@ -682,7 +685,7 @@
     .cap-sep{
       width:1px;
       height:18px;
-      background: rgba(12, 90, 42, 0.35);
+      background: rgba(255,255,255,0.55);
       margin:0 8px;
       border-radius:999px;
     }
@@ -699,7 +702,7 @@
     body.store-expanded #store-grid .product-card{ display:flex; }
     body.store-expanded .store-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; }
 
-    /* Full-store top row: logo left (same size feel), label center-ish, close right */
+    /* Full-store top row: logo left (UPPER LEFT), label, close right */
     .store-close-row{
       display:none;
       align-items:center;
@@ -707,16 +710,22 @@
       margin-top:4px;
       width:100%;
     }
-    body.store-expanded .store-close-row{ display:grid; grid-template-columns: auto 1fr auto; align-items:center; }
+    body.store-expanded .store-close-row{
+      display:grid;
+      grid-template-columns: auto 1fr auto;
+      align-items:center;
+    }
 
+    /* logo in upper-left of expanded store */
     .store-mini-logo{
-      width:64px;
+      width:72px;
       height:auto;
-      border-radius:14px;
+      border-radius:16px;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       cursor:pointer;
       user-select:none;
       -webkit-user-select:none;
+      justify-self:start;
     }
     .store-close-label{
       font-weight:950;
@@ -1003,11 +1012,11 @@
     }
     .footer-toprow{ display:flex; align-items:flex-start; gap:12px; }
 
-    /* Bigger left-aligned footer logo */
+    /* bigger bottom logo */
     .footer-logo{
-      width:88px;
+      width:104px;
       height:auto;
-      border-radius:16px;
+      border-radius:18px;
       flex:0 0 auto;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       cursor:pointer;
@@ -1252,10 +1261,9 @@
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: 0; }
       .top-banner,.site-header,.top-sep,main,.between-wrap,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
-      .between-inner, .footer-wrap{ padding-left:16px; padding-right:16px; }
 
       #hero{ grid-template-columns: 1fr; gap:16px; align-items:start; }
-      body.store-expanded #store-panel{ position:relative; width:auto; right:auto; top:auto; animation:none; }
+      body.store-expanded #store-panel{ position:relative; width:auto; left:auto; right:auto; top:auto; animation:none; }
 
       .store-tools{ grid-template-columns: 1fr; gap:10px; }
       .store-sort{ justify-content:flex-start; width:100%; }
@@ -1431,7 +1439,7 @@
               </div>
             </div>
 
-            <!-- Full store row -->
+            <!-- Full store row (logo upper-left) -->
             <div class="store-close-row" aria-label="Fila superior de tienda completa">
               <img
                 class="store-mini-logo"
@@ -1706,7 +1714,7 @@
     document.getElementById("footer-logo-home").addEventListener("click", () => { window.location.href = "index-es.html"; });
     document.getElementById("store-logo-home").addEventListener("click", () => { window.location.href = "index-es.html"; });
 
-    // Store expand (animation handled via CSS on class)
+    // Store expand
     const btnExpand = document.getElementById("store-view-full");
     const btnCloseStore = document.getElementById("store-close");
     function setStoreExpanded(on){
@@ -1737,12 +1745,10 @@
       e.target.reset();
     });
 
-    // Search bar
+    // Search bar (placeholder always blinks via CSS)
     const storeSearch = document.getElementById("store-search");
     const clearBtn = document.getElementById("search-clear");
     const goBtn = document.getElementById("search-go");
-    storeSearch.addEventListener("focus", () => storeSearch.classList.add("blink"));
-    storeSearch.addEventListener("blur", () => storeSearch.classList.remove("blink"));
     clearBtn.addEventListener("click", () => { storeSearch.value = ""; storeSearch.focus(); });
     goBtn.addEventListener("click", () => { storeSearch.focus(); });
 

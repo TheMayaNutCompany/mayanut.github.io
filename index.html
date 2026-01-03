@@ -12,6 +12,7 @@
   <meta name="author" content="The MayaNut Company, Inc." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="app-version" content="4.0.2" />
 
   <link rel="canonical" href="https://mayanut.com/" />
   <link rel="sitemap" type="application/xml" href="https://mayanut.com/sitemap.xml" />
@@ -44,6 +45,22 @@
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" fetchpriority="high" />
   <link rel="preload" as="image" href="maya-nut-mayanut-plant-tree-nursery.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="mayanuts-the-maya-nut-company-image.jpeg" fetchpriority="high" />
+
+  <script>
+    // Force consistent "start at top" behavior (prevents browser scroll restoration)
+    (function(){
+      try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch(_){}
+      const goTop = () => {
+        requestAnimationFrame(() => {
+          window.scrollTo(0, 0);
+          // extra pass for Safari/Chrome restore edge cases
+          setTimeout(() => window.scrollTo(0, 0), 0);
+        });
+      };
+      window.addEventListener("pageshow", (e) => { if (e.persisted) goTop(); });
+      window.addEventListener("load", () => { if (!location.hash) goTop(); });
+    })();
+  </script>
 
   <script type="application/ld+json">
   {
@@ -91,6 +108,7 @@
       --green:#1a6800;
       --green-deep:#0b3b17; /* darker to improve readability */
       --frame-line: rgba(12, 90, 42, 0.95);
+      --green-line-solid:#0c5a2a; /* solid thin-outline green for text/borders */
 
       --tan:#f3e6d1;
       --tan-top:#c9a981;
@@ -164,10 +182,6 @@
       /* speak pop style */
       --speakPopSize: 38px;
       --speakPopR: 14px;
-
-      /* FIXED CART FAB (matches other metallic buttons) */
-      --cartFabSize: 48px;
-      --cartFabGap: 12px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -262,7 +276,7 @@
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:6px 12px;
+      padding:4px 12px; /* smaller */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -270,14 +284,15 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: var(--frameBorder) solid var(--frame-line);
+      border-bottom: 2px solid var(--green); /* thin green line on bottom */
     }
     .top-banner .banner-text{
-      font-size:13px;
+      font-size:12px; /* smaller */
       letter-spacing:0.06em;
       text-transform:uppercase;
       font-weight:950;
       color:#000;
-      line-height:1.12;
+      line-height:1.10;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
       display:flex;
       align-items:center;
@@ -289,7 +304,7 @@
       gap:8px;
     }
     .banner-flag{
-      font-size:1.45em;
+      font-size:1.38em;
       line-height:1;
       transform: translateY(1px);
       display:inline-block;
@@ -660,8 +675,25 @@
       transform: translateZ(0);
     }
 
-    /* Paragraph boxes (same font/color as top paragraphs; background matches store search box) */
-    .hero-sub,
+    /* Top paragraph: single font, bolder, all one green */
+    .hero-sub{
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-size:13px;
+      line-height:1.85;
+      background: var(--para-bg);
+      border: 1px solid var(--frame-line);
+      padding: 12px 12px 12px;
+      border-radius: 18px;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      position:relative;
+      overflow:hidden;
+      color: var(--green-line-solid);
+      font-weight: 950;
+      letter-spacing: 0.005em;
+    }
+
+    /* About paragraph boxes keep previous style (Block 2 will harmonize further if desired) */
     .about-text{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -674,7 +706,7 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       position:relative;
       overflow:hidden;
-      color: var(--green-deep); /* dark green text only */
+      color: var(--green-deep);
       font-weight: 850;
       letter-spacing: 0.01em;
     }
@@ -830,10 +862,9 @@
     .store-search{ flex:1; min-width:220px; position:relative; max-width:100%; }
     .store-search input{
       width:100%;
-      /* FIX: extra right padding prevents the placeholder text from hiding under the X + magnifier */
-      padding:10px 104px 10px 12px;
+      padding:10px 92px 10px 12px; /* more room so text never sits under X/magnifier */
       border-radius:999px;
-      border:1px solid var(--frame-line); /* thin dark green outline */
+      border:1px solid var(--frame-line);
       font-size:12px;
       background: var(--para-bg);
       color:#111827;
@@ -876,10 +907,9 @@
       justify-content:center;
       border-radius:999px;
       position:relative;
-      flex:0 0 auto;
     }
-    .search-divider{ width:1px; height:16px; background: rgba(255,255,255,0.55); position:relative; flex:0 0 auto; }
-    .search-icon{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; position:relative; flex:0 0 auto; }
+    .search-divider{ width:1px; height:16px; background: rgba(255,255,255,0.55); position:relative; }
+    .search-icon{ width:14px; height:14px; stroke: var(--cream); fill:none; stroke-width:2; position:relative; }
 
     .cart-btn{
       position:relative;
@@ -937,66 +967,6 @@
       z-index:2;
     }
 
-    /* FIXED CART BUTTON (always available like your other version) */
-    .cart-fab{
-      position:fixed;
-      right:18px;
-      bottom: calc(18px + var(--cartFabSize) + var(--cartFabGap)); /* sits above accessibility button */
-      width: var(--cartFabSize);
-      height: var(--cartFabSize);
-      border-radius: 16px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      z-index:75;
-      box-shadow:0 12px 30px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      overflow:hidden;
-    }
-    .cart-fab::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .cart-fab svg{
-      width:20px; height:20px;
-      stroke: var(--cream);
-      fill:none;
-      stroke-width:2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      position:relative;
-      z-index:1;
-    }
-    .cart-fab-badge{
-      position:absolute;
-      top:-6px;
-      right:-6px;
-      width:20px;
-      height:20px;
-      border-radius:999px;
-      background: var(--cream);
-      color:#000;
-      font-weight:950;
-      font-size:11px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid rgba(15,23,42,0.20);
-      line-height:1;
-      pointer-events:none;
-      z-index:2;
-    }
-
-    /* PRODUCT GRID */
     .store-grid{
       margin-top:12px;
       display:grid;
@@ -1010,7 +980,6 @@
     .product-card{
       border-radius: var(--r-card);
       background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
-      /* FIX: thin dark green outline to match the rest */
       border:1px solid var(--frame-line);
       padding:12px 12px 14px;
       display:flex;
@@ -1027,14 +996,13 @@
     .product-card.is-nonmatch{ background: linear-gradient(to bottom, rgba(255,255,255,0.95), var(--nonmatch-red)); }
 
     .product-card .img-zoom-wrap{ width:104px; height:104px; margin-top:4px; margin-bottom:10px; }
-    .product-card .zoom-btn{ display:none !important; } /* store thumbs have no expand */
+    .product-card .zoom-btn{ display:none !important; }
 
     .product-card img{
       width:104px;
       height:104px;
       object-fit:cover;
       border-radius:16px;
-      /* FIX: thin dark green outline on placeholders/images */
       border: 1px solid var(--frame-line);
       background:#fff;
       flex:0 0 auto;
@@ -1116,7 +1084,7 @@
     .qty-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
 
     .btn-buy{
-      min-width:60px;
+      min-width:66px;
       height:var(--qtyBtn);
       border: 1px solid var(--cream);
       border-radius:10px;
@@ -1150,7 +1118,6 @@
     .btn-buy:hover .btn-text{ transform: scale(1.05); }
     .btn-buy .btn-text{ position:relative; display:inline-block; transition: transform .12s ease; }
 
-    /* Expanded store layout on desktop: expand to the left (cover hero-left) */
     @media(min-width:781px){
       body.store-expanded #hero{ grid-template-columns: 1fr; }
       body.store-expanded #store-panel{
@@ -1162,6 +1129,7 @@
         z-index:6;
         box-shadow:0 28px 70px rgba(15,23,42,0.35);
         min-height:100%;
+        background: var(--store-green-grad); /* force stays */
       }
       body.store-expanded .store-grid{
         grid-template-columns:repeat(4, minmax(0,1fr));
@@ -1192,25 +1160,32 @@
     }
     .about-divider .label{
       text-align:center;
-      font-size:12px;
+      font-size:13px;
       font-weight:950;
-      letter-spacing:0.20em;
+      letter-spacing:0.18em;
       text-transform:uppercase;
       color: var(--green-deep);
       white-space:nowrap;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.55);
+      border:1px solid rgba(12, 90, 42, 0.35);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
     }
 
     #about-us{ max-width:1200px; margin:0 auto; padding:12px 6px 0; }
     .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:stretch; }
+
+    /* Remove the “tan card” feel: no card background/border/shadow; just image + text */
     .about-card{
-      border-radius:22px;
-      padding:14px;
-      box-shadow: 0 14px 40px rgba(15,23,42,0.10);
+      border-radius:0;
+      padding:0;
+      box-shadow:none;
       display:flex;
       flex-direction:column;
       gap:10px;
       background: transparent;
-      border:1px solid rgba(15,23,42,0.10);
+      border:none;
       height:100%;
     }
     .about-card img{
@@ -1227,79 +1202,19 @@
     .about-card .about-text{
       flex:1;
       display:block;
-      min-height: 180px;
+      min-height: 200px; /* keep equal */
     }
 
-    .about-long{
-      margin-top:14px;
-      padding:14px 14px 16px;
-      border-radius:22px;
-      border:1px solid var(--frame-line);
-      box-shadow: 0 14px 40px rgba(15,23,42,0.08);
-      font-size:14px;
-      line-height:1.9;
-      font-weight:850;
-      letter-spacing:0.01em;
-      background: var(--para-bg);
-      color: var(--green-deep);
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      justify-content:space-between;
-      position:relative;
-      overflow:visible;
-    }
-
-    .about-long .about-long-text{ flex:1; min-width:0; font-family: var(--font-pretty); font-style: italic; }
-    .about-nav{
-      flex:0 0 auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-left:10px;
-    }
-    .about-nav a{
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:40px;
-      padding:10px 14px;
-      border-radius:12px;
-      background: var(--metal-orange);
-      border: 1px solid var(--cream);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      font-size:12px;
-      white-space:nowrap;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .about-nav a::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .about-nav a span{ position:relative; }
-
-    /* Accessibility floating button */
+    /* Accessibility floating button (Block 2 will replace icon + ring) */
     .accessibility-btn{
       position:fixed;
       right:18px;
       bottom:18px;
       width:48px;
       height:48px;
-      border-radius:16px; /* match square-metal look */
-      border:1px solid var(--cream);
-      background: var(--a11y-blue);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:var(--a11y-blue);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -1325,7 +1240,6 @@
       background: rgba(0,0,0,0.0);
     }
 
-    /* Desktop drawer */
     .a11y-drawer{
       position:absolute;
       top:0;
@@ -1393,6 +1307,7 @@
     }
     .a11y-head .title .t1{ font-weight:950; font-size:14px; }
     .a11y-head .title .t2{ font-weight:950; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.92; }
+
     .a11y-close{
       border: 1px solid var(--cream);
       background: var(--metal-orange);
@@ -1496,211 +1411,6 @@
       background: rgba(255,255,255,0.14);
     }
 
-    .settings-row{
-      margin-bottom:12px;
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color:#0b1220;
-      font-weight:950;
-      position:relative;
-    }
-
-    .a11y-lang-btn{
-      width:100%;
-      height:40px;
-      border-radius:14px;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .a11y-lang-btn::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .a11y-lang-btn span{ position:relative; }
-
-    .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; }
-    .toggle-input{
-      width:54px;
-      height:26px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: rgba(255, 0, 0, 0.16);
-      position:relative;
-      cursor:pointer;
-      flex:0 0 auto;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-    }
-    .toggle-input .knob{
-      position:absolute;
-      top:2px; left:2px;
-      width:22px; height:22px;
-      border-radius:999px;
-      background: var(--cream);
-      transition:transform 0.2s ease;
-      box-shadow:0 2px 8px rgba(15,23,42,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:9px;
-      font-weight:950;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      user-select:none;
-      color:#b91c1c;
-    }
-    .toggle-input.active{ background:#22c55e; border-color:#22c55e; }
-    .toggle-input.active .knob{ transform:translateX(28px); color:#15803d; }
-
-    .info-dot{
-      width:18px; height:18px;
-      border-radius:999px;
-      border:1px solid rgba(15,77,31,0.55);
-      background: rgba(255,255,255,0.70);
-      color:#0b1220;
-      font-weight:950;
-      font-size:12px;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      flex:0 0 auto;
-    }
-    .info-tip{
-      position:absolute;
-      right:0;
-      top: calc(100% + 8px);
-      width: min(380px, 92vw);
-      border-radius:14px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 55px rgba(15,23,42,0.22);
-      padding:10px 10px;
-      display:none;
-      z-index:80;
-      color:#0b1220;
-      font-size:12px;
-      line-height:1.6;
-      font-weight:900;
-    }
-    .info-tip strong{ letter-spacing:0.10em; text-transform:uppercase; font-size:11px; display:block; margin-bottom:6px; }
-    .info-tip .small{ opacity:0.92; font-weight:900; }
-    .info-tip.active{ display:block; }
-
-    /* Full image viewer (kept for non-store images) */
-    .img-viewer-overlay{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 16px;
-    }
-    .img-viewer-overlay.active{ display:flex; }
-    .img-viewer-panel{
-      position:relative;
-      width: min(1100px, 96vw);
-      max-height: 92vh;
-      border-radius: 18px;
-      border: 2px solid rgba(255,255,255,0.20);
-      background: rgba(255,255,255,0.10);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
-      overflow:hidden;
-    }
-    .img-viewer-topbar{
-      position:absolute;
-      top:10px;
-      right:10px;
-      left:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      pointer-events:none;
-      z-index:2;
-    }
-    .img-viewer-caption{
-      pointer-events:none;
-      color: rgba(255,255,255,0.92);
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      max-width: 70%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .img-viewer-close{
-      pointer-events:auto;
-      border: 1px solid var(--cream);
-      background: var(--metal-orange);
-      width:38px;
-      height:38px;
-      border-radius:14px;
-      cursor:pointer;
-      color: var(--cream);
-      font-size:20px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:manipulation;
-      box-shadow:0 14px 40px rgba(0,0,0,0.25);
-    }
-    .img-viewer-close::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
-      pointer-events:none;
-      mix-blend-mode: soft-light;
-    }
-    .img-viewer-close span{ position:relative; }
-    .img-viewer-img{
-      width:100%;
-      height:100%;
-      max-height: 92vh;
-      object-fit: contain;
-      display:block;
-      border-radius:18px;
-      touch-action: pan-x pan-y;
-      background: rgba(0,0,0,0.18);
-    }
-
     /* Selection Speak Button */
     .speak-pop{
       position:fixed;
@@ -1796,11 +1506,7 @@
       body.store-expanded .product-card{ flex:unset !important; width:100%; }
       body.store-expanded #store-panel{ position:relative !important; left:auto !important; right:auto !important; width:100% !important; }
 
-      .banner-flag{ font-size:1.35em; }
-
-      /* keep fixed cart above a11y on mobile too */
-      .cart-fab{ right:16px; bottom: calc(16px + var(--cartFabSize) + var(--cartFabGap)); }
-      .accessibility-btn{ right:16px; bottom:16px; }
+      .banner-flag{ font-size:1.30em; }
     }
 
     @media(max-width:880px){
@@ -1815,7 +1521,6 @@
       .hero-images{ grid-template-columns:1fr; }
       .hero-title .line.topline{ white-space:normal; }
       .hero-title .line.bottomline{ white-space:normal; overflow:visible; align-items:flex-start; }
-      .img-viewer-caption{ display:none; }
       .hero-top{ animation-duration:0.9s; }
     }
   </style>
@@ -1995,7 +1700,6 @@
             </div>
 
             <div class="store-grid" id="store-grid">
-              <!-- Default shows first 4 (2x2). Expanded shows all 8 (2 rows x 4 on desktop). -->
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div class="img-zoom-wrap store-thumb">
                   <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder concept" width="104" height="104" loading="lazy" decoding="async" />
@@ -2009,7 +1713,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2026,7 +1730,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2043,7 +1747,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2060,7 +1764,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2077,7 +1781,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2094,7 +1798,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2111,7 +1815,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
 
@@ -2128,7 +1832,7 @@
                     <input class="qty-input" type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" />
                     <button class="qty-plus" type="button" aria-label="Plus">+</button>
                   </div>
-                  <button class="btn-buy" type="button" aria-label="Buy"><span class="btn-text">BUY</span></button>
+                  <button class="btn-buy" type="button" aria-label="Add"><span class="btn-text">ADD</span></button>
                 </div>
               </article>
             </div>
@@ -2162,7 +1866,7 @@
                   stands on a multi-generation family tradition of fruit cultivation in the United States. August’s great-grandfather,
                   Herbert “<strong>Bubba</strong>” Humphries, was an early pioneer of Florida citrus in the early 1920s.
                   Building on that history, <strong>August Kokus</strong> is introducing a new crop—<strong><span class="brand-orange">MayaNut</span></strong>
-                  (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture.
+                  (<em class="brand-orange">Brosimum alicastrum</em>)—to modern American agriculture, with long-term agricultural and scientific goals.
                 </p>
               </div>
             </article>
@@ -2184,36 +1888,14 @@
                 <p class="about-text" id="para-about-2">
                   <strong>August Kokus</strong> is working in South Florida to establish <em class="brand-orange">Brosimum alicastrum</em>
                   as a new agricultural cornerstone. As the citrus industry continues to decline, Florida must look toward new long-term perennial crops to support its agricultural future.
-                  <strong>August</strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree—while helping ensure the preservation of <em class="brand-orange">Brosimum alicastrum</em> for future generations.
+                  <strong>August</strong> created <span class="brand-orange">The MayaNut Company</span> to introduce people to a resilient, long-overlooked food tree—while helping ensure the preservation and cultivation of this species for future generations.
                 </p>
               </div>
             </article>
           </div>
-
-          <div class="about-long speak-block" data-speak="para-about-3">
-            <button class="para-speak" type="button" aria-label="Play paragraph audio" data-speak-btn="para-about-3">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 10v4"></path><path d="M7 8v8"></path><path d="M10 6v12"></path>
-                <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path><path d="M17 7c3 3 3 7 0 10"></path>
-              </svg>
-            </button>
-
-            <div class="about-long-text" id="para-about-3">
-              <span class="brand-orange">The MayaNut Company</span> actively works to establish <span class="brand-orange">Brosimum alicastrum</span>
-              as a long-term agricultural food source. <span class="brand-orange">August Kokus</span> develops this species for both agricultural and scientific aims.
-              <br /><br />
-              By growing these trees, we can do something new and unique that nobody else thought to do.
-              We hope you love <span class="brand-orange">MayaNut</span> as much as we do!
-            </div>
-
-            <div class="about-nav" aria-label="Quick navigation">
-              <a href="about.html"><span>About</span></a>
-              <a href="research.html"><span>Research</span></a>
-            </div>
-          </div>
         </section>
 
-        <!-- BLOCK 1 ENDS HERE; BLOCK 2 continues with: bottom separator, footer, cart overlay, accessibility drawer markup, image viewer, selection speaker, and full JS -->
+        <!-- BLOCK 1 ENDS HERE; BLOCK 2 continues with: bottom separator, footer (redesigned bottom tab), cart overlay, accessibility drawer logic updates, image viewer redesign, tooltips (eye icons), and full JS -->
       </div><!-- /.content-wrapper -->
     </main>
 
@@ -2221,255 +1903,1188 @@
 
     <!-- (BLOCK 2 will continue after this line) -->
 <!-- BLOCK 2 / 2 -->
+    <!-- FOOTER (redesigned per request) -->
+    <footer id="site-footer" aria-label="Footer">
+      <div class="footer-bar">
+        <a class="footer-left" href="index.html" aria-label="Go to home">
+          <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" class="footer-logo" width="150" height="56" decoding="async" loading="lazy" />
+          <div class="footer-lines" aria-label="Footer links">
+            <div class="footer-line">
+              <span class="footer-text">Based in Florida • 2026</span>
+            </div>
+            <div class="footer-line footer-links">
+              <a class="footer-link" href="privacy.html">Privacy</a>
+              <span class="dot">•</span>
+              <a class="footer-link" href="terms.html">Terms of Service</a>
+              <span class="dot">•</span>
+              <a class="footer-link" href="sitemap.html">Sitemap</a>
+            </div>
+            <div class="footer-line">
+              <span class="footer-text">info@mayanut.com</span>
+            </div>
+          </div>
+        </a>
 
-<!-- bottom separator already present above -->
+        <div class="footer-right" aria-label="Social links">
+          <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1"></circle>
+            </svg>
+          </a>
+          <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16v12H4z"></path>
+              <path d="M4 7l8 6 8-6"></path>
+            </svg>
+          </a>
+          <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X (Twitter)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 4l16 16"></path>
+              <path d="M20 4L4 20"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
 
-<footer id="site-footer" aria-label="Footer">
-  <section class="footer-wrap">
-    <div class="newsletter" id="newsletter">
-      <div class="newsletter-left">
+    <!-- NEWSLETTER (rectangle outline + unified green gradient background) -->
+    <section id="newsletter" aria-label="Newsletter" class="newsletter-wrap">
+      <div class="newsletter-inner">
         <div class="newsletter-title">Newsletter</div>
-        <div class="newsletter-sub">
-          Get occasional updates about MayaNut products, research, and farm progress.
+        <div class="newsletter-sub">One or two emails per month. No spam.</div>
+        <form class="newsletter-form" id="newsletter-form" autocomplete="on">
+          <input class="newsletter-input" id="newsletter-email" type="email" placeholder="Your email" aria-label="Your email" required />
+          <button class="newsletter-btn" type="submit"><span class="btn-text">Subscribe</span></button>
+        </form>
+        <div class="newsletter-note" id="newsletter-note" aria-live="polite"></div>
+      </div>
+    </section>
+
+  </div><!-- /.frame-wrap -->
+
+  <!-- ACCESSIBILITY BUTTON -->
+  <button class="accessibility-btn" id="accessibility-btn" aria-label="Accessibility options" type="button">
+    <!-- Person icon with inner ring (white) -->
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <!-- inner ring -->
+      <circle cx="12" cy="12" r="9.2" stroke="rgba(255,255,255,0.95)" stroke-width="1.6" fill="none"></circle>
+      <!-- person -->
+      <circle cx="12" cy="7" r="1.8"></circle>
+      <path d="M6.5 9.8c1.8 1.2 3.7 1.8 5.5 1.8s3.7-.6 5.5-1.8"></path>
+      <path d="M9.3 12.4v7.2"></path>
+      <path d="M14.7 12.4v7.2"></path>
+      <path d="M9.3 14.6h5.4"></path>
+    </svg>
+  </button>
+
+  <!-- ACCESSIBILITY OVERLAY -->
+  <div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
+    <div class="a11y-dim" id="a11y-dim"></div>
+
+    <aside class="a11y-drawer" role="dialog" aria-modal="true" aria-label="Accessibility menu">
+      <div class="a11y-head">
+        <div class="title">
+          <div class="t1">Accessibility</div>
+          <div class="t2">Version 4.0.2</div>
+        </div>
+        <button class="a11y-close" id="a11y-close" type="button" aria-label="Close accessibility menu"><span>×</span></button>
+      </div>
+
+      <div class="a11y-top">
+        <a class="a11y-logo-link" href="index.html" aria-label="Home">
+          <img class="a11y-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="120" height="46" decoding="async" loading="lazy" />
+        </a>
+
+        <div class="a11y-social" aria-label="Social icons">
+          <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1"></circle>
+            </svg>
+          </a>
+          <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16v12H4z"></path>
+              <path d="M4 7l8 6 8-6"></path>
+            </svg>
+          </a>
+          <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X (Twitter)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 4l16 16"></path>
+              <path d="M20 4L4 20"></path>
+            </svg>
+          </a>
         </div>
       </div>
 
-      <form class="newsletter-form" id="newsletter-form" autocomplete="on">
-        <label class="sr-only" for="newsletter-email">Email</label>
-        <input
-          id="newsletter-email"
-          type="email"
-          name="email"
-          placeholder="Your email"
-          inputmode="email"
-          autocomplete="email"
-          required
-        />
-        <button class="metal-btn newsletter-btn" type="submit" aria-label="Subscribe">
-          <span class="btn-text">SUBSCRIBE</span>
-        </button>
-      </form>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden>
+        <a href="index.html">HOME</a>
+        <a href="index.html?store=1">STORE</a>
+        <a href="about.html">ABOUT</a>
+        <a href="research.html">RESEARCH</a>
+        <a href="contact.html">CONTACT</a>
+      </nav>
 
-      <div class="newsletter-note" id="newsletter-note" role="status" aria-live="polite"></div>
-    </div>
+      <div class="a11y-options" aria-label="Accessibility options">
+        <div class="a11y-row">
+          <div class="a11y-left">
+            <span class="a11y-label">High contrast</span>
+            <button class="info-eye" type="button" aria-label="High contrast info" data-tip="High contrast increases readability by using a cleaner, higher-contrast appearance.">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-contrast" />
+            <span class="slider"></span>
+          </label>
+        </div>
 
-    <!-- footer tab -->
-    <div class="footer-tab" role="navigation" aria-label="Footer navigation">
-      <a class="footer-logo" href="#top" aria-label="Back to top">
-        <img
-          src="mayanut-the-mayanut-comapny-logo.png"
-          alt="The MayaNut Company logo"
-          width="140"
-          height="52"
-          decoding="async"
-          loading="lazy"
-        />
-      </a>
+        <div class="a11y-row">
+          <div class="a11y-left">
+            <span class="a11y-label">Large text</span>
+            <button class="info-eye" type="button" aria-label="Large text info" data-tip="Large text increases the size of most text for easier reading.">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-large" />
+            <span class="slider"></span>
+          </label>
+        </div>
 
-      <button
-        class="footer-tab-btn"
-        id="footer-tab-btn"
-        type="button"
-        aria-label="Open footer links"
-      >
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+        <div class="a11y-row">
+          <div class="a11y-left">
+            <span class="a11y-label">Voice tools</span>
+            <button class="info-eye" type="button" aria-label="Voice tools info" data-tip="Voice tools let you play text aloud. Make sure your volume is adequate. You can also highlight text to use it.">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-voice" />
+            <span class="slider"></span>
+          </label>
+        </div>
 
-    <div class="footer-bottom" id="footer-bottom">
-      <div class="footer-left">
-        <div class="footer-base">Based in Florida</div>
-        <div class="footer-links">
-          <a href="privacy.html">Privacy</a>
-          <span class="dot">•</span>
-          <a href="terms.html">Terms</a>
-          <span class="dot">•</span>
-          <a href="sitemap.xml">Sitemap</a>
+        <div class="a11y-row">
+          <div class="a11y-left">
+            <span class="a11y-label">Reduce motion</span>
+            <button class="info-eye" type="button" aria-label="Reduce motion info" data-tip="Reduce motion disables most animations and transitions.">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-motion" />
+            <span class="slider"></span>
+          </label>
         </div>
       </div>
 
-      <div class="footer-right" aria-label="Social links">
-        <a
-          class="icon-pill"
-          href="https://www.instagram.com/themayanutcompany"
-          target="_blank"
-          rel="noopener"
-          aria-label="Instagram"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-            <circle cx="12" cy="12" r="4.2"></circle>
-            <circle cx="17.3" cy="6.7" r="0.9"></circle>
-          </svg>
-        </a>
-
-        <a
-          class="icon-pill"
-          href="mailto:info@mayanut.com"
-          aria-label="Email info@mayanut.com"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4.5 6.5h15v11h-15z"></path>
-            <path d="M4.5 7l7.5 6 7.5-6"></path>
-          </svg>
-        </a>
-
-        <a
-          class="icon-pill"
-          href="https://x.com/mayanutcompany"
-          target="_blank"
-          rel="noopener"
-          aria-label="X"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M5 5l14 14"></path>
-            <path d="M19 5L5 19"></path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-</footer>
-
-<!-- CART OVERLAY -->
-<div class="cart-overlay" id="cart-overlay" aria-hidden="true">
-  <div class="cart-dim" id="cart-dim" tabindex="-1" aria-label="Close cart"></div>
-
-  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true">
-    <div class="cart-head">
-      <div class="cart-title">
-        <div class="t1">Cart</div>
-        <div class="t2">Future Checkout</div>
-      </div>
-      <button class="a11y-close" id="cart-close" type="button" aria-label="Close cart">
-        <span>×</span>
-      </button>
-    </div>
-
-    <div class="cart-body">
-      <div class="cart-empty" id="cart-empty">Your cart is empty.</div>
-      <div class="cart-items" id="cart-items"></div>
-
-      <div class="cart-summary">
-        <div class="cart-row">
-          <span class="label">Items</span>
-          <span class="value" id="cart-summary-items">0</span>
-        </div>
-        <div class="cart-row">
-          <span class="label">Status</span>
-          <span class="value">Coming soon</span>
+      <div class="a11y-foot">
+        <div class="a11y-foot-title">Language</div>
+        <div class="a11y-lang-row">
+          <button class="lang-pill" id="lang-pill-a11y" type="button" aria-label="Switch to Español">
+            <span>ESPAÑOL</span>
+          </button>
         </div>
       </div>
-    </div>
+    </aside>
 
-    <div class="cart-foot">
-      <button class="metal-btn cart-checkout" id="cart-checkout" type="button">
-        <span class="btn-text">PROCEED TO CHECKOUT</span>
-      </button>
-      <div class="cart-note" id="cart-note" role="status" aria-live="polite"></div>
-    </div>
-  </aside>
-</div>
-
-<!-- ACCESSIBILITY BUTTON -->
-<button
-  class="accessibility-btn"
-  id="accessibility-btn"
-  type="button"
-  aria-label="Accessibility menu"
->
-  <!-- professional person icon + inner white ring -->
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/>
-    <circle cx="12" cy="6" r="2"></circle>
-    <path d="M7 10h10"></path>
-    <path d="M12 10v8"></path>
-    <path d="M8 13l4 2"></path>
-    <path d="M16 13l-4 2"></path>
-  </svg>
-</button>
-
-<!-- ACCESSIBILITY OVERLAY -->
-<div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
-  <div class="a11y-dim" id="a11y-dim" tabindex="-1" aria-label="Close accessibility"></div>
-
-  <aside class="a11y-drawer" id="a11y-drawer" role="dialog" aria-modal="true">
-    <div class="a11y-head">
-      <div class="title">
-        <div class="t1">Accessibility</div>
-        <div class="t2">Settings & Tools</div>
-      </div>
-      <button class="a11y-close" id="a11y-close" type="button" aria-label="Close">
-        <span>×</span>
-      </button>
-    </div>
-
-    <button class="a11y-lang-btn" id="a11y-lang-btn" type="button">
-      <span>ESPAÑOL</span>
-    </button>
-
-    <div class="settings-row">
-      <span>High contrast</span>
-      <div class="toggle-input" id="toggle-contrast" role="switch" aria-checked="false">
-        <div class="knob">off</div>
-      </div>
-    </div>
-
-    <div class="settings-row">
-      <span>Large text</span>
-      <div class="toggle-input" id="toggle-large" role="switch" aria-checked="false">
-        <div class="knob">off</div>
-      </div>
-    </div>
-
-    <div class="settings-row">
-      <span>Voice tools</span>
-      <div class="toggle-input" id="toggle-voice" role="switch" aria-checked="false">
-        <div class="knob">off</div>
-      </div>
-    </div>
-
-    <div class="settings-row">
-      <span>Reduce motion</span>
-      <div class="toggle-input" id="toggle-reduce" role="switch" aria-checked="false">
-        <div class="knob">off</div>
-      </div>
-    </div>
-  </aside>
-</div>
-
-<!-- IMAGE VIEWER -->
-<div class="img-viewer-overlay" id="img-viewer" aria-hidden="true">
-  <div class="img-viewer-panel" role="dialog" aria-modal="true">
-    <div class="img-viewer-topbar">
-      <div class="img-viewer-caption" id="img-viewer-caption"></div>
-
-      <div style="display:flex; gap:8px;">
-        <a
-          href="research.html#gallery"
-          class="metal-btn"
-          style="height:38px; padding:0 12px;"
-        >
-          <span class="btn-text">GO TO GALLERY</span>
-        </a>
-
-        <button class="img-viewer-close" id="img-viewer-close" type="button">
-          <span>×</span>
-        </button>
-      </div>
-    </div>
-
-    <img class="img-viewer-img" id="img-viewer-img" alt="" />
+    <!-- Tooltip bubble (appears SE of the eye icon) -->
+    <div class="tip" id="tip" role="tooltip" aria-hidden="true"></div>
   </div>
-</div>
 
-<!-- SELECTION SPEAK -->
-<button class="speak-pop" id="speak-pop" type="button" aria-label="Speak selection">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M4 10v4"></path>
-    <path d="M7 8v8"></path>
-    <path d="M10 6v12"></path>
-    <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path>
-    <path d="M17 7c3 3 3 7 0 10"></path>
-  </svg>
-</button>
+  <!-- CART OVERLAY (basic) -->
+  <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
+    <div class="cart-dim" id="cart-dim"></div>
+    <div class="cart-panel" role="dialog" aria-modal="true" aria-label="Cart">
+      <div class="cart-head">
+        <div class="cart-title">Cart</div>
+        <button class="a11y-close" id="cart-close" type="button" aria-label="Close cart"><span>×</span></button>
+      </div>
+      <div class="cart-body" id="cart-body">
+        <div class="cart-empty">Your cart is empty.</div>
+      </div>
+      <div class="cart-foot">
+        <button class="btn" id="cart-checkout" type="button"><span class="btn-text">Checkout</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE VIEWER OVERLAY -->
+  <div class="img-overlay" id="img-overlay" aria-hidden="true">
+    <div class="img-dim" id="img-dim"></div>
+
+    <div class="img-panel" role="dialog" aria-modal="true" aria-label="Expanded image">
+      <div class="img-topbar">
+        <div class="img-title" id="img-title">Image</div>
+        <div class="img-top-actions">
+          <button class="goto-gallery" id="goto-gallery" type="button" aria-label="Go to Gallery">
+            <span class="btn-text">Go to Gallery</span>
+          </button>
+          <button class="img-close" id="img-close" type="button" aria-label="Close image">
+            <span>×</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="img-wrap" id="img-wrap">
+        <img id="img-full" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <!-- speak selection button -->
+  <button class="speak-pop" id="speak-pop" type="button" aria-label="Play selected text">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 10v4"></path><path d="M7 8v8"></path><path d="M10 6v12"></path>
+      <path d="M14 9c1.8 1.8 1.8 4.2 0 6"></path><path d="M17 7c3 3 3 7 0 10"></path>
+    </svg>
+  </button>
+
+  <style>
+    /* Footer bar layout */
+    #site-footer{
+      border-left: var(--frameBorder) solid var(--frame-line);
+      border-right: var(--frameBorder) solid var(--frame-line);
+      background: transparent;
+      padding: 18px 0 0;
+    }
+    .footer-bar{
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 18px;
+      border: var(--outlineW) solid var(--frame-line);
+      background: var(--store-green-grad); /* lime to dark green */
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.14);
+    }
+    .footer-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:#0b1220;
+      min-width:0;
+      flex:1;
+    }
+    .footer-logo{
+      width:150px;
+      height:auto;
+      flex:0 0 auto;
+      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.14));
+      border-radius:12px;
+    }
+    .footer-lines{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .footer-line{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .footer-text{
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+      white-space:nowrap;
+    }
+    .footer-links{
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+    }
+    .footer-link{
+      color:#0b1220;
+      text-decoration:none;
+      border-bottom:2px solid rgba(255,255,255,0.0);
+      padding-bottom:2px;
+    }
+    .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
+    .dot{ opacity:0.7; font-weight:950; }
+    .footer-right{ display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+
+    /* Newsletter block: full green gradient + bottom border to form rectangle */
+    .newsletter-wrap{
+      max-width:1200px;
+      margin: 14px auto 24px;
+      padding:0 6px;
+    }
+    .newsletter-inner{
+      border-radius:18px;
+      border: var(--outlineW) solid var(--frame-line);
+      background: var(--store-green-grad);
+      padding:14px 14px 14px;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.14);
+      position:relative;
+    }
+    .newsletter-title{
+      font-weight:950;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      font-size:13px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      margin-bottom:6px;
+    }
+    .newsletter-sub{
+      font-weight:850;
+      font-size:12px;
+      letter-spacing:0.06em;
+      color:#0b1220;
+      opacity:0.95;
+      margin-bottom:10px;
+    }
+    .newsletter-form{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .newsletter-input{
+      flex:1;
+      min-width:240px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--frame-line);
+      background: rgba(255,255,255,0.82);
+      outline:none;
+      font-weight:850;
+    }
+    .newsletter-btn{
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      border-radius: var(--r-btn);
+      padding:10px 14px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      cursor:pointer;
+      font-weight:950;
+      min-height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+    }
+    .newsletter-btn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .newsletter-note{
+      margin-top:10px;
+      font-weight:900;
+      letter-spacing:0.06em;
+      font-size:11px;
+      text-transform:uppercase;
+      color:#0b1220;
+      opacity:0.95;
+      min-height:16px;
+    }
+
+    /* A11y option list */
+    .a11y-options{ margin-top:10px; display:flex; flex-direction:column; gap:10px; }
+    .a11y-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(10, 60, 20, 0.55);
+      background: rgba(255,255,255,0.14);
+    }
+    .a11y-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .a11y-label{
+      font-weight:950;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      white-space:nowrap;
+    }
+
+    /* info eye moved next to words (not near switches) */
+    .info-eye{
+      width:28px;
+      height:28px;
+      border-radius:12px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      flex:0 0 auto;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+    }
+    .info-eye::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .info-eye svg{
+      width:16px;
+      height:16px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
+
+    /* switches */
+    .switch{ position:relative; display:inline-block; width:54px; height:28px; flex:0 0 auto; }
+    .switch input{ opacity:0; width:0; height:0; }
+    .slider{
+      position:absolute;
+      cursor:pointer;
+      top:0; left:0; right:0; bottom:0;
+      background:rgba(255,255,255,0.40);
+      border:1px solid rgba(10, 60, 20, 0.55);
+      transition:.18s;
+      border-radius:999px;
+    }
+    .slider:before{
+      position:absolute;
+      content:"";
+      height:22px; width:22px;
+      left:3px; top:50%;
+      transform: translateY(-50%);
+      background:rgba(255,255,255,0.92);
+      border-radius:999px;
+      transition:.18s;
+      border:1px solid rgba(15,23,42,0.15);
+    }
+    .switch input:checked + .slider{
+      background: rgba(253,108,2,0.30);
+      border-color: rgba(253,108,2,0.55);
+    }
+    .switch input:checked + .slider:before{
+      transform: translate(26px, -50%);
+    }
+
+    .a11y-foot{ margin-top:12px; padding-top:10px; border-top:1px solid rgba(10, 60, 20, 0.45); }
+    .a11y-foot-title{
+      font-weight:950;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      margin-bottom:8px;
+    }
+    .a11y-lang-row{ display:flex; align-items:center; gap:10px; }
+
+    /* tooltip bubble positioned SE */
+    .tip{
+      position:fixed;
+      max-width: 280px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:2px solid var(--frame-line);
+      background: var(--store-green-grad);
+      box-shadow: 0 18px 55px rgba(15,23,42,0.22);
+      font-weight:900;
+      font-size:12px;
+      line-height:1.4;
+      color:#0b1220;
+      display:none;
+      z-index:99999;
+      pointer-events:none;
+    }
+    .tip.active{ display:block; }
+
+    /* Cart overlay */
+    .cart-overlay{
+      position:fixed; inset:0; display:none; z-index:95;
+    }
+    .cart-overlay.active{ display:block; }
+    .cart-dim{ position:absolute; inset:0; background: rgba(0,0,0,0.30); }
+    .cart-panel{
+      position:absolute;
+      right:18px;
+      top:18px;
+      width:min(420px, 92vw);
+      max-height: calc(100vh - 36px);
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      background: var(--panel-green-grad);
+      box-shadow: 0 18px 55px rgba(15,23,42,0.28);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .cart-head{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 12px;
+      border-bottom:1px solid rgba(10, 60, 20, 0.45);
+    }
+    .cart-title{
+      font-weight:950; letter-spacing:0.18em; text-transform:uppercase; font-size:13px; color:#0b1220;
+    }
+    .cart-body{ padding:12px; overflow:auto; min-height:120px; }
+    .cart-empty{
+      font-weight:900; letter-spacing:0.10em; text-transform:uppercase; font-size:12px; color:#0b1220; opacity:0.9;
+    }
+    .cart-foot{
+      padding:12px;
+      border-top:1px solid rgba(10, 60, 20, 0.45);
+      display:flex;
+      justify-content:flex-end;
+    }
+
+    /* Image overlay (no blur rectangle; outline matches image shape) */
+    .img-overlay{ position:fixed; inset:0; display:none; z-index:98; }
+    .img-overlay.active{ display:block; }
+    .img-dim{ position:absolute; inset:0; background: rgba(0,0,0,0.35); }
+    .img-panel{
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%,-50%);
+      width:min(980px, 92vw);
+      max-height: calc(100vh - 40px);
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 18px 55px rgba(15,23,42,0.38);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .img-topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      background: var(--panel-green-grad);
+      border-bottom:1px solid rgba(10, 60, 20, 0.45);
+    }
+    .img-title{
+      font-weight:950;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      flex:1;
+      min-width:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 60%;
+    }
+    .img-top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
+    .goto-gallery{
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      border-radius: 12px;
+      padding:10px 12px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      cursor:pointer;
+      font-weight:950;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+      min-height:34px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+    }
+    .goto-gallery::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+    .img-close{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      color: var(--cream);
+      cursor:pointer;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
+    }
+    .img-close::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.10) 40%, rgba(0,0,0,0.0) 60%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+
+    .img-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px;
+      overflow:auto;
+    }
+    #img-full{
+      max-width: 100%;
+      height:auto;
+      border-radius: 14px;
+      border: var(--outlineW) solid var(--frame-line); /* thin green outline */
+      background:#fff;
+      display:block;
+    }
+
+    /* Mobile footer adjustments */
+    @media(max-width:880px){
+      .footer-bar{ flex-direction:column; align-items:stretch; }
+      .footer-left{ width:100%; }
+      .footer-right{ justify-content:flex-end; }
+      .footer-text{ white-space:normal; }
+    }
+
+    /* prevent header overlap with overlay (a11y/carts/images) */
+    body.overlay-open .sticky-top{ pointer-events:none; }
+    body.overlay-open .sticky-top *{ pointer-events:none; }
+    body.overlay-open .accessibility-btn{ pointer-events:none; }
+
+    /* reduce motion */
+    body.reduce-motion *{
+      animation:none !important;
+      transition:none !important;
+      scroll-behavior:auto !important;
+    }
+  </style>
+
+  <script>
+    // ---------- Helpers ----------
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    // Build side stacks
+    (function buildStacks(){
+      const imgSrc = "mayanuts-the-maya-nut-company-image.jpeg";
+      const left = $("#stack-left");
+      const right = $("#stack-right");
+      if(!left || !right) return;
+      for(let i=0;i<12;i++){
+        const a = document.createElement("img");
+        a.src = imgSrc;
+        a.alt = "";
+        a.loading = "lazy";
+        a.decoding = "async";
+        left.appendChild(a);
+        const b = a.cloneNode();
+        right.appendChild(b);
+      }
+    })();
+
+    // ---------- Language buttons ----------
+    function goSpanish(){
+      // If you have a dedicated Spanish file:
+      window.location.href = "index-es.html";
+    }
+    const langTop = $("#lang-pill-top");
+    const langA11y = $("#lang-pill-a11y");
+    if(langTop) langTop.addEventListener("click", goSpanish);
+    if(langA11y) langA11y.addEventListener("click", goSpanish);
+
+    // ---------- Mobile menu toggles inside a11y drawer (for small screens) ----------
+    const mobileMenuBtn = $("#mobile-menu-btn");
+    const mobileNav = $("#mobile-nav");
+    if(mobileMenuBtn && mobileNav){
+      mobileMenuBtn.addEventListener("click", () => {
+        const hidden = mobileNav.hasAttribute("hidden");
+        if(hidden) mobileNav.removeAttribute("hidden");
+        else mobileNav.setAttribute("hidden", "");
+      });
+    }
+
+    // ---------- Store expand (fix missing green background + missing sort tab in expanded view) ----------
+    const storeBtn = $("#store-view-full");
+    const storePanel = $("#store-panel");
+    const storeGrid = $("#store-grid");
+
+    // Add a sort button that appears in expanded mode (like requested)
+    const sortBtn = document.createElement("button");
+    sortBtn.type = "button";
+    sortBtn.id = "store-sort";
+    sortBtn.className = "metal-btn";
+    sortBtn.innerHTML = '<span class="btn-text">SORT</span>';
+
+    // Sort dropdown
+    const sortMenu = document.createElement("div");
+    sortMenu.id = "store-sort-menu";
+    sortMenu.style.cssText = `
+      position:absolute; top:78px; left:14px;
+      display:none; flex-direction:column; gap:8px;
+      min-width:220px; padding:10px; border-radius:14px;
+      border:2px solid var(--frame-line);
+      background: var(--store-green-grad);
+      box-shadow: 0 18px 55px rgba(15,23,42,0.22);
+      z-index:9999;
+    `;
+    sortMenu.innerHTML = `
+      <button class="sort-item" data-sort="alpha">Alphabetical</button>
+      <button class="sort-item" data-sort="new">Newest (concept)</button>
+      <button class="sort-item" data-sort="type">By type</button>
+    `;
+
+    const sortStyle = document.createElement("style");
+    sortStyle.textContent = `
+      #store-panel{ position:relative; }
+      #store-sort-menu .sort-item{
+        border:none;
+        cursor:pointer;
+        text-align:left;
+        padding:10px 10px;
+        border-radius:12px;
+        background: rgba(255,255,255,0.14);
+        border:1px solid rgba(10, 60, 20, 0.55);
+        color:#0b1220;
+        font-weight:950;
+        letter-spacing:0.10em;
+        text-transform:uppercase;
+        font-size:11px;
+      }
+      #store-sort-menu .sort-item:hover{ background: rgba(255,255,255,0.22); }
+    `;
+    document.head.appendChild(sortStyle);
+
+    function ensureSortUI(){
+      const tools = $(".store-tools");
+      if(!tools) return;
+      // insert SORT button immediately after View Full Store
+      if(!$("#store-sort")){
+        tools.insertBefore(sortBtn, tools.children[1] || null);
+      }
+      if(!$("#store-sort-menu")){
+        storePanel.appendChild(sortMenu);
+      }
+    }
+
+    function setStoreExpanded(on){
+      document.body.classList.toggle("store-expanded", on);
+      if(on){
+        ensureSortUI();
+        storePanel.style.background = getComputedStyle(document.documentElement).getPropertyValue("--store-green-grad");
+      }
+    }
+
+    if(storeBtn){
+      storeBtn.addEventListener("click", () => {
+        const on = !document.body.classList.contains("store-expanded");
+        setStoreExpanded(on);
+        if(on){
+          // ensure panel visible at top
+          storePanel.scrollIntoView({behavior:"smooth", block:"start"});
+        }
+      });
+    }
+
+    // Sort menu behavior
+    sortBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = sortMenu.style.display === "flex";
+      sortMenu.style.display = open ? "none" : "flex";
+    });
+    document.addEventListener("click", () => { if(sortMenu) sortMenu.style.display = "none"; });
+
+    function reorderProducts(mode){
+      if(!storeGrid) return;
+      const cards = $$(".product-card", storeGrid);
+      const getTitle = (c) => (c.getAttribute("data-title") || c.querySelector(".product-name")?.innerText || "").trim().toLowerCase();
+
+      let sorted = cards.slice();
+      if(mode === "alpha"){
+        sorted.sort((a,b) => getTitle(a).localeCompare(getTitle(b)));
+      }else if(mode === "type"){
+        sorted.sort((a,b) => (a.getAttribute("data-name")||"").localeCompare(b.getAttribute("data-name")||""));
+      }else{
+        // "new" fallback: keep current
+      }
+      sorted.forEach(c => storeGrid.appendChild(c));
+    }
+    sortMenu.addEventListener("click", (e) => {
+      const btn = e.target.closest(".sort-item");
+      if(!btn) return;
+      reorderProducts(btn.dataset.sort);
+      sortMenu.style.display = "none";
+    });
+
+    // Search highlighting + clear
+    const searchInput = $("#store-search");
+    const clearX = $("#store-search-clear");
+    function applySearch(){
+      const q = (searchInput?.value || "").trim().toLowerCase();
+      const cards = $$(".product-card", storeGrid);
+      if(!q){
+        cards.forEach(c => c.classList.remove("is-match","is-nonmatch"));
+        return;
+      }
+      cards.forEach(c => {
+        const hay = ((c.dataset.name||"") + " " + (c.dataset.title||"") + " " + (c.innerText||"")).toLowerCase();
+        const match = hay.includes(q);
+        c.classList.toggle("is-match", match);
+        c.classList.toggle("is-nonmatch", !match);
+      });
+    }
+    if(searchInput){
+      searchInput.addEventListener("input", applySearch);
+      searchInput.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ e.preventDefault(); applySearch(); }});
+    }
+    if(clearX){
+      clearX.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if(searchInput){
+          searchInput.value = "";
+          applySearch();
+          searchInput.focus();
+        }
+      });
+    }
+
+    // Qty buttons + ADD + cart overlay
+    let cartCount = 0;
+    const cartBadge = $("#cart-badge");
+    const cartBtn = $("#cart-btn");
+    const cartOverlay = $("#cart-overlay");
+    const cartDim = $("#cart-dim");
+    const cartClose = $("#cart-close");
+    const cartBody = $("#cart-body");
+
+    function setCartCount(n){
+      cartCount = Math.max(0, n|0);
+      if(cartBadge) cartBadge.textContent = String(cartCount);
+      if(cartBody){
+        cartBody.innerHTML = cartCount ? `<div class="cart-empty">Concept cart items: ${cartCount}</div>` : `<div class="cart-empty">Your cart is empty.</div>`;
+      }
+    }
+
+    $$(".product-card").forEach(card => {
+      const minus = $(".qty-minus", card);
+      const plus = $(".qty-plus", card);
+      const input = $(".qty-input", card);
+      const add = $(".btn-buy", card);
+
+      function clamp(){
+        let v = parseInt(input.value || "1", 10);
+        if(isNaN(v)) v = 1;
+        v = Math.min(99, Math.max(1, v));
+        input.value = String(v);
+        return v;
+      }
+      minus?.addEventListener("click", () => { input.value = String(clamp() - 1); clamp(); });
+      plus?.addEventListener("click", () => { input.value = String(clamp() + 1); clamp(); });
+      input?.addEventListener("change", clamp);
+
+      add?.addEventListener("click", () => {
+        const v = clamp();
+        setCartCount(cartCount + v);
+      });
+    });
+
+    function openOverlay(el){
+      document.body.classList.add("overlay-open");
+      el.classList.add("active");
+      el.setAttribute("aria-hidden","false");
+    }
+    function closeOverlay(el){
+      el.classList.remove("active");
+      el.setAttribute("aria-hidden","true");
+      document.body.classList.remove("overlay-open");
+    }
+
+    cartBtn?.addEventListener("click", () => openOverlay(cartOverlay));
+    cartDim?.addEventListener("click", () => closeOverlay(cartOverlay));
+    cartClose?.addEventListener("click", () => closeOverlay(cartOverlay));
+
+    // Newsletter (client-side placeholder)
+    const newsletterForm = $("#newsletter-form");
+    const newsletterNote = $("#newsletter-note");
+    newsletterForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = ($("#newsletter-email")?.value || "").trim();
+      if(!email){
+        if(newsletterNote) newsletterNote.textContent = "Please enter an email.";
+        return;
+      }
+      if(newsletterNote) newsletterNote.textContent = "Subscribed (placeholder).";
+      newsletterForm.reset();
+    });
+
+    // ---------- Accessibility overlay fix: prevent banner/header overlap and dim fully ----------
+    const a11yBtn = $("#accessibility-btn");
+    const a11yOverlay = $("#a11y-overlay");
+    const a11yClose = $("#a11y-close");
+    const a11yDim = $("#a11y-dim");
+
+    function openA11y(){
+      document.body.classList.add("overlay-open");
+      a11yOverlay.classList.add("active");
+      a11yOverlay.setAttribute("aria-hidden","false");
+    }
+    function closeA11y(){
+      a11yOverlay.classList.remove("active");
+      a11yOverlay.setAttribute("aria-hidden","true");
+      document.body.classList.remove("overlay-open");
+      hideTip();
+    }
+    a11yBtn?.addEventListener("click", openA11y);
+    a11yClose?.addEventListener("click", closeA11y);
+    a11yDim?.addEventListener("click", closeA11y);
+
+    // toggles
+    const tContrast = $("#toggle-contrast");
+    const tLarge = $("#toggle-large");
+    const tVoice = $("#toggle-voice");
+    const tMotion = $("#toggle-motion");
+
+    tContrast?.addEventListener("change", () => document.body.classList.toggle("high-contrast", tContrast.checked));
+    tLarge?.addEventListener("change", () => document.body.classList.toggle("large-text", tLarge.checked));
+    tMotion?.addEventListener("change", () => document.body.classList.toggle("reduce-motion", tMotion.checked));
+    tVoice?.addEventListener("change", () => {
+      document.body.classList.toggle("voice-on", tVoice.checked);
+      hideSpeakPop();
+    });
+
+    // ---------- Eye tooltips SE of icon ----------
+    const tip = $("#tip");
+    function showTip(target){
+      if(!tip) return;
+      const txt = target.getAttribute("data-tip") || "";
+      if(!txt) return;
+
+      tip.textContent = txt;
+      tip.classList.add("active");
+      tip.setAttribute("aria-hidden","false");
+
+      const r = target.getBoundingClientRect();
+      // southeast: lower-right of eye, slight offset
+      const left = Math.min(window.innerWidth - 16 - 280, r.right + 10);
+      const top = Math.min(window.innerHeight - 16 - 120, r.bottom + 10);
+      tip.style.left = left + "px";
+      tip.style.top = top + "px";
+    }
+    function hideTip(){
+      if(!tip) return;
+      tip.classList.remove("active");
+      tip.setAttribute("aria-hidden","true");
+    }
+    $$(".info-eye").forEach(btn => {
+      btn.addEventListener("mouseenter", () => showTip(btn));
+      btn.addEventListener("mouseleave", hideTip);
+      btn.addEventListener("focus", () => showTip(btn));
+      btn.addEventListener("blur", hideTip);
+      btn.addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); showTip(btn); });
+    });
+    document.addEventListener("scroll", hideTip, {passive:true});
+
+    // ---------- Image viewer redesign ----------
+    const imgOverlay = $("#img-overlay");
+    const imgDim = $("#img-dim");
+    const imgClose = $("#img-close");
+    const imgFull = $("#img-full");
+    const imgTitle = $("#img-title");
+    const gotoGallery = $("#goto-gallery");
+
+    function openImage(src, title){
+      if(!imgOverlay || !imgFull) return;
+      imgFull.src = src;
+      imgFull.alt = title || "Expanded image";
+      if(imgTitle) imgTitle.textContent = title || "Image";
+      openOverlay(imgOverlay);
+    }
+    function closeImage(){
+      if(!imgOverlay) return;
+      closeOverlay(imgOverlay);
+      if(imgFull){ imgFull.src = ""; imgFull.alt = ""; }
+    }
+    imgDim?.addEventListener("click", closeImage);
+    imgClose?.addEventListener("click", closeImage);
+
+    gotoGallery?.addEventListener("click", () => {
+      // If your gallery lives on research.html#gallery, use that:
+      window.location.href = "research.html#gallery";
+    });
+
+    // Hook zoom buttons and allow clicking image too
+    $$(".img-zoom-wrap").forEach(wrap => {
+      const img = $("img.zoomable", wrap);
+      const btn = $(".zoom-btn", wrap);
+      if(!img || img.getAttribute("data-nozoom")==="1") return;
+
+      const title = img.getAttribute("alt") || "Image";
+      const handler = () => openImage(img.currentSrc || img.src, title);
+
+      btn?.addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); handler(); });
+      img.addEventListener("click", handler);
+      img.style.cursor = "pointer";
+    });
+
+    // ---------- Paragraph voice tools + selection voice pop ----------
+    const synth = window.speechSynthesis;
+    let speaking = false;
+
+    function speakText(text){
+      if(!text || !synth) return;
+      try{
+        synth.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 1.0;
+        u.pitch = 1.0;
+        u.onstart = () => speaking = true;
+        u.onend = () => speaking = false;
+        synth.speak(u);
+      }catch(_){}
+    }
+
+    function stopSpeak(){
+      try{ synth.cancel(); }catch(_){}
+      speaking = false;
+    }
+
+    $$(".para-speak").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-speak-btn");
+        const p = id ? document.getElementById(id) : null;
+        if(!p) return;
+        const txt = (p.innerText || "").trim();
+        speakText(txt);
+      });
+    });
+
+    // selection pop button
+    const speakPop = $("#speak-pop");
+    let selText = "";
+    function hideSpeakPop(){
+      if(!speakPop) return;
+      speakPop.style.display = "none";
+      selText = "";
+    }
+    function showSpeakPop(x, y, text){
+      if(!speakPop) return;
+      selText = text;
+      speakPop.style.left = Math.max(10, Math.min(window.innerWidth - 10 - 38, x)) + "px";
+      speakPop.style.top = Math.max(10, Math.min(window.innerHeight - 10 - 38, y)) + "px";
+      speakPop.style.display = "flex";
+    }
+
+    document.addEventListener("mouseup", () => {
+      if(!document.body.classList.contains("voice-on")){ hideSpeakPop(); return; }
+      const sel = window.getSelection();
+      const text = (sel && sel.toString()) ? sel.toString().trim() : "";
+      if(!text || text.length < 2){ hideSpeakPop(); return; }
+
+      // Use selection rect
+      try{
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        showSpeakPop(rect.right + 8, rect.bottom + 8, text);
+      }catch(_){
+        hideSpeakPop();
+      }
+    });
+
+    document.addEventListener("mousedown", (e) => {
+      // If click is outside speak pop, hide it (but not if clicking it)
+      if(!speakPop) return;
+      if(e.target === speakPop || speakPop.contains(e.target)) return;
+      hideSpeakPop();
+    });
+
+    speakPop?.addEventListener("click", () => {
+      if(!selText) return;
+      speakText(selText);
+    });
+
+    // ---------- Nav buttons ----------
+    $$("[data-nav]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const href = btn.getAttribute("data-nav");
+        if(href) window.location.href = href;
+      });
+    });
+
+    // Logo click => scroll to top
+    const logoTop = $("#logo-top");
+    logoTop?.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+
+    // ---------- Ensure starting at very top even after reload/hashless ----------
+    // already handled in head script; this is a safety pass for some browsers
+    window.addEventListener("load", () => {
+      if(!location.hash){
+        window.scrollTo(0,0);
+      }
+    });
+
+    // Escape key closes overlays
+    document.addEventListener("keydown", (e) => {
+      if(e.key !== "Escape") return;
+      if(imgOverlay?.classList.contains("active")) closeImage();
+      if(cartOverlay?.classList.contains("active")) closeOverlay(cartOverlay);
+      if(a11yOverlay?.classList.contains("active")) closeA11y();
+      stopSpeak();
+      hideSpeakPop();
+    });
+  </script>
+
+</body>
+</html>

@@ -135,10 +135,11 @@
       padding-top: env(safe-area-inset-top);
     }
 
+    /* Make the top tab thicker (about 80% of the old “logo” height feel) */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
-      padding:5px 12px;
+      padding:7px 12px; /* thicker */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -172,7 +173,10 @@
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      padding: 5px 14px;
+
+      padding: 10px 14px; /* thicker */
+      min-height: 62px;   /* prevents “skinny” header */
+
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -351,7 +355,6 @@
     }
     .hero-left{ display:flex; flex-direction:column; gap:18px; align-self:stretch; min-height:100%; }
 
-    /* No slide-in animation */
     .hero-top{ display:flex; align-items:center; gap:12px; max-width:760px; opacity:1; transform:none; }
     .hero-mini-logo{
       width:74px;
@@ -571,6 +574,30 @@
       z-index:2;
     }
 
+    /* Store search bar (under tools, above products) */
+    .store-search{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      margin-top:4px;
+    }
+    .store-search input{
+      width:100%;
+      height:40px;
+      border-radius:999px;
+      border:1px solid var(--frame-line);
+      background: var(--para-bg); /* same as main top paragraph background */
+      padding: 0 14px;
+      font-weight:900;
+      font-size:12px;
+      outline:none;
+      color:#111827;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+    }
+    @keyframes placeholderBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0.25;} }
+    .store-search input.blink::placeholder{ animation: placeholderBlink 0.9s infinite; }
+
     /* Default: 2 options side-by-side. Expanded: 4 all in a row. */
     .store-grid{
       margin-top:12px;
@@ -640,8 +667,6 @@
       padding:14px;
       overflow:hidden;
     }
-
-    /* centered title + thin green lines */
     .about-us .about-title{
       font-weight:950;
       letter-spacing:0.14em;
@@ -668,7 +693,6 @@
     .about-us .about-title::before{ margin-left:10px; }
     .about-us .about-title::after{ margin-right:10px; }
 
-    /* paragraph above each image */
     .about-us .about-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -694,11 +718,9 @@
       border-radius:16px;
       padding:12px;
     }
-
-    /* thinner rectangle images (crop top+bottom) */
     .about-us .about-card img{
       width:100%;
-      aspect-ratio: 16 / 7;
+      aspect-ratio: 16 / 7; /* thinner (cropped top/bottom) */
       border-radius:16px;
       object-fit:cover;
       object-position:center;
@@ -721,7 +743,7 @@
       border:2px solid var(--frame-line);
       background: var(--store-green-grad);
       box-shadow: 0 14px 40px rgba(15,23,42,0.10);
-      padding: 14px;
+      padding: 14px 14px 14px 10px; /* more left */
       overflow:hidden;
       contain: layout paint;
       display:grid;
@@ -742,16 +764,32 @@
     }
     .footer-panel > *{ position:relative; z-index:1; }
 
+    /* Footer left group: logo + text */
     .footer-left{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:flex-start;
+      text-align:left;
+      min-width:0;
+
+      /* nudge right so it lines up nearer to the icon column’s left edge feel */
+      padding-left: 34px;
+    }
+    .footer-logo{
+      width:46px;
+      height:auto;
+      border-radius:14px;
+      flex:0 0 auto;
+      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+    }
+    .footer-left-text{
       display:flex;
       flex-direction:column;
       gap:6px;
       min-width:0;
-      justify-content:flex-start;
-      align-items:flex-start;
-      text-align:left;
     }
-    .footer-left .line{
+    .footer-left-text .line{
       font-weight:950;
       font-size:11px;
       letter-spacing:0.12em;
@@ -762,8 +800,8 @@
       text-overflow:ellipsis;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
-    .footer-left a{ color:#0b1220; text-decoration:none; border-bottom:1px solid rgba(11,18,32,0.28); padding-bottom:2px; }
-    .footer-left a:hover{ border-bottom-color: rgba(11,18,32,0.72); }
+    .footer-left-text a{ color:#0b1220; text-decoration:none; border-bottom:1px solid rgba(11,18,32,0.28); padding-bottom:2px; }
+    .footer-left-text a:hover{ border-bottom-color: rgba(11,18,32,0.72); }
 
     .newsletter-mid{ display:flex; flex-direction:column; gap:6px; min-width:0; }
     .newsletter-title{
@@ -867,13 +905,14 @@
     }
     .overlay.open{ display:block; }
 
+    /* Entire accessibility background must be green gradient */
     .drawer{
       position:fixed;
       top:0;
       right:0;
       height:100vh;
       width:min(440px, 92vw);
-      background: rgba(255,255,255,0.92);
+      background: var(--store-green-grad); /* full coverage */
       border-left: 2px solid var(--frame-line);
       box-shadow: -18px 0 55px rgba(15,23,42,0.25);
       z-index:2100;
@@ -907,6 +946,7 @@
       display:flex;
       align-items:center;
       gap:10px;
+      min-width:0;
     }
     .drawer-title .ver{
       font-weight:950;
@@ -914,7 +954,23 @@
       letter-spacing:0.12em;
       text-transform:uppercase;
       opacity:0.9;
+      flex:0 0 auto;
     }
+    .a11y-logo-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      min-width:0;
+    }
+    .a11y-logo{
+      width:44px;
+      height:auto;
+      border-radius:14px;
+      flex:0 0 auto;
+      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+    }
+
     .drawer-close{
       width:36px;
       height:36px;
@@ -925,20 +981,21 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      flex:0 0 auto;
     }
     .drawer-close svg{ width:18px; height:18px; stroke:#0f172a; fill:none; stroke-width:2; }
 
-    /* Drawer body: green gradient background (menu options area) */
     .drawer-body{
       padding:14px;
       overflow:auto;
       display:flex;
       flex-direction:column;
       gap:12px;
-      background: var(--store-green-grad);
+      background: transparent; /* already covered by drawer background */
+      flex:1;
     }
 
-    /* Menu options cards: also green gradient feel */
+    /* Menu option panels (also green gradient) */
     .a11y-section{
       border-radius:16px;
       border:2px solid rgba(12, 90, 42, 0.55);
@@ -1053,7 +1110,6 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    /* show speaker only when voice mode on + user highlights/targets the box */
     body.voice-on .speak-wrap:hover .speak-btn,
     body.voice-on .speak-wrap:focus-within .speak-btn{
       display:flex;
@@ -1093,7 +1149,8 @@
 
       .about-us .about-grid{ grid-template-columns: 1fr; }
 
-      .footer-panel{ grid-template-columns: 1fr; }
+      .footer-panel{ grid-template-columns: 1fr; padding-left:10px; }
+      .footer-left{ padding-left:0; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
       .newsletter-btn{ width:100%; min-width:0; }
@@ -1117,7 +1174,6 @@
         </div>
       </div>
 
-      <!-- TOP MENU (no logo; nav left->right; Español right) -->
       <header class="site-header" id="top">
         <div class="header-center">
           <nav class="main-nav" aria-label="Primary navigation">
@@ -1165,7 +1221,6 @@
         <section id="hero" aria-label="Hero">
           <div class="hero-left" aria-label="Hero left content">
 
-            <!-- small logo next to header text (kept) -->
             <div class="hero-top" id="hero-top">
               <img class="hero-mini-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="" aria-hidden="true" />
               <div class="hero-top-text">
@@ -1179,7 +1234,6 @@
               </div>
             </div>
 
-            <!-- speakable paragraph (voice mode icon appears upper-left on hover/focus) -->
             <div class="speak-wrap">
               <button class="speak-btn" type="button" aria-label="Read aloud" data-speak-target="hero-sub">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1195,18 +1249,8 @@
             </div>
 
             <div class="hero-images" aria-label="Hero images">
-              <img
-                src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                alt="Seed-grown MayaNut trees in a nursery"
-                loading="eager"
-                decoding="async"
-              />
-              <img
-                src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                alt="MayaNut fruit on the tree"
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="Seed-grown MayaNut trees in a nursery" loading="eager" decoding="async" />
+              <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut fruit on the tree" loading="lazy" decoding="async" />
             </div>
           </div>
 
@@ -1236,6 +1280,17 @@
               </button>
             </div>
 
+            <!-- Search bar under tools -->
+            <div class="store-search" aria-label="Search store">
+              <input
+                id="store-search"
+                type="text"
+                placeholder="Search MayaNut Products or Merch..."
+                autocomplete="off"
+                aria-label="Search MayaNut Products or Merch"
+              />
+            </div>
+
             <div class="store-close-row" aria-label="Close full store row">
               <div class="store-close-note">Full store preview (4 items)</div>
               <button id="store-close" class="metal-btn" type="button" aria-label="Close full store" style="min-width:120px;">CLOSE</button>
@@ -1246,9 +1301,7 @@
                 <div style="width:104px;height:104px;border-radius:16px;border:1px solid var(--frame-line);background:#fff;margin-top:6px;"></div>
                 <div style="height:1px;width:60%;background:rgba(15,23,42,0.10);margin:10px 0 8px;"></div>
                 <div style="font-size:13px;font-weight:950;">MayaNut Powder</div>
-                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
-                  Roasted MayaNut seed powder — smooth, caffeine-free, ready to mix.
-                </p>
+                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">Roasted MayaNut seed powder — smooth, caffeine-free, ready to mix.</p>
                 <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
 
@@ -1256,9 +1309,7 @@
                 <div style="width:104px;height:104px;border-radius:16px;border:1px solid var(--frame-line);background:#fff;margin-top:6px;"></div>
                 <div style="height:1px;width:60%;background:rgba(15,23,42,0.10);margin:10px 0 8px;"></div>
                 <div style="font-size:13px;font-weight:950;">MayaNut Instant Latte</div>
-                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
-                  Future latte concept for warm, creamy cups.
-                </p>
+                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">Future latte concept for warm, creamy cups.</p>
                 <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
 
@@ -1266,9 +1317,7 @@
                 <div style="width:104px;height:104px;border-radius:16px;border:1px solid var(--frame-line);background:#fff;margin-top:6px;"></div>
                 <div style="height:1px;width:60%;background:rgba(15,23,42,0.10);margin:10px 0 8px;"></div>
                 <div style="font-size:13px;font-weight:950;">MayaNut Baking Blend</div>
-                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
-                  Concept baking blend for cookies, bars, and breads.
-                </p>
+                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">Concept baking blend for cookies, bars, and breads.</p>
                 <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
 
@@ -1276,9 +1325,7 @@
                 <div style="width:104px;height:104px;border-radius:16px;border:1px solid var(--frame-line);background:#fff;margin-top:6px;"></div>
                 <div style="height:1px;width:60%;background:rgba(15,23,42,0.10);margin:10px 0 8px;"></div>
                 <div style="font-size:13px;font-weight:950;">MayaNut Mug</div>
-                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
-                  Concept mug for future brews.
-                </p>
+                <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">Concept mug for future brews.</p>
                 <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
             </div>
@@ -1288,7 +1335,7 @@
       </div>
     </main>
 
-    <!-- A LITTLE ABOUT US (between main and bottom) -->
+    <!-- A LITTLE ABOUT US -->
     <section class="between-wrap" aria-label="About section wrapper">
       <div class="between-inner">
         <section class="about-us" id="about-us" aria-label="A Little About Us">
@@ -1310,13 +1357,7 @@
                   We’re growing seed-grown trees, testing what performs best, and building the foundation for a new tropical crop in the U.S.
                 </p>
               </div>
-
-              <img
-                src="the-maya-nut-company-bubba-image.jpg"
-                alt="The MayaNut Company farm photo"
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="the-maya-nut-company-bubba-image.jpg" alt="The MayaNut Company farm photo" loading="lazy" decoding="async" />
             </div>
 
             <div class="about-card">
@@ -1333,13 +1374,7 @@
                   From nursery trials to field planting, every step is documented so supporters can follow the journey in real time.
                 </p>
               </div>
-
-              <img
-                src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                alt="August Kokus with MayaNut (Brosimum alicastrum)"
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" alt="August Kokus with MayaNut (Brosimum alicastrum)" loading="lazy" decoding="async" />
             </div>
           </div>
         </section>
@@ -1353,13 +1388,19 @@
         <div class="footer-panel" aria-label="Footer panel">
           <div class="footer-blur" aria-hidden="true"></div>
 
+          <!-- footer-left: logo + text -->
           <div class="footer-left">
-            <div class="line">Based in Florida</div>
-            <div class="line">© 2026 The MayaNut Company, Inc.</div>
-            <div class="line">
-              <a href="privacy.html">Privacy</a>
-              <span style="opacity:.75;margin:0 8px;">•</span>
-              <a href="terms.html">Terms</a>
+            <a href="index.html" aria-label="Home">
+              <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" />
+            </a>
+            <div class="footer-left-text">
+              <div class="line">Based in Florida</div>
+              <div class="line">© 2026 The MayaNut Company, Inc.</div>
+              <div class="line">
+                <a href="privacy.html">Privacy</a>
+                <span style="opacity:.75;margin:0 8px;">•</span>
+                <a href="terms.html">Terms</a>
+              </div>
             </div>
           </div>
 
@@ -1418,7 +1459,10 @@
   <aside class="drawer" id="a11y-drawer" aria-label="Accessibility drawer" aria-hidden="true">
     <div class="drawer-head">
       <div class="drawer-title">
-        <span>Accessibility</span>
+        <a class="a11y-logo-link" href="index.html" id="a11y-home" aria-label="Home">
+          <img class="a11y-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" />
+          <span>Accessibility</span>
+        </a>
         <span class="ver">v4.0.5</span>
       </div>
       <button class="drawer-close" id="a11y-close" type="button" aria-label="Close accessibility">
@@ -1630,6 +1674,11 @@
       e.target.reset();
     });
 
+    // Store search placeholder blink on focus
+    const storeSearch = document.getElementById("store-search");
+    storeSearch.addEventListener("focus", () => storeSearch.classList.add("blink"));
+    storeSearch.addEventListener("blur", () => storeSearch.classList.remove("blink"));
+
     // A11Y switches
     function bindSwitch(switchEl, bodyClass){
       function apply(on){
@@ -1651,7 +1700,7 @@
     bindSwitch(document.getElementById("switch-contrast"), "a11y-contrast");
     bindSwitch(document.getElementById("switch-motion"), "a11y-reduce");
 
-    // Language toggles (placeholder behavior: flips labels; real translation can be wired later)
+    // Language toggles (placeholder behavior)
     const langTop = document.getElementById("lang-pill-top");
     const langSel = document.getElementById("a11y-lang");
     function setLang(code){
@@ -1702,8 +1751,8 @@
       const inLang = (v) => (v.lang || "").toLowerCase().startsWith(langPref);
 
       const name = (v) => (v.name || "").toLowerCase();
-      const femaleHint = (v) => /female|woman|zira|susan|samantha|victoria|karen|tessa|google (us|uk) english female|amelie/.test(name(v));
-      const maleHint   = (v) => /male|man|david|mark|alex|daniel|fred|google (us|uk) english male|jorge/.test(name(v));
+      const femaleHint = (v) => /female|woman|zira|susan|samantha|victoria|karen|tessa|amelie/.test(name(v));
+      const maleHint   = (v) => /male|man|david|mark|alex|daniel|fred|jorge/.test(name(v));
 
       const pool = voices.filter(inLang);
       const fallbackPool = pool.length ? pool : voices;
@@ -1723,8 +1772,6 @@
       const v = getBestVoice(pref);
 
       if(v) u.voice = v;
-
-      // fallback “male/female” feel if no clear voice match exists:
       u.pitch = (pref === "male") ? 0.95 : 1.15;
       u.rate  = 1.0;
       u.volume = 1.0;
@@ -1732,12 +1779,10 @@
       window.speechSynthesis.speak(u);
     }
 
-    // Ensure voices populate (some browsers load async)
     if("speechSynthesis" in window){
-      window.speechSynthesis.onvoiceschanged = () => { /* ready */ };
+      window.speechSynthesis.onvoiceschanged = () => {};
     }
 
-    // Speaker buttons: read target paragraph
     document.querySelectorAll(".speak-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();

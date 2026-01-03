@@ -38,8 +38,7 @@
       --store-g2:#7ae78a;
       --store-g3:#1a6800;
 
-      --r-card:18px;
-      --r-btn:12px;
+      --stickyOffset: 160px;
 
       --a11y-blue:#084ac5;
 
@@ -74,11 +73,17 @@
       --font-menu: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --para-bg: rgba(255,255,255,0.82);
+
+      --hc-bg: rgba(255,255,255,0.92);
+      --hc-border: rgba(0,0,0,0.75);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
-    html{ background: var(--tan); }
+    html{
+      background: var(--tan);
+      scroll-padding-top: calc(var(--stickyOffset) + 12px);
+    }
     body{
       font-family: var(--font-sans);
       color:var(--text-main);
@@ -88,6 +93,23 @@
       min-height:100vh;
     }
     img{ max-width:100%; height:auto; display:block; }
+
+    /* A11Y toggles (applied by JS) */
+    body.a11y-large{ font-size:18px; }
+    body.a11y-contrast .hero-sub,
+    body.a11y-contrast .product-card,
+    body.a11y-contrast .about-us,
+    body.a11y-contrast .footer-panel{
+      background: var(--hc-bg) !important;
+      border-color: var(--hc-border) !important;
+      color:#000 !important;
+      text-shadow:none !important;
+    }
+    body.a11y-reduce *{
+      scroll-behavior:auto !important;
+      transition:none !important;
+      animation:none !important;
+    }
 
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
@@ -115,17 +137,17 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      padding-top: 0; /* ✅ NOT STICKY */
+      padding-top: var(--stickyOffset);
     }
 
-    /* ✅ HEADER NOT STICKY (top tab should NOT follow user) */
+    /* STICKY HEADER (locked) */
     .sticky-top{
-      position:relative;
-      top:auto;
-      left:auto;
-      right:auto;
-      z-index:10;
+      position:fixed;
+      top:0;
+      z-index:999;
       background:transparent;
+      left: var(--sideW);
+      right: var(--sideW);
       padding-top: env(safe-area-inset-top);
     }
 
@@ -169,8 +191,7 @@
       padding: 5px 14px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      position:relative;
+      gap:14px;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow:0 10px 24px rgba(15,23,42,0.10);
@@ -187,38 +208,33 @@
     .header-left{
       display:flex;
       align-items:center;
-      min-width: 220px;
-      width: 220px;
-      flex: 0 0 220px;
-      justify-content:flex-start; /* ✅ left aligned */
+      flex:0 0 auto;
     }
     #logo-top{
-      width:172px;
+      width:152px;
       height:auto;
       cursor:pointer;
       display:block;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       user-select:none;
       -webkit-user-select:none;
-      margin-left:0; /* ✅ left aligned */
     }
 
     .header-center{
       flex:1;
       display:flex;
-      justify-content:center;
       align-items:center;
       min-width:0;
-      padding: 0 22px;
     }
 
+    /* Tabs take full width; Español is rightmost */
     .main-nav{
       display:flex;
       align-items:center;
-      justify-content:center;
+      justify-content:space-between;
       width:100%;
-      max-width: 980px;
-      gap:72px;
+      gap:18px;
+      padding: 0 10px;
     }
     .main-nav a{
       font-family: var(--font-menu);
@@ -280,9 +296,7 @@
       align-items:center;
       justify-content:flex-end;
       gap:10px;
-      width: 220px;
-      min-width: 220px;
-      flex: 0 0 220px;
+      flex:0 0 auto;
     }
 
     .lang-pill{
@@ -349,7 +363,7 @@
         var(--tan) 100%
       );
     }
-    .content-wrapper{ padding:26px 22px 22px; width:100%; overflow-x:hidden; background:transparent; }
+    .content-wrapper{ padding:26px 22px 30px; width:100%; overflow-x:hidden; background:transparent; }
 
     /* HERO */
     #hero{
@@ -363,6 +377,7 @@
     }
     .hero-left{ display:flex; flex-direction:column; gap:18px; align-self:stretch; min-height:100%; }
 
+    /* removed slide-in animation; keep static */
     .hero-top{
       display:flex;
       align-items:center;
@@ -371,9 +386,6 @@
       opacity:1;
       transform: translateX(0);
     }
-    html.anim-prep .hero-top{ opacity:0; transform: translateX(-48px); }
-    .hero-top.hero-animate{ animation: heroSlideIn 0.95s ease-out 0.05s both; }
-    @keyframes heroSlideIn{ from{ opacity:0; transform: translateX(-48px); } to{ opacity:1; transform: translateX(0); } }
 
     .hero-mini-logo{
       width:74px;
@@ -471,7 +483,7 @@
       align-self:stretch;
     }
 
-    /* Expanded store overlays LEFT across hero (grows leftward) */
+    /* expanded: grows LEFT (overlays hero-left) */
     body.store-expanded #hero{ position:relative; }
     body.store-expanded #store-panel{
       position:absolute;
@@ -591,20 +603,34 @@
       z-index:2;
     }
 
-    /* ✅ STORE LAYOUT (as requested):
-       - default: 2 options side-by-side (2 columns, show 2 cards)
-       - expanded: 4 all in a row (4 columns, show all 4)
-    */
+    /* STORE GRID:
+       - default: 1x1 (single visible card, full width)
+       - expanded: 4 in a row */
     .store-grid{
       margin-top:12px;
       display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
+      grid-template-columns: 1fr;
       gap:12px;
       width:100%;
     }
-    #store-grid .product-card:nth-child(n+3){ display:none; } /* show only 2 by default */
+    #store-grid .product-card:nth-child(n+2){ display:none; }
     body.store-expanded #store-grid .product-card{ display:flex; }
     body.store-expanded .store-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; }
+
+    .product-card{
+      border-radius: 18px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+      border:1px solid var(--frame-line);
+      padding:12px 12px 14px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      justify-content:space-between;
+      min-height:228px;
+      width:100%;
+      overflow:hidden;
+    }
 
     .store-close-row{
       display:none;
@@ -626,22 +652,7 @@
       text-overflow:ellipsis;
     }
 
-    .product-card{
-      border-radius: 18px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
-      border:1px solid var(--frame-line);
-      padding:12px 12px 14px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      justify-content:space-between;
-      min-height:228px;
-      width:100%;
-      overflow:hidden;
-    }
-
-    /* BETWEEN SECTION (A LITTLE ABOUT US) */
+    /* SECTION BETWEEN MAIN AND FOOTER: A LITTLE ABOUT US */
     .between-wrap{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -654,7 +665,6 @@
       padding: 18px 22px 18px;
     }
 
-    /* ✅ Make it look like the simple section you asked for: title + 2 paragraphs (top) + 2 images (bottom) */
     .about-us{
       border-radius:18px;
       border:2px solid var(--frame-line);
@@ -671,12 +681,11 @@
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
       margin-bottom:10px;
-      text-align:left;
     }
     .about-us .about-text{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
       margin-bottom:14px;
     }
     .about-us .about-text p{
@@ -708,7 +717,7 @@
       background:#fff;
     }
 
-    /* FOOTER (newsletter + bottom info fused) */
+    /* FOOTER (newsletter + bottom info fused into one rectangle) */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -717,6 +726,7 @@
     }
     .footer-wrap{ max-width:1200px; margin:0 auto; padding: 18px 22px 18px; }
 
+    /* Left-most logo + (icons moved left), Based-in-Florida block shifted to where icons used to be, newsletter stays right */
     .footer-panel{
       position:relative;
       border-radius:22px;
@@ -727,7 +737,7 @@
       overflow:hidden;
       contain: layout paint;
       display:grid;
-      grid-template-columns: 1fr 1.1fr auto;
+      grid-template-columns: auto 1fr 1.15fr;
       gap:14px;
       align-items:center;
     }
@@ -744,14 +754,37 @@
     }
     .footer-panel > *{ position:relative; z-index:1; }
 
+    .footer-brand{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:10px;
+      flex:0 0 auto;
+    }
+    .footer-brand img{
+      width:74px;
+      height:auto;
+      border-radius:14px;
+      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+      user-select:none;
+      -webkit-user-select:none;
+      pointer-events:none;
+    }
+
+    .footer-icons{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
+    }
+
     .footer-left{
       display:flex;
       flex-direction:column;
       gap:6px;
       min-width:0;
-      justify-content:flex-start;
-      align-items:flex-start; /* ✅ left aligned */
-      text-align:left;
+      /* this is the block moved into the space where icons used to be */
+      align-items:flex-start;
     }
     .footer-left .line{
       font-weight:950;
@@ -802,7 +835,6 @@
     }
     .newsletter-btn{ height:40px; min-width:140px; }
 
-    .footer-right{ display:flex; gap:10px; align-items:center; justify-content:flex-end; flex:0 0 auto; }
     .icon-pill{
       width:40px;
       height:40px;
@@ -827,7 +859,7 @@
       z-index:1;
     }
 
-    /* Floating accessibility (lower right; only icon) */
+    /* FLOATING ACCESSIBILITY BUTTON (lower right; no cart beside it) */
     .fab{
       position:fixed;
       z-index:70;
@@ -858,7 +890,7 @@
       stroke-linejoin:round;
     }
 
-    /* Overlays/drawers */
+    /* DRAWERS / OVERLAYS */
     .overlay{
       position:fixed;
       inset:0;
@@ -946,6 +978,7 @@
     .a11y-desc{ font-size:12px; color:#334155; margin-top:4px; line-height:1.55; }
     .a11y-left{ display:flex; flex-direction:column; min-width:0; }
 
+    /* OFF / ON toggle labels */
     .toggle{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
     .toggle .state{
       font-weight:950;
@@ -1006,11 +1039,9 @@
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
-      .frame-wrap{
-        width: calc(100vw - (var(--sideW) * 2));
-        margin-left: var(--sideW);
-        margin-right: var(--sideW);
-      }
+      .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
+      .sticky-top{ left: var(--sideW); right: var(--sideW); }
+      .main-nav{ gap:14px; }
     }
 
     @media(max-width:880px){
@@ -1020,7 +1051,7 @@
 
     @media(max-width:780px){
       .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: 0; }
+      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
       .top-banner,.site-header,.top-sep,main,.between-wrap,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
       .between-inner, .footer-wrap{ padding-left:16px; padding-right:16px; }
@@ -1033,18 +1064,35 @@
       .store-sort select{ width:100%; min-width:0; }
 
       body.store-expanded .store-grid{ grid-template-columns: 1fr; }
+
+      .about-us .about-text{ grid-template-columns: 1fr; }
       .about-us .about-images{ grid-template-columns: 1fr; }
 
       .footer-panel{ grid-template-columns: 1fr; }
+      .footer-brand{ flex-direction:row; align-items:center; justify-content:space-between; }
+      .footer-icons{ justify-content:flex-end; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
       .newsletter-btn{ width:100%; min-width:0; }
-      .footer-right{ justify-content:flex-end; }
     }
   </style>
 
   <script>
-    document.documentElement.classList.add("anim-prep");
+    (function(){
+      function setStickyOffset(){
+        var sticky = document.getElementById("sticky-top");
+        if(!sticky) return;
+        var h = Math.ceil(sticky.getBoundingClientRect().height);
+        document.documentElement.style.setProperty("--stickyOffset", (h + 12) + "px");
+      }
+      window.addEventListener("load", setStickyOffset, { once:true });
+      window.addEventListener("resize", function(){
+        clearTimeout(window.__stickyT);
+        window.__stickyT = setTimeout(setStickyOffset, 60);
+      });
+      window.addEventListener("pageshow", setStickyOffset);
+      document.addEventListener("DOMContentLoaded", setStickyOffset);
+    })();
   </script>
 </head>
 
@@ -1069,8 +1117,8 @@
             src="mayanut-the-mayanut-comapny-logo.png"
             alt="The MayaNut Company logo"
             id="logo-top"
-            width="172"
-            height="64"
+            width="152"
+            height="56"
             decoding="async"
             fetchpriority="high"
           />
@@ -1233,9 +1281,10 @@
       </div>
     </main>
 
-    <!-- A LITTLE ABOUT US (between main and bottom) -->
+    <!-- SECTION BETWEEN MAIN AND BOTTOM PART -->
     <section class="between-wrap" aria-label="About section wrapper">
       <div class="between-inner">
+
         <section class="about-us" id="about-us" aria-label="A Little About Us">
           <div class="about-title">A Little About Us</div>
 
@@ -1267,6 +1316,7 @@
             />
           </div>
         </section>
+
       </div>
     </section>
 
@@ -1277,6 +1327,35 @@
         <div class="footer-panel" aria-label="Footer panel">
           <div class="footer-blur" aria-hidden="true"></div>
 
+          <!-- LEFT MOST: logo + icons moved left -->
+          <div class="footer-brand" aria-label="Footer brand">
+            <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
+            <div class="footer-icons" aria-label="Social links (moved left)">
+              <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4.2"></circle>
+                  <circle cx="17.3" cy="6.7" r="0.9"></circle>
+                </svg>
+              </a>
+
+              <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4.5 6.5h15v11h-15z"></path>
+                  <path d="M4.5 7l7.5 6 7.5-6"></path>
+                </svg>
+              </a>
+
+              <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 5l14 14"></path>
+                  <path d="M19 5L5 19"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- MOVED: Based in Florida block into the area where icons were -->
           <div class="footer-left">
             <div class="line">Based in Florida</div>
             <div class="line">© 2026 The MayaNut Company, Inc.</div>
@@ -1287,6 +1366,7 @@
             </div>
           </div>
 
+          <!-- RIGHT HALF: Newsletter unchanged -->
           <div class="newsletter-mid" aria-label="Newsletter">
             <div class="newsletter-title">Newsletter</div>
             <div class="newsletter-sub">Get occasional updates about MayaNut products, research, and farm progress.</div>
@@ -1296,35 +1376,12 @@
             </form>
           </div>
 
-          <div class="footer-right" aria-label="Social links">
-            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                <circle cx="12" cy="12" r="4.2"></circle>
-                <circle cx="17.3" cy="6.7" r="0.9"></circle>
-              </svg>
-            </a>
-
-            <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4.5 6.5h15v11h-15z"></path>
-                <path d="M4.5 7l7.5 6 7.5-6"></path>
-              </svg>
-            </a>
-
-            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 5l14 14"></path>
-                <path d="M19 5L5 19"></path>
-              </svg>
-            </a>
-          </div>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- Accessibility (lower right only) -->
+  <!-- Accessibility (lower right; no cart beside it) -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4a2 2 0 1 0 0.01 0z"></path>
@@ -1430,19 +1487,13 @@
   </aside>
 
   <script>
-    // Hero animation
-    window.addEventListener("load", () => {
-      const heroTop = document.getElementById("hero-top");
-      if(heroTop) heroTop.classList.add("hero-animate");
-      document.documentElement.classList.remove("anim-prep");
-    });
-
-    // Side-frame stacks (✅ requested image)
+    // Side-frame stacks (all tiles use the requested image)
     (function(){
       const src = "mayanuts-the-maya-nut-company-image.jpeg";
       const left = document.getElementById("stack-left");
       const right = document.getElementById("stack-right");
       if(!left || !right) return;
+
       function fill(stack){
         let html = "";
         for(let i=0;i<10;i++){
@@ -1484,7 +1535,7 @@
     document.getElementById("mobile-menu-btn").addEventListener("click", () => openDrawer(menuDrawer));
     document.getElementById("menu-close").addEventListener("click", closeAllDrawers);
 
-    // Store expand (2 cards -> expanded 4 in row overlaying left)
+    // Store expand
     const btnExpand = document.getElementById("store-view-full");
     const btnCloseStore = document.getElementById("store-close");
     function setStoreExpanded(on){
@@ -1508,7 +1559,7 @@
       sorted.forEach(el => grid.appendChild(el));
     });
 
-    // BUY buttons -> cart badge
+    // BUY buttons -> add to cart badge
     let cartCount = 0;
     const badge = document.getElementById("cart-badge");
     document.querySelectorAll(".buy-btn").forEach(btn => {
@@ -1525,7 +1576,7 @@
       e.target.reset();
     });
 
-    // A11Y toggles
+    // A11Y toggle binding
     function bindSwitch(switchEl, bodyClass){
       function apply(on){
         switchEl.classList.toggle("on", on);

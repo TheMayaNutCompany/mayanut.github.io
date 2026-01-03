@@ -38,8 +38,6 @@
       --store-g2:#7ae78a;
       --store-g3:#1a6800;
 
-      --stickyOffset: 160px;
-
       --a11y-blue:#084ac5;
 
       --panel-green-grad: linear-gradient(
@@ -73,17 +71,11 @@
       --font-menu: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --para-bg: rgba(255,255,255,0.82);
-
-      --hc-bg: rgba(255,255,255,0.92);
-      --hc-border: rgba(0,0,0,0.75);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
-    html{
-      background: var(--tan);
-      scroll-padding-top: calc(var(--stickyOffset) + 12px);
-    }
+    html{ background: var(--tan); }
     body{
       font-family: var(--font-sans);
       color:var(--text-main);
@@ -94,21 +86,16 @@
     }
     img{ max-width:100%; height:auto; display:block; }
 
-    /* A11Y toggles (applied by JS) */
-    body.a11y-large{ font-size:18px; }
-    body.a11y-contrast .hero-sub,
-    body.a11y-contrast .product-card,
-    body.a11y-contrast .about-us,
-    body.a11y-contrast .footer-panel{
-      background: var(--hc-bg) !important;
-      border-color: var(--hc-border) !important;
-      color:#000 !important;
-      text-shadow:none !important;
+    /* A11Y: larger text + contrast + reduce motion */
+    body.a11y-large{ font-size: 18px; }
+    body.a11y-contrast{
+      --para-bg: rgba(255,255,255,0.92);
+      --shadow: 0 18px 55px rgba(0,0,0,0.26);
     }
     body.a11y-reduce *{
-      scroll-behavior:auto !important;
-      transition:none !important;
       animation:none !important;
+      transition:none !important;
+      scroll-behavior:auto !important;
     }
 
     /* SIDE FRAMES */
@@ -137,17 +124,14 @@
       margin-right: var(--sideW);
       min-height:100vh;
       background:transparent;
-      padding-top: var(--stickyOffset);
+      padding-top: 0; /* not sticky */
     }
 
-    /* STICKY HEADER (locked) */
+    /* HEADER NOT STICKY */
     .sticky-top{
-      position:fixed;
-      top:0;
-      z-index:999;
+      position:relative;
+      z-index:10;
       background:transparent;
-      left: var(--sideW);
-      right: var(--sideW);
       padding-top: env(safe-area-inset-top);
     }
 
@@ -191,7 +175,8 @@
       padding: 5px 14px;
       display:flex;
       align-items:center;
-      gap:14px;
+      justify-content:space-between;
+      position:relative;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow:0 10px 24px rgba(15,23,42,0.10);
@@ -205,36 +190,23 @@
       border-right: var(--frameBorder) solid var(--frame-line);
     }
 
-    .header-left{
-      display:flex;
-      align-items:center;
-      flex:0 0 auto;
-    }
-    #logo-top{
-      width:152px;
-      height:auto;
-      cursor:pointer;
-      display:block;
-      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
-      user-select:none;
-      -webkit-user-select:none;
-    }
-
+    /* Header layout: nav left->right, Español on right; no logo in top tab */
+    .header-left{ display:none !important; }
     .header-center{
       flex:1;
       display:flex;
+      justify-content:flex-start;
       align-items:center;
       min-width:0;
+      padding: 0 14px;
     }
-
-    /* Tabs take full width; Español is rightmost */
     .main-nav{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      width:100%;
-      gap:18px;
-      padding: 0 10px;
+      justify-content:flex-start;
+      width:auto;
+      max-width:none;
+      gap:56px;
     }
     .main-nav a{
       font-family: var(--font-menu);
@@ -296,6 +268,8 @@
       align-items:center;
       justify-content:flex-end;
       gap:10px;
+      width:auto;
+      min-width:0;
       flex:0 0 auto;
     }
 
@@ -363,7 +337,7 @@
         var(--tan) 100%
       );
     }
-    .content-wrapper{ padding:26px 22px 30px; width:100%; overflow-x:hidden; background:transparent; }
+    .content-wrapper{ padding:26px 22px 22px; width:100%; overflow-x:hidden; background:transparent; }
 
     /* HERO */
     #hero{
@@ -377,16 +351,8 @@
     }
     .hero-left{ display:flex; flex-direction:column; gap:18px; align-self:stretch; min-height:100%; }
 
-    /* removed slide-in animation; keep static */
-    .hero-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      max-width:760px;
-      opacity:1;
-      transform: translateX(0);
-    }
-
+    /* No slide-in animation */
+    .hero-top{ display:flex; align-items:center; gap:12px; max-width:760px; opacity:1; transform:none; }
     .hero-mini-logo{
       width:74px;
       height:auto;
@@ -408,7 +374,6 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
       opacity:0.98;
     }
-
     h1.hero-title{ line-height:1.04; color:#000; margin:0; width:100%; max-width:760px; }
     .hero-title .line.topline{
       display:block;
@@ -434,6 +399,9 @@
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
     }
+
+    /* Speakable wrapper (for voice mode speaker icon) */
+    .speak-wrap{ position:relative; }
 
     .hero-sub{
       font-family: var(--font-pretty);
@@ -483,7 +451,7 @@
       align-self:stretch;
     }
 
-    /* expanded: grows LEFT (overlays hero-left) */
+    /* expanded overlays left */
     body.store-expanded #hero{ position:relative; }
     body.store-expanded #store-panel{
       position:absolute;
@@ -603,34 +571,17 @@
       z-index:2;
     }
 
-    /* STORE GRID:
-       - default: 1x1 (single visible card, full width)
-       - expanded: 4 in a row */
+    /* Default: 2 options side-by-side. Expanded: 4 all in a row. */
     .store-grid{
       margin-top:12px;
       display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap:12px;
       width:100%;
     }
-    #store-grid .product-card:nth-child(n+2){ display:none; }
+    #store-grid .product-card:nth-child(n+3){ display:none; }
     body.store-expanded #store-grid .product-card{ display:flex; }
     body.store-expanded .store-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; }
-
-    .product-card{
-      border-radius: 18px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
-      border:1px solid var(--frame-line);
-      padding:12px 12px 14px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      justify-content:space-between;
-      min-height:228px;
-      width:100%;
-      overflow:hidden;
-    }
 
     .store-close-row{
       display:none;
@@ -652,7 +603,22 @@
       text-overflow:ellipsis;
     }
 
-    /* SECTION BETWEEN MAIN AND FOOTER: A LITTLE ABOUT US */
+    .product-card{
+      border-radius: 18px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+      border:1px solid var(--frame-line);
+      padding:12px 12px 14px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      justify-content:space-between;
+      min-height:228px;
+      width:100%;
+      overflow:hidden;
+    }
+
+    /* BETWEEN SECTION WRAPPER */
     .between-wrap{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -665,6 +631,7 @@
       padding: 18px 22px 18px;
     }
 
+    /* ABOUT US */
     .about-us{
       border-radius:18px;
       border:2px solid var(--frame-line);
@@ -673,6 +640,8 @@
       padding:14px;
       overflow:hidden;
     }
+
+    /* centered title + thin green lines */
     .about-us .about-title{
       font-weight:950;
       letter-spacing:0.14em;
@@ -680,15 +649,38 @@
       font-size:12px;
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      margin-bottom:12px;
+      text-align:center;
     }
-    .about-us .about-text{
+    .about-us .about-title::before,
+    .about-us .about-title::after{
+      content:"";
+      height:2px;
+      background: var(--green);
+      flex:1 1 auto;
+      opacity:0.9;
+      border-radius:999px;
+    }
+    .about-us .about-title::before{ margin-left:10px; }
+    .about-us .about-title::after{ margin-right:10px; }
+
+    /* paragraph above each image */
+    .about-us .about-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:14px;
-      margin-bottom:14px;
+      gap:12px;
+      align-items:start;
     }
-    .about-us .about-text p{
+    .about-us .about-card{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .about-us .about-card p{
       margin:0;
       font-family: var(--font-pretty);
       font-style: italic;
@@ -702,22 +694,19 @@
       border-radius:16px;
       padding:12px;
     }
-    .about-us .about-images{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      align-items:start;
-    }
-    .about-us .about-images img{
+
+    /* thinner rectangle images (crop top+bottom) */
+    .about-us .about-card img{
       width:100%;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 16 / 7;
       border-radius:16px;
       object-fit:cover;
+      object-position:center;
       border:2px solid var(--frame-line);
       background:#fff;
     }
 
-    /* FOOTER (newsletter + bottom info fused into one rectangle) */
+    /* FOOTER (newsletter + bottom info fused) */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -726,7 +715,6 @@
     }
     .footer-wrap{ max-width:1200px; margin:0 auto; padding: 18px 22px 18px; }
 
-    /* Left-most logo + (icons moved left), Based-in-Florida block shifted to where icons used to be, newsletter stays right */
     .footer-panel{
       position:relative;
       border-radius:22px;
@@ -737,7 +725,7 @@
       overflow:hidden;
       contain: layout paint;
       display:grid;
-      grid-template-columns: auto 1fr 1.15fr;
+      grid-template-columns: 1fr 1.1fr auto;
       gap:14px;
       align-items:center;
     }
@@ -754,37 +742,14 @@
     }
     .footer-panel > *{ position:relative; z-index:1; }
 
-    .footer-brand{
-      display:flex;
-      flex-direction:column;
-      align-items:flex-start;
-      gap:10px;
-      flex:0 0 auto;
-    }
-    .footer-brand img{
-      width:74px;
-      height:auto;
-      border-radius:14px;
-      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
-      user-select:none;
-      -webkit-user-select:none;
-      pointer-events:none;
-    }
-
-    .footer-icons{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-start;
-    }
-
     .footer-left{
       display:flex;
       flex-direction:column;
       gap:6px;
       min-width:0;
-      /* this is the block moved into the space where icons used to be */
+      justify-content:flex-start;
       align-items:flex-start;
+      text-align:left;
     }
     .footer-left .line{
       font-weight:950;
@@ -835,6 +800,7 @@
     }
     .newsletter-btn{ height:40px; min-width:140px; }
 
+    .footer-right{ display:flex; gap:10px; align-items:center; justify-content:flex-end; flex:0 0 auto; }
     .icon-pill{
       width:40px;
       height:40px;
@@ -859,7 +825,7 @@
       z-index:1;
     }
 
-    /* FLOATING ACCESSIBILITY BUTTON (lower right; no cart beside it) */
+    /* FLOATING ACCESSIBILITY BUTTON (lower right only; no cart icon next to it) */
     .fab{
       position:fixed;
       z-index:70;
@@ -890,7 +856,7 @@
       stroke-linejoin:round;
     }
 
-    /* DRAWERS / OVERLAYS */
+    /* Overlay + drawers */
     .overlay{
       position:fixed;
       inset:0;
@@ -906,7 +872,7 @@
       top:0;
       right:0;
       height:100vh;
-      width:min(420px, 92vw);
+      width:min(440px, 92vw);
       background: rgba(255,255,255,0.92);
       border-left: 2px solid var(--frame-line);
       box-shadow: -18px 0 55px rgba(15,23,42,0.25);
@@ -915,6 +881,7 @@
       transition: transform 0.18s ease;
       display:flex;
       flex-direction:column;
+      overflow:hidden;
     }
     .drawer.open{ transform: translateX(0); }
 
@@ -937,6 +904,16 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .drawer-title .ver{
+      font-weight:950;
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      opacity:0.9;
     }
     .drawer-close{
       width:36px;
@@ -951,34 +928,48 @@
     }
     .drawer-close svg{ width:18px; height:18px; stroke:#0f172a; fill:none; stroke-width:2; }
 
-    .drawer-body{ padding:14px; overflow:auto; display:flex; flex-direction:column; gap:12px; }
+    /* Drawer body: green gradient background (menu options area) */
+    .drawer-body{
+      padding:14px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      background: var(--store-green-grad);
+    }
 
+    /* Menu options cards: also green gradient feel */
     .a11y-section{
       border-radius:16px;
-      border:2px solid rgba(12, 90, 42, 0.35);
-      background: rgba(255,255,255,0.75);
+      border:2px solid rgba(12, 90, 42, 0.55);
+      background: var(--panel-green-grad);
       padding:12px;
+      box-shadow: 0 12px 30px rgba(15,23,42,0.14);
     }
     .a11y-row{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding:10px 0;
-      border-bottom:1px solid rgba(15,23,42,0.10);
+      padding:10px 10px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.18);
+      border:1px solid rgba(10, 60, 20, 0.45);
+      margin-top:10px;
     }
-    .a11y-row:last-child{ border-bottom:none; }
+    .a11y-row:first-child{ margin-top:0; }
+
     .a11y-label{
       font-weight:950;
       letter-spacing:0.08em;
       text-transform:uppercase;
       font-size:11px;
       color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
-    .a11y-desc{ font-size:12px; color:#334155; margin-top:4px; line-height:1.55; }
+    .a11y-desc{ font-size:12px; color:#0b1220; margin-top:4px; line-height:1.55; opacity:0.95; text-shadow:0 1px 0 rgba(255,255,255,0.30); }
     .a11y-left{ display:flex; flex-direction:column; min-width:0; }
 
-    /* OFF / ON toggle labels */
     .toggle{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
     .toggle .state{
       font-weight:950;
@@ -988,6 +979,7 @@
       color:#0b1220;
       width:34px;
       text-align:right;
+      text-shadow:0 1px 0 rgba(255,255,255,0.30);
     }
     .toggle .state.on{ text-align:left; }
 
@@ -1000,6 +992,7 @@
       position:relative;
       cursor:pointer;
       flex:0 0 auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
     }
     .switch::after{
       content:"";
@@ -1015,15 +1008,15 @@
     }
     .switch.on{
       background: rgba(26,104,0,0.35);
-      border-color: rgba(26,104,0,0.55);
+      border-color: rgba(26,104,0,0.70);
     }
     .switch.on::after{ transform: translateX(20px); }
 
     .a11y-select{
       height:36px;
       border-radius:999px;
-      border:1px solid var(--frame-line);
-      background: rgba(255,255,255,0.85);
+      border:1px solid rgba(10, 60, 20, 0.65);
+      background: rgba(255,255,255,0.75);
       font-weight:950;
       font-size:11px;
       letter-spacing:0.08em;
@@ -1032,16 +1025,49 @@
       outline:none;
       cursor:pointer;
       width:100%;
-      margin-top:10px;
+    }
+
+    /* Speaker icon (voice mode) — little orange square outlined */
+    .speak-btn{
+      position:absolute;
+      top:8px;
+      left:8px;
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.20);
+      z-index:5;
+    }
+    .speak-btn svg{
+      width:16px;
+      height:16px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    /* show speaker only when voice mode on + user highlights/targets the box */
+    body.voice-on .speak-wrap:hover .speak-btn,
+    body.voice-on .speak-wrap:focus-within .speak-btn{
+      display:flex;
     }
 
     /* RESPONSIVE */
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
-      .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
-      .sticky-top{ left: var(--sideW); right: var(--sideW); }
-      .main-nav{ gap:14px; }
+      .frame-wrap{
+        width: calc(100vw - (var(--sideW) * 2));
+        margin-left: var(--sideW);
+        margin-right: var(--sideW);
+      }
     }
 
     @media(max-width:880px){
@@ -1051,7 +1077,7 @@
 
     @media(max-width:780px){
       .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
+      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: 0; }
       .top-banner,.site-header,.top-sep,main,.between-wrap,.bottom-sep,footer{ border-left:none !important; border-right:none !important; }
       .content-wrapper{ padding-left:16px; padding-right:16px; }
       .between-inner, .footer-wrap{ padding-left:16px; padding-right:16px; }
@@ -1065,35 +1091,15 @@
 
       body.store-expanded .store-grid{ grid-template-columns: 1fr; }
 
-      .about-us .about-text{ grid-template-columns: 1fr; }
-      .about-us .about-images{ grid-template-columns: 1fr; }
+      .about-us .about-grid{ grid-template-columns: 1fr; }
 
       .footer-panel{ grid-template-columns: 1fr; }
-      .footer-brand{ flex-direction:row; align-items:center; justify-content:space-between; }
-      .footer-icons{ justify-content:flex-end; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
       .newsletter-btn{ width:100%; min-width:0; }
+      .footer-right{ justify-content:flex-end; }
     }
   </style>
-
-  <script>
-    (function(){
-      function setStickyOffset(){
-        var sticky = document.getElementById("sticky-top");
-        if(!sticky) return;
-        var h = Math.ceil(sticky.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--stickyOffset", (h + 12) + "px");
-      }
-      window.addEventListener("load", setStickyOffset, { once:true });
-      window.addEventListener("resize", function(){
-        clearTimeout(window.__stickyT);
-        window.__stickyT = setTimeout(setStickyOffset, 60);
-      });
-      window.addEventListener("pageshow", setStickyOffset);
-      document.addEventListener("DOMContentLoaded", setStickyOffset);
-    })();
-  </script>
 </head>
 
 <body>
@@ -1111,19 +1117,8 @@
         </div>
       </div>
 
+      <!-- TOP MENU (no logo; nav left->right; Español right) -->
       <header class="site-header" id="top">
-        <div class="header-left">
-          <img
-            src="mayanut-the-mayanut-comapny-logo.png"
-            alt="The MayaNut Company logo"
-            id="logo-top"
-            width="152"
-            height="56"
-            decoding="async"
-            fetchpriority="high"
-          />
-        </div>
-
         <div class="header-center">
           <nav class="main-nav" aria-label="Primary navigation">
             <a href="index.html" id="nav-home" class="is-active" aria-current="page">HOME</a>
@@ -1169,6 +1164,8 @@
 
         <section id="hero" aria-label="Hero">
           <div class="hero-left" aria-label="Hero left content">
+
+            <!-- small logo next to header text (kept) -->
             <div class="hero-top" id="hero-top">
               <img class="hero-mini-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="" aria-hidden="true" />
               <div class="hero-top-text">
@@ -1182,10 +1179,20 @@
               </div>
             </div>
 
-            <p class="hero-sub">
-              MayaNut is an ancient, elusive seed from the tropical tree <em style="color:var(--orange);font-weight:950;">Brosimum alicastrum</em>.
-              A soothing roasted seed powder with chocolate-and-coffee notes—future-ready for foods, drinks, and new products.
-            </p>
+            <!-- speakable paragraph (voice mode icon appears upper-left on hover/focus) -->
+            <div class="speak-wrap">
+              <button class="speak-btn" type="button" aria-label="Read aloud" data-speak-target="hero-sub">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 10v4"></path>
+                  <path d="M7 9h4l4-3v12l-4-3H7z"></path>
+                  <path d="M18 9c1.5 1.5 1.5 4.5 0 6"></path>
+                </svg>
+              </button>
+              <p class="hero-sub speakable" id="hero-sub">
+                MayaNut is an ancient, elusive seed from the tropical tree <em style="color:var(--orange);font-weight:950;">Brosimum alicastrum</em>.
+                A soothing roasted seed powder with chocolate-and-coffee notes—future-ready for foods, drinks, and new products.
+              </p>
+            </div>
 
             <div class="hero-images" aria-label="Hero images">
               <img
@@ -1281,42 +1288,61 @@
       </div>
     </main>
 
-    <!-- SECTION BETWEEN MAIN AND BOTTOM PART -->
+    <!-- A LITTLE ABOUT US (between main and bottom) -->
     <section class="between-wrap" aria-label="About section wrapper">
       <div class="between-inner">
-
         <section class="about-us" id="about-us" aria-label="A Little About Us">
           <div class="about-title">A Little About Us</div>
 
-          <div class="about-text">
-            <p>
-              The MayaNut Company is building a South Florida farm focused on
-              <em style="color:var(--orange);font-weight:950;">Brosimum alicastrum</em>.
-              We’re growing seed-grown trees, testing what performs best, and building the foundation for a new tropical crop in the U.S.
-            </p>
+          <div class="about-grid" aria-label="About grid">
+            <div class="about-card">
+              <div class="speak-wrap">
+                <button class="speak-btn" type="button" aria-label="Read aloud" data-speak-target="about-left">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 10v4"></path>
+                    <path d="M7 9h4l4-3v12l-4-3H7z"></path>
+                    <path d="M18 9c1.5 1.5 1.5 4.5 0 6"></path>
+                  </svg>
+                </button>
+                <p class="speakable" id="about-left">
+                  The MayaNut Company is building a South Florida farm focused on
+                  <em style="color:var(--orange);font-weight:950;">Brosimum alicastrum</em>.
+                  We’re growing seed-grown trees, testing what performs best, and building the foundation for a new tropical crop in the U.S.
+                </p>
+              </div>
 
-            <p>
-              We’re developing future-ready MayaNut products—while sharing research and farm progress openly as we scale.
-              From nursery trials to field planting, every step is documented so supporters can follow the journey in real time.
-            </p>
-          </div>
+              <img
+                src="the-maya-nut-company-bubba-image.jpg"
+                alt="The MayaNut Company farm photo"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
 
-          <div class="about-images" aria-label="About images">
-            <img
-              src="the-maya-nut-company-bubba-image.jpg"
-              alt="The MayaNut Company farm photo"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-              alt="August Kokus with MayaNut (Brosimum alicastrum)"
-              loading="lazy"
-              decoding="async"
-            />
+            <div class="about-card">
+              <div class="speak-wrap">
+                <button class="speak-btn" type="button" aria-label="Read aloud" data-speak-target="about-right">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 10v4"></path>
+                    <path d="M7 9h4l4-3v12l-4-3H7z"></path>
+                    <path d="M18 9c1.5 1.5 1.5 4.5 0 6"></path>
+                  </svg>
+                </button>
+                <p class="speakable" id="about-right">
+                  We’re developing future-ready MayaNut products—while sharing research and farm progress openly as we scale.
+                  From nursery trials to field planting, every step is documented so supporters can follow the journey in real time.
+                </p>
+              </div>
+
+              <img
+                src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                alt="August Kokus with MayaNut (Brosimum alicastrum)"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
         </section>
-
       </div>
     </section>
 
@@ -1327,35 +1353,6 @@
         <div class="footer-panel" aria-label="Footer panel">
           <div class="footer-blur" aria-hidden="true"></div>
 
-          <!-- LEFT MOST: logo + icons moved left -->
-          <div class="footer-brand" aria-label="Footer brand">
-            <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" loading="lazy" decoding="async" />
-            <div class="footer-icons" aria-label="Social links (moved left)">
-              <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                  <circle cx="12" cy="12" r="4.2"></circle>
-                  <circle cx="17.3" cy="6.7" r="0.9"></circle>
-                </svg>
-              </a>
-
-              <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4.5 6.5h15v11h-15z"></path>
-                  <path d="M4.5 7l7.5 6 7.5-6"></path>
-                </svg>
-              </a>
-
-              <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 5l14 14"></path>
-                  <path d="M19 5L5 19"></path>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- MOVED: Based in Florida block into the area where icons were -->
           <div class="footer-left">
             <div class="line">Based in Florida</div>
             <div class="line">© 2026 The MayaNut Company, Inc.</div>
@@ -1366,7 +1363,6 @@
             </div>
           </div>
 
-          <!-- RIGHT HALF: Newsletter unchanged -->
           <div class="newsletter-mid" aria-label="Newsletter">
             <div class="newsletter-title">Newsletter</div>
             <div class="newsletter-sub">Get occasional updates about MayaNut products, research, and farm progress.</div>
@@ -1376,12 +1372,35 @@
             </form>
           </div>
 
+          <div class="footer-right" aria-label="Social links">
+            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                <circle cx="12" cy="12" r="4.2"></circle>
+                <circle cx="17.3" cy="6.7" r="0.9"></circle>
+              </svg>
+            </a>
+
+            <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.5 6.5h15v11h-15z"></path>
+                <path d="M4.5 7l7.5 6 7.5-6"></path>
+              </svg>
+            </a>
+
+            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 5l14 14"></path>
+                <path d="M19 5L5 19"></path>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- Accessibility (lower right; no cart beside it) -->
+  <!-- Accessibility floating button (lower right) -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4a2 2 0 1 0 0.01 0z"></path>
@@ -1395,16 +1414,46 @@
 
   <div class="overlay" id="overlay" aria-hidden="true"></div>
 
+  <!-- Accessibility drawer -->
   <aside class="drawer" id="a11y-drawer" aria-label="Accessibility drawer" aria-hidden="true">
     <div class="drawer-head">
-      <div class="drawer-title">Accessibility</div>
+      <div class="drawer-title">
+        <span>Accessibility</span>
+        <span class="ver">v4.0.5</span>
+      </div>
       <button class="drawer-close" id="a11y-close" type="button" aria-label="Close accessibility">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
       </button>
     </div>
 
     <div class="drawer-body">
-      <div class="a11y-section" aria-label="Accessibility toggles">
+      <div class="a11y-section" aria-label="Accessibility options">
+
+        <div class="a11y-row">
+          <div class="a11y-left">
+            <div class="a11y-label">Voice Mode</div>
+            <div class="a11y-desc">Show speaker icons on text boxes and read aloud.</div>
+          </div>
+          <div class="toggle">
+            <div class="state">OFF</div>
+            <div class="switch" id="switch-voice" role="switch" aria-checked="false" tabindex="0"></div>
+            <div class="state on">ON</div>
+          </div>
+        </div>
+
+        <div class="a11y-row">
+          <div class="a11y-left">
+            <div class="a11y-label">Voice Preference</div>
+            <div class="a11y-desc">Choose a male/female voice (best available on this device).</div>
+          </div>
+          <div style="min-width: 170px; flex:0 0 auto;">
+            <select class="a11y-select" id="voice-pref" aria-label="Voice preference">
+              <option value="female" selected>Female</option>
+              <option value="male">Male</option>
+            </select>
+          </div>
+        </div>
+
         <div class="a11y-row">
           <div class="a11y-left">
             <div class="a11y-label">Larger Text</div>
@@ -1441,20 +1490,25 @@
           </div>
         </div>
 
-        <div style="margin-top:10px;">
-          <div class="a11y-label" style="margin-bottom:8px;">Language</div>
+        <div class="a11y-row" style="flex-direction:column; align-items:stretch;">
+          <div class="a11y-left" style="width:100%;">
+            <div class="a11y-label">Language</div>
+            <div class="a11y-desc">Switch English / Español.</div>
+          </div>
           <select class="a11y-select" id="a11y-lang" aria-label="Language selector">
             <option value="en" selected>English</option>
             <option value="es">Español</option>
           </select>
         </div>
+
       </div>
     </div>
   </aside>
 
+  <!-- Cart drawer -->
   <aside class="drawer" id="cart-drawer" aria-label="Cart drawer" aria-hidden="true">
     <div class="drawer-head">
-      <div class="drawer-title">Cart</div>
+      <div class="drawer-title"><span>Cart</span></div>
       <button class="drawer-close" id="cart-close" type="button" aria-label="Close cart">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
       </button>
@@ -1468,9 +1522,10 @@
     </div>
   </aside>
 
+  <!-- Mobile menu drawer -->
   <aside class="drawer" id="menu-drawer" aria-label="Mobile menu" aria-hidden="true">
     <div class="drawer-head">
-      <div class="drawer-title">Menu</div>
+      <div class="drawer-title"><span>Menu</span></div>
       <button class="drawer-close" id="menu-close" type="button" aria-label="Close menu">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
       </button>
@@ -1487,13 +1542,12 @@
   </aside>
 
   <script>
-    // Side-frame stacks (all tiles use the requested image)
+    // Side-frame stacks (single image requested)
     (function(){
       const src = "mayanuts-the-maya-nut-company-image.jpeg";
       const left = document.getElementById("stack-left");
       const right = document.getElementById("stack-right");
       if(!left || !right) return;
-
       function fill(stack){
         let html = "";
         for(let i=0;i<10;i++){
@@ -1535,7 +1589,7 @@
     document.getElementById("mobile-menu-btn").addEventListener("click", () => openDrawer(menuDrawer));
     document.getElementById("menu-close").addEventListener("click", closeAllDrawers);
 
-    // Store expand
+    // Store expand (2 cards -> expanded 4 in row overlaying left)
     const btnExpand = document.getElementById("store-view-full");
     const btnCloseStore = document.getElementById("store-close");
     function setStoreExpanded(on){
@@ -1559,7 +1613,7 @@
       sorted.forEach(el => grid.appendChild(el));
     });
 
-    // BUY buttons -> add to cart badge
+    // BUY buttons -> cart badge
     let cartCount = 0;
     const badge = document.getElementById("cart-badge");
     document.querySelectorAll(".buy-btn").forEach(btn => {
@@ -1576,7 +1630,7 @@
       e.target.reset();
     });
 
-    // A11Y toggle binding
+    // A11Y switches
     function bindSwitch(switchEl, bodyClass){
       function apply(on){
         switchEl.classList.toggle("on", on);
@@ -1597,7 +1651,7 @@
     bindSwitch(document.getElementById("switch-contrast"), "a11y-contrast");
     bindSwitch(document.getElementById("switch-motion"), "a11y-reduce");
 
-    // Language selector (placeholder)
+    // Language toggles (placeholder behavior: flips labels; real translation can be wired later)
     const langTop = document.getElementById("lang-pill-top");
     const langSel = document.getElementById("a11y-lang");
     function setLang(code){
@@ -1613,6 +1667,89 @@
     }
     langTop.addEventListener("click", () => setLang(langSel.value === "en" ? "es" : "en"));
     langSel.addEventListener("change", () => setLang(langSel.value));
+
+    // Voice Mode + Speech Synthesis
+    const voiceSwitch = document.getElementById("switch-voice");
+    const voicePrefSel = document.getElementById("voice-pref");
+
+    function bindVoiceSwitch(){
+      function apply(on){
+        voiceSwitch.classList.toggle("on", on);
+        voiceSwitch.setAttribute("aria-checked", on ? "true" : "false");
+        document.body.classList.toggle("voice-on", on);
+        if(!on && "speechSynthesis" in window){
+          window.speechSynthesis.cancel();
+        }
+      }
+      function toggle(){ apply(!voiceSwitch.classList.contains("on")); }
+      voiceSwitch.addEventListener("click", toggle);
+      voiceSwitch.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          toggle();
+        }
+      });
+      apply(false);
+    }
+    bindVoiceSwitch();
+
+    function getBestVoice(preference){
+      if(!("speechSynthesis" in window)) return null;
+      const voices = window.speechSynthesis.getVoices() || [];
+      if(!voices.length) return null;
+
+      const langPref = (langSel.value === "es") ? "es" : "en";
+      const inLang = (v) => (v.lang || "").toLowerCase().startsWith(langPref);
+
+      const name = (v) => (v.name || "").toLowerCase();
+      const femaleHint = (v) => /female|woman|zira|susan|samantha|victoria|karen|tessa|google (us|uk) english female|amelie/.test(name(v));
+      const maleHint   = (v) => /male|man|david|mark|alex|daniel|fred|google (us|uk) english male|jorge/.test(name(v));
+
+      const pool = voices.filter(inLang);
+      const fallbackPool = pool.length ? pool : voices;
+
+      if(preference === "male"){
+        return fallbackPool.find(maleHint) || fallbackPool.find(v => /male/.test(name(v))) || fallbackPool[0];
+      }
+      return fallbackPool.find(femaleHint) || fallbackPool.find(v => /female/.test(name(v))) || fallbackPool[0];
+    }
+
+    function speakText(text){
+      if(!("speechSynthesis" in window)) return alert("Voice mode is not supported in this browser.");
+      window.speechSynthesis.cancel();
+
+      const u = new SpeechSynthesisUtterance(text);
+      const pref = voicePrefSel.value || "female";
+      const v = getBestVoice(pref);
+
+      if(v) u.voice = v;
+
+      // fallback “male/female” feel if no clear voice match exists:
+      u.pitch = (pref === "male") ? 0.95 : 1.15;
+      u.rate  = 1.0;
+      u.volume = 1.0;
+
+      window.speechSynthesis.speak(u);
+    }
+
+    // Ensure voices populate (some browsers load async)
+    if("speechSynthesis" in window){
+      window.speechSynthesis.onvoiceschanged = () => { /* ready */ };
+    }
+
+    // Speaker buttons: read target paragraph
+    document.querySelectorAll(".speak-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if(!document.body.classList.contains("voice-on")) return;
+        const id = btn.getAttribute("data-speak-target");
+        const el = document.getElementById(id);
+        if(!el) return;
+        const text = (el.innerText || el.textContent || "").trim();
+        if(!text) return;
+        speakText(text);
+      });
+    });
 
     // If URL has ?store=1 => open full store
     (function(){

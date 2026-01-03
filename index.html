@@ -1,3 +1,4 @@
+<!-- BLOCK 1 / 2 (first half) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,16 +35,24 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      --store-g1:#d8ff6a;
-      --store-g2:#7ae78a;
+      /* STORE gradient */
+      --store-g1:#e4ff7f;
+      --store-g2:#86f0a0;
       --store-g3:#1a6800;
+      --store-g4:#0b3b17;
 
       --r-card:18px;
       --r-btn:12px;
 
-      --stickyOffset: 160px;
+      --stickyOffset: 160px; /* JS maintains this */
+
+      --outlineW: 2px;
+      --outlineR: 16px;
 
       --a11y-blue:#084ac5;
+
+      /* ✅ expand store all the way to LEFT frames */
+      --storeExpandLeft: 170px; /* JS will keep this in sync with --sideW */
 
       --panel-green-grad: linear-gradient(
         90deg,
@@ -57,8 +66,9 @@
       --store-green-grad: linear-gradient(
         to bottom,
         var(--store-g1) 0%,
-        var(--store-g2) 52%,
-        var(--store-g3) 100%
+        var(--store-g2) 46%,
+        var(--store-g3) 78%,
+        var(--store-g4) 100%
       );
 
       --metal-orange: linear-gradient(
@@ -76,9 +86,6 @@
       --font-menu: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --para-bg: rgba(255,255,255,0.82);
-
-      --hc-bg: rgba(255,255,255,0.92);
-      --hc-border: rgba(0,0,0,0.75);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -96,25 +103,6 @@
       min-height:100vh;
     }
     img{ max-width:100%; height:auto; display:block; }
-
-    /* A11Y toggles (applied by JS) */
-    body.a11y-large{
-      font-size: 18px;
-    }
-    body.a11y-contrast .hero-sub,
-    body.a11y-contrast .product-card,
-    body.a11y-contrast .about-card,
-    body.a11y-contrast .footer-panel{
-      background: var(--hc-bg) !important;
-      border-color: var(--hc-border) !important;
-      color:#000 !important;
-      text-shadow:none !important;
-    }
-    body.a11y-reduce *{
-      scroll-behavior:auto !important;
-      transition:none !important;
-      animation:none !important;
-    }
 
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
@@ -143,19 +131,23 @@
       min-height:100vh;
       background:transparent;
       padding-top: var(--stickyOffset);
+      overflow-x:hidden;
     }
 
-    /* STICKY HEADER */
+    /* ✅ HEADER IS ALWAYS FIXED AT TOP (already fixed; ensure it never scrolls) */
     .sticky-top{
       position:fixed;
       top:0;
-      z-index:999;
+      z-index:9999;
       background:transparent;
       left: var(--sideW);
       right: var(--sideW);
       padding-top: env(safe-area-inset-top);
+      transform: translateZ(0); /* prevent rare scroll jitter */
+      will-change: transform;
     }
 
+    /* BANNER */
     .top-banner{
       width:100%;
       background: var(--panel-green-grad);
@@ -393,6 +385,8 @@
         var(--tan) 22%,
         var(--tan) 100%
       );
+      overflow:hidden;
+      clip-path: inset(0);
     }
     .content-wrapper{
       padding:26px 22px 30px;
@@ -409,7 +403,7 @@
       gap:18px 26px;
       max-width:1200px;
       margin:0 auto;
-      align-items:stretch; /* store matches hero-left height */
+      align-items:stretch;
     }
 
     .hero-left{
@@ -420,11 +414,10 @@
       min-height:100%;
     }
 
-    /* HERO TOP (logo left of the three lines) */
     .hero-top{
       display:flex;
-      align-items:center;
-      gap:12px;
+      flex-direction:column;
+      gap:10px;
       max-width:760px;
       opacity:1;
       transform: translateX(0);
@@ -439,24 +432,6 @@
     @keyframes heroSlideIn{
       from{ opacity:0; transform: translateX(-48px); }
       to{ opacity:1; transform: translateX(0); }
-    }
-
-    .hero-mini-logo{
-      width:74px;
-      height:auto;
-      flex:0 0 auto;
-      border-radius:14px;
-      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
-      user-select:none;
-      -webkit-user-select:none;
-      pointer-events:none;
-    }
-
-    .hero-top-text{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:0;
     }
 
     .credit{
@@ -545,28 +520,16 @@
       z-index:2;
       box-shadow: 0 14px 40px rgba(15,23,42,0.18);
       overflow:visible;
-      height:100%;          /* stretch to match hero-left */
-      align-self:stretch;   /* stretch to match hero-left */
+      height:100%;
+      align-self:stretch;
+      transition: width 220ms ease, margin-left 220ms ease;
     }
 
-    /* expanded: grows LEFT (overlays hero-left) */
-    body.store-expanded #hero{ position:relative; }
+    /* ✅ EXPAND LEFT TO THE LEFT IMAGE COLUMN EDGE */
     body.store-expanded #store-panel{
-      position:absolute;
-      top:0;
-      right:0;
-      width:100%;
-      z-index:50;
-      height:auto;
-      box-shadow: 0 24px 70px rgba(15,23,42,0.28);
-    }
-    body.store-expanded #store-panel::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:16px;
-      pointer-events:none;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.12);
+      width: calc(100% + var(--storeExpandLeft));
+      margin-left: calc(var(--storeExpandLeft) * -1);
+      z-index:10;
     }
 
     .store-title{
@@ -691,26 +654,31 @@
       z-index:2;
     }
 
-    /* STORE GRID:
-       - default: 1x1 (single visible card, full width)
-       - expanded: 4 in a row */
+    /* ✅ COLLAPSED: 1 ROW TALL (2 products visible) */
     .store-grid{
       margin-top:12px;
       display:grid;
-      grid-template-columns: 1fr;  /* 1x1 */
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:12px;
       width:100%;
+      align-items:stretch;
     }
-    #store-grid .product-card:nth-child(n+2){ display:none; } /* only 1 visible by default */
+    #store-grid .product-card:nth-child(n+3){ display:none; }
+
+    /* ✅ EXPANDED: 4 options in ONE ROW */
+    body.store-expanded #store-grid{
+      grid-template-columns:repeat(4, minmax(0,1fr));
+    }
     body.store-expanded #store-grid .product-card{ display:flex; }
-    body.store-expanded .store-grid{
-      grid-template-columns: repeat(4, minmax(0,1fr)); /* 4 all in a row */
-      gap:12px;
-    }
 
     .product-card{
       border-radius: 18px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(156,163,175,0.55) 60%, rgba(55,65,81,0.40) 100%);
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.95) 0%,
+        rgba(156,163,175,0.55) 60%,
+        rgba(55,65,81,0.40) 100%
+      );
       border:1px solid var(--frame-line);
       padding:12px 12px 14px;
       display:flex;
@@ -723,85 +691,92 @@
       overflow:hidden;
     }
 
-    /* Expanded store close row */
-    .store-close-row{
-      display:none;
+    /* FLOATING BUTTONS */
+    .fab{
+      position:fixed;
+      z-index:70;
+      width:48px;
+      height:48px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:4px;
-    }
-    body.store-expanded .store-close-row{ display:flex; }
-    .store-close-note{
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 10px 25px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
     }
 
-    /* A LITTLE ABOUT US */
-    .about-card{
-      max-width:1200px;
-      margin:18px auto 0;
-      border-radius: 18px;
-      border: 2px solid var(--frame-line);
-      background: var(--para-bg);
-      box-shadow: 0 12px 30px rgba(15,23,42,0.10);
-      padding: 14px 14px 14px;
+    .accessibility-btn{
+      left:18px;
+      bottom:18px;
+      background:var(--a11y-blue);
     }
-    .about-title{
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      margin-bottom:8px;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-    }
-    .about-text{
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:850;
-      color: var(--green-deep);
-      line-height:1.85;
-      font-size:14px;
-      text-shadow:0 1px 0 rgba(255,255,255,0.45);
+    .accessibility-btn svg{
+      width:26px;
+      height:26px;
+      fill:none;
+      stroke:#ffffff;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
     }
 
-    /* FOOTER (newsletter + bottom info fused into ONE rectangle) */
+    .cart-fab{
+      left:18px;
+      bottom:76px;
+      background: var(--metal-orange);
+      border: 1px solid var(--cream);
+    }
+    .cart-fab svg{
+      width:22px;height:22px;
+      stroke: var(--cream);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .cart-fab .cart-badge{
+      top:-6px; right:-6px;
+    }
+
+    /* ✅ FOOTER: UNIFIED GREEN GRADIENT BACKGROUND (newsletter + bottom merged) */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
-      background: linear-gradient(to bottom, rgba(255,255,255,0.40), rgba(255,255,255,0.15));
+      background: var(--store-green-grad); /* unified */
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
+      overflow:hidden;
+      clip-path: inset(0);
+      isolation:isolate;
     }
 
     .footer-wrap{
       max-width:1200px;
       margin:0 auto;
       padding: 18px 22px 18px;
+      overflow:hidden;
     }
 
-    .footer-panel{
+    /* ✅ remove separate green panels; keep borders but transparent so footer is unified */
+    .newsletter{
       position:relative;
       border-radius:22px;
       border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
+      background: rgba(255,255,255,0.10);
       box-shadow: 0 14px 40px rgba(15,23,42,0.10);
       padding: 14px;
-      overflow:hidden;
-      contain: layout paint;
-      display:grid;
-      grid-template-columns: 1fr 1.1fr auto;
-      gap:14px;
+      display:flex;
       align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      overflow:hidden;
+      min-height: 88px;
+      contain: layout paint;
     }
-    .footer-blur{
+    .newsletter-blur{
       position:absolute;
       inset:-22px;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -812,39 +787,9 @@
       transform: scale(1.08);
       pointer-events:none;
     }
-    .footer-panel > *{ position:relative; z-index:1; }
+    .newsletter > *{ position:relative; z-index:1; }
 
-    .footer-left{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .footer-left .line{
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:#0b1220;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-    }
-    .footer-left a{
-      color:#0b1220;
-      text-decoration:none;
-      border-bottom:1px solid rgba(11,18,32,0.28);
-      padding-bottom:2px;
-    }
-    .footer-left a:hover{ border-bottom-color: rgba(11,18,32,0.72); }
-
-    .newsletter-mid{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
+    .newsletter-left{ display:flex; flex-direction:column; gap:4px; min-width: 240px; }
     .newsletter-title{
       font-weight:950;
       letter-spacing:0.16em;
@@ -867,8 +812,10 @@
       display:flex;
       gap:10px;
       align-items:center;
-      width:100%;
-      margin-top:4px;
+      flex:1;
+      justify-content:flex-end;
+      min-width: 260px;
+      max-width: 520px;
     }
     .newsletter-form input{
       flex:1;
@@ -884,6 +831,71 @@
       color:#111827;
     }
     .newsletter-btn{ height:40px; min-width:140px; }
+
+    /* ✅ bottom info: transparent panel so it blends with footer bg */
+    .footer-tab{
+      margin-top:14px;
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.10);
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      overflow:hidden;
+    }
+
+    /* ✅ add logo next to the stacked lines */
+    .footer-left{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      min-width:0;
+    }
+    .footer-mini-logo{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border:2px solid var(--frame-line);
+      background: rgba(255,255,255,0.28);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex:0 0 auto;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.10);
+    }
+    .footer-mini-logo img{
+      width:36px;
+      height:36px;
+      object-fit:contain;
+      filter: drop-shadow(0 6px 10px rgba(15,23,42,0.12));
+    }
+    .footer-lines{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width:0;
+    }
+    .footer-lines .line{
+      font-weight:950;
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:#0b1220;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .footer-lines a{
+      color:#0b1220;
+      text-decoration:none;
+      border-bottom:1px solid rgba(11,18,32,0.28);
+      padding-bottom:2px;
+    }
+    .footer-lines a:hover{ border-bottom-color: rgba(11,18,32,0.72); }
 
     .footer-right{
       display:flex;
@@ -916,200 +928,6 @@
       z-index:1;
     }
 
-    /* FLOATING ACCESSIBILITY BUTTON (lower right; no cart beside it) */
-    .fab{
-      position:fixed;
-      z-index:70;
-      width:48px;
-      height:48px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.35);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 10px 25px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .accessibility-btn{
-      right:18px;
-      bottom:18px;
-      background:var(--a11y-blue);
-    }
-    .accessibility-btn svg{
-      width:26px;
-      height:26px;
-      fill:none;
-      stroke:#ffffff;
-      stroke-width:2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-    /* DRAWERS / OVERLAYS */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background: rgba(15,23,42,0.55);
-      backdrop-filter: blur(6px);
-      z-index:2000;
-      display:none;
-    }
-    .overlay.open{ display:block; }
-
-    .drawer{
-      position:fixed;
-      top:0;
-      right:0;
-      height:100vh;
-      width:min(420px, 92vw);
-      background: rgba(255,255,255,0.92);
-      border-left: 2px solid var(--frame-line);
-      box-shadow: -18px 0 55px rgba(15,23,42,0.25);
-      z-index:2100;
-      transform: translateX(105%);
-      transition: transform 0.18s ease;
-      display:flex;
-      flex-direction:column;
-    }
-    .drawer.open{ transform: translateX(0); }
-
-    .drawer-head{
-      padding:12px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      border-bottom: 2px solid rgba(12, 90, 42, 0.25);
-      background: var(--panel-green-grad);
-    }
-    .drawer-title{
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .drawer-close{
-      width:36px;
-      height:36px;
-      border-radius:12px;
-      border: 1px solid rgba(15,23,42,0.25);
-      background: rgba(255,255,255,0.85);
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .drawer-close svg{ width:18px; height:18px; stroke:#0f172a; fill:none; stroke-width:2; }
-
-    .drawer-body{
-      padding:14px;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .a11y-section{
-      border-radius:16px;
-      border:2px solid rgba(12, 90, 42, 0.35);
-      background: rgba(255,255,255,0.75);
-      padding:12px;
-    }
-    .a11y-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:10px 0;
-      border-bottom:1px solid rgba(15,23,42,0.10);
-    }
-    .a11y-row:last-child{ border-bottom:none; }
-    .a11y-label{
-      font-weight:950;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:#0b1220;
-    }
-    .a11y-desc{
-      font-size:12px;
-      color:#334155;
-      margin-top:4px;
-      line-height:1.55;
-    }
-    .a11y-left{
-      display:flex;
-      flex-direction:column;
-      min-width:0;
-    }
-
-    /* OFF/ON toggle (explicit) */
-    .toggle{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex:0 0 auto;
-    }
-    .toggle .state{
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      color:#0b1220;
-      width:34px;
-      text-align:right;
-    }
-    .switch{
-      width:46px;
-      height:26px;
-      border-radius:999px;
-      border:1px solid rgba(15,23,42,0.25);
-      background: rgba(15,23,42,0.10);
-      position:relative;
-      cursor:pointer;
-      flex:0 0 auto;
-    }
-    .switch::after{
-      content:"";
-      position:absolute;
-      top:3px;
-      left:3px;
-      width:20px;
-      height:20px;
-      border-radius:999px;
-      background:#fff;
-      box-shadow: 0 6px 16px rgba(15,23,42,0.18);
-      transition: transform 0.16s ease;
-    }
-    .switch.on{
-      background: rgba(26,104,0,0.35);
-      border-color: rgba(26,104,0,0.55);
-    }
-    .switch.on::after{ transform: translateX(20px); }
-
-    .a11y-select{
-      height:36px;
-      border-radius:999px;
-      border:1px solid var(--frame-line);
-      background: rgba(255,255,255,0.85);
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      padding:0 12px;
-      outline:none;
-      cursor:pointer;
-      width:100%;
-      margin-top:10px;
-    }
-
     /* RESPONSIVE */
     @media(max-width:980px){
       :root{ --sideW: 120px; }
@@ -1120,6 +938,9 @@
         margin-right: var(--sideW);
       }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
+
+      /* expanded row fallback */
+      body.store-expanded #store-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
     }
 
     @media(max-width:880px){
@@ -1134,12 +955,9 @@
       .content-wrapper{ padding-left:16px; padding-right:16px; }
 
       #hero{ grid-template-columns: 1fr; gap:16px; align-items:start; }
-      body.store-expanded #store-panel{
-        position:relative;  /* on small screens just stacks */
-        width:auto;
-        right:auto;
-        top:auto;
-      }
+
+      /* on mobile, no left-expansion */
+      body.store-expanded #store-panel{ width:100%; margin-left:0; }
 
       .store-tools{
         grid-template-columns: 1fr;
@@ -1147,21 +965,13 @@
       }
       .store-sort{ justify-content:flex-start; width:100%; }
       .store-sort select{ width:100%; min-width:0; }
+      body.store-expanded #store-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
 
-      body.store-expanded .store-grid{
-        grid-template-columns: 1fr; /* 4 in a row becomes stacked on mobile */
-      }
-
-      .footer-panel{
-        grid-template-columns: 1fr;
-      }
-      .newsletter-form{
-        flex-direction:column;
-        align-items:stretch;
-      }
-      .newsletter-form input{ width:100%; min-width:0; }
-      .newsletter-btn{ width:100%; min-width:0; }
-      .footer-right{ justify-content:flex-end; }
+      .newsletter-form{ justify-content:flex-start; width:100%; max-width:100%; }
+      .newsletter-form input{ width:100%; }
+      .newsletter-btn{ width:100%; }
+      .footer-tab{ flex-wrap:wrap; }
+      .footer-right{ width:100%; justify-content:flex-end; }
     }
   </style>
 
@@ -1174,13 +984,36 @@
         var h = Math.ceil(sticky.getBoundingClientRect().height);
         document.documentElement.style.setProperty("--stickyOffset", (h + 12) + "px");
       }
-      window.addEventListener("load", setStickyOffset, { once:true });
+
+      function syncStoreExpandLeft(){
+        // ✅ make store expand EXACTLY to the left frame edge, regardless of sideW changes
+        var sideW = getComputedStyle(document.documentElement).getPropertyValue("--sideW").trim();
+        if(!sideW) return;
+        document.documentElement.style.setProperty("--storeExpandLeft", sideW);
+      }
+
+      window.addEventListener("load", function(){
+        setStickyOffset();
+        syncStoreExpandLeft();
+      }, { once:true });
+
       window.addEventListener("resize", function(){
         clearTimeout(window.__stickyT);
-        window.__stickyT = setTimeout(setStickyOffset, 60);
+        window.__stickyT = setTimeout(function(){
+          setStickyOffset();
+          syncStoreExpandLeft();
+        }, 60);
       });
-      window.addEventListener("pageshow", setStickyOffset);
-      document.addEventListener("DOMContentLoaded", setStickyOffset);
+
+      window.addEventListener("pageshow", function(){
+        setStickyOffset();
+        syncStoreExpandLeft();
+      });
+
+      document.addEventListener("DOMContentLoaded", function(){
+        setStickyOffset();
+        syncStoreExpandLeft();
+      });
     })();
   </script>
 </head>
@@ -1259,18 +1092,14 @@
         <section id="hero" aria-label="Hero">
           <div class="hero-left" aria-label="Hero left content">
 
-            <!-- Logo LEFT of the 3 lines -->
             <div class="hero-top" id="hero-top">
-              <img class="hero-mini-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="" aria-hidden="true" />
-              <div class="hero-top-text">
-                <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
-                <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
-                  <span class="line topline">Aromatic &amp; Delicious.</span>
-                  <span class="line bottomline">
-                    <span class="underline-text">Introducing MayaNut to You</span> 🫵
-                  </span>
-                </h1>
-              </div>
+              <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
+              <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
+                <span class="line topline">Aromatic &amp; Delicious.</span>
+                <span class="line bottomline">
+                  <span class="underline-text">Introducing MayaNut to You</span> 🫵
+                </span>
+              </h1>
             </div>
 
             <p class="hero-sub">
@@ -1299,7 +1128,7 @@
             <div class="store-title">STORE — COMING SOON</div>
 
             <div class="store-tools" aria-label="Store controls">
-              <button id="store-view-full" class="metal-btn" type="button" aria-label="View full store">
+              <button id="store-view-full" class="metal-btn" type="button" aria-label="View full store" aria-pressed="false">
                 VIEW FULL STORE
               </button>
 
@@ -1323,14 +1152,6 @@
               </button>
             </div>
 
-            <div class="store-close-row" aria-label="Close full store row">
-              <div class="store-close-note">Full store preview (4 items)</div>
-              <button id="store-close" class="metal-btn" type="button" aria-label="Close full store" style="min-width:120px;">
-                CLOSE
-              </button>
-            </div>
-
-            <!-- Default = 1x1 (only first item shows). Expanded = 4 in a row. -->
             <div class="store-grid" id="store-grid">
               <article class="product-card" data-name="mayanut powder" data-title="MayaNut Powder">
                 <div style="width:104px;height:104px;border-radius:16px;border:1px solid var(--frame-line);background:#fff;margin-top:6px;"></div>
@@ -1339,7 +1160,7 @@
                 <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
                   Roasted MayaNut seed powder — smooth, caffeine-free, ready to mix.
                 </p>
-                <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
+                <button class="metal-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
 
               <article class="product-card" data-name="mayanut instant latte" data-title="MayaNut Instant Latte">
@@ -1349,7 +1170,7 @@
                 <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
                   Future latte concept for warm, creamy cups.
                 </p>
-                <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
+                <button class="metal-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
 
               <article class="product-card" data-name="mayanut baking blend" data-title="MayaNut Baking Blend">
@@ -1359,7 +1180,7 @@
                 <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
                   Concept baking blend for cookies, bars, and breads.
                 </p>
-                <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
+                <button class="metal-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
 
               <article class="product-card" data-name="mayanut mug" data-title="MayaNut Mug">
@@ -1369,19 +1190,10 @@
                 <p style="font-size:12px;color:#4b5563;line-height:1.6;margin:8px 0 10px;">
                   Concept mug for future brews.
                 </p>
-                <button class="metal-btn buy-btn" type="button" style="min-width:120px;">BUY</button>
+                <button class="metal-btn" type="button" style="min-width:120px;">BUY</button>
               </article>
             </div>
           </aside>
-        </section>
-
-        <!-- A LITTLE ABOUT US (restored) -->
-        <section class="about-card" id="about-snippet" aria-label="A Little About Us">
-          <div class="about-title">A Little About Us</div>
-          <div class="about-text">
-            The MayaNut Company is building a South Florida farm focused on <em style="color:var(--orange);font-weight:950;">Brosimum alicastrum</em>.
-            We’re growing seed-grown trees, testing what performs best, and developing future-ready MayaNut products—while sharing research and progress openly as we scale.
-          </div>
         </section>
 
       </div>
@@ -1389,29 +1201,41 @@
 
     <div class="bottom-sep"></div>
 
-    <!-- FOOTER (newsletter + bottom info fused into one rectangle) -->
+    <!-- ✅ FUSED FOOTER: unified green gradient background across newsletter + bottom info -->
     <footer aria-label="Footer">
       <div class="footer-wrap">
-        <div class="footer-panel" aria-label="Footer panel">
-          <div class="footer-blur" aria-hidden="true"></div>
 
-          <div class="footer-left">
-            <div class="line">Based in Florida</div>
-            <div class="line">© 2026 The MayaNut Company, Inc.</div>
-            <div class="line">
-              <a href="privacy.html">Privacy</a>
-              <span style="opacity:.75;margin:0 8px;">•</span>
-              <a href="terms.html">Terms</a>
-            </div>
-          </div>
+        <div class="newsletter" id="newsletter" aria-label="Newsletter">
+          <div class="newsletter-blur" aria-hidden="true"></div>
 
-          <div class="newsletter-mid" aria-label="Newsletter">
+          <div class="newsletter-left">
             <div class="newsletter-title">Newsletter</div>
             <div class="newsletter-sub">Get occasional updates about MayaNut products, research, and farm progress.</div>
-            <form class="newsletter-form" id="newsletter-form" autocomplete="on">
-              <input id="newsletter-email" type="email" name="email" placeholder="Your email" inputmode="email" autocomplete="email" required />
-              <button class="metal-btn newsletter-btn" type="submit" aria-label="Subscribe">SUBSCRIBE</button>
-            </form>
+          </div>
+
+          <form class="newsletter-form" id="newsletter-form" autocomplete="on">
+            <input id="newsletter-email" type="email" name="email" placeholder="Your email" inputmode="email" autocomplete="email" required />
+            <button class="metal-btn newsletter-btn" type="submit" aria-label="Subscribe">SUBSCRIBE</button>
+          </form>
+        </div>
+
+        <div class="footer-tab" aria-label="Bottom info">
+          <div class="footer-left">
+            <div class="footer-mini-logo" aria-hidden="true">
+              <img src="mayanut-the-mayanut-comapny-logo.png" alt="" />
+            </div>
+
+            <div class="footer-lines">
+              <div class="line">Based in Florida</div>
+              <div class="line">© 2026 The MayaNut Company, Inc.</div>
+              <div class="line">
+                <a href="privacy.html">Privacy</a>
+                <span style="opacity:.75;margin:0 8px;">•</span>
+                <a href="terms.html">Terms</a>
+                <span style="opacity:.75;margin:0 8px;">•</span>
+                <a href="sitemap.html">Sitemap</a>
+              </div>
+            </div>
           </div>
 
           <div class="footer-right" aria-label="Social links">
@@ -1438,11 +1262,11 @@
             </a>
           </div>
         </div>
+
       </div>
     </footer>
   </div>
 
-  <!-- Accessibility (lower right; no cart beside it) -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4a2 2 0 1 0 0.01 0z"></path>
@@ -1454,294 +1278,41 @@
     </svg>
   </button>
 
-  <!-- Overlay + Drawers -->
-  <div class="overlay" id="overlay" aria-hidden="true"></div>
-
-  <!-- Accessibility Drawer -->
-  <aside class="drawer" id="a11y-drawer" aria-label="Accessibility drawer" aria-hidden="true">
-    <div class="drawer-head">
-      <div class="drawer-title">Accessibility</div>
-      <button class="drawer-close" id="a11y-close" type="button" aria-label="Close accessibility">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-      </button>
-    </div>
-
-    <div class="drawer-body">
-      <div class="a11y-section" aria-label="Accessibility toggles">
-        <div class="a11y-row">
-          <div class="a11y-left">
-            <div class="a11y-label">Larger Text</div>
-            <div class="a11y-desc">Increase base text size for readability.</div>
-          </div>
-          <div class="toggle">
-            <div class="state" id="state-large">OFF</div>
-            <div class="switch" id="switch-large" role="switch" aria-checked="false" tabindex="0"></div>
-            <div class="state">ON</div>
-          </div>
-        </div>
-
-        <div class="a11y-row">
-          <div class="a11y-left">
-            <div class="a11y-label">High Contrast</div>
-            <div class="a11y-desc">Boost contrast on key panels.</div>
-          </div>
-          <div class="toggle">
-            <div class="state" id="state-contrast">OFF</div>
-            <div class="switch" id="switch-contrast" role="switch" aria-checked="false" tabindex="0"></div>
-            <div class="state">ON</div>
-          </div>
-        </div>
-
-        <div class="a11y-row">
-          <div class="a11y-left">
-            <div class="a11y-label">Reduce Motion</div>
-            <div class="a11y-desc">Disable animations and transitions.</div>
-          </div>
-          <div class="toggle">
-            <div class="state" id="state-motion">OFF</div>
-            <div class="switch" id="switch-motion" role="switch" aria-checked="false" tabindex="0"></div>
-            <div class="state">ON</div>
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <div class="a11y-label" style="margin-bottom:8px;">Language</div>
-          <select class="a11y-select" id="a11y-lang" aria-label="Language selector">
-            <option value="en" selected>English</option>
-            <option value="es">Español</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="a11y-section" aria-label="Note">
-        <div class="a11y-label">Note</div>
-        <div class="a11y-desc">
-          These settings only affect this device/browser.
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Cart Drawer -->
-  <aside class="drawer" id="cart-drawer" aria-label="Cart drawer" aria-hidden="true">
-    <div class="drawer-head">
-      <div class="drawer-title">Cart</div>
-      <button class="drawer-close" id="cart-close" type="button" aria-label="Close cart">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-      </button>
-    </div>
-    <div class="drawer-body">
-      <div class="a11y-section">
-        <div class="a11y-label">Checkout</div>
-        <div class="a11y-desc" style="margin-top:8px;">
-          This function is unavailable yet.
-        </div>
-        <button class="metal-btn" type="button" style="margin-top:12px; width:100%;" id="checkout-btn">
-          CHECKOUT
-        </button>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Mobile Menu Drawer -->
-  <aside class="drawer" id="menu-drawer" aria-label="Mobile menu" aria-hidden="true">
-    <div class="drawer-head">
-      <div class="drawer-title">Menu</div>
-      <button class="drawer-close" id="menu-close" type="button" aria-label="Close menu">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-      </button>
-    </div>
-    <div class="drawer-body">
-      <div class="a11y-section">
-        <a href="index.html" class="metal-btn" style="width:100%; margin-bottom:10px; text-decoration:none;">HOME</a>
-        <a href="index.html?store=1" class="metal-btn" style="width:100%; margin-bottom:10px; text-decoration:none;">STORE</a>
-        <a href="about.html" class="metal-btn" style="width:100%; margin-bottom:10px; text-decoration:none;">ABOUT</a>
-        <a href="research.html" class="metal-btn" style="width:100%; margin-bottom:10px; text-decoration:none;">RESEARCH</a>
-        <a href="contact.html" class="metal-btn" style="width:100%; text-decoration:none;">CONTACT</a>
-      </div>
-    </div>
-  </aside>
+  <button class="fab cart-fab" id="cart-fab" type="button" aria-label="Cart">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 7h15l-1.5 8H8L6 5H3"></path>
+      <circle cx="9" cy="19" r="1.5"></circle>
+      <circle cx="18" cy="19" r="1.5"></circle>
+    </svg>
+    <span class="cart-badge" id="cart-badge-fab" aria-label="Cart quantity">0</span>
+  </button>
 
   <script>
-    // HERO animation
+    // hero animation
     window.addEventListener("load", () => {
       const heroTop = document.getElementById("hero-top");
       if(heroTop) heroTop.classList.add("hero-animate");
       document.documentElement.classList.remove("anim-prep");
     });
 
-    // Side-frame stacks
+    // ✅ Store expand/collapse (expands LEFT all the way to left frame edge)
     (function(){
-      const imgs = [
-        "maya-nut-mayanut-plant-tree-nursery.jpg",
-        "maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-      ];
-      const left = document.getElementById("stack-left");
-      const right = document.getElementById("stack-right");
-      if(!left || !right) return;
+      const btn = document.getElementById("store-view-full");
+      if(!btn) return;
 
-      function fill(stack){
-        let html = "";
-        for(let i=0;i<10;i++){
-          const src = imgs[i % imgs.length];
-          html += '<img src="'+src+'" alt="" aria-hidden="true" loading="lazy" decoding="async">';
-        }
-        stack.innerHTML = html;
+      function sync(){
+        const expanded = document.body.classList.contains("store-expanded");
+        btn.setAttribute("aria-pressed", expanded ? "true" : "false");
+        btn.textContent = expanded ? "CLOSE STORE" : "VIEW FULL STORE";
       }
-      fill(left); fill(right);
-    })();
 
-    // Overlay + drawer helpers
-    const overlay = document.getElementById("overlay");
-    const a11yDrawer = document.getElementById("a11y-drawer");
-    const cartDrawer = document.getElementById("cart-drawer");
-    const menuDrawer = document.getElementById("menu-drawer");
-
-    function closeAllDrawers(){
-      overlay.classList.remove("open");
-      [a11yDrawer, cartDrawer, menuDrawer].forEach(d => d.classList.remove("open"));
-      [a11yDrawer, cartDrawer, menuDrawer].forEach(d => d.setAttribute("aria-hidden","true"));
-      overlay.setAttribute("aria-hidden","true");
-    }
-
-    function openDrawer(drawer){
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden","false");
-      drawer.classList.add("open");
-      drawer.setAttribute("aria-hidden","false");
-    }
-
-    overlay.addEventListener("click", closeAllDrawers);
-
-    // Accessibility open/close
-    document.getElementById("accessibility-btn").addEventListener("click", () => openDrawer(a11yDrawer));
-    document.getElementById("a11y-close").addEventListener("click", closeAllDrawers);
-
-    // Cart open/close (only from store cart button)
-    document.getElementById("store-cart-btn").addEventListener("click", () => openDrawer(cartDrawer));
-    document.getElementById("cart-close").addEventListener("click", closeAllDrawers);
-    document.getElementById("checkout-btn").addEventListener("click", () => {
-      alert("This function is unavailable yet.");
-    });
-
-    // Mobile menu open/close
-    document.getElementById("mobile-menu-btn").addEventListener("click", () => openDrawer(menuDrawer));
-    document.getElementById("menu-close").addEventListener("click", closeAllDrawers);
-
-    // Store expand (default 1x1) -> expanded overlays left + 4 in a row
-    const btnExpand = document.getElementById("store-view-full");
-    const btnCloseStore = document.getElementById("store-close");
-    function setStoreExpanded(on){
-      document.body.classList.toggle("store-expanded", !!on);
-      btnExpand.textContent = on ? "FULL STORE OPEN" : "VIEW FULL STORE";
-    }
-    btnExpand.addEventListener("click", () => setStoreExpanded(!document.body.classList.contains("store-expanded")));
-    btnCloseStore.addEventListener("click", () => setStoreExpanded(false));
-
-    // Sort (simple)
-    const sortSel = document.getElementById("store-sort");
-    const grid = document.getElementById("store-grid");
-    sortSel.addEventListener("change", () => {
-      const cards = Array.from(grid.querySelectorAll(".product-card"));
-      const mode = sortSel.value;
-
-      const getTitle = (el) => (el.getAttribute("data-title") || "").toLowerCase();
-
-      let sorted = cards.slice();
-      if(mode === "az") sorted.sort((a,b) => getTitle(a).localeCompare(getTitle(b)));
-      if(mode === "za") sorted.sort((a,b) => getTitle(b).localeCompare(getTitle(a)));
-      if(mode === "new") sorted.reverse(); // placeholder
-      // featured = as-is
-
-      sorted.forEach(el => grid.appendChild(el));
-    });
-
-    // BUY buttons -> add to cart count (placeholder)
-    let cartCount = 0;
-    const badge = document.getElementById("cart-badge");
-    function setBadge(n){
-      badge.textContent = String(n);
-    }
-    document.querySelectorAll(".buy-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        cartCount += 1;
-        setBadge(cartCount);
+        document.body.classList.toggle("store-expanded");
+        sync();
       });
-    });
 
-    // Newsletter submit
-    document.getElementById("newsletter-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      alert("Thanks! Newsletter signup will be connected soon.");
-      e.target.reset();
-    });
-
-    // A11Y toggles (OFF/ON labels are literal)
-    function bindSwitch(switchEl, stateEl, bodyClass){
-      function apply(on){
-        switchEl.classList.toggle("on", on);
-        switchEl.setAttribute("aria-checked", on ? "true" : "false");
-        stateEl.textContent = on ? "OFF" : "OFF"; // left label stays OFF (requested: show OFF/ON). We keep both labels visible.
-        document.body.classList.toggle(bodyClass, on);
-      }
-      function toggle(){
-        const on = !switchEl.classList.contains("on");
-        apply(on);
-      }
-      switchEl.addEventListener("click", toggle);
-      switchEl.addEventListener("keydown", (e) => {
-        if(e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          toggle();
-        }
-      });
-      apply(false);
-      return apply;
-    }
-
-    const applyLarge = bindSwitch(
-      document.getElementById("switch-large"),
-      document.getElementById("state-large"),
-      "a11y-large"
-    );
-    const applyContrast = bindSwitch(
-      document.getElementById("switch-contrast"),
-      document.getElementById("state-contrast"),
-      "a11y-contrast"
-    );
-    const applyMotion = bindSwitch(
-      document.getElementById("switch-motion"),
-      document.getElementById("state-motion"),
-      "a11y-reduce"
-    );
-
-    // Language selector (placeholder)
-    const langTop = document.getElementById("lang-pill-top");
-    const langSel = document.getElementById("a11y-lang");
-    function setLang(code){
-      if(code === "es"){
-        langTop.querySelector("span").textContent = "ENGLISH";
-        langTop.setAttribute("aria-label", "Switch to English");
-        langSel.value = "es";
-        // Placeholder: you can swap to index-es.html when ready
-      }else{
-        langTop.querySelector("span").textContent = "ESPAÑOL";
-        langTop.setAttribute("aria-label", "Switch to Español");
-        langSel.value = "en";
-      }
-    }
-    langTop.addEventListener("click", () => {
-      setLang(langSel.value === "en" ? "es" : "en");
-    });
-    langSel.addEventListener("change", () => setLang(langSel.value));
-
-    // If URL has ?store=1 => open full store
-    (function(){
-      const params = new URLSearchParams(location.search);
-      if(params.get("store") === "1"){
-        setStoreExpanded(true);
-      }
+      sync();
     })();
   </script>
-</body>
-</html>
+
+<!-- END BLOCK 1 / 2 -->

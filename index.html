@@ -132,6 +132,8 @@
         var(--orange-mid) 100%
       );
 
+      --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
+
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
@@ -147,7 +149,7 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
     html{
-      background: var(--tan);
+      background: var(--store-green-grad); /* prevents tan overscroll showing under footer */
       scroll-padding-top: calc(var(--stickyOffset) + 12px);
     }
     body{
@@ -155,14 +157,48 @@
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
-      background: var(--tan);
+      background: var(--store-green-grad); /* prevents tan/gray showing under footer */
       min-height:100vh;
+      overscroll-behavior-y: none;
     }
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; }
     button,input,select{ font-family:inherit; }
 
-    /* SIDE FRAMES */
+    /* iPhone safe-area image bars (top and bottom) */
+    .safe-area-img{
+      position:fixed;
+      left:0; right:0;
+      pointer-events:none;
+      z-index:2000;
+      background-image:url("mayanuts-the-maya-nut-company-image.webp");
+      background-size:cover;
+      background-position:center center;
+      background-repeat:no-repeat;
+      filter:saturate(1.06) contrast(1.04);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      display:none; /* enabled only on mobile */
+    }
+    .safe-area-img.top{
+      top:0;
+      height: env(safe-area-inset-top);
+      border-bottom: 1px solid rgba(12,90,42,0.45);
+    }
+    .safe-area-img.bottom{
+      bottom:0;
+      height: env(safe-area-inset-bottom);
+      border-top: 1px solid rgba(12,90,42,0.45);
+      border-bottom:none;
+    }
+    .safe-area-img.top::after,
+    .safe-area-img.bottom::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.0));
+    }
+
+    /* SIDE FRAMES (desktop/tablet) */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{
       position:absolute; top:0; bottom:0; width:var(--sideW);
@@ -183,7 +219,7 @@
       transform: translateZ(0);
     }
 
-    /* Keep center content perfectly within the frame area */
+    /* Center content inside frame area */
     .frame-wrap{
       position:relative;
       z-index:2;
@@ -196,7 +232,7 @@
       overflow-x:hidden;
     }
 
-    /* STICKY TOP (thin green line top+bottom; no thick outline) */
+    /* STICKY TOP (thin green top+bottom; no thick outer outline) */
     .sticky-top{
       position:fixed;
       top:0;
@@ -209,24 +245,23 @@
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
-      overflow: visible;
+      overflow:hidden; /* prevents any “tan bar” bleed */
     }
 
-    /* TOP BANNER (centered text only) */
+    /* TOP BANNER (centered text only; flag left of America) */
     .top-banner{
       width:100%;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:12px;
+      gap:10px;
       padding: 8px 12px;
       background: rgba(255,255,255,0.14);
       border-bottom: 2px solid rgba(12,90,42,0.35);
       position:relative;
-      overflow:hidden;
     }
     .top-banner .flag{
-      width:24px;
+      width:22px;
       height:auto;
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.18));
       flex:0 0 auto;
@@ -244,10 +279,6 @@
       text-overflow:ellipsis;
       max-width: min(980px, calc(100vw - 110px));
     }
-    .top-banner .sep{
-      opacity:.7;
-      margin: 0 8px;
-    }
 
     /* HEADER background */
     .site-header{
@@ -261,7 +292,6 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      overflow: visible;
     }
     .site-header::after{
       content:"";
@@ -282,10 +312,9 @@
       position:relative;
       z-index:1;
       flex-wrap:nowrap;
-      overflow:visible;
     }
 
-    /* Desktop: search icon far-left, tabs centered, language right */
+    /* Desktop search icon far-left */
     .nav-search{
       position:absolute;
       left: 8px;
@@ -433,15 +462,15 @@
       justify-content:center;
       gap:14px;
       width:100%;
-      padding-left: 66px; /* make room for the left search icon */
-      padding-right: 140px; /* make room for right language pill */
+      padding-left: 66px;
+      padding-right: 140px;
     }
 
     .nav-pill{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height:34px; /* slightly shorter */
+      height:34px;
       padding:0 12px;
       border-radius:14px;
       border:1px solid rgba(12,90,42,.85);
@@ -452,7 +481,7 @@
       touch-action:manipulation;
       box-shadow: 0 10px 22px rgba(15,23,42,0.10);
       gap:8px;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
       flex:0 0 auto;
     }
     .nav-pill span{
@@ -503,16 +532,127 @@
       touch-action:manipulation;
       white-space:nowrap;
       box-shadow: 0 10px 22px rgba(15,23,42,0.12);
-      transition: transform .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease;
       flex:0 0 auto;
     }
     .lang-pill:hover{ transform: scale(1.02); }
 
-    .bottom-sep{
-      width:100%;
-      height:2px;
-      background:var(--green);
+    /* Mobile hamburger (only shows on mobile) */
+    .hamburger{
+      display:none;
+      position:absolute;
+      left: 8px;
+      top: 0;
+      height:36px;
+      width:42px;
+      z-index:3;
     }
+    .hamburger-btn{
+      width:42px;
+      height:36px;
+      border-radius:14px;
+      border:1px solid rgba(12,90,42,.85);
+      background: var(--mobile-green-grad);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+      overflow:hidden;
+    }
+    .hamburger-bars{
+      width:18px;
+      height:14px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .hamburger-bars span{
+      display:block;
+      height:2px;
+      border-radius:999px;
+      background: var(--metal-orange); /* bars appear metallic-orange */
+      border:1px solid rgba(255,255,197,0.70);
+    }
+
+    .mobile-menu-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      background: rgba(0,0,0,0.22);
+      backdrop-filter: blur(6px);
+      padding: 16px;
+      z-index:1600;
+    }
+    body.menu-open .mobile-menu-overlay{ display:block; }
+    .mobile-menu{
+      max-width: 520px;
+      margin-left:auto;
+      height: calc(100vh - 32px);
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      background: var(--store-green-grad);
+      box-shadow:0 18px 60px rgba(15,23,42,0.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .mobile-menu-head{
+      padding:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:2px solid rgba(12,90,42,.55);
+      background: rgba(255,255,255,0.10);
+    }
+    .mobile-menu-title{
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .mobile-menu-close{
+      width:40px;height:40px;
+      border-radius:14px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .mobile-menu-close svg{
+      width:18px;height:18px;
+      stroke:var(--cream);
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .mobile-menu-body{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      overflow:auto;
+    }
+    .mobile-menu-body a{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.14);
+      padding:12px;
+      text-decoration:none;
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      box-shadow:0 12px 28px rgba(15,23,42,0.10);
+    }
+    .mobile-menu-body a:active{ background: rgba(253,108,2,0.14); }
 
     main{
       position:relative;
@@ -535,7 +675,7 @@
       overflow-x:hidden;
     }
 
-    /* SECTION DIVIDER (lined header) */
+    /* SECTION DIVIDER (green lines left/right) */
     .section-divider{
       max-width:1200px;
       margin: 10px auto 8px;
@@ -556,6 +696,30 @@
       flex:1;
       height:2px;
       background:var(--green);
+      border-radius:999px;
+      opacity:.9;
+    }
+
+    /* Panel title (used on mobile inside boxes) */
+    .panel-title{
+      display:none;
+      width:100%;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: var(--green);
+      padding: 6px 2px 8px;
+    }
+    .panel-title::before,
+    .panel-title::after{
+      content:"";
+      flex:1;
+      height:2px;
+      background: var(--green);
       border-radius:999px;
       opacity:.9;
     }
@@ -597,7 +761,7 @@
     }
 
     .credit{
-      font-size:11px; /* smaller */
+      font-size:10.5px;
       text-transform:uppercase;
       letter-spacing:0.16em;
       color: rgba(15,23,42,0.55);
@@ -615,7 +779,6 @@
       width:100%;
     }
 
-    /* force consistent single-line on desktop across Mac/PC */
     @media(min-width:981px){
       .hero-title .line{ white-space:nowrap; }
       .hero-title .line.bottomline{ white-space:nowrap; }
@@ -628,7 +791,6 @@
       font-weight: 900;
       letter-spacing: 0.01em;
     }
-    /* slightly bigger so the 3 lines + logo align height better */
     .hero-title .line.topline{
       font-size: clamp(30px, 2.95vw, 42px);
     }
@@ -640,7 +802,7 @@
       display:flex;
       gap:10px;
       align-items:flex-end;
-      flex-wrap:nowrap;
+      flex-wrap:wrap;
     }
     .intro-underline{
       display:inline-block;
@@ -698,7 +860,7 @@
       transform: translateZ(0);
     }
 
-    /* STORE HEADER (outside panel) */
+    /* STORE */
     .store-head{
       width:100%;
       max-width: 520px;
@@ -713,7 +875,6 @@
       box-shadow:0 16px 44px rgba(15,23,42,0.18);
     }
 
-    /* STORE PANEL (shorter controls) */
     #store-panel{
       border-radius: 14px;
       border: 2px solid var(--frame-line);
@@ -729,13 +890,12 @@
       overflow:hidden;
     }
 
-    /* Store bar row (shorter) */
     .store-bar{
       display:flex;
       align-items:center;
       gap:10px;
       width:100%;
-      margin-top:12px;
+      margin-top:6px;
     }
     .icon-btn{
       width:36px;height:34px;
@@ -750,7 +910,7 @@
       -webkit-user-select:none;
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       flex:0 0 auto;
-      transition: transform .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease;
     }
     .icon-btn:hover{ transform: scale(1.03); }
     .icon-btn svg{
@@ -781,7 +941,7 @@
       flex:0 0 auto;
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       min-width:64px;
-      transition: transform .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease;
     }
     .sort-pill:hover{ transform: scale(1.03); }
 
@@ -884,7 +1044,7 @@
     }
     .ptitle .dot{ font-size:13px; transform: translateY(-1px); }
 
-    /* NEW: vertical qty + ADD + price on right only */
+    /* Quantity + ADD + price (right only) */
     .buy-row{
       margin-top:auto;
       width:100%;
@@ -897,7 +1057,7 @@
     .qty-vert{
       width:34px;
       border-radius:12px;
-      overflow:hidden;
+      overflow:hidden; /* ensures highlight stays inside pill */
       border:1px solid rgba(255,255,255,0.55);
       background: rgba(255,255,255,0.12);
       display:flex;
@@ -920,10 +1080,13 @@
       font-weight:950;
       color: rgba(255,255,197,.98);
       text-shadow:0 1px 0 rgba(0,0,0,0.18);
-      line-height:16px; /* prevent cut-off */
+      line-height:16px;
       font-size:14px;
+      outline:none;
     }
-    .qv-btn:hover{ background: rgba(253,108,2,0.18); }
+    .qv-btn:active{
+      background: rgba(253,108,2,0.28); /* highlight stays inside due to overflow */
+    }
     .qv-mid{
       height:16px;
       display:flex;
@@ -983,7 +1146,6 @@
       flex:0 0 72px;
     }
 
-    /* View full store button INSIDE store (replaces Merch) */
     .view-store-btn{
       margin-top:8px;
       width:100%;
@@ -1009,7 +1171,7 @@
     }
     .view-store-btn:hover{ transform: scale(1.01); }
 
-    /* MERCH CAROUSEL (5 squares: small, medium, large, medium, small) */
+    /* Merch carousel */
     .merch-wrap{
       margin-top:10px;
       width:100%;
@@ -1031,15 +1193,20 @@
       user-select:none;
       -webkit-user-select:none;
       touch-action:manipulation;
-      opacity:0.85;
+      opacity:0.92;
       transition: transform .12s ease, opacity .12s ease;
       flex:0 0 auto;
     }
     .merch-arrow:hover{ transform: scale(1.06); opacity:1; }
     .merch-arrow svg{
       width:26px;height:26px;
-      fill: rgba(107,114,128,0.95); /* gray triangle */
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.18));
+    }
+    .merch-arrow polygon{
+      fill: rgba(107,114,128,0.95); /* gray */
+      stroke: var(--cream);         /* ffffc5 outline */
+      stroke-width: 1.8;
+      stroke-linejoin: round;
     }
 
     .merch-track{
@@ -1078,7 +1245,7 @@
     .merch-item.is-med{ transform: scale(0.82); opacity:0.78; }
     .merch-item.is-big{ transform: scale(1.02); opacity:1; }
 
-    /* HERO BOTTOM ROW: Learn More under images; no extra View Store outside store */
+    /* HERO bottom: Learn More under images only */
     .hero-bottom-row{
       grid-column: 1 / -1;
       display:grid;
@@ -1092,7 +1259,8 @@
       align-items:stretch;
       justify-content:flex-start;
     }
-    .storefull-wrap{ justify-content:flex-end; } /* aligns with store column width */
+    .storefull-wrap{ justify-content:flex-end; }
+
     .metal-btn{
       border: 1px solid var(--cream);
       background: var(--metal-orange);
@@ -1115,7 +1283,7 @@
       touch-action:manipulation;
       width:100%;
       text-decoration:none;
-      transition: transform .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease;
       box-shadow:0 14px 36px rgba(15,23,42,0.12);
     }
     .metal-btn:hover{ transform: scale(1.02); }
@@ -1169,14 +1337,14 @@
     }
     .about-card img{
       width:100%;
-      height: 160px; /* match paragraph height */
+      height: 160px;
       object-fit:cover;
       border-radius:16px;
       border:2px solid var(--frame-line);
       background:#fff;
     }
 
-    /* FOOTER: thin green outline + thin green line at bottom; remove newsletter outline */
+    /* FOOTER: thin green lines top and bottom; newsletter no outline */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -1184,13 +1352,13 @@
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       position:relative;
       border-top: 2px solid var(--green);
-      border-bottom: 2px solid var(--green); /* thin green outline at bottom tab */
+      border-bottom: 2px solid var(--green);
     }
     .footer-bottom-line{
       position:absolute;
       left:0; right:0; bottom:0;
       height:2px;
-      background: var(--green); /* thin green line across bottom */
+      background: var(--green);
     }
 
     .footer-wrap{
@@ -1256,7 +1424,6 @@
       height:24px;
       display:inline-block;
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14));
-      margin-top:0;
     }
 
     .footer-links{
@@ -1275,9 +1442,9 @@
       border-bottom:1px solid rgba(11,18,32,0.28);
       padding-bottom:2px;
       white-space:nowrap;
-      transition: transform .12s ease, border-color .12s ease;
+      transition: transform .12s ease;
     }
-    .footer-links a:hover{ border-bottom-color: rgba(11,18,32,0.72); transform: scale(1.02); }
+    .footer-links a:hover{ transform: scale(1.02); }
 
     .footer-social{
       display:flex;
@@ -1299,7 +1466,7 @@
       overflow:hidden;
       text-decoration:none;
       box-shadow: 0 12px 28px rgba(15,23,42,0.12);
-      transition: transform .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease;
     }
     .icon-pill:hover{ transform: scale(1.05); }
     .icon-pill svg{
@@ -1312,9 +1479,7 @@
     }
     .icon-pill .fill{ fill: var(--cream); stroke:none; }
 
-    /* Newsletter: no box/outline, just content */
     .newsletter{
-      position:relative;
       border:none;
       background: transparent;
       box-shadow:none;
@@ -1340,7 +1505,6 @@
       font-size:13px;
       line-height:1.45;
       text-shadow:0 1px 0 rgba(255,255,255,0.45);
-      margin-top:0;
       max-width: 520px;
     }
     .newsletter-form{
@@ -1371,7 +1535,7 @@
       width:auto;
     }
 
-    /* FAB (Accessibility) */
+    /* FAB */
     .fab{
       position:fixed;
       z-index:1300;
@@ -1485,7 +1649,6 @@
       background: var(--metal-orange);
       display:flex;align-items:center;justify-content:center;
       cursor:pointer;
-      flex:0 0 auto;
       transition: transform .12s ease;
     }
     .a11y-close:hover{ transform: scale(1.04); }
@@ -1519,9 +1682,6 @@
       margin-bottom:10px;
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      display:flex;
-      align-items:center;
-      gap:10px;
     }
     .toggle-row{
       display:flex;
@@ -1564,9 +1724,7 @@
       position:relative;
       cursor:pointer;
       flex:0 0 auto;
-      transition: transform .12s ease;
     }
-    .switch:hover{ transform: scale(1.02); }
     .switch::after{
       content:"";
       position:absolute;
@@ -1683,14 +1841,6 @@
       padding:6px 2px 2px;
     }
 
-    /* CLICK GLOW */
-    .click-glow{
-      box-shadow:
-        0 0 0 2px rgba(255,255,197,0.75),
-        0 0 22px rgba(255,255,197,0.35),
-        0 14px 40px rgba(15,23,42,0.18) !important;
-    }
-
     /* RESPONSIVE */
     @media(max-width:980px){
       :root{ --sideW: 120px; }
@@ -1707,9 +1857,14 @@
       .about-grid{ grid-template-columns:1fr; }
       .footer-wrap{ grid-template-columns:1fr; }
     }
+
+    /* MOBILE */
     @media(max-width:780px){
+      .safe-area-img{ display:block; } /* show iPhone status/bottom safe-area images */
+
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
+
       .sticky-top{
         left:0 !important; right:0 !important;
         border-left:none !important; border-right:none !important;
@@ -1717,25 +1872,61 @@
       main,footer{ border-left:none !important; border-right:none !important; }
       .content-wrapper{ padding-left:16px; padding-right:16px; padding-top:12px; }
 
-      .site-header{ padding: 44px 12px 52px; }
-      .nav-center{ padding-left: 56px; padding-right: 116px; }
-      .nav-pill{ height:34px; }
-      .nav-search{ left:6px; }
-      /* mobile menu (hamburger) not requested; keep off */
+      /* Mobile header: hamburger + search left, language right; tabs hidden */
+      .nav-center{ display:none !important; }
+      .hamburger{ display:flex; }
+      .nav-search{
+        left: 56px; /* sits next to hamburger */
+      }
+
+      /* Mobile banner same text */
+      .top-banner .txt{
+        max-width: calc(100vw - 96px);
+        font-size:10px;
+      }
+
+      /* Titles inside boxes on mobile */
+      .section-divider{ display:none; }
+      .panel-title{ display:flex; }
 
       #hero{ grid-template-columns: 1fr; gap:14px; }
-      .hero-brand{ grid-template-columns: 112px 1fr; }
-      .hero-logo{ width:112px; }
+      .hero-brand{
+        grid-template-columns: 112px 1fr;
+        gap:12px;
+      }
+      .hero-logo{
+        width:112px;
+        margin-left:-4px; /* slightly left */
+      }
+      .hero-title .line.topline{
+        font-size: 28px;
+      }
+      .hero-title .line.bottomline{
+        font-size: 18px;
+        line-height:1.12;
+      }
 
+      .hero-images{ grid-template-columns:1fr; }
       .hero-bottom-row{
         grid-template-columns: 1fr;
         gap:10px;
       }
 
+      /* Store title inside store box above controls */
+      #store-panel .panel-title{ padding-top:4px; padding-bottom:8px; }
+      .store-bar{ margin-top:0; }
+
+      /* Footer: newsletter on top, logo/links below; keep thin green lines top+bottom */
+      .footer-wrap{
+        grid-template-columns:1fr;
+      }
+      .newsletter{ order:-1; padding-top:2px; }
+      .footer-left{ order:2; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-btn{ width:100%; min-width:0; }
 
-      .merch-item{ width:56px; height:56px; }
+      /* Increase bottom padding so content doesn't collide with safe-area */
+      footer{ padding-bottom: calc(env(safe-area-inset-bottom) + 6px); }
     }
 
     img, .site-header, .store-search, .nav-pill, .lang-pill, .icon-pill{
@@ -1795,6 +1986,10 @@
 </head>
 
 <body>
+  <!-- iPhone safe areas (top status area + bottom area) -->
+  <div class="safe-area-img top" aria-hidden="true"></div>
+  <div class="safe-area-img bottom" aria-hidden="true"></div>
+
   <div class="side-frames" aria-hidden="true">
     <div class="side left"><div class="stack" id="stack-left"></div></div>
     <div class="side right"><div class="stack" id="stack-right"></div></div>
@@ -1803,15 +1998,22 @@
   <div class="frame-wrap">
     <div class="sticky-top" id="sticky-top">
       <div class="top-banner" aria-label="Top banner">
-        <img class="flag" src="american-flag.png" alt="American flag" onerror="this.style.display='none';" decoding="async" />
-        <div class="txt">
-          America’s Premier MayaNut Farm <span class="sep">|</span> The MayaNut Company
-        </div>
+        <img class="flag" src="american-flag-the-maya-nut-company.svg" alt="USA" onerror="this.style.display='none';" decoding="async" />
+        <div class="txt">America’s Premier MayaNut Farm | The MayaNut Company</div>
       </div>
 
       <header class="site-header" id="top" aria-label="Site header">
         <nav class="main-nav" aria-label="Primary navigation">
-          <!-- Desktop search icon far-left (no hamburger on desktop) -->
+          <!-- Mobile hamburger -->
+          <div class="hamburger" aria-label="Menu">
+            <button class="hamburger-btn" id="hamburger-btn" type="button" aria-label="Open menu">
+              <div class="hamburger-bars" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Search icon -->
           <div class="nav-search" aria-label="Site search">
             <button class="nav-search-btn" id="nav-search-btn" type="button" aria-label="Open site search">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1833,7 +2035,7 @@
             <div class="nav-suggest" id="nav-suggest" role="listbox" aria-label="Search suggestions"></div>
           </div>
 
-          <!-- Centered tabs -->
+          <!-- Desktop tabs (hidden on mobile via CSS) -->
           <div class="nav-center" aria-label="Primary links">
             <a href="index.html" class="nav-pill is-active" aria-current="page"><span>HOME</span></a>
             <a href="store.html" class="nav-pill"><span>STORE</span></a>
@@ -1842,7 +2044,6 @@
             <a href="contact.html" class="nav-pill"><span>CONTACT</span></a>
           </div>
 
-          <!-- Right language -->
           <div class="nav-right">
             <a class="lang-pill" href="index-es.html" id="lang-link" aria-label="Switch to Español">ESPAÑOL</a>
           </div>
@@ -1880,10 +2081,13 @@
               </div>
             </div>
 
-            <!-- FIX: green lines next to What Is MayaNut (same as other section dividers) -->
+            <!-- Desktop divider (hidden on mobile) -->
             <h2 class="section-divider" id="what-is-mayanut">What Is MayaNut?</h2>
 
             <div class="hero-sub-outline">
+              <!-- Mobile title inside the box -->
+              <div class="panel-title" aria-hidden="true">What Is MayaNut?</div>
+
               <p class="pretty-paragraph hero-sub" id="hero-sub">
                 MayaNut is an ancient and elusive seed from the tropical tree Brosimum alicastrum. Try comforting roasted powder with notes of chocolate and coffee, a forgotten food from the ancient world, rediscovered just for you. Shop or learn about mayanut, brought to you by The MayaNut Company.
               </p>
@@ -1917,10 +2121,14 @@
           </div>
 
           <div class="store-col" aria-label="Store column">
+            <!-- Desktop divider (hidden on mobile) -->
             <h2 class="section-divider store-head">Store</h2>
 
             <div class="store-outline">
               <aside id="store-panel" aria-label="Store preview">
+                <!-- Mobile title inside the store box -->
+                <div class="panel-title" aria-hidden="true">Store</div>
+
                 <div class="store-bar" aria-label="Store controls row">
                   <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2008,13 +2216,10 @@
                   </article>
                 </div>
 
-                <!-- REMOVE the extra top store carousel completely (not present here) -->
-
-                <!-- Merch carousel (5 images + gray arrows) -->
                 <div class="merch-wrap" aria-label="Merch carousel">
                   <button class="merch-arrow" id="merch-prev" type="button" aria-label="Previous">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M14.5 4.5c.6-.5 1.5-.4 2 .2.5.6.4 1.5-.2 2L10.8 12l5.5 5.3c.6.5.7 1.4.2 2-.5.6-1.4.7-2 .2l-7-6.7c-.3-.3-.5-.7-.5-1.1s.2-.8.5-1.1l7-6.7z"></path>
+                      <polygon points="14.8,4.2 7.2,12 14.8,19.8 14.8,16.8 10.2,12 14.8,7.2"></polygon>
                     </svg>
                   </button>
 
@@ -2022,7 +2227,7 @@
 
                   <button class="merch-arrow" id="merch-next" type="button" aria-label="Next">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M9.5 19.5c-.6.5-1.5.4-2-.2-.5-.6-.4-1.5.2-2L13.2 12 7.7 6.7c-.6-.5-.7-1.4-.2-2 .5-.6 1.4-.7 2-.2l7 6.7c.3.3.5.7.5 1.1s-.2.8-.5 1.1l-7 6.7z"></path>
+                      <polygon points="9.2,4.2 16.8,12 9.2,19.8 9.2,16.8 13.8,12 9.2,7.2"></polygon>
                     </svg>
                   </button>
                 </div>
@@ -2036,15 +2241,18 @@
             <div class="learnmore-wrap">
               <a href="about.html" class="metal-btn" aria-label="Learn more">LEARN MORE</a>
             </div>
-            <!-- keep right column blank so layout stays aligned; no extra view-store outside store -->
             <div class="storefull-wrap" aria-hidden="true"></div>
           </div>
         </section>
 
+        <!-- Desktop divider (hidden on mobile) -->
         <h2 class="section-divider" id="about-divider">A Little About Us</h2>
 
         <section class="about-wrap" aria-label="A Little About Us">
           <div class="about-outline">
+            <!-- Mobile title inside the box -->
+            <div class="panel-title" aria-hidden="true">A Little About Us</div>
+
             <div class="about-us">
               <div class="about-grid">
                 <div class="about-card">
@@ -2056,7 +2264,7 @@
                   </div>
                   <img
                     src="the-maya-nut-company-bubba-image.jpg"
-                    alt="Florida farming legacy (family agriculture roots from citrus and pineapple growing)"
+                    alt="Florida growing legacy (citrus and pineapple)"
                     width="1200"
                     height="525"
                     loading="lazy"
@@ -2074,7 +2282,7 @@
                   </div>
                   <img
                     src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                    alt="August Kokus with MayaNut trees in Florida (The MayaNut Company founder and farm progress)"
+                    alt="August Kokus with MayaNut trees in Florida"
                     width="1200"
                     height="525"
                     loading="lazy"
@@ -2090,8 +2298,6 @@
       </div>
     </main>
 
-    <div class="bottom-sep"></div>
-
     <footer aria-label="Footer">
       <div class="footer-wrap">
         <div class="footer-left" aria-label="Footer info">
@@ -2101,7 +2307,7 @@
             <div class="footer-lines">
               <div class="based-line">
                 <span>Based in Florida</span>
-                <img src="florida-image-the-maya-nut-company.png" class="florida-icon" alt="Florida icon" width="24" height="24" onerror="this.style.display='none';" decoding="async" loading="lazy" />
+                <img src="florida-image-the-maya-nut-company.png" class="florida-icon" alt="Florida" width="24" height="24" onerror="this.style.display='none';" decoding="async" loading="lazy" />
               </div>
               <div>© 2026 The MayaNut Company, Inc.</div>
             </div>
@@ -2131,7 +2337,6 @@
                   <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
                 </svg>
               </a>
-              <!-- NEW: LinkedIn -->
               <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
@@ -2154,6 +2359,29 @@
 
       <div class="footer-bottom-line" aria-hidden="true"></div>
     </footer>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true">
+    <div class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mobile-menu-head">
+        <div class="mobile-menu-title">Menu</div>
+        <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="mobile-menu-body">
+        <a href="index.html">Home</a>
+        <a href="store.html">Store</a>
+        <a href="research.html">Research</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sitemap.html">Sitemap</a>
+      </div>
+    </div>
   </div>
 
   <!-- Accessibility FAB -->
@@ -2253,7 +2481,7 @@
   </div>
 
   <script>
-    // Side frame images -> prefer webp, fallback to jpeg
+    // Side frame images (desktop) -> prefer webp, fallback to jpeg
     (function(){
       const webp = "mayanuts-the-maya-nut-company-image.webp";
       const jpg  = "mayanuts-the-maya-nut-company-image.jpeg";
@@ -2276,6 +2504,27 @@
         L.appendChild(makeImg());
         R.appendChild(makeImg());
       }
+    })();
+
+    // Mobile menu
+    (function(){
+      const btn = document.getElementById("hamburger-btn");
+      const overlay = document.getElementById("mobile-menu-overlay");
+      const close = document.getElementById("mobile-menu-close");
+
+      function openMenu(){
+        document.body.classList.add("menu-open");
+        overlay?.setAttribute("aria-hidden","false");
+      }
+      function closeMenu(){
+        document.body.classList.remove("menu-open");
+        overlay?.setAttribute("aria-hidden","true");
+      }
+
+      btn?.addEventListener("click", openMenu);
+      close?.addEventListener("click", closeMenu);
+      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "mobile-menu-overlay") closeMenu(); });
+      document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenu(); });
     })();
 
     // Logo clicks -> home
@@ -2508,16 +2757,6 @@
       function open(){
         document.body.classList.add("site-search-open");
         if(box) box.setAttribute("aria-hidden","false");
-
-        try{
-          const firstTab = document.querySelector(".nav-center a.nav-pill.is-active") || document.querySelector(".nav-center a.nav-pill");
-          const sb = btn.getBoundingClientRect();
-          const tb = firstTab.getBoundingClientRect();
-          const gap = tb.left - sb.right;
-          const target = Math.max(160, Math.min(360, gap - 10));
-          document.documentElement.style.setProperty("--siteSearchW", target + "px");
-        }catch(_){}
-
         input?.focus();
         render(input?.value || "");
       }
@@ -2556,7 +2795,6 @@
       const next = document.getElementById("merch-next");
       if(!track || !prev || !next) return;
 
-      // Replace/add images here later (square works best)
       const items = [
         "mayanut-powder-maya-nut-brosimum-alicastrum.png",
         "maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
@@ -2568,12 +2806,11 @@
       ];
 
       let idx = 0;
-
       function mod(n, m){ return ((n % m) + m) % m; }
 
       function render(){
         track.innerHTML = "";
-        const positions = [-2, -1, 0, 1, 2]; // 5 items
+        const positions = [-2, -1, 0, 1, 2];
         positions.forEach((p)=>{
           const realIndex = mod(idx + p, items.length);
           const el = document.createElement("div");
@@ -2598,34 +2835,6 @@
       next.addEventListener("click", ()=>{ idx = mod(idx + 1, items.length); render(); });
 
       render();
-    })();
-
-    // Click glow
-    (function(){
-      const selectors = [
-        "button",
-        "a.nav-pill",
-        "a.lang-pill",
-        "a.metal-btn",
-        ".icon-btn",
-        ".sort-pill",
-        ".add-btn",
-        ".qv-btn",
-        ".icon-pill",
-        ".view-store-btn",
-        ".drawer-close",
-        ".merch-arrow"
-      ];
-      const nodes = Array.from(document.querySelectorAll(selectors.join(",")));
-
-      function flash(el){
-        el.classList.add("click-glow");
-        setTimeout(()=> el.classList.remove("click-glow"), 260);
-      }
-
-      nodes.forEach(el=>{
-        el.addEventListener("pointerdown", ()=> flash(el), {passive:true});
-      });
     })();
   </script>
 </body>

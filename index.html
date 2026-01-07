@@ -160,6 +160,8 @@
       background: var(--store-green-grad);
       min-height:100vh;
       overscroll-behavior-y: none;
+      width:100%;
+      max-width:100%;
     }
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; }
@@ -230,6 +232,7 @@
       background: var(--tan);
       padding-top: var(--stickyOffset);
       overflow-x:hidden;
+      max-width:100%;
     }
 
     /* STICKY TOP */
@@ -246,6 +249,7 @@
       border-bottom: 2px solid var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       overflow:hidden;
+      max-width:100%;
     }
 
     /* TOP BANNER */
@@ -312,6 +316,7 @@
       position:relative;
       z-index:1;
       flex-wrap:nowrap;
+      max-width:100%;
     }
 
     /* Desktop search icon far-left */
@@ -374,9 +379,10 @@
       overflow:hidden;
       display:flex;
       align-items:center;
+      max-width: calc(100vw - 86px);
     }
     body.site-search-open .nav-search-box{
-      width: var(--siteSearchW);
+      width: min(var(--siteSearchW), calc(100vw - 86px));
       opacity:1;
       pointer-events:auto;
     }
@@ -428,6 +434,7 @@
       overflow:hidden;
       display:none;
       z-index:2000;
+      max-width: calc(100vw - 60px);
     }
     body.site-search-open .nav-suggest{ display:block; }
     .suggest-item{
@@ -464,6 +471,8 @@
       width:100%;
       padding-left: 66px;
       padding-right: 140px;
+      min-width:0;
+      max-width:100%;
     }
 
     .nav-pill{
@@ -598,6 +607,7 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
+      max-width:100%;
     }
     .mobile-menu-head{
       padding:14px;
@@ -638,6 +648,7 @@
       flex-direction:column;
       gap:10px;
       overflow:auto;
+      max-width:100%;
     }
     .mobile-menu-body a{
       border-radius:14px;
@@ -651,6 +662,7 @@
       font-size:12px;
       color:#0b1220;
       box-shadow:0 12px 28px rgba(15,23,42,0.10);
+      word-break:break-word;
     }
     .mobile-menu-body a:active{ background: rgba(253,108,2,0.14); }
 
@@ -668,41 +680,22 @@
         var(--tan) 100%
       );
       margin-top:0;
+      max-width:100%;
+      overflow-x:hidden;
     }
     .content-wrapper{
       padding:14px 22px 26px;
       width:100%;
       overflow-x:hidden;
+      max-width:100%;
     }
 
-    /* SECTION DIVIDER */
-    .section-divider{
-      max-width:1200px;
-      margin: 10px auto 8px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color: var(--green);
-      padding: 0 2px;
-    }
-    .section-divider::before,
-    .section-divider::after{
-      content:"";
-      flex:1;
-      height:2px;
-      background:var(--green);
-      border-radius:999px;
-      opacity:.9;
-    }
+    /* Hide external dividers (titles are inside boxes now) */
+    .section-divider{ display:none !important; }
 
-    /* Panel title (mobile inside boxes) */
+    /* Panel title (now always visible, inside boxes) */
     .panel-title{
-      display:none;
+      display:flex;
       width:100%;
       align-items:center;
       justify-content:center;
@@ -712,7 +705,7 @@
       text-transform:uppercase;
       font-size:12px;
       color: var(--green);
-      padding: 6px 2px 8px;
+      padding: 6px 2px 10px;
     }
     .panel-title::before,
     .panel-title::after{
@@ -778,7 +771,6 @@
       margin:6px 0 0 0;
       width:100%;
     }
-
     @media(min-width:981px){
       .hero-title .line{ white-space:nowrap; }
       .hero-title .line.bottomline{ white-space:nowrap; }
@@ -824,6 +816,7 @@
       max-width:820px;
       width:100%;
       margin-top:2px;
+      overflow:hidden;
     }
     .pretty-paragraph{
       font-family: var(--font-pretty);
@@ -860,7 +853,7 @@
       transform: translateZ(0);
     }
 
-    /* STORE (updated so it fills the entire right column, not a capped max-width) */
+    /* STORE */
     .store-head{
       width:100%;
       max-width: none;
@@ -873,6 +866,7 @@
       border-radius:20px;
       padding:5px;
       box-shadow:0 16px 44px rgba(15,23,42,0.18);
+      overflow:hidden;
     }
 
     #store-panel{
@@ -897,6 +891,8 @@
       gap:10px;
       width:100%;
       margin-top:6px;
+      flex-wrap:nowrap;
+      min-width:0;
     }
     .icon-btn{
       width:36px;height:34px;
@@ -959,6 +955,7 @@
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       flex:1 1 auto;
       min-width:0;
+      max-width:100%;
     }
     .store-search .mag,
     .store-search .xbtn{
@@ -996,14 +993,26 @@
     }
     .store-search input::placeholder{ color: rgba(12,90,42,.92); font-weight:950; }
 
+    /* Thin green separator lines inside Store */
+    .store-split-line{
+      width:100%;
+      height:2px;
+      background: rgba(12,90,42,0.92);
+      border-radius:999px;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.25);
+      flex:0 0 auto;
+    }
+
     .store-grid{
-      margin-top:8px;
+      margin-top:2px;
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
       gap:12px;
       width:100%;
       flex:1;
       align-content:start;
+      min-width:0;
+      max-width:100%;
     }
 
     .product-card{
@@ -1019,6 +1028,8 @@
       min-height: 206px;
       overflow:hidden;
       gap:8px;
+      min-width:0;
+      max-width:100%;
     }
     .pimg{
       width:100%;
@@ -1045,7 +1056,6 @@
     }
     .ptitle .dot{ font-size:13px; transform: translateY(-1px); }
 
-    /* Quantity + ADD + price */
     .buy-row{
       margin-top:auto;
       width:100%;
@@ -1053,6 +1063,8 @@
       align-items:stretch;
       justify-content:center;
       gap:10px;
+      min-width:0;
+      max-width:100%;
     }
 
     .qty-vert{
@@ -1085,9 +1097,7 @@
       font-size:14px;
       outline:none;
     }
-    .qv-btn:active{
-      background: rgba(253,108,2,0.28);
-    }
+    .qv-btn:active{ background: rgba(253,108,2,0.28); }
     .qv-mid{
       height:16px;
       display:flex;
@@ -1113,6 +1123,7 @@
       border:1px solid var(--cream);
       background: rgba(255,255,255,0.14);
       min-width: 0;
+      max-width:100%;
     }
     .add-btn{
       border:none;
@@ -1148,7 +1159,7 @@
     }
 
     .view-store-btn{
-      margin-top:8px;
+      margin-top:2px;
       width:100%;
       height:44px;
       border-radius:14px;
@@ -1174,13 +1185,14 @@
 
     /* Merch carousel */
     .merch-wrap{
-      margin-top:10px;
       width:100%;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:12px;
-      padding: 6px 2px 0;
+      padding: 4px 2px 2px;
+      min-width:0;
+      max-width:100%;
     }
     .merch-arrow{
       width:34px;
@@ -1218,6 +1230,8 @@
       flex: 1 1 auto;
       min-width:0;
       overflow:hidden;
+      max-width:100%;
+      touch-action: pan-y;
     }
 
     .merch-item{
@@ -1246,7 +1260,7 @@
     .merch-item.is-med{ transform: scale(0.82); opacity:0.78; }
     .merch-item.is-big{ transform: scale(1.02); opacity:1; }
 
-    /* HERO bottom: Learn More under images only */
+    /* HERO bottom */
     .hero-bottom-row{
       grid-column: 1 / -1;
       display:grid;
@@ -1301,6 +1315,7 @@
       background: var(--metal-orange);
       padding:6px;
       box-shadow:0 20px 55px rgba(15,23,42,.25);
+      overflow:hidden;
     }
     .about-us{
       background: var(--para-bg);
@@ -1313,8 +1328,10 @@
       grid-template-columns:1fr 1fr;
       gap:16px;
       align-items:start;
+      min-width:0;
+      max-width:100%;
     }
-    .about-card{ display:flex; flex-direction:column; gap:12px; }
+    .about-card{ display:flex; flex-direction:column; gap:12px; min-width:0; }
     .about-p-outline{
       background: var(--metal-orange);
       border-radius:22px;
@@ -1335,10 +1352,12 @@
       font-weight: 850;
       min-height: 160px;
       cursor: pointer;
+      word-break:break-word;
     }
+    /* DOUBLE HEIGHT per request */
     .about-card img{
       width:100%;
-      height: 160px;
+      height: 320px;
       object-fit:cover;
       border-radius:16px;
       border:2px solid var(--frame-line);
@@ -1354,6 +1373,8 @@
       position:relative;
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
+      overflow-x:hidden;
+      max-width:100%;
     }
     .footer-bottom-line{
       position:absolute;
@@ -1370,6 +1391,8 @@
       grid-template-columns: 1fr 1fr;
       gap:16px;
       align-items:stretch;
+      min-width:0;
+      max-width:100%;
     }
 
     .footer-left{
@@ -1378,6 +1401,7 @@
       gap:14px;
       min-width:0;
       justify-content:flex-start;
+      max-width:100%;
     }
     .footer-logo{
       width:116px;
@@ -1400,6 +1424,7 @@
       padding-top:6px;
       flex:1 1 auto;
       align-items:flex-start;
+      max-width:100%;
     }
 
     .footer-lines{
@@ -1413,6 +1438,7 @@
       color:#0b1220;
       white-space:nowrap;
       align-items:flex-start;
+      max-width:100%;
     }
     .based-line{
       display:flex;
@@ -1432,6 +1458,7 @@
       gap:14px;
       align-items:flex-start;
       flex-wrap:wrap;
+      max-width:100%;
     }
     .footer-links a{
       font-weight:950;
@@ -1447,14 +1474,6 @@
     }
     .footer-links a:hover{ transform: scale(1.02); }
 
-    .footer-social{
-      display:flex;
-      flex-direction:row;
-      gap:10px;
-      align-items:center;
-      margin-top:6px;
-      width: fit-content;
-    }
     .icon-pill{
       width:38px;
       height:38px;
@@ -1468,6 +1487,7 @@
       text-decoration:none;
       box-shadow: 0 12px 28px rgba(15,23,42,0.12);
       transition: transform .12s ease;
+      flex:0 0 auto;
     }
     .icon-pill:hover{ transform: scale(1.05); }
     .icon-pill svg{
@@ -1488,6 +1508,8 @@
       display:flex;
       flex-direction:column;
       gap:8px;
+      min-width:0;
+      max-width:100%;
     }
     .nl-title{
       font-weight:950;
@@ -1507,6 +1529,7 @@
       line-height:1.45;
       text-shadow:0 1px 0 rgba(255,255,255,0.45);
       max-width: 520px;
+      word-break:break-word;
     }
     .newsletter-form{
       display:flex;
@@ -1516,6 +1539,7 @@
       width:100%;
       margin-top:2px;
       max-width: 520px;
+      min-width:0;
     }
     .newsletter-form input{
       flex:1;
@@ -1529,11 +1553,52 @@
       font-size:12px;
       outline:none;
       color:#111827;
+      max-width:100%;
     }
     .newsletter-btn{
       height:38px;
       min-width:160px;
       width:auto;
+    }
+
+    /* Bottom banner (same thickness as top banner) */
+    .bottom-banner{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.14);
+      border-top: 2px solid rgba(12,90,42,0.35);
+      max-width:100%;
+      overflow:hidden;
+    }
+    .bottom-banner-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      min-width:0;
+    }
+    .bottom-banner-right{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      min-width:0;
+      justify-content:flex-end;
+    }
+    .bottom-banner-right a{
+      font-weight:950;
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:#0b1220;
+      text-decoration:none;
+      border-bottom:1px solid rgba(11,18,32,0.28);
+      padding-bottom:2px;
+      white-space:nowrap;
     }
 
     /* FAB */
@@ -1587,6 +1652,8 @@
       background: rgba(0,0,0,0.26);
       backdrop-filter: blur(6px);
       padding:18px;
+      max-width:100%;
+      overflow:hidden;
     }
     body.cart-open .cart-overlay{ display:block; z-index:1450; }
     body.a11y-open .a11y-overlay{ display:block; z-index:1400; }
@@ -1603,6 +1670,7 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
+      max-width:100%;
     }
     .a11y-head{
       padding:14px 14px 10px;
@@ -1612,6 +1680,7 @@
       gap:12px;
       border-bottom:2px solid rgba(12,90,42,.55);
       background: rgba(255,255,255,0.10);
+      min-width:0;
     }
     .a11y-brand{ display:flex; align-items:center; gap:10px; min-width:0; }
     .a11y-logo{
@@ -1633,6 +1702,7 @@
       overflow:hidden;
       text-overflow:ellipsis;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      min-width:0;
     }
     .a11y-version{
       font-weight:950;
@@ -1642,6 +1712,7 @@
       color:#0b1220;
       white-space:nowrap;
       opacity:.95;
+      flex:0 0 auto;
     }
     .a11y-close{
       width:40px;height:40px;
@@ -1651,6 +1722,7 @@
       display:flex;align-items:center;justify-content:center;
       cursor:pointer;
       transition: transform .12s ease;
+      flex:0 0 auto;
     }
     .a11y-close:hover{ transform: scale(1.04); }
     .a11y-close svg{
@@ -1667,6 +1739,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      min-width:0;
     }
     .a11y-card{
       border-radius:16px;
@@ -1674,6 +1747,7 @@
       background: rgba(255,255,255,0.16);
       padding:12px;
       box-shadow:0 12px 30px rgba(15,23,42,0.10);
+      min-width:0;
     }
     .a11y-card h3{
       font-weight:950;
@@ -1694,6 +1768,7 @@
       border:1px solid rgba(12,90,42,.65);
       background: rgba(255,255,255,0.18);
       margin-top:8px;
+      min-width:0;
     }
     .toggle-row:first-of-type{ margin-top:0; }
     .toggle-row .label{
@@ -1740,6 +1815,20 @@
     body.large-text-on .switch.large::after{ transform: translateX(22px); }
     body.high-contrast-on .switch.contrast::after{ transform: translateX(22px); }
 
+    .a11y-select{
+      width: 160px;
+      max-width: 48vw;
+      height:36px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.14);
+      font-weight:950;
+      letter-spacing:.06em;
+      color:#0b1220;
+      padding: 0 10px;
+      outline:none;
+    }
+
     body.large-text-on{ font-size:112%; }
     body.large-text-on .pretty-paragraph{ font-size:16px; }
     body.high-contrast-on{ filter: contrast(1.22) saturate(1.05); }
@@ -1756,6 +1845,7 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
+      max-width:100%;
     }
     .cart-head{
       padding:14px 14px 10px;
@@ -1864,7 +1954,12 @@
       .safe-area-img{ display:block; }
 
       .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
+      .frame-wrap{
+        width:100% !important;
+        margin:0 !important;
+        padding-top: var(--stickyOffset);
+        max-width:100% !important;
+      }
 
       .sticky-top{
         left:0 !important; right:0 !important;
@@ -1881,9 +1976,6 @@
         max-width: calc(100vw - 96px);
         font-size:10px;
       }
-
-      .section-divider{ display:none; }
-      .panel-title{ display:flex; }
 
       #hero{ grid-template-columns: 1fr; gap:14px; }
       .hero-brand{
@@ -1906,8 +1998,8 @@
         gap:10px;
       }
 
-      #store-panel .panel-title{ padding-top:4px; padding-bottom:8px; }
       .store-bar{ margin-top:0; }
+      .store-grid{ gap:10px; }
 
       .footer-wrap{ grid-template-columns:1fr; }
       .newsletter{ order:-1; padding-top:2px; }
@@ -1916,6 +2008,15 @@
       .newsletter-btn{ width:100%; min-width:0; }
 
       footer{ padding-bottom: calc(env(safe-area-inset-bottom) + 6px); }
+
+      .bottom-banner{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+      .bottom-banner-right{
+        justify-content:flex-start;
+      }
     }
 
     img, .site-header, .store-search, .nav-pill, .lang-pill, .icon-pill{
@@ -2070,15 +2171,11 @@
               </div>
             </div>
 
-            <!-- Desktop divider (hidden on mobile) -->
-            <h2 class="section-divider" id="what-is-mayanut">What Is MayaNut?</h2>
-
             <div class="hero-sub-outline">
-              <!-- Mobile title inside the box -->
-              <div class="panel-title" aria-hidden="true">What Is MayaNut?</div>
+              <div class="panel-title" id="what-is-mayanut">What Is MayaNut?</div>
 
               <p class="pretty-paragraph hero-sub" id="hero-sub">
-                MayaNut is an ancient and elusive seed from the tropical tree Brosimum alicastrum. Try comforting roasted powder with notes of chocolate and coffee, a forgotten food from the ancient world, rediscovered just for you. Shop or learn about mayanut, brought to you by The MayaNut Company.
+                MayaNut is an ancient seed from the tropical tree Brosimum alicastrum. Enjoy splendid tropical notes of coffee and chocolate in this new seed. Longing for the revitalization of a forgotten food lost to time, The MayaNut Company is working in South Florida to establish Florida's first MayaNut farm.
               </p>
             </div>
 
@@ -2110,13 +2207,9 @@
           </div>
 
           <div class="store-col" aria-label="Store column">
-            <!-- Desktop divider (hidden on mobile) -->
-            <h2 class="section-divider store-head">Store</h2>
-
             <div class="store-outline">
               <aside id="store-panel" aria-label="Store preview">
-                <!-- Mobile title inside the store box -->
-                <div class="panel-title" aria-hidden="true">Store</div>
+                <div class="panel-title">Store</div>
 
                 <div class="store-bar" aria-label="Store controls row">
                   <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart">
@@ -2146,6 +2239,26 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="store-split-line" aria-hidden="true"></div>
+
+                <div class="merch-wrap" aria-label="Merch carousel">
+                  <button class="merch-arrow" id="merch-prev" type="button" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <polygon points="14.8,4.2 7.2,12 14.8,19.8 14.8,16.8 10.2,12 14.8,7.2"></polygon>
+                    </svg>
+                  </button>
+
+                  <div class="merch-track" id="merch-track" aria-label="Merch items"></div>
+
+                  <button class="merch-arrow" id="merch-next" type="button" aria-label="Next">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <polygon points="9.2,4.2 16.8,12 9.2,19.8 9.2,16.8 13.8,12 9.2,7.2"></polygon>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="store-split-line" aria-hidden="true"></div>
 
                 <div class="store-grid" id="store-grid">
                   <article class="product-card" data-title="MayaNut Powder">
@@ -2205,22 +2318,6 @@
                   </article>
                 </div>
 
-                <div class="merch-wrap" aria-label="Merch carousel">
-                  <button class="merch-arrow" id="merch-prev" type="button" aria-label="Previous">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <polygon points="14.8,4.2 7.2,12 14.8,19.8 14.8,16.8 10.2,12 14.8,7.2"></polygon>
-                    </svg>
-                  </button>
-
-                  <div class="merch-track" id="merch-track" aria-label="Merch items"></div>
-
-                  <button class="merch-arrow" id="merch-next" type="button" aria-label="Next">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <polygon points="9.2,4.2 16.8,12 9.2,19.8 9.2,16.8 13.8,12 9.2,7.2"></polygon>
-                    </svg>
-                  </button>
-                </div>
-
                 <a href="store.html" class="view-store-btn" aria-label="View full store">VIEW FULL STORE</a>
               </aside>
             </div>
@@ -2234,13 +2331,9 @@
           </div>
         </section>
 
-        <!-- Desktop divider (hidden on mobile) -->
-        <h2 class="section-divider" id="about-divider">A Little About Us</h2>
-
-        <section class="about-wrap" aria-label="A Little About Us">
+        <section class="about-wrap" aria-label="A Little About Us" style="margin-top:14px;">
           <div class="about-outline">
-            <!-- Mobile title inside the box -->
-            <div class="panel-title" aria-hidden="true">A Little About Us</div>
+            <div class="panel-title" id="about-divider">A Little About Us</div>
 
             <div class="about-us">
               <div class="about-grid">
@@ -2306,32 +2399,6 @@
               <a href="privacy.html">Privacy</a>
               <a href="sitemap.html">Sitemap</a>
             </div>
-
-            <div class="footer-social" aria-label="Social links">
-              <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                  <circle cx="12" cy="12" r="4.2"></circle>
-                  <circle cx="17.3" cy="6.7" r="0.9"></circle>
-                </svg>
-              </a>
-              <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4.5 6.5h15v11h-15z"></path>
-                  <path d="M4.5 7l7.5 6 7.5-6"></path>
-                </svg>
-              </a>
-              <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
-                </svg>
-              </a>
-              <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
-                </svg>
-              </a>
-            </div>
           </div>
         </div>
 
@@ -2343,6 +2410,41 @@
             <input id="newsletter-email" type="email" name="email" placeholder="Enter email" inputmode="email" autocomplete="email" required />
             <button class="metal-btn newsletter-btn" type="submit" aria-label="Subscribe">SUBSCRIBE</button>
           </form>
+        </div>
+      </div>
+
+      <!-- Bottom banner under footer content, same thickness as top banner -->
+      <div class="bottom-banner" aria-label="Bottom banner">
+        <div class="bottom-banner-left" aria-label="Social icons">
+          <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <circle cx="17.3" cy="6.7" r="0.9"></circle>
+            </svg>
+          </a>
+          <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4.5 6.5h15v11h-15z"></path>
+              <path d="M4.5 7l7.5 6 7.5-6"></path>
+            </svg>
+          </a>
+          <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+            </svg>
+          </a>
+          <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="bottom-banner-right" aria-label="Footer links">
+          <a href="terms.html">Terms</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="sitemap.html">Sitemap</a>
         </div>
       </div>
 
@@ -2369,6 +2471,9 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
         <a href="sitemap.html">Sitemap</a>
+        <a href="faq.html">FAQ</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
       </div>
     </div>
   </div>
@@ -2411,7 +2516,7 @@
       <div class="a11y-head">
         <div class="a11y-brand">
           <img src="mayanut-the-mayanut-comapny-logo.png" class="a11y-logo" alt="The MayaNut Company logo" id="a11y-logo" width="54" height="54" decoding="async" onerror="this.style.opacity='.35';" />
-          <div class="a11y-title">Accessibility</div>
+          <div class="a11y-title">Accessibility ♿</div>
         </div>
         <div class="a11y-version">v4.2.0</div>
         <button class="a11y-close" id="a11y-close" aria-label="Close accessibility" type="button">
@@ -2465,6 +2570,22 @@
             </select>
           </div>
         </div>
+
+        <div class="a11y-card">
+          <h3>Menu</h3>
+          <div class="mobile-menu-body" style="padding:0; gap:10px;">
+            <a href="index.html">Home</a>
+            <a href="store.html">Store</a>
+            <a href="about.html">About</a>
+            <a href="research.html">Research</a>
+            <a href="contact.html">Contact</a>
+            <a href="sitemap.html">Sitemap</a>
+            <a href="faq.html">FAQ</a>
+            <a href="terms.html">Terms</a>
+            <a href="privacy.html">Privacy</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -2703,7 +2824,8 @@
         { keys:["newsletter","updates","subscribe"], title:"Jump to Newsletter", desc:"Scroll to newsletter signup.", action:()=> document.getElementById("newsletter")?.scrollIntoView({behavior:"smooth", block:"start"}) },
         { keys:["privacy"], title:"Open Privacy", desc:"View privacy policy.", action:()=> location.href="privacy.html" },
         { keys:["terms"], title:"Open Terms", desc:"View terms.", action:()=> location.href="terms.html" },
-        { keys:["sitemap","site map"], title:"Open Sitemap", desc:"View the sitemap.", action:()=> location.href="sitemap.html" }
+        { keys:["sitemap","site map"], title:"Open Sitemap", desc:"View the sitemap.", action:()=> location.href="sitemap.html" },
+        { keys:["faq"], title:"Open FAQ", desc:"Open frequently asked questions.", action:()=> location.href="faq.html" }
       ];
 
       function norm(s){ return String(s||"").toLowerCase().replace(/\s+/g," ").trim(); }
@@ -2777,7 +2899,7 @@
       document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") close(); });
     })();
 
-    // Merch carousel logic (5 visible, infinite scrolling)
+    // Merch carousel: auto-advance every 3s + wheel + drag
     (function(){
       const track = document.getElementById("merch-track");
       const prev = document.getElementById("merch-prev");
@@ -2795,11 +2917,16 @@
       ];
 
       let idx = 0;
+      let timer = null;
+      let dragging = false;
+      let dragX = 0;
+
       function mod(n, m){ return ((n % m) + m) % m; }
 
       function render(){
         track.innerHTML = "";
         const positions = [-2, -1, 0, 1, 2];
+
         positions.forEach((p)=>{
           const realIndex = mod(idx + p, items.length);
           const el = document.createElement("div");
@@ -2820,10 +2947,56 @@
         });
       }
 
-      prev.addEventListener("click", ()=>{ idx = mod(idx - 1, items.length); render(); });
-      next.addEventListener("click", ()=>{ idx = mod(idx + 1, items.length); render(); });
+      function goNext(){ idx = mod(idx + 1, items.length); render(); }
+      function goPrev(){ idx = mod(idx - 1, items.length); render(); }
+
+      function resetAuto(){
+        if(timer) clearInterval(timer);
+        timer = setInterval(goNext, 3000);
+      }
+
+      prev.addEventListener("click", ()=>{ goPrev(); resetAuto(); });
+      next.addEventListener("click", ()=>{ goNext(); resetAuto(); });
+
+      // Mouse wheel: scroll to navigate
+      track.addEventListener("wheel", (e)=>{
+        e.preventDefault();
+        const dx = Math.abs(e.deltaX);
+        const dy = Math.abs(e.deltaY);
+        const dir = (dx > dy ? e.deltaX : e.deltaY);
+        if(dir > 0) goNext();
+        else goPrev();
+        resetAuto();
+      }, { passive:false });
+
+      // Drag (mouse / touch)
+      function onDown(clientX){
+        dragging = true;
+        dragX = clientX;
+        resetAuto();
+      }
+      function onMove(clientX){
+        if(!dragging) return;
+        const diff = clientX - dragX;
+        if(Math.abs(diff) > 24){
+          if(diff < 0) goNext();
+          else goPrev();
+          dragging = false;
+        }
+      }
+      function onUp(){ dragging = false; }
+
+      track.style.cursor = "grab";
+      track.addEventListener("mousedown", (e)=> onDown(e.clientX));
+      window.addEventListener("mousemove", (e)=> onMove(e.clientX));
+      window.addEventListener("mouseup", onUp);
+
+      track.addEventListener("touchstart", (e)=> onDown(e.touches[0].clientX), {passive:true});
+      track.addEventListener("touchmove", (e)=> onMove(e.touches[0].clientX), {passive:true});
+      track.addEventListener("touchend", onUp, {passive:true});
 
       render();
+      resetAuto();
     })();
   </script>
 </body>

@@ -8,14 +8,14 @@
   <title>The MayaNut Company | America's Premier MayaNut Farm</title>
 
   <!-- SEO -->
-  <meta name="description" content="Learn what MayaNut is, its benefits, uses, and why Brosimum alicastrum is a sustainable tropical food tree grown in Florida." />
-  <meta name="keywords" content="MayaNut,Mayanut,Maya Nut,Brosimum alicastrum,Florida farm,South Florida farm,tropical food tree,coffee alternative,caffeine free,roasted seed powder,agroforestry,sustainable perennial crop,August Kokus" />
+  <meta name="description" content="The MayaNut Company is developing MayaNut (Brosimum alicastrum) in South Florida—growing seed-grown trees, building Florida’s first MayaNut farm, and creating caffeine-free roasted MayaNut powders and future foods. Follow our research, cultivation updates, and product development as we revive an overlooked tropical supercrop for resilient agriculture and sustainable nutrition." />
+  <meta name="keywords" content="MayaNut,Mayanut,Brosimum alicastrum,Florida farm,South Florida farm,tropical food tree,coffee alternative,caffeine-free,roasted seed powder,agroforestry,perennial crop,sustainable agriculture,MayaNut powder,MayaNut latte,August Kokus" />
   <link rel="canonical" href="https://mayanut.com/index.html" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="The MayaNut Company | America's Premier MayaNut Farm" />
-  <meta property="og:description" content="Learn what MayaNut is, its benefits, uses, and why Brosimum alicastrum is a sustainable tropical food tree grown in Florida." />
+  <meta property="og:description" content="Developing MayaNut (Brosimum alicastrum) in South Florida—building Florida’s first MayaNut farm, publishing cultivation research, and crafting caffeine-free roasted MayaNut powders and future foods." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mayanut.com/index.html" />
   <meta property="og:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
@@ -23,7 +23,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The MayaNut Company | America's Premier MayaNut Farm" />
-  <meta name="twitter:description" content="Learn what MayaNut is, its benefits, uses, and why Brosimum alicastrum is a sustainable tropical food tree grown in Florida." />
+  <meta name="twitter:description" content="Developing MayaNut (Brosimum alicastrum) in South Florida—building Florida’s first MayaNut farm, publishing cultivation research, and crafting caffeine-free roasted MayaNut powders and future foods." />
   <meta name="twitter:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
 
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
@@ -48,6 +48,7 @@
         "name":"The MayaNut Company",
         "url":"https://mayanut.com/",
         "logo":"https://mayanut.com/mayanut-the-mayanut-comapny-logo.png",
+        "description":"The MayaNut Company is developing MayaNut (Brosimum alicastrum) in South Florida—growing seed-grown trees, building Florida’s first MayaNut farm, publishing cultivation research, and creating roasted MayaNut products as a caffeine-free coffee alternative and resilient food crop.",
         "sameAs":[
           "https://www.instagram.com/themayanutcompany",
           "https://x.com/mayanutcompany",
@@ -66,12 +67,16 @@
         "@id":"https://mayanut.com/#website",
         "url":"https://mayanut.com/",
         "name":"The MayaNut Company",
-        "publisher":{"@id":"https://mayanut.com/#organization"},
-        "potentialAction":{
-          "@type":"SearchAction",
-          "target":"https://mayanut.com/search?q={search_term_string}",
-          "query-input":"required name=search_term_string"
-        }
+        "publisher":{"@id":"https://mayanut.com/#organization"}
+      },
+      {
+        "@type":"WebPage",
+        "@id":"https://mayanut.com/index.html#webpage",
+        "url":"https://mayanut.com/index.html",
+        "name":"The MayaNut Company | America's Premier MayaNut Farm",
+        "isPartOf":{"@id":"https://mayanut.com/#website"},
+        "about":{"@id":"https://mayanut.com/#organization"},
+        "description":"The MayaNut Company is developing MayaNut (Brosimum alicastrum) in South Florida—building Florida’s first MayaNut farm, sharing cultivation research, and creating roasted MayaNut powders and future foods as a caffeine-free coffee alternative and resilient tropical crop."
       }
     ]
   }
@@ -148,6 +153,9 @@
 
       --stickyOffset: 200px;
       --siteSearchW: 280px;
+
+      /* controls store-coming-soon width */
+      --storeSoonW: 86%;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -228,12 +236,13 @@
     .frame-wrap{
       position:relative;
       z-index:2;
+
+      /* FIX: prevent overlap with right frame by sizing from left/right insets */
+      left: var(--sideW);
       width: calc(100% - (var(--sideW) * 2));
-      margin-left: var(--sideW);
-      margin-right: var(--sideW);
+
       min-height:100vh;
 
-      /* CHANGE: main frame background back to tan gradient */
       background: linear-gradient(
         to bottom,
         var(--tan-top) 0%,
@@ -251,8 +260,11 @@
       position:fixed;
       top:0;
       z-index:999;
+
+      /* FIX: align perfectly inside side frames */
       left: var(--sideW);
       right: var(--sideW);
+
       background: var(--panel-green-grad);
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -260,6 +272,10 @@
       border-bottom: 2px solid var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       overflow:hidden;
+
+      /* FIX: reduce scroll jitter / compositing issues */
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     /* TOP BANNER */
@@ -306,6 +322,7 @@
       align-items:center;
       justify-content:center;
       position:relative;
+      contain: paint;
     }
     .site-header::after{
       content:"";
@@ -678,7 +695,6 @@
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow: var(--shadow);
 
-      /* keep tan gradient in main content too */
       background: linear-gradient(
         to bottom,
         var(--tan-top) 0%,
@@ -689,6 +705,7 @@
 
       margin-top:0;
       overflow:hidden;
+      contain: paint;
     }
     .content-wrapper{
       padding:14px 22px 26px;
@@ -844,11 +861,6 @@
       min-width:0;
     }
 
-    /*
-      CHANGE REQUEST:
-      - Make the "orange inside the paragraphs" become the green lime->dark gradient.
-      We do that by giving the paragraph wrapper (hero-sub / about-p-outline) the store-green-grad.
-    */
     .hero-sub{
       background: var(--store-green-grad);
       border: 1px solid var(--frame-line);
@@ -918,6 +930,7 @@
       flex-direction:column;
       min-width:0;
       height:100%;
+      contain: paint;
     }
     .store-titlebar{
       padding:10px 14px 9px;
@@ -930,7 +943,7 @@
     .store-titlebar .box-title{ color: var(--green); }
 
     .store-body{
-      padding:12px 12px 12px;
+      padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -1269,6 +1282,30 @@
       margin: 10px 0 8px;
     }
 
+    /* Store Coming Soon: bigger + controlled width shorter than divider */
+    .store-coming-soon{
+      margin-top:2px;
+      width: var(--storeSoonW);
+      max-width: 520px;
+      align-self:center;
+      text-align:center;
+      padding: 6px 0 2px;
+      font-family: "Snell Roundhand","Apple Chancery","Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing: 0.06em;
+      color: var(--cream);
+      text-shadow:
+        0 2px 10px rgba(15,23,42,0.30),
+        0 0 22px rgba(255,255,197,0.26),
+        0 1px 0 rgba(0,0,0,0.18);
+      -webkit-text-stroke: 1.1px rgba(12,90,42,0.90);
+      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.18));
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
     /* Merch carousel (kept in store) */
     .merch-wrap{
       width:100%;
@@ -1342,28 +1379,6 @@
     .merch-item.is-med{ transform: scale(0.84); opacity:0.78; }
     .merch-item.is-big{ transform: scale(1.05); opacity:1; }
 
-    /* Store Coming Soon: bolder + higher contrast */
-    .store-coming-soon{
-      margin-top:0;
-      width:100%;
-      text-align:center;
-      padding: 6px 0 2px;
-      font-family: "Snell Roundhand","Apple Chancery","Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
-      font-style: italic;
-      font-weight: 900;
-      font-size: 24px;
-      letter-spacing: 0.06em;
-      color: var(--cream);
-      text-shadow:
-        0 2px 10px rgba(15,23,42,0.30),
-        0 0 22px rgba(255,255,197,0.26),
-        0 1px 0 rgba(0,0,0,0.18);
-      -webkit-text-stroke: 1.1px rgba(12,90,42,0.90);
-      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.18));
-      user-select:none;
-      -webkit-user-select:none;
-    }
-
     /* ABOUT */
     .about-wrap{
       max-width:1200px;
@@ -1381,7 +1396,6 @@
     }
     .about-card{ display:flex; flex-direction:column; gap:12px; min-width:0; }
 
-    /* CHANGE: about outline gradient becomes green too */
     .about-p-outline{
       background: var(--store-green-grad);
       border-radius:22px;
@@ -1422,6 +1436,7 @@
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
       overflow:hidden;
+      contain: paint;
     }
     .footer-wrap{
       max-width:1200px;
@@ -1481,11 +1496,16 @@
       gap:8px;
       flex-wrap:wrap;
     }
+
+    /* Florida icon: enforce crisp rendering and proper sizing */
     .florida-icon{
       width:24px;
       height:24px;
       display:inline-block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14));
+      transform: translateZ(0);
     }
 
     .footer-links{
@@ -1973,9 +1993,8 @@
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
       .frame-wrap{
+        left: var(--sideW);
         width: calc(100% - (var(--sideW) * 2));
-        margin-left: var(--sideW);
-        margin-right: var(--sideW);
       }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
       .hero-title .line.topline{ white-space:normal; }
@@ -1994,8 +2013,8 @@
 
       .side-frames{ display:none !important; }
       .frame-wrap{
+        left: 0 !important;
         width:100% !important;
-        margin:0 !important;
         padding-top: var(--stickyOffset);
       }
 
@@ -2043,7 +2062,8 @@
 
       .store-grid{ grid-template-columns:1fr; }
 
-      .store-coming-soon{ font-size: 22px; }
+      :root{ --storeSoonW: 92%; }
+      .store-coming-soon{ font-size: 32px; }
 
       .footer-wrap{ grid-template-columns:1fr; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
@@ -2336,7 +2356,6 @@
 
                   <a href="store.html" class="view-store-btn" aria-label="View full store">VIEW FULL STORE</a>
 
-                  <!-- Merch carousel (kept) -->
                   <div class="merch-wrap" aria-label="Merch carousel">
                     <button class="merch-arrow" id="merch-prev" type="button" aria-label="Previous">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2422,8 +2441,18 @@
           <div class="footer-text">
             <div class="footer-lines">
               <div class="based-line">
-                <span>Based in Florida</span>
-                <img src="florida-image-the-maya-nut-company.png" class="florida-icon" alt="Florida" width="24" height="24" onerror="this.style.display='none';" decoding="async" loading="lazy" />
+                <span>Started in Florida</span>
+                <img
+                  src="florida-image-the-maya-nut-company.png"
+                  class="florida-icon"
+                  alt="Florida"
+                  width="24"
+                  height="24"
+                  decoding="async"
+                  loading="lazy"
+                  style="object-fit:contain;"
+                  onerror="this.style.display='none';"
+                />
               </div>
               <div>© 2026 The MayaNut Company, Inc.</div>
             </div>
@@ -2537,7 +2566,7 @@
           <img src="mayanut-the-mayanut-comapny-logo.png" class="a11y-logo" alt="The MayaNut Company logo" id="a11y-logo" width="54" height="54" decoding="async" onerror="this.style.opacity='.35';" />
           <div class="a11y-title">Accessibility ♿</div>
         </div>
-        <div class="a11y-version">v4.0.4</div>
+        <div class="a11y-version">v4.0.5</div>
         <button class="a11y-close" id="a11y-close" aria-label="Close accessibility" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12"></path>
@@ -2597,7 +2626,7 @@
             <a href="store.html">Store</a>
             <a href="about.html">About</a>
             <a href="research.html">Research</a>
-            <a href="contact.html">Contacts</a>
+            <a href="contact.html">Contact</a>
             <a href="sitemap.html">Sitemap</a>
             <a href="terms.html">Terms</a>
             <a href="privacy.html">Privacy</a>

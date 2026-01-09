@@ -144,6 +144,7 @@
       --siteSearchW: 280px;
 
       --bannerH: 54px;
+      --comingSize: 30px; /* tweak if you want micro-alignment */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -211,8 +212,6 @@
       object-fit:cover;
       border-bottom:1px solid rgba(15,23,42,0.10);
       filter:saturate(1.07) contrast(1.03);
-      image-rendering:auto;
-      backface-visibility:hidden;
       transform: translateZ(0);
     }
 
@@ -243,7 +242,6 @@
       border-bottom: 2px solid var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       overflow:hidden;
-      will-change: transform;
       transform: translateZ(0);
     }
 
@@ -260,7 +258,7 @@
       border-bottom: 2px solid rgba(12,90,42,0.35);
     }
     .top-banner .flag{
-      width:24px;
+      width:26px;
       height:auto;
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.18));
       flex:0 0 auto;
@@ -276,17 +274,17 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: min(980px, calc(100% - 120px));
+      max-width: min(980px, calc(100% - 140px));
     }
 
-    /* header */
+    /* header background */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
-      padding: 28px 14px 32px;
+      padding: 24px 14px 28px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -295,8 +293,7 @@
     }
     .site-header::after{
       content:"";
-      position:absolute;
-      inset:0;
+      position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 55%);
       pointer-events:none;
     }
@@ -315,7 +312,7 @@
       min-height: var(--bannerH);
     }
 
-    /* search */
+    /* search icon (green) */
     .nav-search{
       position:absolute;
       left: 8px;
@@ -323,7 +320,6 @@
       height: var(--bannerH);
       display:flex;
       align-items:center;
-      justify-content:flex-start;
       width: 42px;
       z-index:2;
     }
@@ -357,7 +353,6 @@
       background: var(--metal-orange);
       border-color: var(--cream);
     }
-    body.site-search-open .nav-search-btn svg{ stroke: var(--cream); }
 
     .nav-search-box{
       position:absolute;
@@ -429,6 +424,7 @@
       z-index:2000;
     }
     body.site-search-open .nav-suggest{ display:block; }
+
     .suggest-item{
       padding:10px 12px;
       display:flex;
@@ -455,7 +451,7 @@
     }
     .suggest-item:hover{ background: rgba(253,108,2,0.10); }
 
-    /* tabs */
+    /* nav center */
     .nav-center{
       display:flex;
       align-items:center;
@@ -466,6 +462,8 @@
       padding-right: 140px;
       min-height: var(--bannerH);
     }
+
+    /* tabs: green by default, home orange */
     .nav-pill{
       display:inline-flex;
       align-items:center;
@@ -480,6 +478,7 @@
       -webkit-user-select:none;
       touch-action:manipulation;
       box-shadow: 0 10px 22px rgba(15,23,42,0.10);
+      gap:8px;
       transition: transform .12s ease;
       flex:0 0 auto;
     }
@@ -495,6 +494,7 @@
     .nav-pill:hover{ transform: translateY(-1px) scale(1.02); }
     .nav-pill.is-active{
       background: var(--metal-orange);
+      border-color: var(--cream);
     }
 
     .nav-right{
@@ -530,46 +530,103 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.12);
       transition: transform .12s ease;
     }
-    .lang-pill:hover{ transform: scale(1.02); }
 
-    /* Mobile hamburger */
-    .hamburger{
-      display:none;
-      position:absolute;
-      left: 8px;
-      top: 7px;
-      height:40px;
-      width:42px;
-      z-index:3;
-    }
+    /* hamburger */
+    .hamburger{ display:none; position:absolute; left: 8px; top: 7px; height:40px; width:42px; z-index:3; }
     .hamburger-btn{
-      width:42px;
-      height:40px;
+      width:42px; height:40px;
       border-radius:14px;
       border:1px solid rgba(12,90,42,.85);
       background: var(--mobile-green-grad);
       box-shadow: 0 10px 22px rgba(15,23,42,0.12);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       cursor:pointer;
       user-select:none;
       -webkit-user-select:none;
       overflow:hidden;
     }
-    .hamburger-bars{
-      width:18px;
-      height:14px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
+    .hamburger-bars{ width:18px; height:14px; display:flex; flex-direction:column; justify-content:space-between; }
     .hamburger-bars span{
-      display:block;
-      height:2px;
-      border-radius:999px;
+      display:block; height:2px; border-radius:999px;
       background: var(--cream);
       border:1px solid rgba(255,255,197,0.55);
+    }
+
+    .mobile-menu-overlay{
+      position:fixed; inset:0; display:none;
+      background: rgba(0,0,0,0.22);
+      backdrop-filter: blur(6px);
+      padding: 16px;
+      z-index:1600;
+    }
+    body.menu-open .mobile-menu-overlay{ display:block; }
+    .mobile-menu{
+      max-width: 520px;
+      margin-left:auto;
+      height: calc(100vh - 32px);
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      background: var(--store-green-grad);
+      box-shadow:0 18px 60px rgba(15,23,42,0.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .mobile-menu-head{
+      padding:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:2px solid rgba(12,90,42,.55);
+      background: rgba(255,255,255,0.10);
+    }
+    .mobile-menu-title{
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .mobile-menu-close{
+      width:40px;height:40px;
+      border-radius:14px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .mobile-menu-close svg{
+      width:18px;height:18px;
+      stroke:var(--cream);
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .mobile-menu-body{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      overflow:auto;
+    }
+    .mobile-menu-body a,
+    .mobile-menu-body button{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.14);
+      padding:12px;
+      text-decoration:none;
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      box-shadow:0 12px 28px rgba(15,23,42,0.10);
+      cursor:pointer;
+      text-align:left;
     }
 
     /* main */
@@ -639,7 +696,7 @@
       opacity:.9;
     }
 
-    /* hero layout */
+    /* hero grid */
     #hero{
       position:relative;
       display:grid;
@@ -667,16 +724,15 @@
       min-width:0;
     }
     .hero-logo{
-      width:152px;
+      width:154px;
       height:auto;
       cursor:pointer;
       user-select:none;
       -webkit-user-select:none;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       margin-top:2px;
-      margin-left:-6px;
+      margin-left:-2px; /* moved slightly right */
     }
-
     .credit{
       font-size:11.5px;
       text-transform:uppercase;
@@ -687,13 +743,13 @@
       margin-top:2px;
       line-height:1.05;
     }
-
     h1.hero-title{
       line-height:1.04;
       color:#000;
       margin:6px 0 0 0;
       width:100%;
       min-width:0;
+      padding-right: 6px; /* prevent clipping */
     }
     .hero-title .line{
       display:block;
@@ -704,7 +760,7 @@
       min-width:0;
     }
     .hero-title .line.topline{
-      font-size: clamp(30px, 2.75vw, 44px);
+      font-size: clamp(31px, 2.75vw, 45px);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -735,6 +791,7 @@
       gap:12px;
     }
 
+    /* paragraph card (green border) */
     .hero-sub{
       background: var(--store-green-grad);
       border: 2px solid rgba(12,90,42,0.65);
@@ -756,27 +813,30 @@
       border: 1px solid rgba(12,90,42,0.55);
       border-radius: 14px;
     }
-    .inline-learn{
+
+    /* inline learn more (green academic) */
+    .learn-inline{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height:26px;
-      padding:0 10px;
-      border-radius:12px;
+      height:34px;
+      padding:0 14px;
+      margin-left:10px;
+      border-radius:14px;
       border:1px solid var(--cream);
       background: var(--mobile-green-grad);
       color: var(--cream);
       font-weight:950;
-      letter-spacing:.10em;
+      letter-spacing:.12em;
       text-transform:uppercase;
       font-size:10px;
       text-decoration:none;
-      margin-left:8px;
+      vertical-align: middle;
+      box-shadow:0 12px 28px rgba(15,23,42,0.12);
       white-space:nowrap;
-      vertical-align:middle;
-      box-shadow:0 10px 22px rgba(15,23,42,0.12);
     }
 
+    /* images shorter */
     .what-images{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -879,16 +939,16 @@
       pointer-events:none;
     }
 
-    /* sort = academic (green), “CHECKOUT / COMING SOON” */
+    /* sort: show checkout coming soon */
     .sort-pill{
       height:40px;
       padding:0 12px;
       border-radius:14px;
       border:1px solid var(--cream);
-      background: var(--mobile-green-grad);
+      background: var(--metal-orange);
       color:var(--cream);
       font-weight:950;
-      letter-spacing:.12em;
+      letter-spacing:.10em;
       text-transform:uppercase;
       font-size:10px;
       cursor:pointer;
@@ -896,18 +956,13 @@
       align-items:center;
       justify-content:center;
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
-      min-width:92px;
+      min-width:90px;
       line-height:1.05;
       text-align:center;
-      white-space:normal;
-    }
-    .sort-pill .small2{
-      display:flex;
       flex-direction:column;
       gap:2px;
-      align-items:center;
-      justify-content:center;
     }
+    .sort-pill span{ display:block; }
 
     .store-search{
       height:40px;
@@ -961,7 +1016,6 @@
       gap:12px;
       width:100%;
     }
-
     .product-card{
       border-radius: 16px;
       border:1px solid var(--frame-line);
@@ -971,7 +1025,6 @@
       flex-direction:column;
       min-height: 250px;
     }
-
     .pimg{
       width:100%;
       height: 170px;
@@ -1018,11 +1071,11 @@
       line-height:1.12;
       text-align:center;
       color:#0b1220;
-      margin-bottom:10px;
     }
 
-    /* buy row: orange add+qty and green underlined price */
+    /* buy row: orange add 0 + stacked +/- next to 0, green price only */
     .buy-row{
+      margin-top:10px;
       width:100%;
       display:flex;
       align-items:stretch;
@@ -1049,6 +1102,7 @@
       gap:8px;
       min-height: 34px;
       outline:none;
+      border-right: 2px solid rgba(12,90,42,0.85);
     }
     .qty-inline{
       display:inline-flex;
@@ -1070,24 +1124,23 @@
     .qty-inline input::-webkit-outer-spin-button,
     .qty-inline input::-webkit-inner-spin-button{ -webkit-appearance: none; margin:0; }
 
-    /* plus/minus are characters (no boxes), stacked next to quantity */
     .pm-stack{
       display:flex;
       flex-direction:column;
-      gap:0;
+      gap:2px;
       align-items:center;
       justify-content:center;
-      margin-left:2px;
+      margin-left:-2px;
     }
     .pm-stack button{
-      width:18px;
-      height:12px;
+      width:14px;
+      height:9px;
       border:none;
       background: transparent;
       color: var(--cream);
       font-weight:950;
       font-size:12px;
-      line-height:12px;
+      line-height:10px;
       cursor:pointer;
       padding:0;
       display:flex;
@@ -1099,115 +1152,23 @@
     .pm-stack button:active{ transform: scale(0.96); }
 
     .pricebtn{
-      flex:0 0 92px;
+      flex:0 0 96px;
       display:flex;
       align-items:center;
       justify-content:center;
-      border-left: 2px solid rgba(12,90,42,0.85);
       background: var(--mobile-green-grad);
       color: var(--cream);
       font-weight:950;
       letter-spacing:.08em;
-      font-size:10px;
+      font-size:11px;
       border:none;
       outline:none;
       text-shadow:0 1px 0 rgba(0,0,0,0.18);
       text-decoration: underline;
       text-underline-offset: 2px;
-      text-decoration-thickness: 1px;
     }
 
-    /* View full store (orange - active) */
-    .view-store-btn{
-      margin-top:4px;
-      width:100%;
-      height:40px;
-      border-radius:14px;
-      border:1px solid var(--cream);
-      background: var(--metal-orange);
-      color: var(--cream);
-      font-weight:950;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:11px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      box-shadow: 0 14px 38px rgba(15,23,42,0.16);
-    }
-
-    /* Merch carousel */
-    .merch-wrap{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-      padding: 6px 2px 0;
-      min-width:0;
-    }
-    .merch-arrow{
-      width:42px;
-      height:42px;
-      border:none;
-      background:transparent;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      user-select:none;
-      -webkit-user-select:none;
-      opacity:0.96;
-      flex:0 0 auto;
-    }
-    .merch-arrow svg{ width:36px;height:36px; filter: drop-shadow(0 2px 6px rgba(15,23,42,0.18)); }
-    .merch-arrow polygon{
-      fill: rgba(107,114,128,0.92);
-      stroke: rgba(12,90,42,0.85);
-      stroke-width: 2.4;
-      stroke-linejoin: round;
-    }
-    .merch-track{
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:10px;
-      flex: 1 1 auto;
-      min-width:0;
-      overflow:hidden;
-      user-select:none;
-      -webkit-user-select:none;
-      touch-action:pan-y;
-    }
-    .merch-item{
-      width:66px;
-      height:66px;
-      border-radius:14px;
-      border:2px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.55);
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 12px 30px rgba(15,23,42,0.10);
-      transform: scale(0.70);
-      opacity:0.55;
-      transition: transform .18s ease, opacity .18s ease;
-      flex:0 0 auto;
-    }
-    .merch-item img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      pointer-events:none;
-    }
-    .merch-item.is-small{ transform: scale(0.62); opacity:0.45; }
-    .merch-item.is-med{ transform: scale(0.84); opacity:0.78; }
-    .merch-item.is-big{ transform: scale(1.05); opacity:1; }
-
-    /* store coming soon + info */
+    /* Store Coming Soon + info */
     .store-divider{
       height:1px;
       background: rgba(12,90,42,0.55);
@@ -1230,7 +1191,7 @@
       font-family: "Snell Roundhand","Apple Chancery","Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
       font-style: italic;
       font-weight: 900;
-      font-size: 30px;
+      font-size: var(--comingSize);
       letter-spacing: 0.06em;
       color: var(--cream);
       text-shadow:
@@ -1243,8 +1204,8 @@
     }
     .store-info{
       position:absolute;
-      right: 2px;
-      top: 6px;
+      right: 6px;
+      top: 12px; /* lower + closer */
       width:20px;
       height:20px;
       border-radius:999px;
@@ -1283,7 +1244,7 @@
     .store-info:hover .store-tip,
     .store-info:focus .store-tip{ opacity:1; transform: translateY(0); pointer-events:auto; }
 
-    /* ABOUT */
+    /* about */
     .about-wrap{
       max-width:1200px;
       margin:14px auto 0;
@@ -1301,26 +1262,29 @@
       gap:16px;
       align-items:start;
     }
-    .about-card{ display:flex; flex-direction:column; gap:12px; }
+    .about-card{ display:flex; flex-direction:column; gap:12px; min-width:0; }
+
+    /* about paragraphs same green as top paragraph */
     .about-p-outline{
-      background: var(--store-green-grad); /* green like top paragraph */
-      border-radius:18px;
-      padding:6px;
+      background: var(--store-green-grad);
+      border: 2px solid rgba(12,90,42,0.65);
+      border-radius: 18px;
+      padding: 6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
-      border:2px solid rgba(12,90,42,0.65);
     }
     .about-card p{
+      margin:0;
       font-family: var(--font-pretty);
       font-style: italic;
       font-size:14px;
       line-height:1.85;
-      background: rgba(255,255,255,0.70);
-      border: 1px solid rgba(12,90,42,0.55);
-      padding: 14px;
-      border-radius: 14px;
+      padding: 14px 14px;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
       color: var(--frame-line);
       font-weight: 850;
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(12,90,42,0.55);
+      border-radius: 14px;
       cursor:text;
     }
     .about-card img{
@@ -1332,7 +1296,7 @@
       background:#fff;
     }
 
-    /* FOOTER */
+    /* footer */
     footer{
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
@@ -1534,7 +1498,6 @@
       stroke-linejoin:round;
     }
     .icon-pill .fill{ fill: var(--cream); stroke:none; }
-
     .icon-pill[data-tip]::after{
       content: attr(data-tip);
       position:absolute;
@@ -1554,14 +1517,14 @@
       pointer-events:none;
       transition: opacity .12s ease, transform .12s ease;
       white-space:nowrap;
-      transform: translateY(0);
+      transform: translateY(2px);
     }
     .icon-pill:hover::after{
       opacity:1;
       transform: translateY(-2px);
     }
 
-    /* FAB accessibility */
+    /* FAB */
     .fab{
       position:fixed;
       z-index:1300;
@@ -1711,95 +1674,11 @@
       padding:6px 2px 2px;
     }
 
-    /* Mobile menu overlay */
-    .mobile-menu-overlay{
-      position:fixed;
-      inset:0;
-      display:none;
-      background: rgba(0,0,0,0.22);
-      backdrop-filter: blur(6px);
-      padding: 16px;
-      z-index:1600;
-    }
-    body.menu-open .mobile-menu-overlay{ display:block; }
-    .mobile-menu{
-      max-width: 520px;
-      margin-left:auto;
-      height: calc(100vh - 32px);
-      border-radius:18px;
-      border:2px solid var(--frame-line);
-      background: var(--store-green-grad);
-      box-shadow:0 18px 60px rgba(15,23,42,0.35);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .mobile-menu-head{
-      padding:14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      border-bottom:2px solid rgba(12,90,42,.55);
-      background: rgba(255,255,255,0.10);
-    }
-    .mobile-menu-title{
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
-    }
-    .mobile-menu-close{
-      width:40px;height:40px;
-      border-radius:14px;
-      border:1px solid var(--cream);
-      background: var(--metal-orange);
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;
-    }
-    .mobile-menu-close svg{
-      width:18px;height:18px;
-      stroke:var(--cream);
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-    .mobile-menu-body{
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      overflow:auto;
-    }
-    .mobile-menu-body a,
-    .mobile-menu-body button{
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: rgba(255,255,255,0.14);
-      padding:12px;
-      text-decoration:none;
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      box-shadow:0 12px 28px rgba(15,23,42,0.10);
-      cursor:pointer;
-      text-align:left;
-    }
-
     /* responsive */
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
-      .frame-wrap{
-        width: calc(100% - (var(--sideW) * 2));
-        margin-left: var(--sideW);
-        margin-right: var(--sideW);
-      }
+      .frame-wrap{ width: calc(100% - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
       .store-grid{ grid-template-columns:1fr; }
       .what-img{ height: 175px; max-height:175px; }
@@ -1813,19 +1692,15 @@
       .safe-area-img{ display:block; }
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
-
       .sticky-top{ left:0 !important; right:0 !important; border-left:none !important; border-right:none !important; }
       main,footer{ border-left:none !important; border-right:none !important; }
       .content-wrapper{ padding-left:16px; padding-right:16px; padding-top:12px; }
-
       .nav-center{ display:none !important; }
       .hamburger{ display:flex; }
       .nav-search{ left: 56px; }
-
       #hero{ grid-template-columns: 1fr; }
       .what-images{ grid-template-columns: 1fr 1fr; }
       .what-img{ height: 150px; max-height:150px; }
-
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
       footer{ padding-bottom: calc(env(safe-area-inset-bottom) + 6px); }
@@ -1845,7 +1720,6 @@
         var searchBtn = document.getElementById("nav-search-btn");
         var firstTab = document.querySelector(".nav-center a.nav-pill.is-active") || document.querySelector(".nav-center a.nav-pill");
         if(!searchBtn || !firstTab) return;
-
         var sb = searchBtn.getBoundingClientRect();
         var tb = firstTab.getBoundingClientRect();
         var gap = tb.left - sb.right;
@@ -1948,8 +1822,8 @@
                 class="hero-logo"
                 alt="The MayaNut Company logo"
                 id="hero-logo"
-                width="152"
-                height="152"
+                width="154"
+                height="154"
                 decoding="async"
                 onerror="this.style.opacity='.35';"
               />
@@ -1975,10 +1849,8 @@
                 <div class="what-inner">
                   <div class="hero-sub" id="hero-sub">
                     <p class="pretty-paragraph" data-tts>
-                      🟢 MayaNut (maya nut) is a seed that comes from the tropical tree Brosimum alicastrum. People have used MayaNut for thousands of years—especially the ancient Maya, from whom the tree gets its name. The seed can be roasted and ground, much like coffee or cocoa, and used to make flatbreads, cookies, and beverages.
-                      <br><br>
-                      🟢 The MayaNut Company exists to bring this lost food back into the spotlight and to support the development of America’s first MayaNut farm, so this unique food can be enjoyed again for generations to come.
-                      <a class="inline-learn" href="about.html" aria-label="Learn more">LEARN MORE</a>
+                      🟢 MayaNut (maya nut) is a seed that comes from the tropical tree Brosimum alicastrum. People have used MayaNut for thousands of years—especially the ancient Maya, from whom the tree gets its name. The seed can be roasted and ground, much like coffee or cocoa, and used to make flatbreads and cookies.
+                      <a class="learn-inline" href="about.html" aria-label="Learn more">LEARN MORE</a>
                     </p>
                   </div>
 
@@ -2029,10 +1901,7 @@
                     </button>
 
                     <button class="sort-pill" id="sort-btn" type="button" aria-label="Checkout coming soon">
-                      <span class="small2">
-                        <span>CHECKOUT</span>
-                        <span>COMING SOON</span>
-                      </span>
+                      <span>CHECKOUT</span><span>COMING SOON</span>
                     </button>
 
                     <div class="store-search" aria-label="Search products">
@@ -2074,8 +1943,8 @@
                             <button class="addq" type="button" data-action="add" aria-label="Add to cart">
                               ADD
                               <span class="qty-inline" aria-label="Quantity">
-                                <input class="qty-input-inline" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                                <span class="pm-stack" aria-hidden="false">
+                                <input class="qty-input-inline" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity input" />
+                                <span class="pm-stack" aria-label="Increase/decrease">
                                   <button class="pm-btn-inline" type="button" data-action="plus" aria-label="Increase">+</button>
                                   <button class="pm-btn-inline" type="button" data-action="minus" aria-label="Decrease">-</button>
                                 </span>
@@ -2109,8 +1978,8 @@
                             <button class="addq" type="button" data-action="add" aria-label="Add to cart">
                               ADD
                               <span class="qty-inline" aria-label="Quantity">
-                                <input class="qty-input-inline" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                                <span class="pm-stack" aria-hidden="false">
+                                <input class="qty-input-inline" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity input" />
+                                <span class="pm-stack" aria-label="Increase/decrease">
                                   <button class="pm-btn-inline" type="button" data-action="plus" aria-label="Increase">+</button>
                                   <button class="pm-btn-inline" type="button" data-action="minus" aria-label="Decrease">-</button>
                                 </span>
@@ -2123,8 +1992,6 @@
                       </div>
                     </article>
                   </div>
-
-                  <a href="store.html" class="view-store-btn" aria-label="View full store">VIEW FULL STORE</a>
 
                   <div class="merch-wrap" aria-label="Merch carousel">
                     <button class="merch-arrow" id="merch-prev" type="button" aria-label="Previous">
@@ -2154,6 +2021,7 @@
                       </div>
                     </div>
                   </div>
+
                 </div>
               </aside>
             </div>
@@ -2216,7 +2084,6 @@
       <div class="footer-wrap">
         <div class="footer-left" aria-label="Footer info">
           <img src="mayanut-the-mayanut-comapny-logo.png" class="footer-logo" alt="The MayaNut Company logo" id="footer-logo" width="116" height="116" decoding="async" onerror="this.style.opacity='.35';" />
-
           <div class="footer-text">
             <div class="footer-lines">
               <div class="based-line">
@@ -2225,7 +2092,6 @@
               </div>
               <div>© 2026 The MayaNut Company, Inc.</div>
             </div>
-
             <div class="footer-links" aria-label="Terms Privacy Sitemap">
               <a href="terms.html">Terms</a>
               <a href="privacy.html">Privacy</a>
@@ -2275,7 +2141,6 @@
     </footer>
   </div>
 
-  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true">
     <div class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
       <div class="mobile-menu-head">
@@ -2301,7 +2166,6 @@
     </div>
   </div>
 
-  <!-- Accessibility FAB -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5" r="2"></circle>
@@ -2312,7 +2176,6 @@
     </svg>
   </button>
 
-  <!-- CART OVERLAY -->
   <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
     <div class="cart-drawer" role="dialog" aria-modal="true" aria-label="Cart">
       <div class="cart-head">
@@ -2333,7 +2196,6 @@
     </div>
   </div>
 
-  <!-- A11Y OVERLAY -->
   <div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
     <div class="a11y-drawer" role="dialog" aria-modal="true" aria-label="Accessibility menu">
       <div class="a11y-head">
@@ -2426,15 +2288,10 @@
         im.alt = "";
         im.decoding = "async";
         im.src = webp;
-        im.onerror = function(){
-          if(im.src.indexOf(jpg) === -1) im.src = jpg;
-        };
+        im.onerror = function(){ if(im.src.indexOf(jpg) === -1) im.src = jpg; };
         return im;
       }
-      for(let i=0;i<count;i++){
-        L.appendChild(makeImg());
-        R.appendChild(makeImg());
-      }
+      for(let i=0;i<count;i++){ L.appendChild(makeImg()); R.appendChild(makeImg()); }
     })();
 
     // Mobile menu
@@ -2444,14 +2301,8 @@
       const close = document.getElementById("mobile-menu-close");
       const openA11yFromMenu = document.getElementById("open-a11y-from-menu");
 
-      function openMenu(){
-        document.body.classList.add("menu-open");
-        overlay?.setAttribute("aria-hidden","false");
-      }
-      function closeMenu(){
-        document.body.classList.remove("menu-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
+      function openMenu(){ document.body.classList.add("menu-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeMenu(){ document.body.classList.remove("menu-open"); overlay?.setAttribute("aria-hidden","true"); }
 
       btn?.addEventListener("click", openMenu);
       close?.addEventListener("click", closeMenu);
@@ -2462,13 +2313,6 @@
         closeMenu();
         document.getElementById("accessibility-btn")?.click();
       });
-    })();
-
-    // Logo clicks -> home
-    (function(){
-      document.getElementById("hero-logo")?.addEventListener("click", ()=> location.href="index.html");
-      document.getElementById("footer-logo")?.addEventListener("click", ()=> location.href="index.html");
-      document.getElementById("a11y-logo")?.addEventListener("click", ()=> location.href="index.html");
     })();
 
     // Header search suggestions
@@ -2538,22 +2382,18 @@
         if(document.body.classList.contains("site-search-open")) close();
         else open();
       });
-
       clear?.addEventListener("click", ()=>{
         if(!input) return;
         input.value = "";
         render("");
         input.focus();
       });
-
       input?.addEventListener("input", ()=> render(input.value));
-
       document.addEventListener("click", (e)=>{
         const t = e.target;
         const within = (t && (btn?.contains(t) || box?.contains(t) || suggest?.contains(t)));
         if(!within) close();
       });
-
       document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") close(); });
     })();
 
@@ -2578,14 +2418,9 @@
       const empty = document.getElementById("cart-empty");
       const badge = document.getElementById("cart-badge");
 
-      function openCart(){
-        document.body.classList.add("cart-open");
-        overlay?.setAttribute("aria-hidden","false");
-      }
-      function closeCart(){
-        document.body.classList.remove("cart-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
+      function openCart(){ document.body.classList.add("cart-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeCart(){ document.body.classList.remove("cart-open"); overlay?.setAttribute("aria-hidden","true"); }
+
       function escapeHtml(s){
         return String(s).replace(/[&<>"']/g, m => ({
           "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
@@ -2596,14 +2431,13 @@
         cart.forEach(v => c += Math.max(0, v|0));
         return c;
       }
-      function renderBadge(){
-        if(!badge) return;
-        badge.textContent = String(cartCount());
-      }
+      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
+
       function renderCart(){
         if(!body) return;
         body.querySelectorAll(".cart-item").forEach(n=> n.remove());
         const entries = Array.from(cart.entries()).filter(([,q])=> q>0);
+
         if(entries.length === 0){
           if(empty) empty.style.display = "block";
           renderBadge();
@@ -2620,6 +2454,7 @@
           `;
           body.appendChild(row);
         });
+
         renderBadge();
       }
 
@@ -2636,16 +2471,14 @@
       };
     })();
 
-    // Quantity controls: typeable + press-and-hold on +/- (min 0, max 99)
+    // Quantity controls: +/- stacked next to 0 (press-and-hold supported)
     (function(){
       const clamp = (n)=> Math.max(0, Math.min(99, n));
       const HOLD_DELAY = 350;
       const HOLD_RATE = 80;
 
       function hold(button, stepFn){
-        let t = null;
-        let iv = null;
-
+        let t = null, iv = null;
         const start = (e)=>{
           e.preventDefault();
           stepFn();
@@ -2679,7 +2512,6 @@
         function setQty(v){ qtyInput.value = String(clamp(v)); }
 
         qtyInput.addEventListener("input", ()=> setQty(getQty()));
-
         hold(plusBtn, ()=> setQty(getQty()+1));
         hold(minusBtn, ()=> setQty(getQty()-1));
 
@@ -2698,9 +2530,10 @@
       document.querySelectorAll(".product-card").forEach(wireCard);
     })();
 
-    // Sort button
+    // Checkout coming soon button
     (function(){
       document.getElementById("sort-btn")?.addEventListener("click", ()=> alert("Checkout is coming soon."));
+      document.getElementById("checkout-btn")?.addEventListener("click", ()=> alert("Store is under development."));
     })();
 
     // Newsletter submit
@@ -2711,119 +2544,11 @@
       });
     })();
 
-    // Merch carousel
-    (function(){
-      const track = document.getElementById("merch-track");
-      const prev = document.getElementById("merch-prev");
-      const next = document.getElementById("merch-next");
-      if(!track || !prev || !next) return;
-
-      const items = [
-        "mayanut-merch-hat-brosimum-alicastrum.png",
-        "mayanut-merch-hoodie-brosimum-alicastrum.png",
-        "mayanut-merch-shirt-brosimum-alicastrum.png"
-      ];
-
-      let idx = 0;
-      let timer = null;
-      let paused = false;
-
-      function mod(n, m){ return ((n % m) + m) % m; }
-
-      function render(){
-        track.innerHTML = "";
-        const positions = [-2, -1, 0, 1, 2];
-        positions.forEach((p)=>{
-          const realIndex = mod(idx + p, items.length);
-          const el = document.createElement("div");
-          el.className = "merch-item";
-          if(p === 0) el.classList.add("is-big");
-          else if(Math.abs(p) === 1) el.classList.add("is-med");
-          else el.classList.add("is-small");
-
-          const im = document.createElement("img");
-          im.src = items[realIndex];
-          im.alt = "Merch preview";
-          im.loading = "lazy";
-          im.decoding = "async";
-          im.onerror = ()=> { im.style.opacity = ".35"; };
-          el.appendChild(im);
-
-          el.addEventListener("click", ()=>{ location.href = "store.html"; });
-          track.appendChild(el);
-        });
-      }
-
-      function step(dir){
-        idx = mod(idx + dir, items.length);
-        render();
-      }
-
-      prev.addEventListener("click", ()=> step(-1));
-      next.addEventListener("click", ()=> step( 1));
-
-      function start(){
-        stop();
-        timer = setInterval(()=>{ if(!paused) step(1); }, 3000);
-      }
-      function stop(){
-        if(timer){ clearInterval(timer); timer = null; }
-      }
-
-      track.addEventListener("mouseenter", ()=>{ paused = true; });
-      track.addEventListener("mouseleave", ()=>{ paused = false; });
-
-      track.addEventListener("wheel", (e)=>{
-        e.preventDefault();
-        const dir = (e.deltaY > 0 || e.deltaX > 0) ? 1 : -1;
-        step(dir);
-      }, { passive:false });
-
-      let dragging = false;
-      let startX = 0;
-      let moved = 0;
-
-      function onDown(e){
-        dragging = true;
-        moved = 0;
-        startX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-      }
-      function onMove(e){
-        if(!dragging) return;
-        const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-        moved = x - startX;
-      }
-      function onUp(){
-        if(!dragging) return;
-        dragging = false;
-        if(Math.abs(moved) > 22){
-          step(moved < 0 ? 1 : -1);
-        }
-      }
-
-      track.addEventListener("mousedown", onDown);
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
-
-      track.addEventListener("touchstart", onDown, { passive:true });
-      track.addEventListener("touchmove", onMove, { passive:true });
-      track.addEventListener("touchend", onUp);
-
-      render();
-      start();
-
-      window.addEventListener("visibilitychange", ()=>{
-        if(document.hidden) stop();
-        else start();
-      });
-    })();
-
     // Accessibility drawer
     (function(){
       const btn = document.getElementById("accessibility-btn");
       const overlay = document.getElementById("a11y-overlay");
       const close = document.getElementById("a11y-close");
-      const openFromMenu = document.getElementById("open-a11y-from-menu");
 
       const tLarge = document.getElementById("toggle-large");
       const tContrast = document.getElementById("toggle-contrast");
@@ -2834,7 +2559,6 @@
       function closeA11y(){ document.body.classList.remove("a11y-open"); overlay?.setAttribute("aria-hidden","true"); }
 
       btn?.addEventListener("click", openA11y);
-      openFromMenu?.addEventListener("click", openA11y);
       close?.addEventListener("click", closeA11y);
       overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "a11y-overlay") closeA11y(); });
 
@@ -2869,6 +2593,89 @@
         if(a11yLang.value === "es") location.href = "index-es.html";
         else location.href = "index.html";
       });
+    })();
+
+    // Merch carousel (auto 3s + wheel + drag)
+    (function(){
+      const track = document.getElementById("merch-track");
+      const prev = document.getElementById("merch-prev");
+      const next = document.getElementById("merch-next");
+      if(!track || !prev || !next) return;
+
+      const items = [
+        "mayanut-merch-hat-brosimum-alicastrum.png",
+        "mayanut-merch-hoodie-brosimum-alicastrum.png",
+        "mayanut-merch-shirt-brosimum-alicastrum.png"
+      ];
+
+      let idx = 0, timer = null, paused = false;
+      function mod(n, m){ return ((n % m) + m) % m; }
+
+      function render(){
+        track.innerHTML = "";
+        const positions = [-2, -1, 0, 1, 2];
+        positions.forEach((p)=>{
+          const realIndex = mod(idx + p, items.length);
+          const el = document.createElement("div");
+          el.className = "merch-item";
+          if(p === 0) el.classList.add("is-big");
+          else if(Math.abs(p) === 1) el.classList.add("is-med");
+          else el.classList.add("is-small");
+
+          const im = document.createElement("img");
+          im.src = items[realIndex];
+          im.alt = "Merch preview";
+          im.loading = "lazy";
+          im.decoding = "async";
+          im.onerror = ()=> { im.style.opacity = ".35"; };
+          el.appendChild(im);
+
+          el.addEventListener("click", ()=>{ location.href = "store.html"; });
+          track.appendChild(el);
+        });
+      }
+
+      function step(dir){ idx = mod(idx + dir, items.length); render(); }
+      prev.addEventListener("click", ()=> step(-1));
+      next.addEventListener("click", ()=> step( 1));
+
+      function start(){ stop(); timer = setInterval(()=>{ if(!paused) step(1); }, 3000); }
+      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+      track.addEventListener("mouseenter", ()=>{ paused = true; });
+      track.addEventListener("mouseleave", ()=>{ paused = false; });
+
+      track.addEventListener("wheel", (e)=>{
+        e.preventDefault();
+        const dir = (e.deltaY > 0 || e.deltaX > 0) ? 1 : -1;
+        step(dir);
+      }, { passive:false });
+
+      let dragging = false, startX = 0, moved = 0;
+      function onDown(e){
+        dragging = true; moved = 0;
+        startX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      }
+      function onMove(e){
+        if(!dragging) return;
+        const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+        moved = x - startX;
+      }
+      function onUp(){
+        if(!dragging) return;
+        dragging = false;
+        if(Math.abs(moved) > 22) step(moved < 0 ? 1 : -1);
+      }
+
+      track.addEventListener("mousedown", onDown);
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+      track.addEventListener("touchstart", onDown, { passive:true });
+      track.addEventListener("touchmove", onMove, { passive:true });
+      track.addEventListener("touchend", onUp);
+
+      render(); start();
+      window.addEventListener("visibilitychange", ()=>{ if(document.hidden) stop(); else start(); });
     })();
   </script>
 </body>

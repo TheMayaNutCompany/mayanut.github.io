@@ -37,6 +37,42 @@
   <link rel="preload" as="image" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
 
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"Organization",
+        "@id":"https://mayanut.com/#organization",
+        "name":"The MayaNut Company",
+        "url":"https://mayanut.com/",
+        "logo":"https://mayanut.com/mayanut-the-mayanut-comapny-logo.png",
+        "description":"Building America’s first MayaNut farm in South Florida while sharing research and cultivation observations on Brosimum alicastrum.",
+        "sameAs":[
+          "https://www.instagram.com/themayanutcompany",
+          "https://x.com/mayanutcompany",
+          "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/"
+        ],
+        "contactPoint":[
+          {
+            "@type":"ContactPoint",
+            "contactType":"customer support",
+            "email":"info@mayanut.com"
+          }
+        ]
+      },
+      {
+        "@type":"WebSite",
+        "@id":"https://mayanut.com/#website",
+        "url":"https://mayanut.com/",
+        "name":"The MayaNut Company",
+        "publisher":{"@id":"https://mayanut.com/#organization"}
+      }
+    ]
+  }
+  </script>
+
   <style>
     :root{
       --text-main:#0f172a;
@@ -65,6 +101,8 @@
       --store-g1:#d8ff6a;
       --store-g2:#7ae78a;
       --store-g3:#1a6800;
+
+      --a11y-blue:#084ac5;
 
       --panel-green-grad: linear-gradient(
         90deg,
@@ -106,11 +144,13 @@
       --stickyOffset: 200px;
       --siteSearchW: 280px;
 
-      /* Top banner half-height */
+      /* Top banner will be half-height of prior */
       --bannerH: 28px;
 
-      /* search background */
-      --search-aqua: #efffff;
+      --comingSize: 32px;
+
+      /* search focus color */
+      --search-aqua: #bfffff;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -133,6 +173,25 @@
     a{ color:inherit; }
     button,input,select{ font-family:inherit; }
 
+    /* iPhone safe-area image bars */
+    .safe-area-img{
+      position:fixed; left:0; right:0;
+      pointer-events:none;
+      z-index:2000;
+      background-image:url("mayanuts-the-maya-nut-company-image.webp");
+      background-size:cover;
+      background-position:center center;
+      background-repeat:no-repeat;
+      filter:saturate(1.06) contrast(1.04);
+      display:none;
+    }
+    .safe-area-img.top{ top:0; height: env(safe-area-inset-top); border-bottom: 1px solid rgba(12,90,42,0.45); }
+    .safe-area-img.bottom{ bottom:0; height: env(safe-area-inset-bottom); border-top: 1px solid rgba(12,90,42,0.45); }
+    .safe-area-img.top::after,.safe-area-img.bottom::after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.0));
+    }
+
     /* SIDE FRAMES */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{ position:absolute; top:0; bottom:0; width:var(--sideW); overflow:hidden; background:#ffffff; pointer-events:none; }
@@ -147,7 +206,7 @@
       transform: translateZ(0);
     }
 
-    /* frame wrap */
+    /* frame wrap (fix desktop right-edge glitch by pinning to viewport width) */
     .frame-wrap{
       position:relative;
       z-index:2;
@@ -177,7 +236,7 @@
       transform: translateZ(0);
     }
 
-    /* top banner */
+    /* top banner: half height */
     .top-banner{
       width:100%;
       min-height: var(--bannerH);
@@ -238,7 +297,7 @@
       min-height: 54px;
     }
 
-    /* search icon */
+    /* search icon (green) */
     .nav-search{
       position:absolute;
       left: 8px;
@@ -284,7 +343,7 @@
       width:0;
       opacity:0;
       pointer-events:none;
-      transition: width .18s ease, opacity .12s ease;
+      transition: width .18s ease, opacity .12s ease, background .12s ease;
       height:40px;
       z-index:1200;
       border-radius:14px;
@@ -317,8 +376,9 @@
       justify-content:center;
       flex:0 0 auto;
       border-left:1px solid rgba(12,90,42,.35);
-      transition: background .12s ease, border-color .12s ease;
+      transition: background .12s ease;
     }
+    /* X button orange + cream X when search open */
     body.site-search-open .nav-search-clear{
       background: var(--metal-orange);
       border-left:1px solid rgba(255,255,197,0.55);
@@ -353,6 +413,7 @@
     .suggest-desc{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:12px; color: rgba(12,90,42,.95); line-height:1.35; }
     .suggest-item:hover{ background: rgba(253,108,2,0.10); }
 
+    /* nav center */
     .nav-center{
       display:flex;
       align-items:center;
@@ -363,6 +424,8 @@
       padding-right: 140px;
       min-height: 54px;
     }
+
+    /* tabs: green by default, home orange */
     .nav-pill{
       display:inline-flex;
       align-items:center;
@@ -419,6 +482,7 @@
     }
     .lang-pill:hover{ transform: scale(1.02); }
 
+    /* hamburger (mobile) */
     .hamburger{ display:none; position:absolute; left: 8px; top: 7px; height:40px; width:42px; z-index:3; }
     .hamburger-btn{
       width:42px; height:40px;
@@ -434,6 +498,62 @@
     }
     .hamburger-bars{ width:18px; height:14px; display:flex; flex-direction:column; justify-content:space-between; }
     .hamburger-bars span{ display:block; height:2px; border-radius:999px; background: var(--cream); border:1px solid rgba(255,255,197,0.55); }
+
+    .mobile-menu-overlay{
+      position:fixed; inset:0; display:none;
+      background: rgba(0,0,0,0.22);
+      backdrop-filter: blur(6px);
+      padding: 16px;
+      z-index:1600;
+    }
+    body.menu-open .mobile-menu-overlay{ display:block; }
+    .mobile-menu{
+      max-width: 520px;
+      margin-left:auto;
+      height: calc(100vh - 32px);
+      border-radius:18px;
+      border:2px solid var(--frame-line);
+      background: var(--store-green-grad);
+      box-shadow:0 18px 60px rgba(15,23,42,0.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .mobile-menu-head{
+      padding:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:2px solid rgba(12,90,42,.55);
+      background: rgba(255,255,255,0.10);
+    }
+    .mobile-menu-title{ font-weight:950; letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.35); }
+    .mobile-menu-close{
+      width:40px;height:40px;
+      border-radius:14px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .mobile-menu-close svg{ width:18px;height:18px; stroke:var(--cream); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+    .mobile-menu-body{ padding:14px; display:flex; flex-direction:column; gap:10px; overflow:auto; }
+    .mobile-menu-body a,.mobile-menu-body button{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.14);
+      padding:12px;
+      text-decoration:none;
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      box-shadow:0 12px 28px rgba(15,23,42,0.10);
+      cursor:pointer;
+      text-align:left;
+    }
 
     /* main */
     main{
@@ -453,6 +573,7 @@
     }
     .content-wrapper{ padding:14px 22px 26px; width:100%; overflow-x:hidden; }
 
+    /* universal outline */
     .box-outline{ border-radius:24px; background: var(--metal-orange); padding:6px; box-shadow:0 20px 55px rgba(15,23,42,.22); }
     .box-panel{ background: rgba(255,255,255,0.82); border-radius:18px; border:2px solid var(--frame-line); overflow:hidden; }
     .box-titlebar{ padding:10px 14px 9px; background: var(--title-cream-grad); border-bottom:1px solid rgba(12,90,42,0.35); display:flex; align-items:center; justify-content:center; }
@@ -472,7 +593,7 @@
     }
     .box-title::before,.box-title::after{ content:""; flex:1; height:2px; background:var(--green); border-radius:999px; opacity:.9; }
 
-    /* desktop order: hero-left then store-col */
+    /* hero grid */
     #hero{
       position:relative;
       display:grid;
@@ -484,16 +605,17 @@
       overflow:hidden;
     }
     .hero-left{ display:flex; flex-direction:column; gap:12px; min-width:0; }
-    .store-col{ display:flex; flex-direction:column; gap:12px; min-width:0; }
 
+    /* brand row */
     .hero-brand{
       display:grid;
-      grid-template-columns: 128px 1fr;
+      grid-template-columns: 128px 1fr; /* tighter */
       gap:12px;
       align-items:flex-start;
       width:100%;
       min-width:0;
     }
+    /* logo smaller (match ~3 stacked lines) */
     .hero-logo{
       width:128px;
       height:auto;
@@ -527,6 +649,7 @@
     .hero-title .line.bottomline{ font-size: clamp(19px, 1.75vw, 25px); line-height:1.10; color:var(--orange); margin-top:7px; display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
     .intro-underline{ display:inline-block; padding-bottom:3px; border-bottom: 3px solid var(--orange); line-height:1; }
 
+    /* paragraph card */
     .hero-sub{
       background: var(--store-green-grad);
       border: 2px solid rgba(12,90,42,0.65);
@@ -548,6 +671,8 @@
       border: 1px solid rgba(12,90,42,0.55);
       border-radius: 14px;
     }
+
+    /* inline learn more button */
     .learn-inline{
       display:inline-flex;
       align-items:center;
@@ -569,6 +694,7 @@
       white-space:nowrap;
     }
 
+    /* images */
     .what-inner{ padding:14px; display:flex; flex-direction:column; gap:12px; }
     .what-images{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
     .what-img{
@@ -583,11 +709,11 @@
     }
 
     /* store */
+    .store-col{ display:flex; flex-direction:column; gap:12px; min-width:0; }
     .store-outline{ border-radius:24px; background: var(--metal-orange); padding:6px; box-shadow:0 20px 55px rgba(15,23,42,.22); }
     #store-panel{ width:100%; border-radius: 18px; border: 2px solid var(--frame-line); background: var(--store-green-grad); overflow:hidden; display:flex; flex-direction:column; min-width:0; }
     .store-titlebar{ padding:10px 14px 9px; background: var(--title-cream-grad); border-bottom:1px solid rgba(12,90,42,0.35); display:flex; align-items:center; justify-content:center; }
     .store-body{ padding:12px; display:flex; flex-direction:column; gap:10px; }
-
     .store-bar{ display:flex; align-items:center; gap:10px; width:100%; min-width:0; }
 
     .icon-btn{
@@ -649,12 +775,11 @@
       gap:2px;
     }
 
-    /* store search: default efffff */
     .store-search{
       height:40px;
       border-radius:14px;
       border:1px solid rgba(12,90,42,.65);
-      background: var(--search-aqua);
+      background: rgba(255,255,255,0.86);
       display:flex;
       align-items:center;
       overflow:hidden;
@@ -662,15 +787,28 @@
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       flex:1 1 auto;
       min-width:0;
+      transition: background .12s ease;
     }
+    /* store search turns aqua on focus */
+    .store-search:focus-within{ background: var(--search-aqua); }
     .store-search .mag,.store-search .xbtn{
       width:40px;height:40px;
       display:flex;align-items:center;justify-content:center;
       flex:0 0 40px;
       cursor:pointer;
       user-select:none;
+      transition: background .12s ease;
     }
-    .store-search .mag svg{
+    /* store clear X orange with cream X */
+    .store-search .xbtn{
+      background: transparent;
+      border-left:1px solid rgba(12,90,42,.20);
+    }
+    .store-search:focus-within .xbtn{
+      background: var(--metal-orange);
+      border-left:1px solid rgba(255,255,197,0.55);
+    }
+    .store-search .mag svg,.store-search .xbtn svg{
       width:16px;height:16px;
       stroke:var(--orange);
       fill:none;
@@ -678,18 +816,8 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    .store-search .xbtn{
-      background: var(--metal-orange);
-      border-left:1px solid rgba(255,255,197,0.55);
-    }
-    .store-search .xbtn svg{
-      width:16px;height:16px;
-      stroke:var(--cream);
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
+    .store-search:focus-within .xbtn svg{ stroke: var(--cream); }
+
     .store-search input{
       border:none;
       outline:none;
@@ -719,8 +847,11 @@
     .pimg{ width:100%; height: 170px; border-bottom:1px solid rgba(12,90,42,0.25); background:#fff; overflow:hidden; }
     .pimg img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    /* product bottom like store: green gradient bg */
-    .pbot{ padding:10px; background: var(--store-green-grad); }
+    .pbot{
+      padding:10px;
+      background: var(--store-green-grad);
+      position:relative;
+    }
     .pbot-inner{
       border: 1px solid rgba(12,90,42,0.65);
       border-radius:14px;
@@ -739,54 +870,8 @@
       color:#0b1220;
     }
 
-    /* quantity: small rounded rect (efffff) with +, 0, - stacked */
-    .qty-mid{
-      width:64px;
-      margin:10px auto 8px;
-      border-radius:14px;
-      border:1px solid rgba(12,90,42,0.55);
-      background: var(--search-aqua);
-      box-shadow:0 10px 22px rgba(15,23,42,0.10);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      align-items:stretch;
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .qty-mid .qbtn{
-      height:18px;
-      border:none;
-      background: transparent;
-      cursor:pointer;
-      font-weight:950;
-      font-size:14px;
-      line-height:14px;
-      color: rgba(12,90,42,0.95);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:0;
-    }
-    .qty-mid .qbtn:active{ background: rgba(12,90,42,0.08); }
-    .qty-mid input{
-      height:22px;
-      border:none;
-      outline:none;
-      background: transparent;
-      text-align:center;
-      font-weight:950;
-      font-size:13px;
-      color:#0b1220;
-      padding:0;
-      -moz-appearance:textfield;
-    }
-    .qty-mid input::-webkit-outer-spin-button,
-    .qty-mid input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-    .qty-mid .line{ height:1px; background: rgba(12,90,42,0.22); width:100%; }
-
-    /* add/price row (store style) */
     .buy-row{
+      margin-top:10px;
       width:100%;
       display:flex;
       align-items:stretch;
@@ -795,6 +880,7 @@
       overflow:hidden;
       border:1px solid var(--cream);
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
+      background: transparent;
     }
     .addq{
       flex:1 1 auto;
@@ -810,10 +896,62 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      gap:8px;
       min-height: 34px;
       outline:none;
     }
-    .mid-divider{ width:1px; background: var(--cream); flex:0 0 1px; }
+    .qty-inline{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .qty-inline input{
+      width:28px;
+      height:18px;
+      border:none;
+      background: transparent;
+      color: var(--cream);
+      font-weight:950;
+      font-size:12px;
+      text-align:center;
+      outline:none;
+      -moz-appearance: textfield;
+    }
+    .qty-inline input::-webkit-outer-spin-button,
+    .qty-inline input::-webkit-inner-spin-button{ -webkit-appearance: none; margin:0; }
+
+    .pm-stack{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      align-items:center;
+      justify-content:center;
+      margin-left:-2px;
+    }
+    .pm-stack button{
+      width:14px;
+      height:9px;
+      border:none;
+      background: transparent;
+      color: var(--cream);
+      font-weight:950;
+      font-size:12px;
+      line-height:10px;
+      cursor:pointer;
+      padding:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .mid-divider{
+      width:1px;
+      background: var(--cream);
+      flex:0 0 1px;
+    }
+
     .pricebtn{
       flex:0 0 96px;
       display:flex;
@@ -851,7 +989,144 @@
       box-shadow: 0 14px 38px rgba(15,23,42,0.16);
     }
 
-    /* ABOUT */
+    /* merch */
+    .merch-wrap{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      padding: 8px 2px 0;
+      min-width:0;
+    }
+    .merch-arrow{
+      width:46px;
+      height:46px;
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+      -webkit-user-select:none;
+      opacity:0.96;
+      flex:0 0 auto;
+    }
+    .merch-arrow svg{ width:40px;height:40px; filter: drop-shadow(0 2px 6px rgba(15,23,42,0.18)); }
+    .merch-arrow polygon{
+      fill: rgba(107,114,128,0.92);
+      stroke: rgba(12,90,42,0.85);
+      stroke-width: 2.6;
+      stroke-linejoin: round;
+    }
+    .merch-track{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      flex: 1 1 auto;
+      min-width:0;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:pan-y;
+      padding: 4px 0;
+    }
+    .merch-item{
+      border-radius:18px;
+      border:2px solid rgba(12,90,42,0.55);
+      background: rgba(255,255,255,0.55);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 30px rgba(15,23,42,0.10);
+      transition: transform .18s ease, opacity .18s ease;
+      flex:0 0 auto;
+    }
+    .merch-item img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
+    .merch-item.is-small{ width:72px; height:72px; opacity:0.55; }
+    .merch-item.is-med{ width:92px; height:92px; opacity:0.82; }
+    .merch-item.is-big{ width:116px; height:116px; opacity:1; }
+
+    .store-divider{
+      height:1px;
+      background: rgba(12,90,42,0.55);
+      width:100%;
+      border-radius:999px;
+      margin: 8px 0 6px;
+    }
+    .store-coming-wrap{
+      position:relative;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding-bottom: 6px;
+    }
+    .store-coming-soon{
+      width: calc(100% - 22px);
+      max-width: 520px;
+      text-align:center;
+      padding: 4px 0 2px;
+      font-family: "Snell Roundhand","Apple Chancery","Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+      font-style: italic;
+      font-weight: 900;
+      font-size: var(--comingSize);
+      letter-spacing: 0.06em;
+      color: var(--cream);
+      text-shadow:
+        0 2px 10px rgba(15,23,42,0.18),
+        0 0 22px rgba(255,255,197,0.22);
+      -webkit-text-stroke: 0.8px rgba(12,90,42,0.75);
+      user-select:none;
+      -webkit-user-select:none;
+      margin:0 auto;
+    }
+    .store-info{
+      position:absolute;
+      right: 10px;
+      top: 10px;
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,197,0.85);
+      background: rgba(0,0,0,0.18);
+      color: var(--cream);
+      font-weight:950;
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:default;
+    }
+    .store-tip{
+      position:absolute;
+      right:0;
+      top:24px;
+      width: min(320px, 70vw);
+      background: rgba(255,255,255,0.96);
+      border:2px solid rgba(12,90,42,0.85);
+      border-radius:14px;
+      box-shadow:0 18px 55px rgba(15,23,42,0.25);
+      padding:10px 12px;
+      opacity:0;
+      transform: translateY(-6px);
+      transition: opacity .14s ease, transform .14s ease;
+      pointer-events:none;
+      z-index:10;
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.45;
+      font-size:12.5px;
+    }
+    .store-info:hover .store-tip,
+    .store-info:focus .store-tip{ opacity:1; transform: translateY(0); pointer-events:auto; }
+
+    /* about */
     .about-wrap{ max-width:1200px; margin:14px auto 0; padding:0; background:transparent; }
     .about-wrap .box-outline{ box-shadow:0 20px 55px rgba(15,23,42,.20); border:2px solid rgba(12,90,42,0.65); }
     .about-us{ padding:18px; }
@@ -904,9 +1179,17 @@
     .footer-logo{ width:116px; height:auto; cursor:pointer; filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18)); user-select:none; -webkit-user-select:none; flex:0 0 auto; }
     .footer-text{ display:flex; flex-direction:column; gap:10px; min-width:0; flex:1 1 auto; align-items:flex-start; justify-content:center; }
     .footer-lines{ display:flex; flex-direction:column; gap:6px; font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size:14px; letter-spacing:0.04em; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.35); }
+    .based-line{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .florida-icon{
+      width:26px; height:26px;
+      filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14));
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
     .footer-links{ display:flex; gap:16px; flex-wrap:wrap; }
     .footer-links a{ font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size:14px; letter-spacing:0.04em; color:#0b1220; text-decoration:none; border-bottom:1px solid rgba(11,18,32,0.28); padding-bottom:2px; white-space:nowrap; }
 
+    /* newsletter */
     .newsletter{ border:none; background: transparent; padding: 6px 0 0; display:flex; flex-direction:column; gap:8px; align-items:flex-start; min-width:0; }
     .nl-title{ font-weight:950; letter-spacing:0.14em; text-transform:uppercase; font-size:12px; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.35); }
     .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; letter-spacing:0.01em; color: var(--green-deep); font-size:13px; line-height:1.45; text-shadow:0 1px 0 rgba(255,255,255,0.45); max-width: 520px; }
@@ -914,6 +1197,7 @@
     .newsletter-form input{ flex:1; min-width: 180px; height:40px; border-radius:14px; border:1px solid var(--frame-line); background: rgba(255,255,255,0.86); padding: 0 12px; font-weight:900; font-size:12px; outline:none; color:#111827; }
     .metal-btn{ border: 1px solid var(--cream); background: var(--metal-orange); color: var(--cream); border-radius:14px; padding:9px 14px; font-size:11px; text-transform:uppercase; letter-spacing:0.10em; cursor:pointer; font-weight:950; min-height:40px; display:inline-flex; align-items:center; justify-content:center; white-space:nowrap; box-shadow:0 14px 36px rgba(15,23,42,0.12); }
 
+    /* bottom banner */
     .bottom-banner{
       width:100%;
       border-top: 2px solid rgba(12,90,42,0.35);
@@ -925,6 +1209,67 @@
       justify-content:flex-end;
       gap:10px;
     }
+    .email-text{ font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size:13px; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.35); white-space:nowrap; margin-right:6px; }
+
+    .icon-pill{
+      width:36px;
+      height:36px;
+      border-radius:14px;
+      border: 1px solid var(--cream);
+      background: var(--metal-orange);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      text-decoration:none;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.12);
+      position:relative;
+    }
+    .icon-pill svg{ width:20px; height:20px; stroke: var(--cream); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .icon-pill .fill{ fill: var(--cream); stroke:none; }
+    .icon-pill[data-tip]::after{
+      content: attr(data-tip);
+      position:absolute;
+      bottom: 44px;
+      right: 0;
+      background: rgba(255,255,255,0.96);
+      border:2px solid rgba(12,90,42,0.85);
+      color:#0b1220;
+      font-weight:950;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:10px;
+      padding:6px 8px;
+      border-radius:12px;
+      box-shadow:0 18px 55px rgba(15,23,42,0.25);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .12s ease, transform .12s ease;
+      white-space:nowrap;
+      transform: translateY(2px);
+    }
+    .icon-pill:hover::after{ opacity:1; transform: translateY(-2px); }
+
+    /* FAB accessibility */
+    .fab{
+      position:fixed;
+      z-index:1300;
+      width:52px;
+      height:52px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 10px 25px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+      overflow:hidden;
+    }
+    .accessibility-btn{ right:14px; bottom:14px; background:var(--a11y-blue); }
+    .accessibility-btn::before{ content:""; position:absolute; inset:7px; border-radius:999px; border:2px solid rgba(255,255,255,0.95); opacity:.75; pointer-events:none; }
+    .accessibility-btn svg{ width:28px; height:28px; fill:none; stroke:#ffffff; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; position:relative; z-index:1; }
 
     /* overlays */
     .cart-overlay{
@@ -936,6 +1281,8 @@
       z-index:1450;
     }
     body.cart-open .cart-overlay{ display:block; }
+
+    /* Cart drawer */
     .cart-drawer{
       max-width: 560px;
       margin-left:auto;
@@ -1008,6 +1355,7 @@
       .footer-wrap{ grid-template-columns:1fr; }
     }
     @media(max-width:780px){
+      .safe-area-img{ display:block; }
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
       .sticky-top{ left:0 !important; right:0 !important; border-left:none !important; border-right:none !important; }
@@ -1015,27 +1363,11 @@
       .content-wrapper{ padding-left:16px; padding-right:16px; padding-top:12px; }
       .nav-center{ display:none !important; }
       .hamburger{ display:flex; }
-
-      /* MOBILE: reorder to Store -> What -> About */
+      .nav-search{ left: 56px; }
       #hero{ grid-template-columns: 1fr; }
-      .store-col{ order: 1; }
-      .hero-left{ order: 2; }
-      .about-wrap{ order: 3; }
-
-      /* MOBILE: keep stacked lines, prevent overflow */
-      .hero-brand{ grid-template-columns: 128px 1fr; }
-      .hero-logo{ width:128px; }
-      .hero-title .line.topline{
-        white-space:normal;
-        overflow:visible;
-        text-overflow:unset;
-        font-size: 26px;
-      }
-      .hero-title .line.bottomline{ font-size: 17px; line-height:1.14; }
-
       .what-images{ grid-template-columns: 1fr 1fr; }
       .what-img{ height: 150px; max-height:150px; }
-
+      .store-grid{ grid-template-columns:1fr; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
       footer{ padding-bottom: calc(env(safe-area-inset-bottom) + 6px); }
@@ -1068,7 +1400,10 @@
           setHeaderSearchWidth();
         }, 80);
       }
-      window.addEventListener("load", function(){ setStickyOffset(); setHeaderSearchWidth(); }, { once:true });
+      window.addEventListener("load", function(){
+        setStickyOffset();
+        setHeaderSearchWidth();
+      }, { once:true });
       window.addEventListener("resize", onResize);
       window.addEventListener("pageshow", function(){ setStickyOffset(); setHeaderSearchWidth(); });
       document.addEventListener("DOMContentLoaded", function(){ setStickyOffset(); setHeaderSearchWidth(); });
@@ -1077,6 +1412,9 @@
 </head>
 
 <body>
+  <div class="safe-area-img top" aria-hidden="true"></div>
+  <div class="safe-area-img bottom" aria-hidden="true"></div>
+
   <div class="side-frames" aria-hidden="true">
     <div class="side left"><div class="stack" id="stack-left"></div></div>
     <div class="side right"><div class="stack" id="stack-right"></div></div>
@@ -1138,7 +1476,71 @@
     <main id="main-content" tabindex="-1">
       <div class="content-wrapper">
         <section id="hero" aria-label="Hero">
-          <!-- STORE (goes first on mobile via CSS order) -->
+          <div class="hero-left" aria-label="Hero left content">
+            <div class="hero-brand">
+              <img
+                src="mayanut-the-mayanut-comapny-logo.png"
+                class="hero-logo"
+                alt="The MayaNut Company logo"
+                id="hero-logo"
+                width="128"
+                height="128"
+                decoding="async"
+                onerror="this.style.opacity='.35';"
+              />
+              <div>
+                <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
+
+                <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
+                  <span class="line topline">Aromatic &amp; Delicious.</span>
+                  <span class="line bottomline">
+                    <span class="intro-underline">Introducing MayaNut to You</span>
+                    <span style="display:inline-block; line-height:1;">🫵</span>
+                  </span>
+                </h1>
+              </div>
+            </div>
+
+            <div class="box-outline what-panel" aria-label="What Is MayaNut">
+              <div class="box-panel">
+                <div class="box-titlebar">
+                  <div class="box-title" id="what-is-mayanut">What Is MayaNut?</div>
+                </div>
+
+                <div class="what-inner">
+                  <div class="hero-sub" id="hero-sub">
+                    <p class="pretty-paragraph" data-tts>
+                      🟢 MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of tasty foods and beverages, alongside its many nutritional benefits.&nbsp;<a class="learn-inline" href="about.html" aria-label="Learn more">LEARN MORE</a>
+                    </p>
+                  </div>
+
+                  <div class="what-images" aria-label="What is MayaNut images">
+                    <img
+                      class="what-img"
+                      src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                      alt="MayaNut fruit on the tree (Brosimum alicastrum)"
+                      width="760"
+                      height="520"
+                      loading="eager"
+                      decoding="async"
+                      onerror="this.style.opacity='.35';"
+                    />
+                    <img
+                      class="what-img"
+                      src="maya-nut-mayanut-plant-tree-nursery.jpg"
+                      alt="MayaNut tree (Brosimum alicastrum) growing in South Florida"
+                      width="760"
+                      height="520"
+                      loading="lazy"
+                      decoding="async"
+                      onerror="this.style.opacity='.35';"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="store-col" aria-label="Store column">
             <div class="store-outline">
               <aside id="store-panel" aria-label="Store preview">
@@ -1182,27 +1584,35 @@
                   <div class="store-grid" id="store-grid">
                     <article class="product-card" data-title="MayaNut Powder">
                       <div class="pimg">
-                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                             alt="MayaNut powder (Brosimum alicastrum roasted seed powder)"
-                             width="600" height="520" loading="lazy" decoding="async"
-                             onerror="this.style.opacity='.35';"/>
+                        <img
+                          src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                          alt="MayaNut powder (Brosimum alicastrum roasted seed powder)"
+                          width="600"
+                          height="520"
+                          loading="lazy"
+                          decoding="async"
+                          onerror="this.style.opacity='.35';"
+                        />
                       </div>
 
                       <div class="pbot">
                         <div class="pbot-inner">
                           <div class="ptitle"><span>🟠</span> MayaNut Powder</div>
 
-                          <div class="qty-mid" aria-label="Quantity selector">
-                            <button class="qbtn" type="button" data-q="plus" aria-label="Increase quantity">+</button>
-                            <div class="line" aria-hidden="true"></div>
-                            <input class="qval" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity value" />
-                            <div class="line" aria-hidden="true"></div>
-                            <button class="qbtn" type="button" data-q="minus" aria-label="Decrease quantity">-</button>
-                          </div>
-
                           <div class="buy-row" aria-label="Buy controls">
-                            <button class="addq" type="button" data-action="add" aria-label="Add to cart">ADD</button>
+                            <button class="addq" type="button" data-action="add" aria-label="Add to cart">
+                              ADD
+                              <span class="qty-inline" aria-label="Quantity">
+                                <input class="qty-input-inline" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity input" />
+                                <span class="pm-stack" aria-label="Increase/decrease">
+                                  <button class="pm-btn-inline" type="button" data-action="plus" aria-label="Increase">+</button>
+                                  <button class="pm-btn-inline" type="button" data-action="minus" aria-label="Decrease">-</button>
+                                </span>
+                              </span>
+                            </button>
+
                             <div class="mid-divider" aria-hidden="true"></div>
+
                             <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
                           </div>
                         </div>
@@ -1211,27 +1621,35 @@
 
                     <article class="product-card" data-title="MayaNut Instant Latte">
                       <div class="pimg">
-                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                             alt="MayaNut instant latte (concept)"
-                             width="600" height="520" loading="lazy" decoding="async"
-                             onerror="this.style.opacity='.35';"/>
+                        <img
+                          src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                          alt="MayaNut instant latte (concept)"
+                          width="600"
+                          height="520"
+                          loading="lazy"
+                          decoding="async"
+                          onerror="this.style.opacity='.35';"
+                        />
                       </div>
 
                       <div class="pbot">
                         <div class="pbot-inner">
                           <div class="ptitle"><span>🟠</span> MayaNut Instant Latte</div>
 
-                          <div class="qty-mid" aria-label="Quantity selector">
-                            <button class="qbtn" type="button" data-q="plus" aria-label="Increase quantity">+</button>
-                            <div class="line" aria-hidden="true"></div>
-                            <input class="qval" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity value" />
-                            <div class="line" aria-hidden="true"></div>
-                            <button class="qbtn" type="button" data-q="minus" aria-label="Decrease quantity">-</button>
-                          </div>
-
                           <div class="buy-row" aria-label="Buy controls">
-                            <button class="addq" type="button" data-action="add" aria-label="Add to cart">ADD</button>
+                            <button class="addq" type="button" data-action="add" aria-label="Add to cart">
+                              ADD
+                              <span class="qty-inline" aria-label="Quantity">
+                                <input class="qty-input-inline" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity input" />
+                                <span class="pm-stack" aria-label="Increase/decrease">
+                                  <button class="pm-btn-inline" type="button" data-action="plus" aria-label="Increase">+</button>
+                                  <button class="pm-btn-inline" type="button" data-action="minus" aria-label="Decrease">-</button>
+                                </span>
+                              </span>
+                            </button>
+
                             <div class="mid-divider" aria-hidden="true"></div>
+
                             <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
                           </div>
                         </div>
@@ -1240,63 +1658,38 @@
                   </div>
 
                   <a href="store.html" class="view-store-btn" aria-label="View full store">VIEW FULL STORE</a>
+
+                  <div class="merch-wrap" aria-label="Merch carousel">
+                    <button class="merch-arrow" id="merch-prev" type="button" aria-label="Previous">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <polygon points="15.5,3.5 6.8,12 15.5,20.5 15.5,17.0 11.0,12 15.5,7.0"></polygon>
+                      </svg>
+                    </button>
+
+                    <div class="merch-track" id="merch-track" aria-label="Merch items"></div>
+
+                    <button class="merch-arrow" id="merch-next" type="button" aria-label="Next">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <polygon points="8.5,3.5 17.2,12 8.5,20.5 8.5,17.0 13.0,12 8.5,7.0"></polygon>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div class="store-divider" aria-hidden="true"></div>
+
+                  <div class="store-coming-wrap" aria-label="Store coming soon wrapper">
+                    <div class="store-coming-soon" aria-label="Store coming soon">Store Coming Soon!</div>
+
+                    <div class="store-info" aria-label="Store info" tabindex="0">
+                      i
+                      <div class="store-tip" role="tooltip">
+                        Products are currently conceptual as our store is under development. Thank you for your patience and a marvelous MayaNut month!
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </aside>
-            </div>
-          </div>
-
-          <!-- HERO + WHAT (goes under Store on mobile via CSS order) -->
-          <div class="hero-left" aria-label="Hero left content">
-            <div class="hero-brand">
-              <img
-                src="mayanut-the-mayanut-comapny-logo.png"
-                class="hero-logo"
-                alt="The MayaNut Company logo"
-                id="hero-logo"
-                width="128"
-                height="128"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              />
-              <div>
-                <div class="credit">Created by <span class="creator-name">August Kokus</span></div>
-                <h1 class="hero-title" aria-label="Aromatic & Delicious. Introducing MayaNut to You">
-                  <span class="line topline">Aromatic &amp; Delicious.</span>
-                  <span class="line bottomline">
-                    <span class="intro-underline">Introducing MayaNut to You</span>
-                    <span style="display:inline-block; line-height:1;">🫵</span>
-                  </span>
-                </h1>
-              </div>
-            </div>
-
-            <div class="box-outline what-panel" aria-label="What Is MayaNut">
-              <div class="box-panel">
-                <div class="box-titlebar">
-                  <div class="box-title" id="what-is-mayanut">What Is MayaNut?</div>
-                </div>
-
-                <div class="what-inner">
-                  <div class="hero-sub" id="hero-sub">
-                    <p class="pretty-paragraph" data-tts>
-                      🟢 MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of tasty foods and beverages, alongside its many nutritional benefits.&nbsp;<a class="learn-inline" href="about.html" aria-label="Learn more">LEARN MORE</a>
-                    </p>
-                  </div>
-
-                  <div class="what-images" aria-label="What is MayaNut images">
-                    <img class="what-img"
-                      src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                      alt="MayaNut fruit on the tree (Brosimum alicastrum)"
-                      width="760" height="520" loading="eager" decoding="async"
-                      onerror="this.style.opacity='.35';" />
-                    <img class="what-img"
-                      src="maya-nut-mayanut-plant-tree-nursery.jpg"
-                      alt="MayaNut tree (Brosimum alicastrum) growing in South Florida"
-                      width="760" height="520" loading="lazy" decoding="async"
-                      onerror="this.style.opacity='.35';" />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -1316,10 +1709,15 @@
                         🟢 In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                       </p>
                     </div>
-                    <img src="the-maya-nut-company-bubba-image.jpg"
+                    <img
+                      src="the-maya-nut-company-bubba-image.jpg"
                       alt="Florida growing legacy (citrus, pineapple, watermelons, and more)"
-                      width="1200" height="700" loading="lazy" decoding="async"
-                      onerror="this.style.opacity='.35';" />
+                      width="1200"
+                      height="700"
+                      loading="lazy"
+                      decoding="async"
+                      onerror="this.style.opacity='.35';"
+                    />
                   </div>
 
                   <div class="about-card">
@@ -1328,10 +1726,15 @@
                         🟢 To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
                       </p>
                     </div>
-                    <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                    <img
+                      src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                       alt="August Kokus with MayaNut trees in Florida"
-                      width="1200" height="700" loading="lazy" decoding="async"
-                      onerror="this.style.opacity='.35';" />
+                      width="1200"
+                      height="700"
+                      loading="lazy"
+                      decoding="async"
+                      onerror="this.style.opacity='.35';"
+                    />
                   </div>
                 </div>
               </div>
@@ -1374,9 +1777,71 @@
         </div>
       </div>
 
-      <div class="bottom-banner" aria-label="Bottom banner"></div>
+      <div class="bottom-banner" aria-label="Bottom banner">
+        <span class="email-text">info@mayanut.com</span>
+
+        <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email" data-tip="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.5 6.5h15v11h-15z"></path>
+            <path d="M4.5 7l7.5 6 7.5-6"></path>
+          </svg>
+        </a>
+        <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram" data-tip="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <circle cx="17.3" cy="6.7" r="0.9"></circle>
+          </svg>
+        </a>
+        <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X" data-tip="X">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+          </svg>
+        </a>
+        <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn" data-tip="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+          </svg>
+        </a>
+      </div>
     </footer>
   </div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true">
+    <div class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mobile-menu-head">
+        <div class="mobile-menu-title">Menu</div>
+        <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="mobile-menu-body">
+        <a href="index.html">Home</a>
+        <a href="store.html">Store</a>
+        <a href="research.html">Research</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sitemap.html">Sitemap</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCESSIBILITY FAB (kept) -->
+  <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="5" r="2"></circle>
+      <path d="M4 8h16"></path>
+      <path d="M9 8c1.1 2.2 2.5 3.2 3 3.2s1.9-1 3-3.2"></path>
+      <path d="M10.2 11.2l-1.8 9.3"></path>
+      <path d="M13.8 11.2l1.8 9.3"></path>
+    </svg>
+  </button>
 
   <!-- CART OVERLAY -->
   <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
@@ -1425,25 +1890,23 @@
       const btn = document.getElementById("hamburger-btn");
       const overlay = document.getElementById("mobile-menu-overlay");
       const close = document.getElementById("mobile-menu-close");
-      if(!btn || !overlay || !close) return;
 
-      function openMenu(){ document.body.classList.add("menu-open"); overlay.setAttribute("aria-hidden","false"); }
-      function closeMenu(){ document.body.classList.remove("menu-open"); overlay.setAttribute("aria-hidden","true"); }
+      function openMenu(){ document.body.classList.add("menu-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeMenu(){ document.body.classList.remove("menu-open"); overlay?.setAttribute("aria-hidden","true"); }
 
-      btn.addEventListener("click", openMenu);
-      close.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", (e)=>{ if(e.target && e.target.id === "mobile-menu-overlay") closeMenu(); });
+      btn?.addEventListener("click", openMenu);
+      close?.addEventListener("click", closeMenu);
+      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "mobile-menu-overlay") closeMenu(); });
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenu(); });
     })();
 
-    // Header search open + suggestions
+    // Header search suggestions
     (function(){
       const btn = document.getElementById("nav-search-btn");
       const input = document.getElementById("site-search");
       const clear = document.getElementById("site-search-clear");
       const suggest = document.getElementById("nav-suggest");
       const box = document.querySelector(".nav-search-box");
-      if(!btn || !input || !clear || !suggest || !box) return;
 
       const routes = [
         { keys:["store","shop","buy","purchase","order","products"], title:"Open the Store", desc:"Go to the store page to browse products.", action:()=> location.href="store.html" },
@@ -1459,8 +1922,10 @@
         return r.keys.some(k => qq.includes(norm(k)));
       }
       function render(q){
+        if(!suggest) return;
         suggest.innerHTML = "";
         const qq = norm(q);
+
         const hits = routes
           .map(r => ({r, ok: match(qq, r)}))
           .filter(x => qq ? x.ok : true)
@@ -1485,31 +1950,29 @@
 
       function open(){
         document.body.classList.add("site-search-open");
-        box.setAttribute("aria-hidden","false");
-        input.focus();
-        render(input.value || "");
+        if(box) box.setAttribute("aria-hidden","false");
+        input?.focus();
+        render(input?.value || "");
       }
       function close(){
         document.body.classList.remove("site-search-open");
-        box.setAttribute("aria-hidden","true");
+        if(box) box.setAttribute("aria-hidden","true");
       }
 
-      btn.addEventListener("click", ()=>{
+      btn?.addEventListener("click", ()=>{
         if(document.body.classList.contains("site-search-open")) close();
         else open();
       });
-
-      clear.addEventListener("click", ()=>{
+      clear?.addEventListener("click", ()=>{
+        if(!input) return;
         input.value = "";
         render("");
         input.focus();
       });
-
-      input.addEventListener("input", ()=> render(input.value));
-
+      input?.addEventListener("input", ()=> render(input.value));
       document.addEventListener("click", (e)=>{
         const t = e.target;
-        const within = (t && (btn.contains(t) || box.contains(t) || suggest.contains(t)));
+        const within = (t && (btn?.contains(t) || box?.contains(t) || suggest?.contains(t)));
         if(!within) close();
       });
       document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") close(); });
@@ -1519,15 +1982,15 @@
     (function(){
       const input = document.getElementById("store-search");
       const clear = document.getElementById("store-search-clear");
-      if(!input || !clear) return;
-      clear.addEventListener("click", ()=>{
+      if(!input) return;
+      clear?.addEventListener("click", ()=>{
         input.value = "";
         input.dispatchEvent(new Event("input"));
         input.focus();
       });
     })();
 
-    // Cart drawer + badge
+    // Cart state + drawer + badge
     (function(){
       const cart = new Map(); // title -> qty
       const overlay = document.getElementById("cart-overlay");
@@ -1535,10 +1998,9 @@
       const body = document.getElementById("cart-body");
       const empty = document.getElementById("cart-empty");
       const badge = document.getElementById("cart-badge");
-      if(!overlay || !closeBtn || !body || !empty || !badge) return;
 
-      function openCart(){ document.body.classList.add("cart-open"); overlay.setAttribute("aria-hidden","false"); }
-      function closeCart(){ document.body.classList.remove("cart-open"); overlay.setAttribute("aria-hidden","true"); }
+      function openCart(){ document.body.classList.add("cart-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeCart(){ document.body.classList.remove("cart-open"); overlay?.setAttribute("aria-hidden","true"); }
 
       function escapeHtml(s){
         return String(s).replace(/[&<>"']/g, m => ({
@@ -1550,18 +2012,19 @@
         cart.forEach(v => c += Math.max(0, v|0));
         return c;
       }
-      function renderBadge(){ badge.textContent = String(cartCount()); }
+      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
 
       function renderCart(){
+        if(!body) return;
         body.querySelectorAll(".cart-item").forEach(n=> n.remove());
         const entries = Array.from(cart.entries()).filter(([,q])=> q>0);
 
         if(entries.length === 0){
-          empty.style.display = "block";
+          if(empty) empty.style.display = "block";
           renderBadge();
           return;
         }
-        empty.style.display = "none";
+        if(empty) empty.style.display = "none";
 
         entries.forEach(([name, qty])=>{
           const row = document.createElement("div");
@@ -1577,8 +2040,8 @@
       }
 
       document.getElementById("cart-btn")?.addEventListener("click", ()=>{ renderCart(); openCart(); });
-      closeBtn.addEventListener("click", closeCart);
-      overlay.addEventListener("click", (e)=>{ if(e.target && e.target.id === "cart-overlay") closeCart(); });
+      closeBtn?.addEventListener("click", closeCart);
+      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "cart-overlay") closeCart(); });
 
       renderBadge();
 
@@ -1589,46 +2052,160 @@
       };
     })();
 
-    // Quantity selectors (per product): plus / type / minus
+    // Quantity controls: +/- stacked next to 0 (press-and-hold supported)
     (function(){
       const clamp = (n)=> Math.max(0, Math.min(99, n));
+      const HOLD_DELAY = 350;
+      const HOLD_RATE = 80;
 
-      function wire(card){
+      function hold(button, stepFn){
+        let t = null, iv = null;
+        const start = (e)=>{
+          e.preventDefault();
+          stepFn();
+          clearTimeout(t); clearInterval(iv);
+          t = setTimeout(()=>{ iv = setInterval(stepFn, HOLD_RATE); }, HOLD_DELAY);
+        };
+        const stop = ()=>{
+          clearTimeout(t); clearInterval(iv);
+          t = null; iv = null;
+        };
+
+        button.addEventListener("mousedown", start);
+        window.addEventListener("mouseup", stop);
+        window.addEventListener("mouseleave", stop);
+
+        button.addEventListener("touchstart", start, { passive:false });
+        button.addEventListener("touchend", stop);
+        button.addEventListener("touchcancel", stop);
+      }
+
+      function wireCard(card){
         const title = card.getAttribute("data-title") || "Item";
-        const qtyBox = card.querySelector(".qty-mid");
-        const plus = card.querySelector(".qty-mid [data-q='plus']");
-        const minus = card.querySelector(".qty-mid [data-q='minus']");
-        const val = card.querySelector(".qty-mid .qval");
+        const qtyInput = card.querySelector(".qty-input-inline");
+        const plusBtn = card.querySelector(".pm-btn-inline[data-action='plus']");
+        const minusBtn = card.querySelector(".pm-btn-inline[data-action='minus']");
         const addBtn = card.querySelector(".addq[data-action='add']");
-        if(!qtyBox || !plus || !minus || !val || !addBtn) return;
 
-        function getQty(){ return clamp(parseInt(val.value || "0", 10) || 0); }
-        function setQty(v){ val.value = String(clamp(v)); }
+        if(!qtyInput || !plusBtn || !minusBtn || !addBtn) return;
 
-        val.addEventListener("input", ()=> setQty(getQty()));
-        plus.addEventListener("click", (e)=>{ e.preventDefault(); setQty(getQty()+1); });
-        minus.addEventListener("click", (e)=>{ e.preventDefault(); setQty(getQty()-1); });
+        function getQty(){ return clamp(parseInt(qtyInput.value || "0", 10) || 0); }
+        function setQty(v){ qtyInput.value = String(clamp(v)); }
+
+        qtyInput.addEventListener("input", ()=> setQty(getQty()));
+        hold(plusBtn, ()=> setQty(getQty()+1));
+        hold(minusBtn, ()=> setQty(getQty()-1));
 
         addBtn.addEventListener("click", ()=>{
-          const q = getQty();
-          if(q <= 0){
+          const qty = getQty();
+          if(qty <= 0){
             alert("Select a quantity greater than 0.");
             return;
           }
-          window.__addToCart?.(title, q);
+          window.__addToCart?.(title, qty);
           setQty(0);
           alert("Added to cart (preview). Checkout is unavailable.");
         });
       }
 
-      document.querySelectorAll(".product-card").forEach(wire);
+      document.querySelectorAll(".product-card").forEach(wireCard);
     })();
 
-    // Buttons (concept placeholders)
+    // Checkout coming soon button
     (function(){
       document.getElementById("sort-btn")?.addEventListener("click", ()=> alert("Checkout is coming soon."));
       document.getElementById("checkout-btn")?.addEventListener("click", ()=> alert("Store is under development."));
-      document.getElementById("newsletter-form")?.addEventListener("submit", (e)=>{ e.preventDefault(); alert("This function is unavailable."); });
+    })();
+
+    // Newsletter submit
+    (function(){
+      document.getElementById("newsletter-form")?.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        alert("This function is unavailable.");
+      });
+    })();
+
+    // Merch carousel (auto 3s + wheel + drag)
+    (function(){
+      const track = document.getElementById("merch-track");
+      const prev = document.getElementById("merch-prev");
+      const next = document.getElementById("merch-next");
+      if(!track || !prev || !next) return;
+
+      const items = [
+        "mayanut-merch-hat-brosimum-alicastrum.png",
+        "mayanut-merch-hoodie-brosimum-alicastrum.png",
+        "mayanut-merch-shirt-brosimum-alicastrum.png"
+      ];
+
+      let idx = 0, timer = null, paused = false;
+      function mod(n, m){ return ((n % m) + m) % m; }
+
+      function render(){
+        track.innerHTML = "";
+        const positions = [-2, -1, 0, 1, 2];
+        positions.forEach((p)=>{
+          const realIndex = mod(idx + p, items.length);
+          const el = document.createElement("div");
+          el.className = "merch-item";
+          if(p === 0) el.classList.add("is-big");
+          else if(Math.abs(p) === 1) el.classList.add("is-med");
+          else el.classList.add("is-small");
+
+          const im = document.createElement("img");
+          im.src = items[realIndex];
+          im.alt = "Merch preview";
+          im.loading = "lazy";
+          im.decoding = "async";
+          im.onerror = ()=> { im.style.opacity = ".35"; };
+          el.appendChild(im);
+
+          el.addEventListener("click", ()=>{ location.href = "store.html"; });
+          track.appendChild(el);
+        });
+      }
+
+      function step(dir){ idx = mod(idx + dir, items.length); render(); }
+      prev.addEventListener("click", ()=> step(-1));
+      next.addEventListener("click", ()=> step( 1));
+
+      function start(){ stop(); timer = setInterval(()=>{ if(!paused) step(1); }, 3000); }
+      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+      track.addEventListener("mouseenter", ()=>{ paused = true; });
+      track.addEventListener("mouseleave", ()=>{ paused = false; });
+
+      track.addEventListener("wheel", (e)=>{
+        e.preventDefault();
+        const dir = (e.deltaY > 0 || e.deltaX > 0) ? 1 : -1;
+        step(dir);
+      }, { passive:false });
+
+      let dragging = false, startX = 0, moved = 0;
+      function onDown(e){
+        dragging = true; moved = 0;
+        startX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      }
+      function onMove(e){
+        if(!dragging) return;
+        const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+        moved = x - startX;
+      }
+      function onUp(){
+        if(!dragging) return;
+        dragging = false;
+        if(Math.abs(moved) > 22) step(moved < 0 ? 1 : -1);
+      }
+
+      track.addEventListener("mousedown", onDown);
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+      track.addEventListener("touchstart", onDown, { passive:true });
+      track.addEventListener("touchmove", onMove, { passive:true });
+      track.addEventListener("touchend", onUp);
+
+      render(); start();
+      window.addEventListener("visibilitychange", ()=>{ if(document.hidden) stop(); else start(); });
     })();
   </script>
 </body>

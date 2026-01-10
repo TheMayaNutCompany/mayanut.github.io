@@ -144,8 +144,13 @@
       --stickyOffset: 200px;
       --siteSearchW: 280px;
 
-      --bannerH: 54px;
+      /* Top banner will be half-height of prior */
+      --bannerH: 28px;
+
       --comingSize: 32px;
+
+      /* search focus color */
+      --search-aqua: #bfffff;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -201,17 +206,17 @@
       transform: translateZ(0);
     }
 
-    /* frame wrap */
+    /* frame wrap (fix desktop right-edge glitch by pinning to viewport width) */
     .frame-wrap{
       position:relative;
       z-index:2;
-      width: calc(100% - (var(--sideW) * 2));
+      width: calc(100vw - (var(--sideW) * 2));
       margin-left: var(--sideW);
       margin-right: var(--sideW);
       min-height:100vh;
       background: transparent;
       padding-top: var(--stickyOffset);
-      overflow-x:hidden;
+      overflow-x: clip;
     }
 
     /* sticky top */
@@ -231,7 +236,7 @@
       transform: translateZ(0);
     }
 
-    /* top banner */
+    /* top banner: half height */
     .top-banner{
       width:100%;
       min-height: var(--bannerH);
@@ -239,7 +244,7 @@
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding: 7px 12px;
+      padding: 3px 12px;
       background: rgba(255,255,255,0.14);
       border-bottom: 2px solid rgba(12,90,42,0.35);
     }
@@ -248,7 +253,7 @@
       font-weight:950;
       letter-spacing:0.14em;
       text-transform:uppercase;
-      font-size:14px;
+      font-size:13px;
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
       text-align:center;
@@ -265,12 +270,11 @@
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
-      padding: 24px 14px 28px;
+      padding: 28px 14px 32px;
       display:flex;
       align-items:center;
       justify-content:center;
       position:relative;
-      min-height: var(--bannerH);
     }
     .site-header::after{
       content:"";
@@ -290,7 +294,7 @@
       position:relative;
       z-index:1;
       flex-wrap:nowrap;
-      min-height: var(--bannerH);
+      min-height: 54px;
     }
 
     /* search icon (green) */
@@ -298,7 +302,7 @@
       position:absolute;
       left: 8px;
       top: 0;
-      height: var(--bannerH);
+      height: 54px;
       display:flex;
       align-items:center;
       width: 42px;
@@ -339,7 +343,7 @@
       width:0;
       opacity:0;
       pointer-events:none;
-      transition: width .18s ease, opacity .12s ease;
+      transition: width .18s ease, opacity .12s ease, background .12s ease;
       height:40px;
       z-index:1200;
       border-radius:14px;
@@ -350,7 +354,12 @@
       display:flex;
       align-items:center;
     }
-    body.site-search-open .nav-search-box{ width: var(--siteSearchW); opacity:1; pointer-events:auto; }
+    body.site-search-open .nav-search-box{
+      width: var(--siteSearchW);
+      opacity:1;
+      pointer-events:auto;
+      background: var(--search-aqua);
+    }
     .nav-search-input{
       height:40px; width:100%;
       border:none; background:transparent;
@@ -367,6 +376,12 @@
       justify-content:center;
       flex:0 0 auto;
       border-left:1px solid rgba(12,90,42,.35);
+      transition: background .12s ease;
+    }
+    /* X button orange + cream X when search open */
+    body.site-search-open .nav-search-clear{
+      background: var(--metal-orange);
+      border-left:1px solid rgba(255,255,197,0.55);
     }
     .nav-search-clear svg{
       width:18px;height:18px;
@@ -376,10 +391,11 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
+    body.site-search-open .nav-search-clear svg{ stroke: var(--cream); }
 
     .nav-suggest{
       position:absolute;
-      top: var(--bannerH);
+      top: 54px;
       left:48px;
       width: min(460px, calc(100% - 60px));
       border-radius:16px;
@@ -406,7 +422,7 @@
       width:100%;
       padding-left: 66px;
       padding-right: 140px;
-      min-height: var(--bannerH);
+      min-height: 54px;
     }
 
     /* tabs: green by default, home orange */
@@ -435,7 +451,7 @@
       position:absolute;
       right: 8px;
       top: 0;
-      height: var(--bannerH);
+      height: 54px;
       display:flex;
       align-items:center;
       justify-content:flex-end;
@@ -593,21 +609,22 @@
     /* brand row */
     .hero-brand{
       display:grid;
-      grid-template-columns: 152px 1fr;
+      grid-template-columns: 128px 1fr; /* tighter */
       gap:12px;
       align-items:flex-start;
       width:100%;
       min-width:0;
     }
+    /* logo smaller (match ~3 stacked lines) */
     .hero-logo{
-      width:154px;
+      width:128px;
       height:auto;
       cursor:pointer;
       user-select:none;
       -webkit-user-select:none;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
-      margin-top:2px;
-      margin-left:-2px;
+      margin-top:4px;
+      margin-left:0;
     }
     .credit{
       font-size:11.5px;
@@ -655,14 +672,14 @@
       border-radius: 14px;
     }
 
-    /* inline learn more button sits at end of sentence */
+    /* inline learn more button */
     .learn-inline{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       height:34px;
       padding:0 14px;
-      margin-left:12px; /* nudged right */
+      margin-left:10px;
       border-radius:14px;
       border:1px solid var(--cream);
       background: var(--mobile-green-grad);
@@ -770,13 +787,26 @@
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       flex:1 1 auto;
       min-width:0;
+      transition: background .12s ease;
     }
+    /* store search turns aqua on focus */
+    .store-search:focus-within{ background: var(--search-aqua); }
     .store-search .mag,.store-search .xbtn{
       width:40px;height:40px;
       display:flex;align-items:center;justify-content:center;
       flex:0 0 40px;
       cursor:pointer;
       user-select:none;
+      transition: background .12s ease;
+    }
+    /* store clear X orange with cream X */
+    .store-search .xbtn{
+      background: transparent;
+      border-left:1px solid rgba(12,90,42,.20);
+    }
+    .store-search:focus-within .xbtn{
+      background: var(--metal-orange);
+      border-left:1px solid rgba(255,255,197,0.55);
     }
     .store-search .mag svg,.store-search .xbtn svg{
       width:16px;height:16px;
@@ -786,6 +816,8 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
+    .store-search:focus-within .xbtn svg{ stroke: var(--cream); }
+
     .store-search input{
       border:none;
       outline:none;
@@ -800,7 +832,6 @@
       caret-color: var(--orange);
     }
     .store-search input::placeholder{ color: rgba(12,90,42,.90); font-weight:950; }
-    .store-search input::placeholder{ content:""; }
 
     .store-grid{ margin-top:2px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; width:100%; }
 
@@ -816,7 +847,6 @@
     .pimg{ width:100%; height: 170px; border-bottom:1px solid rgba(12,90,42,0.25); background:#fff; overflow:hidden; }
     .pimg img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    /* bottom: make it green like paragraph background */
     .pbot{
       padding:10px;
       background: var(--store-green-grad);
@@ -840,7 +870,6 @@
       color:#0b1220;
     }
 
-    /* buy row: orange + green connected, divider is thin cream */
     .buy-row{
       margin-top:10px;
       width:100%;
@@ -940,7 +969,6 @@
       text-underline-offset: 2px;
     }
 
-    /* View full store button between products and merch */
     .view-store-btn{
       margin-top:6px;
       width:100%;
@@ -961,7 +989,7 @@
       box-shadow: 0 14px 38px rgba(15,23,42,0.16);
     }
 
-    /* Merch carousel - larger */
+    /* merch */
     .merch-wrap{
       width:100%;
       display:flex;
@@ -1018,18 +1046,16 @@
       flex:0 0 auto;
     }
     .merch-item img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
+    .merch-item.is-small{ width:72px; height:72px; opacity:0.55; }
+    .merch-item.is-med{ width:92px; height:92px; opacity:0.82; }
+    .merch-item.is-big{ width:116px; height:116px; opacity:1; }
 
-    .merch-item.is-small{ width:72px; height:72px; transform: scale(0.98); opacity:0.55; }
-    .merch-item.is-med{ width:92px; height:92px; transform: scale(1.0); opacity:0.82; }
-    .merch-item.is-big{ width:116px; height:116px; transform: scale(1.0); opacity:1; }
-
-    /* Store Coming Soon + info (tightened spacing to align bottoms) */
     .store-divider{
       height:1px;
       background: rgba(12,90,42,0.55);
       width:100%;
       border-radius:999px;
-      margin: 8px 0 6px; /* reduced */
+      margin: 8px 0 6px;
     }
     .store-coming-wrap{
       position:relative;
@@ -1037,7 +1063,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding-bottom: 6px; /* reduced bottom space */
+      padding-bottom: 6px;
     }
     .store-coming-soon{
       width: calc(100% - 22px);
@@ -1106,8 +1132,6 @@
     .about-us{ padding:18px; }
     .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
     .about-card{ display:flex; flex-direction:column; gap:12px; min-width:0; }
-
-    /* about paragraphs green like top paragraph */
     .about-p-outline{
       background: var(--store-green-grad);
       border: 2px solid rgba(12,90,42,0.65);
@@ -1179,7 +1203,7 @@
       border-top: 2px solid rgba(12,90,42,0.35);
       background: rgba(255,255,255,0.14);
       padding: 7px 12px;
-      min-height: var(--bannerH);
+      min-height: 54px;
       display:flex;
       align-items:center;
       justify-content:flex-end;
@@ -1248,15 +1272,15 @@
     .accessibility-btn svg{ width:28px; height:28px; fill:none; stroke:#ffffff; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; position:relative; z-index:1; }
 
     /* overlays */
-    .cart-overlay, .a11y-overlay{
+    .cart-overlay{
       position:fixed; inset:0; display:none;
       background: rgba(0,0,0,0.26);
       backdrop-filter: blur(6px);
       padding:18px;
       overflow:auto;
+      z-index:1450;
     }
-    body.cart-open .cart-overlay{ display:block; z-index:1450; }
-    body.a11y-open .a11y-overlay{ display:block; z-index:1400; }
+    body.cart-open .cart-overlay{ display:block; }
 
     /* Cart drawer */
     .cart-drawer{
@@ -1320,7 +1344,7 @@
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .stack img{ height:200px; flex-basis:200px; }
-      .frame-wrap{ width: calc(100% - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
+      .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
       .store-grid{ grid-template-columns:1fr; }
       .what-img{ height: 175px; max-height:175px; }
@@ -1459,8 +1483,8 @@
                 class="hero-logo"
                 alt="The MayaNut Company logo"
                 id="hero-logo"
-                width="154"
-                height="154"
+                width="128"
+                height="128"
                 decoding="async"
                 onerror="this.style.opacity='.35';"
               />
@@ -1486,8 +1510,7 @@
                 <div class="what-inner">
                   <div class="hero-sub" id="hero-sub">
                     <p class="pretty-paragraph" data-tts>
-                      🟢 MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of tasty foods and beverages, alongside its many nutritional benefits.
-                      <a class="learn-inline" href="about.html" aria-label="Learn more">LEARN MORE</a>
+                      🟢 MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of tasty foods and beverages, alongside its many nutritional benefits.&nbsp;<a class="learn-inline" href="about.html" aria-label="Learn more">LEARN MORE</a>
                     </p>
                   </div>
 
@@ -1805,12 +1828,11 @@
         <a href="sitemap.html">Sitemap</a>
         <a href="terms.html">Terms</a>
         <a href="privacy.html">Privacy</a>
-        <button id="open-a11y-from-menu" type="button" aria-label="Open accessibility">Accessibility ♿</button>
       </div>
     </div>
   </div>
 
-  <!-- ACCESSIBILITY FAB -->
+  <!-- ACCESSIBILITY FAB (kept) -->
   <button class="fab accessibility-btn" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5" r="2"></circle>
@@ -1842,29 +1864,6 @@
     </div>
   </div>
 
-  <!-- A11Y OVERLAY (kept minimal hooks; styling inherited from earlier versions if you paste your full a11y drawer) -->
-  <div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
-    <div class="cart-drawer" role="dialog" aria-modal="true" aria-label="Accessibility">
-      <div class="cart-head">
-        <div class="cart-title">Accessibility</div>
-        <button class="drawer-close" id="a11y-close" type="button" aria-label="Close accessibility">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12"></path>
-            <path d="M18 6L6 18"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="cart-body" style="font-family:var(--font-pretty); font-style:italic; font-weight:850; color:#0b1220;">
-        <div style="padding:10px 2px; line-height:1.7;">
-          This menu remains available. Your full accessibility drawer can be pasted here if needed.
-        </div>
-      </div>
-      <div class="cart-foot">
-        <button class="metal-btn" type="button" id="a11y-close-2">CLOSE</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     // Side frame images (desktop)
     (function(){
@@ -1891,7 +1890,6 @@
       const btn = document.getElementById("hamburger-btn");
       const overlay = document.getElementById("mobile-menu-overlay");
       const close = document.getElementById("mobile-menu-close");
-      const openA11yFromMenu = document.getElementById("open-a11y-from-menu");
 
       function openMenu(){ document.body.classList.add("menu-open"); overlay?.setAttribute("aria-hidden","false"); }
       function closeMenu(){ document.body.classList.remove("menu-open"); overlay?.setAttribute("aria-hidden","true"); }
@@ -1900,14 +1898,9 @@
       close?.addEventListener("click", closeMenu);
       overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "mobile-menu-overlay") closeMenu(); });
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenu(); });
-
-      openA11yFromMenu?.addEventListener("click", ()=>{
-        closeMenu();
-        document.getElementById("accessibility-btn")?.click();
-      });
     })();
 
-    // Top search suggestions (kept)
+    // Header search suggestions
     (function(){
       const btn = document.getElementById("nav-search-btn");
       const input = document.getElementById("site-search");
@@ -1919,11 +1912,7 @@
         { keys:["store","shop","buy","purchase","order","products"], title:"Open the Store", desc:"Go to the store page to browse products.", action:()=> location.href="store.html" },
         { keys:["research","science","data","grow","growing"], title:"Open Research", desc:"Read growing notes and research.", action:()=> location.href="research.html" },
         { keys:["about","story","legacy"], title:"Open About", desc:"Learn the story behind the farm.", action:()=> location.href="about.html" },
-        { keys:["contact","email","instagram","social"], title:"Open Contact", desc:"Find email and contact options.", action:()=> location.href="contact.html" },
-        { keys:["newsletter","updates","subscribe"], title:"Jump to Newsletter", desc:"Scroll to newsletter signup.", action:()=> document.getElementById("newsletter")?.scrollIntoView({behavior:"smooth", block:"start"}) },
-        { keys:["privacy"], title:"Open Privacy", desc:"View privacy policy.", action:()=> location.href="privacy.html" },
-        { keys:["terms"], title:"Open Terms", desc:"View terms.", action:()=> location.href="terms.html" },
-        { keys:["sitemap","site map"], title:"Open Sitemap", desc:"View the sitemap.", action:()=> location.href="sitemap.html" }
+        { keys:["contact","email","instagram","social"], title:"Open Contact", desc:"Find email and contact options.", action:()=> location.href="contact.html" }
       ];
 
       function norm(s){ return String(s||"").toLowerCase().replace(/\s+/g," ").trim(); }
@@ -1945,7 +1934,7 @@
         if(hits.length === 0){
           const d = document.createElement("div");
           d.className = "suggest-item";
-          d.innerHTML = `<div class="suggest-title">No match</div><div class="suggest-desc">Try “store”, “research”, “contact”, “about”, or “newsletter”.</div>`;
+          d.innerHTML = `<div class="suggest-title">No match</div><div class="suggest-desc">Try “store”, “research”, “contact”, or “about”.</div>`;
           suggest.appendChild(d);
           return;
         }
@@ -2136,26 +2125,7 @@
       });
     })();
 
-    // Accessibility overlay (minimal)
-    (function(){
-      const btn = document.getElementById("accessibility-btn");
-      const overlay = document.getElementById("a11y-overlay");
-      const close = document.getElementById("a11y-close");
-      const close2 = document.getElementById("a11y-close-2");
-
-      function openA11y(){ document.body.classList.add("a11y-open"); overlay?.setAttribute("aria-hidden","false"); }
-      function closeA11y(){ document.body.classList.remove("a11y-open"); overlay?.setAttribute("aria-hidden","true"); }
-
-      btn?.addEventListener("click", openA11y);
-      close?.addEventListener("click", closeA11y);
-      close2?.addEventListener("click", closeA11y);
-      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "a11y-overlay") closeA11y(); });
-    })();
-
-    // Merch carousel (auto 3s + wheel + drag) — files:
-    // mayanut-merch-hat-brosimum-alicastrum.png
-    // mayanut-merch-hoodie-brosimum-alicastrum.png
-    // mayanut-merch-shirt-brosimum-alicastrum.png
+    // Merch carousel (auto 3s + wheel + drag)
     (function(){
       const track = document.getElementById("merch-track");
       const prev = document.getElementById("merch-prev");
@@ -2236,18 +2206,6 @@
 
       render(); start();
       window.addEventListener("visibilitychange", ()=>{ if(document.hidden) stop(); else start(); });
-    })();
-
-    // Header sizing
-    (function(){
-      function setStickyOffset(){
-        var sticky = document.getElementById("sticky-top");
-        if(!sticky) return;
-        var h = Math.ceil(sticky.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--stickyOffset", (h + 0) + "px");
-      }
-      window.addEventListener("load", setStickyOffset, { once:true });
-      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
     })();
   </script>
 </body>

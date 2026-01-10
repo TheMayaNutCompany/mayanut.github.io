@@ -44,6 +44,10 @@
       --green-deep:#0b3b17;
       --frame-line: rgba(12, 90, 42, 0.95);
 
+      --tan:#f3e6d1;
+      --tan-top:#c9a981;
+      --tan-top2:#e7d5b6;
+
       --orange:#fd6c02;
       --orange-dark:#e95f02;
       --orange-mid:#ff7a1a;
@@ -92,12 +96,14 @@
 
       --stickyOffset: 200px;
       --bannerH: 54px;
+
+      --heartHot: linear-gradient(180deg, #ff4d6d 0%, #ff2d55 45%, #ff00b8 100%);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; min-height:100%; }
     html{
-      background: var(--store-green-grad);
+      background: var(--tan);
       scroll-padding-top: calc(var(--stickyOffset) + 12px);
       overflow-x:hidden;
     }
@@ -106,7 +112,7 @@
       color:var(--text-main);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
-      background: var(--store-green-grad);
+      background: var(--tan);
       min-height:100vh;
       overscroll-behavior-y:none;
     }
@@ -364,14 +370,20 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.12);
     }
 
-    /* main: all green gradient */
+    /* main: tan/mocha gradient like index */
     main{
       position:relative;
       z-index:1;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       box-shadow: var(--shadow);
-      background: var(--store-green-grad);
+      background: linear-gradient(
+        to bottom,
+        var(--tan-top) 0%,
+        var(--tan-top2) 10%,
+        var(--tan) 22%,
+        var(--tan) 100%
+      );
       overflow:hidden;
       min-height: calc(100vh - var(--stickyOffset));
     }
@@ -472,7 +484,6 @@
       overflow:hidden;
     }
 
-    /* header row inside grid: thin green line across, cream title band */
     .grid-head{
       padding:12px;
       background: rgba(255,255,255,0.10);
@@ -550,7 +561,6 @@
       pointer-events:none;
     }
 
-    /* checkout coming soon (replaces orange sort button) */
     .checkout-pill{
       height:40px;
       padding:0 14px;
@@ -620,9 +630,7 @@
       caret-color: var(--orange);
     }
 
-    .grid-body{
-      padding:12px;
-    }
+    .grid-body{ padding:12px; }
 
     .section-label{
       display:flex;
@@ -659,6 +667,42 @@
       display:flex;
       flex-direction:column;
       min-height: 270px;
+      position:relative;
+    }
+
+    /* favorite heart (top-right) */
+    .fav-btn{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,197,0.85);
+      background: rgba(0,0,0,0.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:5;
+      box-shadow:0 12px 26px rgba(15,23,42,0.14);
+    }
+    .fav-btn svg{
+      width:16px;
+      height:16px;
+      stroke: var(--cream);
+      fill: transparent;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .fav-btn.is-on{
+      background: var(--heartHot);
+      border-color: var(--cream);
+    }
+    .fav-btn.is-on svg{
+      fill: rgba(255,255,255,0.05);
+      stroke: var(--cream);
     }
 
     .pimg{
@@ -708,9 +752,10 @@
       text-align:center;
       color:#0b1220;
       margin-bottom:8px;
+      padding:0 26px; /* space for heart overlap */
     }
 
-    /* Quantity control BETWEEN title and add/price */
+    /* qty control between title and buttons */
     .qty-mid{
       width: 100%;
       display:flex;
@@ -779,9 +824,8 @@
       user-select:none;
       -webkit-user-select:none;
     }
-    .pm-mini button:active{ transform: scale(0.98); }
 
-    /* add/price row (no qty inside, fixes typing triggering add) */
+    /* add/price row */
     .buy-row{
       width:100%;
       display:flex;
@@ -833,7 +877,6 @@
       flex:0 0 1px;
     }
 
-    /* empty space below grid */
     .grid-spacer{ height: 180px; }
 
     /* FOOTER */
@@ -1272,10 +1315,11 @@
           <aside class="left-panel" aria-label="Sorting and filters">
             <div class="head">Sort &amp; Filter</div>
             <div class="body">
-              <div class="filter-group">
-                <div class="filter-title">A to Z</div>
-                <label class="filter-item"><input type="radio" name="az" value="az" checked> A → Z</label>
-                <label class="filter-item"><input type="radio" name="az" value="za"> Z → A</label>
+              <div class="filter-group" aria-label="Sort options">
+                <div class="filter-title">Sort</div>
+                <label class="filter-item"><input type="radio" name="sortmode" value="newest" checked> Newest</label>
+                <label class="filter-item"><input type="radio" name="sortmode" value="az"> A → Z</label>
+                <label class="filter-item"><input type="radio" name="sortmode" value="za"> Z → A</label>
               </div>
 
               <div class="filter-group">
@@ -1297,7 +1341,7 @@
           <!-- GRID -->
           <section class="grid-wrap" aria-label="Product grid">
             <div class="grid-head">
-              <div class="grid-title">Store</div>
+              <div class="grid-title">MayaNut Store</div>
 
               <div class="grid-tools">
                 <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart">
@@ -1335,25 +1379,28 @@
             <div class="grid-body">
               <div class="section-label">Food Products</div>
               <div class="product-grid" id="grid-food">
-                <!-- 4 food items -->
-                <article class="product-card" data-title="MayaNut Powder" data-cat="food">
+                <!-- For Newest sorting: higher data-newest = newer -->
+                <article class="product-card" data-title="MayaNut Powder" data-cat="food" data-newest="5">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/>
+                    </svg>
+                  </button>
                   <div class="pimg"><img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut Powder" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot">
                     <div class="pbot-inner">
                       <div class="ptitle">🟠 MayaNut Powder</div>
-
                       <div class="qty-mid">
                         <div class="qty-pill" aria-label="Quantity control">
                           <span class="lbl">Qty</span>
                           <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                          <span class="pm-mini" aria-hidden="false">
+                          <span class="pm-mini">
                             <button class="pm" type="button" data-step="+1" aria-label="Increase">+</button>
                             <button class="pm" type="button" data-step="-1" aria-label="Decrease">-</button>
                           </span>
                         </div>
                       </div>
-
-                      <div class="buy-row" aria-label="Buy controls">
+                      <div class="buy-row">
                         <button class="addq" type="button" data-action="add">ADD</button>
                         <div class="cream-divider" aria-hidden="true"></div>
                         <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
@@ -1362,217 +1409,141 @@
                   </div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Instant Latte" data-cat="food">
+                <article class="product-card" data-title="MayaNut Instant Latte" data-cat="food" data-newest="4">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/>
+                    </svg>
+                  </button>
                   <div class="pimg"><img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut Instant Latte" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
-                  <div class="pbot">
-                    <div class="pbot-inner">
-                      <div class="ptitle">🟠 Instant Latte</div>
-
-                      <div class="qty-mid">
-                        <div class="qty-pill" aria-label="Quantity control">
-                          <span class="lbl">Qty</span>
-                          <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                          <span class="pm-mini">
-                            <button class="pm" type="button" data-step="+1" aria-label="Increase">+</button>
-                            <button class="pm" type="button" data-step="-1" aria-label="Decrease">-</button>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="buy-row">
-                        <button class="addq" type="button" data-action="add">ADD</button>
-                        <div class="cream-divider" aria-hidden="true"></div>
-                        <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
-                      </div>
-                    </div>
-                  </div>
+                  <div class="pbot"><div class="pbot-inner">
+                    <div class="ptitle">🟠 Instant Latte</div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
+                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
+                    </div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
+                  </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Fruit" data-cat="food">
+                <article class="product-card" data-title="MayaNut Fruit" data-cat="food" data-newest="3">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/>
+                    </svg>
+                  </button>
                   <div class="pimg"><img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut Fruit" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
-                  <div class="pbot">
-                    <div class="pbot-inner">
-                      <div class="ptitle">🟠 MayaNut Fruit</div>
-
-                      <div class="qty-mid">
-                        <div class="qty-pill" aria-label="Quantity control">
-                          <span class="lbl">Qty</span>
-                          <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                          <span class="pm-mini">
-                            <button class="pm" type="button" data-step="+1" aria-label="Increase">+</button>
-                            <button class="pm" type="button" data-step="-1" aria-label="Decrease">-</button>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="buy-row">
-                        <button class="addq" type="button" data-action="add">ADD</button>
-                        <div class="cream-divider" aria-hidden="true"></div>
-                        <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
-                      </div>
-                    </div>
-                  </div>
+                  <div class="pbot"><div class="pbot-inner">
+                    <div class="ptitle">🟠 MayaNut Fruit</div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
+                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
+                    </div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
+                  </div></div>
                 </article>
 
-                <article class="product-card" data-title="Sampler Pack" data-cat="food">
+                <article class="product-card" data-title="Sampler Pack" data-cat="food" data-newest="2">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/>
+                    </svg>
+                  </button>
                   <div class="pimg"><img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="Sampler Pack" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
-                  <div class="pbot">
-                    <div class="pbot-inner">
-                      <div class="ptitle">🟠 Sampler Pack</div>
-
-                      <div class="qty-mid">
-                        <div class="qty-pill" aria-label="Quantity control">
-                          <span class="lbl">Qty</span>
-                          <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                          <span class="pm-mini">
-                            <button class="pm" type="button" data-step="+1" aria-label="Increase">+</button>
-                            <button class="pm" type="button" data-step="-1" aria-label="Decrease">-</button>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="buy-row">
-                        <button class="addq" type="button" data-action="add">ADD</button>
-                        <div class="cream-divider" aria-hidden="true"></div>
-                        <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
-                      </div>
-                    </div>
-                  </div>
+                  <div class="pbot"><div class="pbot-inner">
+                    <div class="ptitle">🟠 Sampler Pack</div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
+                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
+                    </div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
+                  </div></div>
                 </article>
               </div>
 
               <div class="section-label" style="margin-top:16px;">Merch</div>
               <div class="product-grid" id="grid-merch">
-                <!-- 4 merch items -->
-                <article class="product-card" data-title="MayaNut Hat" data-cat="merch">
+                <!-- Newest sorting should NOT reorder merch -->
+                <article class="product-card" data-title="MayaNut Hat" data-cat="merch" data-newest="1">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="mayanut-merch-hat-brosimum-alicastrum.png" alt="MayaNut Hat" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 MayaNut Hat</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Hoodie" data-cat="merch">
+                <article class="product-card" data-title="MayaNut Hoodie" data-cat="merch" data-newest="1">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="mayanut-merch-hoodie-brosimum-alicastrum.png" alt="MayaNut Hoodie" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 MayaNut Hoodie</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Shirt" data-cat="merch">
+                <article class="product-card" data-title="MayaNut Shirt" data-cat="merch" data-newest="1">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="mayanut-merch-shirt-brosimum-alicastrum.png" alt="MayaNut Shirt" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 MayaNut Shirt</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Tote" data-cat="merch">
-                  <div class="pimg"><img src="mayanut-merch-shirt-brosimum-alicastrum.png" alt="MayaNut Tote (concept)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
+                <article class="product-card" data-title="Tote (Concept)" data-cat="merch" data-newest="1">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
+                  <div class="pimg"><img src="mayanut-merch-shirt-brosimum-alicastrum.png" alt="Tote (concept)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 Tote (Concept)</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
               </div>
 
               <div class="section-label" style="margin-top:16px;">Trees & Planting Stock</div>
               <div class="product-grid" id="grid-trees">
-                <!-- 4 planting stock items -->
-                <article class="product-card" data-title="MayaNut Seed (Germination)" data-cat="trees">
+                <article class="product-card" data-title="MayaNut Seed (Germination)" data-cat="trees" data-newest="3">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut Seed (Germination) (concept)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 Seed (Germination)</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Seedling (1 Gallon)" data-cat="trees">
+                <article class="product-card" data-title="MayaNut Seedling (1 Gallon)" data-cat="trees" data-newest="4">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut Seedling 1 Gallon (concept)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 Seedling (1 Gallon)</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Seedling (2 Gallon)" data-cat="trees">
+                <article class="product-card" data-title="MayaNut Seedling (2 Gallon)" data-cat="trees" data-newest="2">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut Seedling 2 Gallon (concept)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 Seedling (2 Gallon)</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
 
-                <article class="product-card" data-title="MayaNut Cuttings (Concept)" data-cat="trees">
+                <article class="product-card" data-title="MayaNut Cuttings (Concept)" data-cat="trees" data-newest="1">
+                  <button class="fav-btn" type="button" aria-label="Favorite" data-fav><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/></svg></button>
                   <div class="pimg"><img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut Cuttings (concept)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/></div>
                   <div class="pbot"><div class="pbot-inner">
                     <div class="ptitle">🟠 Cuttings (Concept)</div>
-                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span>
-                      <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                      <span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span>
-                    </div></div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
-                      <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button">$0.00</button>
-                    </div>
+                    <div class="qty-mid"><div class="qty-pill"><span class="lbl">Qty</span><input class="qty-input" type="number" min="0" max="99" step="1" value="0"/><span class="pm-mini"><button class="pm" type="button" data-step="+1">+</button><button class="pm" type="button" data-step="-1">-</button></span></div></div>
+                    <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                   </div></div>
                 </article>
               </div>
@@ -1696,6 +1667,46 @@
         input.dispatchEvent(new Event("input"));
         input.focus();
       });
+    })();
+
+    // Favorites (localStorage)
+    (function(){
+      const KEY = "mayanut_favs_v1";
+      function load(){
+        try{
+          const raw = localStorage.getItem(KEY);
+          const arr = raw ? JSON.parse(raw) : [];
+          return new Set(Array.isArray(arr) ? arr : []);
+        }catch(_){ return new Set(); }
+      }
+      function save(set){
+        try{ localStorage.setItem(KEY, JSON.stringify(Array.from(set))); }catch(_){}
+      }
+      const favs = load();
+
+      function applyUI(){
+        document.querySelectorAll("[data-fav]").forEach(btn=>{
+          const card = btn.closest(".product-card");
+          const id = card?.getAttribute("data-title") || "";
+          btn.classList.toggle("is-on", favs.has(id));
+        });
+      }
+
+      document.addEventListener("click", (e)=>{
+        const btn = e.target?.closest?.("[data-fav]");
+        if(!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const card = btn.closest(".product-card");
+        const id = card?.getAttribute("data-title") || "";
+        if(!id) return;
+        if(favs.has(id)) favs.delete(id);
+        else favs.add(id);
+        save(favs);
+        applyUI();
+      });
+
+      applyUI();
     })();
 
     // Cart state + drawer + badge
@@ -1825,14 +1836,17 @@
       document.querySelectorAll(".product-card").forEach(wireCard);
     })();
 
-    // A→Z sorting (ignores "MayaNut" prefix; uses the remainder)
+    // Sorting: Newest, A→Z, Z→A
+    // - Newest: do NOT reorder merch (keeps current order); only reorders food + trees by data-newest desc
+    // - A/Z: sorts food + trees by name (ignoring leading "MayaNut"); merch can sort for A/Z but remains stable for Newest
     (function(){
       function displayName(raw){
         const s = String(raw||"").trim();
         if(!s) return "";
         return s.replace(/^MayaNut\s+/i, "").trim();
       }
-      function sortGrid(container, dir){
+
+      function sortByName(container, dir){
         const cards = Array.from(container.querySelectorAll(".product-card"));
         cards.sort((a,b)=>{
           const A = displayName(a.getAttribute("data-title")).toLowerCase();
@@ -1844,19 +1858,43 @@
         cards.forEach(c=> container.appendChild(c));
       }
 
-      const radios = Array.from(document.querySelectorAll("input[name='az']"));
-      function apply(){
-        const dir = (radios.find(r=>r.checked)?.value) || "az";
-        ["grid-food","grid-merch","grid-trees"].forEach(id=>{
-          const el = document.getElementById(id);
-          if(el) sortGrid(el, dir);
+      function sortByNewest(container){
+        const cards = Array.from(container.querySelectorAll(".product-card"));
+        cards.sort((a,b)=>{
+          const A = parseInt(a.getAttribute("data-newest") || "0", 10) || 0;
+          const B = parseInt(b.getAttribute("data-newest") || "0", 10) || 0;
+          return B - A; // newest first
         });
+        cards.forEach(c=> container.appendChild(c));
       }
-      radios.forEach(r=> r.addEventListener("change", apply));
-      apply();
+
+      const radios = Array.from(document.querySelectorAll("input[name='sortmode']"));
+      function mode(){ return (radios.find(r=>r.checked)?.value) || "newest"; }
+
+      function applySort(){
+        const m = mode();
+        const food = document.getElementById("grid-food");
+        const merch = document.getElementById("grid-merch");
+        const trees = document.getElementById("grid-trees");
+
+        if(m === "newest"){
+          if(food) sortByNewest(food);
+          if(trees) sortByNewest(trees);
+          // merch stays as-is
+          return;
+        }
+        if(m === "az" || m === "za"){
+          if(food) sortByName(food, m);
+          if(merch) sortByName(merch, m);
+          if(trees) sortByName(trees, m);
+        }
+      }
+
+      radios.forEach(r=> r.addEventListener("change", applySort));
+      applySort();
     })();
 
-    // Category filters (concept UI; applies basic show/hide)
+    // Category filters (concept UI; show/hide)
     (function(){
       const catChecks = Array.from(document.querySelectorAll("input[name='cat']"));
       const btn = document.getElementById("apply-filters");

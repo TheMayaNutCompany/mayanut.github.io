@@ -55,9 +55,9 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      --store-g1:#d8ff6a;
+      --store-g1:#d8ff6a; /* lime */
       --store-g2:#7ae78a;
-      --store-g3:#1a6800;
+      --store-g3:#1a6800; /* dark */
 
       --panel-green-grad: linear-gradient(
         90deg,
@@ -101,11 +101,21 @@
         rgba(179,232,135,0.96) 100%
       );
 
+      --dbl-line: linear-gradient(
+        to bottom,
+        rgba(216,255,106,0.95) 0%,
+        rgba(216,255,106,0.95) 50%,
+        rgba(12,90,42,0.70) 50%,
+        rgba(12,90,42,0.70) 100%
+      );
+
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --stickyOffset: 170px;
       --bannerH: 28px; /* thinner */
+
+      --a11y-blue:#084ac5;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -235,10 +245,9 @@
       padding:0 8px;
       position:relative;
       z-index:1;
-      min-height:56px; /* taller than before */
+      min-height:56px;
     }
 
-    /* SEARCH ICON (concept) */
     .nav-search{
       position:absolute;
       left:8px; top:0;
@@ -266,7 +275,6 @@
       stroke-linejoin:round;
     }
 
-    /* NAV PILLS */
     .nav-center{
       display:flex;
       align-items:center;
@@ -323,7 +331,7 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.12);
     }
 
-    /* MAIN (mocha) */
+    /* MAIN */
     main{
       border-left: var(--frameBorder) solid var(--green-line);
       border-right: var(--frameBorder) solid var(--green-line);
@@ -338,24 +346,38 @@
       margin:0 auto;
     }
 
-    /* LAYOUT */
+    /* LAYOUT (side sort less wide) */
     .store-layout{
       display:grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 230px 1fr; /* narrower */
       gap:14px;
       align-items:start;
     }
 
-    /* LEFT: SORT PANEL (sticky) */
+    /* LEFT: SORT PANEL */
     .left-panel{
       position:sticky;
       top: calc(var(--stickyOffset) + 12px);
       border-radius:18px;
       background: var(--para-green-grad);
-      border:6px solid var(--orange);
+      border:6px solid var(--orange); /* outer orange outline */
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
       overflow:hidden;
     }
+    /* add double-line separation between orange outline and inner content */
+    .left-panel{ position:sticky; }
+    .left-panel::before{
+      content:"";
+      position:absolute;
+      inset:6px;
+      border-radius:12px;
+      border:2px solid rgba(216,255,106,0.95);
+      box-shadow: inset 0 0 0 2px rgba(12,90,42,0.70);
+      pointer-events:none;
+      z-index:0;
+    }
+    .left-panel > *{ position:relative; z-index:1; }
+
     .left-panel .head{
       background: var(--cream);
       padding:10px 12px;
@@ -372,8 +394,8 @@
       content:"";
       position:absolute;
       left:0; right:0; bottom:0;
-      height:2px;
-      background: rgba(12,90,42,0.55);
+      height:4px;
+      background: var(--dbl-line);
     }
     .left-panel .body{
       padding:12px;
@@ -404,8 +426,8 @@
     .filter-title::after{
       content:"";
       flex:1;
-      height:2px;
-      background: rgba(12,90,42,0.45);
+      height:4px;
+      background: var(--dbl-line);
       border-radius:999px;
     }
     .filter-item{
@@ -419,7 +441,6 @@
     }
     .filter-item input{ accent-color: #1a6800; }
 
-    /* Sticky checkout under filters, outside groups */
     .side-checkout{
       margin-top:4px;
       width:100%;
@@ -439,13 +460,25 @@
     /* RIGHT: STORE SHELL */
     .grid-wrap{
       border-radius:18px;
-      border:6px solid var(--orange); /* orange outer outline around entire store */
+      border:6px solid var(--orange); /* outer orange outline */
       background: var(--store-green-grad);
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
       overflow:hidden;
+      position:relative;
     }
+    /* double-line separation between orange outline and inner */
+    .grid-wrap::before{
+      content:"";
+      position:absolute;
+      inset:6px;
+      border-radius:12px;
+      border:2px solid rgba(216,255,106,0.95);
+      box-shadow: inset 0 0 0 2px rgba(12,90,42,0.70);
+      pointer-events:none;
+      z-index:0;
+    }
+    .grid-wrap > *{ position:relative; z-index:1; }
 
-    /* GRID HEAD (cream) */
     .grid-head{
       background: var(--cream);
       padding:10px 12px;
@@ -456,13 +489,12 @@
       position:relative;
       border-bottom:2px solid rgba(12,90,42,0.35);
     }
-    /* remove “glitch strip”: only thin green line */
     .grid-head::after{
       content:"";
       position:absolute;
       left:0; right:0; bottom:0;
-      height:2px;
-      background: rgba(12,90,42,0.55);
+      height:4px;
+      background: var(--dbl-line);
       pointer-events:none;
     }
 
@@ -493,8 +525,8 @@
     }
     .title-line{
       flex:1;
-      height:2px;
-      background: rgba(12,90,42,0.55);
+      height:4px;
+      background: var(--dbl-line);
       border-radius:999px;
       margin-left:12px;
       margin-right:12px;
@@ -509,7 +541,6 @@
       min-width:0;
     }
 
-    /* cart icon */
     .icon-btn{
       width:42px;height:40px;
       border-radius:14px;
@@ -531,7 +562,6 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    /* cart badge orange circle */
     .cart-badge{
       position:absolute;
       top:-6px;
@@ -552,7 +582,6 @@
       pointer-events:none;
     }
 
-    /* search */
     .store-search{
       height:40px;
       border-radius:14px;
@@ -602,11 +631,8 @@
     }
     .store-search input::placeholder{ color: rgba(12,90,42,.92); font-weight:950; }
 
-    .grid-body{
-      padding:12px;
-    }
+    .grid-body{ padding:12px; }
 
-    /* Mobile category tabs (only on mobile) */
     .mobile-cat-tabs{
       display:none;
       gap:10px;
@@ -628,7 +654,6 @@
     }
     .mobile-cat-tabs button.is-active{ background: var(--metal-orange); }
 
-    /* Section headings with right-side line */
     .section-label{
       display:flex;
       align-items:center;
@@ -646,27 +671,25 @@
     .section-label::after{
       content:"";
       flex:1;
-      height:2px;
-      background: rgba(12,90,42,0.45);
+      height:4px;
+      background: var(--dbl-line);
       border-radius:999px;
     }
 
     .section-block{ display:block; }
     .section-block.is-active{ display:block; }
 
-    /* product grid */
     .product-grid{
       display:grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap:12px;
     }
 
-    /* PRODUCT CARD */
     .product-card{
       border-radius:18px;
       overflow:hidden;
       background: rgba(255,255,255,0.10);
-      border:2px solid rgba(12,90,42,0.55); /* thin green outline standard */
+      border:2px solid rgba(12,90,42,0.55);
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       position:relative;
       transform: translateZ(0);
@@ -674,11 +697,10 @@
     }
     .product-card:hover{ transform: scale(1.02); }
 
-    /* cream header (thinner) */
     .prod-head{
       background: var(--cream);
       border-bottom:2px solid rgba(12,90,42,0.35);
-      padding:5px 8px; /* thinner */
+      padding:5px 8px;
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight:900;
@@ -692,7 +714,6 @@
       text-align:center;
     }
 
-    /* image rectangle (wider than tall) */
     .pimg{
       position:relative;
       background:#fff;
@@ -703,10 +724,9 @@
       height:150px;
       object-fit:cover;
       display:block;
-      cursor:pointer; /* click image for modal */
+      cursor:pointer;
     }
 
-    /* heart upper-right of image, outlined dark green */
     .fav-btn{
       position:absolute;
       top:8px;
@@ -737,12 +757,10 @@
       stroke: rgba(12,90,42,0.85);
     }
 
-    /* buy area background: index paragraph green */
     .pbot{
       padding:10px;
       background: var(--para-green-grad);
     }
-    /* inner outline around qty + buttons: lime-to-dark green, inner most = index paragraph bg */
     .pbot-inner{
       border-radius:14px;
       border:3px solid;
@@ -754,7 +772,6 @@
       gap:10px;
     }
 
-    /* qty row */
     .qty-row{
       display:flex;
       align-items:center;
@@ -762,7 +779,6 @@
       gap:8px;
     }
 
-    /* quantity value box (white) */
     .qty-val{
       width:50px;
       height:26px;
@@ -779,16 +795,15 @@
     .qty-val::-webkit-outer-spin-button,
     .qty-val::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-    /* plus/minus mini rounded squares (touching) */
     .pm-stack{
       display:flex;
       flex-direction:column;
-      gap:0; /* touching */
+      gap:0;
     }
     .pm-btn{
       width:24px;
       height:13px;
-      border-radius:6px; /* rounded square feel */
+      border-radius:6px;
       border:2px solid rgba(12,90,42,0.55);
       background:#fff;
       color:#0b1220;
@@ -804,7 +819,6 @@
     }
     .pm-btn:active{ transform: scale(0.98); }
 
-    /* info button: small, rectangular */
     .info-btn{
       margin-left:auto;
       height:26px;
@@ -823,7 +837,6 @@
       white-space:nowrap;
     }
 
-    /* add/price: 50/50 with cream divider */
     .buy-row{
       width:100%;
       display:flex;
@@ -862,7 +875,7 @@
       flex:0 0 1px;
     }
 
-    /* FOOTER (BOTTOM TAB) */
+    /* FOOTER (BOTTOM TAB RESTORED) */
     footer{
       border-left: var(--frameBorder) solid var(--green-line);
       border-right: var(--frameBorder) solid var(--green-line);
@@ -921,7 +934,7 @@
     }
     .icon-pill .fill{ fill: var(--cream); stroke:none; }
 
-    /* ACCESSIBILITY FAB (blue circle like index) */
+    /* ACCESSIBILITY FAB */
     .fab{
       position:fixed;
       z-index:1300;
@@ -964,8 +977,8 @@
       z-index:1;
     }
 
-    /* CART OVERLAY */
-    .cart-overlay, .modal-overlay, .a11y-overlay{
+    /* OVERLAYS */
+    .cart-overlay, .modal-overlay, .a11y-overlay, .checkout-overlay{
       position:fixed; inset:0; display:none;
       background: rgba(0,0,0,0.26);
       backdrop-filter: blur(6px);
@@ -975,6 +988,35 @@
     body.cart-open .cart-overlay{ display:block; z-index:1450; }
     body.modal-open .modal-overlay{ display:block; z-index:1460; }
     body.a11y-open .a11y-overlay{ display:block; z-index:1400; }
+    body.checkout-open .checkout-overlay{ display:block; z-index:1500; padding:0; }
+
+    /* Checkout overlay: left 2/3 dark, right 1/3 panel */
+    .checkout-overlay{
+      background: rgba(0,0,0,0.44);
+      backdrop-filter: blur(6px);
+    }
+    .checkout-panel{
+      position:absolute;
+      right:0; top:0; bottom:0;
+      width: min(520px, 34vw);
+      background: rgba(0,0,0,0.0);
+      padding: 18px 18px 18px 0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-end;
+    }
+    .checkout-drawer{
+      width:100%;
+      max-width:520px;
+      height:100%;
+      border-radius:18px;
+      border:2px solid rgba(12,90,42,0.85);
+      background: rgba(255,255,255,0.94);
+      box-shadow:0 18px 60px rgba(15,23,42,0.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
 
     .drawer{
       max-width: 560px;
@@ -996,6 +1038,14 @@
       gap:12px;
       border-bottom:2px solid rgba(12,90,42,.55);
       background: rgba(255,255,255,0.60);
+      position:relative;
+    }
+    .drawer-head::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:4px;
+      background: var(--dbl-line);
     }
     .drawer-title{
       font-weight:950;
@@ -1027,30 +1077,6 @@
       flex-direction:column;
       gap:10px;
     }
-    .cart-item{
-      border-radius:16px;
-      border:2px solid rgba(12,90,42,.80);
-      background: rgba(255,255,255,0.70);
-      padding:12px;
-      box-shadow:0 12px 30px rgba(15,23,42,0.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .cart-item .name{
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:#0b1220;
-      line-height:1.2;
-    }
-    .cart-item .qty{
-      font-weight:950;
-      font-size:12px;
-      color: rgba(12,90,42,.95);
-    }
     .drawer-foot{
       margin-top:auto;
       padding:12px 14px 14px;
@@ -1080,7 +1106,6 @@
       box-shadow:0 14px 36px rgba(15,23,42,0.12);
     }
 
-    /* MODAL (center) */
     .modal{
       max-width: 780px;
       margin: 40px auto;
@@ -1098,6 +1123,14 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
+      position:relative;
+    }
+    .modal-head::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:4px;
+      background: var(--dbl-line);
     }
     .modal-title{
       font-family: var(--font-pretty);
@@ -1137,7 +1170,7 @@
       color:#0b1220;
     }
 
-    /* Mobile adjustments */
+    /* Responsive */
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
@@ -1148,25 +1181,23 @@
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .store-layout{ grid-template-columns: 1fr; }
       .left-panel{ position:relative; top:auto; }
-      .store-search{ width: min(360px, 60vw); }
+      .checkout-panel{ width: min(520px, 64vw); }
     }
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
       .sticky-top{ left:0 !important; right:0 !important; border-left:none !important; border-right:none !important; }
       main,footer{ border-left:none !important; border-right:none !important; }
-
       .nav-center{ display:none !important; }
       .store-layout{ grid-template-columns: 1fr; }
-
-      .left-panel{ display:none !important; } /* mobile: no left panel */
+      .left-panel{ display:none !important; }
       .mobile-cat-tabs{ display:flex; }
-
       .product-grid{ grid-template-columns: 1fr; }
       .store-search{ width: 100%; min-width:0; }
-
       .modal-body{ grid-template-columns: 1fr; }
       .modal-body img{ height:220px; }
+      .checkout-panel{ width: 100%; padding: 0; }
+      .checkout-drawer{ border-radius:0; height:100%; }
     }
   </style>
 </head>
@@ -1189,7 +1220,6 @@
     <div class="side right"><div class="stack" id="stack-right"></div></div>
   </div>
 
-  <!-- TOP -->
   <div class="frame-wrap">
     <div class="sticky-top" id="sticky-top">
       <div class="top-banner" aria-label="Top banner">
@@ -1223,12 +1253,10 @@
       </header>
     </div>
 
-    <!-- MAIN -->
     <main id="main-content" tabindex="-1" aria-label="Store">
       <div class="content-wrapper">
         <div class="store-layout">
 
-          <!-- LEFT PANEL -->
           <aside class="left-panel" aria-label="Sort">
             <div class="head">SORT</div>
             <div class="body">
@@ -1250,7 +1278,6 @@
             </div>
           </aside>
 
-          <!-- STORE -->
           <section class="grid-wrap" aria-label="Store listings">
             <div class="grid-head">
               <div class="store-brand" aria-label="Store brand">
@@ -1289,19 +1316,16 @@
             </div>
 
             <div class="grid-body">
-              <!-- mobile category tabs -->
               <div class="mobile-cat-tabs" id="mobile-cat-tabs" aria-label="Mobile categories">
                 <button type="button" class="is-active" data-tab="food">MayaNut Food</button>
                 <button type="button" data-tab="merch">MayaNut Merch</button>
                 <button type="button" data-tab="plants">MayaNut Plants</button>
               </div>
 
-              <!-- FOOD -->
               <div class="section-block is-active" data-section="food" id="section-food">
                 <div class="section-label">MayaNut Food Products</div>
                 <div class="product-grid" id="grid-food">
 
-                  <!-- 1 -->
                   <article class="product-card" data-title="¼ lb MayaNut Powder" data-cat="food" data-newest="5" data-price="0">
                     <div class="prod-head">¼ lb MayaNut Powder</div>
                     <div class="pimg">
@@ -1331,7 +1355,6 @@
                     </div>
                   </article>
 
-                  <!-- 2 -->
                   <article class="product-card" data-title="1 lb MayaNut Powder" data-cat="food" data-newest="4" data-price="0">
                     <div class="prod-head">1 lb MayaNut Powder</div>
                     <div class="pimg">
@@ -1361,7 +1384,6 @@
                     </div>
                   </article>
 
-                  <!-- 3 -->
                   <article class="product-card" data-title="Instant MayaNut Pods" data-cat="food" data-newest="3" data-price="0">
                     <div class="prod-head">Instant MayaNut Pods</div>
                     <div class="pimg">
@@ -1394,7 +1416,6 @@
                 </div>
               </div>
 
-              <!-- MERCH -->
               <div class="section-block" data-section="merch" id="section-merch">
                 <div class="section-label">MayaNut Merch</div>
                 <div class="product-grid" id="grid-merch">
@@ -1475,7 +1496,6 @@
                 </div>
               </div>
 
-              <!-- PLANTS -->
               <div class="section-block" data-section="plants" id="section-plants">
                 <div class="section-label">MayaNut Plants</div>
                 <div class="product-grid" id="grid-plants">
@@ -1538,7 +1558,6 @@
       </div>
     </main>
 
-    <!-- FOOTER -->
     <footer aria-label="Footer">
       <div class="bottom-banner">
         <div class="email-text">info@mayanut.com</div>
@@ -1558,12 +1577,12 @@
           </a>
           <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z" fill="currentColor" style="color:var(--cream)"/>
+              <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z" fill="currentColor" style="color:var(--cream)"></path>
             </svg>
           </a>
           <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z" fill="currentColor" style="color:var(--cream)"/>
+              <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z" fill="currentColor" style="color:var(--cream)"></path>
             </svg>
           </a>
         </div>
@@ -1617,9 +1636,7 @@
       </div>
       <div class="modal-body">
         <img id="modal-img" src="" alt="Product image" />
-        <div class="modal-copy" id="modal-copy">
-          Product details are conceptual while the store is under development.
-        </div>
+        <div class="modal-copy" id="modal-copy">Product details are conceptual while the store is under development.</div>
       </div>
       <div class="drawer-foot" style="justify-content:flex-end;">
         <button class="metal-btn" id="modal-close-2" type="button">CLOSE</button>
@@ -1627,7 +1644,30 @@
     </div>
   </div>
 
-  <!-- A11Y OVERLAY (index-style behavior; simplified) -->
+  <!-- CHECKOUT OVERLAY -->
+  <div class="checkout-overlay" id="checkout-overlay" aria-hidden="true">
+    <div class="checkout-panel" role="dialog" aria-modal="true" aria-label="Checkout">
+      <div class="checkout-drawer">
+        <div class="drawer-head">
+          <div class="drawer-title">Checkout</div>
+          <button class="drawer-close" id="checkout-close" type="button" aria-label="Close checkout">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12"></path>
+              <path d="M18 6L6 18"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="drawer-body" style="font-family:var(--font-pretty); font-style:italic; font-weight:850; color:#0b1220;">
+          Checkout is coming soon. Products are currently conceptual as our store is under development.
+        </div>
+        <div class="drawer-foot">
+          <button class="metal-btn" id="checkout-close-2" type="button">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A11Y OVERLAY (simple) -->
   <div class="a11y-overlay" id="a11y-overlay" aria-hidden="true">
     <div class="drawer" role="dialog" aria-modal="true" aria-label="Accessibility">
       <div class="drawer-head">
@@ -1640,9 +1680,7 @@
         </button>
       </div>
       <div class="drawer-body" style="font-family:var(--font-pretty); font-style:italic; font-weight:850; color:#0b1220;">
-        <div style="line-height:1.7">
-          This drawer is active. (Paste your full index accessibility drawer here if you want full controls.)
-        </div>
+        This drawer is active. Paste your full index accessibility drawer here if desired.
       </div>
       <div class="drawer-foot">
         <button class="metal-btn" id="a11y-close-2" type="button">CLOSE</button>
@@ -1651,7 +1689,7 @@
   </div>
 
   <script>
-    /* Side frame images */
+    // Side frame images
     (function(){
       const webp = "mayanuts-the-maya-nut-company-image.webp";
       const jpg  = "mayanuts-the-maya-nut-company-image.jpeg";
@@ -1670,7 +1708,7 @@
       for(let i=0;i<count;i++){ L.appendChild(makeImg()); R.appendChild(makeImg()); }
     })();
 
-    /* Sticky offset */
+    // Sticky offset
     (function(){
       function setStickyOffset(){
         const sticky = document.getElementById("sticky-top");
@@ -1684,7 +1722,7 @@
       document.addEventListener("DOMContentLoaded", setStickyOffset);
     })();
 
-    /* Mobile category tabs */
+    // Mobile tabs
     (function(){
       const tabs = document.getElementById("mobile-cat-tabs");
       if(!tabs) return;
@@ -1703,20 +1741,12 @@
       setActive("food");
     })();
 
-    /* Favorites (localStorage) */
+    // Favorites
     (function(){
       const KEY = "mayanut_store_favs_v2";
-      const favs = (()=>{
-        try{
-          const raw = localStorage.getItem(KEY);
-          const arr = raw ? JSON.parse(raw) : [];
-          return new Set(Array.isArray(arr) ? arr : []);
-        }catch(_){ return new Set(); }
-      })();
+      const favs = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(KEY)||"[]")); }catch(_){ return new Set(); } })();
 
-      function save(){
-        try{ localStorage.setItem(KEY, JSON.stringify(Array.from(favs))); }catch(_){}
-      }
+      function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Array.from(favs))); }catch(_){ } }
       function applyUI(){
         document.querySelectorAll("[data-fav]").forEach(btn=>{
           const card = btn.closest(".product-card");
@@ -1734,14 +1764,13 @@
         const id = card?.getAttribute("data-title") || "";
         if(!id) return;
         favs.has(id) ? favs.delete(id) : favs.add(id);
-        save();
-        applyUI();
+        save(); applyUI();
       });
 
       applyUI();
     })();
 
-    /* Quantity controls (1..99) with press-and-hold */
+    // Quantity controls (1..99)
     (function(){
       const clamp = (n)=> Math.max(1, Math.min(99, n));
       const HOLD_DELAY = 320;
@@ -1755,13 +1784,12 @@
           clearTimeout(t); clearInterval(iv);
           t = setTimeout(()=>{ iv=setInterval(stepFn, HOLD_RATE); }, HOLD_DELAY);
         };
-        const stop = ()=>{
-          clearTimeout(t); clearInterval(iv);
-          t=null; iv=null;
-        };
+        const stop = ()=>{ clearTimeout(t); clearInterval(iv); t=null; iv=null; };
+
         btn.addEventListener("mousedown", start);
         window.addEventListener("mouseup", stop);
         window.addEventListener("mouseleave", stop);
+
         btn.addEventListener("touchstart", start, { passive:false });
         btn.addEventListener("touchend", stop);
         btn.addEventListener("touchcancel", stop);
@@ -1779,40 +1807,28 @@
         qty.addEventListener("input", ()=> setQty(getQty()));
         bindHold(plus, ()=> setQty(getQty()+1));
         bindHold(minus, ()=> setQty(getQty()-1));
-
         setQty(getQty());
       }
 
       document.querySelectorAll(".product-card").forEach(wire);
     })();
 
-    /* Cart */
+    // Cart
     (function(){
-      const cart = new Map(); // title -> qty
+      const cart = new Map();
       const overlay = document.getElementById("cart-overlay");
       const closeBtn = document.getElementById("cart-close");
       const body = document.getElementById("cart-body");
       const empty = document.getElementById("cart-empty");
       const badge = document.getElementById("cart-badge");
 
-      function openCart(){
-        document.body.classList.add("cart-open");
-        overlay?.setAttribute("aria-hidden","false");
-      }
-      function closeCart(){
-        document.body.classList.remove("cart-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
+      function openCart(){ document.body.classList.add("cart-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeCart(){ document.body.classList.remove("cart-open"); overlay?.setAttribute("aria-hidden","true"); }
+
       function escapeHtml(s){
-        return String(s).replace(/[&<>"']/g, m => ({
-          "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-        }[m]));
+        return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m]));
       }
-      function cartCount(){
-        let c = 0;
-        cart.forEach(v => c += Math.max(0, v|0));
-        return c;
-      }
+      function cartCount(){ let c=0; cart.forEach(v => c += Math.max(0, v|0)); return c; }
       function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
 
       function renderCart(){
@@ -1830,10 +1846,7 @@
         entries.forEach(([name, qty])=>{
           const row = document.createElement("div");
           row.className = "cart-item";
-          row.innerHTML = `
-            <div class="name">${escapeHtml(name)}</div>
-            <div class="qty">x${qty}</div>
-          `;
+          row.innerHTML = `<div class="name">${escapeHtml(name)}</div><div class="qty">x${qty}</div>`;
           body.appendChild(row);
         });
         renderBadge();
@@ -1849,7 +1862,6 @@
           const title = card?.getAttribute("data-title") || "Item";
           const qtyEl = card?.querySelector(".qty-val");
           const qty = qtyEl ? (parseInt(qtyEl.value,10) || 1) : 1;
-
           const prev = cart.get(title) || 0;
           cart.set(title, Math.max(0, prev + qty));
           renderCart();
@@ -1857,12 +1869,10 @@
         });
       });
 
-      document.getElementById("checkout-btn")?.addEventListener("click", ()=> alert("Store is under development."));
-      document.getElementById("side-checkout")?.addEventListener("click", ()=> alert("Checkout is coming soon."));
       renderBadge();
     })();
 
-    /* Info + image modal */
+    // Info + image modal
     (function(){
       const overlay = document.getElementById("modal-overlay");
       const close = document.getElementById("modal-close");
@@ -1870,20 +1880,6 @@
       const titleEl = document.getElementById("modal-title");
       const imgEl = document.getElementById("modal-img");
       const copyEl = document.getElementById("modal-copy");
-
-      function openModal(data){
-        document.body.classList.add("modal-open");
-        overlay?.setAttribute("aria-hidden","false");
-        titleEl.textContent = data.title || "Product";
-        imgEl.src = data.img || "";
-        imgEl.alt = data.title || "Product image";
-
-        copyEl.textContent = data.copy || "Product details are conceptual while the store is under development.";
-      }
-      function closeModal(){
-        document.body.classList.remove("modal-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
 
       function productCopy(title){
         const t = String(title||"");
@@ -1898,19 +1894,31 @@
         return "Product details are conceptual while the store is under development.";
       }
 
+      function openModal(card, src){
+        const title = card?.getAttribute("data-title") || "Product";
+        titleEl.textContent = title;
+        imgEl.src = src || "";
+        imgEl.alt = title;
+        copyEl.textContent = productCopy(title);
+        document.body.classList.add("modal-open");
+        overlay?.setAttribute("aria-hidden","false");
+      }
+      function closeModal(){
+        document.body.classList.remove("modal-open");
+        overlay?.setAttribute("aria-hidden","true");
+      }
+
       document.querySelectorAll("[data-open-modal]").forEach(im=>{
         im.addEventListener("click", ()=>{
           const card = im.closest(".product-card");
-          const title = card?.getAttribute("data-title") || "Product";
-          openModal({ title, img: im.getAttribute("src"), copy: productCopy(title) });
+          openModal(card, im.getAttribute("src"));
         });
       });
       document.querySelectorAll("[data-info]").forEach(btn=>{
         btn.addEventListener("click", ()=>{
           const card = btn.closest(".product-card");
-          const title = card?.getAttribute("data-title") || "Product";
-          const img = card?.querySelector("[data-open-modal]")?.getAttribute("src") || "";
-          openModal({ title, img, copy: productCopy(title) });
+          const src = card?.querySelector("[data-open-modal]")?.getAttribute("src") || "";
+          openModal(card, src);
         });
       });
 
@@ -1920,79 +1928,64 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
     })();
 
-    /* Search: filters within currently visible cards; ignores "mayanut" prefix */
+    // Checkout overlay (right panel)
+    (function(){
+      const overlay = document.getElementById("checkout-overlay");
+      const openBtn = document.getElementById("side-checkout");
+      const close = document.getElementById("checkout-close");
+      const close2 = document.getElementById("checkout-close-2");
+      const checkoutBtn = document.getElementById("checkout-btn");
+
+      function openCheckout(){
+        document.body.classList.add("checkout-open");
+        overlay?.setAttribute("aria-hidden","false");
+      }
+      function closeCheckout(){
+        document.body.classList.remove("checkout-open");
+        overlay?.setAttribute("aria-hidden","true");
+      }
+
+      openBtn?.addEventListener("click", openCheckout);
+      checkoutBtn?.addEventListener("click", openCheckout);
+      close?.addEventListener("click", closeCheckout);
+      close2?.addEventListener("click", closeCheckout);
+      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "checkout-overlay") closeCheckout(); });
+      document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeCheckout(); });
+    })();
+
+    // Search
     (function(){
       const input = document.getElementById("store-search");
       const clear = document.getElementById("store-search-clear");
+      function qnorm(s){ return String(s||"").toLowerCase().trim(); }
+      function tnorm(s){ return String(s||"").toLowerCase().replace(/^mayanut\s+/i, "").trim(); }
 
-      function normTitle(t){
-        return String(t||"").toLowerCase().replace(/^mayanut\s+/i, "").trim();
-      }
-      function normQuery(q){
-        return String(q||"").toLowerCase().trim();
-      }
-
-      function applySearch(){
-        const q = normQuery(input?.value);
+      function apply(){
+        const q = qnorm(input?.value);
         document.querySelectorAll(".product-card").forEach(card=>{
-          const t = normTitle(card.getAttribute("data-title"));
-          const hit = !q || t.includes(q);
+          const hit = !q || tnorm(card.getAttribute("data-title")).includes(q);
           card.style.display = hit ? "" : "none";
         });
       }
-
-      input?.addEventListener("input", applySearch);
-      clear?.addEventListener("click", ()=>{
-        if(!input) return;
-        input.value = "";
-        applySearch();
-        input.focus();
-      });
-
-      applySearch();
+      input?.addEventListener("input", apply);
+      clear?.addEventListener("click", ()=>{ if(!input) return; input.value=""; apply(); input.focus(); });
+      apply();
     })();
 
-    /* Sorting */
+    // Sorting
     (function(){
+      const radios = Array.from(document.querySelectorAll("input[name='sortmode']"));
+      function mode(){ return (radios.find(r=>r.checked)?.value) || "newest"; }
+
       function displayName(raw){
         const s = String(raw||"").trim();
         return s.replace(/^MayaNut\s+/i, "").trim();
       }
-
-      function sortByName(container, dir){
+      function sortCards(container, fn){
         const cards = Array.from(container.querySelectorAll(".product-card"));
-        cards.sort((a,b)=>{
-          const A = displayName(a.getAttribute("data-title")).toLowerCase();
-          const B = displayName(b.getAttribute("data-title")).toLowerCase();
-          if(A < B) return dir === "az" ? -1 : 1;
-          if(A > B) return dir === "az" ? 1 : -1;
-          return 0;
-        });
+        cards.sort(fn);
         cards.forEach(c=> container.appendChild(c));
       }
-
-      function sortByNewest(container){
-        const cards = Array.from(container.querySelectorAll(".product-card"));
-        cards.sort((a,b)=>{
-          const A = parseInt(a.getAttribute("data-newest") || "0", 10) || 0;
-          const B = parseInt(b.getAttribute("data-newest") || "0", 10) || 0;
-          return B - A;
-        });
-        cards.forEach(c=> container.appendChild(c));
-      }
-
-      function sortByPrice(container, dir){
-        const cards = Array.from(container.querySelectorAll(".product-card"));
-        cards.sort((a,b)=>{
-          const A = parseFloat(a.getAttribute("data-price") || "0") || 0;
-          const B = parseFloat(b.getAttribute("data-price") || "0") || 0;
-          return dir === "price_low" ? (A - B) : (B - A);
-        });
-        cards.forEach(c=> container.appendChild(c));
-      }
-
-      const radios = Array.from(document.querySelectorAll("input[name='sortmode']"));
-      function mode(){ return (radios.find(r=>r.checked)?.value) || "newest"; }
 
       function applySort(){
         const m = mode();
@@ -2000,30 +1993,32 @@
         const merch = document.getElementById("grid-merch");
         const plants = document.getElementById("grid-plants");
 
-        if(m === "newest"){
-          if(food) sortByNewest(food);
-          if(plants) sortByNewest(plants);
-          // leave merch as-is
-          return;
-        }
-        if(m === "az" || m === "za"){
-          if(food) sortByName(food, m);
-          if(merch) sortByName(merch, m);
-          if(plants) sortByName(plants, m);
-          return;
-        }
-        if(m === "price_low" || m === "price_high"){
-          if(food) sortByPrice(food, m);
-          if(merch) sortByPrice(merch, m);
-          if(plants) sortByPrice(plants, m);
-        }
+        const byNewest = (a,b)=> (parseInt(b.getAttribute("data-newest")||"0",10)||0) - (parseInt(a.getAttribute("data-newest")||"0",10)||0);
+        const byAZ = (a,b)=>{
+          const A = displayName(a.getAttribute("data-title")).toLowerCase();
+          const B = displayName(b.getAttribute("data-title")).toLowerCase();
+          if(A < B) return -1; if(A > B) return 1; return 0;
+        };
+        const byZA = (a,b)=> -byAZ(a,b);
+        const byPriceLow = (a,b)=> (parseFloat(a.getAttribute("data-price")||"0")||0) - (parseFloat(b.getAttribute("data-price")||"0")||0);
+        const byPriceHigh = (a,b)=> -byPriceLow(a,b);
+
+        let fn = byNewest;
+        if(m === "az") fn = byAZ;
+        else if(m === "za") fn = byZA;
+        else if(m === "price_low") fn = byPriceLow;
+        else if(m === "price_high") fn = byPriceHigh;
+
+        if(food) sortCards(food, fn);
+        if(merch) sortCards(merch, fn);
+        if(plants) sortCards(plants, fn);
       }
 
       radios.forEach(r=> r.addEventListener("change", applySort));
       applySort();
     })();
 
-    /* In-stock filter: none in stock => hide all when checked (no popups) */
+    // In-stock filter (none in stock)
     (function(){
       const inStock = document.getElementById("in-stock-only");
       function apply(){
@@ -2035,21 +2030,15 @@
       inStock?.addEventListener("change", apply);
     })();
 
-    /* Accessibility overlay */
+    // A11Y overlay
     (function(){
       const btn = document.getElementById("accessibility-btn");
       const overlay = document.getElementById("a11y-overlay");
       const close = document.getElementById("a11y-close");
       const close2 = document.getElementById("a11y-close-2");
 
-      function openA11y(){
-        document.body.classList.add("a11y-open");
-        overlay?.setAttribute("aria-hidden","false");
-      }
-      function closeA11y(){
-        document.body.classList.remove("a11y-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
+      function openA11y(){ document.body.classList.add("a11y-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeA11y(){ document.body.classList.remove("a11y-open"); overlay?.setAttribute("aria-hidden","true"); }
 
       btn?.addEventListener("click", openA11y);
       close?.addEventListener("click", closeA11y);
@@ -2058,7 +2047,7 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeA11y(); });
     })();
 
-    /* Top search button (concept) */
+    // Top search button (concept)
     (function(){
       document.getElementById("nav-search-btn")?.addEventListener("click", ()=> alert("Search is conceptual on this page."));
     })();

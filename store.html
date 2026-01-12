@@ -60,10 +60,9 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      /* store gradients */
-      --store-g1:#d8ff6a;     /* lime */
-      --store-g2:#7ae78a;     /* mid green */
-      --store-g3:#1a6800;     /* dark green */
+      --store-g1:#d8ff6a;
+      --store-g2:#7ae78a;
+      --store-g3:#1a6800;
 
       --panel-green-grad: linear-gradient(
         90deg,
@@ -73,14 +72,12 @@
         #2a8b2f 78%,
         var(--green-deep) 100%
       );
-
       --store-green-grad: linear-gradient(
         to bottom,
         var(--store-g1) 0%,
         var(--store-g2) 52%,
         var(--store-g3) 100%
       );
-
       --metal-orange: linear-gradient(
         180deg,
         var(--orange-hi) 0%,
@@ -89,29 +86,25 @@
         var(--orange-dark) 72%,
         var(--orange-mid) 100%
       );
-
       --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
 
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --stickyOffset: 200px;
-      --bannerH: 46px; /* thinner banner */
-      --headerPadTop: 22px;
+      --bannerH: 46px;        /* thinner banner */
+      --headerPadTop: 22px;   /* a bit taller top tab area */
 
       --heartHot: linear-gradient(180deg, #ff4d6d 0%, #ff2d55 45%, #ff00b8 100%);
 
-      /* index paragraph bg vibe */
+      /* index paragraph vibe */
       --para-bg: rgba(255,255,255,0.16);
 
-      /* qty bg */
+      /* qty box */
       --qty-bg: #ffffff;
 
-      /* description gray like your “Created by August Kokus” style */
-      --desc-gray: rgba(15,23,42,0.60);
-
-      /* outer card outline (lime->dark) */
-      --card-outline: linear-gradient(180deg, var(--store-g1) 0%, #38b24c 55%, var(--store-g3) 100%);
+      /* outline around action box */
+      --action-outline: linear-gradient(180deg, var(--store-g1) 0%, #38b24c 55%, var(--store-g3) 100%);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -161,7 +154,6 @@
       margin-left: var(--sideW);
       margin-right: var(--sideW);
       min-height:100vh;
-      background: transparent;
       padding-top: var(--stickyOffset);
       overflow-x: clip;
     }
@@ -177,7 +169,7 @@
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
       border-top: 2px solid var(--green);
-      border-bottom: 0; /* remove the “glitchy” line between top and body */
+      border-bottom: 0; /* remove seam/glitch */
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       overflow:hidden;
       transform: translateZ(0);
@@ -186,7 +178,7 @@
     /* top banner */
     .top-banner{
       width:100%;
-      min-height: calc(var(--bannerH) * 0.55); /* about half height */
+      min-height: calc(var(--bannerH) * 0.55);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -227,7 +219,6 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      min-height: var(--bannerH);
     }
     .site-header::after{
       content:"";
@@ -258,7 +249,6 @@
       height: var(--bannerH);
       display:flex;
       align-items:center;
-      justify-content:flex-start;
       width: 42px;
       z-index:2;
     }
@@ -309,8 +299,6 @@
       -webkit-user-select:none;
       touch-action:manipulation;
       box-shadow: 0 10px 22px rgba(15,23,42,0.10);
-      gap:8px;
-      flex:0 0 auto;
       transition: transform .12s ease;
     }
     .nav-pill:hover{ transform: translateY(-1px) scale(1.02); }
@@ -323,10 +311,7 @@
       text-shadow:0 1px 0 rgba(0,0,0,0.18);
       white-space:nowrap;
     }
-    .nav-pill.is-active{
-      background: var(--metal-orange);
-      border-color: var(--cream);
-    }
+    .nav-pill.is-active{ background: var(--metal-orange); border-color: var(--cream); }
 
     .nav-right{
       position:absolute;
@@ -361,23 +346,17 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.12);
     }
 
-    /* main: mocha/tan gradient */
+    /* main */
     main{
       position:relative;
       z-index:1;
       border-left: var(--frameBorder) solid var(--frame-line);
       border-right: var(--frameBorder) solid var(--frame-line);
+      border-top: 0; /* remove seam */
       box-shadow: var(--shadow);
-      background: linear-gradient(
-        to bottom,
-        var(--tan-top) 0%,
-        var(--tan-top2) 10%,
-        var(--tan) 22%,
-        var(--tan) 100%
-      );
+      background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan-top2) 10%, var(--tan) 22%, var(--tan) 100%);
       overflow:hidden;
       min-height: calc(100vh - var(--stickyOffset));
-      border-top: 0; /* remove any top seam */
     }
     .content-wrapper{
       padding:16px 18px 40px;
@@ -385,7 +364,7 @@
       overflow-x:hidden;
     }
 
-    /* layout: sidebar 1/6 + content */
+    /* layout */
     .store-layout{
       display:grid;
       grid-template-columns: 1fr 5fr;
@@ -395,7 +374,7 @@
       align-items:start;
     }
 
-    /* left panel: now “Sort” */
+    /* left panel */
     .left-panel{
       border-radius:18px;
       border:2px solid rgba(12,90,42,0.75);
@@ -464,7 +443,6 @@
       justify-content:space-between;
       gap:12px;
     }
-
     .grid-title-wrap{
       display:flex;
       align-items:center;
@@ -472,8 +450,8 @@
       min-width:0;
     }
     .store-mini-logo{
-      width:34px;
-      height:34px;
+      width:36px;
+      height:36px;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.12));
       user-select:none;
       -webkit-user-select:none;
@@ -500,8 +478,6 @@
       min-width:0;
       flex-wrap:nowrap;
     }
-
-    /* reorder: cart, search, checkout */
     .icon-btn{
       width:40px;height:40px;
       border-radius:14px;
@@ -516,6 +492,7 @@
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       position:relative;
       flex:0 0 auto;
+      order:1;
     }
     .icon-btn svg{
       width:18px;height:18px;
@@ -545,33 +522,6 @@
       pointer-events:none;
     }
 
-    .checkout-pill{
-      height:40px;
-      padding:0 14px;
-      border-radius:14px;
-      border:1px solid var(--cream);
-      background: var(--metal-orange);
-      color:var(--cream);
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:10px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 10px 20px rgba(15,23,42,0.10);
-      line-height:1.05;
-      text-align:center;
-      flex-direction:column;
-      gap:2px;
-      min-width:128px;
-      user-select:none;
-      -webkit-user-select:none;
-      order: 3;
-    }
-    .checkout-pill span{ display:block; }
-
     .store-search{
       height:40px;
       border-radius:14px;
@@ -583,7 +533,7 @@
       width: min(420px, 44vw);
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
       min-width: 180px;
-      order: 2;
+      order:2;
     }
     .store-search .mag,
     .store-search .xbtn{
@@ -616,9 +566,36 @@
       caret-color: var(--orange);
     }
 
+    .checkout-pill{
+      height:40px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid var(--cream);
+      background: var(--metal-orange);
+      color:var(--cream);
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:10px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 10px 20px rgba(15,23,42,0.10);
+      line-height:1.05;
+      text-align:center;
+      flex-direction:column;
+      gap:2px;
+      min-width:128px;
+      user-select:none;
+      -webkit-user-select:none;
+      order:3;
+    }
+    .checkout-pill span{ display:block; }
+
     .grid-body{ padding:12px; }
 
-    /* Mobile-only top tabs */
+    /* mobile tabs */
     .mobile-cat-tabs{ display:none; }
     .mobile-cat-tabs button{
       flex:1 1 0;
@@ -637,7 +614,6 @@
       -webkit-user-select:none;
     }
     .mobile-cat-tabs button.is-active{ background: var(--metal-orange); }
-
     .section-block{ display:block; }
 
     .section-label{
@@ -667,58 +643,62 @@
       gap:12px;
     }
 
-    /* PRODUCT CARD (outer = lime->dark outline) */
+    /* product card */
     .product-card{
       border-radius: 18px;
-      padding: 2px; /* outline thickness */
-      background: var(--card-outline);
+      padding: 2px;
+      background: var(--action-outline);
       box-shadow:0 16px 44px rgba(15,23,42,0.12);
       position:relative;
-      min-height: 320px;
+      min-height: 300px;
       display:flex;
+      transition: transform .14s ease;
+      will-change: transform;
     }
+    .product-card:hover{ transform: translateY(-1px) scale(1.015); }
+
     .product-inner{
       border-radius: 16px;
-      border: 1px solid rgba(12,90,42,0.75); /* thin dark green outlines */
-      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(12,90,42,0.75);
+      background: rgba(255,255,255,0.12);
       overflow:hidden;
       display:flex;
       flex-direction:column;
       width:100%;
-      min-height: 320px;
+      min-height: 300px;
       position:relative;
     }
 
-    /* top label bar (FFFFC5) thinner */
+    /* header (FFFFC5) thinner + no cut-off */
     .product-top{
       background: var(--cream);
       border-bottom:2px solid rgba(12,90,42,0.35);
-      padding: 6px 10px; /* thinner */
+      padding: 6px 10px;
       display:flex;
       align-items:center;
       justify-content:center;
-      position:relative;
       min-height: 30px;
     }
     .product-title{
       font-weight:950;
-      letter-spacing:.12em;
+      letter-spacing:.10em;
       text-transform:uppercase;
       font-size:11px;
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
-      white-space:nowrap;            /* force single line */
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: calc(100% - 86px);  /* room for buttons */
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      max-width: 100%;
       text-align:center;
+      line-height:1.1;
     }
 
-    /* heart moved under label, upper-left */
+    /* heart under header, upper-left */
     .fav-btn{
       position:absolute;
       left:10px;
-      top: 34px; /* just below the label bar */
+      top: 34px;
       width:28px;
       height:28px;
       border-radius:10px;
@@ -732,7 +712,7 @@
       box-shadow:0 12px 26px rgba(15,23,42,0.14);
     }
     .fav-btn svg{
-      width:18px; /* slightly bigger heart */
+      width:18px;
       height:18px;
       stroke: var(--cream);
       fill: transparent;
@@ -740,16 +720,13 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    .fav-btn.is-on svg{
-      fill: url(#heartHotFill);
-      stroke: var(--cream);
-    }
+    .fav-btn.is-on svg{ fill: url(#heartHotFill); stroke: var(--cream); }
 
-    /* expand button upper-right (on image) */
+    /* expand upper-right */
     .expand-btn{
       position:absolute;
       right:10px;
-      top: 34px; /* just below label bar */
+      top: 34px;
       width:28px;
       height:28px;
       border-radius:10px;
@@ -779,63 +756,30 @@
       background:#fff;
       overflow:hidden;
       cursor: zoom-in;
-      position:relative;
     }
     .pimg img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    /* body area (inner paragraph bg vibe) */
-    .pbody{
-      padding:10px;
+    /* action panel: lime outline + inner index paragraph vibe */
+    .action-outer{
+      padding: 2px;
+      margin: 10px;
+      border-radius: 16px;
+      background: var(--action-outline);
+      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+    }
+    .action-inner{
+      border-radius: 14px;
+      border: 1px solid rgba(12,90,42,0.75);
       background: var(--para-bg);
+      padding: 10px;
       display:flex;
       flex-direction:column;
       gap:10px;
-      flex:1 1 auto;
     }
 
-    /* short description row with See more */
-    .pdesc-row{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      padding:10px;
-      border-radius:14px;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.12);
-    }
-    .pdesc{
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size:13px;
-      line-height:1.45;
-      color: var(--desc-gray);
-      text-shadow:0 1px 0 rgba(255,255,255,0.45);
-      flex:1 1 auto;
-      min-width:0;
-    }
-    .see-more{
-      flex:0 0 auto;
-      height:32px;
-      padding:0 10px;
-      border-radius:12px;
-      border:1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.22);
-      color:#0b1220;
-      font-weight:950;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:10px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      white-space:nowrap;
-    }
-
-    /* qty control */
+    /* qty */
     .qty-mid{
-      width: 100%;
+      width:100%;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -844,10 +788,8 @@
       display:flex;
       align-items:center;
       gap:8px;
-      padding:0;
       border:none;
       background: transparent;
-      box-shadow:none;
     }
     .qty-pill input{
       width:58px;
@@ -865,6 +807,7 @@
     .qty-pill input::-webkit-outer-spin-button,
     .qty-pill input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
+    /* plus/minus small rounded squares */
     .pm-mini{
       display:flex;
       flex-direction:column;
@@ -875,7 +818,7 @@
     }
     .pm-mini button{
       width:34px;
-      height:15px; /* smaller so stacked is same height as qty box */
+      height:15px;
       border-radius:8px;
       border:1px solid rgba(12,90,42,0.55);
       background: var(--qty-bg);
@@ -888,8 +831,9 @@
       user-select:none;
       -webkit-user-select:none;
     }
+    .pm-mini button:active{ transform: scale(0.98); }
 
-    /* add/price row (ADD orange, price 0.00) */
+    /* add/price (50/50) */
     .buy-row{
       width:100%;
       display:flex;
@@ -898,7 +842,7 @@
       border-radius:14px;
       overflow:hidden;
       border:1px solid var(--cream);
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+      box-shadow:0 12px 26px rgba(15,23,42,0.10);
     }
     .addq{
       flex:1 1 0;
@@ -935,15 +879,9 @@
       text-decoration: underline;
       text-underline-offset: 2px;
     }
-    .cream-divider{
-      width:1px;
-      background: var(--cream);
-      flex:0 0 1px;
-    }
+    .cream-divider{ width:1px; background: var(--cream); flex:0 0 1px; }
 
-    .grid-spacer{ height: 120px; }
-
-    /* bottom checkout area */
+    /* bottom checkout */
     .store-bottom-cta{
       display:flex;
       justify-content:flex-end;
@@ -1024,12 +962,7 @@
       color:#0b1220;
       text-shadow:0 1px 0 rgba(255,255,255,0.35);
     }
-    .based-line{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+    .based-line{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     .florida-icon{
       width:26px;
       height:26px;
@@ -1037,11 +970,7 @@
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
     }
-    .footer-links{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-    }
+    .footer-links{ display:flex; gap:16px; flex-wrap:wrap; }
     .footer-links a{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -1169,30 +1098,8 @@
       stroke-linejoin:round;
     }
     .icon-pill .fill{ fill: var(--cream); stroke:none; }
-    .icon-pill[data-tip]::after{
-      content: attr(data-tip);
-      position:absolute;
-      bottom: 44px;
-      right: 0;
-      background: rgba(255,255,255,0.96);
-      border:2px solid rgba(12,90,42,0.85);
-      color:#0b1220;
-      font-weight:950;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:10px;
-      padding:6px 8px;
-      border-radius:12px;
-      box-shadow:0 18px 55px rgba(15,23,42,0.25);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .12s ease, transform .12s ease;
-      white-space:nowrap;
-      transform: translateY(2px);
-    }
-    .icon-pill:hover::after{ opacity:1; transform: translateY(-2px); }
 
-    /* overlays (cart) */
+    /* overlays */
     .cart-overlay{
       position:fixed; inset:0; display:none;
       background: rgba(0,0,0,0.26);
@@ -1315,7 +1222,7 @@
       margin: 22px auto;
       border-radius: 22px;
       padding: 2px;
-      background: var(--card-outline);
+      background: var(--action-outline);
       box-shadow:0 22px 70px rgba(15,23,42,0.45);
     }
     .modal-inner{
@@ -1394,8 +1301,14 @@
     .modal-buy{
       margin-top:auto;
       border-radius:18px;
-      border:2px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.78);
+      padding: 2px;
+      background: var(--action-outline);
+      box-shadow:0 14px 34px rgba(15,23,42,0.12);
+    }
+    .modal-buy-inner{
+      border-radius:16px;
+      border:1px solid rgba(12,90,42,0.75);
+      background: var(--para-bg);
       padding:12px;
       display:flex;
       flex-direction:column;
@@ -1429,13 +1342,7 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-
-    /* accessibility (simple) */
-    body.a11y-large{
-      font-size: 115%;
-    }
-    body.a11y-large .product-title{ font-size:12px; }
-    body.a11y-large .pdesc{ font-size:14px; }
+    body.a11y-large{ font-size:115%; }
 
     /* responsive */
     @media(max-width:1100px){
@@ -1443,11 +1350,7 @@
     }
     @media(max-width:980px){
       :root{ --sideW: 120px; }
-      .frame-wrap{
-        width: calc(100vw - (var(--sideW) * 2));
-        margin-left: var(--sideW);
-        margin-right: var(--sideW);
-      }
+      .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
       .store-layout{ grid-template-columns: 1fr; }
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1457,7 +1360,7 @@
       .footer-wrap{ grid-template-columns:1fr; }
     }
 
-    /* MOBILE: vertical format */
+    /* MOBILE: vertical */
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; padding-top: var(--stickyOffset); }
@@ -1466,15 +1369,12 @@
       .content-wrapper{ padding-left:16px; padding-right:16px; padding-top:12px; }
 
       .nav-center{ display:none !important; }
-      .nav-right{ right: 8px; }
 
       .store-layout{ grid-template-columns: 1fr; }
       .left-panel{ display:none !important; }
 
       .grid-tools{ flex-wrap:wrap; justify-content:flex-end; }
-      .store-search{ width: 100%; min-width:0; order:2; }
-      .checkout-pill{ order:3; }
-      #cart-btn{ order:1; }
+      .store-search{ width: 100%; min-width:0; }
 
       .product-grid{ grid-template-columns: 1fr; }
 
@@ -1483,7 +1383,6 @@
         gap:10px;
         margin: 2px 0 12px;
       }
-
       .section-block{ display:none; }
       .section-block.is-active{ display:block; }
 
@@ -1492,7 +1391,6 @@
 
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
-      footer{ padding-bottom: calc(env(safe-area-inset-bottom) + 6px); }
 
       .store-bottom-cta{ justify-content:stretch; }
       .big-checkout{ width:100%; min-width:0; }
@@ -1501,7 +1399,7 @@
 </head>
 
 <body>
-  <!-- Heart gradient for SVG fills -->
+  <!-- Heart gradient -->
   <svg width="0" height="0" style="position:absolute">
     <defs>
       <linearGradient id="heartHotFill" x1="0" y1="0" x2="0" y2="1">
@@ -1553,8 +1451,8 @@
     <main id="main-content" tabindex="-1" aria-label="Store main">
       <div class="content-wrapper">
         <div class="store-layout">
-          <!-- LEFT SORT PANEL (desktop) -->
-          <aside class="left-panel" aria-label="Sorting">
+          <!-- LEFT: SORT -->
+          <aside class="left-panel" aria-label="Sort">
             <div class="head">Sort</div>
             <div class="body">
               <div class="filter-group" aria-label="Sort options">
@@ -1580,7 +1478,7 @@
             </div>
           </aside>
 
-          <!-- GRID -->
+          <!-- RIGHT: STORE -->
           <section class="grid-wrap" aria-label="Product grid">
             <div class="grid-head">
               <div class="grid-title-wrap">
@@ -1589,7 +1487,7 @@
               </div>
 
               <div class="grid-tools">
-                <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart" style="order:1;">
+                <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
                     <path d="M6 7l-1-3H2.5"></path>
@@ -1633,12 +1531,9 @@
               <div class="section-block is-active" data-section="food" id="section-food">
                 <div class="section-label">MayaNut Food</div>
                 <div class="product-grid" id="grid-food">
-                  <!-- 1/4 lb powder -->
-                  <article class="product-card" data-title="MayaNut Powder (1/4 lb)" data-cat="food" data-newest="5" data-price="0">
+                  <article class="product-card" data-title="1/4 lb MayaNut Powder" data-cat="food" data-newest="5" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Powder (1/4 lb)</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">1/4 lb MayaNut Powder</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1656,42 +1551,34 @@
                       </button>
 
                       <div class="pimg" data-expand>
-                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut Powder (1/4 lb)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
+                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="1/4 lb MayaNut Powder" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">
-                            You will recieve a quarter-pound of MayaNut powder. Use MayaNut powder in fruit bowls, baked goods,...
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill" aria-label="Quantity control">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
+                              <span class="pm-mini" aria-label="Increase/decrease">
+                                <button class="pm" type="button" data-step="+1" aria-label="Increase">+</button>
+                                <button class="pm" type="button" data-step="-1" aria-label="Decrease">-</button>
+                              </span>
+                            </div>
                           </div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
 
-                        <div class="qty-mid">
-                          <div class="qty-pill" aria-label="Quantity control">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
                         </div>
                       </div>
                     </div>
                   </article>
 
-                  <!-- 1 lb powder -->
-                  <article class="product-card" data-title="MayaNut Powder (1 lb)" data-cat="food" data-newest="4" data-price="0">
+                  <article class="product-card" data-title="1 lb MayaNut Powder" data-cat="food" data-newest="4" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Powder (1 lb)</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">1 lb MayaNut Powder</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1709,42 +1596,34 @@
                       </button>
 
                       <div class="pimg" data-expand>
-                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut Powder (1 lb)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
+                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="1 lb MayaNut Powder" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">
-                            You will recieve 1 pound of MayaNut powder. Use MayaNut powder in fruit bowls, baked goods,...
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
 
-                        <div class="qty-mid">
-                          <div class="qty-pill" aria-label="Quantity control">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
                         </div>
                       </div>
                     </div>
                   </article>
 
-                  <!-- coffee pods -->
-                  <article class="product-card" data-title="MayaNut Instant Coffee Pods" data-cat="food" data-newest="3" data-price="0">
+                  <article class="product-card" data-title="Instant MayaNut Pods" data-cat="food" data-newest="3" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Instant Coffee Pods</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">Instant MayaNut Pods</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1762,35 +1641,31 @@
                       </button>
 
                       <div class="pimg" data-expand>
-                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut Instant Coffee Pods" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
+                        <img src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="Instant MayaNut Pods" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">
-                            You will recieve instant pods for MayaNut. Use MayaNut in fruit bowls, baked goods,...
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
 
-                        <div class="qty-mid">
-                          <div class="qty-pill" aria-label="Quantity control">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
                         </div>
                       </div>
                     </div>
                   </article>
+
                 </div>
               </div>
 
@@ -1800,9 +1675,7 @@
                 <div class="product-grid" id="grid-merch">
                   <article class="product-card" data-title="MayaNut Hat" data-cat="merch" data-newest="2" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Hat</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">MayaNut Hat</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1823,26 +1696,22 @@
                         <img src="mayanut-merch-hat-brosimum-alicastrum.png" alt="MayaNut Hat" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">Concept preview merch item...</div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
-
-                        <div class="qty-mid">
-                          <div class="qty-pill">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1850,9 +1719,7 @@
 
                   <article class="product-card" data-title="MayaNut Hoodie" data-cat="merch" data-newest="1" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Hoodie</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">MayaNut Hoodie</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1873,26 +1740,22 @@
                         <img src="mayanut-merch-hoodie-brosimum-alicastrum.png" alt="MayaNut Hoodie" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">Concept preview merch item...</div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
-
-                        <div class="qty-mid">
-                          <div class="qty-pill">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1900,9 +1763,7 @@
 
                   <article class="product-card" data-title="MayaNut Shirt" data-cat="merch" data-newest="1" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Shirt</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">MayaNut Shirt</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1923,26 +1784,22 @@
                         <img src="mayanut-merch-shirt-brosimum-alicastrum.png" alt="MayaNut Shirt" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">Concept preview merch item...</div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
-
-                        <div class="qty-mid">
-                          <div class="qty-pill">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1956,9 +1813,7 @@
                 <div class="product-grid" id="grid-plants">
                   <article class="product-card" data-title="MayaNut Seedling (1 Gallon)" data-cat="plants" data-newest="3" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">MayaNut Seedling (1 Gallon)</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">MayaNut Seedling (1 Gallon)</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1979,26 +1834,22 @@
                         <img src="maya-nut-mayanut-plant-tree-nursery.jpg" alt="MayaNut Seedling (1 Gallon)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">Concept preview planting stock...</div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
-
-                        <div class="qty-mid">
-                          <div class="qty-pill">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2006,9 +1857,7 @@
 
                   <article class="product-card" data-title="Germinated Seeds (Planting)" data-cat="plants" data-newest="2" data-price="0">
                     <div class="product-inner">
-                      <div class="product-top">
-                        <div class="product-title">Germinated Seeds (Planting)</div>
-                      </div>
+                      <div class="product-top"><div class="product-title">Germinated Seeds (Planting)</div></div>
 
                       <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2029,26 +1878,22 @@
                         <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="Germinated Seeds (Planting)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';"/>
                       </div>
 
-                      <div class="pbody">
-                        <div class="pdesc-row">
-                          <div class="pdesc">Concept preview planting stock...</div>
-                          <button class="see-more" type="button" data-expand>SEE MORE</button>
-                        </div>
-
-                        <div class="qty-mid">
-                          <div class="qty-pill">
-                            <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
-                            <span class="pm-mini">
-                              <button class="pm" type="button" data-step="+1">+</button>
-                              <button class="pm" type="button" data-step="-1">-</button>
-                            </span>
+                      <div class="action-outer">
+                        <div class="action-inner">
+                          <div class="qty-mid">
+                            <div class="qty-pill">
+                              <input class="qty-input" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" />
+                              <span class="pm-mini">
+                                <button class="pm" type="button" data-step="+1">+</button>
+                                <button class="pm" type="button" data-step="-1">-</button>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="buy-row">
-                          <button class="addq" type="button" data-action="add">ADD</button>
-                          <div class="cream-divider"></div>
-                          <button class="pricebtn" type="button">$0.00</button>
+                          <div class="buy-row">
+                            <button class="addq" type="button" data-action="add">ADD</button>
+                            <div class="cream-divider"></div>
+                            <button class="pricebtn" type="button">$0.00</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2060,7 +1905,6 @@
                 </div>
               </div>
 
-              <div class="grid-spacer" aria-hidden="true"></div>
             </div>
           </section>
         </div>
@@ -2070,7 +1914,7 @@
     <footer aria-label="Footer">
       <div class="footer-wrap">
         <div class="footer-left" aria-label="Footer info">
-          <img src="mayanut-the-mayanut-comapny-logo.png" class="footer-logo" alt="The MayaNut Company logo" id="footer-logo" width="116" height="116" decoding="async" onerror="this.style.opacity='.35';" />
+          <img src="mayanut-the-mayanut-comapny-logo.png" class="footer-logo" alt="The MayaNut Company logo" width="116" height="116" decoding="async" onerror="this.style.opacity='.35';" />
           <div class="footer-text">
             <div class="footer-lines">
               <div class="based-line">
@@ -2079,7 +1923,7 @@
               </div>
               <div>© 2026 The MayaNut Company, Inc.</div>
             </div>
-            <div class="footer-links" aria-label="Terms Privacy Sitemap">
+            <div class="footer-links">
               <a href="terms.html">Terms</a>
               <a href="privacy.html">Privacy</a>
               <a href="sitemap.html">Sitemap</a>
@@ -2092,7 +1936,7 @@
           <div class="nl-sub">Enter your email to receive updates and notifications about MayaNut products, research, and farm progress.</div>
           <form class="newsletter-form" id="newsletter-form" autocomplete="on">
             <input id="newsletter-email" type="email" name="email" placeholder="Enter your email" inputmode="email" autocomplete="email" required />
-            <button class="metal-btn" type="submit" aria-label="Subscribe">SUBSCRIBE</button>
+            <button class="metal-btn" type="submit">SUBSCRIBE</button>
           </form>
         </div>
       </div>
@@ -2100,25 +1944,25 @@
       <div class="bottom-banner" aria-label="Bottom banner">
         <span class="email-text">info@mayanut.com</span>
 
-        <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email" data-tip="Email">
+        <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4.5 6.5h15v11h-15z"></path>
             <path d="M4.5 7l7.5 6 7.5-6"></path>
           </svg>
         </a>
-        <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram" data-tip="Instagram">
+        <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
             <circle cx="12" cy="12" r="4.2"></circle>
             <circle cx="17.3" cy="6.7" r="0.9"></circle>
           </svg>
         </a>
-        <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X" data-tip="X">
+        <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
           </svg>
         </a>
-        <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn" data-tip="LinkedIn">
+        <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
           </svg>
@@ -2169,20 +2013,22 @@
             <div class="modal-desc" id="modal-desc"></div>
 
             <div class="modal-buy">
-              <div class="qty-mid">
-                <div class="qty-pill">
-                  <input class="qty-input" id="modal-qty" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
-                  <span class="pm-mini">
-                    <button class="pm" id="modal-plus" type="button" data-step="+1">+</button>
-                    <button class="pm" id="modal-minus" type="button" data-step="-1">-</button>
-                  </span>
+              <div class="modal-buy-inner">
+                <div class="qty-mid">
+                  <div class="qty-pill">
+                    <input class="qty-input" id="modal-qty" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Quantity" />
+                    <span class="pm-mini">
+                      <button class="pm" id="modal-plus" type="button" data-step="+1">+</button>
+                      <button class="pm" id="modal-minus" type="button" data-step="-1">-</button>
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="buy-row">
-                <button class="addq" id="modal-add" type="button">ADD</button>
-                <div class="cream-divider"></div>
-                <button class="pricebtn" type="button" id="modal-price">$0.00</button>
+                <div class="buy-row">
+                  <button class="addq" id="modal-add" type="button">ADD</button>
+                  <div class="cream-divider"></div>
+                  <button class="pricebtn" type="button" id="modal-price">$0.00</button>
+                </div>
               </div>
             </div>
           </div>
@@ -2191,7 +2037,7 @@
     </div>
   </div>
 
-  <!-- ACCESSIBILITY BUTTON -->
+  <!-- ACCESSIBILITY -->
   <button class="access-btn" id="access-btn" type="button" aria-label="Accessibility options">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="4.5" r="2"></circle>
@@ -2223,29 +2069,23 @@
       for(let i=0;i<count;i++){ L.appendChild(makeImg()); R.appendChild(makeImg()); }
     })();
 
-    // Mobile tabs: show one section at a time
+    // Mobile tabs
     (function(){
       const tabs = document.getElementById("mobile-cat-tabs");
       if(!tabs) return;
-
       const btns = Array.from(tabs.querySelectorAll("button[data-tab]"));
       const sections = Array.from(document.querySelectorAll(".section-block[data-section]"));
-
       function setActive(key){
         btns.forEach(b => b.classList.toggle("is-active", b.getAttribute("data-tab") === key));
         sections.forEach(s => s.classList.toggle("is-active", s.getAttribute("data-section") === key));
       }
-
-      btns.forEach(b=>{
-        b.addEventListener("click", ()=> setActive(b.getAttribute("data-tab")));
-      });
-
+      btns.forEach(b=> b.addEventListener("click", ()=> setActive(b.getAttribute("data-tab"))) );
       setActive("food");
     })();
 
-    // Favorites (localStorage)
+    // Favorites
     (function(){
-      const KEY = "mayanut_store_favs_v2";
+      const KEY = "mayanut_store_favs_v3";
       function load(){
         try{
           const raw = localStorage.getItem(KEY);
@@ -2274,8 +2114,7 @@
         const card = btn.closest(".product-card");
         const id = card?.getAttribute("data-title") || "";
         if(!id) return;
-        if(favs.has(id)) favs.delete(id);
-        else favs.add(id);
+        if(favs.has(id)) favs.delete(id); else favs.add(id);
         save(favs);
         applyUI();
       });
@@ -2283,17 +2122,21 @@
       applyUI();
     })();
 
-    // Store search clear + filtering
+    // Store search clear + filtering (hide with display to avoid weird grid visibility glitches)
     (function(){
       const input = document.getElementById("store-search");
       const clear = document.getElementById("store-search-clear");
       if(!input) return;
 
+      function normTitle(t){
+        return String(t||"").toLowerCase().replace(/^mayanut\s+/i, "").trim();
+      }
+
       function applySearch(){
         const q = String(input.value || "").trim().toLowerCase();
         document.querySelectorAll(".product-card").forEach(card=>{
-          const title = (card.getAttribute("data-title") || "").toLowerCase();
-          const ok = !q || title.includes(q);
+          const t = normTitle(card.getAttribute("data-title"));
+          const ok = !q || t.includes(q);
           card.dataset.searchOk = ok ? "1" : "0";
         });
         window.__applyFilters?.();
@@ -2309,9 +2152,9 @@
       applySearch();
     })();
 
-    // Cart state + drawer + badge
+    // Cart
     (function(){
-      const cart = new Map(); // title -> qty
+      const cart = new Map();
       const overlay = document.getElementById("cart-overlay");
       const closeBtn = document.getElementById("cart-close");
       const body = document.getElementById("cart-body");
@@ -2326,35 +2169,24 @@
           "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
         }[m]));
       }
-      function cartCount(){
-        let c = 0;
-        cart.forEach(v => c += Math.max(0, v|0));
-        return c;
-      }
+      function cartCount(){ let c=0; cart.forEach(v=> c+=Math.max(0,v|0)); return c; }
       function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
 
       function renderCart(){
         if(!body) return;
         body.querySelectorAll(".cart-item").forEach(n=> n.remove());
         const entries = Array.from(cart.entries()).filter(([,q])=> q>0);
-
         if(entries.length === 0){
           if(empty) empty.style.display = "block";
-          renderBadge();
-          return;
+          renderBadge(); return;
         }
         if(empty) empty.style.display = "none";
-
         entries.forEach(([name, qty])=>{
           const row = document.createElement("div");
           row.className = "cart-item";
-          row.innerHTML = `
-            <div class="name">${escapeHtml(name)}</div>
-            <div class="qty">x${qty}</div>
-          `;
+          row.innerHTML = `<div class="name">${escapeHtml(name)}</div><div class="qty">x${qty}</div>`;
           body.appendChild(row);
         });
-
         renderBadge();
       }
 
@@ -2371,7 +2203,7 @@
       };
     })();
 
-    // Quantity controls (typeable + press-and-hold +/-)
+    // Qty controls + ADD
     (function(){
       const clamp = (n)=> Math.max(0, Math.min(99, n));
       const HOLD_DELAY = 320;
@@ -2385,10 +2217,7 @@
           clearTimeout(t); clearInterval(iv);
           t = setTimeout(()=>{ iv=setInterval(stepFn, HOLD_RATE); }, HOLD_DELAY);
         };
-        const stop = ()=>{
-          clearTimeout(t); clearInterval(iv);
-          t=null; iv=null;
-        };
+        const stop = ()=>{ clearTimeout(t); clearInterval(iv); t=null; iv=null; };
 
         btn.addEventListener("mousedown", start);
         window.addEventListener("mouseup", stop);
@@ -2399,11 +2228,13 @@
         btn.addEventListener("touchcancel", stop);
       }
 
-      function wireQty(root, onAdd){
-        const qtyInput = root.querySelector(".qty-input");
-        const plus = root.querySelector(".pm[data-step='+1']");
-        const minus = root.querySelector(".pm[data-step='-1']");
-        if(!qtyInput || !plus || !minus) return null;
+      function wireCard(card){
+        const title = card.getAttribute("data-title") || "Item";
+        const qtyInput = card.querySelector(".qty-input");
+        const plus = card.querySelector(".pm[data-step='+1']");
+        const minus = card.querySelector(".pm[data-step='-1']");
+        const addBtn = card.querySelector("[data-action='add']");
+        if(!qtyInput || !plus || !minus || !addBtn) return;
 
         function getQty(){ return clamp(parseInt(qtyInput.value || "0", 10) || 0); }
         function setQty(v){ qtyInput.value = String(clamp(v)); }
@@ -2412,56 +2243,29 @@
         bindHold(plus, ()=> setQty(getQty()+1));
         bindHold(minus, ()=> setQty(getQty()-1));
 
-        return { getQty, setQty };
-      }
-
-      document.querySelectorAll(".product-card").forEach(card=>{
-        const title = card.getAttribute("data-title") || "Item";
-        const addBtn = card.querySelector("[data-action='add']");
-        const qtyCtl = wireQty(card, null);
-
-        addBtn?.addEventListener("click", ()=>{
-          const qty = qtyCtl ? qtyCtl.getQty() : 0;
-          if(qty <= 0){
-            alert("Select a quantity greater than 0.");
-            return;
-          }
+        addBtn.addEventListener("click", ()=>{
+          const qty = getQty();
+          if(qty <= 0){ alert("Select a quantity greater than 0."); return; }
           window.__addToCart?.(title, qty);
-          qtyCtl?.setQty(0);
+          setQty(0);
           alert("Added to cart (preview). Checkout is unavailable.");
         });
-      });
+      }
+
+      document.querySelectorAll(".product-card").forEach(wireCard);
 
       // Modal qty
       const modalQty = document.getElementById("modal-qty");
       const modalPlus = document.getElementById("modal-plus");
       const modalMinus = document.getElementById("modal-minus");
-      const clampModal = (n)=> Math.max(0, Math.min(99, n));
-
-      function modalGet(){ return clampModal(parseInt(modalQty.value || "0", 10) || 0); }
-      function modalSet(v){ modalQty.value = String(clampModal(v)); }
       if(modalQty && modalPlus && modalMinus){
-        modalQty.addEventListener("input", ()=> modalSet(modalGet()));
-        // hold
-        const HOLD_DELAY = 320, HOLD_RATE = 80;
-        function bind(btn, step){
-          let t=null, iv=null;
-          const start = (e)=>{
-            e.preventDefault();
-            modalSet(modalGet()+step);
-            clearTimeout(t); clearInterval(iv);
-            t=setTimeout(()=>{ iv=setInterval(()=> modalSet(modalGet()+step), HOLD_RATE); }, HOLD_DELAY);
-          };
-          const stop=()=>{ clearTimeout(t); clearInterval(iv); t=null; iv=null; };
-          btn.addEventListener("mousedown", start);
-          window.addEventListener("mouseup", stop);
-          window.addEventListener("mouseleave", stop);
-          btn.addEventListener("touchstart", start, { passive:false });
-          btn.addEventListener("touchend", stop);
-          btn.addEventListener("touchcancel", stop);
-        }
-        bind(modalPlus, +1);
-        bind(modalMinus, -1);
+        const clampM = (n)=> Math.max(0, Math.min(99, n));
+        const get = ()=> clampM(parseInt(modalQty.value || "0", 10) || 0);
+        const set = (v)=> { modalQty.value = String(clampM(v)); };
+
+        modalQty.addEventListener("input", ()=> set(get()));
+        bindHold(modalPlus, ()=> set(get()+1));
+        bindHold(modalMinus, ()=> set(get()-1));
       }
     })();
 
@@ -2505,7 +2309,6 @@
         });
         cards.forEach(c=> container.appendChild(c));
       }
-
       function mode(){ return (radios.find(r=>r.checked)?.value) || "newest"; }
 
       function applySort(){
@@ -2535,12 +2338,8 @@
         document.querySelectorAll(".product-card").forEach(card=>{
           const cat = card.getAttribute("data-cat");
           const showByCat = set.has(cat);
-
           const searchOk = (card.dataset.searchOk ?? "1") === "1";
-
-          // concept: none in stock
-          const showByStock = inStockOnly ? false : true;
-
+          const showByStock = inStockOnly ? false : true; // concept: none in stock
           card.style.display = (showByCat && searchOk && showByStock) ? "" : "none";
         });
       }
@@ -2555,7 +2354,7 @@
       applyFilters();
     })();
 
-    // Product modal (expand)
+    // Modal (expand)
     (function(){
       const overlay = document.getElementById("modal-overlay");
       const closeBtn = document.getElementById("modal-close");
@@ -2566,15 +2365,21 @@
       const qtyEl = document.getElementById("modal-qty");
 
       const FULL = {
-        "MayaNut Powder (1/4 lb)":
+        "1/4 lb MayaNut Powder":
           "You will recieve a quarter-pound of MayaNut powder. Use MayaNut powder in fruit bowls, baked goods, drinks, and so much more with this bold and delicious powder, derived from MayaNut seeds. The flavor is similar to roasted cocoa powder, yet contains so much nutrients.",
-        "MayaNut Powder (1 lb)":
+        "1 lb MayaNut Powder":
           "You will recieve 1 pound of MayaNut powder. Use MayaNut powder in fruit bowls, baked goods, drinks, and so much more with this bold and delicious powder, derived from MayaNut seeds. The flavor is similar to roasted cocoa powder, yet contains so much nutrients.",
-        "MayaNut Instant Coffee Pods":
-          "You will recieve instant pods for mayanut. Use MayaNut in fruit bowls, baked goods, drinks, and so much more with this bold and delicious powder, derived from MayaNut seeds. The flavor is similar to roasted cocoa powder, yet contains so much nutrients."
+        "Instant MayaNut Pods":
+          "You will recieve instant pods for mayanut. Use MayaNut in drinks, baked goods, and so much more with a bold and delicious roasted flavor derived from MayaNut seeds. The flavor is similar to roasted cocoa powder, yet contains so much nutrients.",
+        "MayaNut Hat":"Concept preview merch item. More details coming soon.",
+        "MayaNut Hoodie":"Concept preview merch item. More details coming soon.",
+        "MayaNut Shirt":"Concept preview merch item. More details coming soon.",
+        "MayaNut Seedling (1 Gallon)":"Concept preview planting stock. More details coming soon.",
+        "Germinated Seeds (Planting)":"Concept preview planting stock. More details coming soon."
       };
 
       let currentTitle = "";
+
       function openModal(card){
         const t = card.getAttribute("data-title") || "Product";
         const img = card.querySelector(".pimg img");
@@ -2585,7 +2390,6 @@
         titleEl.textContent = t;
         imgEl.src = src;
         imgEl.alt = alt;
-
         descEl.textContent = FULL[t] || "Product details coming soon.";
         qtyEl.value = "0";
 
@@ -2598,13 +2402,10 @@
       }
 
       document.addEventListener("click", (e)=>{
-        const tgt = e.target;
-        const expand = tgt?.closest?.("[data-expand]");
+        const expand = e.target?.closest?.("[data-expand]");
         if(!expand) return;
-
         const card = expand.closest(".product-card");
         if(!card) return;
-
         e.preventDefault();
         e.stopPropagation();
         openModal(card);
@@ -2616,17 +2417,26 @@
 
       addBtn?.addEventListener("click", ()=>{
         const qty = Math.max(0, Math.min(99, parseInt(qtyEl.value || "0", 10) || 0));
-        if(qty <= 0){
-          alert("Select a quantity greater than 0.");
-          return;
-        }
+        if(qty <= 0){ alert("Select a quantity greater than 0."); return; }
         window.__addToCart?.(currentTitle || "Item", qty);
         qtyEl.value = "0";
         alert("Added to cart (preview). Checkout is unavailable.");
       });
     })();
 
-    // Buttons (concept)
+    // Store search clear
+    (function(){
+      const input = document.getElementById("store-search");
+      const clear = document.getElementById("store-search-clear");
+      if(!input || !clear) return;
+      clear.addEventListener("click", ()=>{
+        input.value = "";
+        input.dispatchEvent(new Event("input"));
+        input.focus();
+      });
+    })();
+
+    // Checkout buttons
     (function(){
       document.getElementById("checkout-pill")?.addEventListener("click", ()=> alert("Checkout is coming soon."));
       document.getElementById("bottom-checkout")?.addEventListener("click", ()=> alert("Checkout is coming soon."));
@@ -2635,7 +2445,7 @@
       document.getElementById("nav-search-btn")?.addEventListener("click", ()=> alert("Search is conceptual on this page."));
     })();
 
-    // Accessibility toggle (simple: larger text)
+    // Accessibility toggle (simple)
     (function(){
       const btn = document.getElementById("access-btn");
       if(!btn) return;

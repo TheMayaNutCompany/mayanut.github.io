@@ -53,7 +53,9 @@
       --orange-mid:#ff7a1a;
       --orange-hi:#ffd2a8;
 
-      --cream:#ffffc5;
+      /* REPLACED ALL #ffffc5 usage by making --cream = lime */
+      --limeText: #d8ff6a;
+      --cream: #d8ff6a;
 
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
@@ -91,7 +93,6 @@
 
       /* headers: dark green gradient, lime text */
       --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 55%, #0b3b17 100%);
-      --limeText: #d8ff6a;
 
       /* lighter green used inside panels + product action areas */
       --lite-green: linear-gradient(
@@ -134,7 +135,7 @@
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* SIDE FRAMES */
+    /* SIDE FRAMES (LOCKED) */
     .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
     .side{
       position:absolute; top:0; bottom:0; width:var(--sideW);
@@ -166,7 +167,7 @@
       background: transparent;
     }
 
-    /* STICKY TOP */
+    /* STICKY TOP (LOCKED) */
     .sticky-top{
       position:fixed;
       top:0;
@@ -408,10 +409,10 @@
       align-items:start;
     }
 
-    /* LEFT SORT */
+    /* LEFT SORT (MOVED UP) */
     .left-shell{
       position: sticky;
-      top: calc(var(--stickyOffset) + 6px);
+      top: calc(var(--stickyOffset) + 0px);
       align-self:start;
     }
 
@@ -458,12 +459,12 @@
 
     .filter-shell{
       border-radius:16px;
-      background: var(--store-bg-h); /* green gradient box */
+      background: var(--store-bg-h);
       padding:6px;
     }
     .filter-group{
       border-radius:12px;
-      background: var(--lite-green); /* paler green inner */
+      background: var(--lite-green);
       padding:10px;
     }
     .filter-title{
@@ -498,12 +499,13 @@
     }
     .filter-item input{ accent-color: #1a6800; }
 
+    /* CHECKOUT BUTTONS ORANGE AGAIN */
     .side-checkout{
       width:100%;
       border-radius:14px;
       border:2px solid var(--cream);
-      background: var(--store-bg-h);
-      color: var(--limeText);
+      background: var(--metal-orange);
+      color: var(--cream);
       font-weight:950;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -523,7 +525,7 @@
     }
     .grid-wrap{
       border-radius:14px;
-      background: var(--store-bg-h); /* opposite direction background */
+      background: var(--store-bg-h);
       overflow:hidden;
     }
 
@@ -667,13 +669,14 @@
       pointer-events:none;
     }
 
+    /* CHECKOUT BUTTON ORANGE AGAIN */
     .checkout-top{
       height:40px;
       padding:0 12px;
       border-radius:14px;
       border:1px solid var(--cream);
-      background: var(--store-bg-h);
-      color: var(--limeText);
+      background: var(--metal-orange);
+      color: var(--cream);
       font-weight:950;
       letter-spacing:.10em;
       text-transform:uppercase;
@@ -743,10 +746,10 @@
       gap:12px;
     }
 
-    /* product cards: green gradient box around with inner paler green */
+    /* PRODUCT OUTER OUTLINE ORANGE (inner stays as-is) */
     .product-shell{
       border-radius:18px;
-      background: var(--store-bg-h);
+      background: var(--metal-orange);
       padding:6px;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       transition: transform .14s ease;
@@ -891,6 +894,7 @@
     .qty-val::-webkit-outer-spin-button,
     .qty-val::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
+    /* INFO HOVER GROWS + BETTER CURVED ARROW */
     .info-btn{
       margin-left:auto;
       height:26px;
@@ -910,7 +914,10 @@
       display:flex;
       align-items:center;
       gap:6px;
+      transition: transform .12s ease;
+      transform-origin: right center;
     }
+    .info-btn:hover{ transform: scale(1.06); }
     .info-btn svg{
       width:16px;
       height:16px;
@@ -959,7 +966,7 @@
       flex:0 0 1px;
     }
 
-    /* FOOTER */
+    /* FOOTER (kept where it is; no drift changes) */
     footer{
       border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
       border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
@@ -1664,7 +1671,7 @@
     </div>
   </div>
 
-  <!-- CHECKOUT SCREEN -->
+  <!-- CHECKOUT SCREEN (single instance; removed duplicate to prevent drift/bugs) -->
   <div class="checkout-overlay" id="checkout-overlay" aria-hidden="true">
     <div class="checkout-left" id="checkout-left"></div>
     <div class="checkout-right">
@@ -1732,8 +1739,9 @@
                       <button class="info-btn" type="button" data-info>
                         INFO
                         <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M5 19c5-1 9-5 10-10"></path>
-                          <path d="M12 4h6v6"></path>
+                          <path d="M6 18c4-6 8-9 12-9"></path>
+                          <path d="M18 9V5"></path>
+                          <path d="M18 5h-4"></path>
                         </svg>
                       </button>
                     </div>
@@ -2192,29 +2200,5 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeA11y(); });
     })();
   </script>
-
-  <!-- Checkout overlay elements -->
-  <div class="checkout-overlay" id="checkout-overlay" aria-hidden="true">
-    <div class="checkout-left" id="checkout-left"></div>
-    <div class="checkout-right">
-      <div class="checkout-toast" role="dialog" aria-modal="true" aria-label="Checkout">
-        <div class="checkout-toast-inner">
-          <div class="checkout-toast-head">
-            <div class="checkout-toast-title">Checkout</div>
-            <button class="drawer-close" id="checkout-close" type="button" aria-label="Close checkout">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 6l12 12"></path>
-                <path d="M18 6L6 18"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="checkout-toast-body">
-            Checkout is coming soon. Products on this page are currently conceptual while the store is under development.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>

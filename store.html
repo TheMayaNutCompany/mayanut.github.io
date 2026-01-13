@@ -42,6 +42,7 @@
 
       --green:#1a6800;
       --green-deep:#0b3b17;
+      --green-line: rgba(12, 90, 42, 0.95);
 
       --tan:#f3e6d1;
       --tan-top:#c9a981;
@@ -52,17 +53,14 @@
       --orange-mid:#ff7a1a;
       --orange-hi:#ffd2a8;
 
-      /* LIME (requested) */
-      --limeText:#d8ff6a;
-      --lime:#d8ff6a;
-
-      /* keep cream variable mapped to lime so legacy borders/text flip automatically */
-      --cream: var(--lime);
-
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
       --sideW: 170px;
       --frameBorder: 2px;
+
+      --store-g1:#d8ff6a;
+      --store-g2:#7ae78a;
+      --store-g3:#1a6800;
 
       --panel-green-grad: linear-gradient(
         90deg,
@@ -73,7 +71,7 @@
         var(--green-deep) 100%
       );
 
-      /* orange metal */
+      /* ORANGE BORDER LIKE INDEX */
       --metal-orange: linear-gradient(
         180deg,
         var(--orange-hi) 0%,
@@ -83,13 +81,20 @@
         var(--orange-mid) 100%
       );
 
-      /* store background goes DOWN */
-      --store-bg-h: linear-gradient(180deg, #0b3b17 0%, #2a8b2f 45%, #d8ff6a 100%);
+      /* STORE BACKGROUND (dark -> light left-to-right) */
+      --store-bg-h: linear-gradient(90deg, #0b3b17 0%, #d8ff6a 100%);
 
+      /* line gradients: lime -> dark left-to-right */
       --line-grad: linear-gradient(90deg, #d8ff6a 0%, #0b3b17 100%);
 
+      /* headers: dark green gradient, lime text */
       --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 55%, #0b3b17 100%);
+      --limeText: #d8ff6a;
 
+      /* Replace #ffffc5 usage with lime */
+      --cream: var(--limeText);
+
+      /* lighter green used inside panels + product action areas */
       --lite-green: linear-gradient(
         180deg,
         rgba(233,255,214,0.98) 0%,
@@ -104,12 +109,11 @@
 
       --stickyOffset: 170px;
       --bannerH: 22px;
-      --navH: 76px; /* taller top tab (requested) */
+      --navH: 66px;
+
+      --qtyBg:#ffffff;
 
       --a11y-blue:#084ac5;
-
-      /* section title style */
-      --sectFont: var(--font-pretty);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -216,7 +220,7 @@
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
-      padding: 14px 14px 18px; /* taller */
+      padding: 10px 14px 14px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -241,23 +245,23 @@
       padding:0 8px;
       position:relative;
       z-index:1;
-      min-height:64px; /* taller */
+      min-height:56px;
     }
 
     /* HEADER SEARCH */
     .nav-search{
       position:absolute;
       left:8px; top:0;
-      height:64px;
+      height:56px;
       display:flex;
       align-items:center;
       width: 42px;
       z-index:2;
     }
     .nav-search-btn{
-      width:42px; height:42px;
+      width:42px; height:40px;
       border-radius:14px;
-      border:1px solid rgba(12,90,42,.85);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--mobile-green-grad);
       display:flex; align-items:center; justify-content:center;
       cursor:pointer;
@@ -265,7 +269,7 @@
     }
     .nav-search-btn svg{
       width:18px;height:18px;
-      stroke:var(--cream);
+      stroke:var(--limeText);
       fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -274,13 +278,13 @@
     .nav-search-box{
       position:absolute;
       left:48px;
-      top:11px;
+      top:8px;
       width:0;
       opacity:0;
       pointer-events:none;
-      height:42px;
+      height:40px;
       border-radius:14px;
-      border:1px solid rgba(12,90,42,.85);
+      border:2px solid rgba(216,255,106,0.95);
       background:#ffffff;
       box-shadow:0 10px 22px rgba(15,23,42,0.10);
       overflow:hidden;
@@ -295,7 +299,7 @@
       pointer-events:auto;
     }
     .nav-search-input{
-      height:42px; width:100%;
+      height:40px; width:100%;
       border:none; outline:none; background:transparent;
       color:#0b1220;
       font-weight:950;
@@ -304,7 +308,7 @@
       padding:0 12px;
     }
     .nav-search-clear{
-      width:42px; height:42px;
+      width:40px; height:40px;
       border:none;
       background: transparent;
       cursor:pointer;
@@ -333,10 +337,10 @@
       padding-right:140px;
     }
     .nav-pill{
-      height:42px;
+      height:40px;
       padding:0 12px;
       border-radius:14px;
-      border:1px solid var(--cream);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--mobile-green-grad);
       display:inline-flex;
       align-items:center;
@@ -350,7 +354,7 @@
       letter-spacing:0.20em;
       text-transform:uppercase;
       font-weight:950;
-      color: var(--cream);
+      color: var(--limeText);
       text-shadow:0 1px 0 rgba(0,0,0,0.18);
       white-space:nowrap;
     }
@@ -359,19 +363,19 @@
     .nav-right{
       position:absolute;
       right:8px; top:0;
-      height:64px;
+      height:56px;
       display:flex;
       align-items:center;
       justify-content:flex-end;
       z-index:2;
     }
     .lang-pill{
-      height:42px;
+      height:40px;
       padding:0 14px;
       border-radius:14px;
-      border:1px solid var(--cream);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--mobile-green-grad);
-      color:var(--cream);
+      color:var(--limeText);
       font-weight:950;
       letter-spacing:0.14em;
       text-transform:uppercase;
@@ -405,17 +409,16 @@
       align-items:start;
     }
 
-    /* LEFT SORT */
+    /* LEFT SORT (moved up a bit + sticky) */
     .left-shell{
       position: sticky;
-      top: var(--stickyOffset);
+      top: calc(var(--stickyOffset) - 10px);
       align-self:start;
     }
 
     .left-outer{
       border-radius:18px;
-      border:2px solid var(--lime); /* optional: lime edge */
-      background: rgba(255,255,255,0.06);
+      background: var(--metal-orange); /* keep orange outline */
       padding:6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
     }
@@ -427,12 +430,13 @@
     .left-head{
       background: var(--head-grad);
       padding:10px 12px;
-      font-family: var(--font-sans);
-      font-weight:1000;
-      letter-spacing:.18em;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.14em;
       text-transform:uppercase;
       font-size:13px;
-      color: var(--limeText); /* lime */
+      color: var(--limeText);
       display:flex;
       align-items:center;
       gap:10px;
@@ -453,13 +457,10 @@
       background: rgba(255,255,255,0.10);
     }
 
-    /* ORDER / STOCK OUTLINES = LIME (requested) */
     .filter-shell{
       border-radius:16px;
-      border:2px solid var(--lime);   /* lime outline */
-      background: rgba(255,255,255,0.06);
+      background: var(--store-bg-h);
       padding:6px;
-      box-shadow:0 12px 30px rgba(15,23,42,0.10);
     }
     .filter-group{
       border-radius:12px;
@@ -467,12 +468,13 @@
       padding:10px;
     }
     .filter-title{
-      font-family: var(--font-sans);
-      font-weight:1000;
-      letter-spacing:.14em;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.10em;
       text-transform:uppercase;
       font-size:12px;
-      color: var(--limeText); /* lime (requested) */
+      color:#0b1220;
       margin-bottom:8px;
       display:flex;
       align-items:center;
@@ -497,12 +499,13 @@
     }
     .filter-item input{ accent-color: #1a6800; }
 
+    /* Checkout buttons orange again */
     .side-checkout{
       width:100%;
       border-radius:14px;
-      border:2px solid var(--lime);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--metal-orange);
-      color: var(--cream);
+      color: var(--limeText);
       font-weight:950;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -515,7 +518,7 @@
     /* STORE */
     .grid-outer{
       border-radius:18px;
-      background: var(--metal-orange);
+      background: var(--metal-orange); /* orange outer outline stays */
       padding:6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
       overflow:hidden;
@@ -559,15 +562,15 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-
-    .head-divider{
-      width:2px;
-      height:34px;
+    .title-line{
+      flex:1;
+      height:2px;
+      background: var(--line-grad);
       border-radius:999px;
-      background: linear-gradient(180deg, rgba(216,255,106,0.05), rgba(216,255,106,0.95), rgba(216,255,106,0.05));
-      box-shadow: 0 10px 24px rgba(15,23,42,0.10);
-      flex:0 0 auto;
-      opacity:.9;
+      margin-left:12px;
+      margin-right:12px;
+      max-width: 220px;
+      transform: translateY(2px);
     }
 
     .grid-tools{
@@ -581,7 +584,7 @@
     .store-search{
       height:40px;
       border-radius:14px;
-      border:2px solid rgba(12,90,42,.55);
+      border:2px solid rgba(216,255,106,0.95);
       background: #ffffff;
       display:flex;
       align-items:center;
@@ -599,7 +602,7 @@
       user-select:none;
     }
     .store-search .xbtn{
-      background: transparent;
+      background: transparent; /* X not orange background */
       border-left:1px solid rgba(12,90,42,.20);
     }
     .store-search .mag svg,
@@ -628,7 +631,7 @@
     .icon-btn{
       width:42px;height:40px;
       border-radius:14px;
-      border:1px solid var(--lime);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--metal-orange);
       display:flex;
       align-items:center;
@@ -640,7 +643,7 @@
     }
     .icon-btn svg{
       width:18px;height:18px;
-      stroke: var(--cream);
+      stroke: var(--limeText);
       fill:none;
       stroke-width:2;
       stroke-linecap:round;
@@ -658,8 +661,8 @@
       align-items:center;
       justify-content:center;
       background: var(--orange);
-      border:1px solid var(--lime);
-      color: var(--cream);
+      border:2px solid rgba(216,255,106,0.95);
+      color: var(--limeText);
       font-weight:950;
       font-size:11px;
       line-height:1;
@@ -670,9 +673,9 @@
       height:40px;
       padding:0 12px;
       border-radius:14px;
-      border:1px solid var(--lime);
-      background: var(--metal-orange);
-      color: var(--cream);
+      border:2px solid rgba(216,255,106,0.95);
+      background: var(--metal-orange); /* orange again */
+      color: var(--limeText);
       font-weight:950;
       letter-spacing:.10em;
       text-transform:uppercase;
@@ -698,32 +701,48 @@
       flex:1 1 0;
       height:40px;
       border-radius:14px;
-      border:1px solid var(--lime);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--mobile-green-grad);
       color: var(--limeText);
-      font-weight:1000;
-      letter-spacing:.12em;
+      font-weight:950;
+      letter-spacing:.10em;
       text-transform:uppercase;
       font-size:10px;
       cursor:pointer;
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
     }
-    .mobile-cat-tabs button.is-active{ background: var(--metal-orange); color:#0b1220; }
+    .mobile-cat-tabs button.is-active{ background: var(--metal-orange); }
 
-    /* SECTION TITLES (Powder/Merch/Plants) = LIME */
-    .section-label{
-      margin: 10px 2px 12px;
-      font-family: var(--sectFont);
+    /* REMOVE old section titles */
+    .section-label{ display:none !important; }
+
+    /* Vertical category labels (left of first product) */
+    .section-row{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+    }
+    .section-vert{
+      flex:0 0 44px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding-top: 6px;
+      user-select:none;
+    }
+    .section-vert span{
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--font-pretty);
       font-style: italic;
-      font-weight: 900;
-      letter-spacing: .14em;
+      font-weight: 950;
+      letter-spacing: .10em;
       text-transform: uppercase;
-      font-size: 15px;
-      color: var(--limeText);
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      text-decoration-thickness: 2px;
-      text-shadow:0 1px 0 rgba(0,0,0,0.18);
+      font-size: 20px;
+      line-height: 1;
+      color: var(--orange);
+      -webkit-text-stroke: 1px rgba(12,90,42,0.90);
+      text-shadow: 0 6px 16px rgba(15,23,42,0.10);
     }
 
     .section-block{ display:block; }
@@ -733,24 +752,26 @@
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap:12px;
+      width:100%;
     }
 
-    /* PRODUCT OUTLINES = LIME (requested) */
+    /* PRODUCTS: ONLY thin lime outline (no orange/metal outer) */
     .product-shell{
       border-radius:18px;
-      border:2px solid var(--lime);
-      background: rgba(255,255,255,0.06);
-      padding:6px;
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+      background: transparent;
+      padding:0;
+      box-shadow:none;
       transition: transform .14s ease;
     }
     .product-shell:hover{ transform: scale(1.02); }
 
     .product-card{
-      border-radius:14px;
+      border-radius:18px;
       overflow:hidden;
       background: var(--lite-green);
       position:relative;
+      border:2px solid rgba(216,255,106,0.95); /* thin lime outline */
+      box-shadow:0 14px 30px rgba(15,23,42,0.10);
     }
 
     .prod-head{
@@ -770,17 +791,10 @@
       text-align:center;
     }
 
-    /* green box around image */
-    .pimg-shell{
-      padding:6px;
-      background: var(--store-bg-h);
-    }
     .pimg{
       position:relative;
       background:#fff;
-      border-radius:12px;
-      overflow:hidden;
-      border:2px solid rgba(12,90,42,0.20);
+      border-bottom:2px solid rgba(12,90,42,0.20);
     }
     .pimg img{
       width:100%;
@@ -790,10 +804,44 @@
       cursor:pointer;
     }
 
-    /* bottom area */
+    .fav-btn{
+      position:absolute;
+      top:8px;
+      right:8px;
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      border:2px solid rgba(12,90,42,0.85);
+      background: rgba(255,255,255,0.20);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:5;
+      box-shadow:0 12px 26px rgba(15,23,42,0.14);
+    }
+    .fav-btn svg{
+      width:20px;
+      height:20px;
+      stroke: rgba(12,90,42,0.85);
+      fill: transparent;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .fav-btn.is-on svg{
+      fill: url(#heartHotFill);
+      stroke: rgba(12,90,42,0.85);
+    }
+
     .pbot{
       padding:10px;
       background: var(--lite-green);
+    }
+    .pbot-shell{
+      border-radius:16px;
+      background: var(--store-bg-h);
+      padding:6px;
     }
     .pbot-inner{
       border-radius:12px;
@@ -804,115 +852,20 @@
       gap:10px;
     }
 
-    /* price left, info right */
-    .top-row{
+    .qty-row{
       display:flex;
       align-items:center;
-      gap:10px;
-    }
-    .price-inline{
-      height:26px;
-      min-width: 84px;
-      padding:0 10px;
-      border-radius:10px;
-      border:2px solid rgba(12,90,42,0.55);
-      background: #ffffff;
-      color:#0b1220;
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:.02em;
-      text-decoration: underline;
-      text-underline-offset:2px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      user-select:none;
-    }
-
-    .info-btn{
-      margin-left:auto;
-      height:26px;
-      padding:0 10px;
-      border-radius:0;
-      border:2px solid rgba(12,90,42,0.85);
-      background:#777;
-      color: var(--cream);
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:900;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      cursor:pointer;
-      white-space:nowrap;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      transition: transform .12s ease;
-      transform-origin: right center;
-    }
-    .info-btn:hover{ transform: scale(1.06); }
-    .info-btn svg{
-      width:16px;
-      height:16px;
-      stroke: var(--cream);
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-    /* add | qty (qty side uses lite-green as earlier) */
-    .buy-row{
-      width:100%;
-      display:flex;
-      align-items:stretch;
-      gap:0;
-      border-radius:12px;
-      overflow:hidden;
-      border:2px solid rgba(12,90,42,0.55);
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
-    }
-    .addq{
-      flex: 1 1 0;
-      border:none;
-      padding:10px 10px;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:10px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:34px;
-      color: var(--cream);
-      white-space:nowrap;
-      background: var(--metal-orange);
-    }
-    .cream-divider{
-      width:1px;
-      background: var(--lime);
-      flex:0 0 1px;
-    }
-
-    .qty-pack{
-      flex: 1 1 0;
-      background: var(--lite-green);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      justify-content:flex-start;
       gap:8px;
-      padding:6px 8px;
-      min-height:34px;
     }
+
+    /* +/- on LEFT, single combined box, swapped (minus on top, plus bottom) */
     .pm-box{
       width:26px;
       height:26px;
       border-radius:8px;
       border:2px solid rgba(12,90,42,0.55);
-      background: var(--lite-green);
+      background: var(--qtyBg);
       overflow:hidden;
       display:flex;
       flex-direction:column;
@@ -934,12 +887,13 @@
       -webkit-user-select:none;
     }
     .pm-btn + .pm-btn{ border-top:1px solid rgba(12,90,42,0.25); }
+
     .qty-val{
       width:56px;
       height:26px;
       border-radius:10px;
       border:2px solid rgba(12,90,42,0.55);
-      background: var(--lite-green);
+      background: var(--qtyBg);
       color:#0b1220;
       font-weight:950;
       font-size:12px;
@@ -949,6 +903,76 @@
     }
     .qty-val::-webkit-outer-spin-button,
     .qty-val::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+
+    .info-btn{
+      margin-left:auto;
+      height:26px;
+      padding:0 10px;
+      border-radius:10px;
+      border:2px solid rgba(216,255,106,0.95);
+      background: rgba(12,90,42,0.65);
+      color: var(--limeText);
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:11px;
+      cursor:pointer;
+      white-space:nowrap;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      transition: transform .12s ease;
+    }
+    .info-btn:hover{ transform: scale(1.06); }
+    .info-btn svg{
+      width:16px;
+      height:16px;
+      stroke: var(--limeText);
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .buy-row{
+      width:100%;
+      display:flex;
+      align-items:stretch;
+      gap:0;
+      border-radius:12px;
+      overflow:hidden;
+      border:2px solid rgba(12,90,42,0.55);
+      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+    }
+    .addq,.pricebtn{
+      flex:1 1 0;
+      border:none;
+      padding:10px 10px;
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:10px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:34px;
+      color: var(--limeText);
+      white-space:nowrap;
+    }
+    .addq{ background: var(--metal-orange); }
+    .pricebtn{
+      background: var(--mobile-green-grad);
+      text-decoration: underline;
+      text-underline-offset:2px;
+    }
+    .cream-divider{
+      width:1px;
+      background: rgba(216,255,106,0.95);
+      flex:0 0 1px;
+    }
 
     /* FOOTER */
     footer{
@@ -989,7 +1013,7 @@
       width:36px;
       height:36px;
       border-radius:14px;
-      border: 1px solid var(--lime);
+      border: 2px solid rgba(216,255,106,0.95);
       background: var(--metal-orange);
       display:inline-flex;
       align-items:center;
@@ -999,21 +1023,21 @@
     }
     .icon-pill svg{
       width:20px; height:20px;
-      stroke: var(--cream);
+      stroke: var(--limeText);
       fill:none;
       stroke-width:2;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    .icon-pill .fill{ fill: var(--cream); stroke:none; }
+    .icon-pill .fill{ fill: var(--limeText); stroke:none; }
 
     .share-btn{
       height:36px;
       padding:0 12px;
       border-radius:14px;
-      border:1px solid var(--lime);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--metal-orange);
-      color: var(--cream);
+      color: var(--limeText);
       font-weight:950;
       letter-spacing:.10em;
       text-transform:uppercase;
@@ -1027,7 +1051,7 @@
     }
     .share-btn svg{
       width:16px; height:16px;
-      stroke: var(--cream);
+      stroke: var(--limeText);
       fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -1087,6 +1111,7 @@
     body.cart-open .cart-overlay{ display:block; }
     body.modal-open .modal-overlay{ display:block; }
     body.a11y-open .a11y-overlay{ display:block; }
+    body.checkout-open .checkout-overlay{ display:block; }
 
     .drawer{
       max-width: 560px;
@@ -1119,14 +1144,14 @@
     .drawer-close{
       width:40px;height:40px;
       border-radius:14px;
-      border:1px solid var(--lime);
+      border:2px solid rgba(216,255,106,0.95);
       background: var(--metal-orange);
       display:flex;align-items:center;justify-content:center;
       cursor:pointer;
     }
     .drawer-close svg{
       width:18px;height:18px;
-      stroke:var(--cream);
+      stroke:var(--limeText);
       fill:none;
       stroke-width:2.4;
       stroke-linecap:round;
@@ -1150,9 +1175,9 @@
       justify-content:flex-end;
     }
     .metal-btn{
-      border: 1px solid var(--lime);
+      border: 2px solid rgba(216,255,106,0.95);
       background: var(--metal-orange);
-      color: var(--cream);
+      color: var(--limeText);
       border-radius:14px;
       padding:10px 14px;
       font-size:11px;
@@ -1260,7 +1285,6 @@
       position:fixed; inset:0; display:none;
       z-index:1700;
     }
-    body.checkout-open .checkout-overlay{ display:block; }
     .checkout-left{
       position:absolute; top:0; left:0; bottom:0;
       width:66.666%;
@@ -1329,13 +1353,12 @@
       .left-shell{ position:relative; top:auto; }
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .store-search{ width: min(360px, 60vw); }
-      .head-divider{ display:none; }
     }
     @media(max-width:820px){
+      .title-line{ display:none; }
       .checkout-right{ display:none; }
       .checkout-left{ width:100%; }
       .checkout-toast{ width:min(520px, calc(100vw - 36px)); right:18px; }
-      .head-divider{ display:none; }
     }
     @media(max-width:780px){
       .side-frames{ display:none !important; }
@@ -1349,17 +1372,30 @@
       .left-shell{ display:none !important; }
 
       .mobile-cat-tabs{ display:flex; }
+      .section-row{ display:block; }
+      .section-vert{ display:none !important; }
+
       .product-grid{ grid-template-columns: 1fr; }
       .store-search{ width: 100%; min-width:0; }
 
       .modal-body{ grid-template-columns: 1fr; }
       .modal-body img{ height:220px; }
-      .head-divider{ display:none; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Heart gradient -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="heartHotFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ff4d6d"></stop>
+        <stop offset="45%" stop-color="#ff2d55"></stop>
+        <stop offset="100%" stop-color="#ff00b8"></stop>
+      </linearGradient>
+    </defs>
+  </svg>
+
   <!-- SIDE FRAMES -->
   <div class="side-frames" aria-hidden="true">
     <div class="side left"><div class="stack" id="stack-left"></div></div>
@@ -1458,9 +1494,8 @@
                 <div class="store-brand" aria-label="Store brand">
                   <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
                   <div class="grid-title">MayaNut Store</div>
+                  <div class="title-line" aria-hidden="true"></div>
                 </div>
-
-                <div class="head-divider" aria-hidden="true"></div>
 
                 <div class="grid-tools">
                   <div class="store-search" aria-label="Search products">
@@ -1495,27 +1530,33 @@
 
               <div class="grid-body">
                 <div class="mobile-cat-tabs" id="mobile-cat-tabs" aria-label="Mobile categories">
-                  <button type="button" class="is-active" data-tab="food">MayaNut Powder</button>
+                  <button type="button" class="is-active" data-tab="food">MayaNut Food</button>
                   <button type="button" data-tab="merch">MayaNut Merch</button>
                   <button type="button" data-tab="plants">MayaNut Plants</button>
                 </div>
 
-                <!-- POWDER -->
+                <!-- FOOD -->
                 <div class="section-block is-active" data-section="food" id="section-food">
-                  <div class="section-label">MayaNut Powder</div>
-                  <div class="product-grid" id="grid-food"></div>
+                  <div class="section-row">
+                    <div class="section-vert" aria-hidden="true"><span>MayaNut Powder</span></div>
+                    <div class="product-grid" id="grid-food"></div>
+                  </div>
                 </div>
 
                 <!-- MERCH -->
                 <div class="section-block" data-section="merch" id="section-merch">
-                  <div class="section-label">MayaNut Merch</div>
-                  <div class="product-grid" id="grid-merch"></div>
+                  <div class="section-row">
+                    <div class="section-vert" aria-hidden="true"><span>MayaNut Merch</span></div>
+                    <div class="product-grid" id="grid-merch"></div>
+                  </div>
                 </div>
 
                 <!-- PLANTS -->
                 <div class="section-block" data-section="plants" id="section-plants">
-                  <div class="section-label">MayaNut Plants</div>
-                  <div class="product-grid" id="grid-plants"></div>
+                  <div class="section-row">
+                    <div class="section-vert" aria-hidden="true"><span>MayaNut Plants</span></div>
+                    <div class="product-grid" id="grid-plants"></div>
+                  </div>
                 </div>
 
                 <div style="height:140px" aria-hidden="true"></div>
@@ -1598,7 +1639,7 @@
         <div id="cart-empty" style="font-family:var(--font-pretty); font-style:italic; font-weight:850; color:#0b1220;">Your cart is empty.</div>
       </div>
       <div class="drawer-foot">
-        <button class="metal-btn" id="checkout-btn" type="button">STORE COMING SOON</button>
+        <button class="metal-btn" id="checkout-btn" type="button">CHECKOUT</button>
       </div>
     </div>
   </div>
@@ -1671,7 +1712,7 @@
   </div>
 
   <script>
-    /* Product data + render (no heart / no favorites) */
+    /* Product data + render */
     (function(){
       const food = [
         { title:"¼ lb MayaNut Powder", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", newest:5, price:0 },
@@ -1691,44 +1732,43 @@
       function cardHTML(p, cat){
         const safeTitle = (p.title || "Product").replace(/"/g,"&quot;");
         const safeImg = (p.img || "").replace(/"/g,"&quot;");
-        const priceTxt = "$0.00";
         return `
           <div class="product-shell">
             <article class="product-card" data-title="${safeTitle}" data-cat="${cat}" data-newest="${p.newest||0}" data-price="${p.price||0}">
               <div class="prod-head">${safeTitle}</div>
-
-              <div class="pimg-shell">
-                <div class="pimg">
-                  <img src="${safeImg}" alt="${safeTitle} (concept)" data-open-modal />
-                </div>
+              <div class="pimg">
+                <img src="${safeImg}" alt="${safeTitle} (concept)" data-open-modal />
+                <button class="fav-btn" type="button" aria-label="Favorite" data-fav>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 21s-7.2-4.6-9.4-8.6C.7 9 .9 5.8 3.4 4.1 5.6 2.6 8.1 3.2 10 5c.8.8 1.3 1.5 2 2.6.7-1.1 1.2-1.8 2-2.6 1.9-1.8 4.4-2.4 6.6-.9 2.5 1.7 2.7 4.9.8 8.3C19.2 16.4 12 21 12 21z"/>
+                  </svg>
+                </button>
               </div>
-
               <div class="pbot">
-                <div class="pbot-inner">
-                  <div class="top-row">
-                    <button class="price-inline" type="button" aria-label="Price">${priceTxt}</button>
-                    <button class="info-btn" type="button" data-info>
-                      INFO
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 18c4-6 8-9 12-9"></path>
-                        <path d="M18 9V5"></path>
-                        <path d="M18 5h-4"></path>
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div class="buy-row">
-                    <button class="addq" type="button" data-action="add">ADD</button>
-                    <div class="cream-divider" aria-hidden="true"></div>
-                    <div class="qty-pack" aria-label="Quantity controls">
+                <div class="pbot-shell">
+                  <div class="pbot-inner">
+                    <div class="qty-row">
                       <div class="pm-box">
-                        <button class="pm-btn" type="button" data-step="+1">+</button>
                         <button class="pm-btn" type="button" data-step="-1">-</button>
+                        <button class="pm-btn" type="button" data-step="+1">+</button>
                       </div>
                       <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity" />
+                      <button class="info-btn" type="button" data-info>
+                        INFO
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <!-- upward curved arrow -->
+                          <path d="M6 18c6-1 9-6 10-11" />
+                          <path d="M14 7h6v6" />
+                          <path d="M20 7l-6 6" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="buy-row">
+                      <button class="addq" type="button" data-action="add">ADD</button>
+                      <div class="cream-divider" aria-hidden="true"></div>
+                      <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
                     </div>
                   </div>
-
                 </div>
               </div>
             </article>
@@ -1827,6 +1867,32 @@
       }
       btns.forEach(b=> b.addEventListener("click", ()=> setActive(b.getAttribute("data-tab"))));
       setActive("food");
+    })();
+
+    /* Favorites */
+    (function(){
+      const KEY = "mayanut_store_favs_simple_v3";
+      const favs = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(KEY)||"[]")); }catch(_){ return new Set(); } })();
+      function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Array.from(favs))); }catch(_){ } }
+      function applyUI(){
+        document.querySelectorAll("[data-fav]").forEach(btn=>{
+          const card = btn.closest(".product-card");
+          const id = card?.getAttribute("data-title") || "";
+          btn.classList.toggle("is-on", favs.has(id));
+        });
+      }
+      document.addEventListener("click", (e)=>{
+        const btn = e.target?.closest?.("[data-fav]");
+        if(!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const card = btn.closest(".product-card");
+        const id = card?.getAttribute("data-title") || "";
+        if(!id) return;
+        favs.has(id) ? favs.delete(id) : favs.add(id);
+        save(); applyUI();
+      });
+      applyUI();
     })();
 
     /* Quantity controls 1..99 */
@@ -1935,7 +2001,11 @@
         });
       });
 
-      document.getElementById("checkout-btn")?.addEventListener("click", ()=> alert("Store is under development."));
+      document.getElementById("checkout-btn")?.addEventListener("click", ()=> {
+        document.body.classList.remove("cart-open");
+        document.body.classList.add("checkout-open");
+      });
+
       renderBadge();
     })();
 
@@ -2052,7 +2122,7 @@
         const byZA = (a,b)=> -byAZ(a,b);
         const byPriceLow = (a,b)=>{
           const A = parseFloat(a.querySelector(".product-card")?.getAttribute("data-price")||"0")||0;
-          const B = parseFloat(a.querySelector(".product-card")?.getAttribute("data-price")||"0")||0;
+          const B = parseFloat(b.querySelector(".product-card")?.getAttribute("data-price")||"0")||0;
           return A-B;
         };
         const byPriceHigh = (a,b)=> -byPriceLow(a,b);

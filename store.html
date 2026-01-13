@@ -43,10 +43,6 @@
       --green:#1a6800;
       --green-deep:#0b3b17;
 
-      /* “thin green lines” become a gradient */
-      --gline: linear-gradient(90deg, #d8ff6a 0%, #7ae78a 45%, #1a6800 100%);
-      --glineSolid: rgba(12, 90, 42, 0.95);
-
       --tan:#f3e6d1;
       --tan-top:#c9a981;
       --tan-top2:#e7d5b6;
@@ -83,7 +79,7 @@
         var(--store-g3) 100%
       );
 
-      /* orange gradient border like index */
+      /* orange border like index */
       --metal-orange: linear-gradient(
         180deg,
         var(--orange-hi) 0%,
@@ -95,15 +91,8 @@
 
       --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
 
-      --title-cream-grad: linear-gradient(
-        180deg,
-        rgba(255,255,197,0.92) 0%,
-        rgba(255,255,197,0.74) 55%,
-        rgba(255,255,197,0.90) 100%
-      );
-
-      /* index paragraph inner background vibe */
-      --para-green-grad: linear-gradient(
+      /* lighter green used inside panels + product action areas */
+      --lite-green: linear-gradient(
         180deg,
         rgba(233,255,214,0.98) 0%,
         rgba(201,245,165,0.92) 55%,
@@ -114,18 +103,12 @@
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --stickyOffset: 170px;
-      --bannerH: 22px;  /* thinner banner */
-      --navH: 66px;     /* slightly taller top tabs area */
+      --bannerH: 22px;
+      --navH: 66px;
 
       --qtyBg:#ffffff;
 
       --a11y-blue:#084ac5;
-
-      --heartHotA:#ff4d6d;
-      --heartHotB:#ff2d55;
-      --heartHotC:#ff00b8;
-
-      --siteSearchW: 280px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -153,11 +136,8 @@
       position:absolute; top:0; bottom:0; width:var(--sideW);
       overflow:hidden; background:#ffffff; pointer-events:none;
     }
-    .side.left{ left:0; border-right: var(--frameBorder) solid transparent; }
-    .side.right{ right:0; border-left: var(--frameBorder) solid transparent; }
-    .side.left, .side.right{
-      border-image: var(--gline) 1;
-    }
+    .side.left{ left:0; border-right: var(--frameBorder) solid rgba(12, 90, 42, 0.95); }
+    .side.right{ right:0; border-left: var(--frameBorder) solid rgba(12, 90, 42, 0.95); }
     .stack{ position:absolute; inset:0; display:flex; flex-direction:column; }
     .stack img{
       width:100%;
@@ -190,11 +170,10 @@
       right: var(--sideW);
       z-index:999;
       background: var(--panel-green-grad);
-      border-left: var(--frameBorder) solid transparent;
-      border-right: var(--frameBorder) solid transparent;
+      border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
+      border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
-      border-image: var(--gline) 1;
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       overflow:hidden;
       transform: translateZ(0);
@@ -242,7 +221,6 @@
       justify-content:center;
       position:relative;
       min-height: var(--navH);
-      border-top: 0;
     }
     .site-header::after{
       content:"";
@@ -264,7 +242,7 @@
       min-height:56px;
     }
 
-    /* HEADER SEARCH (OPEN/CLOSE like index) */
+    /* HEADER SEARCH */
     .nav-search{
       position:absolute;
       left:8px; top:0;
@@ -291,7 +269,6 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-
     .nav-search-box{
       position:absolute;
       left:48px;
@@ -311,7 +288,7 @@
       z-index:1200;
     }
     body.site-search-open .nav-search-box{
-      width: var(--siteSearchW);
+      width: min(320px, 56vw);
       opacity:1;
       pointer-events:auto;
     }
@@ -343,6 +320,7 @@
       stroke-linejoin:round;
     }
 
+    /* NAV PILLS */
     .nav-center{
       display:flex;
       align-items:center;
@@ -404,9 +382,8 @@
 
     /* MAIN */
     main{
-      border-left: var(--frameBorder) solid transparent;
-      border-right: var(--frameBorder) solid transparent;
-      border-image: var(--gline) 1;
+      border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
+      border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
       box-shadow: var(--shadow);
       background: linear-gradient(to bottom, var(--tan-top) 0%, var(--tan-top2) 10%, var(--tan) 22%, var(--tan) 100%);
       min-height: calc(100vh - var(--stickyOffset));
@@ -421,41 +398,32 @@
     /* LAYOUT */
     .store-layout{
       display:grid;
-      grid-template-columns: 250px 1fr; /* narrower sort bar */
+      grid-template-columns: 240px 1fr; /* narrower */
       gap:14px;
       align-items:start;
     }
 
-    /* LEFT: SORT PANEL (sticky; aligned to top of store) */
+    /* LEFT SORT (raised + sticky) */
     .left-shell{
       position: sticky;
-      top: calc(var(--stickyOffset) + 12px);
+      top: calc(var(--stickyOffset) + 6px); /* raised */
       align-self:start;
     }
 
-    /* orange gradient outer border with a green gradient separator */
+    /* orange outline, no green outline */
     .left-outer{
       border-radius:18px;
       background: var(--metal-orange);
       padding:6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
     }
-    .left-sep{
-      border-radius:14px;
-      background: var(--store-green-grad);
-      padding:6px;
-    }
     .left-panel{
-      border-radius:12px;
-      background: var(--para-green-grad);
-      border:2px solid transparent;
-      border-image: var(--gline) 1;
+      border-radius:14px;
+      background: var(--store-green-grad); /* green gradient background only */
       overflow:hidden;
     }
-
-    /* top tab in sort should be ffffc5 */
     .left-head{
-      background: var(--cream);
+      background: var(--cream); /* ffffc5 */
       padding:10px 12px;
       font-family: var(--font-pretty);
       font-style: italic;
@@ -468,7 +436,6 @@
       align-items:center;
       gap:10px;
       border-bottom:2px solid rgba(12,90,42,0.35);
-      position:relative;
     }
     .left-head .line{
       height:2px;
@@ -482,13 +449,18 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      background: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.10);
     }
 
+    /* groups are now: green gradient box around, inner lighter green */
+    .filter-shell{
+      border-radius:16px;
+      background: var(--store-green-grad);
+      padding:6px;
+    }
     .filter-group{
-      border-radius:14px;
-      border:2px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.22);
+      border-radius:12px;
+      background: var(--lite-green);
       padding:10px;
     }
     .filter-title{
@@ -523,7 +495,6 @@
     }
     .filter-item input{ accent-color: #1a6800; }
 
-    /* checkout sticky button under sort groups */
     .side-checkout{
       width:100%;
       border-radius:14px;
@@ -539,39 +510,29 @@
       box-shadow:0 14px 30px rgba(15,23,42,0.12);
     }
 
-    /* RIGHT: STORE SHELL */
+    /* STORE */
     .grid-outer{
       border-radius:18px;
-      background: var(--metal-orange);
+      background: var(--metal-orange); /* orange outline */
       padding:6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
       overflow:hidden;
     }
-    .grid-sep{
-      border-radius:14px;
-      background: var(--store-green-grad);
-      padding:6px;
-    }
     .grid-wrap{
-      border-radius:12px;
-      border:2px solid transparent;
-      border-image: var(--gline) 1;
-      background: var(--store-green-grad);
+      border-radius:14px;
+      background: var(--store-green-grad); /* green gradient background, no green outline */
       overflow:hidden;
     }
 
-    /* GRID HEAD must be ffffc5 */
     .grid-head{
-      background: var(--cream);
+      background: var(--cream); /* ffffc5 */
       padding:10px 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      position:relative;
       border-bottom:2px solid rgba(12,90,42,0.35);
     }
-
     .store-brand{
       display:flex;
       align-items:center;
@@ -580,9 +541,6 @@
     }
     .store-logo{
       width:44px; height:44px;
-      background:none;
-      border:none;
-      box-shadow:none;
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
       flex:0 0 auto;
     }
@@ -598,28 +556,15 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-
-    /* thin line left of store title (not touching things) */
-    .title-left-line{
-      width:24px;
-      height:2px;
-      background: rgba(12,90,42,0.55);
-      border-radius:999px;
-      margin-right:8px;
-      transform: translateY(3px);
-      opacity:.95;
-    }
-
-    /* double-green line treatment -> single gradient line (requested) */
     .title-line{
       flex:1;
       height:2px;
+      background: rgba(12,90,42,0.55);
       border-radius:999px;
       margin-left:12px;
       margin-right:12px;
       max-width: 220px;
-      background: var(--gline);
-      opacity:.95;
+      transform: translateY(2px);
     }
 
     .grid-tools{
@@ -634,7 +579,7 @@
       height:40px;
       border-radius:14px;
       border:2px solid rgba(12,90,42,.55);
-      background: #ffffff; /* white again */
+      background: #ffffff;
       display:flex;
       align-items:center;
       overflow:hidden;
@@ -651,7 +596,7 @@
       user-select:none;
     }
     .store-search .xbtn{
-      background: transparent; /* X not orange */
+      background: transparent;
       border-left:1px solid rgba(12,90,42,.20);
     }
     .store-search .mag svg,
@@ -676,7 +621,6 @@
       min-width:0;
       caret-color: var(--orange);
     }
-    .store-search input::placeholder{ color: rgba(12,90,42,.92); font-weight:950; }
 
     .icon-btn{
       width:42px;height:40px;
@@ -763,7 +707,6 @@
     }
     .mobile-cat-tabs button.is-active{ background: var(--metal-orange); }
 
-    /* Section headings with gradient line */
     .section-label{
       display:flex;
       align-items:center;
@@ -782,34 +725,36 @@
       content:"";
       flex:1;
       height:2px;
+      background: rgba(12,90,42,0.55);
       border-radius:999px;
-      background: var(--gline);
       transform: translateY(2px);
-      opacity:.95;
     }
 
     .section-block{ display:block; }
     .section-block.is-active{ display:block; }
 
-    /* product grid */
     .product-grid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap:12px;
     }
 
-    /* PRODUCT CARD */
-    .product-card{
+    /* product cards: no thin outlines; just green gradient box around with inner lighter green part */
+    .product-shell{
       border-radius:18px;
-      overflow:hidden;
-      background: rgba(255,255,255,0.10);
-      border:2px solid transparent;
-      border-image: var(--gline) 1;
+      background: var(--store-green-grad);
+      padding:6px;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
-      position:relative;
       transition: transform .14s ease;
     }
-    .product-card:hover{ transform: scale(1.02); }
+    .product-shell:hover{ transform: scale(1.02); }
+
+    .product-card{
+      border-radius:14px;
+      overflow:hidden;
+      background: var(--lite-green);
+      position:relative;
+    }
 
     .prod-head{
       background: var(--cream);
@@ -828,7 +773,6 @@
       text-align:center;
     }
 
-    /* image rectangle */
     .pimg{
       position:relative;
       background:#fff;
@@ -842,7 +786,6 @@
       cursor:pointer;
     }
 
-    /* heart upper-right of image */
     .fav-btn{
       position:absolute;
       top:8px;
@@ -873,31 +816,25 @@
       stroke: rgba(12,90,42,0.85);
     }
 
-    /* buy area background: pale green like index paragraph */
+    /* bottom action area: lighter green + green gradient box around, inner lighter green */
     .pbot{
       padding:10px;
-      background: var(--para-green-grad);
+      background: var(--lite-green);
     }
-
-    /* separator outline between orange outer and inner content (gradient green) */
     .pbot-shell{
-      border-radius:14px;
+      border-radius:16px;
       background: var(--store-green-grad);
       padding:6px;
-      border:2px solid transparent;
-      border-image: var(--gline) 1;
     }
     .pbot-inner{
       border-radius:12px;
-      border:2px solid rgba(12,90,42,0.55);
-      background: var(--para-green-grad);
+      background: var(--lite-green);
       padding:10px;
       display:flex;
       flex-direction:column;
       gap:10px;
     }
 
-    /* qty row: plus/minus LEFT of qty number; plus/minus in ONE small box */
     .qty-row{
       display:flex;
       align-items:center;
@@ -949,7 +886,6 @@
     .qty-val::-webkit-outer-spin-button,
     .qty-val::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-    /* INFO button + little cream curved arrow */
     .info-btn{
       margin-left:auto;
       height:26px;
@@ -980,7 +916,6 @@
       stroke-linejoin:round;
     }
 
-    /* add/price */
     .buy-row{
       width:100%;
       display:flex;
@@ -1021,9 +956,8 @@
 
     /* FOOTER */
     footer{
-      border-left: var(--frameBorder) solid transparent;
-      border-right: var(--frameBorder) solid transparent;
-      border-image: var(--gline) 1;
+      border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
+      border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
       background: var(--store-green-grad);
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       border-top: 2px solid var(--green);
@@ -1077,7 +1011,6 @@
     }
     .icon-pill .fill{ fill: var(--cream); stroke:none; }
 
-    /* Share button (bottom left) */
     .share-btn{
       height:36px;
       padding:0 12px;
@@ -1105,7 +1038,7 @@
       stroke-linejoin:round;
     }
 
-    /* ACCESSIBILITY FAB (index-like) */
+    /* ACCESSIBILITY FAB */
     .fab{
       position:fixed;
       z-index:1300;
@@ -1238,7 +1171,6 @@
       white-space:nowrap;
       box-shadow:0 14px 36px rgba(15,23,42,0.12);
     }
-
     .cart-item{
       border-radius:16px;
       border:2px solid rgba(12,90,42,.80);
@@ -1276,8 +1208,6 @@
     }
     .modal-inner{
       border-radius:14px;
-      border:2px solid transparent;
-      border-image: var(--gline) 1;
       background: var(--store-green-grad);
       overflow:hidden;
     }
@@ -1320,7 +1250,7 @@
     .modal-copy{
       border-radius:16px;
       border:2px solid rgba(12,90,42,0.55);
-      background: var(--para-green-grad);
+      background: var(--lite-green);
       padding:12px;
       font-family: var(--font-pretty);
       font-style: italic;
@@ -1329,7 +1259,7 @@
       color:#0b1220;
     }
 
-    /* Checkout overlay: left 2/3 dark, right 1/3 visible */
+    /* Checkout overlay (unchanged) */
     .checkout-overlay{
       position:fixed; inset:0; display:none;
       z-index:1700;
@@ -1360,8 +1290,6 @@
     }
     .checkout-toast-inner{
       border-radius:14px;
-      border:2px solid transparent;
-      border-image: var(--gline) 1;
       background: rgba(255,255,255,0.92);
       overflow:hidden;
     }
@@ -1501,17 +1429,17 @@
       <div class="content-wrapper">
         <div class="store-layout">
 
-          <!-- LEFT SORT (sticky, aligned to top) -->
+          <!-- LEFT SORT -->
           <div class="left-shell" aria-label="Sort column">
             <div class="left-outer">
-              <div class="left-sep">
-                <aside class="left-panel" aria-label="Sort">
-                  <div class="left-head">
-                    <span>SORT</span>
-                    <span class="line" aria-hidden="true"></span>
-                  </div>
+              <aside class="left-panel" aria-label="Sort">
+                <div class="left-head">
+                  <span>SORT</span>
+                  <span class="line" aria-hidden="true"></span>
+                </div>
 
-                  <div class="left-body">
+                <div class="left-body">
+                  <div class="filter-shell">
                     <div class="filter-group" aria-label="Sort options">
                       <div class="filter-title">Order</div>
                       <label class="filter-item"><input type="radio" name="sortmode" value="newest" checked> Newest</label>
@@ -1520,76 +1448,76 @@
                       <label class="filter-item"><input type="radio" name="sortmode" value="price_low"> Price (Low)</label>
                       <label class="filter-item"><input type="radio" name="sortmode" value="price_high"> Price (High)</label>
                     </div>
+                  </div>
 
+                  <div class="filter-shell">
                     <div class="filter-group" aria-label="Stock">
                       <div class="filter-title">Stock</div>
                       <label class="filter-item"><input type="checkbox" id="in-stock-only"> In Stock</label>
                     </div>
-
-                    <button class="side-checkout" type="button" id="side-checkout">CHECKOUT</button>
                   </div>
-                </aside>
-              </div>
+
+                  <button class="side-checkout" type="button" id="side-checkout">CHECKOUT</button>
+                </div>
+              </aside>
             </div>
           </div>
 
           <!-- STORE -->
           <section class="grid-outer" aria-label="Store listings">
-            <div class="grid-sep">
-              <div class="grid-wrap">
+            <div class="grid-wrap">
 
-                <div class="grid-head">
-                  <div class="store-brand" aria-label="Store brand">
-                    <div class="title-left-line" aria-hidden="true"></div>
-                    <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
-                    <div class="grid-title">MayaNut Store</div>
-                    <div class="title-line" aria-hidden="true"></div>
-                  </div>
-
-                  <div class="grid-tools">
-                    <div class="store-search" aria-label="Search products">
-                      <div class="mag" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                          <circle cx="11" cy="11" r="6.5"></circle>
-                          <path d="M16.2 16.2L21 21"></path>
-                        </svg>
-                      </div>
-                      <input id="store-search" type="text" placeholder="Search products…" autocomplete="off" />
-                      <div class="xbtn" id="store-search-clear" aria-label="Clear search">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M6 6l12 12"></path>
-                          <path d="M18 6L6 18"></path>
-                        </svg>
-                      </div>
-                    </div>
-
-                    <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                        <path d="M6 7l-1-3H2.5"></path>
-                        <circle cx="9" cy="19" r="1.6"></circle>
-                        <circle cx="17" cy="19" r="1.6"></circle>
-                      </svg>
-                      <span class="cart-badge" id="cart-badge" aria-hidden="true">0</span>
-                    </button>
-
-                    <button class="checkout-top" id="checkout-top" type="button" aria-label="Checkout">CHECKOUT</button>
-                  </div>
+              <div class="grid-head">
+                <div class="store-brand" aria-label="Store brand">
+                  <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="grid-title">MayaNut Store</div>
+                  <div class="title-line" aria-hidden="true"></div>
                 </div>
 
-                <div class="grid-body">
-                  <!-- mobile category tabs -->
-                  <div class="mobile-cat-tabs" id="mobile-cat-tabs" aria-label="Mobile categories">
-                    <button type="button" class="is-active" data-tab="food">MayaNut Food</button>
-                    <button type="button" data-tab="merch">MayaNut Merch</button>
-                    <button type="button" data-tab="plants">MayaNut Plants</button>
+                <div class="grid-tools">
+                  <div class="store-search" aria-label="Search products">
+                    <div class="mag" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="M16.2 16.2L21 21"></path>
+                      </svg>
+                    </div>
+                    <input id="store-search" type="text" placeholder="Search products…" autocomplete="off" />
+                    <div class="xbtn" id="store-search-clear" aria-label="Clear search">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 6l12 12"></path>
+                        <path d="M18 6L6 18"></path>
+                      </svg>
+                    </div>
                   </div>
 
-                  <!-- FOOD -->
-                  <div class="section-block is-active" data-section="food" id="section-food">
-                    <div class="section-label">MayaNut Food Products</div>
-                    <div class="product-grid" id="grid-food">
+                  <button class="icon-btn" id="cart-btn" type="button" aria-label="Open cart">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                      <path d="M6 7l-1-3H2.5"></path>
+                      <circle cx="9" cy="19" r="1.6"></circle>
+                      <circle cx="17" cy="19" r="1.6"></circle>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge" aria-hidden="true">0</span>
+                  </button>
 
+                  <button class="checkout-top" id="checkout-top" type="button" aria-label="Checkout">CHECKOUT</button>
+                </div>
+              </div>
+
+              <div class="grid-body">
+                <div class="mobile-cat-tabs" id="mobile-cat-tabs" aria-label="Mobile categories">
+                  <button type="button" class="is-active" data-tab="food">MayaNut Food</button>
+                  <button type="button" data-tab="merch">MayaNut Merch</button>
+                  <button type="button" data-tab="plants">MayaNut Plants</button>
+                </div>
+
+                <!-- FOOD -->
+                <div class="section-block is-active" data-section="food" id="section-food">
+                  <div class="section-label">MayaNut Food Products</div>
+                  <div class="product-grid" id="grid-food">
+
+                    <div class="product-shell">
                       <article class="product-card" data-title="¼ lb MayaNut Powder" data-cat="food" data-newest="5" data-price="0">
                         <div class="prod-head">¼ lb MayaNut Powder</div>
                         <div class="pimg">
@@ -1604,11 +1532,11 @@
                           <div class="pbot-shell">
                             <div class="pbot-inner">
                               <div class="qty-row">
-                                <div class="pm-box" aria-label="Increase/decrease">
-                                  <button class="pm-btn" type="button" data-step="+1" aria-label="Increase">+</button>
-                                  <button class="pm-btn" type="button" data-step="-1" aria-label="Decrease">-</button>
+                                <div class="pm-box">
+                                  <button class="pm-btn" type="button" data-step="+1">+</button>
+                                  <button class="pm-btn" type="button" data-step="-1">-</button>
                                 </div>
-                                <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity" />
+                                <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" />
                                 <button class="info-btn" type="button" data-info>
                                   INFO
                                   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1619,14 +1547,16 @@
                               </div>
                               <div class="buy-row">
                                 <button class="addq" type="button" data-action="add">ADD</button>
-                                <div class="cream-divider" aria-hidden="true"></div>
-                                <button class="pricebtn" type="button" aria-label="Price">$0.00</button>
+                                <div class="cream-divider"></div>
+                                <button class="pricebtn" type="button">$0.00</button>
                               </div>
                             </div>
                           </div>
                         </div>
                       </article>
+                    </div>
 
+                    <div class="product-shell">
                       <article class="product-card" data-title="1 lb MayaNut Powder" data-cat="food" data-newest="4" data-price="0">
                         <div class="prod-head">1 lb MayaNut Powder</div>
                         <div class="pimg">
@@ -1641,29 +1571,20 @@
                           <div class="pbot-shell">
                             <div class="pbot-inner">
                               <div class="qty-row">
-                                <div class="pm-box">
-                                  <button class="pm-btn" type="button" data-step="+1">+</button>
-                                  <button class="pm-btn" type="button" data-step="-1">-</button>
-                                </div>
+                                <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
                                 <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" />
-                                <button class="info-btn" type="button" data-info>
-                                  INFO
-                                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M5 19c5-1 9-5 10-10"></path>
-                                    <path d="M12 4h6v6"></path>
-                                  </svg>
+                                <button class="info-btn" type="button" data-info>INFO
+                                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                                 </button>
                               </div>
-                              <div class="buy-row">
-                                <button class="addq" type="button" data-action="add">ADD</button>
-                                <div class="cream-divider"></div>
-                                <button class="pricebtn" type="button">$0.00</button>
-                              </div>
+                              <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                             </div>
                           </div>
                         </div>
                       </article>
+                    </div>
 
+                    <div class="product-shell">
                       <article class="product-card" data-title="Instant MayaNut Pods" data-cat="food" data-newest="3" data-price="0">
                         <div class="prod-head">Instant MayaNut Pods</div>
                         <div class="pimg">
@@ -1678,37 +1599,27 @@
                           <div class="pbot-shell">
                             <div class="pbot-inner">
                               <div class="qty-row">
-                                <div class="pm-box">
-                                  <button class="pm-btn" type="button" data-step="+1">+</button>
-                                  <button class="pm-btn" type="button" data-step="-1">-</button>
-                                </div>
+                                <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
                                 <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" />
-                                <button class="info-btn" type="button" data-info>
-                                  INFO
-                                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M5 19c5-1 9-5 10-10"></path>
-                                    <path d="M12 4h6v6"></path>
-                                  </svg>
+                                <button class="info-btn" type="button" data-info>INFO
+                                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                                 </button>
                               </div>
-                              <div class="buy-row">
-                                <button class="addq" type="button" data-action="add">ADD</button>
-                                <div class="cream-divider"></div>
-                                <button class="pricebtn" type="button">$0.00</button>
-                              </div>
+                              <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                             </div>
                           </div>
                         </div>
                       </article>
-
                     </div>
+
                   </div>
+                </div>
 
-                  <!-- MERCH -->
-                  <div class="section-block" data-section="merch" id="section-merch">
-                    <div class="section-label">MayaNut Merch</div>
-                    <div class="product-grid" id="grid-merch">
-
+                <!-- MERCH -->
+                <div class="section-block" data-section="merch" id="section-merch">
+                  <div class="section-label">MayaNut Merch</div>
+                  <div class="product-grid" id="grid-merch">
+                    <div class="product-shell">
                       <article class="product-card" data-title="MayaNut Hat" data-cat="merch" data-newest="1" data-price="0">
                         <div class="prod-head">MayaNut Hat</div>
                         <div class="pimg">
@@ -1720,7 +1631,7 @@
                         <div class="pbot"><div class="pbot-shell"><div class="pbot-inner">
                           <div class="qty-row">
                             <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
-                            <input class="qty-val" type="number" min="1" max="99" step="1" value="1" />
+                            <input class="qty-val" type="number" min="1" max="99" value="1" />
                             <button class="info-btn" type="button" data-info>INFO
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                             </button>
@@ -1728,7 +1639,9 @@
                           <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                         </div></div></div>
                       </article>
+                    </div>
 
+                    <div class="product-shell">
                       <article class="product-card" data-title="MayaNut Hoodie" data-cat="merch" data-newest="1" data-price="0">
                         <div class="prod-head">MayaNut Hoodie</div>
                         <div class="pimg">
@@ -1740,7 +1653,7 @@
                         <div class="pbot"><div class="pbot-shell"><div class="pbot-inner">
                           <div class="qty-row">
                             <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
-                            <input class="qty-val" type="number" min="1" max="99" step="1" value="1" />
+                            <input class="qty-val" type="number" min="1" max="99" value="1" />
                             <button class="info-btn" type="button" data-info>INFO
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                             </button>
@@ -1748,7 +1661,9 @@
                           <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                         </div></div></div>
                       </article>
+                    </div>
 
+                    <div class="product-shell">
                       <article class="product-card" data-title="MayaNut Shirt" data-cat="merch" data-newest="1" data-price="0">
                         <div class="prod-head">MayaNut Shirt</div>
                         <div class="pimg">
@@ -1760,7 +1675,7 @@
                         <div class="pbot"><div class="pbot-shell"><div class="pbot-inner">
                           <div class="qty-row">
                             <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
-                            <input class="qty-val" type="number" min="1" max="99" step="1" value="1" />
+                            <input class="qty-val" type="number" min="1" max="99" value="1" />
                             <button class="info-btn" type="button" data-info>INFO
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                             </button>
@@ -1768,15 +1683,15 @@
                           <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                         </div></div></div>
                       </article>
-
                     </div>
                   </div>
+                </div>
 
-                  <!-- PLANTS -->
-                  <div class="section-block" data-section="plants" id="section-plants">
-                    <div class="section-label">MayaNut Plants</div>
-                    <div class="product-grid" id="grid-plants">
-
+                <!-- PLANTS -->
+                <div class="section-block" data-section="plants" id="section-plants">
+                  <div class="section-label">MayaNut Plants</div>
+                  <div class="product-grid" id="grid-plants">
+                    <div class="product-shell">
                       <article class="product-card" data-title="Seedling (1 Gallon)" data-cat="plants" data-newest="2" data-price="0">
                         <div class="prod-head">Seedling (1 Gallon)</div>
                         <div class="pimg">
@@ -1788,7 +1703,7 @@
                         <div class="pbot"><div class="pbot-shell"><div class="pbot-inner">
                           <div class="qty-row">
                             <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
-                            <input class="qty-val" type="number" min="1" max="99" step="1" value="1" />
+                            <input class="qty-val" type="number" min="1" max="99" value="1" />
                             <button class="info-btn" type="button" data-info>INFO
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                             </button>
@@ -1796,7 +1711,9 @@
                           <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                         </div></div></div>
                       </article>
+                    </div>
 
+                    <div class="product-shell">
                       <article class="product-card" data-title="Germinated Seeds (Planting)" data-cat="plants" data-newest="1" data-price="0">
                         <div class="prod-head">Germinated Seeds (Planting)</div>
                         <div class="pimg">
@@ -1808,7 +1725,7 @@
                         <div class="pbot"><div class="pbot-shell"><div class="pbot-inner">
                           <div class="qty-row">
                             <div class="pm-box"><button class="pm-btn" type="button" data-step="+1">+</button><button class="pm-btn" type="button" data-step="-1">-</button></div>
-                            <input class="qty-val" type="number" min="1" max="99" step="1" value="1" />
+                            <input class="qty-val" type="number" min="1" max="99" value="1" />
                             <button class="info-btn" type="button" data-info>INFO
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c5-1 9-5 10-10"></path><path d="M12 4h6v6"></path></svg>
                             </button>
@@ -1816,14 +1733,12 @@
                           <div class="buy-row"><button class="addq" type="button" data-action="add">ADD</button><div class="cream-divider"></div><button class="pricebtn" type="button">$0.00</button></div>
                         </div></div></div>
                       </article>
-
                     </div>
                   </div>
-
-                  <div style="height:140px" aria-hidden="true"></div>
                 </div>
-              </div>
 
+                <div style="height:140px" aria-hidden="true"></div>
+              </div>
             </div>
           </section>
         </div>
@@ -1875,7 +1790,7 @@
     </footer>
   </div>
 
-  <!-- ACCESSIBILITY FAB -->
+  <!-- Accessibility FAB -->
   <button class="fab" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5" r="2"></circle>
@@ -1928,7 +1843,7 @@
     </div>
   </div>
 
-  <!-- ACCESSIBILITY OVERLAY (index-like open/close behavior; replace body with your full index drawer if needed) -->
+  <!-- ACCESSIBILITY OVERLAY -->
   <div class="overlay a11y-overlay" id="a11y-overlay" aria-hidden="true" style="z-index:1750;">
     <div class="drawer" role="dialog" aria-modal="true" aria-label="Accessibility">
       <div class="drawer-head">
@@ -1942,7 +1857,7 @@
       </div>
       <div class="drawer-body" style="font-family:var(--font-pretty); font-style:italic; font-weight:850; color:#0b1220;">
         <div style="line-height:1.7">
-          Accessibility is active. Paste your full index accessibility drawer content here if you want the complete controls on this page as well.
+          Accessibility is active. Paste your full index accessibility drawer content here if you want full controls on this page too.
         </div>
       </div>
       <div class="drawer-foot">
@@ -1951,7 +1866,7 @@
     </div>
   </div>
 
-  <!-- CHECKOUT SCREEN (left 2/3 dark, right 1/3 visible) -->
+  <!-- CHECKOUT SCREEN -->
   <div class="checkout-overlay" id="checkout-overlay" aria-hidden="true">
     <div class="checkout-left" id="checkout-left"></div>
     <div class="checkout-right">
@@ -2002,30 +1917,10 @@
         const h = Math.ceil(sticky.getBoundingClientRect().height);
         document.documentElement.style.setProperty("--stickyOffset", (h + 0) + "px");
       }
-      function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
-      function setHeaderSearchWidth(){
-        const btn = document.getElementById("nav-search-btn");
-        const firstTab = document.querySelector(".nav-center a.nav-pill.is-active") || document.querySelector(".nav-center a.nav-pill");
-        if(!btn || !firstTab) return;
-        const sb = btn.getBoundingClientRect();
-        const tb = firstTab.getBoundingClientRect();
-        const gap = tb.left - sb.right;
-        const target = clamp(gap - 10, 160, 360);
-        document.documentElement.style.setProperty("--siteSearchW", target + "px");
-      }
-
-      function onResize(){
-        clearTimeout(window.__st);
-        window.__st = setTimeout(()=>{
-          setStickyOffset();
-          setHeaderSearchWidth();
-        }, 80);
-      }
-
-      window.addEventListener("load", ()=>{ setStickyOffset(); setHeaderSearchWidth(); }, { once:true });
-      window.addEventListener("resize", onResize);
-      window.addEventListener("pageshow", ()=>{ setStickyOffset(); setHeaderSearchWidth(); });
-      document.addEventListener("DOMContentLoaded", ()=>{ setStickyOffset(); setHeaderSearchWidth(); });
+      window.addEventListener("load", setStickyOffset, { once:true });
+      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
+      window.addEventListener("pageshow", setStickyOffset);
+      document.addEventListener("DOMContentLoaded", setStickyOffset);
     })();
 
     /* Header search open/close */
@@ -2085,7 +1980,7 @@
 
     /* Favorites (localStorage) */
     (function(){
-      const KEY = "mayanut_store_favs_v3";
+      const KEY = "mayanut_store_favs_simple_v1";
       const favs = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(KEY)||"[]")); }catch(_){ return new Set(); } })();
       function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Array.from(favs))); }catch(_){ } }
       function applyUI(){
@@ -2109,7 +2004,7 @@
       applyUI();
     })();
 
-    /* Quantity controls: min 1 max 99; plus/minus in one box (press and hold) */
+    /* Quantity controls: min 1 max 99 */
     (function(){
       const clamp = (n)=> Math.max(1, Math.min(99, n));
       const HOLD_DELAY = 280;
@@ -2203,9 +2098,9 @@
 
       document.querySelectorAll("[data-action='add']").forEach(btn=>{
         btn.addEventListener("click", ()=>{
-          const card = btn.closest(".product-card");
-          const title = card?.getAttribute("data-title") || "Item";
-          const qtyEl = card?.querySelector(".qty-val");
+          const shell = btn.closest(".product-card");
+          const title = shell?.getAttribute("data-title") || "Item";
+          const qtyEl = shell?.querySelector(".qty-val");
           const qty = qtyEl ? (parseInt(qtyEl.value,10) || 1) : 1;
 
           const prev = cart.get(title) || 0;
@@ -2219,7 +2114,7 @@
       renderBadge();
     })();
 
-    /* Modal (image click OR INFO click) */
+    /* Modal */
     (function(){
       const overlay = document.getElementById("modal-overlay");
       const close = document.getElementById("modal-close");
@@ -2274,7 +2169,7 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
     })();
 
-    /* Search: filters visible cards */
+    /* Search */
     (function(){
       const input = document.getElementById("store-search");
       const clear = document.getElementById("store-search-clear");
@@ -2286,7 +2181,7 @@
         document.querySelectorAll(".product-card").forEach(card=>{
           const t = normTitle(card.getAttribute("data-title"));
           const hit = !q || t.includes(q);
-          card.style.display = hit ? "" : "none";
+          card.parentElement.style.display = hit ? "" : "none"; /* hide shell */
         });
       }
 
@@ -2307,10 +2202,10 @@
       function mode(){ return (radios.find(r=>r.checked)?.value) || "newest"; }
       function displayName(raw){ return String(raw||"").trim().replace(/^MayaNut\s+/i, "").trim(); }
 
-      function sortCards(container, cmp){
-        const cards = Array.from(container.querySelectorAll(".product-card"));
-        cards.sort(cmp);
-        cards.forEach(c=> container.appendChild(c));
+      function sortShells(container, cmp){
+        const shells = Array.from(container.querySelectorAll(".product-shell"));
+        shells.sort(cmp);
+        shells.forEach(s=> container.appendChild(s));
       }
 
       function applySort(){
@@ -2319,14 +2214,22 @@
         const merch = document.getElementById("grid-merch");
         const plants = document.getElementById("grid-plants");
 
-        const byNewest = (a,b)=> (parseInt(b.getAttribute("data-newest")||"0",10)||0) - (parseInt(a.getAttribute("data-newest")||"0",10)||0);
+        const byNewest = (a,b)=> {
+          const A = parseInt(a.querySelector(".product-card")?.getAttribute("data-newest")||"0",10)||0;
+          const B = parseInt(b.querySelector(".product-card")?.getAttribute("data-newest")||"0",10)||0;
+          return B-A;
+        };
         const byAZ = (a,b)=>{
-          const A = displayName(a.getAttribute("data-title")).toLowerCase();
-          const B = displayName(b.getAttribute("data-title")).toLowerCase();
+          const A = displayName(a.querySelector(".product-card")?.getAttribute("data-title")).toLowerCase();
+          const B = displayName(b.querySelector(".product-card")?.getAttribute("data-title")).toLowerCase();
           if(A < B) return -1; if(A > B) return 1; return 0;
         };
         const byZA = (a,b)=> -byAZ(a,b);
-        const byPriceLow = (a,b)=> (parseFloat(a.getAttribute("data-price")||"0")||0) - (parseFloat(b.getAttribute("data-price")||"0")||0);
+        const byPriceLow = (a,b)=>{
+          const A = parseFloat(a.querySelector(".product-card")?.getAttribute("data-price")||"0")||0;
+          const B = parseFloat(b.querySelector(".product-card")?.getAttribute("data-price")||"0")||0;
+          return A-B;
+        };
         const byPriceHigh = (a,b)=> -byPriceLow(a,b);
 
         const cmp =
@@ -2337,28 +2240,28 @@
           m === "price_high" ? byPriceHigh :
           byNewest;
 
-        if(food) sortCards(food, cmp);
-        if(merch) sortCards(merch, cmp);
-        if(plants) sortCards(plants, cmp);
+        if(food) sortShells(food, cmp);
+        if(merch) sortShells(merch, cmp);
+        if(plants) sortShells(plants, cmp);
       }
 
       radios.forEach(r=> r.addEventListener("change", applySort));
       applySort();
     })();
 
-    /* In-stock filter: none in stock => hide all when checked */
+    /* In-stock filter: none in stock */
     (function(){
       const inStock = document.getElementById("in-stock-only");
       function apply(){
         const on = !!inStock?.checked;
-        document.querySelectorAll(".product-card").forEach(card=>{
-          card.style.display = on ? "none" : "";
+        document.querySelectorAll(".product-shell").forEach(shell=>{
+          shell.style.display = on ? "none" : "";
         });
       }
       inStock?.addEventListener("change", apply);
     })();
 
-    /* Checkout overlays: top + side checkout */
+    /* Checkout overlay */
     (function(){
       const overlay = document.getElementById("checkout-overlay");
       const close = document.getElementById("checkout-close");
@@ -2381,7 +2284,7 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeCheckout(); });
     })();
 
-    /* Share button */
+    /* Share */
     (function(){
       const btn = document.getElementById("share-btn");
       btn?.addEventListener("click", async ()=>{
@@ -2397,13 +2300,11 @@
           }else{
             alert(url);
           }
-        }catch(_){
-          /* user cancelled share */
-        }
+        }catch(_){}
       });
     })();
 
-    /* Accessibility overlay (index-like open/close) */
+    /* Accessibility overlay */
     (function(){
       const btn = document.getElementById("accessibility-btn");
       const overlay = document.getElementById("a11y-overlay");
@@ -2426,5 +2327,40 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeA11y(); });
     })();
   </script>
+
+  <!-- Heart gradient (SVG defs) -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="heartHotFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ff4d6d"></stop>
+        <stop offset="45%" stop-color="#ff2d55"></stop>
+        <stop offset="100%" stop-color="#ff00b8"></stop>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Checkout overlay elements -->
+  <div class="checkout-overlay" id="checkout-overlay" aria-hidden="true">
+    <div class="checkout-left" id="checkout-left"></div>
+    <div class="checkout-right">
+      <div class="checkout-toast">
+        <div class="checkout-toast-inner">
+          <div class="checkout-toast-head">
+            <div class="checkout-toast-title">Checkout</div>
+            <button class="drawer-close" id="checkout-close" type="button" aria-label="Close checkout">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12"></path>
+                <path d="M18 6L6 18"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="checkout-toast-body">
+            Checkout is coming soon. Products on this page are currently conceptual while the store is under development.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

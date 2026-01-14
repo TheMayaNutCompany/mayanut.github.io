@@ -90,7 +90,7 @@
 
       --stickyOffset: 170px;   /* set via JS */
       --filterGap: 10px;       /* set via JS to match initial gap */
-      --bottomGap: 10px;       /* keep same gap at bottom */
+      --bottomGap: 10px;
 
       --bannerH: 24px;
       --navH: 84px;
@@ -101,7 +101,6 @@
       --catTabW: 56px;
 
       --red-grad: linear-gradient(180deg, #ff3b1f 0%, #b5220a 55%, #ff6a3a 100%);
-
       --a11y-blue:#084ac5;
     }
 
@@ -253,12 +252,12 @@
     }
 
     .content-wrapper{
-      padding:10px 18px calc(var(--bottomGap) + 40px); /* ensures bottom breathing room */
+      padding:10px 18px calc(var(--bottomGap) + 40px);
       max-width:1400px;
       margin:0 auto;
     }
 
-    .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:stretch; } /* stretch so left col reaches bottom */
+    .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:stretch; }
 
     /* frames */
     .oframe{ border-radius:18px; background: var(--metal-orange); padding:6px; box-shadow:0 14px 40px rgba(15,23,42,0.12); overflow:hidden; height:100%; }
@@ -266,20 +265,26 @@
       align-self: stretch;
       height: 100%;
       border-radius:18px;
-      background: var(--metal-orange); /* full-height orange column */
+      background: var(--metal-orange);
       padding:6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
       overflow:hidden;
       display:flex;
     }
 
-    /* LEFT FILTER: sticky with constant top gap */
+    /* LEFT FILTER: sticky with constant gap */
     .left-shell{
       position: sticky;
       top: calc(var(--stickyOffset) + var(--filterGap));
       align-self:flex-start;
       width:100%;
+      /* stop before footer with same bottom gap */
+      max-height: calc(100vh - (var(--stickyOffset) + var(--filterGap) + var(--bottomGap)));
+      overflow:auto;
+      scrollbar-width: none;
     }
+    .left-shell::-webkit-scrollbar{ width:0; height:0; }
+
     .left-panel{ border-radius:14px; background: var(--store-panel-bg); overflow:hidden; }
     .left-head{
       background: var(--head-grad);
@@ -363,7 +368,7 @@
 
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; height:100%; }
 
-    /* LEFT TAB: flush with inner orange outline AND touch header (no gap) */
+    /* LEFT TAB: touches header + inner orange outline */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -374,14 +379,46 @@
       justify-content:space-between;
       padding:0;
       margin:0;
-
-      /* pull up into the grid-body top padding so it touches the header */
       margin-top: -10px;
       padding-top: 10px;
     }
-    .cat-btn{ border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:1 1 0; padding:10px 0; user-select:none; -webkit-user-select:none; }
+
+    .cat-btn{
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:1 1 0;
+      padding:10px 0;
+      user-select:none;
+      -webkit-user-select:none;
+    }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
+
+    .cat-stack{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .cat-dot{
+      width:14px;
+      height:14px;
+      border-radius:999px;
+      border:1px solid rgba(12,90,42,0.65);
+      box-shadow:0 10px 18px rgba(15,23,42,0.18);
+      flex:0 0 auto;
+    }
+    .dot-orange{ background: var(--orange); }
+    .dot-white{ background: #ffffff; }
+    .dot-yellow{ background: #ffd400; }
+
     .cat-text{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:2px; font-weight:1000; text-transform:uppercase; letter-spacing:0.02em;
@@ -399,6 +436,17 @@
       flex-direction:column;
       gap:10px;
       padding-left:12px;
+    }
+
+    /* Section separators: full store width (including tab) */
+    .section-sep{
+      height:2px;
+      background: linear-gradient(90deg, #d8ff6a 0%, #0b3b17 100%);
+      border-radius:999px;
+      opacity:.95;
+      margin: 2px 0;
+      width: calc(100% + var(--catTabW));
+      margin-left: calc(-1 * var(--catTabW));
     }
 
     .section-block{ border-radius:18px; background: rgba(255,255,255,0.06); border:2px solid rgba(12,90,42,0.18); padding:8px; box-shadow:0 14px 30px rgba(15,23,42,0.08); }
@@ -423,7 +471,7 @@
       display:flex;
       flex-direction:column;
       gap:6px;
-      justify-content:flex-start; /* avoid extra bottom slack */
+      justify-content:flex-start;
     }
 
     .row1{ display:flex; align-items:center; gap:8px; }
@@ -456,7 +504,7 @@
     .desc-btn:hover{ transform: scale(1.03); }
     .desc-btn svg{ width:16px; height:16px; stroke: var(--limeText); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-    .row2{ display:flex; align-items:center; gap:10px; margin-top:0; }
+    .row2{ display:flex; align-items:center; gap:10px; }
     .addq{
       height:34px; flex:1 1 auto;
       border-radius:14px;
@@ -603,6 +651,7 @@
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
       .cat-tab{ display:none; }
+      .section-sep{ width:100%; margin-left:0; }
       .store-content{ padding-left:0; }
       .footer-wrap{ grid-template-columns:1fr; }
     }
@@ -755,20 +804,35 @@
 
               <div class="grid-body">
                 <div class="store-body-wrap">
+
                   <aside class="cat-tab" aria-label="Categories">
                     <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
-                      <span class="cat-text" aria-hidden="true">
-                        <span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span>
+                      <span class="cat-stack" aria-hidden="true">
+                        <span class="cat-dot dot-orange"></span>
+                        <span class="cat-text">
+                          <span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span>
+                        </span>
+                        <span class="cat-dot dot-orange"></span>
                       </span>
                     </button>
+
                     <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Merch">
-                      <span class="cat-text" aria-hidden="true">
-                        <span>M</span><span>E</span><span>R</span><span>C</span><span>H</span>
+                      <span class="cat-stack" aria-hidden="true">
+                        <span class="cat-dot dot-white"></span>
+                        <span class="cat-text">
+                          <span>M</span><span>E</span><span>R</span><span>C</span><span>H</span>
+                        </span>
+                        <span class="cat-dot dot-white"></span>
                       </span>
                     </button>
+
                     <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Plants">
-                      <span class="cat-text" aria-hidden="true">
-                        <span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span>
+                      <span class="cat-stack" aria-hidden="true">
+                        <span class="cat-dot dot-yellow"></span>
+                        <span class="cat-text">
+                          <span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span>
+                        </span>
+                        <span class="cat-dot dot-yellow"></span>
                       </span>
                     </button>
                   </aside>
@@ -778,14 +842,19 @@
                       <div class="product-grid" id="grid-food"></div>
                     </div>
 
+                    <div class="section-sep" aria-hidden="true"></div>
+
                     <div class="section-block" id="sec-merch" aria-label="Merch products">
                       <div class="product-grid" id="grid-merch"></div>
                     </div>
+
+                    <div class="section-sep" aria-hidden="true"></div>
 
                     <div class="section-block" id="sec-plants" aria-label="Plant products">
                       <div class="product-grid" id="grid-plants"></div>
                     </div>
                   </div>
+
                 </div>
               </div>
 
@@ -871,7 +940,7 @@
     </footer>
   </div>
 
-  <!-- ACCESSIBILITY FAB (visible) -->
+  <!-- ACCESSIBILITY FAB -->
   <button class="fab" id="accessibility-btn" type="button" aria-label="Accessibility menu">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="5" r="2"></circle>

@@ -29,6 +29,7 @@
 
       --green:#1a6800;
       --green-deep:#0b3b17;
+      --green-line: rgba(12, 90, 42, 0.95);
 
       --tan:#f3e6d1;
       --tan-top:#c9a981;
@@ -57,8 +58,6 @@
       );
       --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 60%, #0b3b17 100%);
 
-      --gBorder: linear-gradient(180deg, #0b3b17 0%, #2a8b2f 52%, #d8ff6a 100%);
-
       --metal-orange: linear-gradient(
         180deg,
         var(--orange-hi) 0%,
@@ -69,6 +68,14 @@
       );
 
       --store-panel-bg: radial-gradient(circle at 50% 42%, #0b3b17 0%, #2a8b2f 44%, #d8ff6a 100%);
+
+      /* pale green (index paragraph-style) */
+      --para-green: linear-gradient(
+        180deg,
+        rgba(233,255,214,0.98) 0%,
+        rgba(201,245,165,0.92) 55%,
+        rgba(179,232,135,0.96) 100%
+      );
 
       --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
 
@@ -181,7 +188,7 @@
       position:relative; z-index:1; min-height:56px;
     }
 
-    /* NAV SEARCH (left) */
+    /* NAV SEARCH */
     .nav-search{ position:absolute; left:8px; top:0; height:56px; display:flex; align-items:center; width:42px; z-index:2; }
     .nav-search-btn{
       width:42px; height:40px; border-radius:14px;
@@ -208,31 +215,6 @@
     .nav-search-clear{ width:40px; height:40px; border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; border-left:1px solid rgba(12,90,42,.25); }
     .nav-search-clear svg{ width:18px; height:18px; stroke:#0b1220; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-    /* NAV PILLS */
-    .nav-center{ display:flex; align-items:center; justify-content:center; gap:12px; width:100%; padding-left:66px; padding-right:140px; }
-    .nav-pill{
-      height:40px; padding:0 12px; border-radius:14px;
-      border:1px solid var(--limeText);
-      background: var(--mobile-green-grad);
-      display:inline-flex; align-items:center; justify-content:center;
-      box-shadow:0 10px 22px rgba(15,23,42,0.10);
-      transition: transform .12s ease;
-    }
-    .nav-pill:hover{ transform: translateY(-1px) scale(1.02); }
-    .nav-pill span{ font-size:12px; letter-spacing:0.20em; text-transform:uppercase; font-weight:950; color: var(--limeText); text-shadow:0 1px 0 rgba(0,0,0,0.18); white-space:nowrap; }
-    .nav-pill.is-active{ background: var(--metal-orange); }
-
-    .nav-right{ position:absolute; right:8px; top:0; height:56px; display:flex; align-items:center; justify-content:flex-end; z-index:2; gap:10px; }
-    .lang-pill{
-      height:40px; padding:0 14px; border-radius:14px;
-      border:1px solid var(--limeText);
-      background: var(--mobile-green-grad);
-      color:var(--limeText);
-      font-weight:950; letter-spacing:0.14em; text-transform:uppercase; font-size:12px;
-      box-shadow:0 10px 22px rgba(15,23,42,0.12);
-      display:inline-flex; align-items:center; justify-content:center;
-    }
-
     /* MAIN */
     main{
       border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
@@ -252,7 +234,13 @@
     .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:start; }
 
     /* OUTER STORE */
-    .oframe{ border-radius:18px; background: var(--metal-orange); padding:6px; box-shadow:0 14px 40px rgba(15,23,42,0.12); overflow:hidden; }
+    .oframe{
+      border-radius:18px;
+      background: var(--metal-orange);
+      padding:6px;
+      box-shadow:0 14px 40px rgba(15,23,42,0.12);
+      overflow:hidden;
+    }
 
     /* FILTER: outline only */
     .filter-col{ align-self:start; background: transparent; padding:0; box-shadow:none; }
@@ -288,30 +276,22 @@
       border-bottom:2px solid rgba(12,90,42,0.25);
       min-height:56px;
     }
-    .left-head .line{
-      height:2px;
-      background: linear-gradient(90deg, #d8ff6a 0%, #0b3b17 100%);
-      border-radius:999px;
-      flex:1;
-      transform: translateY(2px);
-      opacity:.95;
-    }
     .left-body{ padding:12px; display:flex; flex-direction:column; gap:10px; background: rgba(255,255,255,0.10); }
 
-    /* FILTER group outline = same green frame */
+    /* CATEGORY/SORT: pale green background and NO green gradient frame */
     .filter-shell{
       border-radius:16px;
-      background: var(--gBorder);
-      padding:6px;
+      background: transparent;
+      padding:0;
     }
     .filter-group{
       border-radius:12px;
-      background: var(--panel-green-grad);
+      background: var(--para-green);
       padding:10px;
-      border:1px solid rgba(216,255,106,0.35);
+      border: 1px solid rgba(12,90,42,0.25);
     }
 
-    /* filter title: badge uses SAME header gradient as store bar */
+    /* filter title: keep tag style, but group background is pale green now */
     .filter-title{
       display:flex;
       align-items:center;
@@ -330,7 +310,7 @@
     .filter-title .ftag{
       display:inline-flex;
       align-items:center;
-      background: var(--head-grad); /* match store top bar */
+      background: var(--head-grad);
       color: var(--limeText);
       border-radius:12px;
       padding:5px 10px;
@@ -352,8 +332,8 @@
       padding:6px 0;
       font-weight:900;
       font-size:12px;
-      color: var(--limeText);
-      text-shadow:0 2px 10px rgba(15,23,42,0.18);
+      color:#0b1220; /* dark text on pale green */
+      text-shadow:none;
     }
     .filter-item input{ accent-color: #1a6800; }
 
@@ -405,11 +385,10 @@
     .checkout-fused svg{ width:18px; height:18px; stroke: var(--limeText); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
     .checkout-fused .txt{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color: var(--limeText); white-space:nowrap; }
 
-    .mobile-filter-btn{ display:none; }
-
     .grid-body{ padding:10px 12px 10px; padding-left:0; flex:1 1 auto; }
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; height:100%; }
 
+    /* LEFT TAB: remove circles (no dots) */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -437,14 +416,6 @@
     }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
-
-    .cat-stack{ height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
-    .cat-dot{ width:14px; height:14px; border-radius:999px; border:1px solid rgba(12,90,42,0.65); box-shadow:0 10px 18px rgba(15,23,42,0.18); }
-    /* UPDATED CIRCLE COLORS */
-    .dot-powder{ background: #ff2d55; }  /* red */
-    .dot-merch{ background: var(--orange); } /* orange */
-    .dot-plants{ background: #1a6800; }  /* green */
-
     .cat-text{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:2px; font-weight:1000; text-transform:uppercase; letter-spacing:0.02em;
@@ -469,17 +440,38 @@
       border-radius:999px;
       opacity:.95;
       margin: 2px 0;
-      /* reach the RIGHT wall fully */
       width: calc(100% + var(--catTabW) + 24px);
       margin-left: calc(-1 * (var(--catTabW) + 12px));
     }
 
-    .section-block{ border-radius:18px; background: rgba(255,255,255,0.06); border:2px solid rgba(12,90,42,0.18); padding:8px; box-shadow:0 14px 30px rgba(15,23,42,0.08); }
+    .section-block{
+      border-radius:18px;
+      background: rgba(255,255,255,0.06);
+      border:2px solid rgba(12,90,42,0.18);
+      padding:8px;
+      box-shadow:0 14px 30px rgba(15,23,42,0.08);
+    }
     .product-grid{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; grid-auto-rows: 1fr; }
 
-    /* product spacing locked */
-    .product-shell{ border-radius:18px; background: var(--metal-orange); padding:6px; box-shadow:0 14px 30px rgba(15,23,42,0.10); min-height: var(--cardMinH); height:100%; }
-    .product-inner{ border-radius:14px; overflow:hidden; background: var(--store-panel-bg); height:100%; display:flex; flex-direction:column; }
+    /* PRODUCT OUTER: remove orange frame; thin dark green outline instead */
+    .product-shell{
+      border-radius:18px;
+      background: transparent;
+      padding:0;
+      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+      min-height: var(--cardMinH);
+      height:100%;
+      border: 1px solid rgba(12,90,42,0.55);
+    }
+
+    .product-inner{
+      border-radius:18px; /* match outer curve */
+      overflow:hidden;
+      background: var(--store-panel-bg);
+      height:100%;
+      display:flex;
+      flex-direction:column;
+    }
 
     .prod-head{
       background: var(--head-grad);
@@ -496,7 +488,13 @@
       flex:0 0 auto;
       min-height:44px;
     }
-    .dot{ width:12px; height:12px; border-radius:999px; border:1px solid rgba(12,90,42,0.55); flex:0 0 auto; }
+    .dot{
+      width:12px; height:12px;
+      border-radius:999px;
+      border:1px solid rgba(12,90,42,0.55);
+      flex:0 0 auto;
+      background: var(--orange);
+    }
     .prod-head .title{
       display:block;
       white-space:nowrap;
@@ -512,33 +510,49 @@
     .pimg{ background:#fff; border-bottom:1px solid rgba(216,255,106,0.75); flex:0 0 auto; }
     .pimg img{ width:100%; height: var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
 
-    .pbot{ padding:8px; flex:1 1 auto; display:flex; align-items:stretch; }
-    .click-frame{ width:100%; border-radius:16px; background: var(--gBorder); padding:6px; display:flex; }
+    .pbot{
+      padding:8px;
+      flex:1 1 auto;
+      display:flex;
+      align-items:stretch;
+      background: transparent;
+    }
+
+    /* REMOVE green gradient frame around action area */
+    .click-frame{
+      width:100%;
+      border-radius:16px;
+      background: transparent;
+      padding:0;
+      display:flex;
+    }
+
+    /* Action area background: pale green (index paragraph background) */
     .click-inner{
       width:100%;
       border-radius:12px;
-      background: var(--store-panel-bg);
-      padding:8px;
+      background: var(--para-green);
+      padding:10px;
       display:flex;
       flex-direction:column;
       gap:6px;
       justify-content:flex-start;
+      border: 1px solid rgba(12,90,42,0.25);
     }
 
     .row1{ display:flex; align-items:center; gap:8px; }
     .price-inline{
       height:28px; display:flex; align-items:center; justify-content:flex-start;
-      color: var(--limeText);
+      color:#0b1220;
       font-weight:1000; letter-spacing:.04em; font-size:13px;
       text-decoration: underline; text-underline-offset:2px;
       white-space:nowrap; padding-left:2px;
-      text-shadow:0 2px 10px rgba(15,23,42,0.25);
+      text-shadow:none;
       flex:1 1 auto;
     }
-    /* INFO button (short) */
     .desc-btn{
       height:28px; padding:0 10px; border-radius:12px;
-      border:2px solid rgba(216,255,106,0.95);
+      border:2px solid rgba(12,90,42,0.55);
       background: var(--red-grad);
       color: var(--limeText);
       font-family: var(--font-pretty);
@@ -557,12 +571,11 @@
     .desc-btn:hover{ transform: scale(1.03); }
 
     .row2{ display:flex; align-items:center; gap:10px; }
-    /* make ADD and QTY equal widths */
     .addq{
       height:34px;
       flex:1 1 0;
       border-radius:14px;
-      border:2px solid rgba(216,255,106,0.95);
+      border:2px solid rgba(12,90,42,0.55);
       background: var(--metal-orange);
       color: var(--limeText);
       font-weight:950;
@@ -578,8 +591,8 @@
       height:34px;
       flex:1 1 0;
       border-radius:14px;
-      border:2px solid rgba(216,255,106,0.95);
-      background: var(--mobile-green-grad);
+      border:2px solid rgba(12,90,42,0.55);
+      background: #ffffff;
       display:flex;
       align-items:stretch;
       overflow:hidden;
@@ -587,23 +600,23 @@
       min-width:110px;
       max-width:160px;
     }
-    .pm-stack{ width:30px; display:flex; flex-direction:column; flex:0 0 30px; }
+    .pm-stack{ width:30px; display:flex; flex-direction:column; flex:0 0 30px; background: #ffffff; }
     .pm-stack button{
       flex:1 1 0;
       border:none; background:transparent;
-      color: var(--limeText);
+      color:#0b1220;
       font-weight:1000; font-size:12px;
       cursor:pointer;
       display:flex; align-items:center; justify-content:center;
       user-select:none; -webkit-user-select:none;
       line-height:1;
     }
-    .pm-stack button + button{ border-top:1px solid rgba(216,255,106,0.40); }
-    .qty-sep{ width:1px; background: rgba(216,255,106,0.55); flex:0 0 1px; }
+    .pm-stack button + button{ border-top:1px solid rgba(12,90,42,0.25); }
+    .qty-sep{ width:1px; background: rgba(12,90,42,0.25); flex:0 0 1px; }
     .qty-number{
       width:100%;
       border:none; outline:none; background:transparent;
-      color: var(--limeText);
+      color:#0b1220;
       font-weight:1000; font-size:12px;
       text-align:center;
       -moz-appearance:textfield;
@@ -611,7 +624,7 @@
     .qty-number::-webkit-outer-spin-button,
     .qty-number::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-    /* FOOTER (bottom tab) */
+    /* FOOTER */
     footer{
       border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
       border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
@@ -643,13 +656,6 @@
     }
     .based-line{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14)); }
-    .footer-links{ display:flex; gap:16px; flex-wrap:wrap; }
-    .footer-links a{
-      font-family: var(--font-pretty); font-style: italic; font-weight: 850;
-      font-size:14px; letter-spacing:0.04em; color:#0b1220;
-      text-decoration:none; border-bottom:1px solid rgba(11,18,32,0.28);
-      padding-bottom:2px; white-space:nowrap;
-    }
 
     .newsletter{ border:none; background: transparent; padding: 6px 0 0; display:flex; flex-direction:column; gap:8px; align-items:flex-start; min-width:0; }
     .nl-title{
@@ -697,7 +703,7 @@
       min-height: 54px;
       display:flex;
       align-items:center;
-      justify-content:flex-start; /* left aligned */
+      justify-content:flex-start;
       gap:10px;
       overflow:hidden;
     }
@@ -720,7 +726,6 @@
       white-space:nowrap;
     }
     .share-btn svg{ width:16px; height:16px; stroke: var(--limeText); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-
     .bottom-icons{ display:flex; align-items:center; gap:10px; flex-wrap:nowrap; }
     .icon-pill{
       width:36px; height:36px;
@@ -778,47 +783,7 @@
       z-index:1;
     }
 
-    /* MOBILE */
-    .mobile-controls{
-      display:none;
-      padding: 10px 12px 0;
-    }
-    .mobile-toprow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .mobile-toprow .store-search{
-      width: 50%;
-      min-width:0;
-      flex:1 1 0;
-    }
-    .mobile-toprow .checkout-fused{
-      width: 50%;
-      min-width:0;
-      flex:1 1 0;
-      justify-content:center;
-    }
-    .mobile-catrow{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
-    }
-    .mcat-btn{
-      flex:1 1 0;
-      height:40px;
-      border-radius:14px;
-      border:1px solid var(--limeText);
-      background: var(--metal-orange);
-      color: var(--limeText);
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:10px;
-      cursor:pointer;
-      box-shadow:0 12px 28px rgba(15,23,42,0.12);
-    }
-
+    /* RESPONSIVE */
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -829,33 +794,17 @@
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
       .cat-tab{ display:none; }
-
-      /* mobile layout changes */
-      .grid-head{ display:none; } /* hide desktop header row */
-      .mobile-controls{ display:block; }
-
-      .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .section-sep{ width:100%; margin-left:0; }
       .store-content{ padding-left:0; }
-
-      /* footer mobile requirements */
       .footer-wrap{ grid-template-columns:1fr; }
-      .newsletter{ order:0; }
-      .footer-left{ order:1; }
-      .footer-lines{ white-space:nowrap; } /* company inc on one line */
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
-
-      /* bottom banner: share + icons left, no email text */
-      .bottom-banner{ justify-content:flex-start; gap:10px; }
-      .fab{ bottom:78px; } /* keep off the left-aligned icons row */
     }
     @media(max-width:780px){
       .side-frames{ display:none !important; }
       .frame-wrap{ width:100% !important; margin:0 !important; }
       .sticky-top{ left:0 !important; right:0 !important; border-left:none !important; border-right:none !important; }
       main,footer{ border-left:none !important; border-right:none !important; }
-      .nav-center{ display:none !important; }
     }
   </style>
 </head>
@@ -956,9 +905,14 @@
           <section class="oframe" aria-label="Store listings">
             <div class="grid-wrap">
 
-              <!-- MOBILE CONTROLS (replaces desktop header on mobile) -->
-              <div class="mobile-controls" id="mobile-controls" aria-label="Mobile store controls">
-                <div class="mobile-toprow">
+              <div class="grid-head">
+                <div class="store-brand" aria-label="Store brand">
+                  <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="grid-title">MayaNut Store</div>
+                  <div class="title-line" aria-hidden="true"></div>
+                </div>
+
+                <div class="grid-tools">
                   <div class="store-search" aria-label="Search products">
                     <div class="mag" aria-hidden="true">
                       <svg viewBox="0 0 24 24">
@@ -986,76 +940,19 @@
                     <div class="txt">CHECKOUT</div>
                   </button>
                 </div>
-
-                <div class="mobile-catrow" aria-label="Mobile categories">
-                  <button class="mcat-btn" type="button" data-mjump="#sec-powder">POWDER</button>
-                  <button class="mcat-btn" type="button" data-mjump="#sec-merch">MERCH</button>
-                  <button class="mcat-btn" type="button" data-mjump="#sec-plants">PLANTS</button>
-                </div>
-              </div>
-
-              <!-- DESKTOP HEADER -->
-              <div class="grid-head" id="desktop-grid-head">
-                <div class="store-brand" aria-label="Store brand">
-                  <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
-                  <div class="grid-title">MayaNut Store</div>
-                  <div class="title-line" aria-hidden="true"></div>
-                </div>
-
-                <div class="grid-tools">
-                  <div class="store-search" aria-label="Search products">
-                    <div class="mag" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="6.5"></circle>
-                        <path d="M16.2 16.2L21 21"></path>
-                      </svg>
-                    </div>
-                    <input id="store-search-desktop" type="text" placeholder="Search MayaNut Products..." autocomplete="off" />
-                    <div class="xbtn" id="store-search-clear-desktop" aria-label="Clear search">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 6l12 12"></path>
-                        <path d="M18 6L6 18"></path>
-                      </svg>
-                    </div>
-                  </div>
-
-                  <button class="checkout-fused" id="checkout-top-desktop" type="button" aria-label="Checkout">
-                    <div class="dust" aria-hidden="true"><span></span><span></span><span></span></div>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                      <path d="M6 7l-1-3H2.5"></path>
-                      <circle cx="9" cy="19" r="1.6"></circle>
-                      <circle cx="17" cy="19" r="1.6"></circle>
-                    </svg>
-                    <div class="txt">CHECKOUT</div>
-                  </button>
-                </div>
               </div>
 
               <div class="grid-body">
                 <div class="store-body-wrap">
-
                   <aside class="cat-tab" aria-label="Categories">
                     <button class="cat-btn is-active" type="button" data-jump="#sec-powder" data-cat="powder" aria-label="Powder">
-                      <span class="cat-stack" aria-hidden="true">
-                        <span class="cat-dot dot-powder"></span>
-                        <span class="cat-text"><span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span></span>
-                        <span class="cat-dot dot-powder"></span>
-                      </span>
+                      <span class="cat-text"><span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span></span>
                     </button>
                     <button class="cat-btn" type="button" data-jump="#sec-merch" data-cat="merch" aria-label="Merch">
-                      <span class="cat-stack" aria-hidden="true">
-                        <span class="cat-dot dot-merch"></span>
-                        <span class="cat-text"><span>M</span><span>E</span><span>R</span><span>C</span><span>H</span></span>
-                        <span class="cat-dot dot-merch"></span>
-                      </span>
+                      <span class="cat-text"><span>M</span><span>E</span><span>R</span><span>C</span><span>H</span></span>
                     </button>
                     <button class="cat-btn" type="button" data-jump="#sec-plants" data-cat="plants" aria-label="Plants">
-                      <span class="cat-stack" aria-hidden="true">
-                        <span class="cat-dot dot-plants"></span>
-                        <span class="cat-text"><span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span></span>
-                        <span class="cat-dot dot-plants"></span>
-                      </span>
+                      <span class="cat-text"><span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span></span>
                     </button>
                   </aside>
 
@@ -1100,11 +997,6 @@
               </div>
               <div>© 2026 The MayaNut Company, Inc.</div>
             </div>
-            <div class="footer-links" aria-label="Terms Privacy Sitemap">
-              <a href="terms.html">Terms</a>
-              <a href="privacy.html">Privacy</a>
-              <a href="sitemap.html">Sitemap</a>
-            </div>
           </div>
         </div>
 
@@ -1118,7 +1010,6 @@
         </div>
       </div>
 
-      <!-- Social icons moved next to share; no info@mayanut.com text -->
       <div class="bottom-banner" aria-label="Bottom banner">
         <button class="share-btn" id="share-btn" type="button" aria-label="Share">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1281,30 +1172,19 @@
       });
     })();
 
-    /* Mobile category buttons scroll */
-    (function(){
-      $$("[data-mjump]").forEach(b=>{
-        b.addEventListener("click", ()=>{
-          const id = b.getAttribute("data-mjump");
-          const el = id ? document.querySelector(id) : null;
-          if(el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-        });
-      });
-    })();
-
     /* Store rendering + filters/sort + search */
     (function(){
       const PRODUCTS = [
-        { id:"powder_qtr",  cat:"powder", title:"¼ lb MayaNut Powder", price:9.95,  dot:"#fd6c02", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", inStock:false },
-        { id:"powder_lb",   cat:"powder", title:"1 lb MayaNut Powder",  price:34.95, dot:"#fd6c02", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", inStock:false },
-        { id:"pods_25",     cat:"powder", title:"MayaNut Instant Pods (25)", price:29.95, dot:"#fd6c02", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", inStock:false },
+        { id:"powder_qtr",  cat:"powder", title:"¼ lb MayaNut Powder", price:9.95,  img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", inStock:false },
+        { id:"powder_lb",   cat:"powder", title:"1 lb MayaNut Powder",  price:34.95, img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", inStock:false },
+        { id:"pods_25",     cat:"powder", title:"MayaNut Instant Pods (25)", price:29.95, img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", inStock:false },
 
-        { id:"hat",         cat:"merch",  title:"MayaNut Hat", price:15.00, dot:"#ffffff", img:"mayanut-merch-hat-brosimum-alicastrum.png", inStock:false },
-        { id:"shirt",       cat:"merch",  title:"MayaNut T-Shirt", price:18.00, dot:"#ffffff", img:"mayanut-merch-shirt-brosimum-alicastrum.png", inStock:false },
-        { id:"hoodie",      cat:"merch",  title:"MayaNut Hoodie", price:30.00, dot:"#ffffff", img:"mayanut-merch-hoodie-brosimum-alicastrum.png", inStock:false },
+        { id:"hat",         cat:"merch",  title:"MayaNut Hat", price:15.00, img:"mayanut-merch-hat-brosimum-alicastrum.png", inStock:false },
+        { id:"shirt",       cat:"merch",  title:"MayaNut T-Shirt", price:18.00, img:"mayanut-merch-shirt-brosimum-alicastrum.png", inStock:false },
+        { id:"hoodie",      cat:"merch",  title:"MayaNut Hoodie", price:30.00, img:"mayanut-merch-hoodie-brosimum-alicastrum.png", inStock:false },
 
-        { id:"seedling_1g", cat:"plants", title:"MayaNut Seedling (1 Gallon)", price:34.95, dot:"#ffd400", img:"maya-nut-mayanut-plant-tree-nursery.jpg", inStock:false },
-        { id:"seeds_10",    cat:"plants", title:"MayaNut Seeds (10 Pack)", price:9.95, dot:"#ffd400", img:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg", inStock:false }
+        { id:"seedling_1g", cat:"plants", title:"MayaNut Seedling (1 Gallon)", price:34.95, img:"maya-nut-mayanut-plant-tree-nursery.jpg", inStock:false },
+        { id:"seeds_10",    cat:"plants", title:"MayaNut Seeds (10 Pack)", price:9.95, img:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg", inStock:false }
       ];
 
       const grids = {
@@ -1321,7 +1201,7 @@
           <div class="product-shell" data-shell data-id="${p.id}" data-cat="${p.cat}" data-title="${p.title}" data-price="${p.price}" data-stock="${p.inStock ? "1":"0"}">
             <article class="product-inner">
               <div class="prod-head">
-                <span class="dot" style="background:${p.dot}"></span>
+                <span class="dot" aria-hidden="true"></span>
                 <span class="title">${p.title}</span>
               </div>
 
@@ -1404,11 +1284,7 @@
 
         $$(".cat-btn").forEach(btn=>{
           const c = btn.getAttribute("data-cat");
-          if(state.cat==="all"){
-            btn.classList.toggle("is-active", c==="powder");
-          }else{
-            btn.classList.toggle("is-active", c===state.cat);
-          }
+          btn.classList.toggle("is-active", state.cat==="all" ? c==="powder" : c===state.cat);
         });
       }
 
@@ -1424,18 +1300,10 @@
       }
 
       function bindSearch(){
-        const sMobile = $("#store-search");
-        const sMobileClear = $("#store-search-clear");
-        const sDesk = $("#store-search-desktop");
-        const sDeskClear = $("#store-search-clear-desktop");
-
-        const bind = (input, clear)=>{
-          input?.addEventListener("input", ()=>{ state.q = input.value; apply(); });
-          clear?.addEventListener("click", ()=>{ if(!input) return; input.value=""; state.q=""; apply(); input.focus(); });
-        };
-
-        bind(sMobile, sMobileClear);
-        bind(sDesk, sDeskClear);
+        const s = $("#store-search");
+        const sc = $("#store-search-clear");
+        s?.addEventListener("input", ()=>{ state.q = s.value; apply(); });
+        sc?.addEventListener("click", ()=>{ if(!s) return; s.value=""; state.q=""; apply(); s.focus(); });
       }
 
       function bindCatTab(){
@@ -1461,7 +1329,7 @@
       bindCatTab();
     })();
 
-    /* Accessibility */
+    /* Accessibility demo */
     (function(){
       $("#accessibility-btn")?.addEventListener("click", ()=> alert("Accessibility controls can be added here."));
     })();

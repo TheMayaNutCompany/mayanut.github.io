@@ -69,7 +69,12 @@
         #0b3b17 100%
       );
 
-      --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 60%, #0b3b17 100%);
+      --head-grad: linear-gradient(
+        180deg,
+        #0b3b17 0%,
+        #1a6800 60%,
+        #0b3b17 100%
+      );
 
       --metal-orange: linear-gradient(
         180deg,
@@ -101,16 +106,15 @@
 
       --a11y-blue:#084ac5;
 
-      /* product sizing (shorter) */
       --cardImgH: 132px;
       --cardMinH: 302px;
 
       /* left vertical tab */
-      --catTabW: 56px; /* same width as grid-head height */
-      --catPad: 6px;
+      --catTabW: 56px; /* same as grid-head min-height */
+      --catPad: 0px;   /* we will center with flex instead */
 
-      --red-outline:#b5220a;
-      --red-grad: linear-gradient(180deg, #ff3b1f 0%, #b5220a 55%, #ff6a3a 100%);
+      /* align cat tab top to bottom of store header */
+      --gridBodyPadTop: 10px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -323,7 +327,7 @@
       stroke-linejoin:round;
     }
 
-    /* NAV PILLS (active store orange, others green) */
+    /* NAV PILLS */
     .nav-center{
       display:flex;
       align-items:center;
@@ -356,6 +360,7 @@
       white-space:nowrap;
     }
     .nav-pill.is-active{ background: var(--metal-orange); }
+
     .nav-right{
       position:absolute;
       right:8px; top:0;
@@ -406,7 +411,6 @@
       align-items:start;
     }
 
-    /* frames */
     .gframe{
       border-radius:18px;
       background: var(--gBorder);
@@ -419,14 +423,16 @@
       padding:6px;
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
     }
-    .inner-red{
-      border-radius:14px;
-      border:1px solid var(--red-outline);
-      overflow:hidden;
-      background: transparent;
+
+    /* LEFT FILTER outer outline orange */
+    .filter-outer{
+      border-radius:18px;
+      background: var(--metal-orange);
+      padding:6px;
+      box-shadow:0 14px 40px rgba(15,23,42,0.12);
     }
 
-    /* LEFT SORT - ensure top aligned */
+    /* LEFT FILTER - sticky at top */
     .left-shell{
       position: sticky;
       top: var(--stickyOffset);
@@ -469,7 +475,6 @@
       background: rgba(255,255,255,0.10);
     }
 
-    /* tighter sort blocks to remove wasted space */
     .filter-shell{
       border-radius:16px;
       background: rgba(255,255,255,0.08);
@@ -527,7 +532,7 @@
       justify-content:space-between;
       gap:10px;
       border-bottom:2px solid rgba(12,90,42,0.25);
-      min-height:56px; /* key: used to match left tab width */
+      min-height:56px;
     }
     .store-brand{
       display:flex;
@@ -561,7 +566,7 @@
       margin-left:12px;
       margin-right:12px;
       flex:1 1 auto;
-      max-width: 260px;
+      max-width: 220px;
       transform: translateY(2px);
       opacity:.95;
     }
@@ -570,32 +575,11 @@
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap:8px; /* tighter to make room for search */
+      gap:8px;
       flex:0 0 auto;
     }
 
-    /* MOBILE SORT BUTTON */
-    .sort-mobile-btn{
-      display:none;
-      width:42px;
-      height:40px;
-      border-radius:14px;
-      border:1px solid var(--limeText);
-      background: var(--metal-orange);
-      box-shadow:0 10px 20px rgba(15,23,42,0.10);
-      cursor:pointer;
-      align-items:center;
-      justify-content:center;
-    }
-    .sort-mobile-btn svg{
-      width:18px;height:18px;
-      stroke: var(--limeText);
-      fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
+    /* Search bar slightly shorter */
     .store-search{
       height:40px;
       border-radius:14px;
@@ -604,9 +588,9 @@
       display:flex;
       align-items:center;
       overflow:hidden;
-      width: min(520px, 44vw); /* bigger */
+      width: min(420px, 34vw);
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
-      min-width: 240px;
+      min-width: 220px;
     }
     .store-search .mag,
     .store-search .xbtn{
@@ -639,30 +623,37 @@
       min-width:0;
       caret-color: var(--orange);
     }
+    .store-search input::placeholder{
+      color: rgba(11,18,32,0.55);
+      font-weight:950;
+    }
 
-    /* Checkout button: metallic orange, tighter (no wasted space) */
+    /* Checkout button (metallic orange) + not cut off */
     .checkout-fused{
       height:40px;
       border-radius:14px;
-      padding:0 10px; /* tighter */
+      padding:0 12px;
       border:1px solid var(--limeText);
-      background: var(--metal-orange); /* changed per request */
+      background: var(--metal-orange);
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:8px; /* tighter */
+      gap:8px;
       cursor:pointer;
       box-shadow:0 14px 30px rgba(15,23,42,0.12);
       user-select:none;
       -webkit-user-select:none;
       flex:0 0 auto;
-      min-width: 140px; /* smaller */
+      min-width: 150px;
     }
+
+    /* dust lines: flat side on RIGHT */
     .checkout-fused .dust{
       display:flex;
       flex-direction:column;
       gap:3px;
       margin-right:-4px;
+      align-items:flex-start; /* left aligned so flat ends at right */
     }
     .checkout-fused .dust span{
       display:block;
@@ -695,7 +686,7 @@
 
     .grid-body{ padding:10px 12px 10px; }
 
-    /* store body: remove extra space; left tab flush/connected */
+    /* LEFT CATEGORY TAB: align to left & up, bottom aligned with store header bottom */
     .store-body-wrap{
       display:flex;
       align-items:stretch;
@@ -703,7 +694,6 @@
       margin:0;
     }
 
-    /* LEFT CATEGORY TAB: aligned left & up; no gap to top inside store */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -713,12 +703,11 @@
       flex-direction:column;
       align-items:stretch;
       justify-content:space-between;
-      padding: var(--catPad) 0;
+      padding:0;
       margin:0;
-      /* make it touch the header: pull up exactly the grid-body top padding */
-      margin-top: -10px;
-      padding-top: calc(var(--catPad) + 10px);
-      border-top: 1px solid rgba(12,90,42,0.25);
+      /* EXACT: start at grid-body top (which is directly below header) */
+      margin-top: calc(-1 * var(--gridBodyPadTop));
+      padding-top: var(--gridBodyPadTop);
     }
 
     .cat-btn{
@@ -728,14 +717,15 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:6px 0;
+      padding:10px 0; /* gives vertical centering space */
       user-select:none;
       -webkit-user-select:none;
+      flex:1 1 0; /* each takes equal height */
     }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
 
-    /* bigger stacked letters without widening tab */
+    /* bigger and vertically centered in their third */
     .cat-text{
       display:flex;
       flex-direction:column;
@@ -749,16 +739,16 @@
       -webkit-text-stroke: 1px rgba(12, 90, 42, 0.95);
       text-shadow: 0 2px 10px rgba(15,23,42,0.25);
       line-height:1;
-      font-size:18px;
+      font-size:22px; /* bigger */
       width:100%;
     }
     .cat-text span{ display:block; }
 
     @media(min-width: 981px){
-      .cat-text{ font-size:20px; }
+      .cat-text{ font-size:24px; }
     }
     @media(min-width: 1200px){
-      .cat-text{ font-size:22px; }
+      .cat-text{ font-size:26px; }
     }
 
     .store-content{
@@ -766,7 +756,7 @@
       min-width:0;
       display:flex;
       flex-direction:column;
-      gap:10px; /* tighter to remove wasted space */
+      gap:10px;
       padding-left:12px;
     }
 
@@ -774,18 +764,18 @@
       border-radius:18px;
       background: rgba(255,255,255,0.06);
       border:2px solid rgba(12,90,42,0.18);
-      padding:8px; /* less */
+      padding:8px;
       box-shadow:0 14px 30px rgba(15,23,42,0.08);
     }
 
     .product-grid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:10px; /* tighter */
+      gap:10px;
       grid-auto-rows: 1fr;
     }
 
-    /* PRODUCT (single orange outline + inner red outline) */
+    /* PRODUCT (single orange outline only) */
     .product-shell{
       border-radius:18px;
       background: var(--metal-orange);
@@ -799,7 +789,8 @@
 
     .product-inner{
       border-radius:14px;
-      border:1px solid var(--red-outline);
+      /* removed thin red outline */
+      border:none;
       overflow:hidden;
       background: var(--store-panel-bg);
       height:100%;
@@ -859,7 +850,6 @@
       display:flex;
     }
 
-    /* single click area (no extra space) */
     .click-frame{
       width:100%;
       border-radius:16px;
@@ -996,7 +986,7 @@
       white-space:nowrap;
     }
 
-    /* FOOTER (restored) */
+    /* FOOTER */
     footer{
       border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
       border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
@@ -1152,120 +1142,6 @@
       stroke-linejoin:round;
     }
 
-    /* ACCESSIBILITY FAB */
-    .fab{
-      position:fixed;
-      z-index:1300;
-      width:52px;
-      height:52px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.35);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 10px 25px rgba(15,23,42,0.35);
-      user-select:none;
-      -webkit-user-select:none;
-      overflow:hidden;
-      right:14px;
-      bottom:14px;
-      background: var(--a11y-blue);
-    }
-    .fab::before{
-      content:"";
-      position:absolute;
-      inset:7px;
-      border-radius:999px;
-      border:2px solid rgba(255,255,255,0.95);
-      opacity:.75;
-      pointer-events:none;
-    }
-    .fab svg{
-      width:28px;
-      height:28px;
-      fill:none;
-      stroke:#ffffff;
-      stroke-width:2.1;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      position:relative;
-      z-index:1;
-    }
-
-    /* OVERLAYS */
-    .overlay{
-      position:fixed; inset:0; display:none;
-      background: rgba(0,0,0,0.26);
-      backdrop-filter: blur(6px);
-      padding:18px;
-      overflow:auto;
-      z-index:1450;
-    }
-    body.a11y-open .a11y-overlay{ display:block; }
-
-    .drawer{
-      max-width: 560px;
-      margin-left:auto;
-      height: calc(100vh - 36px);
-      border-radius:18px;
-      border:2px solid rgba(12,90,42,0.85);
-      background: rgba(255,255,255,0.94);
-      box-shadow:0 18px 60px rgba(15,23,42,0.35);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .drawer-head{
-      padding:14px 14px 10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom:2px solid rgba(12,90,42,.55);
-      background: rgba(255,255,255,0.60);
-    }
-    .drawer-title{
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-    }
-    .drawer-close{
-      width:40px;height:40px;
-      border-radius:14px;
-      border:1px solid var(--limeText);
-      background: var(--metal-orange);
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;
-    }
-    .drawer-close svg{
-      width:18px;height:18px;
-      stroke:var(--limeText);
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-    .drawer-body{
-      padding:12px 14px 14px;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .drawer-foot{
-      margin-top:auto;
-      padding:12px 14px 14px;
-      border-top:2px solid rgba(12,90,42,.35);
-      background: rgba(255,255,255,0.60);
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-end;
-    }
-
     /* RESPONSIVE */
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1345,136 +1221,132 @@
       <div class="content-wrapper">
         <div class="store-layout">
 
-          <!-- LEFT SORT -->
-          <div class="left-shell" aria-label="Sort column">
-            <div class="gframe">
-              <div class="inner-red">
-                <aside class="left-panel" aria-label="Sort">
-                  <div class="left-head">
-                    <span>ORDER</span>
-                    <span class="line" aria-hidden="true"></span>
+          <!-- LEFT FILTER -->
+          <div class="left-shell" aria-label="Filter column">
+            <div class="filter-outer">
+              <aside class="left-panel" aria-label="Filter">
+                <div class="left-head">
+                  <span>FILTER</span>
+                  <span class="line" aria-hidden="true"></span>
+                </div>
+
+                <div class="left-body">
+                  <div class="filter-shell">
+                    <div class="filter-group" aria-label="Category filter">
+                      <div class="filter-title">Category</div>
+                      <label class="filter-item"><input type="radio" name="catmode" value="all" checked> All</label>
+                      <label class="filter-item"><input type="radio" name="catmode" value="powder"> Powder</label>
+                      <label class="filter-item"><input type="radio" name="catmode" value="merch"> Merch</label>
+                      <label class="filter-item"><input type="radio" name="catmode" value="plants"> Plants</label>
+                    </div>
                   </div>
 
-                  <div class="left-body">
-                    <div class="filter-shell">
-                      <div class="filter-group" aria-label="Category filter">
-                        <div class="filter-title">Category</div>
-                        <label class="filter-item"><input type="radio" name="catmode" value="all" checked> All</label>
-                        <label class="filter-item"><input type="radio" name="catmode" value="powder"> Powder</label>
-                        <label class="filter-item"><input type="radio" name="catmode" value="merch"> Merch</label>
-                        <label class="filter-item"><input type="radio" name="catmode" value="plants"> Plants</label>
-                      </div>
+                  <div class="filter-shell">
+                    <div class="filter-group" aria-label="Sort options">
+                      <div class="filter-title">Sort</div>
+                      <label class="filter-item"><input type="radio" name="sortmode" value="newest" checked> Newest</label>
+                      <label class="filter-item"><input type="radio" name="sortmode" value="az"> A → Z</label>
+                      <label class="filter-item"><input type="radio" name="sortmode" value="za"> Z → A</label>
+                      <label class="filter-item"><input type="radio" name="sortmode" value="price_low"> Price (Low)</label>
+                      <label class="filter-item"><input type="radio" name="sortmode" value="price_high"> Price (High)</label>
+
+                      <div style="height:8px" aria-hidden="true"></div>
+
+                      <label class="filter-item"><input type="checkbox" id="in-stock-only"> In Stock</label>
                     </div>
-
-                    <div class="filter-shell">
-                      <div class="filter-group" aria-label="Sort options">
-                        <div class="filter-title">Sort</div>
-                        <label class="filter-item"><input type="radio" name="sortmode" value="newest" checked> Newest</label>
-                        <label class="filter-item"><input type="radio" name="sortmode" value="az"> A → Z</label>
-                        <label class="filter-item"><input type="radio" name="sortmode" value="za"> Z → A</label>
-                        <label class="filter-item"><input type="radio" name="sortmode" value="price_low"> Price (Low)</label>
-                        <label class="filter-item"><input type="radio" name="sortmode" value="price_high"> Price (High)</label>
-
-                        <div style="height:8px" aria-hidden="true"></div>
-
-                        <label class="filter-item"><input type="checkbox" id="in-stock-only"> In Stock</label>
-                      </div>
-                    </div>
-
-                    <button class="checkout-fused" type="button" id="side-checkout" aria-label="Checkout">
-                      <div class="dust" aria-hidden="true">
-                        <span></span><span></span><span></span>
-                      </div>
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                        <path d="M6 7l-1-3H2.5"></path>
-                        <circle cx="9" cy="19" r="1.6"></circle>
-                        <circle cx="17" cy="19" r="1.6"></circle>
-                      </svg>
-                      <div class="txt">CHECKOUT</div>
-                    </button>
                   </div>
-                </aside>
-              </div>
+
+                  <button class="checkout-fused" type="button" id="side-checkout" aria-label="Checkout">
+                    <div class="dust" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                      <path d="M6 7l-1-3H2.5"></path>
+                      <circle cx="9" cy="19" r="1.6"></circle>
+                      <circle cx="17" cy="19" r="1.6"></circle>
+                    </svg>
+                    <div class="txt">CHECKOUT</div>
+                  </button>
+                </div>
+              </aside>
             </div>
           </div>
 
           <!-- STORE -->
           <section class="oframe" aria-label="Store listings">
-            <div class="inner-red">
-              <div class="grid-wrap">
+            <div class="grid-wrap">
 
-                <div class="grid-head">
-                  <div class="store-brand" aria-label="Store brand">
-                    <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
-                    <div class="grid-title">MayaNut Store</div>
-                    <div class="title-line" aria-hidden="true"></div>
-                  </div>
-
-                  <div class="grid-tools">
-                    <div class="store-search" aria-label="Search products">
-                      <div class="mag" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                          <circle cx="11" cy="11" r="6.5"></circle>
-                          <path d="M16.2 16.2L21 21"></path>
-                        </svg>
-                      </div>
-                      <input id="store-search" type="text" placeholder="Search MayaNut powder, merch, plants…" autocomplete="off" />
-                      <div class="xbtn" id="store-search-clear" aria-label="Clear search">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M6 6l12 12"></path>
-                          <path d="M18 6L6 18"></path>
-                        </svg>
-                      </div>
-                    </div>
-
-                    <button class="checkout-fused" id="checkout-top" type="button" aria-label="Checkout">
-                      <div class="dust" aria-hidden="true">
-                        <span></span><span></span><span></span>
-                      </div>
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                        <path d="M6 7l-1-3H2.5"></path>
-                        <circle cx="9" cy="19" r="1.6"></circle>
-                        <circle cx="17" cy="19" r="1.6"></circle>
-                      </svg>
-                      <div class="txt">CHECKOUT</div>
-                    </button>
-                  </div>
+              <div class="grid-head">
+                <div class="store-brand" aria-label="Store brand">
+                  <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="grid-title">MayaNut Store</div>
+                  <div class="title-line" aria-hidden="true"></div>
                 </div>
 
-                <div class="grid-body">
-                  <div class="store-body-wrap">
-                    <aside class="cat-tab" aria-label="Categories">
-                      <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
-                        <span class="cat-text" aria-hidden="true">
-                          <span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span>
-                        </span>
-                      </button>
-                      <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Merch">
-                        <span class="cat-text" aria-hidden="true">
-                          <span>M</span><span>E</span><span>R</span><span>C</span><span>H</span>
-                        </span>
-                      </button>
-                      <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Plants">
-                        <span class="cat-text" aria-hidden="true">
-                          <span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span>
-                        </span>
-                      </button>
-                    </aside>
+                <div class="grid-tools">
+                  <div class="store-search" aria-label="Search products">
+                    <div class="mag" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="M16.2 16.2L21 21"></path>
+                      </svg>
+                    </div>
+                    <input id="store-search" type="text" placeholder="Search MayaNut Products..." autocomplete="off" />
+                    <div class="xbtn" id="store-search-clear" aria-label="Clear search">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 6l12 12"></path>
+                        <path d="M18 6L6 18"></path>
+                      </svg>
+                    </div>
+                  </div>
 
-                    <div class="store-content">
-                      <div class="section-block" id="sec-powder" aria-label="Powder products">
-                        <div class="product-grid" id="grid-food"></div>
-                      </div>
+                  <button class="checkout-fused" id="checkout-top" type="button" aria-label="Checkout">
+                    <div class="dust" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                      <path d="M6 7l-1-3H2.5"></path>
+                      <circle cx="9" cy="19" r="1.6"></circle>
+                      <circle cx="17" cy="19" r="1.6"></circle>
+                    </svg>
+                    <div class="txt">CHECKOUT</div>
+                  </button>
+                </div>
+              </div>
 
-                      <div class="section-block" id="sec-merch" aria-label="Merch products">
-                        <div class="product-grid" id="grid-merch"></div>
-                      </div>
+              <div class="grid-body">
+                <div class="store-body-wrap">
+                  <aside class="cat-tab" aria-label="Categories">
+                    <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
+                      <span class="cat-text" aria-hidden="true">
+                        <span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span>
+                      </span>
+                    </button>
+                    <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Merch">
+                      <span class="cat-text" aria-hidden="true">
+                        <span>M</span><span>E</span><span>R</span><span>C</span><span>H</span>
+                      </span>
+                    </button>
+                    <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Plants">
+                      <span class="cat-text" aria-hidden="true">
+                        <span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span>
+                      </span>
+                    </button>
+                  </aside>
 
-                      <div class="section-block" id="sec-plants" aria-label="Plant products">
-                        <div class="product-grid" id="grid-plants"></div>
-                      </div>
+                  <div class="store-content">
+                    <div class="section-block" id="sec-powder" aria-label="Powder products">
+                      <div class="product-grid" id="grid-food"></div>
+                    </div>
+
+                    <div class="section-block" id="sec-merch" aria-label="Merch products">
+                      <div class="product-grid" id="grid-merch"></div>
+                    </div>
+
+                    <div class="section-block" id="sec-plants" aria-label="Plant products">
+                      <div class="product-grid" id="grid-plants"></div>
                     </div>
                   </div>
                 </div>
@@ -1581,7 +1453,7 @@
       for(let i=0;i<count;i++){ L.appendChild(makeImg()); R.appendChild(makeImg()); }
     })();
 
-    /* Sticky offset (keeps sort at top) */
+    /* Sticky offset */
     (function(){
       function setStickyOffset(){
         const sticky = document.getElementById("sticky-top");
@@ -1593,38 +1465,6 @@
       window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
       window.addEventListener("pageshow", setStickyOffset);
       document.addEventListener("DOMContentLoaded", setStickyOffset);
-    })();
-
-    /* Header search open/close */
-    (function(){
-      const btn = document.getElementById("nav-search-btn");
-      const box = document.getElementById("nav-search-box");
-      const input = document.getElementById("site-search");
-      const clear = document.getElementById("site-search-clear");
-
-      function open(){
-        document.body.classList.add("site-search-open");
-        box?.setAttribute("aria-hidden","false");
-        input?.focus();
-      }
-      function close(){
-        document.body.classList.remove("site-search-open");
-        box?.setAttribute("aria-hidden","true");
-      }
-
-      btn?.addEventListener("click", ()=> {
-        if(document.body.classList.contains("site-search-open")) close();
-        else open();
-      });
-
-      clear?.addEventListener("click", ()=>{ if(input){ input.value=""; input.focus(); } });
-
-      document.addEventListener("click",(e)=>{
-        const t = e.target;
-        const within = (t && (btn?.contains(t) || box?.contains(t)));
-        if(!within) close();
-      });
-      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") close(); });
     })();
 
     /* Product data + render */
@@ -1648,7 +1488,7 @@
         const dot = DOT_COLOR[p.dot] || "#fd6c02";
         return `
           <div class="product-shell" data-shell data-id="${p.id}" data-newest="${p.newest||0}" data-price="${p.price||0}" data-cat="${p.cat}">
-            <article class="product-inner" data-id="${p.id}">
+            <article class="product-inner">
               <div class="prod-head">
                 <span class="dot" style="background:${dot}"></span>
                 <span class="title">${p.title}</span>
@@ -1663,11 +1503,11 @@
                   <div class="click-inner">
                     <div class="topline">
                       <div class="pm-box">
-                        <button class="pm-btn pm-plus" type="button" aria-label="Increase">+</button>
-                        <button class="pm-btn pm-minus" type="button" aria-label="Decrease">-</button>
+                        <button class="pm-btn pm-plus" type="button">+</button>
+                        <button class="pm-btn pm-minus" type="button">-</button>
                       </div>
-                      <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity" />
-                      <button class="desc-btn" type="button" aria-label="Description">
+                      <input class="qty-val" type="number" min="1" max="99" step="1" value="1" />
+                      <button class="desc-btn" type="button">
                         DESCRIPTION
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                           <path d="M4 18c7-1 12-6 13-13"></path>
@@ -1688,12 +1528,9 @@
         `;
       }
 
-      const gridFood = document.getElementById("grid-food");
-      const gridMerch = document.getElementById("grid-merch");
-      const gridPlants = document.getElementById("grid-plants");
-      if(gridFood)  gridFood.innerHTML  = PRODUCTS.filter(p=>p.cat==="powder").map(cardHTML).join("");
-      if(gridMerch) gridMerch.innerHTML = PRODUCTS.filter(p=>p.cat==="merch").map(cardHTML).join("");
-      if(gridPlants)gridPlants.innerHTML= PRODUCTS.filter(p=>p.cat==="plants").map(cardHTML).join("");
+      document.getElementById("grid-food").innerHTML   = PRODUCTS.filter(p=>p.cat==="powder").map(cardHTML).join("");
+      document.getElementById("grid-merch").innerHTML  = PRODUCTS.filter(p=>p.cat==="merch").map(cardHTML).join("");
+      document.getElementById("grid-plants").innerHTML = PRODUCTS.filter(p=>p.cat==="plants").map(cardHTML).join("");
 
       /* qty controls */
       const clamp = (n)=> Math.max(1, Math.min(99, n));
@@ -1703,10 +1540,8 @@
         const plus = shell.querySelector(".pm-plus");
         const minus = shell.querySelector(".pm-minus");
         if(!qty || !plus || !minus) return;
-
         setQty(qty, qty.value);
         qty.addEventListener("input", ()=> setQty(qty, qty.value));
-        qty.addEventListener("blur", ()=> setQty(qty, qty.value));
         plus.addEventListener("click", ()=> setQty(qty, (parseInt(qty.value,10)||1)+1));
         minus.addEventListener("click", ()=> setQty(qty, (parseInt(qty.value,10)||1)-1));
       });
@@ -1720,8 +1555,7 @@
         document.querySelectorAll("[data-shell]").forEach(shell=>{
           const id = shell.getAttribute("data-id");
           const p = PRODUCTS.find(x=>x.id===id);
-          const hit = !q || norm(p?.title).includes(q);
-          shell.style.display = hit ? "" : "none";
+          shell.style.display = (!q || norm(p?.title).includes(q)) ? "" : "none";
         });
       }
       sInput?.addEventListener("input", applySearch);

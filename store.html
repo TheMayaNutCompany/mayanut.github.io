@@ -90,6 +90,8 @@
 
       --stickyOffset: 170px;   /* set via JS */
       --filterGap: 10px;       /* set via JS to match initial gap */
+      --bottomGap: 10px;       /* keep same gap at bottom */
+
       --bannerH: 24px;
       --navH: 84px;
 
@@ -99,6 +101,8 @@
       --catTabW: 56px;
 
       --red-grad: linear-gradient(180deg, #ff3b1f 0%, #b5220a 55%, #ff6a3a 100%);
+
+      --a11y-blue:#084ac5;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -248,19 +252,33 @@
       overflow: visible;
     }
 
-    .content-wrapper{ padding:10px 18px 10px; max-width:1400px; margin:0 auto; }
-    .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:start; }
+    .content-wrapper{
+      padding:10px 18px calc(var(--bottomGap) + 40px); /* ensures bottom breathing room */
+      max-width:1400px;
+      margin:0 auto;
+    }
+
+    .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:stretch; } /* stretch so left col reaches bottom */
 
     /* frames */
-    .oframe{ border-radius:18px; background: var(--metal-orange); padding:6px; box-shadow:0 14px 40px rgba(15,23,42,0.12); overflow:hidden; }
-    .filter-outer{ border-radius:18px; background: var(--metal-orange); padding:6px; box-shadow:0 14px 40px rgba(15,23,42,0.12); }
+    .oframe{ border-radius:18px; background: var(--metal-orange); padding:6px; box-shadow:0 14px 40px rgba(15,23,42,0.12); overflow:hidden; height:100%; }
+    .filter-col{
+      align-self: stretch;
+      height: 100%;
+      border-radius:18px;
+      background: var(--metal-orange); /* full-height orange column */
+      padding:6px;
+      box-shadow:0 14px 40px rgba(15,23,42,0.12);
+      overflow:hidden;
+      display:flex;
+    }
 
-    /* LEFT FILTER: maintain constant gap from header while sticky */
+    /* LEFT FILTER: sticky with constant top gap */
     .left-shell{
       position: sticky;
       top: calc(var(--stickyOffset) + var(--filterGap));
-      align-self:start;
-      margin:0;
+      align-self:flex-start;
+      width:100%;
     }
     .left-panel{ border-radius:14px; background: var(--store-panel-bg); overflow:hidden; }
     .left-head{
@@ -287,13 +305,14 @@
     .filter-item input{ accent-color: #1a6800; }
 
     /* STORE */
-    .grid-wrap{ border-radius:14px; background: var(--store-panel-bg); overflow:hidden; }
+    .grid-wrap{ border-radius:14px; background: var(--store-panel-bg); overflow:hidden; height:100%; display:flex; flex-direction:column; }
     .grid-head{
       background: var(--head-grad);
       padding:10px 12px;
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       border-bottom:2px solid rgba(12,90,42,0.25);
       min-height:56px;
+      flex:0 0 auto;
     }
     .store-brand{ display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; }
     .store-logo{ width:44px; height:44px; filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18)); flex:0 0 auto; }
@@ -335,11 +354,16 @@
     .checkout-fused .txt{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color: var(--limeText); white-space:nowrap; }
 
     /* IMPORTANT: remove left padding so the tab touches inner orange outline */
-    .grid-body{ padding:10px 12px 10px; padding-left:0; }
+    .grid-body{
+      padding:10px 12px 10px;
+      padding-left:0;
+      flex:1 1 auto;
+      display:block;
+    }
 
-    .store-body-wrap{ display:flex; align-items:stretch; gap:0; }
+    .store-body-wrap{ display:flex; align-items:stretch; gap:0; height:100%; }
 
-    /* LEFT TAB: no gap to inner orange outline */
+    /* LEFT TAB: flush with inner orange outline AND touch header (no gap) */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -350,6 +374,10 @@
       justify-content:space-between;
       padding:0;
       margin:0;
+
+      /* pull up into the grid-body top padding so it touches the header */
+      margin-top: -10px;
+      padding-top: 10px;
     }
     .cat-btn{ border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:1 1 0; padding:10px 0; user-select:none; -webkit-user-select:none; }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
@@ -364,7 +392,14 @@
     }
     .cat-text span{ display:block; }
 
-    .store-content{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:10px; padding-left:12px; }
+    .store-content{
+      flex:1 1 auto;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding-left:12px;
+    }
 
     .section-block{ border-radius:18px; background: rgba(255,255,255,0.06); border:2px solid rgba(12,90,42,0.18); padding:8px; box-shadow:0 14px 30px rgba(15,23,42,0.08); }
     .product-grid{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; grid-auto-rows: 1fr; }
@@ -380,7 +415,16 @@
 
     .pbot{ padding:8px; flex:1 1 auto; display:flex; }
     .click-frame{ width:100%; border-radius:16px; background: var(--gBorder); padding:6px; display:flex; }
-    .click-inner{ width:100%; border-radius:12px; background: var(--store-panel-bg); padding:8px; display:flex; flex-direction:column; gap:6px; }
+    .click-inner{
+      width:100%;
+      border-radius:12px;
+      background: var(--store-panel-bg);
+      padding:8px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      justify-content:flex-start; /* avoid extra bottom slack */
+    }
 
     .row1{ display:flex; align-items:center; gap:8px; }
     .price-inline{
@@ -412,7 +456,7 @@
     .desc-btn:hover{ transform: scale(1.03); }
     .desc-btn svg{ width:16px; height:16px; stroke: var(--limeText); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-    .row2{ display:flex; align-items:center; gap:10px; }
+    .row2{ display:flex; align-items:center; gap:10px; margin-top:0; }
     .addq{
       height:34px; flex:1 1 auto;
       border-radius:14px;
@@ -508,14 +552,56 @@
     .share-btn{ height:36px; padding:0 12px; border-radius:14px; border:1px solid var(--limeText); background: var(--metal-orange); color: var(--limeText); font-weight:950; letter-spacing:.10em; text-transform:uppercase; font-size:10px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; box-shadow:0 12px 28px rgba(15,23,42,0.12); white-space:nowrap; }
     .share-btn svg{ width:16px; height:16px; stroke: var(--limeText); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 
-    @media(max-width:1100px){ .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    /* Accessibility FAB */
+    .fab{
+      position:fixed;
+      z-index:1300;
+      width:52px;
+      height:52px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 10px 25px rgba(15,23,42,0.35);
+      user-select:none;
+      -webkit-user-select:none;
+      overflow:hidden;
+      right:14px;
+      bottom:14px;
+      background: var(--a11y-blue);
+    }
+    .fab::before{
+      content:"";
+      position:absolute;
+      inset:7px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,0.95);
+      opacity:.75;
+      pointer-events:none;
+    }
+    .fab svg{
+      width:28px;
+      height:28px;
+      fill:none;
+      stroke:#ffffff;
+      stroke-width:2.1;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      position:relative;
+      z-index:1;
+    }
+
+    @media(max-width:1100px){
+      .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
     @media(max-width:980px){
       :root{ --sideW: 120px; }
       .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
       .sticky-top{ left: var(--sideW); right: var(--sideW); }
       .store-layout{ grid-template-columns: 1fr; }
-      .left-shell{ position:relative; top:auto; }
-      .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-col{ display:none; }
       .cat-tab{ display:none; }
       .store-content{ padding-left:0; }
       .footer-wrap{ grid-template-columns:1fr; }
@@ -585,8 +671,9 @@
       <div class="content-wrapper">
         <div class="store-layout">
 
-          <div class="left-shell" aria-label="Filter column">
-            <div class="filter-outer">
+          <!-- FULL-HEIGHT LEFT COLUMN -->
+          <div class="filter-col" aria-label="Filter column background">
+            <div class="left-shell" aria-label="Filter sticky">
               <aside class="left-panel" aria-label="Filter">
                 <div class="left-head">
                   <span>FILTER</span>
@@ -623,8 +710,10 @@
             </div>
           </div>
 
+          <!-- STORE -->
           <section class="oframe" aria-label="Store listings">
             <div class="grid-wrap">
+
               <div class="grid-head">
                 <div class="store-brand" aria-label="Store brand">
                   <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
@@ -699,6 +788,7 @@
                   </div>
                 </div>
               </div>
+
             </div>
           </section>
 
@@ -781,6 +871,17 @@
     </footer>
   </div>
 
+  <!-- ACCESSIBILITY FAB (visible) -->
+  <button class="fab" id="accessibility-btn" type="button" aria-label="Accessibility menu">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="5" r="2"></circle>
+      <path d="M4 8h16"></path>
+      <path d="M9 8c1.1 2.2 2.5 3.2 3 3.2s1.9-1 3-3.2"></path>
+      <path d="M10.2 11.2l-1.8 9.3"></path>
+      <path d="M13.8 11.2l1.8 9.3"></path>
+    </svg>
+  </button>
+
   <script>
     /* Side frame images */
     (function(){
@@ -815,8 +916,10 @@
         const sticky = document.getElementById("sticky-top");
         const left = document.querySelector(".left-shell");
         if(!sticky || !left) return;
+
         const gap = Math.max(0, Math.round(left.getBoundingClientRect().top - sticky.getBoundingClientRect().bottom));
         document.documentElement.style.setProperty("--filterGap", gap + "px");
+        document.documentElement.style.setProperty("--bottomGap", gap + "px");
       }
 
       function run(){
@@ -973,35 +1076,9 @@
       });
     })();
 
-    /* Share */
+    /* Accessibility button demo */
     (function(){
-      const btn = document.getElementById("share-btn");
-      btn?.addEventListener("click", async ()=>{
-        const url = window.location.href;
-        const title = document.title;
-        const text = "MayaNut Store | The MayaNut Company";
-        try{
-          if(navigator.share){
-            await navigator.share({ title, text, url });
-          }else if(navigator.clipboard){
-            await navigator.clipboard.writeText(url);
-            alert("Link copied to clipboard.");
-          }else{
-            alert(url);
-          }
-        }catch(_){}
-      });
-    })();
-
-    /* Newsletter demo */
-    (function(){
-      document.getElementById("newsletter-form")?.addEventListener("submit",(e)=>{
-        e.preventDefault();
-        const email = document.getElementById("newsletter-email")?.value?.trim() || "";
-        if(!email) return;
-        alert("Subscribed (demo).");
-        document.getElementById("newsletter-email").value = "";
-      });
+      document.getElementById("accessibility-btn")?.addEventListener("click", ()=> alert("Accessibility controls can be added here."));
     })();
   </script>
 </body>

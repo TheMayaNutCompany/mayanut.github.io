@@ -97,7 +97,7 @@
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      --stickyOffset: 170px;
+      --stickyOffset: 170px; /* recalculated by JS */
       --bannerH: 23px;
       --navH: 66px;
 
@@ -105,9 +105,9 @@
 
       --a11y-blue:#084ac5;
 
-      --storeTopH: 54px;
       --sideRailW: 92px;
       --sortW: 210px;
+      --storeTopH: 54px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -346,7 +346,7 @@
       margin:0 auto;
     }
 
-    /* LAYOUT: left rail + sort + store */
+    /* LAYOUT: rail + sort + store */
     .store-layout{
       display:grid;
       grid-template-columns: var(--sideRailW) var(--sortW) 1fr;
@@ -354,10 +354,10 @@
       align-items:start;
     }
 
-    /* LEFT SIDE TAB (like top tab but vertical) */
+    /* LEFT SIDE TAB */
     .side-rail{
       position: sticky;
-      top: var(--stickyOffset); /* aligned with store top */
+      top: var(--stickyOffset);
       align-self:start;
       border-radius:18px;
       background: var(--metal-orange);
@@ -382,7 +382,7 @@
       letter-spacing:.12em;
       text-transform:uppercase;
       font-size:12px;
-      color:#ffffc5;
+      color: var(--cream);
       text-align:center;
       margin-bottom:2px;
     }
@@ -408,10 +408,10 @@
       -webkit-user-select:none;
     }
     .rail-btn:hover{ transform: translateY(-1px); }
-    .rail-btn.is-active .rail-letter{ color: var(--orange-hi); -webkit-text-stroke-color: rgba(12,90,42,0.95); }
+    .rail-btn.is-active .rail-letter{ color: var(--orange-hi); }
     .rail-letter{
       font-weight:1000;
-      font-size:22px; /* bigger */
+      font-size:22px;
       line-height:1;
       color: var(--orange);
       -webkit-text-stroke: 1.15px rgba(12,90,42,0.90);
@@ -428,10 +428,10 @@
       opacity:.85;
     }
 
-    /* LEFT SORT */
+    /* SORT (aligned with store top + sticky follows scroll) */
     .left-shell{
       position: sticky;
-      top: var(--stickyOffset); /* aligned with store top */
+      top: var(--stickyOffset);
       align-self:start;
     }
     .left-outer{
@@ -454,7 +454,7 @@
       letter-spacing:.14em;
       text-transform:uppercase;
       font-size:13px;
-      color: #ffffc5;
+      color: var(--cream);
       display:flex;
       align-items:center;
       gap:10px;
@@ -485,7 +485,7 @@
       border-radius:14px;
       border:2px solid var(--orange);
       background: var(--metal-orange);
-      color: #ffffc5;
+      color: var(--cream);
       font-weight:950;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -505,25 +505,24 @@
     }
     .grid-wrap{ border-radius:14px; background: var(--store-bg-h); overflow:hidden; }
 
-    /* STORE TOP BAR: everything on one line */
+    /* STORE TOP: logo + text + line + search + cart + checkout (no cutoffs) */
     .grid-head{
       background: var(--head-grad);
       padding:10px 12px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
       border-bottom:2px solid rgba(12,90,42,0.25);
-      flex-wrap:nowrap;
       min-height: var(--storeTopH);
+      flex-wrap:nowrap;
     }
-
     .store-left{
       display:flex;
       align-items:center;
       gap:10px;
-      min-width: 320px;
-      flex:0 0 auto;
+      min-width: 0;
+      flex:1 1 auto;
+      overflow:hidden;
     }
     .store-logo{
       width:44px; height:44px;
@@ -537,29 +536,22 @@
       letter-spacing:.10em;
       text-transform:uppercase;
       font-size:16px;
-      color: #ffffc5;
+      color: var(--cream);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      max-width: 260px;
+      flex:0 1 auto;
     }
-    /* line to the left of text, and extends halfway into right area */
-    .store-left-line{
-      width: 140px;
-      height:2px;
-      border-radius:999px;
-      background: var(--line-grad);
-      opacity:.95;
-      transform: translateY(2px);
-      flex:0 0 auto;
-    }
-    .store-mid-line{
-      flex: 1 1 auto;
+    .title-line{
+      flex:1 1 auto;
       height:2px;
       border-radius:999px;
       background: var(--line-grad);
       opacity:.92;
-      margin-left: 8px;
-      margin-right: 8px;
+      margin-left: 10px;
+      margin-right: 10px;
+      min-width: 30px;
       transform: translateY(2px);
     }
 
@@ -578,7 +570,8 @@
       display:flex;
       align-items:center;
       overflow:hidden;
-      width: 420px;
+      width: min(420px, 34vw);
+      min-width: 180px;
       box-shadow:0 10px 20px rgba(15,23,42,0.10);
     }
     .store-search .mag,.store-search .xbtn{
@@ -610,6 +603,7 @@
       min-width:0;
       caret-color: var(--orange);
     }
+
     .icon-btn{
       width:42px;height:40px;
       border-radius:14px;
@@ -656,7 +650,7 @@
       border-radius:14px;
       border:2px solid var(--orange);
       background: var(--metal-orange);
-      color: #ffffc5;
+      color: var(--cream);
       font-weight:950;
       letter-spacing:.10em;
       text-transform:uppercase;
@@ -667,11 +661,35 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      flex:0 0 auto;
     }
 
     .grid-body{ padding:12px; }
 
-    /* product grid */
+    /* SECTION HEADERS (merged back into store content) */
+    .section-label{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin: 10px 2px 12px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:14px;
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    }
+    .section-label::after{
+      content:"";
+      flex:1;
+      height:2px;
+      background: var(--line-grad);
+      border-radius:999px;
+      transform: translateY(2px);
+    }
+
     .product-grid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -705,7 +723,7 @@
       letter-spacing:.10em;
       text-transform:uppercase;
       font-size:12px;
-      color: #ffffc5;
+      color: var(--cream);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -753,6 +771,7 @@
       -webkit-user-select:none;
     }
     .pm-btn + .pm-btn{ border-top:1px solid rgba(12,90,42,0.25); }
+
     .qty-val{
       width:56px; height:26px;
       border-radius:10px;
@@ -1076,8 +1095,6 @@
       z-index:1450;
     }
     body.cart-open .cart-overlay{ display:block; }
-    body.modal-open .modal-overlay{ display:block; }
-    body.a11y-open .a11y-overlay{ display:block; }
     body.checkout-open .checkout-overlay{ display:block; }
 
     .drawer{
@@ -1208,7 +1225,7 @@
       letter-spacing:.10em;
       text-transform:uppercase;
       font-size:12px;
-      color: #ffffc5;
+      color: var(--cream);
       white-space:nowrap;
     }
     .checkout-toast-body{
@@ -1224,7 +1241,7 @@
     @media(max-width:1100px){
       :root{ --sideRailW: 80px; --sortW: 200px; }
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .store-search{ width: min(360px, 44vw); }
+      .store-search{ width: min(360px, 38vw); }
     }
     @media(max-width:980px){
       :root{ --sideW: 120px; }
@@ -1233,6 +1250,8 @@
 
       .store-layout{ grid-template-columns: 1fr; }
       .side-rail, .left-shell{ position:relative; top:auto; }
+
+      .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .store-search{ width: min(360px, 60vw); }
 
       .footer-wrap{ grid-template-columns:1fr; }
@@ -1376,14 +1395,12 @@
           <!-- STORE -->
           <section class="grid-outer" aria-label="Store listings">
             <div class="grid-wrap">
-              <div class="grid-head">
+              <div class="grid-head" id="store-topbar">
                 <div class="store-left">
-                  <div class="store-left-line" aria-hidden="true"></div>
                   <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
                   <div class="grid-title">MayaNut Store</div>
+                  <div class="title-line" aria-hidden="true"></div>
                 </div>
-
-                <div class="store-mid-line" aria-hidden="true"></div>
 
                 <div class="grid-tools">
                   <div class="store-search" aria-label="Search products">
@@ -1417,9 +1434,23 @@
               </div>
 
               <div class="grid-body">
-                <div class="product-grid" id="grid-food"></div>
-                <div class="product-grid" id="grid-merch" style="margin-top:14px;"></div>
-                <div class="product-grid" id="grid-plants" style="margin-top:14px;"></div>
+
+                <div id="section-powder">
+                  <div class="section-label">Powder</div>
+                  <div class="product-grid" id="grid-food"></div>
+                </div>
+
+                <div id="section-merch" style="margin-top:14px;">
+                  <div class="section-label">Merch</div>
+                  <div class="product-grid" id="grid-merch"></div>
+                </div>
+
+                <div id="section-plants" style="margin-top:14px;">
+                  <div class="section-label">Plants</div>
+                  <div class="product-grid" id="grid-plants"></div>
+                </div>
+
+                <div style="height:140px" aria-hidden="true"></div>
               </div>
             </div>
           </section>
@@ -1610,7 +1641,7 @@
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") close(); });
     })();
 
-    /* Product render */
+    /* Render products */
     (function(){
       const food = [
         { title:"¼ lb MayaNut Powder", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png" },
@@ -1628,7 +1659,6 @@
       ];
 
       function infoArrowSVG(){
-        /* Upward curved arrow */
         return `
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M5 18c5.5-1.2 9.5-5.6 11-12"></path>
@@ -1645,7 +1675,7 @@
             <article class="product-card" data-title="${t}">
               <div class="prod-head">${t}</div>
               <div class="pimg">
-                <img src="${img}" alt="${t} (concept)" data-open-modal />
+                <img src="${img}" alt="${t} (concept)" />
               </div>
               <div class="pbot">
                 <div class="pbot-shell">
@@ -1679,23 +1709,24 @@
       document.getElementById("grid-plants").innerHTML = plants.map(cardHTML).join("");
     })();
 
-    /* Rail switching (Powder/Merch/Plants) */
+    /* Rail buttons scroll (does not hide merch/plants) */
     (function(){
       const railBtns = Array.from(document.querySelectorAll(".rail-btn[data-rail]"));
-      const grids = {
-        powder: document.getElementById("grid-food"),
-        merch: document.getElementById("grid-merch"),
-        plants: document.getElementById("grid-plants"),
-      };
-      function show(key){
+      function setActive(key){
         railBtns.forEach(b=> b.classList.toggle("is-active", b.getAttribute("data-rail") === key));
-        Object.entries(grids).forEach(([k, el])=>{
-          if(!el) return;
-          el.style.display = (k === key) ? "" : "none";
-        });
       }
-      railBtns.forEach(b=> b.addEventListener("click", ()=> show(b.getAttribute("data-rail"))));
-      show("powder");
+      function scrollToId(id){
+        document.getElementById(id)?.scrollIntoView({ behavior:"smooth", block:"start" });
+      }
+      railBtns.forEach(b=>{
+        b.addEventListener("click", ()=>{
+          const k = b.getAttribute("data-rail");
+          if(k === "powder"){ setActive("powder"); scrollToId("section-powder"); }
+          if(k === "merch"){ setActive("merch"); scrollToId("section-merch"); }
+          if(k === "plants"){ setActive("plants"); scrollToId("section-plants"); }
+        });
+      });
+      setActive("powder");
     })();
 
     /* Quantity controls 1..99 */
@@ -1837,14 +1868,8 @@
       const close = document.getElementById("checkout-close");
       const left = document.getElementById("checkout-left");
 
-      function openCheckout(){
-        document.body.classList.add("checkout-open");
-        overlay?.setAttribute("aria-hidden","false");
-      }
-      function closeCheckout(){
-        document.body.classList.remove("checkout-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
+      function openCheckout(){ document.body.classList.add("checkout-open"); overlay?.setAttribute("aria-hidden","false"); }
+      function closeCheckout(){ document.body.classList.remove("checkout-open"); overlay?.setAttribute("aria-hidden","true"); }
 
       document.getElementById("checkout-top")?.addEventListener("click", openCheckout);
       document.getElementById("side-checkout")?.addEventListener("click", openCheckout);
@@ -1882,12 +1907,10 @@
       });
     })();
 
-    /* Accessibility overlay (simple) */
+    /* Accessibility */
     (function(){
-      const btn = document.getElementById("accessibility-btn");
-      btn?.addEventListener("click", ()=> alert("Accessibility menu is available on the index page layout."));
+      document.getElementById("accessibility-btn")?.addEventListener("click", ()=> alert("Accessibility menu is available on the index page layout."));
     })();
   </script>
-
 </body>
 </html>

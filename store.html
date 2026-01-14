@@ -43,7 +43,7 @@
       --sideW: 170px;
       --frameBorder: 2px;
 
-      /* dark green slight gradient */
+      /* “dark green slight gradient” */
       --dark-tab-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 55%, #0b3b17 100%);
 
       /* top sticky bar */
@@ -56,10 +56,10 @@
         #0b3b17 100%
       );
 
-      /* lime -> dark green (requested for sort/store backgrounds + outlines) */
+      /* lime -> dark green (for sort/store backgrounds + outlines) */
       --lime-dark-grad: linear-gradient(180deg, #d8ff6a 0%, #2a8b2f 45%, #0b3b17 100%);
 
-      /* orange metal (used for per-product outline) */
+      /* orange outline (single ring) */
       --metal-orange: linear-gradient(
         180deg,
         var(--orange-hi) 0%,
@@ -71,16 +71,13 @@
 
       --line-grad: linear-gradient(90deg, #d8ff6a 0%, #0b3b17 100%);
 
-      /* paragraph green background */
+      /* paragraph background green */
       --para-green-bg: linear-gradient(
         180deg,
         rgba(233,255,214,0.98) 0%,
         rgba(201,245,165,0.92) 55%,
         rgba(179,232,135,0.96) 100%
       );
-
-      /* clickables outline gradient (lime -> dark) */
-      --clickable-outline: linear-gradient(180deg, #d8ff6a 0%, #2a8b2f 55%, #0b3b17 100%);
 
       --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
 
@@ -96,10 +93,13 @@
       --cardMinH: 308px;
       --btnH: 34px;
 
-      /* padding thicknesses */
-      --outerPad: 6px;         /* outer outlines */
-      --productPad: 6px;       /* orange product outline */
-      --clickablePad: 3px;     /* outline around clickables block */
+      /* thicknesses */
+      --outerPad: 6px;         /* orange outline thickness */
+      --productPad: 6px;       /* orange per-product outline thickness */
+      --clickablePad: 3px;     /* lime->dark outline around clickables */
+
+      /* left tab width = store header height vibe (matches ~grid-head height visually) */
+      --catTabW: 64px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -246,30 +246,21 @@
       min-height: calc(100vh - var(--stickyOffset));
       overflow:hidden;
     }
+    .content-wrapper{ padding: 0 18px 0; max-width:1400px; margin:0 auto; }
 
-    .content-wrapper{
-      padding: 0 18px 0;
-      max-width:1400px;
-      margin:0 auto;
-    }
-    .store-layout{
-      display:grid;
-      grid-template-columns: 220px 1fr;
-      gap:14px;
-      align-items:start;
-    }
+    .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:14px; align-items:start; }
 
-    /* SORT: outer outline lime->dark, inner panel background lime->dark */
+    /* SORT: single outline (lime->dark), no orange here */
     .left-shell{ position: sticky; top: var(--stickyOffset); align-self:start; }
     .left-outer{
       border-radius:18px;
-      background: var(--lime-dark-grad); /* lime->dark outline */
+      background: var(--lime-dark-grad);
       padding: var(--outerPad);
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
     }
     .left-panel{
       border-radius:14px;
-      background: var(--lime-dark-grad); /* background back to lime->dark */
+      background: var(--lime-dark-grad);
       overflow:hidden;
     }
     .left-head{
@@ -301,10 +292,10 @@
     .filter-item{ display:flex; align-items:center; gap:10px; padding:6px 0; font-weight:900; font-size:12px; color:#0b1220; }
     .filter-item input{ accent-color: #1a6800; }
 
-    /* STORE: background lime->dark */
+    /* STORE: background lime->dark, keep outer outline lime->dark (NOT orange) */
     .grid-outer{
       border-radius:18px;
-      background: var(--lime-dark-grad); /* outer store outline lime->dark */
+      background: var(--lime-dark-grad);
       padding: var(--outerPad);
       box-shadow:0 14px 40px rgba(15,23,42,0.12);
       overflow:hidden;
@@ -312,7 +303,7 @@
     .grid-wrap{
       border-radius:14px;
       overflow:hidden;
-      background: var(--lime-dark-grad); /* store background back to lime->dark */
+      background: var(--lime-dark-grad);
     }
     .grid-head{
       background: var(--dark-tab-grad);
@@ -329,7 +320,7 @@
     .grid-title{
       font-family: var(--font-pretty); font-style: italic; font-weight: 900;
       letter-spacing:.12em; text-transform:uppercase; font-size:16px; color: var(--lime);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 320px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px;
       text-shadow:0 1px 0 rgba(0,0,0,0.22);
     }
     .title-line{ height:2px; background: var(--line-grad); border-radius:999px; margin-left:12px; margin-right:12px; flex:1 1 auto; max-width:260px; transform: translateY(2px); opacity:.95; }
@@ -356,18 +347,13 @@
       overflow:hidden;
     }
     .cart-left{ display:flex; align-items:center; gap:2px; }
-    .dust{
-      display:flex; flex-direction:column; gap:3px;
-      align-items:flex-end; justify-content:center;
-      width:14px; flex:0 0 14px; margin-right:2px;
-    }
+    .dust{ display:flex; flex-direction:column; gap:3px; align-items:flex-end; justify-content:center; width:14px; flex:0 0 14px; margin-right:2px; }
     .dust i{ display:block; height:2px; border-radius:999px; background: var(--lime); filter: drop-shadow(0 2px 4px rgba(15,23,42,0.18)); }
     .dust i:nth-child(1){ width:7px; opacity:.80; }
     .dust i:nth-child(2){ width:14px; opacity:.95; }
     .dust i:nth-child(3){ width:10px; opacity:.88; }
     .cart-btn{ width:42px; height:40px; border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; }
     .cart-btn svg{ width:18px; height:18px; stroke: var(--lime); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .cart-badge{ display:none !important; }
     .checkout-btn{
       height:40px; padding:0 12px; border-radius:12px;
       border:2px solid rgba(216,255,106,0.75);
@@ -384,14 +370,15 @@
     .grid-body{ padding:0; }
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; }
 
+    /* left tab width == top tab height vibe */
     .cat-tab{
-      width: 86px;
+      width: var(--catTabW);
       background: var(--dark-tab-grad);
       border-right:2px solid rgba(12,90,42,0.25);
       display:grid;
       grid-template-rows: 1fr 1fr 1fr;
       padding:0;
-      flex:0 0 86px;
+      flex:0 0 var(--catTabW);
     }
     .cat-btn{ border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: background .12s ease; user-select:none; -webkit-user-select:none; }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
@@ -407,16 +394,10 @@
       letter-spacing:.06em;
       line-height:1;
     }
-    .cat-text span{ display:block; font-size:30px; line-height:1; }
+    .cat-text span{ display:block; font-size:28px; line-height:1; }
 
-    .store-content{
-      flex:1 1 auto; min-width:0;
-      display:flex; flex-direction:column;
-      gap:10px;
-      padding:10px;
-    }
+    .store-content{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:10px; padding:10px; }
 
-    /* remove orange border from whole section-block; keep subtle */
     .section-block{
       border-radius:18px;
       background: rgba(255,255,255,0.06);
@@ -432,7 +413,7 @@
       grid-auto-rows: 1fr;
     }
 
-    /* INDIVIDUAL PRODUCT ORANGE OUTLINE */
+    /* PER-PRODUCT SINGLE ORANGE OUTLINE (not doubled) */
     .product-shell{
       border-radius:18px;
       background: var(--metal-orange);
@@ -441,7 +422,6 @@
       min-height: var(--cardMinH);
       height:100%;
     }
-
     .product-mid{
       border-radius:14px;
       background: rgba(0,0,0,0.08);
@@ -457,6 +437,7 @@
       flex-direction:column;
     }
 
+    /* Underline product title */
     .prod-head{
       background: var(--dark-tab-grad);
       border-bottom:2px solid rgba(12,90,42,0.25);
@@ -492,12 +473,12 @@
     .pimg{ background:#fff; border-bottom:2px solid rgba(12,90,42,0.20); flex:0 0 auto; }
     .pimg img{ width:100%; height:var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
 
-    /* clickables outline rectangle: lime->dark */
+    /* rectangle outline around clickables: lime->dark gradient */
     .pbot{ padding:8px; background: transparent; flex:1 1 auto; display:flex; }
     .pbot-outline{
       width:100%;
       border-radius:14px;
-      background: var(--clickable-outline); /* outline gradient */
+      background: var(--lime-dark-grad);
       padding: var(--clickablePad);
       box-shadow:0 10px 22px rgba(15,23,42,0.10);
     }
@@ -515,10 +496,11 @@
     .top-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:0; }
     .price-text{ font-weight:1000; letter-spacing:.08em; text-transform:uppercase; font-size:14px; color:#0b1220; text-decoration: underline; text-underline-offset:2px; white-space:nowrap; }
 
+    /* DESCRIPTION back to red gradient */
     .desc-btn{
       height:30px; padding:0 10px; border-radius:12px;
       border:2px solid var(--lime);
-      background: var(--clickable-outline);
+      background: linear-gradient(180deg, #ff4d4d 0%, #d31515 60%, #a90000 100%);
       color: var(--lime);
       font-family: var(--font-pretty);
       font-style: italic;
@@ -537,12 +519,11 @@
 
     .bottom-row{ display:flex; gap:10px; align-items:stretch; margin-top:2px; }
     .qty-pack{ flex:1 1 auto; min-height: var(--btnH); display:flex; align-items:center; gap:8px; padding:0; background:transparent; border:none; box-shadow:none; }
-
     .pm-box{
       width:30px; height: var(--btnH);
       border-radius:12px;
       border:2px solid var(--lime);
-      background: var(--clickable-outline);
+      background: var(--lime-dark-grad);
       overflow:hidden;
       display:flex; flex-direction:column; flex:0 0 auto;
     }
@@ -565,7 +546,7 @@
       width:64px; height: var(--btnH);
       border-radius:12px;
       border:2px solid var(--lime);
-      background: var(--clickable-outline);
+      background: var(--lime-dark-grad);
       color: var(--lime);
       font-weight:1000;
       font-size:12px;
@@ -601,7 +582,8 @@
     /* Responsive */
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .cat-text span{ font-size:28px; }
+      .cat-text span{ font-size:26px; }
+      :root{ --catTabW: 60px; }
     }
     @media(max-width:980px){
       :root{ --sideW: 120px; }

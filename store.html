@@ -87,6 +87,32 @@
       --line-grad: linear-gradient(90deg, #d8ff6a 0%, #0b3b17 100%);
       --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 55%, #0b3b17 100%);
 
+      /* NEW: tab/head gradients with a bit more yellow in the center */
+      --tab-grad-h: linear-gradient(
+        90deg,
+        var(--green-deep) 0%,
+        #2a8b2f 20%,
+        #c9ff5c 50%,
+        #2a8b2f 80%,
+        var(--green-deep) 100%
+      );
+      --tab-grad-v: linear-gradient(
+        180deg,
+        var(--green-deep) 0%,
+        #2a8b2f 20%,
+        #c9ff5c 50%,
+        #2a8b2f 80%,
+        var(--green-deep) 100%
+      );
+      --tab-corner-bend: conic-gradient(
+        from 225deg at 0 0,
+        var(--green-deep),
+        #2a8b2f 25%,
+        #c9ff5c 50%,
+        #2a8b2f 75%,
+        var(--green-deep) 100%
+      );
+
       --lite-green: linear-gradient(
         180deg,
         rgba(233,255,214,0.98) 0%,
@@ -394,7 +420,7 @@
       overflow:hidden;
     }
     .content-wrapper{
-      padding:10px 18px 40px; /* less top filler */
+      padding:10px 18px 40px;
       max-width:1400px;
       margin:0 auto;
     }
@@ -407,7 +433,7 @@
       align-items:start;
     }
 
-    /* LEFT SORT (DESKTOP) aligned to same top level as store */
+    /* LEFT SORT (DESKTOP) */
     .left-shell{
       position: sticky;
       top: var(--stickyOffset);
@@ -522,15 +548,35 @@
       border-radius:14px;
       background: var(--store-bg);
       overflow:hidden;
+      position:relative;
     }
+
+    /* NEW: corner bend patch so the head->tab looks continuous */
+    .grid-wrap::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      width:140px;
+      height:140px;
+      background: var(--tab-corner-bend);
+      opacity:.96;
+      pointer-events:none;
+      z-index:2;
+      border-bottom-right-radius: 26px;
+      filter: saturate(1.02) contrast(1.02);
+    }
+
     .grid-head{
-      background: var(--head-grad);
+      background: var(--tab-grad-h);
       padding:10px 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       border-bottom:2px solid rgba(12,90,42,0.25);
+      position:relative;
+      z-index:3;
     }
     .store-brand{
       display:flex;
@@ -556,6 +602,7 @@
       overflow:hidden;
       text-overflow:ellipsis;
       max-width: 320px;
+      text-shadow:0 1px 0 rgba(0,0,0,0.22);
     }
     .title-line{
       height:2px;
@@ -704,9 +751,13 @@
       flex:0 0 auto;
     }
 
-    .grid-body{ padding:12px; }
+    .grid-body{
+      padding:12px;
+      position:relative;
+      z-index:3;
+    }
 
-    /* LEFT CATEGORY TAB (rotated/vertical, dark green) */
+    /* LEFT CATEGORY TAB */
     .store-body-wrap{
       display:flex;
       align-items:stretch;
@@ -715,7 +766,7 @@
     .cat-tab{
       width: var(--catTabW);
       border-radius:18px;
-      background: var(--head-grad);
+      background: var(--tab-grad-v);
       border:2px solid rgba(12,90,42,0.35);
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       overflow:hidden;
@@ -732,7 +783,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:10px 0;
+      padding:12px 0;
       border-radius:14px;
       transition: transform .12s ease, background .12s ease;
       user-select:none;
@@ -741,29 +792,34 @@
     .cat-btn:hover{ transform: scale(1.03); background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
 
-    /* rotated 90deg text look, bigger/thicker, lime with green outline */
+    /* NEW: stacked-letter vertical text, centered between tab walls */
     .cat-text{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:2px;
       font-family: var(--font-sans);
       font-weight: 1000;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-size: 16px;              /* base for mobile */
       color: var(--lime);
       -webkit-text-stroke: 1px var(--catTextStroke);
       text-shadow:
         0 2px 10px rgba(15,23,42,0.25),
         0 0 0.5px var(--catTextStroke);
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
+      line-height:1;
+      letter-spacing: .06em;
+    }
+    .cat-text span{
+      display:block;
+      font-size: 18px;
       line-height: 1;
     }
-
-    /* make bigger/thicker on desktop */
     @media(min-width: 981px){
-      .cat-text{ font-size: 18px; }
+      .cat-text span{ font-size: 20px; }
     }
     @media(min-width: 1200px){
-      .cat-text{ font-size: 20px; }
+      .cat-text span{ font-size: 22px; }
     }
 
     .store-content{
@@ -774,7 +830,6 @@
       gap:14px;
     }
 
-    /* sections (no horizontal food/merch/plants titles) */
     .section-block{
       border-radius:18px;
       background: rgba(255,255,255,0.06);
@@ -787,10 +842,10 @@
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap:12px;
-      grid-auto-rows: 1fr; /* equal height rows */
+      grid-auto-rows: 1fr;
     }
 
-    /* PRODUCT (NO ORANGE OUTLINE) */
+    /* PRODUCT */
     .product-shell{
       border-radius:18px;
       background: transparent;
@@ -876,15 +931,90 @@
       padding:10px;
       display:flex;
       flex-direction:column;
-      gap:6px; /* less wasted space */
+      gap:6px; /* tightened to remove random gaps */
       width:100%;
       justify-content:space-between;
     }
 
-    .qty-row{
+    /* NEW: swap quantity and price placements (price on top row, quantity on bottom row) */
+    .top-row{
+      display:flex;
+      align-items:stretch;
+      gap:6px;
+    }
+    .price-pill{
+      height:26px;
+      padding:0 10px;
+      border-radius:0;
+      border:2px solid rgba(12,90,42,0.85);
+      background: var(--mobile-green-grad);
+      color: var(--cream);
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:10px;
+      cursor:pointer;
       display:flex;
       align-items:center;
-      gap:6px; /* tighter */
+      justify-content:center;
+      white-space:nowrap;
+      min-width:92px;
+      box-shadow:0 10px 22px rgba(15,23,42,0.10);
+      flex:0 0 auto;
+    }
+
+    .info-btn{
+      height:26px;
+      padding:0 10px;
+      border-radius:0;
+      border:2px solid rgba(12,90,42,0.85);
+      background:#777;
+      color: var(--lime);
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:11px;
+      cursor:pointer;
+      white-space:nowrap;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      transition: transform .12s ease;
+      flex:1 1 auto; /* removes the huge empty gap */
+      min-width:0;
+    }
+    .info-btn:hover{ transform: scale(1.05); }
+    .info-btn svg{
+      width:16px; height:16px;
+      stroke: var(--lime);
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .bottom-row{
+      width:100%;
+      display:flex;
+      align-items:stretch;
+      gap:0;
+      border-radius:12px;
+      overflow:hidden;
+      border:2px solid rgba(12,90,42,0.55);
+      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+    }
+
+    .qty-pack{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:6px;
+      background: var(--lite-green);
+      flex:1 1 auto;
+      min-height:34px;
     }
 
     /* plus/minus same background as qty */
@@ -932,50 +1062,8 @@
     .qty-val::-webkit-outer-spin-button,
     .qty-val::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-    .info-btn{
-      margin-left:auto;
-      height:26px;
-      padding:0 10px;
-      border-radius:0;
-      border:2px solid rgba(12,90,42,0.85);
-      background:#777;
-      color: var(--lime);
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:900;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      cursor:pointer;
-      white-space:nowrap;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      transition: transform .12s ease;
-    }
-    .info-btn:hover{ transform: scale(1.05); }
-    .info-btn svg{
-      width:16px; height:16px;
-      stroke: var(--lime);
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-    .buy-row{
-      width:100%;
-      display:flex;
-      align-items:stretch;
-      gap:0;
-      border-radius:12px;
-      overflow:hidden;
-      border:2px solid rgba(12,90,42,0.55);
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
-      margin-top:2px; /* reduce filler */
-    }
-    .addq,.pricebtn{
-      flex:1 1 0;
+    .addq{
+      flex:0 0 42%;
       border:none;
       padding:10px 10px;
       font-weight:950;
@@ -989,13 +1077,9 @@
       min-height:34px;
       color: var(--cream);
       white-space:nowrap;
+      background: var(--metal-orange);
     }
-    .addq{ background: var(--metal-orange); }
-    .pricebtn{
-      background: var(--mobile-green-grad);
-      text-decoration: underline;
-      text-underline-offset:2px;
-    }
+
     .cream-divider{
       width:1px;
       background: var(--cream);
@@ -1462,13 +1546,19 @@
                   <!-- LEFT CATEGORY TAB -->
                   <aside class="cat-tab" aria-label="Categories">
                     <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
-                      <span class="cat-text">POWDER</span>
+                      <span class="cat-text" aria-hidden="true">
+                        <span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span>
+                      </span>
                     </button>
                     <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Merch">
-                      <span class="cat-text">MERCH</span>
+                      <span class="cat-text" aria-hidden="true">
+                        <span>M</span><span>E</span><span>R</span><span>C</span><span>H</span>
+                      </span>
                     </button>
                     <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Plants">
-                      <span class="cat-text">PLANTS</span>
+                      <span class="cat-text" aria-hidden="true">
+                        <span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span>
+                      </span>
                     </button>
                   </aside>
 
@@ -1726,12 +1816,10 @@
               <div class="pbot">
                 <div class="pbot-shell">
                   <div class="pbot-inner">
-                    <div class="qty-row">
-                      <div class="pm-box">
-                        <button class="pm-btn pm-plus" type="button" aria-label="Increase">+</button>
-                        <button class="pm-btn pm-minus" type="button" aria-label="Decrease">-</button>
-                      </div>
-                      <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity" />
+
+                    <!-- TOP: PRICE + INFO (swapped so price is up here) -->
+                    <div class="top-row">
+                      <button class="price-pill" type="button" aria-label="Price">${money(p.price)}</button>
                       <button class="info-btn" type="button" data-info aria-label="Info">
                         INFO
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1740,11 +1828,20 @@
                         </svg>
                       </button>
                     </div>
-                    <div class="buy-row">
-                      <button class="addq" type="button" data-action="add">ADD</button>
+
+                    <!-- BOTTOM: QUANTITY + ADD (swapped so quantity is down here) -->
+                    <div class="bottom-row">
+                      <div class="qty-pack">
+                        <div class="pm-box">
+                          <button class="pm-btn pm-plus" type="button" aria-label="Increase">+</button>
+                          <button class="pm-btn pm-minus" type="button" aria-label="Decrease">-</button>
+                        </div>
+                        <input class="qty-val" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity" />
+                      </div>
                       <div class="cream-divider" aria-hidden="true"></div>
-                      <button class="pricebtn" type="button" aria-label="Price">${money(p.price)}</button>
+                      <button class="addq" type="button" data-action="add">ADD</button>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -1847,7 +1944,6 @@
         });
       });
 
-      // update active on scroll
       const ids = ["#sec-powder","#sec-merch","#sec-plants"];
       const els = ids.map(s=>$(s)).filter(Boolean);
       const obs = new IntersectionObserver((entries)=>{
@@ -1886,7 +1982,7 @@
       function mode(){ return (radios.find(r=>r.checked)?.value) || "newest"; }
       function displayName(raw){ return String(raw||"").trim().replace(/^MayaNut\s+/i,"").trim().toLowerCase(); }
 
-      function sortGrid(gridSel, cat){
+      function sortGrid(gridSel){
         const grid = $(gridSel);
         if(!grid) return;
 
@@ -1911,9 +2007,9 @@
       }
 
       function applySort(){
-        sortGrid("#grid-food","powder");
-        sortGrid("#grid-merch","merch");
-        sortGrid("#grid-plants","plants");
+        sortGrid("#grid-food");
+        sortGrid("#grid-merch");
+        sortGrid("#grid-plants");
       }
 
       radios.forEach(r=> r.addEventListener("change", applySort));

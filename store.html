@@ -59,6 +59,7 @@
         #1a6800 82%,
         #0b3b17 100%
       );
+
       --panel-green-grad-vert: linear-gradient(
         180deg,
         #0b3b17 0%,
@@ -67,6 +68,7 @@
         #1a6800 82%,
         #0b3b17 100%
       );
+
       --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 60%, #0b3b17 100%);
       --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
 
@@ -98,10 +100,11 @@
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      --stickyOffset: 140px;
+      --stickyOffset: 140px; /* set via JS */
       --filterGap: 10px;
 
-      --navH: 138px;
+      --navH: 148px;
+
       --cardImgH: 196px;
       --cardMinH: 365px;
 
@@ -111,8 +114,6 @@
 
       --thin-outline: 1px solid rgba(12,90,42,0.45);
       --btnText:#ffffff;
-
-      --footerImg: "mayanuts-the-maya-nut-company-image.jpeg";
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -153,7 +154,7 @@
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
-      padding: 28px 0 32px;
+      padding: 30px 0 34px;
       display:flex; align-items:center; justify-content:center;
       position:relative; min-height: var(--navH);
     }
@@ -163,10 +164,11 @@
       pointer-events:none;
     }
 
+    /* centered Slackey text */
     .header-center-brand{
       position:absolute;
       left:50%;
-      top:52%;
+      top:54%;
       transform: translate(-50%, -50%);
       font-family: "Slackey", system-ui, sans-serif;
       font-weight: 400;
@@ -182,54 +184,54 @@
       white-space:nowrap;
     }
 
-    /* HEADER LAYOUT (FIXED): left group pinned left, right group pinned right */
+    /* HEADER: left group pinned top-left, right group pinned top-right */
     .main-nav{
-      width:100%;
-      max-width:1240px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:0 8px;
-      position:relative;
+      position:absolute;
+      top:10px;
+      left:0;
+      right:0;
+      height:56px;
       z-index:3;
-      min-height:56px;
+      pointer-events:none;
     }
-
     .nav-left{
+      position:absolute;
+      left:8px;
+      top:0;
       display:flex;
       align-items:center;
       gap:12px;
-      justify-content:flex-start;
-      min-width:0;
-      flex:1 1 auto;
+      pointer-events:auto;
+      max-width: calc(50% - 180px); /* keep clear of center text */
+      overflow:hidden;
     }
-
-    .nav-logo{
+    .nav-right{
+      position:absolute;
+      right:8px;
+      top:0;
       display:flex;
       align-items:center;
-      flex:0 0 auto;
+      gap:10px;
+      pointer-events:auto;
+      max-width: calc(50% - 180px);
+      overflow:hidden;
     }
+
     .nav-logo img{
       width:92px;
       height:92px;
-      border-radius:0;
-      background: transparent;
-      border: none;
-      box-shadow:none;
       object-fit:contain;
       filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22));
+      flex:0 0 auto;
+      background: transparent;
     }
 
     .nav-center{
       display:flex;
       align-items:center;
-      justify-content:flex-start;
       gap:12px;
-      flex-wrap:nowrap;
-      min-width:0;
+      white-space:nowrap;
     }
-
     .nav-pill{
       height:40px;
       padding:0 12px;
@@ -249,7 +251,7 @@
       letter-spacing:0.10em;
       text-transform:uppercase;
       font-weight:950;
-      color: var(--btnText);
+      color:#ffffff;
       text-shadow:0 1px 0 rgba(0,0,0,0.18);
       white-space:nowrap;
     }
@@ -257,34 +259,25 @@
       background: var(--metal-orange);
       border-color: rgba(255,255,255,0.55);
     }
-    .nav-pill.is-active span{ color: var(--btnText); }
 
-    .nav-right{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-      flex:0 0 auto;
-      margin-left:auto;
-    }
-
-    /* BOTH GREEN, ALL THE WAY RIGHT */
+    /* top-right controls: BOTH GREEN */
     .lang-pill{
       height:40px; padding:0 14px; border-radius:14px;
       border:1px solid rgba(255,255,255,0.55);
       background: var(--mobile-green-grad);
-      color:var(--btnText);
+      color:#ffffff;
       font-weight:950; letter-spacing:0.10em;
       text-transform:uppercase; font-size:12px;
       box-shadow:0 10px 22px rgba(15,23,42,0.12);
       display:inline-flex; align-items:center; justify-content:center;
       flex:0 0 auto;
+      white-space:nowrap;
     }
     .email-top{
       width:40px; height:40px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,0.55);
-      background: var(--mobile-green-grad); /* GREEN */
+      background: var(--mobile-green-grad);
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -293,7 +286,7 @@
     }
     .email-top svg{
       width:20px; height:20px;
-      stroke: #ffffff; /* visible */
+      stroke: #ffffff;
       fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -320,6 +313,7 @@
       overflow:hidden;
     }
 
+    /* FILTER */
     .left-shell{ position: sticky; top: calc(var(--stickyOffset) + var(--filterGap)); width:100%; }
     .left-head{
       background: var(--head-grad);
@@ -330,7 +324,7 @@
       letter-spacing:.04em;
       text-transform:uppercase;
       font-size:14px;
-      color: #ffffff;
+      color:#ffffff;
       border-bottom: var(--thin-outline);
       min-height:56px;
       display:flex;
@@ -353,7 +347,7 @@
     .filter-title .ftag{
       display:inline-flex; align-items:center;
       background: var(--head-grad);
-      color: #ffffff;
+      color:#ffffff;
       border-radius:12px;
       padding:5px 10px;
       border:1px solid rgba(255,255,255,0.35);
@@ -368,6 +362,7 @@
     .filter-item{ display:flex; align-items:center; gap:10px; padding:6px 0; font-weight:900; font-size:12px; color:#0b1220; }
     .filter-item input{ accent-color: #1a6800; }
 
+    /* STORE */
     .grid-wrap{
       background: var(--store-rest-bg);
       display:flex;
@@ -384,10 +379,6 @@
       gap:10px;
       border-bottom: var(--thin-outline);
       min-height:56px;
-      border-top-left-radius:18px;
-      border-top-right-radius:18px;
-      position:relative;
-      z-index:2;
     }
     .store-brand{ display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; }
     .store-logo{ width:44px; height:44px; filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18)); }
@@ -398,7 +389,7 @@
       letter-spacing:.04em;
       text-transform:uppercase;
       font-size:17px;
-      color: #ffffff;
+      color:#ffffff;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -472,8 +463,8 @@
       pointer-events:none;
     }
 
-    .grid-body{ padding:10px 12px; padding-left:0; position:relative; }
-    .store-body-wrap{ display:flex; align-items:stretch; gap:0; position:relative; }
+    .grid-body{ padding:10px 12px; padding-left:0; }
+    .store-body-wrap{ display:flex; align-items:stretch; gap:0; }
 
     .cat-tab{
       width: var(--catTabW);
@@ -506,7 +497,6 @@
     .cat-btn{ border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:1 1 0; padding:10px 0; }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
-
     .cat-text{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:2px;
@@ -522,7 +512,6 @@
     }
 
     .store-content{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:10px; padding-left:12px; }
-
     .section-sep{
       height:4px;
       background: var(--line-grad);
@@ -540,7 +529,7 @@
       border-radius:18px;
       background: rgba(255,255,255,0.55);
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      min-height: var(--cardMinH);
+      min-height: 365px;
       border: var(--thin-outline);
       overflow:hidden;
       display:flex;
@@ -578,8 +567,8 @@
       opacity:.85; min-width: 18px;
     }
 
-    .pimg{ background:#fff; border-bottom: var(--thin-outline); position:relative; }
-    .pimg img{ width:100%; height: var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
+    .pimg{ background:#fff; border-bottom: var(--thin-outline); }
+    .pimg img{ width:100%; height:196px; object-fit:cover; display:block; cursor:pointer; }
 
     .pbot{ padding:8px; flex:1 1 auto; display:flex; background: var(--para-green); }
     .click-inner{
@@ -732,7 +721,6 @@
       outline-offset: -2px;
     }
 
-    /* Modal */
     .overlay{
       position:fixed; inset:0; display:none;
       background: rgba(0,0,0,0.35);
@@ -808,35 +796,15 @@
       white-space:pre-line;
     }
 
-    /* FOOTER rotated background, 3 tiles across */
+    /* FOOTER (remove email icon here; keep IG/X/LinkedIn only) */
     footer{
-      position:relative;
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
-      overflow:hidden;
-      margin-top: 10px;
+      background: #0b3b17;
       color:#fff;
-    }
-    footer::before{
-      content:"";
-      position:absolute;
-      inset:-40% -40%;
-      background-image: url("mayanuts-the-maya-nut-company-image.jpeg");
-      background-repeat: repeat-x;
-      background-size: 33.333% 100%;
-      background-position: center;
-      transform: rotate(90deg);
-      transform-origin: center;
-      filter: saturate(1.05) contrast(1.02);
-    }
-    footer::after{
-      content:"";
-      position:absolute; inset:0;
-      background: rgba(0,0,0,0.60);
+      margin-top:10px;
     }
     .footer-wrap{
-      position:relative;
-      z-index:1;
       max-width:1200px;
       margin:0 auto;
       padding: 16px 22px 18px;
@@ -845,49 +813,37 @@
       gap:16px;
       align-items:stretch;
     }
-
-    .nl-title,.nl-sub,.based-line,.copyright-line,.footer-links a,.email-text{ color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.60); }
-    .newsletter{ display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
-    .nl-title{ font-weight:950; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; }
-    .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:13px; line-height:1.45; max-width:520px; }
-    .newsletter-form{ display:flex; gap:10px; align-items:center; width:100%; max-width: 520px; }
-    .newsletter-form input{
-      flex:1; min-width: 180px; height:40px;
-      border-radius:14px; border: 1px solid rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.90);
-      padding: 0 12px; font-weight:900; font-size:12px;
-      outline:none; color:#111827;
-    }
-    .metal-btn{
-      border: 1px solid rgba(255,255,255,0.45);
-      background: var(--metal-orange);
-      color: #ffffff;
-      border-radius:14px;
-      padding:10px 14px;
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.10em;
-      cursor:pointer;
-      font-weight:950;
-      min-height:40px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
-      box-shadow:0 14px 36px rgba(0,0,0,0.25);
-    }
-
     .footer-left{ display:flex; align-items:flex-start; gap:16px; }
-    .footer-logo{ width:116px; height:auto; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45)); }
+    .footer-logo{ width:116px; height:auto; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35)); }
     .footer-text{ display:flex; flex-direction:column; gap:10px; }
-    .based-line{ display:flex; align-items:center; gap:8px; font-family: var(--font-pretty); font-style: italic; font-weight:900; font-size:14px; white-space:nowrap; }
-    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.55)); }
-    .copyright-line{ font-family: var(--font-pretty); font-style: italic; font-weight:900; font-size:14px; white-space:nowrap; }
-    .footer-row3{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .based-line, .copyright-line{
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 900;
+      font-size:14px;
+      letter-spacing:0.04em;
+      color:#ffffff;
+      text-shadow:0 2px 14px rgba(0,0,0,0.40);
+      white-space:nowrap;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.35)); }
     .footer-links{ display:flex; gap:16px; flex-wrap:wrap; }
-    .footer-links a{ border-bottom:1px solid rgba(255,255,255,0.40); padding-bottom:2px; font-family: var(--font-pretty); font-style: italic; font-weight:900; font-size:14px; }
-
-    .footer-icons{ display:flex; align-items:center; gap:10px; flex-wrap:nowrap; }
+    .footer-links a{
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 900;
+      font-size:14px;
+      letter-spacing:0.04em;
+      color:#ffffff;
+      border-bottom:1px solid rgba(255,255,255,0.40);
+      padding-bottom:2px;
+      white-space:nowrap;
+      text-shadow:0 2px 14px rgba(0,0,0,0.40);
+    }
+    .footer-icons{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .icon-pill{
       width:36px; height:36px;
       border-radius:14px;
@@ -897,12 +853,19 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
-      box-shadow:0 12px 28px rgba(0,0,0,0.30);
+      box-shadow:0 12px 28px rgba(0,0,0,0.20);
     }
-    .icon-pill svg{ width:20px; height:20px; stroke: #ffffff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .icon-pill .fill{ fill: #ffffff; stroke:none; }
-    .email-inline{ display:flex; align-items:center; gap:10px; white-space:nowrap; }
+    .icon-pill svg{
+      width:20px; height:20px;
+      stroke:#ffffff;
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
+    /* Accessibility */
     .fab{
       position:fixed; z-index:1300;
       width:52px; height:52px;
@@ -941,19 +904,13 @@
       .section-sep{ width:100%; margin-left:0; }
       .store-content{ padding-left:0; }
       .footer-wrap{ grid-template-columns:1fr; }
-      .newsletter-form{ flex-direction:column; align-items:stretch; }
-      .newsletter-form input{ width:100%; min-width:0; }
-      .footer-icons{ flex-wrap:wrap; }
-      .email-inline{ flex-wrap:wrap; }
-      .variant-box{ max-width: 999px; }
+      .header-center-brand{ font-size:28px; }
       .nav-logo img{ width:78px; height:78px; }
-      .header-center-brand{ font-size: 28px; }
     }
     @media(max-width:780px){
       .header-center-brand{ display:none; }
       .nav-center{ display:none; }
-      .based-line{ flex-wrap:wrap; white-space:normal; }
-      .email-inline{ flex-wrap:wrap; }
+      .footer-wrap{ padding:14px 16px 16px; }
     }
   </style>
 </head>
@@ -1125,38 +1082,11 @@
             </div>
             <div class="copyright-line">© 2026 The MayaNut Company, Inc.</div>
 
-            <div class="footer-row3">
-              <div class="footer-links" aria-label="Terms Privacy Sitemap">
-                <a href="terms.html">Terms</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="sitemap.html">Sitemap</a>
-              </div>
-
-              <div class="footer-icons" aria-label="Icons">
-                <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                    <circle cx="12" cy="12" r="4.2"></circle>
-                    <circle cx="17.3" cy="6.7" r="0.9"></circle>
-                  </svg>
-                </a>
-                <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
-                  </svg>
-                </a>
-                <div class="email-inline">
-                  <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M4.5 6.5h15v11h-15z"></path>
-                      <path d="M4.5 7l7.5 6 7.5-6"></path>
-                    </svg>
-                  </a>
-                  <div class="email-text">info@mayanut.com</div>
-                </div>
-              </div>
+            <div class="footer-links" aria-label="Terms Privacy Sitemap">
+              <a href="terms.html">Terms</a>
+              <a href="privacy.html">Privacy</a>
+              <a href="sitemap.html">Sitemap</a>
             </div>
-
           </div>
         </div>
 
@@ -1167,6 +1097,28 @@
             <input id="newsletter-email" type="email" name="email" placeholder="Enter your email" inputmode="email" autocomplete="email" required />
             <button class="metal-btn" type="submit">SUBSCRIBE</button>
           </form>
+
+          <div style="height:12px" aria-hidden="true"></div>
+
+          <div class="footer-icons" aria-label="Social links">
+            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                <circle cx="12" cy="12" r="4.2"></circle>
+                <circle cx="17.3" cy="6.7" r="0.9"></circle>
+              </svg>
+            </a>
+            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+              </svg>
+            </a>
+            <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+              </svg>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -1205,6 +1157,9 @@
   <div id="variant-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
   <script>
+    const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
+    const $  = (s, r=document)=> r.querySelector(s);
+
     /* Sticky offset */
     (function(){
       function setStickyOffset(){
@@ -1218,9 +1173,7 @@
       window.addEventListener("pageshow", setStickyOffset);
       document.addEventListener("DOMContentLoaded", setStickyOffset);
     })();
-  </script>
 
-  <script>
     /* Variant menu + modal helpers */
     (function(){
       const root = document.getElementById("variant-menu-root");
@@ -1238,6 +1191,7 @@
         const menu = document.createElement("div");
         menu.className = "variant-menu";
         menu.style.pointerEvents = "auto";
+
         const left = Math.min(window.innerWidth - 210, Math.max(10, Math.round(r.left)));
         const top = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6));
         menu.style.left = left + "px";
@@ -1268,7 +1222,6 @@
 
       const overlay = document.getElementById("desc-overlay");
       const closeBtn = document.getElementById("modal-close");
-
       function openModal(title, imgSrc, text){
         document.body.classList.add("modal-open");
         overlay.setAttribute("aria-hidden","false");
@@ -1282,16 +1235,12 @@
         document.body.classList.remove("modal-open");
         overlay.setAttribute("aria-hidden","true");
       }
-
       closeBtn?.addEventListener("click", closeModal);
       overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "desc-overlay") closeModal(); });
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeModal(); });
-
       window.__openDescModal = openModal;
     })();
-  </script>
 
-  <script>
     /* category jump */
     (function(){
       document.querySelectorAll("[data-jump]").forEach(b=>{
@@ -1302,9 +1251,7 @@
         });
       });
     })();
-  </script>
 
-  <script>
     /* Store rendering */
     (function(){
       const PRODUCTS = [
@@ -1569,78 +1516,6 @@
       bindDesktopFilters();
       bindSearch();
       wireImageDesc();
-      wireVariants();
-    })();
-  </script>
-
-  <script>
-    /* Variant menu + modal helpers */
-    (function(){
-      const root = document.getElementById("variant-menu-root");
-      let openMenu = null;
-
-      function closeMenu(){
-        if(!openMenu) return;
-        openMenu.el.remove();
-        openMenu = null;
-      }
-
-      function openVariantMenu(anchorEl, options, activeKey, onPick){
-        closeMenu();
-        const r = anchorEl.getBoundingClientRect();
-        const menu = document.createElement("div");
-        menu.className = "variant-menu";
-        menu.style.pointerEvents = "auto";
-        const left = Math.min(window.innerWidth - 210, Math.max(10, Math.round(r.left)));
-        const top = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6));
-        menu.style.left = left + "px";
-        menu.style.top = top + "px";
-
-        options.forEach(opt=>{
-          const row = document.createElement("div");
-          row.className = "opt" + (opt.key === activeKey ? " is-active" : "");
-          row.textContent = opt.label;
-          row.addEventListener("click", ()=>{ onPick(opt.key); closeMenu(); });
-          menu.appendChild(row);
-        });
-
-        root.appendChild(menu);
-        openMenu = { el: menu };
-      }
-
-      document.addEventListener("click", (e)=>{
-        if(openMenu){
-          const within = e.target.closest(".variant-menu");
-          const anchor = e.target.closest("[data-variant-anchor]");
-          if(!within && !anchor) closeMenu();
-        }
-      });
-      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
-
-      window.__openVariantMenu = openVariantMenu;
-
-      const overlay = document.getElementById("desc-overlay");
-      const closeBtn = document.getElementById("modal-close");
-
-      function openModal(title, imgSrc, text){
-        document.body.classList.add("modal-open");
-        overlay.setAttribute("aria-hidden","false");
-        document.getElementById("modal-title").textContent = title || "Product";
-        const mimg = document.getElementById("modal-img");
-        mimg.src = imgSrc || "";
-        mimg.alt = title || "Product image";
-        document.getElementById("modal-copy").textContent = text || "";
-      }
-      function closeModal(){
-        document.body.classList.remove("modal-open");
-        overlay.setAttribute("aria-hidden","true");
-      }
-
-      closeBtn?.addEventListener("click", closeModal);
-      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "desc-overlay") closeModal(); });
-      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeModal(); });
-
-      window.__openDescModal = openModal;
     })();
   </script>
 </body>

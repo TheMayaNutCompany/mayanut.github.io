@@ -163,32 +163,42 @@
       pointer-events:none;
     }
 
-    /* centered Slackey text (caps experiment) */
-    .header-center-brand{
+    /* Center title with logo just left of the T, slightly off-center */
+    .brand-group{
       position:absolute;
       left:50%;
       top:54%;
-      transform: translate(-50%, -50%);
-      font-family: "Slackey", system-ui, sans-serif;
-      font-weight: 400;
-      letter-spacing: .02em;
-      text-transform: none; /* allow exact caps */
-      font-size: 34px;
-      color: #d8ff6a;
-      -webkit-text-stroke: 1px rgba(11,59,23,0.95);
-      text-shadow: 0 14px 34px rgba(15,23,42,0.20);
+      transform: translate(-58%, -50%);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      z-index:2;
       pointer-events:none;
       user-select:none;
-      z-index:1;
       white-space:nowrap;
     }
+    .brand-group img{
+      width:64px;
+      height:64px;
+      object-fit:contain;
+      filter: drop-shadow(0 14px 30px rgba(15,23,42,0.20));
+    }
+    .brand-text{
+      font-family:"Slackey", system-ui, sans-serif;
+      font-weight:400;
+      letter-spacing:.02em;
+      font-size:34px;
+      color:#d8ff6a;
+      -webkit-text-stroke: 1px rgba(11,59,23,0.95);
+      text-shadow:0 14px 34px rgba(15,23,42,0.20);
+    }
 
-    /* HEADER: lower the nav row to align with centered text */
+    /* Nav aligned to brand level */
     .main-nav{
       position:absolute;
-      top:54%;
       left:0;
       right:0;
+      top:54%;
       transform: translateY(-50%);
       height:56px;
       z-index:3;
@@ -196,15 +206,17 @@
     }
     .nav-left{
       position:absolute;
-      left:8px;
+      left:0px; /* moved further left to fill gap */
       top:50%;
       transform: translateY(-50%);
       display:flex;
       align-items:center;
       gap:12px;
       pointer-events:auto;
-      max-width: calc(50% - 200px);
+      max-width: calc(50% - 240px);
       overflow:hidden;
+      white-space:nowrap;
+      padding-left:8px;
     }
     .nav-right{
       position:absolute;
@@ -215,25 +227,11 @@
       align-items:center;
       gap:10px;
       pointer-events:auto;
-      max-width: calc(50% - 200px);
+      max-width: calc(50% - 240px);
       overflow:hidden;
-    }
-
-    .nav-logo img{
-      width:92px;
-      height:92px;
-      object-fit:contain;
-      filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22));
-      flex:0 0 auto;
-      background: transparent;
-    }
-
-    .nav-center{
-      display:flex;
-      align-items:center;
-      gap:12px;
       white-space:nowrap;
     }
+
     .nav-pill{
       height:40px;
       padding:0 12px;
@@ -257,10 +255,7 @@
       text-shadow:0 1px 0 rgba(0,0,0,0.18);
       white-space:nowrap;
     }
-    .nav-pill.is-active{
-      background: var(--metal-orange);
-      border-color: rgba(255,255,255,0.55);
-    }
+    .nav-pill.is-active{ background: var(--metal-orange); }
 
     /* top-right controls: both green */
     .lang-pill{
@@ -288,7 +283,7 @@
     }
     .email-top svg{
       width:20px; height:20px;
-      stroke: #ffffff;
+      stroke:#ffffff;
       fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -317,6 +312,7 @@
 
     /* FILTER */
     .left-shell{ position: sticky; top: calc(var(--stickyOffset) + var(--filterGap)); width:100%; }
+    .left-panel{ background: transparent; }
     .left-head{
       background: var(--head-grad);
       padding:10px 12px;
@@ -439,12 +435,12 @@
       position:relative;
     }
     .checkout-fused .dust{ display:flex; flex-direction:column; gap:3px; margin-right:-4px; align-items:flex-end; }
-    .checkout-fused .dust span{ display:block; height:2px; border-radius:999px; background: #ffffff; opacity:.9; }
+    .checkout-fused .dust span{ display:block; height:2px; border-radius:999px; background:#ffffff; opacity:.9; }
     .checkout-fused .dust span:nth-child(1){ width:10px; }
     .checkout-fused .dust span:nth-child(2){ width:16px; }
     .checkout-fused .dust span:nth-child(3){ width:12px; }
-    .checkout-fused svg{ width:18px; height:18px; stroke: #ffffff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-    .checkout-fused .txt{ font-weight:950; letter-spacing:.10em; text-transform:uppercase; font-size:10px; color: #ffffff; white-space:nowrap; }
+    .checkout-fused svg{ width:18px; height:18px; stroke:#ffffff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+    .checkout-fused .txt{ font-weight:950; letter-spacing:.10em; text-transform:uppercase; font-size:10px; color:#ffffff; white-space:nowrap; }
     .cart-badge{
       position:absolute;
       top:-7px;
@@ -453,7 +449,7 @@
       height:18px;
       padding:0 6px;
       border-radius:999px;
-      background: #ffffff;
+      background:#ffffff;
       border:1px solid rgba(255,255,255,0.65);
       color: var(--orange);
       font-weight:1000;
@@ -465,10 +461,10 @@
       pointer-events:none;
     }
 
-    .grid-body{ padding:0 12px 10px; padding-left:0; } /* remove top gap so left tab can tuck into header */
+    /* MERGE LEFT TAB INTO TOP (fix: remove top padding in grid-body so it actually touches) */
+    .grid-body{ padding:0 12px 10px; padding-left:0; }
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; position:relative; }
 
-    /* CONNECT POWDER TAB to top store header */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -477,8 +473,8 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding-top: 56px;       /* header height */
-      margin-top: -56px;       /* pull up into header */
+      padding-top:56px;     /* equals grid-head min-height */
+      margin-top:-56px;     /* pulls tab up into header */
       border-top-left-radius:18px;
       border-bottom-left-radius:18px;
       overflow:hidden;
@@ -799,13 +795,15 @@
       white-space:pre-line;
     }
 
-    /* Footer: no email icon (IG/X/LinkedIn only) */
+    /* FOOTER: stacked horizontally, NOT darkened */
     footer{
+      margin-top:10px;
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
-      background: #0b3b17;
-      color:#fff;
-      margin-top:10px;
+      background-image: url("mayanuts-the-maya-nut-company-image.jpeg");
+      background-repeat: repeat-x;
+      background-size: 33.333% 100%;
+      background-position: center;
     }
     .footer-wrap{
       max-width:1200px;
@@ -815,9 +813,10 @@
       grid-template-columns: 1.2fr 1fr;
       gap:16px;
       align-items:stretch;
+      background: transparent;
     }
     .footer-left{ display:flex; align-items:flex-start; gap:16px; }
-    .footer-logo{ width:116px; height:auto; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35)); }
+    .footer-logo{ width:116px; height:auto; filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18)); }
     .footer-text{ display:flex; flex-direction:column; gap:10px; }
     .based-line, .copyright-line{
       font-family: var(--font-pretty);
@@ -825,14 +824,14 @@
       font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#ffffff;
-      text-shadow:0 2px 14px rgba(0,0,0,0.40);
+      color:#0b1220;
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
       white-space:nowrap;
       display:flex;
       align-items:center;
       gap:8px;
     }
-    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.35)); }
+    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 10px rgba(15,23,42,0.18)); }
     .footer-links{ display:flex; gap:16px; flex-wrap:wrap; }
     .footer-links a{
       font-family: var(--font-pretty);
@@ -840,27 +839,27 @@
       font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#ffffff;
-      border-bottom:1px solid rgba(255,255,255,0.40);
+      color:#0b1220;
+      border-bottom:1px solid rgba(11,18,32,0.28);
       padding-bottom:2px;
       white-space:nowrap;
-      text-shadow:0 2px 14px rgba(0,0,0,0.40);
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
     .newsletter{ display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
-    .nl-title{ font-weight:950; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.40); }
-    .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:13px; line-height:1.45; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.40); max-width:520px; }
+    .nl-title{ font-weight:950; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.55); }
+    .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:13px; line-height:1.45; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.55); max-width:520px; }
     .newsletter-form{ display:flex; gap:10px; align-items:center; width:100%; max-width:520px; }
     .newsletter-form input{
       flex:1; min-width: 180px; height:40px;
-      border-radius:14px; border: 1px solid rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.90);
+      border-radius:14px; border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(255,255,255,0.86);
       padding: 0 12px; font-weight:900; font-size:12px;
       outline:none; color:#111827;
     }
     .metal-btn{
-      border: 1px solid rgba(255,255,255,0.45);
+      border: 1px solid rgba(12,90,42,0.55);
       background: var(--metal-orange);
-      color: #ffffff;
+      color:#ffffff;
       border-radius:14px;
       padding:10px 14px;
       font-size:11px;
@@ -873,29 +872,8 @@
       align-items:center;
       justify-content:center;
       white-space:nowrap;
-      box-shadow:0 14px 36px rgba(0,0,0,0.20);
+      box-shadow:0 14px 36px rgba(15,23,42,0.12);
     }
-    .footer-icons{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
-    .icon-pill{
-      width:36px; height:36px;
-      border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.40);
-      background: var(--metal-orange);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      box-shadow:0 12px 28px rgba(0,0,0,0.20);
-    }
-    .icon-pill svg{
-      width:20px; height:20px;
-      stroke:#ffffff;
-      fill:none;
-      stroke-width:2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-    .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
     .fab{
       position:fixed; z-index:1300;
@@ -931,19 +909,19 @@
     @media(max-width:980px){
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
-      .cat-tab{ display:none; }
+      .cat-tab{ display:none; margin-top:0; padding-top:0; }
       .section-sep{ width:100%; margin-left:0; }
       .store-content{ padding-left:0; }
       .footer-wrap{ grid-template-columns:1fr; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
       .header-center-brand{ font-size:28px; }
-      .nav-logo img{ width:78px; height:78px; }
     }
     @media(max-width:780px){
       .header-center-brand{ display:none; }
-      .nav-center{ display:none; }
+      .nav-left{ display:none; }
       .footer-wrap{ padding:14px 16px 16px; }
+      footer{ background-size: 60% 100%; }
     }
   </style>
 </head>
@@ -956,10 +934,6 @@
 
         <nav class="main-nav" aria-label="Primary navigation">
           <div class="nav-left">
-            <a class="nav-logo" href="index.html" aria-label="The MayaNut Company home">
-              <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" />
-            </a>
-
             <div class="nav-center" aria-label="Primary links">
               <a class="nav-pill" href="index.html"><span>HOME</span></a>
               <a class="nav-pill is-active" href="store.html" aria-current="page"><span>STORE</span></a>
@@ -978,6 +952,12 @@
             </a>
           </div>
         </nav>
+
+        <!-- MOVED LOGO: just left of the T in The MayaNut Comapny -->
+        <div class="brand-group" aria-hidden="true">
+          <img src="mayanut-the-mayanut-comapny-logo.png" alt="" />
+          <div class="brand-text">The MayaNut Comapny</div>
+        </div>
       </header>
     </div>
 
@@ -1126,28 +1106,7 @@
             <input id="newsletter-email" type="email" name="email" placeholder="Enter your email" inputmode="email" autocomplete="email" required />
             <button class="metal-btn" type="submit">SUBSCRIBE</button>
           </form>
-
-          <div class="footer-icons" aria-label="Social links">
-            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                <circle cx="12" cy="12" r="4.2"></circle>
-                <circle cx="17.3" cy="6.7" r="0.9"></circle>
-              </svg>
-            </a>
-            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
-              </svg>
-            </a>
-            <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
-              </svg>
-            </a>
-          </div>
         </div>
-
       </div>
     </footer>
   </div>
@@ -1170,16 +1129,6 @@
       </div>
     </div>
   </div>
-
-  <button class="fab" id="accessibility-btn" type="button" aria-label="Accessibility menu">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="5" r="2"></circle>
-      <path d="M4 8h16"></path>
-      <path d="M9 8c1.1 2.2 2.5 3.2 3 3.2s1.9-1 3-3.2"></path>
-      <path d="M10.2 11.2l-1.8 9.3"></path>
-      <path d="M13.8 11.2l1.8 9.3"></path>
-    </svg>
-  </button>
 
   <div id="variant-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
@@ -1544,6 +1493,14 @@
       bindSearch();
       wireImageDesc();
       wireVariants();
+    })();
+  </script>
+
+  <script>
+    /* Footer JPG preflight (ensures it loads) */
+    (function(){
+      const img = new Image();
+      img.src = "mayanuts-the-maya-nut-company-image.jpeg";
     })();
   </script>
 </body>

@@ -113,7 +113,6 @@
       --a11y-blue:#084ac5;
 
       --thin-outline: 1px solid rgba(12,90,42,0.45);
-      --btnText:#ffffff;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -164,7 +163,7 @@
       pointer-events:none;
     }
 
-    /* centered Slackey text */
+    /* centered Slackey text (caps experiment) */
     .header-center-brand{
       position:absolute;
       left:50%;
@@ -173,7 +172,7 @@
       font-family: "Slackey", system-ui, sans-serif;
       font-weight: 400;
       letter-spacing: .02em;
-      text-transform: lowercase;
+      text-transform: none; /* allow exact caps */
       font-size: 34px;
       color: #d8ff6a;
       -webkit-text-stroke: 1px rgba(11,59,23,0.95);
@@ -184,12 +183,13 @@
       white-space:nowrap;
     }
 
-    /* HEADER: left group pinned top-left, right group pinned top-right */
+    /* HEADER: lower the nav row to align with centered text */
     .main-nav{
       position:absolute;
-      top:10px;
+      top:54%;
       left:0;
       right:0;
+      transform: translateY(-50%);
       height:56px;
       z-index:3;
       pointer-events:none;
@@ -197,23 +197,25 @@
     .nav-left{
       position:absolute;
       left:8px;
-      top:0;
+      top:50%;
+      transform: translateY(-50%);
       display:flex;
       align-items:center;
       gap:12px;
       pointer-events:auto;
-      max-width: calc(50% - 180px); /* keep clear of center text */
+      max-width: calc(50% - 200px);
       overflow:hidden;
     }
     .nav-right{
       position:absolute;
       right:8px;
-      top:0;
+      top:50%;
+      transform: translateY(-50%);
       display:flex;
       align-items:center;
       gap:10px;
       pointer-events:auto;
-      max-width: calc(50% - 180px);
+      max-width: calc(50% - 200px);
       overflow:hidden;
     }
 
@@ -260,7 +262,7 @@
       border-color: rgba(255,255,255,0.55);
     }
 
-    /* top-right controls: BOTH GREEN */
+    /* top-right controls: both green */
     .lang-pill{
       height:40px; padding:0 14px; border-radius:14px;
       border:1px solid rgba(255,255,255,0.55);
@@ -463,9 +465,10 @@
       pointer-events:none;
     }
 
-    .grid-body{ padding:10px 12px; padding-left:0; }
-    .store-body-wrap{ display:flex; align-items:stretch; gap:0; }
+    .grid-body{ padding:0 12px 10px; padding-left:0; } /* remove top gap so left tab can tuck into header */
+    .store-body-wrap{ display:flex; align-items:stretch; gap:0; position:relative; }
 
+    /* CONNECT POWDER TAB to top store header */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -474,8 +477,8 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding:0;
-      margin:0;
+      padding-top: 56px;       /* header height */
+      margin-top: -56px;       /* pull up into header */
       border-top-left-radius:18px;
       border-bottom-left-radius:18px;
       overflow:hidden;
@@ -511,7 +514,7 @@
       width:100%;
     }
 
-    .store-content{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:10px; padding-left:12px; }
+    .store-content{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:10px; padding-left:12px; padding-top:10px; }
     .section-sep{
       height:4px;
       background: var(--line-grad);
@@ -529,7 +532,7 @@
       border-radius:18px;
       background: rgba(255,255,255,0.55);
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      min-height: 365px;
+      min-height: var(--cardMinH);
       border: var(--thin-outline);
       overflow:hidden;
       display:flex;
@@ -545,7 +548,7 @@
     }
     .prod-title-pill{
       background: var(--head-grad);
-      color: #ffffff;
+      color:#ffffff;
       border-radius:12px;
       padding:5px 10px;
       border:1px solid rgba(255,255,255,0.35);
@@ -568,7 +571,7 @@
     }
 
     .pimg{ background:#fff; border-bottom: var(--thin-outline); }
-    .pimg img{ width:100%; height:196px; object-fit:cover; display:block; cursor:pointer; }
+    .pimg img{ width:100%; height:var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
 
     .pbot{ padding:8px; flex:1 1 auto; display:flex; background: var(--para-green); }
     .click-inner{
@@ -634,7 +637,7 @@
       border-radius:14px;
       border: var(--thin-outline);
       background: var(--metal-orange);
-      color: #ffffff;
+      color:#ffffff;
       font-weight:950;
       letter-spacing:.10em;
       text-transform:uppercase;
@@ -709,13 +712,13 @@
       cursor:pointer;
       font-weight:950;
       font-size:12px;
-      color: #ffffff;
+      color:#ffffff;
       background: var(--head-grad);
       margin-bottom:6px;
     }
     .variant-menu .opt:last-child{ margin-bottom:0; }
     .variant-menu .opt.is-active{
-      color: #ffffff;
+      color:#ffffff;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
       outline: 2px solid rgba(255,255,255,0.25);
       outline-offset: -2px;
@@ -768,7 +771,7 @@
       align-items:center;
       justify-content:center;
     }
-    .modal-close svg{ width:18px; height:18px; stroke: #ffffff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+    .modal-close svg{ width:18px; height:18px; stroke:#ffffff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
     .modal-body{
       padding:14px;
       display:grid;
@@ -796,7 +799,7 @@
       white-space:pre-line;
     }
 
-    /* FOOTER (remove email icon here; keep IG/X/LinkedIn only) */
+    /* Footer: no email icon (IG/X/LinkedIn only) */
     footer{
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
@@ -843,7 +846,36 @@
       white-space:nowrap;
       text-shadow:0 2px 14px rgba(0,0,0,0.40);
     }
-    .footer-icons{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .newsletter{ display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
+    .nl-title{ font-weight:950; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.40); }
+    .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:13px; line-height:1.45; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.40); max-width:520px; }
+    .newsletter-form{ display:flex; gap:10px; align-items:center; width:100%; max-width:520px; }
+    .newsletter-form input{
+      flex:1; min-width: 180px; height:40px;
+      border-radius:14px; border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.90);
+      padding: 0 12px; font-weight:900; font-size:12px;
+      outline:none; color:#111827;
+    }
+    .metal-btn{
+      border: 1px solid rgba(255,255,255,0.45);
+      background: var(--metal-orange);
+      color: #ffffff;
+      border-radius:14px;
+      padding:10px 14px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      cursor:pointer;
+      font-weight:950;
+      min-height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+      box-shadow:0 14px 36px rgba(0,0,0,0.20);
+    }
+    .footer-icons{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
     .icon-pill{
       width:36px; height:36px;
       border-radius:14px;
@@ -865,7 +897,6 @@
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
-    /* Accessibility */
     .fab{
       position:fixed; z-index:1300;
       width:52px; height:52px;
@@ -904,6 +935,8 @@
       .section-sep{ width:100%; margin-left:0; }
       .store-content{ padding-left:0; }
       .footer-wrap{ grid-template-columns:1fr; }
+      .newsletter-form{ flex-direction:column; align-items:stretch; }
+      .newsletter-form input{ width:100%; min-width:0; }
       .header-center-brand{ font-size:28px; }
       .nav-logo img{ width:78px; height:78px; }
     }
@@ -919,7 +952,7 @@
   <div class="frame-wrap">
     <div class="sticky-top" id="sticky-top">
       <header class="site-header" aria-label="Site header">
-        <div class="header-center-brand">the mayanut company</div>
+        <div class="header-center-brand">The MayaNut Comapny</div>
 
         <nav class="main-nav" aria-label="Primary navigation">
           <div class="nav-left">
@@ -989,7 +1022,6 @@
           <!-- STORE -->
           <section class="oframe" aria-label="Store listings">
             <div class="grid-wrap">
-
               <div class="grid-head">
                 <div class="store-brand" aria-label="Store brand">
                   <img class="store-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.35';" />
@@ -1030,7 +1062,6 @@
 
               <div class="grid-body">
                 <div class="store-body-wrap">
-
                   <aside class="cat-tab" aria-label="Categories">
                     <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
                       <span class="cat-text"><span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span></span>
@@ -1060,10 +1091,8 @@
                       <div class="product-grid" id="grid-plants"></div>
                     </div>
                   </div>
-
                 </div>
               </div>
-
             </div>
           </section>
 
@@ -1097,8 +1126,6 @@
             <input id="newsletter-email" type="email" name="email" placeholder="Enter your email" inputmode="email" autocomplete="email" required />
             <button class="metal-btn" type="submit">SUBSCRIBE</button>
           </form>
-
-          <div style="height:12px" aria-hidden="true"></div>
 
           <div class="footer-icons" aria-label="Social links">
             <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1516,6 +1543,7 @@
       bindDesktopFilters();
       bindSearch();
       wireImageDesc();
+      wireVariants();
     })();
   </script>
 </body>

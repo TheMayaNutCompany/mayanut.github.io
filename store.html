@@ -39,7 +39,6 @@
 
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
-      --sideW: 170px;
       --frameBorder: 2px;
 
       --panel-green-grad: linear-gradient(
@@ -78,23 +77,24 @@
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      --stickyOffset: 140px; /* set via JS */
+      --stickyOffset: 155px; /* set via JS */
       --filterGap: 10px;
       --bottomGap: 10px;
 
-      --navH: 105px; /* 25% taller */
+      --navH: 105px;
 
       --cardImgH: 132px;
-      --cardMinH: 286px;
+      --cardMinH: 292px;
 
       --catTabW: 56px;
 
-      --red-grad: linear-gradient(180deg, #ff3b1f 0%, #b5220a 55%, #ff6a3a 100%);
       --a11y-blue:#084ac5;
 
       --line-grad: linear-gradient(90deg, #d8ff6a 0%, #0b3b17 100%);
 
       --thin-outline: 1px solid rgba(12,90,42,0.45);
+
+      --footer-bg: url("mayanuts-the-maya-nut-company-image.webp");
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -116,20 +116,10 @@
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* SIDE FRAMES */
-    .side-frames{ position:fixed; inset:0; pointer-events:none; z-index:0; }
-    .side{ position:absolute; top:0; bottom:0; width:var(--sideW); overflow:hidden; background:#ffffff; pointer-events:none; }
-    .side.left{ left:0; border-right: var(--frameBorder) solid rgba(12, 90, 42, 0.95); }
-    .side.right{ right:0; border-left: var(--frameBorder) solid rgba(12, 90, 42, 0.95); }
-    .stack{ position:absolute; inset:0; display:flex; flex-direction:column; }
-    .stack img{ width:100%; height:220px; flex:0 0 220px; object-fit:cover; border-bottom:1px solid rgba(15,23,42,0.10); filter:saturate(1.07) contrast(1.03); }
-
     /* WRAP */
     .frame-wrap{
-      position:relative; z-index:2;
-      width: calc(100vw - (var(--sideW) * 2));
-      margin-left: var(--sideW);
-      margin-right: var(--sideW);
+      position:relative;
+      width:100%;
       min-height:100vh;
       padding-top: var(--stickyOffset);
       overflow-x: clip;
@@ -138,11 +128,9 @@
 
     /* STICKY TOP */
     .sticky-top{
-      position:fixed; top:0; left: var(--sideW); right: var(--sideW);
+      position:fixed; top:0; left:0; right:0;
       z-index:999;
       background: var(--panel-green-grad);
-      border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
-      border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
@@ -156,7 +144,7 @@
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
-      padding: 22px 14px 26px; /* scaled with navH */
+      padding: 22px 14px 26px;
       display:flex; align-items:center; justify-content:center;
       position:relative; min-height: var(--navH);
     }
@@ -294,7 +282,7 @@
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight:900;
-      letter-spacing:.08em;
+      letter-spacing:.04em; /* slacker */
       text-transform:uppercase;
       font-size:14px;
       color: var(--limeText);
@@ -336,7 +324,7 @@
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight:900;
-      letter-spacing:.08em;
+      letter-spacing:.04em; /* slacker */
       text-transform:uppercase;
       font-size:12px;
       white-space:nowrap;
@@ -375,7 +363,7 @@
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight:900;
-      letter-spacing:.08em;
+      letter-spacing:.04em; /* slacker */
       text-transform:uppercase;
       font-size:17px;
       color: var(--limeText);
@@ -471,6 +459,7 @@
     }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
+    /* powder/merch/plants unchanged */
     .cat-text{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:2px; font-weight:1000; text-transform:uppercase; letter-spacing:0.02em;
@@ -565,7 +554,7 @@
       min-width: 18px;
     }
 
-    .pimg{ background:#fff; border-bottom: var(--thin-outline); flex:0 0 auto; }
+    .pimg{ background:#fff; border-bottom: var(--thin-outline); flex:0 0 auto; position:relative; }
     .pimg img{ width:100%; height: var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
 
     .pbot{
@@ -575,25 +564,23 @@
       align-items:stretch;
       background: var(--para-green);
     }
-    .click-frame{ width:100%; background: transparent; padding:0; display:flex; }
+
+    /* layout: price over add (left stack), variant right-aligned (top), qty (bottom right) */
     .click-inner{
       width:100%;
-      background: transparent;
-      padding:0;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      justify-content:flex-start;
-      border:none;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      align-items:stretch;
     }
+    .left-stack{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .right-stack{ display:flex; flex-direction:column; gap:6px; align-items:stretch; min-width:0; }
 
-    /* row1: prevent INFO from being pushed off by variant box */
-    .row1{ display:flex; align-items:center; gap:8px; flex-wrap:nowrap; }
-    .price-inline{
+    .price-over{
       height:26px;
       display:flex;
       align-items:center;
-      justify-content:flex-start;
+      justify-content:center; /* centered over ADD */
       color:#0b1220;
       font-weight:1000;
       letter-spacing:.02em;
@@ -601,31 +588,12 @@
       text-decoration: underline;
       text-underline-offset:2px;
       white-space:nowrap;
-      padding-left:2px;
-      flex:0 0 auto;
-      min-width:86px;
-    }
-    .desc-btn{
-      height:26px;
-      padding:0 10px;
-      border-radius:12px;
       border: var(--thin-outline);
-      background: var(--red-grad);
-      color: #ffffff;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:900;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:10px;
-      cursor:pointer;
-      white-space:nowrap;
-      display:flex; align-items:center; gap:6px;
-      flex:0 0 auto;
+      background: rgba(255,255,255,0.55);
+      border-radius:12px;
     }
-    .desc-btn svg{ width:16px; height:16px; stroke: #ffffff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-    /* variant box: flexible but capped so INFO never gets cut */
+    /* variant box right-aligned */
     .variant-box{
       height:26px;
       border: var(--thin-outline);
@@ -637,10 +605,9 @@
       gap:10px;
       cursor:pointer;
       user-select:none;
-      flex: 1 1 auto;
-      min-width: 140px;
-      max-width: 220px;
+      width:100%;
       justify-content:space-between;
+      margin-left:auto; /* right aligned in its column */
     }
     .variant-left{
       font-weight:950;
@@ -705,10 +672,8 @@
       box-shadow: inset 0 0 0 1px rgba(216,255,106,0.35);
     }
 
-    .row2{ display:flex; align-items:center; gap:10px; }
     .addq{
       height:32px;
-      flex:1 1 0;
       border-radius:14px;
       border: var(--thin-outline);
       background: var(--orange);
@@ -721,10 +686,11 @@
       display:flex; align-items:center; justify-content:center;
       box-shadow:0 10px 18px rgba(15,23,42,0.08);
       white-space:nowrap;
+      width:100%;
     }
+
     .qty-unified{
       height:32px;
-      flex:1 1 0;
       border-radius:14px;
       border: var(--thin-outline);
       background: var(--mobile-green-grad);
@@ -732,8 +698,7 @@
       align-items:stretch;
       overflow:hidden;
       box-shadow:0 10px 18px rgba(15,23,42,0.08);
-      min-width:110px;
-      max-width:160px;
+      width:100%;
     }
     .pm-stack{ width:30px; display:flex; flex-direction:column; flex:0 0 30px; }
     .pm-stack button{
@@ -759,49 +724,55 @@
     .qty-number::-webkit-outer-spin-button,
     .qty-number::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-    /* FOOTER */
+    /* FOOTER background is the image + dark overlay; lime text */
     footer{
       border-left: var(--frameBorder) solid rgba(12,90,42,0.95);
       border-right: var(--frameBorder) solid rgba(12,90,42,0.95);
-      background: linear-gradient(to bottom, #d8ff6a 0%, #7ae78a 52%, #1a6800 100%);
-      box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
       overflow:hidden;
       margin-top: 10px;
+
+      background-image:
+        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+        var(--footer-bg);
+      background-size: cover;
+      background-position: center;
     }
+
     .footer-wrap{
       max-width:1200px;
       margin:0 auto;
-      padding: 14px 22px 16px;
+      padding: 16px 22px 18px;
       display:grid;
       grid-template-columns: 1.2fr 1fr;
       gap:16px;
       align-items:stretch;
     }
 
-    /* newsletter stays right column as-is */
     .newsletter{ border:none; background: transparent; padding: 0; display:flex; flex-direction:column; gap:8px; align-items:flex-start; min-width:0; }
     .nl-title{
-      font-weight:950; letter-spacing:0.14em; text-transform:uppercase;
-      font-size:12px; color:#0b1220; text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      font-weight:950; letter-spacing:0.12em; text-transform:uppercase;
+      font-size:12px; color: var(--limeText);
+      text-shadow:0 2px 14px rgba(0,0,0,0.55);
     }
     .nl-sub{
       font-family: var(--font-pretty); font-style: italic; font-weight:850;
-      letter-spacing:0.01em; color: var(--green-deep);
-      font-size:13px; line-height:1.45; text-shadow:0 1px 0 rgba(255,255,255,0.45);
+      letter-spacing:0.01em; color: var(--limeText);
+      font-size:13px; line-height:1.45;
+      text-shadow:0 2px 14px rgba(0,0,0,0.55);
       max-width: 520px;
     }
     .newsletter-form{ display:flex; gap:10px; align-items:center; width:100%; max-width: 520px; }
     .newsletter-form input{
       flex:1; min-width: 180px; height:40px;
-      border-radius:14px; border: var(--thin-outline);
-      background: rgba(255,255,255,0.92);
+      border-radius:14px; border: 1px solid rgba(216,255,106,0.55);
+      background: rgba(255,255,255,0.90);
       padding: 0 12px; font-weight:900; font-size:12px;
       outline:none; color:#111827;
     }
     .metal-btn{
-      border: var(--thin-outline);
+      border: 1px solid rgba(216,255,106,0.55);
       background: var(--orange);
       color: #ffffff;
       border-radius:14px;
@@ -816,10 +787,9 @@
       align-items:center;
       justify-content:center;
       white-space:nowrap;
-      box-shadow:0 14px 36px rgba(15,23,42,0.08);
+      box-shadow:0 14px 36px rgba(0,0,0,0.25);
     }
 
-    /* Footer left: requested layout */
     .footer-left{
       display:flex;
       align-items:flex-start;
@@ -830,13 +800,13 @@
       width:116px;
       height:auto;
       cursor:pointer;
-      filter: drop-shadow(0 10px 18px rgba(15,23,42,0.18));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45));
       flex:0 0 auto;
     }
     .footer-text{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:10px;
       min-width:0;
       flex:1 1 auto;
       align-items:flex-start;
@@ -847,26 +817,29 @@
       display:flex;
       align-items:center;
       gap:8px;
-      flex-wrap:nowrap;   /* keep all on one line */
+      flex-wrap:nowrap;
       white-space:nowrap;
       font-family: var(--font-pretty);
       font-style: italic;
-      font-weight: 850;
+      font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      color: var(--limeText);
+      text-shadow:0 2px 14px rgba(0,0,0,0.60);
     }
-    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14)); }
+    .florida-icon{
+      width:26px; height:26px;
+      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.55));
+    }
 
     .copyright-line{
       font-family: var(--font-pretty);
       font-style: italic;
-      font-weight: 850;
+      font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      color: var(--limeText);
+      text-shadow:0 2px 14px rgba(0,0,0,0.60);
       white-space:nowrap;
     }
 
@@ -886,17 +859,17 @@
     .footer-links a{
       font-family: var(--font-pretty);
       font-style: italic;
-      font-weight: 850;
+      font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#0b1220;
+      color: var(--limeText);
       text-decoration:none;
-      border-bottom:1px solid rgba(11,18,32,0.28);
+      border-bottom:1px solid rgba(216,255,106,0.55);
       padding-bottom:2px;
       white-space:nowrap;
+      text-shadow:0 2px 14px rgba(0,0,0,0.60);
     }
 
-    /* icons right of sitemap, email last + text */
     .footer-icons{
       display:flex;
       align-items:center;
@@ -912,7 +885,7 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
-      box-shadow:0 12px 28px rgba(15,23,42,0.08);
+      box-shadow:0 12px 28px rgba(0,0,0,0.30);
       flex:0 0 auto;
     }
     .icon-pill svg{ width:20px; height:20px; stroke: var(--limeText); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -927,10 +900,10 @@
     .email-text{
       font-family: var(--font-pretty);
       font-style: italic;
-      font-weight: 850;
+      font-weight: 900;
       font-size:13px;
-      color:#0b1220;
-      text-shadow:0 1px 0 rgba(255,255,255,0.35);
+      color: var(--limeText);
+      text-shadow:0 2px 14px rgba(0,0,0,0.60);
       white-space:nowrap;
     }
 
@@ -975,44 +948,114 @@
       z-index:1;
     }
 
-    /* RESPONSIVE */
+    /* MODAL (description on image click) */
+    .overlay{
+      position:fixed; inset:0; display:none;
+      background: rgba(0,0,0,0.38);
+      backdrop-filter: blur(6px);
+      padding:18px;
+      overflow:auto;
+      z-index:2600;
+    }
+    body.modal-open .overlay{ display:block; }
+    .modal{
+      max-width: 860px;
+      margin: 40px auto;
+      border-radius:18px;
+      background: rgba(255,255,255,0.92);
+      border: var(--thin-outline);
+      box-shadow:0 18px 60px rgba(0,0,0,0.35);
+      overflow:hidden;
+    }
+    .modal-head{
+      background: var(--head-grad);
+      color: var(--limeText);
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: 1px solid rgba(216,255,106,0.35);
+    }
+    .modal-title{
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .modal-close{
+      width:40px;height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(216,255,106,0.55);
+      background: var(--orange);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .modal-close svg{
+      width:18px;height:18px;
+      stroke:#ffffff;
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .modal-body{
+      padding:14px;
+      display:grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap:14px;
+      background: rgba(255,255,255,0.92);
+    }
+    .modal-body img{
+      width:100%;
+      height:300px;
+      object-fit:cover;
+      border-radius:16px;
+      border: var(--thin-outline);
+      background:#fff;
+    }
+    .modal-copy{
+      border-radius:16px;
+      border: var(--thin-outline);
+      background: var(--para-green);
+      padding:12px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.7;
+      color:#0b1220;
+    }
+
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media(max-width:980px){
-      :root{ --sideW: 120px; }
-      .frame-wrap{ width: calc(100vw - (var(--sideW) * 2)); margin-left: var(--sideW); margin-right: var(--sideW); }
-      .sticky-top{ left: var(--sideW); right: var(--sideW); }
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
       .cat-tab{ display:none; }
       .section-sep{ width:100%; margin-left:0; }
       .store-content{ padding-left:0; }
-
       .footer-wrap{ grid-template-columns:1fr; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
-      .footer-row3{ align-items:flex-start; }
       .footer-icons{ flex-wrap:wrap; }
       .email-inline{ flex-wrap:wrap; }
+      .modal-body{ grid-template-columns: 1fr; }
+      .modal-body img{ height:220px; }
     }
     @media(max-width:780px){
-      .side-frames{ display:none !important; }
-      .frame-wrap{ width:100% !important; margin:0 !important; }
-      .sticky-top{ left:0 !important; right:0 !important; border-left:none !important; border-right:none !important; }
-      main,footer{ border-left:none !important; border-right:none !important; }
       .nav-center{ display:none !important; }
-      .based-line{ flex-wrap:wrap; white-space:normal; }
+      main,footer{ border-left:none !important; border-right:none !important; }
     }
   </style>
 </head>
 
 <body>
-  <div class="side-frames" aria-hidden="true">
-    <div class="side left"><div class="stack" id="stack-left"></div></div>
-    <div class="side right"><div class="stack" id="stack-right"></div></div>
-  </div>
-
   <div class="frame-wrap">
     <div class="sticky-top" id="sticky-top">
       <header class="site-header" aria-label="Site header">
@@ -1250,29 +1293,28 @@
   <!-- variant menu mount -->
   <div id="variant-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
+  <!-- image-click modal -->
+  <div class="overlay" id="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Product description">
+      <div class="modal-head">
+        <div class="modal-title" id="modal-title">Product</div>
+        <button class="modal-close" id="modal-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img id="modal-img" src="" alt="Product image" />
+        <div class="modal-copy" id="modal-copy">Product details are conceptual while the store is under development.</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
     const $  = (s, r=document)=> r.querySelector(s);
-
-    /* Side frame images */
-    (function(){
-      const webp = "mayanuts-the-maya-nut-company-image.webp";
-      const jpg  = "mayanuts-the-maya-nut-company-image.jpeg";
-      const L = document.getElementById("stack-left");
-      const R = document.getElementById("stack-right");
-      if(!L || !R) return;
-      const count = 10;
-      function makeImg(){
-        const im = document.createElement("img");
-        im.alt = "";
-        im.decoding = "async";
-        im.loading = "lazy";
-        im.src = webp;
-        im.onerror = ()=> { if(im.src.indexOf(jpg) === -1) im.src = jpg; };
-        return im;
-      }
-      for(let i=0;i<count;i++){ L.appendChild(makeImg()); R.appendChild(makeImg()); }
-    })();
 
     /* measure sticky header + compute initial filter gap */
     (function(){
@@ -1348,7 +1390,7 @@
         menu.className = "variant-menu";
         menu.style.pointerEvents = "auto";
 
-        const left = Math.min(window.innerWidth - 210, Math.max(10, Math.round(r.left)));
+        const left = Math.min(window.innerWidth - 210, Math.max(10, Math.round(r.right - 210)));
         const top = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6));
 
         menu.style.left = left + "px";
@@ -1381,6 +1423,34 @@
       window.__openVariantMenu = openVariantMenu;
     })();
 
+    /* Modal (open on image click) */
+    (function(){
+      const overlay = document.getElementById("modal-overlay");
+      const closeBtn = document.getElementById("modal-close");
+      const titleEl = document.getElementById("modal-title");
+      const imgEl = document.getElementById("modal-img");
+      const copyEl = document.getElementById("modal-copy");
+
+      function openModal({ title, img, text }){
+        document.body.classList.add("modal-open");
+        overlay?.setAttribute("aria-hidden","false");
+        titleEl.textContent = title || "Product";
+        imgEl.src = img || "";
+        imgEl.alt = title || "Product image";
+        copyEl.textContent = text || "Product details are conceptual while the store is under development.";
+      }
+      function closeModal(){
+        document.body.classList.remove("modal-open");
+        overlay?.setAttribute("aria-hidden","true");
+      }
+
+      closeBtn?.addEventListener("click", closeModal);
+      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "modal-overlay") closeModal(); });
+      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeModal(); });
+
+      window.__openProductModal = openModal;
+    })();
+
     /* category jump */
     (function(){
       document.querySelectorAll("[data-jump]").forEach(b=>{
@@ -1392,7 +1462,7 @@
       });
     })();
 
-    /* Store rendering + cart badge */
+    /* Store rendering + cart badge + variants + image modal */
     (function(){
       const PRODUCTS = [
         {
@@ -1436,6 +1506,16 @@
         { id:"seeds_10",    cat:"plants", title:"MayaNut Seeds (10 Pack)",     price:9.95,  img:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg", inStock:false }
       ];
 
+      const DESC = {
+        powder: "Concept preview: MayaNut powder. Select a weight to see the target price. Products are currently out of stock while the store is under development.",
+        pods: "Concept preview: instant MayaNut pods. Select an amount to see the target price. Products are currently out of stock while the store is under development.",
+        hat: "Concept preview: MayaNut hat (merch).",
+        shirt: "Concept preview: MayaNut T-shirt (merch).",
+        hoodie: "Concept preview: MayaNut hoodie (merch).",
+        seedling_1g: "Concept preview: MayaNut seedling (1 gallon).",
+        seeds_10: "Concept preview: MayaNut seeds (10 pack)."
+      };
+
       const grids = {
         powder: document.getElementById("grid-powder"),
         merch:  document.getElementById("grid-merch"),
@@ -1473,50 +1553,37 @@
               </div>
 
               <div class="pimg">
-                <img src="${p.img}" alt="${p.title}" />
+                <img src="${p.img}" alt="${p.title}" data-open-modal />
               </div>
 
               <div class="pbot">
-                <div class="click-frame">
-                  <div class="click-inner">
+                <div class="click-inner">
+                  <div class="left-stack">
+                    <div class="price-over" data-price>${money(basePrice)}</div>
+                    <button class="addq" type="button" data-add>ADD</button>
+                  </div>
 
-                    <div class="row1">
-                      <div class="price-inline" data-price>${money(basePrice)}</div>
-
-                      ${hasVariant ? `
-                        <div class="variant-box" data-variant-anchor data-variant="${p.id}">
-                          <div class="variant-left">${p.variant.label}</div>
-                          <div class="variant-right">
-                            <div class="variant-value" data-variant-value>${variantLabel}</div>
-                            <svg class="variant-caret" viewBox="0 0 24 24" aria-hidden="true">
-                              <path d="M6 9l6 6 6-6"></path>
-                            </svg>
-                          </div>
+                  <div class="right-stack">
+                    ${hasVariant ? `
+                      <div class="variant-box" data-variant-anchor data-variant="${p.id}">
+                        <div class="variant-left">${p.variant.label}</div>
+                        <div class="variant-right">
+                          <div class="variant-value" data-variant-value>${variantLabel}</div>
+                          <svg class="variant-caret" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6"></path>
+                          </svg>
                         </div>
-                      ` : ""}
-
-                      <button class="desc-btn" type="button">
-                        INFO
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M4 12h12"></path>
-                          <path d="M14 6l6 6-6 6"></path>
-                        </svg>
-                      </button>
-                    </div>
-
-                    <div class="row2">
-                      <button class="addq" type="button" data-add>ADD</button>
-
-                      <div class="qty-unified" aria-label="Quantity">
-                        <div class="pm-stack">
-                          <button class="pm-plus" type="button" aria-label="Increase">+</button>
-                          <button class="pm-minus" type="button" aria-label="Decrease">-</button>
-                        </div>
-                        <div class="qty-sep" aria-hidden="true"></div>
-                        <input class="qty-number" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity value" />
                       </div>
-                    </div>
+                    ` : `<div style="height:26px"></div>`}
 
+                    <div class="qty-unified" aria-label="Quantity">
+                      <div class="pm-stack">
+                        <button class="pm-plus" type="button" aria-label="Increase">+</button>
+                        <button class="pm-minus" type="button" aria-label="Decrease">-</button>
+                      </div>
+                      <div class="qty-sep" aria-hidden="true"></div>
+                      <input class="qty-number" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity value" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1597,6 +1664,31 @@
         });
       }
 
+      function wireImageModal(){
+        document.addEventListener("click", (e)=>{
+          const img = e.target?.closest?.("[data-open-modal]");
+          if(!img) return;
+
+          const shell = img.closest(".product-shell");
+          const id = shell?.getAttribute("data-id");
+          const p = PRODUCTS.find(x=>x.id===id);
+          if(!p) return;
+
+          const key = shell.getAttribute("data-variant-key");
+          const variantLabel = p.variant ? getVariantLabel(p, key || p.variant.defaultKey) : "";
+          const price = p.variant ? getVariantPrice(p, key || p.variant.defaultKey) : p.price;
+
+          const detailLine = p.variant ? `Selected: ${variantLabel} • ${money(price)}` : `Price: ${money(price)}`;
+          const text = `${DESC[p.id] || "Product details are conceptual while the store is under development."}\n\n${detailLine}`;
+
+          window.__openProductModal?.({
+            title: p.title,
+            img: p.img,
+            text
+          });
+        });
+      }
+
       function apply(){
         const q = norm(state.q);
 
@@ -1642,6 +1734,7 @@
       apply();
       bindDesktopFilters();
       bindSearch();
+      wireImageModal();
     })();
   </script>
 </body>

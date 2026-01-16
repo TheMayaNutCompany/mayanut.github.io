@@ -30,8 +30,6 @@
   <meta name="format-detection" content="telephone=no" />
 
   <!-- Slackey font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Slackey&display=swap" />
 
   <!-- Preload -->
@@ -51,13 +49,15 @@
       --orange-mid:#ff7a1a;
       --orange-hi:#ffd2a8;
 
+      --lime:#d8ff6a;
+
       --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
       --panel-green-grad: linear-gradient(
         90deg,
         #0b3b17 0%,
-        #1a6800 22%,
-        #2a8b2f 54%,
+        #1a6800 20%,
+        #2a8b2f 52%,
         #1a6800 82%,
         #0b3b17 100%
       );
@@ -65,13 +65,14 @@
       --panel-green-grad-vert: linear-gradient(
         180deg,
         #0b3b17 0%,
-        #1a6800 22%,
-        #2a8b2f 54%,
+        #1a6800 20%,
+        #2a8b2f 52%,
         #1a6800 82%,
         #0b3b17 100%
       );
 
       --head-grad: linear-gradient(180deg, #0b3b17 0%, #1a6800 60%, #0b3b17 100%);
+      --mobile-green-grad: linear-gradient(180deg, #b7ff3f 0%, #2a8b2f 45%, #0b3b17 100%);
 
       --store-rest-bg: linear-gradient(
         180deg,
@@ -87,8 +88,6 @@
         rgba(179,232,135,0.96) 100%
       );
 
-      --pale-green: rgba(233,255,214,0.98);
-
       --metal-orange: linear-gradient(
         180deg,
         var(--orange-hi) 0%,
@@ -103,21 +102,19 @@
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      --stickyOffset: 180px; /* set via JS */
+      --stickyOffset: 140px; /* set via JS */
       --filterGap: 10px;
 
-      --navH: 176px;
+      --navH: 156px;
 
-      --cardImgH: 214px;
-      --cardMinH: 375px;
+      --cardImgH: 196px;
+      --cardMinH: 365px;
 
-      --catTabW: 64px;
+      --catTabW: 56px;
 
       --a11y-blue:#084ac5;
 
       --thin-outline: 1px solid rgba(12,90,42,0.45);
-
-      --frame-band-h: 52px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -126,18 +123,21 @@
       background: var(--page-bg);
       overflow-x:hidden;
       scroll-padding-top: calc(var(--stickyOffset) + var(--filterGap) + 12px);
+      text-rendering: geometricPrecision;
+      -webkit-text-size-adjust: 100%;
     }
     body{
       font-family: var(--font-sans);
       background: var(--page-bg);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       overflow-x:hidden;
       overscroll-behavior-y:none;
     }
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
-    button,input{ font-family:inherit; }
+    button,input,select{ font-family:inherit; }
 
     .frame-wrap{ position:relative; width:100%; min-height:100vh; padding-top: var(--stickyOffset); overflow-x: clip; }
 
@@ -152,126 +152,88 @@
       transform: translateZ(0);
     }
 
-    /* medium thickness top framing banner */
-    .frame-band{
-      height: var(--frame-band-h);
-      background: var(--head-grad);
-      border-bottom: 1px solid rgba(255,255,255,0.20);
-    }
-
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
-      padding: 20px 0 22px;
-      position:relative;
-      min-height: var(--navH);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      padding: 26px 0 22px;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; min-height: var(--navH);
     }
     .site-header::after{
-      content:"";
-      position:absolute; inset:0;
+      content:""; position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 55%);
       pointer-events:none;
     }
 
-    /* Center brand row with NO transforms (crisper Slackey) */
-    .brand-row{
+    /* Center brand: logo next to brand text */
+    .brand-center{
       position:absolute;
-      left:0; right:0;
-      top:0; bottom:0;
+      left:50%;
+      top:52%;
+      transform: translate(-50%, -50%);
       display:flex;
       align-items:center;
-      justify-content:center;
+      gap:10px;
+      z-index:3;
       pointer-events:none;
-      z-index:2;
-    }
-    .brand-lockup{
-      display:flex;
-      align-items:center;
-      gap:12px;
+      user-select:none;
       white-space:nowrap;
     }
-    .brand-lockup img{
+    .brand-center img{
       width:86px;
       height:86px;
       object-fit:contain;
       filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22));
     }
-    .brand-title{
+    .brand-center .brand-text{
       font-family: "Slackey", system-ui, sans-serif;
-      font-weight:400;
-      letter-spacing:.02em;
+      font-weight: 400;
+      letter-spacing: .02em;
+      text-transform:none;
       font-size: 36px;
-      color:#d8ff6a;
-      -webkit-text-stroke: 1px rgba(11,59,23,0.95);
+      color: var(--lime);
+      -webkit-text-stroke: 0.6px rgba(11,59,23,0.95);
       text-shadow: 0 14px 34px rgba(15,23,42,0.20);
-      text-rendering: geometricPrecision;
-      -webkit-font-smoothing: antialiased;
-      font-smooth: always;
     }
 
-    /* menu options under brand: Slackey, white, thin green outline */
-    .menu-row{
+    /* Top actions: email left, espanol right */
+    .top-actions{
       position:absolute;
       left:0; right:0;
-      top: calc(50% + 34px);
+      top:52%;
+      transform: translateY(-50%);
+      z-index:4;
+      pointer-events:none;
+    }
+    .actions-left{
+      position:absolute;
+      left:10px;
+      top:50%;
+      transform: translateY(-50%);
       display:flex;
-      justify-content:center;
-      gap: 18px; /* closer together */
-      z-index:3;
+      gap:10px;
+      align-items:center;
       pointer-events:auto;
-      user-select:none;
     }
-    .menu-row a{
-      font-family:"Slackey", system-ui, sans-serif;
-      font-weight:400;
-      font-size: 20px; /* between brand title and store/filter size */
-      color:#ffffff;
-      letter-spacing:.02em;
-      text-shadow: 0 10px 22px rgba(15,23,42,0.20);
-      -webkit-text-stroke: 0.8px rgba(11,59,23,0.95);
-      text-rendering: geometricPrecision;
-      white-space:nowrap;
-      padding: 2px 4px;
-    }
-    .menu-row a.is-active{
-      color: var(--orange);
-      -webkit-text-stroke: 0.9px rgba(11,59,23,0.95);
+    .actions-right{
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform: translateY(-50%);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      pointer-events:auto;
     }
 
-    /* top-right: Español + email icon (both aligned right, centered vertically) */
-    .nav-right{
-      position:absolute;
-      top:0; bottom:0;
-      right:12px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      z-index:4;
-      pointer-events:auto;
-    }
-    .lang-pill{
-      height:40px; padding:0 14px; border-radius:14px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: var(--panel-green-grad);
-      color:#ffffff;
-      font-weight:950; letter-spacing:0.10em;
-      text-transform:uppercase; font-size:12px;
-      box-shadow:0 10px 22px rgba(15,23,42,0.12);
-      display:inline-flex; align-items:center; justify-content:center;
-      flex:0 0 auto;
-      white-space:nowrap;
-    }
     .email-top{
       width:40px; height:40px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,0.55);
-      background: var(--panel-green-grad);
+      background: var(--mobile-green-grad);
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -287,15 +249,70 @@
       stroke-linejoin:round;
     }
 
+    .lang-pill{
+      height:40px; padding:0 14px; border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: var(--mobile-green-grad);
+      color:#ffffff;
+      font-weight:950; letter-spacing:0.10em;
+      text-transform:uppercase; font-size:12px;
+      box-shadow:0 10px 22px rgba(15,23,42,0.12);
+      display:inline-flex; align-items:center; justify-content:center;
+      flex:0 0 auto;
+      white-space:nowrap;
+    }
+
+    /* Slackey menu row under brand */
+    .slackey-menu{
+      position:absolute;
+      left:50%;
+      top:78%;
+      transform: translate(-50%, -50%);
+      display:flex;
+      gap:26px;
+      z-index:4;
+      pointer-events:auto;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .slackey-menu a{
+      font-family:"Slackey", system-ui, sans-serif;
+      font-weight:400;
+      font-size:18px;
+      color:#ffffff;
+      letter-spacing:0.02em;
+      -webkit-text-stroke: 0.45px rgba(11,59,23,0.90);
+      text-shadow:0 10px 22px rgba(15,23,42,0.16);
+      line-height:1;
+      padding:2px 2px;
+      text-decoration:none;
+    }
+    .slackey-menu a.is-active{
+      color: var(--orange);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 6px;
+    }
+
+    /* Frame banners inside main */
+    .frame-banner{
+      height:18px;               /* half height */
+      background: var(--head-grad); /* exact match */
+      border-left: 1px solid rgba(12,90,42,0.35);
+      border-right: 1px solid rgba(12,90,42,0.35);
+    }
+
     main{
-      border-top: 2px solid rgba(12,90,42,0.95);
+      /* remove border-top to prevent double line with sticky bottom border */
+      border-top: none;
       border-bottom: 2px solid rgba(12,90,42,0.95);
       box-shadow: var(--shadow);
       background: #ffffff;
       min-height: calc(100vh - var(--stickyOffset));
       overflow: visible;
     }
-    .content-wrapper{ padding:10px 10px 32px; max-width:1400px; margin:0 auto; }
+
+    .content-wrapper{ padding:10px 10px 22px; max-width:1400px; margin:0 auto; }
     .store-layout{ display:grid; grid-template-columns: 220px 1fr; gap:10px; align-items:start; }
 
     .filter-outline, .oframe{
@@ -316,11 +333,11 @@
     .left-head{
       background: var(--head-grad);
       padding:10px 12px;
-      font-family:"Slackey", system-ui, sans-serif; /* Slackey */
+      font-family: "Slackey", system-ui, sans-serif;
       font-weight:400;
       letter-spacing:.06em;
       text-transform:uppercase;
-      font-size:16px;
+      font-size:14px;
       color:#ffffff;
       border-bottom: var(--thin-outline);
       min-height:56px;
@@ -349,7 +366,7 @@
       border-radius:12px;
       padding:5px 10px;
       border:1px solid rgba(255,255,255,0.35);
-      font-family:"Slackey", system-ui, sans-serif;
+      font-family: "Slackey", system-ui, sans-serif;
       font-weight:400;
       letter-spacing:.06em;
       text-transform:uppercase;
@@ -368,7 +385,6 @@
       border-radius:18px;
       overflow:hidden;
     }
-
     .grid-head{
       background: var(--head-grad);
       padding:10px 12px;
@@ -380,36 +396,41 @@
       min-height:56px;
     }
 
-    /* remove "MayaNut Store" text; desktop header = search + line + checkout */
+    /* Search left, line divider, checkout right */
     .grid-tools{
-      width:100%;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
+      width:100%;
     }
 
     .store-search{
-      height:40px;
+      height:38px;
       border-radius:14px;
       border: var(--thin-outline);
       background:#fff;
       display:flex;
       align-items:center;
       overflow:hidden;
+      width: 260px;          /* half-length */
+      max-width: 58vw;
       box-shadow:0 10px 20px rgba(15,23,42,0.06);
-      flex: 2 1 0; /* double checkout */
-      min-width: 260px;
+      min-width: 220px;
     }
-    .store-search .mag{
-      width:40px; height:40px;
+    .store-search .mag,
+    .store-search .xbtn{
+      width:38px; height:38px;
       display:flex; align-items:center; justify-content:center;
-      flex:0 0 40px;
-      user-select:none;
+      flex:0 0 38px;
+      cursor:pointer; user-select:none;
+      background: transparent;
+      border:none;           /* no internal vertical lines */
     }
-    .store-search .mag svg{
+    .store-search .mag svg,
+    .store-search .xbtn svg{
       width:16px; height:16px;
-      stroke:var(--orange);
+      stroke: var(--orange);
       fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -418,69 +439,48 @@
     .store-search input{
       border:none; outline:none; background:transparent;
       color:#0b1220; font-weight:950; letter-spacing:.02em; font-size:12px;
-      padding:0 12px 0 2px;
-      width:100%;
-      min-width:0;
-      caret-color:var(--orange);
+      padding:0 10px; width:100%; min-width:0; caret-color:var(--orange);
     }
-    .store-search .xbtn{
-      width:40px; height:40px;
-      display:flex; align-items:center; justify-content:center;
-      flex:0 0 40px;
-      cursor:pointer;
-      background:transparent;
-      border:none; /* no vertical lines */
-    }
-    .store-search .xbtn svg{
-      width:16px; height:16px;
-      stroke:var(--orange);
-      fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      opacity:.85;
-    }
-
-    .tools-line{
-      flex:1 1 auto;
+    .store-divider{
       height:2px;
+      flex:1 1 auto;
       background: var(--line-grad);
       border-radius:999px;
       opacity:.9;
       transform: translateY(1px);
+      min-width: 34px;
     }
 
+    /* compact checkout */
     .checkout-fused{
-      height:40px;
+      height:38px;
       border-radius:14px;
-      padding:0 12px;
+      padding:0 10px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--metal-orange);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       gap:8px;
       cursor:pointer;
       box-shadow:0 10px 18px rgba(15,23,42,0.10);
       user-select:none;
-      flex: 1 0 0; /* half-ish */
-      min-width: 180px;
+      min-width: 0;
+      width: auto;            /* shorter */
       position:relative;
+    }
+    .checkout-fused .txt{
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:10px;
+      color:#ffffff;
       white-space:nowrap;
     }
-    .checkout-fused .dust{ display:flex; flex-direction:column; gap:3px; margin-right:-4px; align-items:flex-end; }
-    .checkout-fused .dust span{ display:block; height:2px; border-radius:999px; background:#ffffff; opacity:.9; }
-    .checkout-fused .dust span:nth-child(1){ width:10px; }
-    .checkout-fused .dust span:nth-child(2){ width:16px; }
-    .checkout-fused .dust span:nth-child(3){ width:12px; }
-
-    .cart-wrap{
+    .cart-icon-wrap{
       position:relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      width:18px; height:18px;
+      display:flex; align-items:center; justify-content:center;
     }
-    .checkout-fused svg.cart-ico{
+    .cart-icon-wrap svg{
       width:18px; height:18px;
       stroke:#ffffff;
       fill:none;
@@ -488,19 +488,18 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-
-    /* badge: smaller, orange circle, white number; placed near cart tip (front) */
+    /* badge at the front tip of cart, smaller */
     .cart-badge{
       position:absolute;
-      left:-8px;           /* overlap cart front */
-      top:2px;
+      top:-7px;
+      left:-9px;              /* more left toward tip */
       min-width:14px;
       height:14px;
       padding:0 4px;
       border-radius:999px;
       background: var(--orange);
-      border:1px solid rgba(255,255,255,0.55);
-      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.65);
+      color:#ffffff;          /* number white */
       font-weight:1000;
       font-size:10px;
       display:flex;
@@ -510,28 +509,16 @@
       pointer-events:none;
     }
 
-    .checkout-fused .txt{
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:10px;
-      color:#ffffff;
-      white-space:nowrap;
-    }
-
-    .grid-body{
-      padding:0 12px 10px;
-      padding-left:0; /* allow left tab to merge */
-    }
+    .grid-body{ padding:0; }               /* remove bottom gap so left tab meets bottom */
     .store-body-wrap{
       display:flex;
       align-items:stretch;
       gap:0;
       position:relative;
-      min-height: 100%; /* helps bottom meet */
+      padding:0 12px 12px;                 /* controlled padding here */
     }
 
-    /* CONNECT LEFT TAB to top store header AND ensure bottom meets evenly */
+    /* CONNECT left tab into store header area cleanly */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -540,14 +527,14 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding-top: 56px;   /* header height */
-      margin-top: -56px;   /* pull into header */
+      padding-top: 56px;     /* header height */
+      margin-top: -56px;     /* pull into header */
       border-top-left-radius:18px;
       border-bottom-left-radius:18px;
       overflow:hidden;
       position:relative;
-      align-self:stretch;  /* ensure it reaches bottom */
     }
+    /* rounded inner corner where tab meets header */
     .cat-tab::before{
       content:"";
       position:absolute;
@@ -569,27 +556,27 @@
       align-items:center;
       justify-content:center;
       flex:1 1 0;
-      padding:10px 0;
+      padding:12px 0;
     }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
-
-    /* bigger + more vertical spacing between letters */
+    /* renamed category words */
     .cat-text{
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:5px;                 /* taller spacing */
+      gap:4px;
       font-weight:1000;
       text-transform:uppercase;
-      letter-spacing:0.02em;
-      color: var(--orange);
-      -webkit-text-stroke: 1px rgba(11,59,23,0.95);
-      text-shadow: 0 2px 10px rgba(15,23,42,0.15);
-      line-height:1;
-      font-size:30px;          /* slightly bigger */
+      letter-spacing:0.08em; /* taller spacing feel */
+      color: var(--lime);
+      -webkit-text-stroke: 0.55px rgba(11,59,23,0.95);
+      text-shadow: 0 2px 10px rgba(15,23,42,0.18);
+      line-height:1.08;
+      font-size:24px;
       width:100%;
+      text-rendering: geometricPrecision;
     }
 
     .store-content{
@@ -600,10 +587,11 @@
       gap:10px;
       padding-left:12px;
       padding-top:10px;
+      padding-bottom: 0;
     }
 
-    /* removed the full-width section separators */
-    .section-sep{ display:none !important; }
+    /* remove full-width separators (requested) */
+    .section-sep{ display:none; }
 
     .section-block{
       border-radius:18px;
@@ -626,43 +614,43 @@
     }
     .product-inner{ flex:1; display:flex; flex-direction:column; }
 
-    /* product top header: left dark green -> right pale green */
+    /* product top: left dark -> right pale green */
     .prod-head{
-      background: linear-gradient(
-        90deg,
-        #0b3b17 0%,
-        #0b3b17 48%,
-        rgba(233,255,214,0.98) 100%
-      );
-      padding:10px 10px;
-      display:flex;
-      align-items:center;
-      gap:10px;
+      background: linear-gradient(90deg, #0b3b17 0%, rgba(233,255,214,0.98) 62%, rgba(233,255,214,0.98) 100%);
+      padding:8px 10px;
+      display:flex; align-items:center; gap:10px;
       border-bottom: var(--thin-outline);
-      min-height:46px;
+      min-height:44px;
     }
-    .prod-title{
-      font-family: var(--font-sans);
-      font-weight: 950;
-      font-size: 13px;
-      letter-spacing: .02em;
+    .prod-title-pill{
+      background: transparent;
       color:#ffffff;
+      border-radius:0;
+      padding:0;
+      border:none;
+      font-family: var(--font-sans); /* same family as rest of site */
+      font-style: normal;
+      font-weight: 950;
+      letter-spacing:.02em;
+      font-size:13px;
       white-space:nowrap;
+      max-width: 100%;
       overflow:hidden;
       text-overflow:ellipsis;
-      text-shadow: 0 2px 12px rgba(15,23,42,0.25);
-      padding-left:2px;
+      display:inline-flex;
+      align-items:center;
+      text-shadow: 0 2px 10px rgba(15,23,42,0.25);
+    }
+    .prod-title-line{
+      flex:1; height:2px; background: var(--line-grad);
+      border-radius:999px; transform: translateY(2px);
+      opacity:.65; min-width: 18px;
     }
 
     .pimg{ background:#fff; border-bottom: var(--thin-outline); }
     .pimg img{ width:100%; height:var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
 
-    .pbot{
-      padding:8px;
-      flex:1 1 auto;
-      display:flex;
-      background: var(--para-green);
-    }
+    .pbot{ padding:8px; flex:1 1 auto; display:flex; background: var(--para-green); }
     .click-inner{
       width:100%;
       display:grid;
@@ -673,7 +661,6 @@
       align-content:start;
     }
 
-    /* price LEFT aligned */
     .price-inline{
       grid-column: 1;
       height:26px;
@@ -687,7 +674,6 @@
       padding-left:2px;
     }
 
-    /* right aligned variant dropdown */
     .variant-box{
       grid-column: 2;
       justify-self:end;
@@ -739,49 +725,54 @@
       white-space:nowrap;
     }
 
-    /* quantity: rounded rectangle; minus left, number center (green gradient), plus right */
-    .qty-pill{
+    /* NEW quantity: minus | number | plus */
+    .qty-h{
       grid-column: 2;
       justify-self:end;
       height:32px;
-      display:grid;
-      grid-template-columns: 34px 1fr 34px;
-      gap:6px;
-      align-items:center;
-      min-width: 150px;
-      max-width: 210px;
-    }
-    .qty-pill button{
-      height:32px;
       border-radius:14px;
       border: var(--thin-outline);
-      background: var(--metal-orange);
-      color:#ffffff;
+      background: rgba(255,255,255,0.20);
+      display:flex;
+      align-items:stretch;
+      overflow:hidden;
+      box-shadow:0 10px 18px rgba(15,23,42,0.08);
+      min-width:140px;
+      max-width:180px;
+    }
+    .qty-h button{
+      width:38px;
+      border:none;
+      cursor:pointer;
       font-weight:1000;
       font-size:14px;
-      cursor:pointer;
+      color:#ffffff;
+      background: var(--mobile-green-grad);
       display:flex;
       align-items:center;
       justify-content:center;
       user-select:none;
-      box-shadow:0 10px 18px rgba(15,23,42,0.08);
       line-height:1;
     }
-    .qty-pill input{
-      height:32px;
-      border-radius:14px;
-      border: var(--thin-outline);
-      background: var(--panel-green-grad);
+    .qty-mid{
+      flex:1;
+      background: var(--mobile-green-grad);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 6px;
+    }
+    .qty-number{
+      width:100%;
+      border:none; outline:none; background:transparent;
       color:#ffffff;
       font-weight:1000;
       font-size:12px;
       text-align:center;
-      outline:none;
       -moz-appearance:textfield;
-      box-shadow:0 10px 18px rgba(15,23,42,0.08);
     }
-    .qty-pill input::-webkit-outer-spin-button,
-    .qty-pill input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+    .qty-number::-webkit-outer-spin-button,
+    .qty-number::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
     .tagline{
       grid-column: 1 / -1;
@@ -797,7 +788,6 @@
       margin-top:2px;
     }
 
-    /* Variant menu */
     .variant-menu{
       position:absolute;
       z-index:2000;
@@ -809,7 +799,7 @@
       border-radius:14px;
     }
     .variant-menu .opt{
-      border-radius:12px;
+      border-radius:10px;
       padding:8px 10px;
       cursor:pointer;
       font-weight:950;
@@ -826,7 +816,6 @@
       outline-offset: -2px;
     }
 
-    /* MODAL */
     .overlay{
       position:fixed; inset:0; display:none;
       background: rgba(0,0,0,0.35);
@@ -854,15 +843,15 @@
     }
     .modal-title{
       color:#ffffff;
-      font-family: "Slackey", system-ui, sans-serif;
-      font-weight:400;
-      letter-spacing:.06em;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:900;
+      letter-spacing:.04em;
       text-transform:uppercase;
-      font-size:13px;
+      font-size:14px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      text-rendering: geometricPrecision;
     }
     .modal-close{
       width:40px; height:40px;
@@ -902,39 +891,19 @@
       white-space:pre-line;
     }
 
-    /* Footer: background image tiled/stacked feel, no darkening overlay; text WHITE */
+    /* Footer with non-glitched repeating background image (no dark overlay) */
     footer{
-      position:relative;
       border-top: 2px solid var(--green);
       border-bottom: 2px solid var(--green);
-      color:#ffffff;
-      margin-top:10px;
-      overflow:hidden;
-      background: transparent;
-    }
-    footer::before{
-      content:"";
-      position:absolute;
-      inset:-120px; /* allow rotation without gaps */
-      background-image:url("mayanuts-the-maya-nut-company-image.jpeg");
+      background-color: #0b3b17;
+      background-image: url("mayanuts-the-maya-nut-company-image.jpeg");
       background-repeat: repeat-x;
-      background-size: 420px 420px; /* shows more of image */
-      background-position: center;
-      transform: rotate(90deg);
-      transform-origin:center;
-      opacity: 1;
-      pointer-events:none;
+      background-size: auto 140px;
+      background-position: center center;
+      color:#fff;
+      margin-top:10px;
     }
-    /* bottom framing banner */
-    .frame-band-bottom{
-      height: var(--frame-band-h);
-      background: var(--head-grad);
-      border-top: 1px solid rgba(255,255,255,0.20);
-    }
-
     .footer-wrap{
-      position:relative;
-      z-index:1;
       max-width:1200px;
       margin:0 auto;
       padding: 16px 22px 18px;
@@ -942,6 +911,8 @@
       grid-template-columns: 1.2fr 1fr;
       gap:16px;
       align-items:stretch;
+      position:relative;
+      z-index:1;
     }
     .footer-left{ display:flex; align-items:flex-start; gap:16px; }
     .footer-logo{ width:116px; height:auto; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35)); }
@@ -952,14 +923,14 @@
       font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#ffffff;
-      text-shadow:0 2px 14px rgba(0,0,0,0.50);
+      color:#ffffff; /* white contrast */
+      text-shadow:0 2px 14px rgba(0,0,0,0.40);
       white-space:nowrap;
       display:flex;
       align-items:center;
       gap:8px;
     }
-    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.45)); }
+    .florida-icon{ width:26px; height:26px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.35)); }
     .footer-links{ display:flex; gap:16px; flex-wrap:wrap; }
     .footer-links a{
       font-family: var(--font-pretty);
@@ -967,27 +938,28 @@
       font-weight: 900;
       font-size:14px;
       letter-spacing:0.04em;
-      color:#ffffff;
-      border-bottom:1px solid rgba(255,255,255,0.55);
+      color:#ffffff; /* white contrast */
+      border-bottom:1px solid rgba(255,255,255,0.40);
       padding-bottom:2px;
       white-space:nowrap;
-      text-shadow:0 2px 14px rgba(0,0,0,0.55);
+      text-shadow:0 2px 14px rgba(0,0,0,0.40);
     }
+
     .newsletter{ display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
-    .nl-title{ font-weight:950; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.55); }
-    .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:13px; line-height:1.45; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.55); max-width:520px; }
+    .nl-title{ font-weight:950; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.40); }
+    .nl-sub{ font-family: var(--font-pretty); font-style: italic; font-weight:850; font-size:13px; line-height:1.45; color:#ffffff; text-shadow:0 2px 14px rgba(0,0,0,0.40); max-width:520px; }
     .newsletter-form{ display:flex; gap:10px; align-items:center; width:100%; max-width:520px; }
     .newsletter-form input{
       flex:1; min-width: 180px; height:40px;
-      border-radius:14px; border: 1px solid rgba(255,255,255,0.65);
-      background: rgba(255,255,255,0.92);
+      border-radius:14px; border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.90);
       padding: 0 12px; font-weight:900; font-size:12px;
       outline:none; color:#111827;
     }
     .metal-btn{
-      border: 1px solid rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.45);
       background: var(--metal-orange);
-      color:#ffffff;
+      color: #ffffff;
       border-radius:14px;
       padding:10px 14px;
       font-size:11px;
@@ -1006,7 +978,7 @@
     .icon-pill{
       width:36px; height:36px;
       border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.60);
+      border: 1px solid rgba(255,255,255,0.40);
       background: var(--metal-orange);
       display:inline-flex;
       align-items:center;
@@ -1024,7 +996,6 @@
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
-    /* Accessibility */
     .fab{
       position:fixed; z-index:1300;
       width:52px; height:52px;
@@ -1053,81 +1024,84 @@
       position:relative; z-index:1;
     }
 
-    /* RESPONSIVE */
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .brand-title{ font-size:32px; }
-      .brand-lockup img{ width:78px; height:78px; }
-      .menu-row a{ font-size:18px; }
+      .store-search{ width: 240px; }
+      .slackey-menu{ gap:18px; }
     }
     @media(max-width:980px){
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
       .cat-tab{ display:none; }
+      .store-body-wrap{ padding:0 0 12px; }
       .store-content{ padding-left:0; }
       .footer-wrap{ grid-template-columns:1fr; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
-
-      /* mobile store header: stack nicely */
-      .grid-tools{
-        flex-direction:column;
-        align-items:stretch;
-        gap:10px;
-      }
-      .tools-line{ width:100%; }
-      .checkout-fused{ width:100%; min-width:0; }
-      .store-search{ width:100%; min-width:0; }
+      .brand-center .brand-text{ font-size:30px; }
+      .brand-center img{ width:78px; height:78px; }
     }
     @media(max-width:780px){
-      .menu-row{ gap:14px; }
-      .menu-row a{ font-size:16px; }
-      .brand-title{ font-size:28px; }
-      .brand-lockup img{ width:70px; height:70px; }
-      .nav-right{ right:10px; }
-      .lang-pill{ height:38px; }
-      .email-top{ width:38px; height:38px; }
-      .footer-wrap{ padding:14px 16px 16px; }
-      .modal-body{ grid-template-columns:1fr; }
-      .modal-body img{ height:260px; }
+      .slackey-menu{
+        position:static;
+        transform:none;
+        justify-content:center;
+        padding:10px 0 0;
+        gap:18px;
+      }
+      .brand-center{
+        top:48%;
+      }
+      .brand-center img{ width:72px; height:72px; }
+      .brand-center .brand-text{ font-size:28px; }
+      .top-actions{ top:14px; transform:none; }
+      .actions-left{ top:0; transform:none; }
+      .actions-right{ top:0; transform:none; }
+      .site-header{ padding: 18px 0 14px; min-height: 160px; }
+      .grid-tools{ gap:8px; }
+      .store-search{ width: min(92vw, 340px); max-width: 92vw; }
+      .store-divider{ display:none; }
+      .grid-head{ padding:10px 10px; }
     }
   </style>
 </head>
 
 <body>
   <div class="frame-wrap">
-
     <div class="sticky-top" id="sticky-top">
-      <div class="frame-band" aria-hidden="true"></div>
-
       <header class="site-header" aria-label="Site header">
-        <div class="brand-row" aria-hidden="true">
-          <div class="brand-lockup">
-            <img src="mayanut-the-mayanut-comapny-logo.png" alt="" decoding="async" />
-            <div class="brand-title">The MayaNut Company</div>
+
+        <div class="top-actions" aria-hidden="false">
+          <div class="actions-left">
+            <a class="email-top" href="mailto:info@mayanut.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.5 6.5h15v11h-15z"></path>
+                <path d="M4.5 7l7.5 6 7.5-6"></path>
+              </svg>
+            </a>
+          </div>
+          <div class="actions-right">
+            <a class="lang-pill" href="store-es.html" aria-label="Switch to Español">ESPAÑOL</a>
           </div>
         </div>
 
-        <nav class="menu-row" aria-label="Primary navigation">
+        <div class="brand-center" aria-hidden="true">
+          <img src="mayanut-the-mayanut-comapny-logo.png" alt="" />
+          <div class="brand-text">The MayaNut Comapny</div>
+        </div>
+
+        <nav class="slackey-menu" aria-label="Primary navigation">
           <a href="index.html">Home</a>
           <a class="is-active" href="store.html" aria-current="page">Store</a>
           <a href="about.html">About</a>
           <a href="research.html">Research</a>
         </nav>
-
-        <div class="nav-right" aria-label="Top right controls">
-          <a class="lang-pill" href="store-es.html" aria-label="Switch to Español">ESPAÑOL</a>
-          <a class="email-top" href="mailto:info@mayanut.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4.5 6.5h15v11h-15z"></path>
-              <path d="M4.5 7l7.5 6 7.5-6"></path>
-            </svg>
-          </a>
-        </div>
       </header>
     </div>
 
     <main id="main-content" tabindex="-1" aria-label="Store">
+      <div class="frame-banner" aria-hidden="true"></div>
+
       <div class="content-wrapper">
         <div class="store-layout">
 
@@ -1170,9 +1144,9 @@
             <div class="grid-wrap">
               <div class="grid-head">
                 <div class="grid-tools" aria-label="Store tools">
-                  <div class="store-search" aria-label="Search MayaNut Store">
+                  <div class="store-search" aria-label="Search products">
                     <div class="mag" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="6.5"></circle>
                         <path d="M16.2 16.2L21 21"></path>
                       </svg>
@@ -1186,21 +1160,18 @@
                     </button>
                   </div>
 
-                  <div class="tools-line" aria-hidden="true"></div>
+                  <div class="store-divider" aria-hidden="true"></div>
 
                   <button class="checkout-fused" id="checkout-top" type="button" aria-label="Checkout">
-                    <div class="dust" aria-hidden="true"><span></span><span></span><span></span></div>
-
-                    <div class="cart-wrap" aria-hidden="true">
-                      <span class="cart-badge" id="cart-badge">0</span>
-                      <svg class="cart-ico" viewBox="0 0 24 24">
+                    <span class="cart-icon-wrap" aria-hidden="true">
+                      <span class="cart-badge" id="cart-badge" aria-hidden="true">0</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
                         <path d="M6 7l-1-3H2.5"></path>
                         <circle cx="9" cy="19" r="1.6"></circle>
                         <circle cx="17" cy="19" r="1.6"></circle>
                       </svg>
-                    </div>
-
+                    </span>
                     <div class="txt">CHECKOUT</div>
                   </button>
                 </div>
@@ -1209,14 +1180,14 @@
               <div class="grid-body">
                 <div class="store-body-wrap">
                   <aside class="cat-tab" aria-label="Categories">
-                    <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
-                      <span class="cat-text"><span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span></span>
+                    <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Ewert">
+                      <span class="cat-text"><span>E</span><span>W</span><span>E</span><span>R</span><span>T</span></span>
                     </button>
-                    <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Merch">
-                      <span class="cat-text"><span>M</span><span>E</span><span>R</span><span>C</span><span>H</span></span>
+                    <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Wild West">
+                      <span class="cat-text"><span>W</span><span>I</span><span>L</span><span>D</span><span>W</span><span>E</span><span>S</span><span>T</span></span>
                     </button>
-                    <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Plants">
-                      <span class="cat-text"><span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span></span>
+                    <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Adventure">
+                      <span class="cat-text"><span>A</span><span>D</span><span>V</span><span>E</span><span>N</span><span>T</span><span>U</span><span>R</span><span>E</span></span>
                     </button>
                   </aside>
 
@@ -1235,12 +1206,13 @@
                   </div>
                 </div>
               </div>
-
             </div>
           </section>
 
         </div>
       </div>
+
+      <div class="frame-banner" aria-hidden="true"></div>
     </main>
 
     <footer aria-label="Footer">
@@ -1290,9 +1262,8 @@
             </a>
           </div>
         </div>
-      </div>
 
-      <div class="frame-band-bottom" aria-hidden="true"></div>
+      </div>
     </footer>
   </div>
 
@@ -1393,7 +1364,6 @@
 
       const overlay = document.getElementById("desc-overlay");
       const closeBtn = document.getElementById("modal-close");
-
       function openModal(title, imgSrc, text){
         document.body.classList.add("modal-open");
         overlay.setAttribute("aria-hidden","false");
@@ -1407,7 +1377,6 @@
         document.body.classList.remove("modal-open");
         overlay.setAttribute("aria-hidden","true");
       }
-
       closeBtn?.addEventListener("click", closeModal);
       overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "desc-overlay") closeModal(); });
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeModal(); });
@@ -1456,7 +1425,6 @@
             { key:"p100", label:"100", price:89.95 }
           ]}
         },
-
         { id:"hat",    cat:"merch",  title:"MayaNut Hat",     price:15.00, img:"mayanut-merch-hat-brosimum-alicastrum.png", inStock:false, desc:"Lookin' good, support us in style!", tagline:"" },
         { id:"shirt",  cat:"merch",  title:"MayaNut T-Shirt", price:18.00, img:"mayanut-merch-shirt-brosimum-alicastrum.png", inStock:false, desc:"MayaNut T-shirt for MayaNut lovers!", tagline:"", variant:{ label:"SIZE", defaultKey:"m", options:[
           { key:"s", label:"Small", price:18.00 }, { key:"m", label:"Medium", price:18.00 }, { key:"l", label:"Large", price:18.00 }, { key:"xl", label:"XL", price:18.00 }
@@ -1464,20 +1432,12 @@
         { id:"hoodie", cat:"merch",  title:"MayaNut Hoodie",  price:30.00, img:"mayanut-merch-hoodie-brosimum-alicastrum.png", inStock:false, desc:"Stay warm like our trees!", tagline:"", variant:{ label:"SIZE", defaultKey:"m", options:[
           { key:"s", label:"Small", price:30.00 }, { key:"m", label:"Medium", price:30.00 }, { key:"l", label:"Large", price:30.00 }, { key:"xl", label:"XL", price:30.00 }
         ]}},
-
-        /* seedling: remove “(1 Gallon)” from title, use size dropdown with 1 GL */
-        { id:"seedling", cat:"plants", title:"MayaNut Seedling", img:"maya-nut-mayanut-plant-tree-nursery.jpg", inStock:false, desc:"Seedlings will be shipped bareroot.", tagline:"",
-          variant:{ label:"SIZE", defaultKey:"1gl", options:[
-            { key:"1gl", label:"1 GL", price:34.95 }
-          ]}
-        },
-
-        /* seeds: remove “10 Pack”, use amount dropdown with 10 pc */
-        { id:"seeds", cat:"plants", title:"MayaNut Seeds", img:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg", inStock:false, desc:"Seeds are water tested for improved viability.", tagline:"",
-          variant:{ label:"AMOUNT", defaultKey:"10pc", options:[
-            { key:"10pc", label:"10 pc", price:9.95 }
-          ]}
-        }
+        { id:"seedling", cat:"plants", title:"MayaNut Seedling", price:34.95, img:"maya-nut-mayanut-plant-tree-nursery.jpg", inStock:false, desc:"Seedlings will be shipped bareroot.", tagline:"", variant:{ label:"SIZE", defaultKey:"1gl", options:[
+          { key:"1gl", label:"1 GL", price:34.95 }
+        ]}},
+        { id:"seeds", cat:"plants", title:"MayaNut Seeds", price:9.95, img:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg", inStock:false, desc:"Seeds are water tested for improved viability.", tagline:"", variant:{ label:"AMOUNT", defaultKey:"10pc", options:[
+          { key:"10pc", label:"10 pc", price:9.95 }
+        ]}}
       ];
 
       const grids = {
@@ -1517,7 +1477,8 @@
                ${hasVariant ? `data-variant-key="${defaultKey}"` : ""}>
             <article class="product-inner">
               <div class="prod-head">
-                <div class="prod-title">${p.title}</div>
+                <span class="prod-title-pill">${p.title}</span>
+                <span class="prod-title-line" aria-hidden="true"></span>
               </div>
 
               <div class="pimg">
@@ -1542,10 +1503,12 @@
 
                   <button class="addq" type="button" data-add>ADD</button>
 
-                  <div class="qty-pill" aria-label="Quantity">
-                    <button type="button" class="qty-minus" aria-label="Decrease">−</button>
-                    <input class="qty-number" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity value" />
-                    <button type="button" class="qty-plus" aria-label="Increase">+</button>
+                  <div class="qty-h" aria-label="Quantity">
+                    <button class="qty-minus" type="button" aria-label="Decrease">−</button>
+                    <div class="qty-mid">
+                      <input class="qty-number" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-label="Quantity value" />
+                    </div>
+                    <button class="qty-plus" type="button" aria-label="Increase">+</button>
                   </div>
 
                   ${safeTag ? `<div class="tagline">${safeTag}</div>` : `<div class="tagline" style="opacity:0">.</div>`}
@@ -1569,6 +1532,7 @@
       function wireQtyButtons(){
         const clamp = (n)=> Math.max(1, Math.min(99, n));
         const setQty = (input, v)=> { input.value = String(clamp(parseInt(v,10)||1)); };
+
         document.querySelectorAll(".product-shell").forEach(shell=>{
           const qty = shell.querySelector(".qty-number");
           const plus = shell.querySelector(".qty-plus");
@@ -1642,7 +1606,6 @@
 
           const vid = shell.getAttribute("data-id");
           const p = PRODUCTS.find(x=>x.id===vid);
-
           let extra = "";
           if(p?.variant){
             const key = shell.getAttribute("data-variant-key") || p.variant.defaultKey;

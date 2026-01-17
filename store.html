@@ -22,19 +22,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Acme&family=Fredericka+the+Great&display=swap" rel="stylesheet" />
 
-  <!-- Preload -->
-  <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" />
-  <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
-  <link rel="preload" as="image" href="mayanuts-the-maya-nut-company-image.jpeg" />
-  <link rel="preload" as="image" href="florida-image-the-maya-nut-company.png" />
-
   <style>
     :root{
       --green:#066100;
       --greenDeep:#0b3b17;
 
       --orange:#fd6c02;
-      --orangeDarker:#d65402;
+      --orangeDarker:#d65402;   /* hover target */
+      --orangeBadge:#d24f02;    /* slightly darker badge fill */
+      --orangeMidDark: rgba(0,0,0,0.10); /* for qty center */
 
       --lime:#d8ff6a;
       --pale:#e9ffd6;
@@ -43,8 +39,8 @@
       --softBorder: 1px solid rgba(12,90,42,0.45);
 
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      --font-brand: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; /* header */
-      --font-side: "Fredericka the Great", cursive; /* POWDER/MERCH/PLANTS */
+      --font-brand: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --font-side: "Fredericka the Great", cursive;
 
       --stickyOffset: 170px;
       --filterGap: 10px;
@@ -81,7 +77,6 @@
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* Top banner restored */
     .top-banner{
       height: var(--bannerH);
       background: var(--green);
@@ -117,11 +112,12 @@
       pointer-events:none;
     }
 
+    /* Nudge brand + menu left a bit (logo has transparent padding) */
     .brand-group{
       position:absolute;
       left:50%;
       top:52%;
-      transform: translate(-50%, -50%);
+      transform: translate(-54%, -50%); /* nudged left */
       display:flex;
       align-items:center;
       gap:12px;
@@ -170,11 +166,12 @@
     .nav-left{ left:12px; }
     .nav-right{ right:12px; }
 
+    /* Español + Email buttons orange with white text/icons */
     .pill-btn{
       height:40px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,0.55);
-      background: var(--green);
+      background: var(--orange);
       box-shadow:0 10px 22px rgba(15,23,42,0.12);
       display:inline-flex;
       align-items:center;
@@ -189,7 +186,10 @@
       font-size:12px;
       font-weight:900;
       white-space:nowrap;
+      transition: background .12s ease;
     }
+    .pill-btn:hover{ background: var(--orangeDarker); }
+
     .pill-icon{ width:40px; padding:0; }
     .pill-icon svg{
       width:20px; height:20px;
@@ -198,12 +198,12 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
     }
 
-    /* Menu underline closer to the word */
+    /* Menu underline closer */
     .menu-row{
       position:absolute;
       left:50%;
       top: calc(52% + 54px);
-      transform: translate(-50%, -50%);
+      transform: translate(-54%, -50%); /* same left nudge */
       z-index:4;
       display:flex;
       align-items:center;
@@ -228,7 +228,7 @@
       content:"";
       position:absolute;
       left:0;
-      bottom:-3px; /* closer underline */
+      bottom:-3px;
       height: var(--menuUnderlineH);
       width:100%;
       transform: scaleX(0);
@@ -240,9 +240,7 @@
     }
     .menu-row a:hover::after{ transform: scaleX(1); }
 
-    .menu-row a.is-active{
-      color: var(--orange);
-    }
+    .menu-row a.is-active{ color: var(--orange); }
     .menu-row a.is-active::after{
       transform: scaleX(1);
       background: var(--orange);
@@ -312,6 +310,15 @@
       gap:10px;
       background: rgba(255,255,255,0.35);
     }
+
+    /* Category radio: selected dot orange */
+    .filter-item input[type="radio"]{
+      accent-color: var(--orange);
+    }
+    .filter-item input[type="checkbox"]{
+      accent-color: var(--green);
+    }
+
     .filter-group{
       border-radius:12px;
       background: var(--pale);
@@ -336,7 +343,7 @@
       font-size:14px;
       color:#0b1220;
       text-decoration: underline;
-      text-underline-offset: 2px; /* closer underline */
+      text-underline-offset: 2px;
     }
     .filter-item{
       display:flex;
@@ -348,7 +355,6 @@
       color:#0b1220;
       letter-spacing:.01em;
     }
-    .filter-item input{ accent-color: var(--green); }
 
     /* STORE TOP */
     .grid-wrap{
@@ -484,6 +490,8 @@
     .checkout-fused:hover{ background: var(--orangeDarker); }
 
     .cart-wrap{ position:relative; display:flex; align-items:center; justify-content:center; }
+
+    /* Badge orange slightly darker */
     .cart-badge{
       position:absolute;
       top:-6px;
@@ -492,7 +500,7 @@
       height:12px;
       padding:0 3px;
       border-radius:999px;
-      background: var(--orange);
+      background: var(--orangeBadge);
       border:1px solid rgba(255,255,255,0.65);
       color:#ffffff;
       font-weight:900;
@@ -507,11 +515,10 @@
     .grid-body{ padding:0; }
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; position:relative; }
 
-    /* LEFT POWDER/MERCH/PLANTS tab: green like all other green */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
-      background: var(--green); /* fixed */
+      background: var(--green);
       border-right: var(--softBorder);
       display:flex;
       flex-direction:column;
@@ -543,7 +550,7 @@
       align-items:center;
       justify-content:center;
       gap:18px;
-      font-family: var(--font-side); /* Fredericka */
+      font-family: var(--font-side);
       font-weight:400;
       text-transform:uppercase;
       letter-spacing:0.18em;
@@ -590,9 +597,8 @@
     }
     .product-inner{ flex:1; display:flex; flex-direction:column; }
 
-    /* Product top tab: green like all other green (fixed) */
     .prod-head{
-      background: var(--green); /* fixed */
+      background: var(--green);
       padding:9px 10px;
       display:flex;
       align-items:center;
@@ -660,9 +666,10 @@
       text-shadow:0 2px 10px rgba(0,0,0,0.20);
     }
 
+    /* Variant box: outline green (not orange) */
     .variant-box{
       height:28px;
-      border: 1px solid rgba(255,255,255,0.55);
+      border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.92);
       border-radius:14px;
       padding:0 10px;
@@ -741,6 +748,7 @@
       box-shadow:0 10px 18px rgba(0,0,0,0.10);
       transition: background .12s ease;
     }
+    /* Better option: keep center dark ALWAYS, and on hover only outer orange darkens (center stays) */
     .qty-unified:hover{ background: var(--orangeDarker); }
 
     .qty-btn{
@@ -758,12 +766,14 @@
       line-height:1;
       flex:0 0 40px;
     }
+
+    /* Center is always darker to separate */
     .qty-mid{
       flex:1 1 auto;
       display:flex;
       align-items:center;
       justify-content:center;
-      background: rgba(0,0,0,0.10);
+      background: var(--orangeMidDark);
       border-left:1px solid rgba(255,255,255,0.25);
       border-right:1px solid rgba(255,255,255,0.25);
     }
@@ -892,6 +902,7 @@
       border-top: 1px solid rgba(255,255,255,0.18);
     }
 
+    /* Responsive */
     @media(max-width:1100px){
       .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -969,8 +980,7 @@
 
                     <div class="filter-group" aria-label="Sort options">
                       <div class="filter-title"><span class="ftag">SORT</span></div>
-                      <label class="filter-item"><input type="radio" name="sortmode" value="newest" checked> Newest</label>
-                      <label class="filter-item"><input type="radio" name="sortmode" value="az"> A → Z</label>
+                      <label class="filter-item"><input type="radio" name="sortmode" value="az" checked> A → Z</label>
                       <label class="filter-item"><input type="radio" name="sortmode" value="za"> Z → A</label>
                       <label class="filter-item"><input type="radio" name="sortmode" value="price_low"> Price (Low)</label>
                       <label class="filter-item"><input type="radio" name="sortmode" value="price_high"> Price (High)</label>
@@ -1102,7 +1112,7 @@
       document.addEventListener("DOMContentLoaded", setStickyOffset);
     })();
 
-    /* Variant menu */
+    /* Variant menu (green outline, not orange) */
     (function(){
       const root = document.getElementById("variant-menu-root");
       let openMenu = null;
@@ -1125,7 +1135,7 @@
         menu.style.minWidth = "190px";
         menu.style.padding = "6px";
         menu.style.borderRadius = "12px";
-        menu.style.border = "1px solid rgba(12,90,42,0.45)";
+        menu.style.border = "1px solid rgba(12,90,42,0.55)"; /* green */
         menu.style.background = "rgba(255,255,255,0.98)";
         menu.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
 
@@ -1139,10 +1149,10 @@
           row.style.fontSize = "12px";
           row.style.color = "#0b1220";
           row.style.background = "rgba(233,255,214,0.95)";
-          row.style.border = "1px solid rgba(12,90,42,0.45)";
+          row.style.border = "1px solid rgba(12,90,42,0.55)"; /* green */
           row.style.marginBottom = "6px";
           if(opt.key === activeKey){
-            row.style.outline = "2px solid rgba(253,108,2,0.55)";
+            row.style.outline = "2px solid rgba(12,90,42,0.55)"; /* green active */
             row.style.outlineOffset = "-2px";
           }
           row.addEventListener("click", ()=>{ onPick(opt.key); closeMenu(); });
@@ -1175,7 +1185,7 @@
       });
     })();
 
-    /* Store rendering */
+    /* Store rendering + filters */
     (function(){
       const PRODUCTS = [
         { id:"powder", cat:"powder", title:"MayaNut Powder", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", tagline:"Flavorful powder, great for acai bowls, granola, cookies", variant:{ label:"WEIGHT", defaultKey:"qtr", options:[ { key:"qtr", label:"1/4 LB", price:9.95 }, { key:"half", label:"1/2 LB", price:18.95 }, { key:"one", label:"1 LB", price:35.95 } ] } },
@@ -1199,6 +1209,13 @@
       const money = (n)=> Number(n||0).toLocaleString(undefined,{style:"currency",currency:"USD"});
       const norm = (s)=> String(s||"").toLowerCase().trim();
 
+      const state = {
+        cat: "all",
+        sort: "az",
+        stockOnly: false,
+        q: ""
+      };
+
       function getVariantPrice(p, key){
         const v = p.variant.options.find(o=>o.key===key) || p.variant.options[0];
         return v.price;
@@ -1207,6 +1224,9 @@
         const v = p.variant.options.find(o=>o.key===key) || p.variant.options[0];
         return v.label;
       }
+      function basePriceForSort(p){
+        return getVariantPrice(p, p.variant.defaultKey);
+      }
 
       function cardHTML(p){
         const baseKey = p.variant.defaultKey;
@@ -1214,7 +1234,7 @@
         const baseLabel = getVariantLabel(p, baseKey);
 
         return `
-          <div class="product-shell" data-shell data-id="${p.id}" data-title="${p.title}" data-variant-key="${baseKey}">
+          <div class="product-shell" data-shell data-id="${p.id}" data-title="${p.title}" data-cat="${p.cat}" data-variant-key="${baseKey}">
             <article class="product-inner">
               <div class="prod-head"><div class="prod-title">${p.title}</div></div>
               <div class="pimg"><img src="${p.img}" alt="${p.title}" loading="lazy" decoding="async" /></div>
@@ -1247,10 +1267,43 @@
           </div>`;
       }
 
-      function render(){
-        gridPowder.innerHTML = PRODUCTS.filter(p=>p.cat==="powder").map(cardHTML).join("");
-        gridMerch.innerHTML  = PRODUCTS.filter(p=>p.cat==="merch").map(cardHTML).join("");
-        gridPlants.innerHTML = PRODUCTS.filter(p=>p.cat==="plants").map(cardHTML).join("");
+      function sortList(list){
+        const s = state.sort;
+        const nameKey = (p)=> p.title.toLowerCase();
+
+        const cmp =
+          s === "az" ? (a,b)=> nameKey(a).localeCompare(nameKey(b)) :
+          s === "za" ? (a,b)=> nameKey(b).localeCompare(nameKey(a)) :
+          s === "price_low" ? (a,b)=> basePriceForSort(a) - basePriceForSort(b) :
+          s === "price_high" ? (a,b)=> basePriceForSort(b) - basePriceForSort(a) :
+          (a,b)=> 0;
+
+        return list.slice().sort(cmp);
+      }
+
+      function apply(){
+        const q = norm(state.q);
+        const cat = state.cat;
+
+        let list = PRODUCTS.slice();
+
+        if(cat !== "all") list = list.filter(p=> p.cat === cat);
+        if(q) list = list.filter(p=> norm(p.title).includes(q));
+
+        list = sortList(list);
+
+        // render by grids: show only matching category in correct grid, others empty when filtering
+        const powderList = list.filter(p=> p.cat === "powder");
+        const merchList  = list.filter(p=> p.cat === "merch");
+        const plantsList = list.filter(p=> p.cat === "plants");
+
+        gridPowder.innerHTML = powderList.map(cardHTML).join("");
+        gridMerch.innerHTML  = merchList.map(cardHTML).join("");
+        gridPlants.innerHTML = plantsList.map(cardHTML).join("");
+
+        wireQty();
+        wireAdd();
+        wireVariants();
       }
 
       function wireQty(){
@@ -1284,16 +1337,12 @@
       function wireSearch(){
         const s = document.getElementById("store-search");
         const clear = document.getElementById("store-search-clear");
-        function apply(){
-          const q = norm(s.value);
-          document.querySelectorAll(".product-shell").forEach(shell=>{
-            const t = norm(shell.getAttribute("data-title")||"");
-            shell.style.display = (!q || t.includes(q)) ? "" : "none";
-          });
+        function onInput(){
+          state.q = s.value || "";
+          apply();
         }
-        s?.addEventListener("input", apply);
-        clear?.addEventListener("click", ()=>{ if(!s) return; s.value=""; apply(); s.focus(); });
-        apply();
+        s?.addEventListener("input", onInput);
+        clear?.addEventListener("click", ()=>{ if(!s) return; s.value=""; state.q=""; apply(); s.focus(); });
       }
 
       function wireVariants(){
@@ -1323,12 +1372,29 @@
         });
       }
 
-      render();
-      wireQty();
-      wireAdd();
-      wireSearch();
-      wireVariants();
+      function bindFilters(){
+        // category
+        document.querySelectorAll('input[name="catmode"]').forEach(r=>{
+          r.addEventListener("change", ()=>{ state.cat = r.value; apply(); });
+        });
+
+        // sort
+        document.querySelectorAll('input[name="sortmode"]').forEach(r=>{
+          r.addEventListener("change", ()=>{ state.sort = r.value; apply(); });
+        });
+
+        // stock (kept, but no products are in stock right now; still works)
+        const stock = document.getElementById("in-stock-only");
+        stock?.addEventListener("change", ()=>{ state.stockOnly = !!stock.checked; apply(); });
+      }
+
+      window.__openVariantMenu || (window.__openVariantMenu = ()=>{});
+
+      // init
       setBadge();
+      apply();
+      bindFilters();
+      wireSearch();
 
       document.getElementById("checkout-top")?.addEventListener("click", ()=> alert("Store is under development."));
       document.getElementById("newsletter-form")?.addEventListener("submit",(e)=>{

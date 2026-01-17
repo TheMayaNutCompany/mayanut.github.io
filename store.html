@@ -21,13 +21,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Acme&family=Aprecu&display=swap" rel="stylesheet" />
-  <!-- If Aprecu doesn't load via Google Fonts in your environment, replace with your hosted font via @font-face. -->
 
   <style>
     :root{
       --green:#066100;
+
       --orange:#fd6c02;
-      --orangeDarker:#d65402;
+
+      /* “dark orange that’s already been there where the 1 sits” */
+      --darkOrange: rgba(0,0,0,0.18);
+
       --orangeBadge:#d24f02;
 
       --lime:#d8ff6a;
@@ -183,7 +186,9 @@
       white-space:nowrap;
       transition: background .12s ease;
     }
-    .pill-btn:hover{ background: var(--orangeDarker); }
+    /* hover uses same “dark orange” feel as the 1 area */
+    .pill-btn:hover{ background: var(--orange); box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 22px rgba(15,23,42,0.12); }
+
     .pill-icon{ width:40px; padding:0; }
     .pill-icon svg{
       width:20px; height:20px;
@@ -457,9 +462,11 @@
       min-width:132px;
       position:relative;
       flex:0 0 auto;
-      transition: background .12s ease;
     }
-    .checkout-fused:hover{ background: var(--orangeDarker); }
+    /* hover matches the dark orange (same overlay used for qty center) */
+    .checkout-fused:hover{
+      box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 18px rgba(15,23,42,0.10);
+    }
     .checkout-fused svg{
       width:22px; height:22px;
       stroke:#ffffff; fill:none;
@@ -499,7 +506,6 @@
     .grid-body{ padding:0; }
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; position:relative; }
 
-    /* Side POWDER/MERCH/PLANTS in Aprecu, CAPS, white */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -528,17 +534,19 @@
     }
     .cat-btn:hover{ background: rgba(255,255,255,0.06); }
     .cat-btn.is-active{ background: rgba(255,255,255,0.10); }
+
+    /* Bigger POWDER/MERCH/PLANTS + “2 spaces” feel via letter-spacing + gap */
     .cat-text{
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:18px;
+      gap:22px;              /* more vertical gap between letters */
       font-family: var(--font-side);
       font-weight:900;
       text-transform:uppercase;
-      letter-spacing:0.18em;
-      font-size:18px;
+      letter-spacing:0.28em; /* ~two spaces vibe */
+      font-size:20px;        /* bigger */
       line-height:1;
       width:100%;
       color:#ffffff;
@@ -573,7 +581,7 @@
       border-radius:18px;
       background:#ffffff;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      min-height: 382px;
+      min-height: var(--cardMinH);
       border: var(--softBorder);
       overflow:hidden;
       display:flex;
@@ -604,7 +612,7 @@
     }
 
     .pimg{ background:#fff; border-bottom: var(--softBorder); }
-    .pimg img{ width:100%; height:206px; object-fit:cover; display:block; cursor:pointer; }
+    .pimg img{ width:100%; height:var(--cardImgH); object-fit:cover; display:block; cursor:pointer; }
 
     .pbot{
       padding:10px;
@@ -714,9 +722,10 @@
       display:flex; align-items:center; justify-content:center;
       box-shadow:0 10px 18px rgba(0,0,0,0.12);
       white-space:nowrap;
-      transition: background .12s ease;
     }
-    .addq:hover{ background: var(--orangeDarker); }
+    .addq:hover{
+      box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 18px rgba(0,0,0,0.12);
+    }
 
     .qty-unified{
       height:34px;
@@ -730,7 +739,7 @@
       box-shadow:0 10px 18px rgba(0,0,0,0.10);
     }
 
-    /* IMPORTANT: only hovered plus/minus darkens; center never changes */
+    /* Only hovered plus/minus darkens, using SAME darkOrange as the center */
     .qty-btn{
       width:40px;
       border:none;
@@ -747,14 +756,15 @@
       flex:0 0 40px;
       transition: background .12s ease;
     }
-    .qty-btn:hover{ background: rgba(0,0,0,0.18); } /* darken only that button */
+    .qty-btn:hover{ background: var(--darkOrange); }
 
+    /* Center stays constant (already the darkened separator) */
     .qty-mid{
       flex:1 1 auto;
       display:flex;
       align-items:center;
       justify-content:center;
-      background: rgba(0,0,0,0.10); /* always the darker separator */
+      background: var(--darkOrange);
       border-left:1px solid rgba(255,255,255,0.25);
       border-right:1px solid rgba(255,255,255,0.25);
     }
@@ -873,9 +883,11 @@
       justify-content:center;
       white-space:nowrap;
       box-shadow:0 14px 36px rgba(0,0,0,0.20);
-      transition: background .12s ease;
+      transition: box-shadow .12s ease;
     }
-    .metal-btn:hover{ background: var(--orangeDarker); }
+    .metal-btn:hover{
+      box-shadow: inset 0 0 0 999px var(--darkOrange), 0 14px 36px rgba(0,0,0,0.20);
+    }
 
     .footer-thin{
       height: var(--bannerH);
@@ -1166,11 +1178,9 @@
     (function(){
       const PRODUCTS = [
         { id:"powder", cat:"powder", title:"MayaNut Powder", img:"mayanut-powder-maya-nut-brosimum-alicastrum.png", tagline:"Flavorful powder, great for acai bowls, granola, cookies", variant:{ label:"WEIGHT", defaultKey:"qtr", options:[ { key:"qtr", label:"1/4 LB", price:9.95 }, { key:"half", label:"1/2 LB", price:18.95 }, { key:"one", label:"1 LB", price:35.95 } ] } },
-
         { id:"hat", cat:"merch", title:"MayaNut Hat", img:"mayanut-merch-hat-brosimum-alicastrum.png", tagline:"", variant:{ label:"SIZE", defaultKey:"os", options:[ { key:"os", label:"OS", price:15.00 } ] } },
         { id:"shirt", cat:"merch", title:"MayaNut T-Shirt", img:"mayanut-merch-shirt-brosimum-alicastrum.png", tagline:"", variant:{ label:"SIZE", defaultKey:"m", options:[ { key:"s", label:"S", price:18.00 }, { key:"m", label:"M", price:18.00 }, { key:"l", label:"L", price:18.00 }, { key:"xl", label:"XL", price:18.00 } ] } },
         { id:"hoodie", cat:"merch", title:"MayaNut Hoodie", img:"mayanut-merch-hoodie-brosimum-alicastrum.png", tagline:"", variant:{ label:"SIZE", defaultKey:"m", options:[ { key:"s", label:"S", price:30.00 }, { key:"m", label:"M", price:30.00 }, { key:"l", label:"L", price:30.00 }, { key:"xl", label:"XL", price:30.00 } ] } },
-
         { id:"seedling", cat:"plants", title:"MayaNut Seedling", img:"maya-nut-mayanut-plant-tree-nursery.jpg", tagline:"", variant:{ label:"SIZE", defaultKey:"1gl", options:[ { key:"1gl", label:"1 GL", price:34.95 } ] } },
         { id:"seeds", cat:"plants", title:"MayaNut Seeds", img:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg", tagline:"", variant:{ label:"PACK", defaultKey:"10pc", options:[ { key:"10pc", label:"10 PC", price:9.95 } ] } }
       ];
@@ -1240,14 +1250,12 @@
       function sortList(list){
         const s = state.sort;
         const nameKey = (p)=> p.title.toLowerCase();
-
         const cmp =
           s === "az" ? (a,b)=> nameKey(a).localeCompare(nameKey(b)) :
           s === "za" ? (a,b)=> nameKey(b).localeCompare(nameKey(a)) :
           s === "price_low" ? (a,b)=> basePriceForSort(a) - basePriceForSort(b) :
           s === "price_high" ? (a,b)=> basePriceForSort(b) - basePriceForSort(a) :
           (a,b)=> 0;
-
         return list.slice().sort(cmp);
       }
 
@@ -1301,10 +1309,7 @@
       function wireSearch(){
         const s = document.getElementById("store-search");
         const clear = document.getElementById("store-search-clear");
-        function onInput(){
-          state.q = s.value || "";
-          apply();
-        }
+        function onInput(){ state.q = s.value || ""; apply(); }
         s?.addEventListener("input", onInput);
         clear?.addEventListener("click", ()=>{ if(!s) return; s.value=""; state.q=""; apply(); s.focus(); });
       }

@@ -25,6 +25,7 @@
   <style>
     :root{
       --green:#066100;
+
       --orange:#fd6c02;
       --orangeBadge:#d24f02;
 
@@ -295,7 +296,7 @@
       z-index:30;
     }
 
-    /* Search: never cut off; can overlap visually if needed */
+    /* Search: reduced length; aligned feel similar to first product width */
     .store-search{
       height:36px;
       border-radius:14px;
@@ -304,12 +305,13 @@
       display:flex;
       align-items:center;
       overflow:hidden;
-      flex: 1 1 360px;
-      min-width: 240px;
-      max-width: 560px;
+      flex: 0 1 410px;
+      width:410px;
+      max-width:410px;
+      min-width:240px;
       box-shadow:0 10px 18px rgba(15,23,42,0.06);
       position:relative;
-      z-index:60; /* sits above */
+      z-index:60;
     }
     .store-search .mag{ width:36px; height:36px; display:flex; align-items:center; justify-content:center; flex:0 0 36px; user-select:none; }
     .store-search .mag svg{ width:16px; height:16px; stroke: var(--orange); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
@@ -350,7 +352,7 @@
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
-      background: var(--green); /* matches */
+      background: var(--green);
       border-right: var(--softBorder);
       display:flex; flex-direction:column; justify-content:space-between;
       padding-top: 46px; margin-top: -46px;
@@ -374,16 +376,16 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.18);
     }
 
-    /* REMOVE pale background the products sit on */
+    /* REMOVE pale background that products sit on; section backgrounds are white */
     .store-content{
       flex:1 1 auto; min-width:0;
       display:flex; flex-direction:column; gap:10px;
       padding:10px 12px 12px;
-      background:#ffffff; /* white */
+      background:#ffffff;
     }
     .section-block{
       border-radius:18px;
-      background:#ffffff; /* white now */
+      background:#ffffff;
       border: var(--softBorder);
       padding:8px;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
@@ -414,7 +416,7 @@
       font-size:14px;
       letter-spacing:.08em;
       text-transform:uppercase;
-      color:#0b1220; /* readable on pale */
+      color:#0b1220;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -498,6 +500,7 @@
     }
     .addq:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 18px rgba(15,23,42,0.10); }
 
+    /* Quantity control: center is ORANGE like rest; only hovered third darkens */
     .qty-unified{
       height:34px;
       flex:0 0 170px;
@@ -522,13 +525,17 @@
       transition: background .12s ease;
     }
     .qty-btn:hover{ background: var(--darkOrange); }
+
     .qty-mid{
       flex:1 1 auto;
       display:flex; align-items:center; justify-content:center;
-      background: var(--darkOrange);
+      background: transparent; /* orange shows through */
       border-left:1px solid rgba(255,255,255,0.25);
       border-right:1px solid rgba(255,255,255,0.25);
+      transition: background .12s ease;
     }
+    .qty-mid:hover{ background: var(--darkOrange); }
+
     .qty-number{
       width:100%;
       border:none;
@@ -700,9 +707,21 @@
       .filter-col{ display:none; }
       .cat-tab{ display:none; }
       .product-grid{ grid-template-columns: 1fr; }
-      .variant-box{ min-width: 0; max-width: 100%; width:100%; }
+
+      .store-search{
+        width:100%;
+        max-width:none;
+        flex:1 1 auto;
+        min-width:0;
+      }
+
       .row1, .row2{ flex-direction:column; align-items:stretch; }
-      .qty-unified{ width:100%; flex:1 1 auto; }
+      .variant-box{
+        width:100%;
+        max-width:100%;
+        min-width:0;
+      }
+      .qty-unified{ flex:1 1 auto; width:100%; }
 
       .cart-drawer{
         width:100%;
@@ -774,7 +793,6 @@
                     <div class="filter-group" aria-label="Sort">
                       <div class="filter-title"><span class="ftag">SORT</span></div>
 
-                      <!-- (optional) no default sort; users can pick -->
                       <label class="filter-item"><input type="radio" name="nameorder" value="az"> A → Z</label>
                       <label class="filter-item"><input type="radio" name="nameorder" value="za"> Z → A</label>
 
@@ -833,6 +851,7 @@
 
               <div class="grid-body">
                 <div class="store-body-wrap">
+
                   <aside class="cat-tab" aria-label="Categories">
                     <button class="cat-btn is-active" type="button" data-jump="#sec-powder" aria-label="Powder">
                       <span class="cat-text"><span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span></span>
@@ -987,7 +1006,7 @@
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
     })();
 
-    /* Cart drawer */
+    /* Cart drawer open/close */
     (function(){
       const overlay = document.getElementById("overlay");
       const drawer = document.getElementById("cart-drawer");
@@ -1008,9 +1027,6 @@
       overlay?.addEventListener("click", closeCart);
       closeBtn?.addEventListener("click", closeCart);
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeCart(); });
-
-      window.__cartOpen = openCart;
-      window.__cartClose = closeCart;
     })();
 
     /* Store rendering + cart content */
@@ -1056,8 +1072,6 @@
 
       function renderCart(){
         if(!cartBody) return;
-
-        // remove old items
         cartBody.querySelectorAll(".cart-item").forEach(n=>n.remove());
 
         const entries = Array.from(cart.entries()).filter(([,q])=> q>0);
@@ -1203,6 +1217,7 @@
       wireSearch();
       wireVariants();
       renderCart();
+      renderBadge();
     })();
   </script>
 </body>

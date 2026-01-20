@@ -183,7 +183,7 @@
     .menu-row{
       position:absolute;
       left:50%;
-      top: calc(56% + 44px); /* lifted */
+      top: calc(56% + 44px);
       transform: translate(-54%, -50%);
       z-index:4;
       display:flex;
@@ -379,7 +379,7 @@
       position:relative;
     }
 
-    /* Rounded inner corner between left tab and store area */
+    /* fill the inner curve in GREEN (no hollow) */
     .store-body-wrap::before{
       content:"";
       position:absolute;
@@ -387,9 +387,8 @@
       top:0;
       width:18px;
       height:18px;
-      background:#ffffff;
-      border-top-left-radius:18px;
-      box-shadow: -1px 0 0 rgba(12,90,42,0.45), 0 -1px 0 rgba(12,90,42,0.45);
+      background: var(--green);          /* filled green */
+      border-bottom-right-radius:18px;  /* rounded inner angle */
       pointer-events:none;
       z-index:8;
     }
@@ -428,19 +427,17 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.18);
     }
 
-    /* TWO WHITE CIRCLES BETWEEN WORDS (consistent rendering) */
-    .cat-dots{
+    /* ONE big white circle between words (2 total) */
+    .cat-dot{
       flex:0 0 auto;
       display:flex;
-      flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:10px;
-      padding: 6px 0;
+      padding: 8px 0;
     }
-    .cat-dots span{
-      width:7px;
-      height:7px;
+    .cat-dot span{
+      width:12px;
+      height:12px;
       border-radius:999px;
       background:#ffffff;
       box-shadow:0 2px 10px rgba(0,0,0,0.18);
@@ -466,7 +463,7 @@
       border-radius:18px;
       background:#ffffff;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      min-height: var(--cardMinH);
+      min-height: 240px;
       border: var(--softBorder);
       overflow:hidden;
       display:flex;
@@ -733,14 +730,14 @@
     }
     .cart-foot .checkout-disabled:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange); }
 
-    /* ===== Footer (Chick-fil-A style layout) ===== */
-    .cfa-footer{
+    /* Footer (logo left, everything right) */
+    .footer{
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
       border-top: 2px solid rgba(6,97,0,0.65);
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       margin-top: 18px;
     }
-    .cfa-footer-inner{
+    .footer-inner{
       max-width: 1200px;
       margin: 0 auto;
       padding: 18px 18px 14px;
@@ -749,13 +746,13 @@
       gap: 22px;
       align-items: start;
     }
-    .cfa-footer-left{
+    .footer-left{
       display:flex;
       flex-direction:column;
       gap: 10px;
       align-items:flex-start;
     }
-    .cfa-footer-tagline{
+    .footer-tagline{
       display:flex;
       align-items:center;
       gap: 8px;
@@ -767,24 +764,25 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.35);
       white-space:nowrap;
     }
-    .cfa-footer-florida{
+    .footer-florida{
       width: 22px;
       height: 22px;
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14));
     }
-    .cfa-footer-logo{
+    .footer-logo{
       width: 220px;
       height: auto;
       filter: drop-shadow(0 12px 22px rgba(15,23,42,0.18));
       user-select:none;
     }
-    .cfa-footer-right{
+
+    .footer-right{
       display:grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 18px;
       align-items:start;
     }
-    .cfa-footer-col-title{
+    .footer-col-title{
       font-weight: 950;
       letter-spacing: .12em;
       text-transform: uppercase;
@@ -793,7 +791,7 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.35);
       margin-bottom: 10px;
     }
-    .cfa-footer-link{
+    .footer-link{
       display:block;
       font-weight: 900;
       font-size: 14px;
@@ -803,17 +801,18 @@
       border-bottom: 1px solid rgba(11,18,32,0.22);
       width: fit-content;
     }
-    .cfa-footer-link:hover{
+    .footer-link:hover{
       border-bottom-color: rgba(11,18,32,0.55);
     }
-    .cfa-social-row{
+
+    .footer-social-row{
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
       align-items:center;
       margin-top: 2px;
     }
-    .cfa-icon-pill{
+    .footer-icon-pill{
       width: 38px;
       height: 38px;
       border-radius: 14px;
@@ -824,7 +823,7 @@
       justify-content:center;
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
     }
-    .cfa-icon-pill svg{
+    .footer-icon-pill svg{
       width: 20px;
       height: 20px;
       stroke: #ffffff;
@@ -833,8 +832,9 @@
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    .cfa-icon-pill .fill{ fill:#ffffff; stroke:none; }
-    .cfa-email{
+    .footer-icon-pill .fill{ fill:#ffffff; stroke:none; }
+
+    .footer-email{
       margin-top: 10px;
       font-weight: 900;
       letter-spacing: .02em;
@@ -843,20 +843,153 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.35);
       white-space:nowrap;
     }
-    .cfa-footer-bottom{
+
+    .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
       font-weight: 850;
       font-size: 13px;
       color:#0b1220;
       text-shadow: 0 1px 0 rgba(255,255,255,0.35);
-      max-width: 1200px;
-      margin: 0 auto;
+    }
+    .footer-bottom a{
+      font-weight: 900;
+      border-bottom: 1px solid rgba(11,18,32,0.22);
+      padding-bottom:2px;
+      white-space:nowrap;
     }
 
-    @media(max-width:1100px){
-      .product-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* AI modal */
+    .ai-overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,0.32);
+      display:none;
+      z-index:2600;
+      padding:18px;
     }
+    body.ai-open .ai-overlay{ display:block; }
+
+    .ai-modal{
+      width:min(520px, calc(100vw - 36px));
+      margin: 40px auto;
+      border-radius:18px;
+      border: 1px solid rgba(12,90,42,0.45);
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 18px 60px rgba(15,23,42,0.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      max-height: min(720px, calc(100vh - 80px));
+    }
+    .ai-head{
+      background: var(--green);
+      color:#fff;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .ai-close{
+      width:40px; height:40px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .ai-close:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange); }
+    .ai-close svg{ width:18px; height:18px; stroke:#fff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+
+    .ai-body{
+      padding:12px 14px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .ai-msg{
+      max-width: 92%;
+      border-radius:14px;
+      padding:10px 12px;
+      border: 1px solid rgba(12,90,42,0.25);
+      background: rgba(233,255,214,0.85);
+      color:#0b1220;
+      font-weight:850;
+      line-height:1.45;
+      font-size:13px;
+    }
+    .ai-msg.user{
+      margin-left:auto;
+      background: rgba(255,255,255,0.95);
+    }
+    .ai-suggestions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding: 0 14px 12px;
+      border-top: 1px solid rgba(12,90,42,0.20);
+      background: rgba(255,255,255,0.70);
+    }
+    .ai-chip{
+      border-radius:999px;
+      border: 1px solid rgba(12,90,42,0.35);
+      background: rgba(233,255,214,0.92);
+      padding:8px 10px;
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      white-space:nowrap;
+      color:#0b1220;
+    }
+    .ai-chip:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.06); }
+
+    .ai-foot{
+      padding:12px 14px 14px;
+      border-top: 1px solid rgba(12,90,42,0.20);
+      display:flex;
+      gap:10px;
+      background: rgba(255,255,255,0.70);
+    }
+    .ai-input{
+      flex:1;
+      height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(12,90,42,0.45);
+      padding:0 12px;
+      font-weight:900;
+      font-size:12px;
+      outline:none;
+      color:#0b1220;
+      background:#fff;
+    }
+    .ai-send{
+      height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(253,108,2,0.55);
+      background: var(--orange);
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:11px;
+      padding:0 14px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .ai-send:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange); }
+
     @media(max-width:980px){
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
@@ -867,9 +1000,9 @@
       .variant-box{ width:100%; min-width:0; max-width:none; }
       .qty-unified{ width:100%; flex:1 1 auto; }
       .cart-drawer{ width:100%; max-width:none; min-width:0; }
-      .cfa-footer-inner{ grid-template-columns: 1fr; }
-      .cfa-footer-right{ grid-template-columns: 1fr; }
-      .cfa-footer-logo{ width: 200px; }
+      .footer-inner{ grid-template-columns: 1fr; }
+      .footer-right{ grid-template-columns: 1fr; }
+      .footer-logo{ width: 200px; }
     }
   </style>
 </head>
@@ -990,19 +1123,18 @@
               <div class="grid-body">
                 <div class="store-body-wrap">
 
-                  <!-- LEFT CATEGORY TAB with two white circles between words -->
                   <aside class="cat-tab" aria-label="Categories">
                     <button class="cat-btn" type="button" data-jump="#sec-powder" aria-label="Powder">
                       <span class="cat-text"><span>P</span><span>O</span><span>W</span><span>D</span><span>E</span><span>R</span></span>
                     </button>
 
-                    <div class="cat-dots" aria-hidden="true"><span></span><span></span></div>
+                    <div class="cat-dot" aria-hidden="true"><span></span></div>
 
                     <button class="cat-btn" type="button" data-jump="#sec-merch" aria-label="Merch">
                       <span class="cat-text"><span>M</span><span>E</span><span>R</span><span>C</span><span>H</span></span>
                     </button>
 
-                    <div class="cat-dots" aria-hidden="true"><span></span><span></span></div>
+                    <div class="cat-dot" aria-hidden="true"><span></span></div>
 
                     <button class="cat-btn" type="button" data-jump="#sec-plants" aria-label="Plants">
                       <span class="cat-text"><span>P</span><span>L</span><span>A</span><span>N</span><span>T</span><span>S</span></span>
@@ -1049,44 +1181,74 @@
       </div>
     </aside>
 
-    <!-- ===================== FOOTER (Chick-fil-A style) ===================== -->
-    <footer class="cfa-footer" aria-label="Footer">
-      <div class="cfa-footer-inner">
+    <!-- MayaNut AI (Beta) -->
+    <div class="ai-overlay" id="ai-overlay" aria-hidden="true">
+      <div class="ai-modal" role="dialog" aria-modal="true" aria-label="MayaNut AI (Beta)">
+        <div class="ai-head">
+          <div>MayaNut AI (Beta)</div>
+          <button class="ai-close" id="ai-close" type="button" aria-label="Close MayaNut AI">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12"></path>
+              <path d="M18 6L6 18"></path>
+            </svg>
+          </button>
+        </div>
 
-        <!-- LEFT: tagline + big logo -->
-        <div class="cfa-footer-left" aria-label="Brand">
-          <div class="cfa-footer-tagline">
+        <div class="ai-body" id="ai-body" aria-label="Chat messages"></div>
+
+        <div class="ai-suggestions" aria-label="Suggested questions">
+          <button class="ai-chip" type="button" data-q="What is MayaNut?">What is MayaNut?</button>
+          <button class="ai-chip" type="button" data-q="Where does MayaNut grow?">Where does it grow?</button>
+          <button class="ai-chip" type="button" data-q="What is Brosimum alicastrum?">Brosimum alicastrum?</button>
+          <button class="ai-chip" type="button" data-q="What is The MayaNut Company?">The company?</button>
+          <button class="ai-chip" type="button" data-q="How can I support?">How can I support?</button>
+        </div>
+
+        <div class="ai-foot">
+          <input class="ai-input" id="ai-input" type="text" placeholder="Ask about MayaNut, the site, or research…" autocomplete="off" />
+          <button class="ai-send" id="ai-send" type="button">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" aria-label="Footer">
+      <div class="footer-inner">
+
+        <div class="footer-left" aria-label="Brand">
+          <div class="footer-tagline">
             <span>Started in South Florida</span>
-            <img class="cfa-footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida" onerror="this.style.display='none';">
+            <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida" onerror="this.style.display='none';">
           </div>
 
           <a href="index.html" aria-label="The MayaNut Company home">
-            <img class="cfa-footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
+            <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
           </a>
         </div>
 
-        <!-- RIGHT: link columns -->
-        <div class="cfa-footer-right" aria-label="Footer links">
-          <div class="cfa-footer-col">
-            <div class="cfa-footer-col-title">WHO WE ARE</div>
-            <a class="cfa-footer-link" href="social-responsibility.html">Social Responsibility</a>
-            <a class="cfa-footer-link" href="stories.html">Stories</a>
-            <a class="cfa-footer-link" href="contact.html">Contact Us</a>
+        <div class="footer-right" aria-label="Footer links">
+          <div class="footer-col">
+            <div class="footer-col-title">WHO WE ARE</div>
+            <a class="footer-link" href="social-responsibility.html">Social Responsibility</a>
+            <a class="footer-link" href="stories.html">Stories</a>
+            <a class="footer-link" href="contact.html">Contact Us</a>
+            <a class="footer-link" href="#" data-open-ai>MayaNut AI (Beta)</a>
           </div>
 
-          <div class="cfa-footer-col">
-            <div class="cfa-footer-col-title">SUPPORT</div>
-            <a class="cfa-footer-link" href="accessibility.html">Accessibility</a>
-            <a class="cfa-footer-link" href="terms.html">Terms</a>
-            <a class="cfa-footer-link" href="privacy.html">Privacy</a>
-            <a class="cfa-footer-link" href="sitemap.html">Sitemap</a>
+          <div class="footer-col">
+            <div class="footer-col-title">SUPPORT</div>
+            <a class="footer-link" href="accessibility.html">Accessibility</a>
+            <a class="footer-link" href="terms.html">Terms</a>
+            <a class="footer-link" href="privacy.html">Privacy</a>
+            <a class="footer-link" href="sitemap.html">Sitemap</a>
+            <a class="footer-link" href="do-not-sell.html">Do Not Sell My Info</a>
           </div>
 
-          <div class="cfa-footer-col cfa-footer-social">
-            <div class="cfa-footer-col-title">FOLLOW</div>
+          <div class="footer-col">
+            <div class="footer-col-title">FOLLOW</div>
 
-            <div class="cfa-social-row" aria-label="Social links">
-              <a class="cfa-icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <div class="footer-social-row" aria-label="Social links">
+              <a class="footer-icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
                   <circle cx="12" cy="12" r="4.2"></circle>
@@ -1094,19 +1256,19 @@
                 </svg>
               </a>
 
-              <a class="cfa-icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+              <a class="footer-icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
                 </svg>
               </a>
 
-              <a class="cfa-icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <a class="footer-icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
                 </svg>
               </a>
 
-              <a class="cfa-icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
+              <a class="footer-icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4.5 6.5h15v11h-15z"></path>
                   <path d="M4.5 7l7.5 6 7.5-6"></path>
@@ -1114,14 +1276,15 @@
               </a>
             </div>
 
-            <div class="cfa-email">info@mayanut.com</div>
+            <div class="footer-email">info@mayanut.com</div>
           </div>
         </div>
 
       </div>
 
-      <div class="cfa-footer-bottom">
+      <div class="footer-bottom">
         <div>© 2026 The MayaNut Company, Inc.</div>
+        <a href="do-not-sell.html">Do Not Sell My Info</a>
       </div>
     </footer>
 
@@ -1242,6 +1405,86 @@
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeCart(); });
     })();
 
+    /* MayaNut AI (Beta) */
+    (function(){
+      const overlay = document.getElementById("ai-overlay");
+      const closeBtn = document.getElementById("ai-close");
+      const body = document.getElementById("ai-body");
+      const input = document.getElementById("ai-input");
+      const send = document.getElementById("ai-send");
+
+      const openers = [
+        "Hello. I’m MayaNut AI (Beta). Ask me about MayaNut (Brosimum alicastrum), the company, or the site.",
+        "Beta note: this is a lightweight FAQ-style assistant for now. Later it can be upgraded to a full AI system that helps with research workflows and site updates."
+      ];
+
+      const KB = [
+        { k:["what is mayanut","what is maya nut","mayanut"], a:"MayaNut is a nutritious seed from the tropical tree *Brosimum alicastrum*. It has been used traditionally in Mesoamerica and has a mild, roasted, cocoa-coffee-like flavor when prepared as a powder." },
+        { k:["where does it grow","where does mayanut grow","range"], a:"MayaNut trees grow in tropical and subtropical regions of Mesoamerica, and they can be cultivated in warm climates. The MayaNut Company is developing this crop in South Florida." },
+        { k:["brosimum alicastrum","scientific name"], a:"*Brosimum alicastrum* is the scientific name of the MayaNut tree. It’s a hardy tropical tree that produces nutrient-rich seeds." },
+        { k:["what is the mayanut company","company","mission"], a:"The MayaNut Company is building a new American MayaNut supply from the ground up. The focus is cultivation research, future products, and long-term agricultural development in South Florida." },
+        { k:["support","how can i support","help"], a:"You can support by following along, sharing the project, and (when available) purchasing MayaNut products or merch. Merch items on this page are concept previews meant to support early development." },
+        { k:["research","data"], a:"Long-term: this assistant can help collect user questions, highlight knowledge gaps, and support the research section with structured information. Today: it answers common questions and points you to site sections." }
+      ];
+
+      function addMsg(text, who="bot"){
+        const div = document.createElement("div");
+        div.className = "ai-msg" + (who==="user" ? " user" : "");
+        div.textContent = text;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+      }
+
+      function openAI(){
+        document.body.classList.add("ai-open");
+        overlay.setAttribute("aria-hidden","false");
+        if(body.childElementCount === 0){
+          openers.forEach(t=> addMsg(t,"bot"));
+        }
+        setTimeout(()=> input?.focus(), 50);
+      }
+      function closeAI(){
+        document.body.classList.remove("ai-open");
+        overlay.setAttribute("aria-hidden","true");
+      }
+
+      document.querySelectorAll("[data-open-ai]").forEach(a=>{
+        a.addEventListener("click",(e)=>{ e.preventDefault(); openAI(); });
+      });
+
+      closeBtn?.addEventListener("click", closeAI);
+      overlay?.addEventListener("click",(e)=>{ if(e.target && e.target.id === "ai-overlay") closeAI(); });
+      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeAI(); });
+
+      document.querySelectorAll(".ai-chip").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const q = btn.getAttribute("data-q") || "";
+          if(q) {
+            addMsg(q,"user");
+            respond(q);
+          }
+        });
+      });
+
+      function respond(q){
+        const s = String(q||"").toLowerCase().trim();
+        const hit = KB.find(item => item.k.some(kk => s.includes(kk)));
+        if(hit) addMsg(hit.a,"bot");
+        else addMsg("I can help with: what MayaNut is, where it grows, what *Brosimum alicastrum* is, and what the company is building. Try one of the suggested questions.","bot");
+      }
+
+      function sendMsg(){
+        const q = (input.value||"").trim();
+        if(!q) return;
+        input.value = "";
+        addMsg(q,"user");
+        respond(q);
+      }
+
+      send?.addEventListener("click", sendMsg);
+      input?.addEventListener("keydown",(e)=>{ if(e.key==="Enter") sendMsg(); });
+    })();
+
     /* Store rendering + cart content */
     (function(){
       const PRODUCTS = [
@@ -1265,6 +1508,7 @@
       const cart = new Map();
 
       const money = (n)=> Number(n||0).toLocaleString(undefined,{style:"currency",currency:"USD"});
+      const norm = (s)=> String(s||"").toLowerCase().trim();
 
       function getVariantPrice(p, key){
         const v = p.variant.options.find(o=>o.key===key) || p.variant.options[0];
@@ -1380,7 +1624,6 @@
       function wireSearch(){
         const s = document.getElementById("store-search");
         const clear = document.getElementById("store-search-clear");
-        const norm = (x)=> String(x||"").toLowerCase().trim();
         function apply(){
           const q = norm(s?.value);
           document.querySelectorAll(".product-shell").forEach(shell=>{
@@ -1428,14 +1671,6 @@
       renderCart();
       renderBadge();
     })();
-
-    document.getElementById("newsletter-form")?.addEventListener("submit",(e)=>{
-      e.preventDefault();
-      const email = document.getElementById("newsletter-email")?.value?.trim() || "";
-      if(!email) return;
-      alert("Subscribed (demo).");
-      document.getElementById("newsletter-email").value = "";
-    });
   </script>
 </body>
 </html>

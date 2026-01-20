@@ -51,7 +51,7 @@
 
       --darkOrange: rgba(0,0,0,0.18);
       --footerDivider: 2px solid rgba(6,97,0,0.85);
-      --footerTopOutline: 2px solid rgba(12,90,42,0.55); /* match the “top part” outline feel */
+      --footerTopOutline: 2px solid rgba(12,90,42,0.55);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -181,7 +181,8 @@
     .menu-row{
       position:absolute;
       left:50%;
-      top: calc(56% + 54px);
+      /* moved slightly UP so underline isn't touching the store section */
+      top: calc(56% + 44px);
       transform: translate(-54%, -50%);
       z-index:4;
       display:flex;
@@ -295,7 +296,7 @@
       border-radius:18px;
       overflow:hidden;
       position:relative;
-      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.45); /* inner outline */
+      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.45);
     }
 
     .grid-head{
@@ -340,7 +341,6 @@
     .store-search .xbtn{ width:34px; height:36px; display:flex; align-items:center; justify-content:center; flex:0 0 34px; cursor:pointer; user-select:none; background:transparent; }
     .store-search .xbtn svg{ width:16px; height:16px; stroke: rgba(15,23,42,0.65); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 
-    /* thin vertical separator centered under search bar */
     .store-search::after{
       content:"";
       position:absolute;
@@ -365,30 +365,30 @@
       user-select:none; min-width:132px; position:relative; flex:0 0 auto;
       z-index:40;
     }
-    .checkout-fused:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 18px rgba(15,23,42,0.10); }
+    .checkout-fused:hover{
+      box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 18px rgba(15,23,42,0.10);
+    }
     .checkout-fused svg{ width:22px; height:22px; stroke:#ffffff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
     .checkout-fused .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#ffffff; white-space:nowrap; }
 
     .cart-wrap{ position:relative; display:flex; align-items:center; justify-content:center; }
+
+    /* badge: default REGULAR orange; darkens only when hovering the checkout button */
     .cart-badge{
       position:absolute; top:-6px; right:-7px;
       min-width:12px; height:12px; padding:0 3px; border-radius:999px;
-      background: var(--orangeBadge);
+      background: var(--orange);
       border:1px solid rgba(255,255,255,0.65);
       color:#ffffff; font-weight:900; font-size:8px;
       display:flex; align-items:center; justify-content:center; line-height:1;
       pointer-events:none;
+      transition: background .12s ease;
     }
+    .checkout-fused:hover .cart-badge{ background: var(--orangeBadge); }
 
     .grid-body{ padding:0; }
-    .store-body-wrap{
-      display:flex;
-      align-items:stretch;
-      gap:0;
-      position:relative;
-    }
+    .store-body-wrap{ display:flex; align-items:stretch; gap:0; position:relative; }
 
-    /* Rounded INNER corner between left tab and top tab (smooth rounded angle) */
     .store-body-wrap::before{
       content:"";
       position:absolute;
@@ -396,14 +396,13 @@
       top:0;
       width:18px;
       height:18px;
-      background:#ffffff;                 /* “cut” into the green to round the inside */
-      border-top-left-radius:18px;        /* rounded inside */
-      box-shadow: -1px 0 0 rgba(12,90,42,0.45), 0 -1px 0 rgba(12,90,42,0.45); /* keep the inner outline look */
+      background:#ffffff;
+      border-top-left-radius:18px;
+      box-shadow: -1px 0 0 rgba(12,90,42,0.45), 0 -1px 0 rgba(12,90,42,0.45);
       pointer-events:none;
       z-index:8;
     }
 
-    /* Left vertical tab */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -416,7 +415,7 @@
       position:relative;
     }
 
-    /* Longer vertical separators between POWDER/MERCH/PLANTS */
+    /* ONE vertical line between tabs, longer, lime color */
     .cat-btn{
       border:none; background:transparent; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
@@ -427,30 +426,16 @@
       content:"";
       position:absolute;
       left:50%;
-      bottom:4px;
-      transform:translateX(-50%);
+      top:50%;
+      transform: translate(-50%, -50%);
       width:2px;
-      height:38px; /* longer */
-      background: rgba(216,255,106,0.85);
+      height:64px;                 /* longer */
+      background: var(--lime);     /* lime (same as header text) */
       border-radius:999px;
       opacity:1;
       pointer-events:none;
     }
-    .cat-btn::before{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:4px;
-      transform:translateX(-50%);
-      width:2px;
-      height:38px; /* longer */
-      background: rgba(216,255,106,0.85);
-      border-radius:999px;
-      opacity:1;
-      pointer-events:none;
-    }
-    .cat-btn:last-child::after{ display:none; } /* no line below last */
-    .cat-btn:first-child::before{ display:none; } /* no line above first */
+    .cat-btn:last-child::after{ display:none; } /* no divider after PLANTS */
     .cat-btn.is-active{ background:transparent; box-shadow:none; }
 
     .cat-text{
@@ -637,7 +622,6 @@
       margin-top:2px;
     }
 
-    /* Checkout drawer */
     .overlay{
       position:fixed; inset:0;
       background: rgba(0,0,0,0.28);
@@ -755,7 +739,6 @@
     }
     .cart-foot .checkout-disabled:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange); }
 
-    /* FOOTER */
     footer{
       border-top: var(--footerTopOutline);
       background: linear-gradient(to bottom, #d8ff6a 0%, #7ae78a 52%, #066100 100%);
@@ -846,13 +829,11 @@
     }
     .metal-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 14px 36px rgba(15,23,42,0.12); }
 
-    /* Divider between copyright/newsletter and socials */
     .footer-divider{
       height:0;
       border-top: var(--footerTopOutline);
     }
 
-    /* SOCIAL STRIP: mayanuts image background */
     .bottom-banner{
       width:100%;
       background-image: url("mayanuts-the-maya-nut-company-image.jpeg");
@@ -906,20 +887,14 @@
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
-    /* Mobile */
     @media(max-width:780px){
-      .site-header{
-        background-size: 160% auto;
-        background-position: center 35%;
-      }
-
       .main-nav{ top:10px; transform:none; height:auto; }
       .nav-left,.nav-right{ top:auto; transform:none; }
       .nav-left{ top:10px; }
       .nav-right{ top:10px; }
 
       .brand-group{ top:64%; transform: translate(-50%, -50%); left:50%; }
-      .menu-row{ top: calc(64% + 54px); transform: translate(-50%, -50%); }
+      .menu-row{ top: calc(64% + 44px); transform: translate(-50%, -50%); } /* keep menu lifted on mobile too */
 
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
@@ -1092,7 +1067,6 @@
       </div>
     </main>
 
-    <!-- Checkout overlay + drawer -->
     <div class="overlay" id="overlay" aria-hidden="true"></div>
 
     <aside class="cart-drawer" id="cart-drawer" aria-label="Cart drawer" aria-hidden="true">
@@ -1116,7 +1090,6 @@
       </div>
     </aside>
 
-    <!-- FOOTER -->
     <footer aria-label="Footer">
       <div class="footer-wrap">
         <div class="footer-left" aria-label="Footer info">
@@ -1200,22 +1173,6 @@
       window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
       window.addEventListener("pageshow", setStickyOffset);
       document.addEventListener("DOMContentLoaded", setStickyOffset);
-    })();
-
-    /* Category click = scroll only */
-    (function(){
-      const map = { all:null, powder:"#sec-powder", merch:"#sec-merch", plants:"#sec-plants" };
-      document.querySelectorAll('input[name="catmode"]').forEach(r=>{
-        r.addEventListener("change", ()=>{
-          const sel = map[r.value] || null;
-          if(sel){
-            const el = document.querySelector(sel);
-            if(el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-          }else{
-            window.scrollTo({ top: 0, behavior:"smooth" });
-          }
-        });
-      });
     })();
 
     /* Variant menu */
@@ -1437,6 +1394,7 @@
 
             const prev = cart.get(title) || 0;
             cart.set(title, prev + q);
+
             renderCart();
           });
         });

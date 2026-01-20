@@ -291,6 +291,7 @@
       z-index:30;
     }
 
+    /* Search aligned with first product: constrain width */
     .store-search{
       height:36px;
       border-radius:14px;
@@ -299,10 +300,13 @@
       display:flex;
       align-items:center;
       overflow:hidden;
-      flex: 0 1 410px;
-      width:410px;
-      max-width:410px;
+
+      /* shorter than before */
+      flex: 0 1 360px;
+      width:360px;
+      max-width:360px;
       min-width:240px;
+
       box-shadow:0 10px 18px rgba(15,23,42,0.06);
       position:relative;
       z-index:60;
@@ -342,11 +346,11 @@
     .grid-body{ padding:0; }
     .store-body-wrap{ display:flex; align-items:stretch; gap:0; }
 
-    /* Left vertical tab */
+    /* Left vertical tab: POWDER green MUST match FILTER green */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
-      background: var(--green);
+      background: var(--green); /* exact same green as filter */
       border-right: var(--softBorder);
       display:flex; flex-direction:column; justify-content:space-between;
       padding-top: 46px; margin-top: -46px;
@@ -484,7 +488,9 @@
     }
     .addq:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 18px rgba(15,23,42,0.10); }
 
-    /* Qty: all three segments same orange, only hovered segment darkens */
+    /* Qty: all three segments same orange.
+       Only the hovered segment darkens (no group hover).
+    */
     .qty-unified{
       height:34px;
       flex:0 0 170px;
@@ -497,7 +503,7 @@
     .qty-btn{
       width:40px;
       border:none;
-      background: transparent; /* same orange as parent */
+      background: transparent;
       color:#ffffff;
       font-weight:900;
       font-size:14px;
@@ -513,7 +519,7 @@
     .qty-mid{
       flex:1 1 auto;
       display:flex; align-items:center; justify-content:center;
-      background: transparent; /* same orange as parent */
+      background: transparent;
       border-left:1px solid rgba(255,255,255,0.25);
       border-right:1px solid rgba(255,255,255,0.25);
       transition: background .12s ease;
@@ -662,7 +668,7 @@
     }
     .cart-foot .checkout-disabled:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange); }
 
-    /* RESTORED FOOTER (info, terms/privacy/sitemap, newsletter, email + socials) */
+    /* RESTORED FOOTER */
     footer{
       border-top: 2px solid rgba(0,0,0,0.08);
       background: linear-gradient(to bottom, #d8ff6a 0%, #7ae78a 52%, #066100 100%);
@@ -829,25 +835,60 @@
       stroke-linejoin:round;
     }
 
-    /* Mobile adjustments */
-    @media(max-width:780px){
-      .main-nav{ top:10px; transform:none; height:auto; }
-      .nav-left,.nav-right{ top:auto; transform:none; }
-      .nav-left{ top:10px; }
-      .nav-right{ top:10px; }
+    .footer-thin{
+      height: var(--bannerH);
+      background: var(--green);
+      border-top: 1px solid rgba(255,255,255,0.18);
+    }
 
-      .brand-group{ top:64%; transform: translate(-50%, -50%); left:50%; }
-      .menu-row{ top: calc(64% + 54px); transform: translate(-50%, -50%); }
+    /* Mobile: move Email + Espanol higher, and zoom header background in */
+    @media(max-width:780px){
+      .site-header{
+        /* zoom in so leaf vein is thicker */
+        background-size: 140% auto;
+        background-position: center 40%;
+      }
+
+      .main-nav{
+        top:6px;
+        transform:none;
+        height:auto;
+      }
+      .nav-left,.nav-right{
+        top:0;
+        transform:none;
+      }
+      .nav-left{ top:6px; }
+      .nav-right{ top:6px; }
+
+      .brand-group{
+        top:66%;
+        left:50%;
+        transform: translate(-50%, -50%);
+      }
+      .menu-row{
+        top: calc(66% + 54px);
+        transform: translate(-50%, -50%);
+      }
 
       .store-layout{ grid-template-columns: 1fr; }
       .filter-col{ display:none; }
       .cat-tab{ display:none; }
       .product-grid{ grid-template-columns: 1fr; }
 
-      .store-search{ width:100%; max-width:none; flex:1 1 auto; min-width:0; }
+      .store-search{
+        width:100%;
+        max-width:none;
+        min-width:0;
+        flex:1 1 auto;
+      }
 
       .row1,.row2{ flex-direction:column; align-items:stretch; }
-      .variant-box{ width:100%; max-width:100%; min-width:0; }
+      .variant-box{
+        width:100%;
+        max-width:100%;
+        min-width:0;
+      }
 
       .qty-unified{ width:100%; flex:1 1 auto; }
 

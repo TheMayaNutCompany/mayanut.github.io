@@ -49,8 +49,8 @@
       --bannerH: 18px;
       --topBarOutline: 1px solid rgba(12,90,42,0.55);
 
-      /* hover darken overlay */
       --darkOrange: rgba(0,0,0,0.18);
+      --footerDivider: 2px solid rgba(6,97,0,0.85);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -191,8 +191,6 @@
       user-select:none;
       white-space:nowrap;
     }
-
-    /* MENU UNDERLINES (slide L->R, white; STORE always orange underline) */
     .menu-row a{
       position:relative;
       font-weight:900;
@@ -289,7 +287,17 @@
     .filter-item{ display:flex; align-items:center; gap:10px; padding:6px 0; font-weight:800; font-size:12px; color:#0b1220; letter-spacing:.01em; }
 
     /* STORE TOP BAR */
-    .grid-wrap{ background:#ffffff; display:flex; flex-direction:column; border-radius:18px; overflow:hidden; }
+    .grid-wrap{
+      background:#ffffff;
+      display:flex;
+      flex-direction:column;
+      border-radius:18px;
+      overflow:hidden;
+      position:relative;
+      /* inner outline (same as outer) */
+      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.45);
+    }
+
     .grid-head{
       background: var(--green);
       padding:10px 12px;
@@ -332,6 +340,19 @@
     .store-search .xbtn{ width:34px; height:36px; display:flex; align-items:center; justify-content:center; flex:0 0 34px; cursor:pointer; user-select:none; background:transparent; }
     .store-search .xbtn svg{ width:16px; height:16px; stroke: rgba(15,23,42,0.65); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 
+    /* thin vertical separators centered under search bar */
+    .store-search::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-20px;
+      width:2px;
+      height:18px;
+      transform:translateX(-50%);
+      background: rgba(216,255,106,0.85);
+      border-radius:999px;
+    }
+
     .head-divider{ height:2px; background: rgba(255,255,255,0.55); flex:1 1 auto; border-radius:999px; opacity:.55; min-width:18px; }
 
     .checkout-fused{
@@ -359,9 +380,28 @@
     }
 
     .grid-body{ padding:0; }
-    .store-body-wrap{ display:flex; align-items:stretch; gap:0; }
+    .store-body-wrap{
+      display:flex;
+      align-items:stretch;
+      gap:0;
+      position:relative;
+    }
 
-    /* Left vertical tab (no light outline on active) */
+    /* Rounded inner corner between left tab and top tab area */
+    .store-body-wrap::before{
+      content:"";
+      position:absolute;
+      left: var(--catTabW);
+      top:0;
+      width:18px;
+      height:18px;
+      background: var(--green);
+      border-bottom-right-radius:18px;
+      pointer-events:none;
+      z-index:5;
+    }
+
+    /* Left vertical tab */
     .cat-tab{
       width: var(--catTabW);
       flex:0 0 var(--catTabW);
@@ -371,10 +411,30 @@
       padding-top: 46px; margin-top: -46px;
       border-top-left-radius:18px; border-bottom-left-radius:18px;
       overflow:hidden;
+      position:relative;
     }
-    .cat-btn{ border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:1 1 0; padding:10px 0; }
-    .cat-btn:hover{ background:transparent; }
-    .cat-btn.is-active{ background:transparent; box-shadow:none; } /* <-- removes the lighter outline */
+
+    /* vertical separators: below powder->merch and merch->plants */
+    .cat-btn{
+      border:none; background:transparent; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      flex:1 1 0; padding:10px 0;
+      position:relative;
+    }
+    .cat-btn::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:0;
+      transform:translateX(-50%);
+      width:2px;
+      height:22px;
+      background: rgba(216,255,106,0.85);
+      border-radius:999px;
+      opacity:1;
+    }
+    .cat-btn:last-child::after{ display:none; }
+    .cat-btn.is-active{ background:transparent; box-shadow:none; }
     .cat-text{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:22px;
@@ -389,7 +449,6 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.18);
     }
 
-    /* White section blocks */
     .store-content{
       flex:1 1 auto; min-width:0;
       display:flex; flex-direction:column; gap:10px;
@@ -767,10 +826,15 @@
     }
     .metal-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 14px 36px rgba(15,23,42,0.12); }
 
-    /* SOCIAL STRIP: use mayanuts image background */
+    /* dark green outline divider between upper footer section and socials strip */
+    .footer-divider{
+      height:0;
+      border-top: var(--footerDivider);
+    }
+
+    /* SOCIAL STRIP: mayanuts image background */
     .bottom-banner{
       width:100%;
-      border-top: 2px solid rgba(12,90,42,0.35);
       background-image: url("mayanuts-the-maya-nut-company-image.jpeg");
       background-repeat: repeat-x;
       background-size: auto 100%;
@@ -779,7 +843,7 @@
       min-height: 54px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-start;
       gap:10px;
     }
 
@@ -822,34 +886,6 @@
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
-    .share-btn{
-      height:36px;
-      padding:0 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      color:#ffffff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:10px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      box-shadow:0 12px 28px rgba(15,23,42,0.12);
-      white-space:nowrap;
-    }
-    .share-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 12px 28px rgba(15,23,42,0.12); }
-    .share-btn svg{
-      width:16px; height:16px;
-      stroke:#ffffff;
-      fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
     /* Mobile */
     @media(max-width:780px){
       .site-header{
@@ -871,6 +907,7 @@
       .product-grid{ grid-template-columns: 1fr; }
 
       .store-search{ width:100%; max-width:none; flex:1 1 auto; min-width:0; }
+      .store-search::after{ display:none; }
 
       .row1,.row2{ flex-direction:column; align-items:stretch; }
       .variant-box{ width:100%; max-width:100%; min-width:0; }
@@ -882,7 +919,6 @@
       .footer-wrap{ grid-template-columns:1fr; }
       .newsletter-form{ flex-direction:column; align-items:stretch; }
       .newsletter-form input{ width:100%; min-width:0; }
-      .bottom-banner{ flex-direction:column; align-items:flex-start; }
     }
 
     @media(max-width:1100px){
@@ -1059,7 +1095,7 @@
       </div>
     </aside>
 
-    <!-- RESTORED FOOTER -->
+    <!-- FOOTER -->
     <footer aria-label="Footer">
       <div class="footer-wrap">
         <div class="footer-left" aria-label="Footer info">
@@ -1090,18 +1126,9 @@
         </div>
       </div>
 
-      <div class="bottom-banner" aria-label="Bottom banner">
-        <button class="share-btn" id="share-btn" type="button" aria-label="Share">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 8a3 3 0 1 0-2.8-4"></path>
-            <path d="M6 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"></path>
-            <path d="M18 13a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"></path>
-            <path d="M8.5 15.2l6.8-3.4"></path>
-            <path d="M8.5 18.8l6.8-3.4"></path>
-          </svg>
-          SHARE
-        </button>
+      <div class="footer-divider" aria-hidden="true"></div>
 
+      <div class="bottom-banner" aria-label="Bottom banner">
         <div class="bottom-left">
           <div class="email-inline">
             <a class="icon-pill" href="mailto:info@mayanut.com" aria-label="Email">
@@ -1132,7 +1159,6 @@
           </a>
         </div>
       </div>
-      <!-- removed the dark green bar that was below socials -->
     </footer>
   </div>
 
@@ -1142,7 +1168,6 @@
     const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
     const $  = (s, r=document)=> r.querySelector(s);
 
-    /* Sticky offset */
     (function(){
       function setStickyOffset(){
         const sticky = document.getElementById("sticky-top");
@@ -1154,6 +1179,22 @@
       window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
       window.addEventListener("pageshow", setStickyOffset);
       document.addEventListener("DOMContentLoaded", setStickyOffset);
+    })();
+
+    /* Category click = scroll only */
+    (function(){
+      const map = { all:null, powder:"#sec-powder", merch:"#sec-merch", plants:"#sec-plants" };
+      document.querySelectorAll('input[name="catmode"]').forEach(r=>{
+        r.addEventListener("change", ()=>{
+          const sel = map[r.value] || null;
+          if(sel){
+            const el = document.querySelector(sel);
+            if(el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+          }else{
+            window.scrollTo({ top: 0, behavior:"smooth" });
+          }
+        });
+      });
     })();
 
     /* Variant menu */
@@ -1262,7 +1303,7 @@
       const cartBody = document.getElementById("cart-body");
       const cartEmpty = document.getElementById("cart-empty");
 
-      const cart = new Map(); // title -> qty
+      const cart = new Map();
 
       const money = (n)=> Number(n||0).toLocaleString(undefined,{style:"currency",currency:"USD"});
       const norm = (s)=> String(s||"").toLowerCase().trim();
@@ -1430,31 +1471,16 @@
       wireVariants();
       renderCart();
       renderBadge();
-
-      document.getElementById("share-btn")?.addEventListener("click", async ()=>{
-        const url = window.location.href;
-        const title = document.title;
-        const text = "Store | The MayaNut Company";
-        try{
-          if(navigator.share){
-            await navigator.share({ title, text, url });
-          }else if(navigator.clipboard){
-            await navigator.clipboard.writeText(url);
-            alert("Link copied to clipboard.");
-          }else{
-            alert(url);
-          }
-        }catch(_){}
-      });
-
-      document.getElementById("newsletter-form")?.addEventListener("submit",(e)=>{
-        e.preventDefault();
-        const email = document.getElementById("newsletter-email")?.value?.trim() || "";
-        if(!email) return;
-        alert("Subscribed (demo).");
-        document.getElementById("newsletter-email").value = "";
-      });
     })();
+
+    /* Newsletter demo */
+    document.getElementById("newsletter-form")?.addEventListener("submit",(e)=>{
+      e.preventDefault();
+      const email = document.getElementById("newsletter-email")?.value?.trim() || "";
+      if(!email) return;
+      alert("Subscribed (demo).");
+      document.getElementById("newsletter-email").value = "";
+    });
   </script>
 </body>
 </html>

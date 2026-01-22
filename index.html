@@ -1,8 +1,11 @@
 <!-- UPDATED index.html (copy-paste over your current file)
-     Changes:
-     - Menu order: HOME, STORE, ABOUT (3rd), RESEARCH (4th)
-     - Footer left: centered tagline + smaller logo + slightly bigger Florida icon
-     - SEO: expanded keywords; added OG alt and explicit image alt text already present; added image meta (best-effort via og:image:alt + descriptive alt attributes)
+     Fixes requested:
+     - Qty control: stable “classic” rounded rectangle, no glitches; starts 1, max 9, shows bulk message on attempt >9
+     - Seed product description: “Grow your own tropical MayaNut plants!”
+     - Remove the thick green bar before footer (removed the extra .top-banner divider under main)
+     - Footer headings (WHO WE ARE / SUPPORT / FOLLOW): match top menu tab font-size (17px)
+     - Footer links: match mini store title size (12px) + keep underlines
+     - Ensure “Introducing MayaNut to You 🫵” is underlined in orange
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -53,29 +56,19 @@
   <style>
     :root{
       --green:#066100;
-      --greenDeep:#0b3b17;
-
       --orange:#fd6c02;
       --orangeBadge:#fd6c02;
       --orangeBadgeHover:#d24f02;
-
       --lime:#d8ff6a;
       --pale:#e9ffd6;
-
       --page:#ffffff;
       --softBorder: 1px solid rgba(12,90,42,0.45);
-
-      --shadow: 0 18px 55px rgba(15,23,42,0.18);
-
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-
       --stickyOffset: 170px;
       --bannerH: 18px;
       --navH: 152px;
-
       --darkOverlay: rgba(0,0,0,0.18);
-
       --footer-g1:#d8ff6a;
       --footer-g2:#7ae78a;
       --footer-g3:#066100;
@@ -186,7 +179,6 @@
       height:56px;
       z-index:5;
       pointer-events:none;
-      overflow:visible;
     }
     .nav-left,.nav-right{
       position:absolute;
@@ -214,14 +206,12 @@
       cursor:pointer;
       user-select:none;
       padding:0 14px;
-      gap:8px;
       color:#ffffff;
       letter-spacing:0.12em;
       text-transform:uppercase;
       font-size:12px;
       font-weight:900;
       white-space:nowrap;
-      transition: box-shadow .12s ease;
     }
     .pill-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 22px rgba(15,23,42,0.12); }
 
@@ -328,25 +318,23 @@
 
     .headline{ padding: 14px 14px 0; background:#ffffff; }
     .headline .big{
-      font-family: var(--font-ui);
       font-weight: 950;
       font-size: 30px;
       line-height: 1.05;
       color:#0b1220;
       letter-spacing: .02em;
-      width:100%;
     }
+    /* Force orange underline */
     .headline .sub{
       margin-top: 6px;
       font-weight: 950;
       font-size: 17px;
       line-height: 1.1;
       color: var(--orange);
-      text-decoration-line: underline;
+      text-decoration: underline;
       text-decoration-color: var(--orange);
       text-decoration-thickness: 2px;
       text-underline-offset: 4px;
-      width: fit-content;
     }
 
     .para{ padding: 14px; background: #ffffff; }
@@ -442,7 +430,6 @@
       min-width: 132px;
       position:relative;
     }
-    .mini-checkout:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 18px rgba(15,23,42,0.10); }
     .mini-checkout svg{ width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
     .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
@@ -490,7 +477,6 @@
       flex-direction:column;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       min-height: 318px;
-      position:relative;
     }
 
     .mini-top{
@@ -507,7 +493,7 @@
       font-weight: 950;
       letter-spacing: .06em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 12px; /* mini store title size */
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -614,18 +600,21 @@
       flex:0 0 auto;
     }
 
-    .qty-pill{ padding: 0; overflow:hidden; }
-    .qty-pill .qty-seg{
-      width: 40px;
+    /* QTY (glitch-proof): keep it simple, no weird min-width tricks */
+    .qty-pill{
+      padding: 0;
+      overflow:hidden;
+    }
+    .qty-seg{
+      width: 42px;
       height: 100%;
       display:flex;
       align-items:center;
       justify-content:center;
-      flex:0 0 40px;
+      flex:0 0 42px;
     }
-    .qty-pill .qty-mid{
+    .qty-mid{
       flex: 1 1 auto;
-      min-width: 120px;
       height: 100%;
       display:flex;
       align-items:center;
@@ -633,12 +622,13 @@
       padding: 0 10px;
       border-left: 1px solid rgba(12,90,42,0.35);
       border-right: 1px solid rgba(12,90,42,0.35);
+      min-width: 0;
     }
     .qty-display{
       font-weight: 950;
       font-size: 14px;
       letter-spacing: .04em;
-      color:#000000;
+      color:#000000;           /* always visible */
       line-height: 1;
       user-select:none;
       white-space:nowrap;
@@ -649,6 +639,7 @@
       text-transform: uppercase;
       white-space:normal;
       text-align:center;
+      line-height: 1.05;
     }
     .qty-pill button{
       width:100%;
@@ -664,6 +655,7 @@
       justify-content:center;
       outline:none;
     }
+    .qty-pill button:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.04); }
 
     .prod-desc{
       margin-top: 8px;
@@ -746,18 +738,17 @@
       align-items: start;
     }
 
-    /* Footer left: center tagline + logo */
     .footer-left{
       display:flex;
       flex-direction:column;
       gap: 10px;
-      align-items:center;            /* centered */
-      text-align:center;             /* centered text */
+      align-items:center;
+      text-align:center;
     }
     .footer-tagline{
       display:flex;
       align-items:center;
-      justify-content:center;        /* center within */
+      justify-content:center;
       gap: 10px;
       font-weight: 950;
       letter-spacing: .06em;
@@ -768,12 +759,12 @@
       width:100%;
     }
     .footer-florida{
-      width: 26px;                   /* slightly bigger */
+      width: 26px;
       height: 26px;
       filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14));
     }
     .footer-logo{
-      width: 240px;                  /* a little smaller */
+      width: 240px;
       height: auto;
       filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
       user-select:none;
@@ -786,23 +777,28 @@
       gap: 18px;
       align-items:start;
     }
+
+    /* Footer column titles: match top menu size */
     .footer-col-title{
       font-weight: 950;
-      letter-spacing: .12em;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      font-size: 14px;
+      font-size: 17px; /* match top menu tabs */
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       margin-bottom: 10px;
     }
+
+    /* Footer links: match mini-store title size */
     .footer-link{
       display:block;
       font-weight: 900;
-      font-size: 15px;
-      letter-spacing: .02em;
+      font-size: 12px; /* match mini title */
+      letter-spacing: .06em;
       padding: 6px 0;
       border-bottom: 1px solid rgba(255,255,255,0.25);
       width: fit-content;
       text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      text-transform: uppercase;
     }
     .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
 
@@ -833,7 +829,6 @@
       .add-to-cart{ width:100%; }
       .stack-right{ width:100%; }
       .mini-pill, .qty-pill{ height: 40px; }
-      .qty-pill .qty-mid{ min-width: 0; }
       .prod-desc{ white-space:normal; }
     }
 
@@ -910,7 +905,7 @@
           </div>
         </nav>
 
-        <!-- MENU ORDER UPDATED: ABOUT 3rd, RESEARCH 4th -->
+        <!-- MENU ORDER: ABOUT 3rd, RESEARCH 4th -->
         <div class="menu-row" aria-label="Primary navigation">
           <a class="is-active" href="index.html" aria-current="page">HOME</a>
           <a href="store.html">STORE</a>
@@ -1068,7 +1063,7 @@
                     </div>
 
                     <div class="prod-desc">
-                      Flavorful powder, great for acai bowls, granola, and much more!
+                      Grow your own tropical MayaNut plants!
                     </div>
                   </div>
                 </article>
@@ -1108,8 +1103,7 @@
         </section>
 
       </div>
-
-      <div class="top-banner" aria-hidden="true" style="border-top:1px solid rgba(255,255,255,0.18); border-bottom:none;"></div>
+      <!-- Removed the extra green/top-banner strip that was causing the thick bar above the footer -->
     </main>
 
     <footer class="footer" aria-label="Footer">
@@ -1120,7 +1114,7 @@
             <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
           </div>
           <a href="index.html" aria-label="The MayaNut Company home">
-            <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
+            <img class="footer-logo" src="mayanut-the-maya-nut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.src='mayanut-the-mayanut-comapny-logo.png';">
           </a>
         </div>
 
@@ -1149,4 +1143,235 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
                   <circle cx="12" cy="12" r="4.2"></circle>
-                  <circle cx="17.3" cy="6.7" r="0
+                  <circle cx="17.3" cy="6.7" r="0.9"></circle>
+                </svg>
+              </a>
+
+              <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+                </svg>
+              </a>
+
+              <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+                </svg>
+              </a>
+
+              <a class="icon-pill" href="#" aria-label="YouTube" onclick="return false;">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>
+                  <path class="yt-play" d="M11.0 9.4v5.2l4.6-2.6-4.6-2.6Z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider" aria-hidden="true"></div>
+
+      <div class="footer-bottom">
+        <div>© 2026 The MayaNut Company, Inc.</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Weight dropdown menu root -->
+  <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
+
+  <script>
+    // Mini store: qty + add + search + badge + weight dropdown
+    (function(){
+      const MAX_QTY = 9;
+      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
+      const cart = new Map();
+      const badge = document.getElementById("mini-badge");
+
+      const weightRoot = document.getElementById("weight-menu-root");
+      let weightMenu = null;
+      const WEIGHTS = [
+        { key:"qtr", label:"1/4 LB", price:9.95 },
+        { key:"half", label:"1/2 LB", price:18.95 },
+        { key:"one", label:"1 LB", price:35.95 }
+      ];
+      let activeWeight = "qtr";
+
+      function closeWeight(){ if(weightMenu){ weightMenu.remove(); weightMenu = null; } }
+      function openWeight(anchor){
+        closeWeight();
+        const r = anchor.getBoundingClientRect();
+        const menu = document.createElement("div");
+        menu.style.pointerEvents = "auto";
+        menu.style.position = "fixed";
+        menu.style.left = Math.min(window.innerWidth - 220, Math.max(10, Math.round(r.left))) + "px";
+        menu.style.top  = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6)) + "px";
+        menu.style.zIndex = "2600";
+        menu.style.minWidth = "190px";
+        menu.style.padding = "6px";
+        menu.style.borderRadius = "12px";
+        menu.style.border = "1px solid rgba(12,90,42,0.55)";
+        menu.style.background = "rgba(255,255,255,0.98)";
+        menu.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
+
+        WEIGHTS.forEach(opt=>{
+          const row = document.createElement("div");
+          row.textContent = opt.label;
+          row.style.borderRadius = "10px";
+          row.style.padding = "8px 10px";
+          row.style.cursor = "pointer";
+          row.style.fontWeight = "900";
+          row.style.fontSize = "12px";
+          row.style.color = "#0b1220";
+          row.style.background = "rgba(233,255,214,0.95)";
+          row.style.border = "1px solid rgba(12,90,42,0.55)";
+          row.style.marginBottom = "6px";
+          if(opt.key === activeWeight){
+            row.style.outline = "2px solid rgba(12,90,42,0.55)";
+            row.style.outlineOffset = "-2px";
+          }
+          row.addEventListener("click", ()=>{
+            activeWeight = opt.key;
+            document.querySelectorAll("[data-weight-val]").forEach(el=> el.textContent = opt.label);
+
+            const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
+            const priceEl = powder?.querySelector("[data-price]");
+            if(priceEl) priceEl.textContent = "$" + opt.price.toFixed(2);
+
+            closeWeight();
+          });
+          menu.appendChild(row);
+        });
+        if(menu.lastChild) menu.lastChild.style.marginBottom = "0";
+
+        weightRoot.appendChild(menu);
+        weightMenu = menu;
+      }
+
+      document.addEventListener("click",(e)=>{
+        if(weightMenu){
+          const within = weightMenu.contains(e.target);
+          const anchor = e.target.closest?.("[data-weight]");
+          if(!within && !anchor) closeWeight();
+        }
+      });
+      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeWeight(); });
+
+      function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
+      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
+
+      function brieflyAdded(btn){
+        btn.classList.add("added-state");
+        const main = btn.querySelector(".add-main");
+        const sub  = btn.querySelector(".add-sub");
+        const oldMain = main?.textContent || "ADD";
+        const oldSub  = sub?.textContent || "TO CART";
+        if(main) main.textContent = "ADDED";
+        if(sub)  sub.textContent  = "✓";
+        setTimeout(()=>{
+          if(main) main.textContent = oldMain;
+          if(sub)  sub.textContent  = oldSub;
+          btn.classList.remove("added-state");
+        }, 550);
+      }
+
+      function wireCard(card){
+        const title = card.getAttribute("data-title") || "Item";
+        const add = card.querySelector("[data-add]");
+        const weightBtn = card.querySelector("[data-weight]");
+
+        const qtyDisplay = card.querySelector("[data-qty]");
+        const plus = card.querySelector(".qty-pill [data-plus]");
+        const minus = card.querySelector(".qty-pill [data-minus]");
+
+        let qtyVal = 1;
+        let bulkTimer = null;
+
+        function setQty(n){
+          qtyVal = clamp(parseInt(n,10) || 1);
+          if(qtyDisplay){
+            qtyDisplay.classList.remove("bulk");
+            qtyDisplay.textContent = String(qtyVal);
+          }
+        }
+
+        function showBulkMessage(){
+          if(!qtyDisplay) return;
+          clearTimeout(bulkTimer);
+          qtyDisplay.classList.add("bulk");
+          qtyDisplay.textContent = "Contact Us for Bulk Orders!";
+          bulkTimer = setTimeout(()=>{
+            qtyDisplay.classList.remove("bulk");
+            qtyDisplay.textContent = String(qtyVal);
+          }, 1400);
+        }
+
+        if(weightBtn){
+          weightBtn.addEventListener("click", (e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            openWeight(weightBtn);
+          });
+        }
+
+        setQty(1);
+
+        plus?.addEventListener("click", ()=>{
+          if(qtyVal >= MAX_QTY){ showBulkMessage(); return; }
+          setQty(qtyVal + 1);
+        });
+        minus?.addEventListener("click", ()=> setQty(qtyVal - 1));
+
+        add?.addEventListener("click", ()=>{
+          if(add.disabled) return;
+          const q = clamp(qtyVal);
+          cart.set(title, (cart.get(title)||0) + q);
+          renderBadge();
+          add.disabled = true;
+          brieflyAdded(add);
+          setTimeout(()=>{ add.disabled = false; }, 350);
+        });
+      }
+
+      document.querySelectorAll(".mini-card").forEach(wireCard);
+
+      document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
+        const count = cartCount();
+        alert(count ? `Cart items (preview): ${count}` : "Your cart is empty.");
+      });
+
+      const s = document.getElementById("mini-search");
+      const c = document.getElementById("mini-search-clear");
+      const norm = (x)=> String(x||"").toLowerCase().trim();
+      function apply(){
+        const q = norm(s?.value);
+        document.querySelectorAll(".mini-card").forEach(card=>{
+          const t = norm(card.getAttribute("data-title"));
+          card.style.display = (!q || t.includes(q)) ? "" : "none";
+        });
+      }
+      s?.addEventListener("input", apply);
+      c?.addEventListener("click", ()=>{ if(!s) return; s.value=""; apply(); s.focus(); });
+
+      const init = WEIGHTS.find(w=>w.key===activeWeight);
+      if(init){
+        const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
+        const priceEl = powder?.querySelector("[data-price]");
+        const valEl = powder?.querySelector("[data-weight-val]");
+        if(priceEl) priceEl.textContent = "$" + init.price.toFixed(2);
+        if(valEl) valEl.textContent = init.label;
+      }
+
+      renderBadge();
+      apply();
+    })();
+
+    // Footer AI link opens the AI overlay if you kept that component elsewhere; prevent jump for now.
+    (function(){
+      const link = document.getElementById("footer-ai-link");
+      link?.addEventListener("click", (e)=>{ e.preventDefault(); });
+    })();
+  </script>
+</body>
+</html>

@@ -94,7 +94,7 @@
       overscroll-behavior-y:none;
     }
 
-    /* Thin desktop scrollbar (right edge, not over your content) */
+    /* Thin desktop scrollbar */
     @media (min-width: 981px){
       body{
         scrollbar-width: thin;
@@ -322,7 +322,6 @@
       min-height:0;
     }
 
-    /* Headline block (inside What Is MayaNut?) */
     .headline{
       padding: 14px 14px 0;
       background:#ffffff;
@@ -446,7 +445,6 @@
     .mini-checkout svg{ width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
     .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
-    /* Badge on the cart icon tip (not the button corner) */
     .mini-checkout .cart-icon-wrap{
       position:relative;
       display:inline-flex;
@@ -456,8 +454,8 @@
     }
     .mini-badge{
       position:absolute;
-      top: -6px;
-      right: -8px;
+      top:-6px;
+      right:-8px;
       min-width: 14px;
       height: 14px;
       padding:0 4px;
@@ -493,13 +491,21 @@
       flex-direction:column;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       min-height: 318px;
+      position:relative;
     }
 
-    .mini-title{
+    /* Top strip now holds title + price (right side) */
+    .mini-top{
       background: var(--pale);
-      color:#0b1220;
       border-bottom: var(--softBorder);
       padding: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .mini-title{
+      color:#0b1220;
       font-weight: 950;
       letter-spacing: .06em;
       text-transform: uppercase;
@@ -507,7 +513,16 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      min-width:0;
     }
+    .mini-top-price{
+      font-weight: 950;
+      font-size: 12px;
+      color:#0b1220;
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+
     .mini-img{
       width:100%;
       height: 192px;
@@ -524,54 +539,8 @@
       gap: 8px;
       flex:1 1 auto;
     }
-    .mini-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-    }
-    .mini-price{
-      font-weight:900;
-      font-size: 13px;
-      color:#0b1220;
-      white-space:nowrap;
-    }
 
-    .mini-pill{
-      height:28px;
-      border-radius:14px;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.92);
-      padding:0 10px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      cursor:pointer;
-      user-select:none;
-      white-space:nowrap;
-      flex:0 0 auto;
-    }
-    .mini-pill .lbl{
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:10px;
-      color:#0b1220;
-    }
-    .mini-pill .val{
-      font-weight:900;
-      font-size:12px;
-      color:#0b1220;
-    }
-    .mini-pill svg{
-      width:14px;height:14px;
-      stroke:#0b1220; fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round; stroke-linejoin:round;
-      opacity:.9;
-    }
-
-    /* ========== ACTION ROW ========== */
+    /* === Tight bottom: Add left, Stack right === */
     .mini-actions{
       margin-top:auto;
       display:flex;
@@ -608,52 +577,74 @@
       outline-offset: 2px;
     }
     .add-to-cart[disabled]{ opacity: .65; cursor: default; transform:none; }
-
-    .add-main{
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .add-sub{
-      font-size: 10px;
-      font-weight: 850;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      margin-top: 3px;
-    }
+    .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
     .added-state{ animation: pop .35s ease; }
-    @keyframes pop{
-      0%{ transform: scale(1); }
-      50%{ transform: scale(1.02); }
-      100%{ transform: scale(1); }
-    }
+    @keyframes pop{ 0%{ transform: scale(1); } 50%{ transform: scale(1.02); } 100%{ transform: scale(1); } }
 
-    /* QTY: 3 sections with dividers; minus left, plus right; max 9 w/ bulk message */
-    .qty-pill{
+    .stack-right{
       flex: 1 1 auto;
-      min-height: 58px;
-      border-radius: 16px;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.96);
-      box-shadow:0 14px 30px rgba(15,23,42,0.06);
       display:flex;
-      align-items:stretch;
-      justify-content:space-between;
-      padding: 0;
-      overflow:hidden;
+      flex-direction:column;
+      gap: 8px;
       min-width: 0;
     }
+
+    /* Weight + Qty stacked: each half height of add button (≈29px) */
+    .mini-pill,
+    .qty-pill{
+      height: 29px;
+      border-radius: 14px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(255,255,255,0.96);
+      box-shadow:0 10px 18px rgba(15,23,42,0.06);
+      padding: 0 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-width: 0;
+    }
+    .mini-pill{ cursor:pointer; user-select:none; gap:8px; }
+    .mini-pill .lbl{
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:10px;
+      color:#0b1220;
+      white-space:nowrap;
+    }
+    .mini-pill .val{
+      font-weight:900;
+      font-size:12px;
+      color:#0b1220;
+      white-space:nowrap;
+    }
+    .mini-pill svg{
+      width:14px;height:14px;
+      stroke:#0b1220; fill:none;
+      stroke-width:2.2;
+      stroke-linecap:round; stroke-linejoin:round;
+      opacity:.9;
+      flex:0 0 auto;
+    }
+
+    /* Qty: classic rounded rectangle with centered +/number/- */
+    .qty-pill{
+      padding: 0;
+      overflow:hidden;
+    }
     .qty-pill .qty-seg{
-      flex: 0 0 56px;
+      width: 40px;
+      height: 100%;
       display:flex;
       align-items:center;
       justify-content:center;
-      user-select:none;
+      flex:0 0 40px;
     }
     .qty-pill .qty-mid{
       flex: 1 1 auto;
       min-width: 0;
+      height: 100%;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -662,27 +653,25 @@
       border-right: 1px solid rgba(12,90,42,0.35);
     }
     .qty-display{
-      width:100%;
-      text-align:center;
       font-weight: 950;
-      font-size: 16px;
+      font-size: 14px;
       letter-spacing: .04em;
-      color:#0b1220;
-      line-height: 1.1;
+      color:#000000; /* force black */
+      line-height: 1;
       user-select:none;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .qty-display.bulk{
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: .10em;
       text-transform: uppercase;
       white-space:normal;
       overflow:visible;
       text-overflow:clip;
+      text-align:center;
     }
-
     .qty-pill button{
       width:100%;
       height:100%;
@@ -690,15 +679,13 @@
       background: transparent;
       color:#0b1220;
       font-weight: 950;
-      font-size: 20px;
+      font-size: 18px;
       cursor:pointer;
-      padding: 0 12px;
       display:flex;
       align-items:center;
+      justify-content:center; /* centered */
       outline:none;
     }
-    .qty-pill button[data-minus]{ justify-content:flex-start; }
-    .qty-pill button[data-plus]{ justify-content:flex-end; }
     .qty-pill button:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.04); }
     .qty-pill button:active{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.07); }
     .qty-pill button:focus-visible{
@@ -1016,46 +1003,15 @@
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 260px; }
-    }
 
-    @media(max-width:780px){
-      .site-header{
-        background-size: 175% auto;
-        background-position: center 40%;
-        padding: 22px 0 22px;
-        min-height: 140px;
-      }
-      .brand-group{
-        top:64%;
-        left:50%;
-        transform: translate(-50%, -50%);
-        max-width: calc(100vw - 48px);
-      }
-      .brand-logo{ width:56px; height:56px; }
-      .brand-text{
-        font-size: 26px;
-        letter-spacing:.05em;
-        max-width: calc(100vw - 120px);
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
-
-      .menu-row{
-        top: calc(64% + 34px);
-        transform: translate(-50%, -50%);
-        gap: 12px;
-      }
-      .menu-row a{ font-size: 14px; letter-spacing:.07em; }
-
-      .main-nav{ top: 8px; transform:none; height:auto; }
-      .nav-left,.nav-right{ top: 8px; transform:none; }
-
-      .mini-bar{ flex-direction:column; align-items:stretch; }
-      .mini-checkout{ width:100%; min-width:0; }
-
+      /* On small screens: stack buttons full width */
       .mini-actions{ flex-direction:column; }
       .add-to-cart{ width: 100%; }
-      .qty-pill{ width: 100%; }
+      .stack-right{ width: 100%; }
+      .mini-pill, .qty-pill{ height: 40px; } /* give touch room on mobile */
+      .qty-pill .qty-seg{ width: 56px; flex-basis:56px; }
+      .qty-display{ font-size: 16px; }
+      .qty-pill button{ font-size: 20px; }
     }
   </style>
 
@@ -1122,7 +1078,7 @@
 
               <div class="para">
                 <p>
-                  🟢 MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods and beverages—alongside its many nutritional benefits.
+                  MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods and beverages—alongside its many nutritional benefits.
                 </p>
               </div>
 
@@ -1156,7 +1112,6 @@
                   </div>
                 </div>
 
-                <!-- CHECKOUT: badge attached to cart icon tip -->
                 <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
                   <span class="cart-icon-wrap" aria-hidden="true">
                     <span class="mini-badge" id="mini-badge" aria-hidden="true">0</span>
@@ -1172,67 +1127,82 @@
               </div>
 
               <div class="mini-grid" id="mini-grid">
+                <!-- PRODUCT 1 -->
                 <article class="mini-card" data-title="MayaNut Powder">
-                  <div class="mini-title">MayaNut Powder</div>
+                  <div class="mini-top">
+                    <div class="mini-title">MayaNut Powder</div>
+                    <div class="mini-top-price" data-price>$9.95</div>
+                  </div>
+
                   <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut powder" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
                   <div class="mini-bot">
-                    <div class="mini-row">
-                      <div class="mini-price" data-price>$9.95</div>
-
-                      <button class="mini-pill" type="button" data-weight aria-label="Select weight">
-                        <span class="lbl">WEIGHT:</span>
-                        <span class="val" data-weight-val>1/4 LB</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
-                      </button>
-                    </div>
-
                     <div class="mini-actions" aria-label="Actions">
                       <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
                         <div class="add-main">ADD</div>
                         <div class="add-sub">TO CART</div>
                       </button>
 
-                      <!-- QTY: 3 segments (− | 1 | +) -->
-                      <div class="qty-pill" aria-label="Quantity selector (max 9)">
-                        <div class="qty-seg">
-                          <button type="button" data-minus aria-label="Decrease quantity">−</button>
-                        </div>
-                        <div class="qty-mid">
-                          <div class="qty-display" data-qty>1</div>
-                        </div>
-                        <div class="qty-seg">
-                          <button type="button" data-plus aria-label="Increase quantity">+</button>
+                      <div class="stack-right" aria-label="Options">
+                        <!-- Weight (top) -->
+                        <button class="mini-pill" type="button" data-weight aria-label="Select weight">
+                          <span class="lbl">WEIGHT:</span>
+                          <span class="val" data-weight-val>1/4 LB</span>
+                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                        </button>
+
+                        <!-- Qty (bottom) -->
+                        <div class="qty-pill" aria-label="Quantity selector (max 9)">
+                          <div class="qty-seg">
+                            <button type="button" data-minus aria-label="Decrease quantity">−</button>
+                          </div>
+                          <div class="qty-mid">
+                            <div class="qty-display" data-qty>1</div>
+                          </div>
+                          <div class="qty-seg">
+                            <button type="button" data-plus aria-label="Increase quantity">+</button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </article>
 
+                <!-- PRODUCT 2 -->
                 <article class="mini-card" data-title="MayaNut Seeds">
-                  <div class="mini-title">MayaNut Seeds</div>
-                  <img class="mini-img" src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut seeds" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-                  <div class="mini-bot">
-                    <div class="mini-row">
-                      <div class="mini-price">$9.95</div>
-                      <span style="opacity:.0">.</span>
-                    </div>
+                  <div class="mini-top">
+                    <div class="mini-title">MayaNut Seeds</div>
+                    <div class="mini-top-price" data-price>$9.95</div>
+                  </div>
 
+                  <img class="mini-img" src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut seeds" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
+                  <div class="mini-bot">
                     <div class="mini-actions" aria-label="Actions">
                       <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
                         <div class="add-main">ADD</div>
                         <div class="add-sub">TO CART</div>
                       </button>
 
-                      <!-- QTY: 3 segments (− | 1 | +) -->
-                      <div class="qty-pill" aria-label="Quantity selector (max 9)">
-                        <div class="qty-seg">
-                          <button type="button" data-minus aria-label="Decrease quantity">−</button>
-                        </div>
-                        <div class="qty-mid">
-                          <div class="qty-display" data-qty>1</div>
-                        </div>
-                        <div class="qty-seg">
-                          <button type="button" data-plus aria-label="Increase quantity">+</button>
+                      <div class="stack-right" aria-label="Options">
+                        <!-- Weight placeholder (top) -->
+                        <button class="mini-pill" type="button" aria-label="Weight option (coming soon)" style="cursor:default;">
+                          <span class="lbl">WEIGHT:</span>
+                          <span class="val">N/A</span>
+                          <svg viewBox="0 0 24 24" aria-hidden="true" style="opacity:.25;"><path d="M6 9l6 6 6-6"></path></svg>
+                        </button>
+
+                        <!-- Qty (bottom) -->
+                        <div class="qty-pill" aria-label="Quantity selector (max 9)">
+                          <div class="qty-seg">
+                            <button type="button" data-minus aria-label="Decrease quantity">−</button>
+                          </div>
+                          <div class="qty-mid">
+                            <div class="qty-display" data-qty>1</div>
+                          </div>
+                          <div class="qty-seg">
+                            <button type="button" data-plus aria-label="Increase quantity">+</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1255,7 +1225,7 @@
               <div class="about-card" aria-label="About card 1">
                 <div class="para">
                   <p>
-                    🟢 In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                    In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                   </p>
                 </div>
                 <img src="the-maya-nut-company-bubba-image.jpg" alt="Florida growing legacy (citrus, pineapple, watermelons, and more)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
@@ -1264,7 +1234,7 @@
               <div class="about-card" aria-label="About card 2">
                 <div class="para">
                   <p>
-                    🟢 To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
+                    To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
                   </p>
                 </div>
                 <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" alt="August Kokus with MayaNut trees in Florida" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
@@ -1399,7 +1369,7 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
       const cart = new Map();
       const badge = document.getElementById("mini-badge");
 
-      // Weight menu (simple)
+      // Weight menu
       const weightRoot = document.getElementById("weight-menu-root");
       let weightMenu = null;
       const WEIGHTS = [
@@ -1446,8 +1416,11 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
           }
           row.addEventListener("click", ()=>{
             activeWeight = opt.key;
+
+            // Update label everywhere
             document.querySelectorAll("[data-weight-val]").forEach(el=> el.textContent = opt.label);
 
+            // Update powder price in the top bar
             const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
             const priceEl = powder?.querySelector("[data-price]");
             if(priceEl) priceEl.textContent = "$" + opt.price.toFixed(2);

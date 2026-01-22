@@ -1,4 +1,3 @@
-<!-- UPDATED index.html (English) — FULL FILE (copy-paste over your current file) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +19,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mayanut.com/index.html" />
   <meta property="og:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
+  <meta property="og:image:alt" content="The MayaNut Company logo" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -49,8 +49,7 @@
       --greenDeep:#0b3b17;
 
       --orange:#fd6c02;
-      --orangeBadge:#fd6c02;
-      --orangeBadgeHover:#d24f02;
+      --orangeDark:#d24f02;
 
       --lime:#d8ff6a;
       --pale:#e9ffd6;
@@ -72,6 +71,8 @@
       --footer-g1:#d8ff6a;
       --footer-g2:#7ae78a;
       --footer-g3:#066100;
+
+      --hintText: rgba(15,23,42,0.55); /* placeholder gray */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -80,10 +81,11 @@
     html{
       background: var(--page);
       overflow-x:hidden;
+      overflow-y:auto;
+      scrollbar-gutter: stable;
       scroll-padding-top: calc(var(--stickyOffset) + 12px);
       -webkit-text-size-adjust: 100%;
       text-rendering: geometricPrecision;
-      scrollbar-gutter: stable;
     }
     body{
       font-family: var(--font-ui);
@@ -94,28 +96,29 @@
       overscroll-behavior-y:none;
     }
 
-    /* Thin desktop scrollbar (right edge; reserved via scrollbar-gutter) */
+    /* Fix “white gutter behind header” feel by styling the scrollbar track/thumb */
     @media (min-width: 981px){
       body{
         scrollbar-width: thin;
-        scrollbar-color: rgba(11,59,23,0.45) transparent;
+        scrollbar-color: rgba(31,41,55,0.55) rgba(229,231,235,0.75);
       }
-      ::-webkit-scrollbar{ width: 10px; }
-      ::-webkit-scrollbar-track{ background: transparent; }
+      ::-webkit-scrollbar{ width: 12px; }
+      ::-webkit-scrollbar-track{
+        background: rgba(229,231,235,0.85);
+      }
       ::-webkit-scrollbar-thumb{
-        background: rgba(11,59,23,0.40);
+        background: rgba(55,65,81,0.55);
         border-radius: 999px;
-        border: 3px solid rgba(255,255,255,0);
+        border: 3px solid rgba(229,231,235,0.85);
         background-clip: padding-box;
       }
-      ::-webkit-scrollbar-thumb:hover{ background: rgba(11,59,23,0.55); }
+      ::-webkit-scrollbar-thumb:hover{ background: rgba(55,65,81,0.70); }
     }
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* ===================== TOP ===================== */
     .top-banner{ height: var(--bannerH); background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
     .frame-wrap{ position:relative; width:100%; min-height:100vh; padding-top: var(--stickyOffset); }
 
@@ -221,7 +224,6 @@
     .pill-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 22px rgba(15,23,42,0.12); }
     .pill-btn:active{ filter: brightness(0.92); }
 
-    /* MENU UNDERLINES */
     .menu-row{
       position:absolute;
       left:50%;
@@ -265,7 +267,6 @@
     .menu-row a.is-active{ color: var(--orange); }
     .menu-row a.is-active::after{ transform: scaleX(1); background: var(--orange); opacity:1; }
 
-    /* ===================== MAIN ===================== */
     main{
       background:#ffffff;
       min-height: calc(100vh - var(--stickyOffset));
@@ -323,7 +324,6 @@
       min-height:0;
     }
 
-    /* Headlines */
     .headline{
       padding: 14px 14px 0;
       background:#ffffff;
@@ -337,20 +337,29 @@
       letter-spacing: .02em;
       width:100%;
     }
+
+    /* FIXED underline: dedicated span + stronger underline rules */
     .headline .sub{
       margin-top: 6px;
       font-weight: 950;
-      font-size: 17px; /* match menu option size */
+      font-size: 17px;
       line-height: 1.1;
       color: var(--orange);
       width: fit-content;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      display:inline-flex;
+      align-items: baseline;
+      gap: 6px;
     }
-    .headline .sub .u{
-      text-decoration: underline;
-      text-underline-offset: 4px;
+    .headline .sub .sub-uline{
+      color: var(--orange);
+      text-decoration: underline !important;
+      text-decoration-color: var(--orange) !important;
+      text-decoration-thickness: 2px !important;
+      text-underline-offset: 4px !important;
+    }
+    .headline .sub .sub-emoji{
+      color: var(--orange);
+      text-decoration: none !important;
     }
 
     .para{ padding: 14px; background: #ffffff; }
@@ -387,7 +396,7 @@
       background:#fff;
     }
 
-    /* ===================== MINI STORE ===================== */
+    /* Mini store */
     .mini-store-body{
       padding: 14px;
       background:#ffffff;
@@ -426,6 +435,10 @@
       padding:0 10px 0 2px; width:100%; min-width:0;
       caret-color: var(--orange);
     }
+    .mini-search input::placeholder{
+      color: var(--hintText);
+      opacity: 1;
+    }
     .mini-search .xbtn{ width:34px; height:36px; display:flex; align-items:center; justify-content:center; flex:0 0 34px; cursor:pointer; background:transparent; }
     .mini-search .xbtn svg{ width:16px; height:16px; stroke: rgba(15,23,42,0.65); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 
@@ -452,21 +465,20 @@
     .mini-checkout svg{ width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
     .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
-    /* Badge on tip of cart icon */
+    /* smaller badge */
     .mini-badge{
       position:absolute;
-      top: 4px;
-      left: 50%;
-      transform: translateX(22px); /* pushes toward cart icon */
-      min-width: 14px;
-      height: 14px;
-      padding:0 4px;
+      top: 7px;
+      right: 54px;
+      min-width: 12px;
+      height: 12px;
+      padding:0 3px;
       border-radius:999px;
       background: var(--orangeBadge);
       border:1px solid rgba(255,255,255,0.75);
       color:#ffffff;
       font-weight:900;
-      font-size:9px;
+      font-size:8px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -533,6 +545,7 @@
       border-bottom: var(--softBorder);
       background:#fff;
     }
+
     .mini-bot{
       background: var(--pale);
       padding: 10px;
@@ -568,37 +581,11 @@
       transition: transform .08s ease, box-shadow .12s ease, filter .12s ease;
       cursor:pointer;
     }
-    .add-to-cart:hover{
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay);
-    }
+    .add-to-cart:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay); }
     .add-to-cart:active{ transform: translateY(1px); filter: brightness(0.92); }
-    .add-to-cart:focus-visible{
-      outline: 3px solid rgba(6,97,0,0.35);
-      outline-offset: 2px;
-    }
-    .add-to-cart[disabled]{ opacity: .65; cursor: default; transform:none; }
+    .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
 
-    .add-main{
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .add-sub{
-      font-size: 10px;
-      font-weight: 850;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      margin-top: 3px;
-    }
-    .added-state{ animation: pop .35s ease; }
-    @keyframes pop{
-      0%{ transform: scale(1); }
-      50%{ transform: scale(1.02); }
-      100%{ transform: scale(1); }
-    }
-
-    /* Right stack: WEIGHT/PACK on top, QTY under it (both half height of Add) */
     .right-stack{
       display:grid;
       grid-template-rows: 1fr 1fr;
@@ -607,7 +594,7 @@
     }
 
     .mini-rectbtn{
-      height: 28px; /* half-ish */
+      height: 28px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
@@ -624,28 +611,14 @@
     }
     .mini-rectbtn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.04), 0 10px 18px rgba(15,23,42,0.06); }
     .mini-rectbtn:active{ filter: brightness(0.96); }
-    .mini-rectbtn .lbl{
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:10px;
-      white-space:nowrap;
-    }
-    .mini-rectbtn .val{
-      font-weight:950;
-      font-size:12px;
-      white-space:nowrap;
-    }
+    .mini-rectbtn .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; white-space:nowrap; }
+    .mini-rectbtn .val{ font-weight:950; font-size:12px; white-space:nowrap; }
     .mini-rectbtn svg{
-      width:14px;height:14px;
-      stroke:#0b1220; fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round; stroke-linejoin:round;
-      opacity:.9;
+      width:14px;height:14px; stroke:#0b1220; fill:none;
+      stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; opacity:.9;
       flex:0 0 auto;
     }
 
-    /* Qty pill: rounded rectangle, 3 columns, max 9 */
     .qty-pill{
       height: 28px;
       border-radius: 14px;
@@ -653,7 +626,7 @@
       background: rgba(255,255,255,0.96);
       box-shadow:0 10px 18px rgba(15,23,42,0.06);
       display:grid;
-      grid-template-columns: 44px 1fr 44px; /* middle wider */
+      grid-template-columns: 44px 1fr 44px;
       align-items:center;
       overflow:hidden;
       user-select:none;
@@ -669,7 +642,7 @@
       color:#0b1220;
       display:flex;
       align-items:center;
-      justify-content:center; /* centered in its section */
+      justify-content:center;
       transition: background .12s ease, filter .12s ease;
     }
     .qty-btn:hover{ background: rgba(233,255,214,0.45); }
@@ -687,7 +660,7 @@
     .qty-display{
       font-weight:950;
       font-size:14px;
-      color:#0b1220; /* black number */
+      color:#0b1220;
       letter-spacing:.06em;
       text-align:center;
       width:100%;
@@ -702,46 +675,23 @@
       white-space:normal;
     }
 
+    /* Descriptions: Acme + placeholder gray */
     .mini-desc{
       margin-top: 6px;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
+      font-family: var(--font-ui);
+      font-style: normal;
+      font-weight: 900;
       font-size: 12px;
       line-height: 1.35;
-      color: rgba(11,59,23,0.92);
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+      color: var(--hintText);
+      letter-spacing: .02em;
     }
-    .mini-desc em{ font-style: italic; opacity: .92; }
-
-    .view-store{
-      margin-top: 2px;
-      height: 42px;
-      width: 100%;
-      border-radius: 14px;
-      background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.55);
-      color:#fff;
+    .mini-desc em{
+      font-style: italic;
       font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      user-select:none;
-      transition: box-shadow .12s ease, filter .12s ease;
-    }
-    .view-store:hover{
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay);
-    }
-    .view-store:active{ transform: translateY(1px); filter: brightness(0.92); }
-    .view-store:focus-visible{
-      outline: 3px solid rgba(6,97,0,0.35);
-      outline-offset: 2px;
     }
 
-    /* ===================== ABOUT ===================== */
+    /* About section */
     .about-wrap{ margin-top: 16px; }
     .about-grid{
       display:grid;
@@ -760,7 +710,18 @@
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
     }
     .about-card .para{ padding: 12px; background:#ffffff; }
-    .about-card .para p{ background: var(--pale); }
+    .about-card .para p{
+      background: var(--pale);
+      border: 1px solid rgba(12,90,42,0.55);
+      border-radius: 16px;
+      padding: 16px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      line-height: 1.75;
+      color: rgba(12,90,42,0.95);
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+    }
     .about-card img{
       width:100%;
       height: 310px;
@@ -770,7 +731,34 @@
       background:#fff;
     }
 
-    /* ===================== FOOTER ===================== */
+    /* CTA buttons under images */
+    .about-cta{
+      padding: 10px 12px 14px;
+      display:flex;
+      justify-content:center;
+      background:#ffffff;
+    }
+    .about-cta a{
+      height:40px;
+      min-width: 160px;
+      border-radius: 14px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.55);
+      color:#fff;
+      font-weight: 950;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.10);
+      transition: box-shadow .12s ease, filter .12s ease, transform .08s ease;
+    }
+    .about-cta a:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay); }
+    .about-cta a:active{ transform: translateY(1px); filter: brightness(0.92); }
+
+    /* Footer */
     .footer{
       margin-top: 18px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -806,18 +794,8 @@
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       white-space:nowrap;
     }
-    .footer-florida{
-      width: 24px;
-      height: 24px;
-      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.30));
-    }
-    .footer-logo{
-      width: 250px; /* slightly smaller */
-      height: auto;
-      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
-      user-select:none;
-      display:block;
-    }
+    .footer-florida{ width: 24px; height: 24px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.30)); }
+    .footer-logo{ width: 250px; height: auto; filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22)); user-select:none; display:block; }
 
     .footer-right{
       display:grid;
@@ -829,14 +807,14 @@
       font-weight: 950;
       letter-spacing: .12em;
       text-transform: uppercase;
-      font-size: 17px; /* match top menu tabs */
+      font-size: 17px;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       margin-bottom: 10px;
     }
     .footer-link{
       display:block;
       font-weight: 900;
-      font-size: 14px; /* slightly smaller */
+      font-size: 14px;
       letter-spacing: .02em;
       padding: 6px 0;
       border-bottom: 1px solid rgba(255,255,255,0.25);
@@ -850,7 +828,6 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-
     .social-row{
       display:flex;
       gap: 10px;
@@ -872,9 +849,7 @@
       user-select:none;
       transition: box-shadow .12s ease, filter .12s ease;
     }
-    .icon-pill:hover{
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.18);
-    }
+    .icon-pill:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.18); }
     .icon-pill:active{ filter: brightness(0.92); }
     .icon-pill svg{
       width: 18px;
@@ -886,7 +861,6 @@
       stroke-linejoin: round;
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
-
     .yt-body{ fill:#ffffff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
@@ -900,136 +874,7 @@
       text-shadow: 0 2px 12px rgba(0,0,0,0.25);
     }
 
-    /* ===================== MayaNut AI (Beta) modal ===================== */
-    .ai-overlay{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,0.28);
-      backdrop-filter: blur(6px);
-      display:none;
-      z-index:1900;
-      padding: 18px;
-    }
-    body.ai-open .ai-overlay{ display:block; }
-    .ai-drawer{
-      max-width: 560px;
-      margin-left:auto;
-      height: calc(100vh - 36px);
-      border-radius:18px;
-      border: 2px solid rgba(12,90,42,0.65);
-      background: rgba(255,255,255,0.94);
-      box-shadow:0 18px 60px rgba(15,23,42,0.35);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .ai-head{
-      background: var(--green);
-      color:#fff;
-      padding: 12px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-weight:950;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    .ai-close{
-      width:40px;height:40px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition: filter .12s ease, box-shadow .12s ease;
-    }
-    .ai-close:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay); }
-    .ai-close:active{ filter: brightness(0.92); }
-    .ai-close svg{ width:18px;height:18px; stroke:#fff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
-    .ai-body{
-      flex:1 1 auto;
-      padding: 12px 14px;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .ai-msg{
-      border-radius:14px;
-      border: var(--softBorder);
-      padding: 10px 12px;
-      background: #ffffff;
-      color:#0b1220;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:850;
-      line-height:1.55;
-      white-space:pre-line;
-    }
-    .ai-msg.ai{ background: var(--pale); }
-    .ai-quick{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top: 2px;
-    }
-    .ai-qbtn{
-      border-radius:14px;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(233,255,214,0.95);
-      color:#0b1220;
-      font-weight:950;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-size:11px;
-      padding: 10px 12px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .ai-qbtn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.06); }
-    .ai-foot{
-      padding: 12px 14px 14px;
-      border-top: 2px solid rgba(6,97,0,0.35);
-      background: rgba(255,255,255,0.70);
-    }
-    .ai-inputrow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .ai-input{
-      flex:1 1 auto;
-      height:40px;
-      border-radius:14px;
-      border: 1px solid rgba(12,90,42,0.65);
-      background: rgba(255,255,255,0.92);
-      padding: 0 12px;
-      font-weight:900;
-      font-size:12px;
-      outline:none;
-    }
-    .ai-send{
-      height:40px;
-      border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      padding:0 14px;
-      cursor:pointer;
-      white-space:nowrap;
-      transition: filter .12s ease, box-shadow .12s ease;
-    }
-    .ai-send:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay); }
-    .ai-send:active{ filter: brightness(0.92); }
-
-    /* ===================== RESPONSIVE ===================== */
+    /* Responsive */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .mini-grid{ grid-template-columns:1fr; }
@@ -1037,60 +882,13 @@
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
+      .mini-actions{ grid-template-columns: 1fr; }
+      .add-to-cart{ width:100%; }
+      .right-stack{ grid-template-rows: auto auto; }
     }
 
     @media(max-width:780px){
-      .site-header{
-        background-position: center center !important; /* center leaf vein */
-        background-size: cover !important;
-        padding: 22px 0 22px;
-        min-height: 140px;
-      }
-      .brand-group{
-        top:64%;
-        left:50%;
-        transform: translate(-50%, -50%);
-        max-width: calc(100% - 24px) !important;
-      }
-      .brand-logo{ width:56px; height:56px; }
-      .brand-text{
-        font-size: 26px;
-        letter-spacing:.05em;
-        max-width: calc(100% - 72px) !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-        white-space: nowrap !important;
-      }
-
-      .menu-row{
-        top: calc(64% + 34px);
-        transform: translate(-50%, -50%);
-        gap: 12px;
-      }
-      .menu-row a{ font-size: 14px; letter-spacing:.07em; }
-
-      .main-nav{ top: 8px; transform:none; height:auto; }
-      .nav-left,.nav-right{ top: 8px; transform:none; }
-
-      /* make images more square on mobile */
-      .img-grid img{ height: 170px; }
-
-      .mini-bar{ flex-direction:column; align-items:stretch; }
-      .mini-checkout{ width:100%; min-width:0; }
-
-      /* footer tagline smaller to prevent overlap */
-      .footer-tagline{
-        font-size: 12px !important;
-        letter-spacing: .06em !important;
-        white-space: nowrap !important;
-      }
-      .footer-florida{
-        width: 18px !important;
-        height: 18px !important;
-        filter:
-          drop-shadow(0 2px 10px rgba(0,0,0,0.28))
-          drop-shadow(0 2px 6px rgba(15,23,42,0.10)) !important;
-      }
+      .img-grid img{ height:auto; aspect-ratio: 1 / 1; }
     }
   </style>
 
@@ -1152,12 +950,16 @@
             <div class="section-body">
               <div class="headline" aria-label="Hero headline">
                 <div class="big">Aromatic &amp; Delicious</div>
-                <div class="sub"><span class="u">Introducing MayaNut to You</span> <span aria-hidden="true">🫵</span></div>
+                <div class="sub">
+                  <span class="sub-uline">Introducing MayaNut to You</span>
+                  <span class="sub-emoji">🫵</span>
+                </div>
               </div>
 
               <div class="para">
                 <p>
-                  MayaNut (Maya nut) is the seed of the tropical tree <em>Brosimum alicastrum</em>. Used for centuries as a Maya food tree, it becomes a rich, flavorful powder when roasted and ground—great in foods and beverages, with strong potential as a sustainable, perennial crop.
+                  MayaNut (Maya nut) is the seed of the tropical tree <em>Brosimum alicastrum</em>. It was used for centuries by the Maya.
+                  When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods and beverages—alongside its many nutritional benefits.
                 </p>
               </div>
 
@@ -1204,24 +1006,21 @@
               </div>
 
               <div class="mini-grid" id="mini-grid">
-
-                <!-- PRODUCT 1 -->
+                <!-- Powder -->
                 <article class="mini-card" data-title="MayaNut Powder">
                   <div class="mini-titlebar">
                     <div class="mini-title">MayaNut Powder</div>
                     <div class="mini-price" data-price>$9.95</div>
                   </div>
-
                   <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="Roasted, ground MayaNut powder (Maya nut) made from Brosimum alicastrum seed" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-
                   <div class="mini-bot">
                     <div class="mini-actions" aria-label="Actions">
-                      <button class="add-to-cart" type="button" data-add aria-label="Add MayaNut Powder to cart">
+                      <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
                         <div class="add-main">ADD</div>
                         <div class="add-sub">TO CART</div>
                       </button>
 
-                      <div class="right-stack" aria-label="Weight and quantity">
+                      <div class="right-stack" aria-label="Options">
                         <button class="mini-rectbtn" type="button" data-weight aria-label="Select weight">
                           <span class="lbl">WEIGHT:</span>
                           <span class="val" data-weight-val>1/4 LB</span>
@@ -1230,9 +1029,7 @@
 
                         <div class="qty-pill" aria-label="Quantity selector (max 9)">
                           <button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button>
-                          <div class="qty-mid">
-                            <div class="qty-display" data-qty>1</div>
-                          </div>
+                          <div class="qty-mid"><div class="qty-display" data-qty>1</div></div>
                           <button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button>
                         </div>
                       </div>
@@ -1242,24 +1039,22 @@
                   </div>
                 </article>
 
-                <!-- PRODUCT 2 -->
+                <!-- Seeds -->
                 <article class="mini-card" data-title="MayaNut Seeds">
                   <div class="mini-titlebar">
                     <div class="mini-title">MayaNut Seeds</div>
                     <div class="mini-price">$9.95</div>
                   </div>
-
                   <img class="mini-img" src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" alt="MayaNut (Maya nut) seeds/fruit from Brosimum alicastrum for growing tropical plants" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-
                   <div class="mini-bot">
                     <div class="mini-actions" aria-label="Actions">
-                      <button class="add-to-cart" type="button" data-add aria-label="Add MayaNut Seeds to cart">
+                      <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
                         <div class="add-main">ADD</div>
                         <div class="add-sub">TO CART</div>
                       </button>
 
-                      <div class="right-stack" aria-label="Pack and quantity">
-                        <button class="mini-rectbtn" type="button" data-pack aria-label="Select pack size">
+                      <div class="right-stack" aria-label="Options">
+                        <button class="mini-rectbtn" type="button" data-pack aria-label="Select pack">
                           <span class="lbl">PACK:</span>
                           <span class="val" data-pack-val>10</span>
                           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
@@ -1267,18 +1062,15 @@
 
                         <div class="qty-pill" aria-label="Quantity selector (max 9)">
                           <button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button>
-                          <div class="qty-mid">
-                            <div class="qty-display" data-qty>1</div>
-                          </div>
+                          <div class="qty-mid"><div class="qty-display" data-qty>1</div></div>
                           <button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button>
                         </div>
                       </div>
                     </div>
 
-                    <div class="mini-desc">Grow your own tropical MayaNut plants! <em>*Seeds will be shipped in moist vermiculite.</em></div>
+                    <div class="mini-desc">Grow your own tropical MayaNut plants! <em>*Seeds are shipped in moist vermiculite.</em></div>
                   </div>
                 </article>
-
               </div>
 
               <a class="view-store" href="store.html" aria-label="View full store">VIEW FULL STORE</a>
@@ -1296,30 +1088,35 @@
               <div class="about-card" aria-label="About card 1">
                 <div class="para">
                   <p>
-                    In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company—focused exclusively on cultivating MayaNut and building Florida’s first dedicated MayaNut farm of the future.
+                    In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more.
+                    In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company—focused on cultivating MayaNut (<em>Brosimum alicastrum</em>) in Florida.
                   </p>
                 </div>
-                <img src="the-maya-nut-company-bubba-image.jpg" alt="Historic Florida farming legacy: citrus, pineapple, watermelons, and more" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                <img src="the-maya-nut-company-bubba-image.jpg" alt="Florida growing legacy and family farming tradition" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                <div class="about-cta">
+                  <a href="about.html" aria-label="Learn more about The MayaNut Company">LEARN MORE</a>
+                </div>
               </div>
 
               <div class="about-card" aria-label="About card 2">
                 <div class="para">
                   <p>
-                    To continue our family’s Florida farming heritage, we are establishing Florida’s first MayaNut farm while openly sharing research and data on <em>Brosimum alicastrum</em>. Our mission is to develop MayaNut as a sustainable, long-term crop so others can learn, adopt the tree, and help build a lasting legacy for generations to come.
+                    We are establishing Florida’s first MayaNut farm while openly sharing cultivation observations and research on <em>Brosimum alicastrum</em>.
+                    Our mission is to develop MayaNut as a sustainable, long-term crop so others can learn and adopt it for generations to come.
                   </p>
                 </div>
-                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" alt="August Kokus with MayaNut trees (Brosimum alicastrum) in South Florida" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" alt="August Kokus with MayaNut trees in South Florida" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                <div class="about-cta">
+                  <a href="research.html" aria-label="Explore MayaNut research">EXPLORE RESEARCH</a>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
       </div>
-
-      <!-- removed extra thick green bar here (no extra banner) -->
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer" aria-label="Footer">
       <div class="footer-inner">
         <div class="footer-left" aria-label="Brand">
@@ -1328,7 +1125,7 @@
             <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
           </div>
           <a href="index.html" aria-label="The MayaNut Company home">
-            <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async" onerror="this.style.opacity='.75';">
+            <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
           </a>
         </div>
 
@@ -1393,55 +1190,18 @@
     </footer>
   </div>
 
-  <!-- MayaNut AI (Beta) overlay -->
-  <div class="ai-overlay" id="ai-overlay" aria-hidden="true">
-    <div class="ai-drawer" role="dialog" aria-modal="true" aria-label="MayaNut AI (Beta)">
-      <div class="ai-head">
-        <div>MAYANUT AI (BETA)</div>
-        <button class="ai-close" id="ai-close" type="button" aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12"></path>
-            <path d="M18 6L6 18"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="ai-body" id="ai-body">
-        <div class="ai-msg ai">
-Hello! I’m MayaNut AI (Beta).
-Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on this site.
-        </div>
-
-        <div class="ai-quick" aria-label="Suggested questions">
-          <button class="ai-qbtn" type="button" data-q="What is MayaNut?">What is MayaNut?</button>
-          <button class="ai-qbtn" type="button" data-q="Where does MayaNut grow?">Where does it grow?</button>
-          <button class="ai-qbtn" type="button" data-q="What is The MayaNut Company?">What is the company?</button>
-          <button class="ai-qbtn" type="button" data-q="How will the store work?">How will the store work?</button>
-        </div>
-      </div>
-
-      <div class="ai-foot">
-        <div class="ai-inputrow">
-          <input class="ai-input" id="ai-input" type="text" placeholder="Ask a question…" autocomplete="off" />
-          <button class="ai-send" id="ai-send" type="button">SEND</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dropdown menu root -->
+  <!-- Weight/Pack dropdown root -->
   <div id="menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
   <script>
-    // Mini store: qty + add + search + badge + weight dropdown + pack dropdown
     (function(){
       const MAX_QTY = 9;
-      const clampQty = (n)=> Math.max(1, Math.min(MAX_QTY, n));
-
+      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
       const cart = new Map();
       const badge = document.getElementById("mini-badge");
-      const menuRoot = document.getElementById("menu-root");
-      let openMenuEl = null;
+
+      const root = document.getElementById("menu-root");
+      let menu = null;
 
       const WEIGHTS = [
         { key:"qtr", label:"1/4 LB", price:9.95 },
@@ -1449,32 +1209,30 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
         { key:"one", label:"1 LB", price:35.95 }
       ];
       const PACKS = [
-        { key:"p10", label:"10" },
-        { key:"p25", label:"25" }
+        { key:"10", label:"10" },
+        { key:"25", label:"25" }
       ];
 
       let activeWeight = "qtr";
-      let activePack = "p10";
+      let activePack = "10";
 
-      function closeMenu(){
-        if(openMenuEl){ openMenuEl.remove(); openMenuEl = null; }
-      }
+      function closeMenu(){ if(menu){ menu.remove(); menu = null; } }
 
-      function openMenu(anchor, options, onPick){
+      function openMenu(anchor, options, activeKey, onPick){
         closeMenu();
         const r = anchor.getBoundingClientRect();
-        const menu = document.createElement("div");
-        menu.style.pointerEvents = "auto";
-        menu.style.position = "fixed";
-        menu.style.left = Math.min(window.innerWidth - 220, Math.max(10, Math.round(r.left))) + "px";
-        menu.style.top  = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6)) + "px";
-        menu.style.zIndex = "2600";
-        menu.style.minWidth = "190px";
-        menu.style.padding = "6px";
-        menu.style.borderRadius = "12px";
-        menu.style.border = "1px solid rgba(12,90,42,0.55)";
-        menu.style.background = "rgba(255,255,255,0.98)";
-        menu.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
+        const m = document.createElement("div");
+        m.style.pointerEvents = "auto";
+        m.style.position = "fixed";
+        m.style.left = Math.min(window.innerWidth - 220, Math.max(10, Math.round(r.left))) + "px";
+        m.style.top  = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6)) + "px";
+        m.style.zIndex = "2600";
+        m.style.minWidth = "190px";
+        m.style.padding = "6px";
+        m.style.borderRadius = "12px";
+        m.style.border = "1px solid rgba(12,90,42,0.55)";
+        m.style.background = "rgba(255,255,255,0.98)";
+        m.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
 
         options.forEach(opt=>{
           const row = document.createElement("div");
@@ -1488,34 +1246,29 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
           row.style.background = "rgba(233,255,214,0.95)";
           row.style.border = "1px solid rgba(12,90,42,0.55)";
           row.style.marginBottom = "6px";
-          row.addEventListener("click", ()=>{
-            onPick(opt);
-            closeMenu();
-          });
-          menu.appendChild(row);
+          if(opt.key === activeKey){
+            row.style.outline = "2px solid rgba(12,90,42,0.55)";
+            row.style.outlineOffset = "-2px";
+          }
+          row.addEventListener("click", ()=>{ onPick(opt); closeMenu(); });
+          m.appendChild(row);
         });
-        if(menu.lastChild) menu.lastChild.style.marginBottom = "0";
+        if(m.lastChild) m.lastChild.style.marginBottom = "0";
 
-        menuRoot.appendChild(menu);
-        openMenuEl = menu;
+        root.appendChild(m);
+        menu = m;
       }
 
       document.addEventListener("click",(e)=>{
-        if(openMenuEl){
-          const within = openMenuEl.contains(e.target);
-          const anchor = e.target.closest?.("[data-weight],[data-pack]");
-          if(!within && !anchor) closeMenu();
-        }
+        if(!menu) return;
+        const within = menu.contains(e.target);
+        const anyAnchor = e.target.closest?.("[data-weight],[data-pack]");
+        if(!within && !anyAnchor) closeMenu();
       });
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-      function cartCount(){
-        let t = 0; cart.forEach(v=> t += Math.max(0, v|0)); return t;
-      }
-      function renderBadge(){
-        if(!badge) return;
-        badge.textContent = String(cartCount());
-      }
+      function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
+      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
 
       function brieflyAdded(btn){
         btn.classList.add("added-state");
@@ -1523,10 +1276,8 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
         const sub  = btn.querySelector(".add-sub");
         const oldMain = main?.textContent || "ADD";
         const oldSub  = sub?.textContent || "TO CART";
-
         if(main) main.textContent = "ADDED";
         if(sub)  sub.textContent  = "✓";
-
         setTimeout(()=>{
           if(main) main.textContent = oldMain;
           if(sub)  sub.textContent  = oldSub;
@@ -1541,14 +1292,14 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
         const packBtn = card.querySelector("[data-pack]");
 
         const qtyDisplay = card.querySelector("[data-qty]");
-        const plus = card.querySelector(".qty-pill [data-plus]");
-        const minus = card.querySelector(".qty-pill [data-minus]");
+        const plus = card.querySelector("[data-plus]");
+        const minus = card.querySelector("[data-minus]");
 
         let qtyVal = 1;
         let bulkTimer = null;
 
         function setQty(n){
-          qtyVal = clampQty(parseInt(n,10) || 1);
+          qtyVal = clamp(parseInt(n,10) || 1);
           if(qtyDisplay){
             qtyDisplay.classList.remove("bulk");
             qtyDisplay.textContent = String(qtyVal);
@@ -1572,12 +1323,11 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
           if(qtyVal >= MAX_QTY){ showBulkMessage(); return; }
           setQty(qtyVal + 1);
         });
-
-        minus?.addEventListener("click", ()=>{ setQty(qtyVal - 1); });
+        minus?.addEventListener("click", ()=> setQty(qtyVal - 1));
 
         weightBtn?.addEventListener("click", (e)=>{
           e.preventDefault(); e.stopPropagation();
-          openMenu(weightBtn, WEIGHTS, (opt)=>{
+          openMenu(weightBtn, WEIGHTS, activeWeight, (opt)=>{
             activeWeight = opt.key;
             document.querySelectorAll("[data-weight-val]").forEach(el=> el.textContent = opt.label);
             const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
@@ -1588,7 +1338,7 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
 
         packBtn?.addEventListener("click", (e)=>{
           e.preventDefault(); e.stopPropagation();
-          openMenu(packBtn, PACKS, (opt)=>{
+          openMenu(packBtn, PACKS, activePack, (opt)=>{
             activePack = opt.key;
             document.querySelectorAll("[data-pack-val]").forEach(el=> el.textContent = opt.label);
           });
@@ -1596,7 +1346,7 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
 
         add?.addEventListener("click", ()=>{
           if(add.disabled) return;
-          const q = clampQty(qtyVal);
+          const q = clamp(qtyVal);
           cart.set(title, (cart.get(title)||0) + q);
           renderBadge();
 
@@ -1613,107 +1363,24 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
         alert(count ? `Cart items (preview): ${count}` : "Your cart is empty.");
       });
 
-      // Search filter
-      const s = document.getElementById("mini-search");
-      const c = document.getElementById("mini-search-clear");
-      const norm = (x)=> String(x||"").toLowerCase().trim();
-
-      function apply(){
-        const q = norm(s?.value);
-        document.querySelectorAll(".mini-card").forEach(card=>{
-          const t = norm(card.getAttribute("data-title"));
-          card.style.display = (!q || t.includes(q)) ? "" : "none";
-        });
-      }
-
-      s?.addEventListener("input", apply);
-      c?.addEventListener("click", ()=>{ if(!s) return; s.value=""; apply(); s.focus(); });
-
-      // init weight/price
-      const init = WEIGHTS.find(w=>w.key===activeWeight);
-      if(init){
+      // init defaults
+      const initW = WEIGHTS.find(w=>w.key===activeWeight);
+      if(initW){
         const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
         const priceEl = powder?.querySelector("[data-price]");
         const valEl = powder?.querySelector("[data-weight-val]");
-        if(priceEl) priceEl.textContent = "$" + init.price.toFixed(2);
-        if(valEl) valEl.textContent = init.label;
+        if(priceEl) priceEl.textContent = "$" + initW.price.toFixed(2);
+        if(valEl) valEl.textContent = initW.label;
       }
-      const initP = PACKS.find(p=>p.key===activePack);
-      if(initP){
-        document.querySelectorAll("[data-pack-val]").forEach(el=> el.textContent = initP.label);
-      }
+      document.querySelectorAll("[data-pack-val]").forEach(el=> el.textContent = activePack);
 
       renderBadge();
-      apply();
     })();
 
-    // MayaNut AI (Beta)
+    // Footer AI link placeholder
     (function(){
       const link = document.getElementById("footer-ai-link");
-      const overlay = document.getElementById("ai-overlay");
-      const closeBtn = document.getElementById("ai-close");
-      const body = document.getElementById("ai-body");
-      const input = document.getElementById("ai-input");
-      const send = document.getElementById("ai-send");
-
-      function open(){
-        document.body.classList.add("ai-open");
-        overlay?.setAttribute("aria-hidden","false");
-        input?.focus();
-      }
-      function close(){
-        document.body.classList.remove("ai-open");
-        overlay?.setAttribute("aria-hidden","true");
-      }
-
-      function addMsg(text, who){
-        const div = document.createElement("div");
-        div.className = "ai-msg" + (who === "ai" ? " ai" : "");
-        div.textContent = text;
-        body.appendChild(div);
-        body.scrollTop = body.scrollHeight;
-      }
-
-      function reply(q){
-        const n = String(q||"").toLowerCase();
-        if(n.includes("what is mayanut") || n.includes("maya nut")){
-          return "MayaNut (Maya nut) is the seed of the tropical tree Brosimum alicastrum. When roasted and ground, it becomes a rich, cocoa-coffee style powder used in foods and drinks.";
-        }
-        if(n.includes("where") && (n.includes("grow") || n.includes("native"))){
-          return "Brosimum alicastrum is native to Mesoamerica and grows in tropical to subtropical climates. This project focuses on developing it as a long-term crop in South Florida.";
-        }
-        if(n.includes("company") || n.includes("mayanut company")){
-          return "The MayaNut Company is developing America’s first MayaNut farm in South Florida and documenting cultivation and research so others can adopt and grow the crop.";
-        }
-        if(n.includes("store")){
-          return "The store is a concept preview while production and supply chain are being built. Items are placeholders until inventory is available.";
-        }
-        return "Ask me about MayaNut basics, growing, or what’s on the site. Try: “What is MayaNut?” or “Where does it grow?”";
-      }
-
-      function handleSend(){
-        const q = input.value.trim();
-        if(!q) return;
-        addMsg(q, "user");
-        input.value = "";
-        addMsg(reply(q), "ai");
-      }
-
-      link?.addEventListener("click", (e)=>{ e.preventDefault(); open(); });
-      closeBtn?.addEventListener("click", close);
-      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "ai-overlay") close(); });
-      document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") close(); });
-
-      send?.addEventListener("click", handleSend);
-      input?.addEventListener("keydown", (e)=>{ if(e.key === "Enter") handleSend(); });
-
-      body?.addEventListener("click", (e)=>{
-        const btn = e.target.closest?.("[data-q]");
-        if(!btn) return;
-        const q = btn.getAttribute("data-q") || "";
-        addMsg(q, "user");
-        addMsg(reply(q), "ai");
-      });
+      link?.addEventListener("click", (e)=>{ e.preventDefault(); });
     })();
   </script>
 </body>

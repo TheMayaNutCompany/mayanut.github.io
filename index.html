@@ -83,8 +83,6 @@
       scroll-padding-top: calc(var(--stickyOffset) + 12px);
       -webkit-text-size-adjust: 100%;
       text-rendering: geometricPrecision;
-
-      /* keeps scrollbar reserved on the far right (prevents overlap vibes) */
       scrollbar-gutter: stable;
     }
     body{
@@ -107,7 +105,7 @@
       ::-webkit-scrollbar-thumb{
         background: rgba(11,59,23,0.40);
         border-radius: 999px;
-        border: 3px solid rgba(255,255,255,0); /* creates a “floating” thin pill */
+        border: 3px solid rgba(255,255,255,0);
         background-clip: padding-box;
       }
       ::-webkit-scrollbar-thumb:hover{ background: rgba(11,59,23,0.55); }
@@ -324,7 +322,7 @@
       min-height:0;
     }
 
-    /* NEW: headline block (inside What Is MayaNut?) */
+    /* Headline block (inside What Is MayaNut?) */
     .headline{
       padding: 14px 14px 0;
       background:#ffffff;
@@ -341,10 +339,12 @@
     .headline .sub{
       margin-top: 6px;
       font-weight: 950;
-      font-size: 17px; /* match menu option size */
+      font-size: 17px;
       line-height: 1.1;
       color: var(--orange);
       text-decoration: underline;
+      text-decoration-color: var(--orange);
+      text-decoration-thickness: 2px;
       text-underline-offset: 4px;
       width: fit-content;
     }
@@ -375,7 +375,7 @@
     }
     .img-grid img{
       width:100%;
-      height: 214px; /* slightly shorter to keep panels equal height with new headline */
+      height: 214px;
       object-fit: cover;
       object-position: center 50%;
       border-radius: 16px;
@@ -446,16 +446,24 @@
     .mini-checkout svg{ width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
     .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
+    /* Badge on the cart icon tip (not the button corner) */
+    .mini-checkout .cart-icon-wrap{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:0;
+    }
     .mini-badge{
       position:absolute;
-      top: 6px;
-      right: 46px;
+      top: -6px;
+      right: -8px;
       min-width: 14px;
       height: 14px;
       padding:0 4px;
       border-radius:999px;
       background: var(--orangeBadge);
-      border:1px solid rgba(255,255,255,0.75);
+      border:1px solid rgba(255,255,255,0.85);
       color:#ffffff;
       font-weight:900;
       font-size:9px;
@@ -621,7 +629,7 @@
       100%{ transform: scale(1); }
     }
 
-    /* Qty pill: NO "QTY:" label; just three segments (− | 1 | +), max 9 w/ bulk message */
+    /* QTY: 3 sections with dividers; minus left, plus right; max 9 w/ bulk message */
     .qty-pill{
       flex: 1 1 auto;
       min-height: 58px;
@@ -630,42 +638,31 @@
       background: rgba(255,255,255,0.96);
       box-shadow:0 14px 30px rgba(15,23,42,0.06);
       display:flex;
-      align-items:center;
+      align-items:stretch;
       justify-content:space-between;
-      padding: 8px 10px;
-      color:#0b1220;
+      padding: 0;
+      overflow:hidden;
       min-width: 0;
-      gap: 10px;
     }
-    .qty-pill .qty-btn{
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      border: 1px solid rgba(12,90,42,0.45);
-      background: rgba(233,255,214,0.35);
-      color:#0b1220;
-      font-weight: 950;
-      font-size: 18px;
-      cursor:pointer;
+    .qty-pill .qty-seg{
+      flex: 0 0 56px;
       display:flex;
       align-items:center;
       justify-content:center;
       user-select:none;
-      transition: background .12s ease, box-shadow .12s ease;
-      flex: 0 0 auto;
     }
-    .qty-pill .qty-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.04); }
-
     .qty-pill .qty-mid{
       flex: 1 1 auto;
+      min-width: 0;
       display:flex;
       align-items:center;
       justify-content:center;
-      min-width: 0;
-      padding: 0 6px;
+      padding: 0 10px;
+      border-left: 1px solid rgba(12,90,42,0.35);
+      border-right: 1px solid rgba(12,90,42,0.35);
     }
     .qty-display{
-      width: 100%;
+      width:100%;
       text-align:center;
       font-weight: 950;
       font-size: 16px;
@@ -684,6 +681,29 @@
       white-space:normal;
       overflow:visible;
       text-overflow:clip;
+    }
+
+    .qty-pill button{
+      width:100%;
+      height:100%;
+      border:none;
+      background: transparent;
+      color:#0b1220;
+      font-weight: 950;
+      font-size: 20px;
+      cursor:pointer;
+      padding: 0 12px;
+      display:flex;
+      align-items:center;
+      outline:none;
+    }
+    .qty-pill button[data-minus]{ justify-content:flex-start; }
+    .qty-pill button[data-plus]{ justify-content:flex-end; }
+    .qty-pill button:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.04); }
+    .qty-pill button:active{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.07); }
+    .qty-pill button:focus-visible{
+      outline: 3px solid rgba(6,97,0,0.35);
+      outline-offset: -3px;
     }
 
     .view-store{
@@ -1095,7 +1115,6 @@
             </div>
 
             <div class="section-body">
-              <!-- NEW HEADLINES -->
               <div class="headline" aria-label="Hero headline">
                 <div class="big">Aromatic &amp; Delicious</div>
                 <div class="sub">Introducing MayaNut to You 🫵</div>
@@ -1137,14 +1156,17 @@
                   </div>
                 </div>
 
+                <!-- CHECKOUT: badge attached to cart icon tip -->
                 <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
-                  <span class="mini-badge" id="mini-badge" aria-hidden="true">0</span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                    <path d="M6 7l-1-3H2.5"></path>
-                    <circle cx="9" cy="19" r="1.6"></circle>
-                    <circle cx="17" cy="19" r="1.6"></circle>
-                  </svg>
+                  <span class="cart-icon-wrap" aria-hidden="true">
+                    <span class="mini-badge" id="mini-badge" aria-hidden="true">0</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                      <path d="M6 7l-1-3H2.5"></path>
+                      <circle cx="9" cy="19" r="1.6"></circle>
+                      <circle cx="17" cy="19" r="1.6"></circle>
+                    </svg>
+                  </span>
                   <span class="txt">CHECKOUT</span>
                 </button>
               </div>
@@ -1170,13 +1192,17 @@
                         <div class="add-sub">TO CART</div>
                       </button>
 
-                      <!-- UPDATED QTY: (− | 1 | +) with max 9 -->
+                      <!-- QTY: 3 segments (− | 1 | +) -->
                       <div class="qty-pill" aria-label="Quantity selector (max 9)">
-                        <button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button>
+                        <div class="qty-seg">
+                          <button type="button" data-minus aria-label="Decrease quantity">−</button>
+                        </div>
                         <div class="qty-mid">
                           <div class="qty-display" data-qty>1</div>
                         </div>
-                        <button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button>
+                        <div class="qty-seg">
+                          <button type="button" data-plus aria-label="Increase quantity">+</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1197,13 +1223,17 @@
                         <div class="add-sub">TO CART</div>
                       </button>
 
-                      <!-- UPDATED QTY: (− | 1 | +) with max 9 -->
+                      <!-- QTY: 3 segments (− | 1 | +) -->
                       <div class="qty-pill" aria-label="Quantity selector (max 9)">
-                        <button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button>
+                        <div class="qty-seg">
+                          <button type="button" data-minus aria-label="Decrease quantity">−</button>
+                        </div>
                         <div class="qty-mid">
                           <div class="qty-display" data-qty>1</div>
                         </div>
-                        <button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button>
+                        <div class="qty-seg">
+                          <button type="button" data-plus aria-label="Increase quantity">+</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1471,7 +1501,6 @@ Ask me about MayaNut (Brosimum alicastrum), growing in Florida, or what’s on t
         const add = card.querySelector("[data-add]");
         const weightBtn = card.querySelector("[data-weight]");
 
-        // NEW qty parts
         const qtyDisplay = card.querySelector("[data-qty]");
         const plus = card.querySelector(".qty-pill [data-plus]");
         const minus = card.querySelector(".qty-pill [data-minus]");

@@ -78,11 +78,16 @@
       --muted2: rgba(15,23,42,0.65);
 
       --ruleH: 2px;
-      --ruleColor: var(--pale);
+      --ruleGrad: linear-gradient(to right, var(--footer-g1), var(--footer-g2), var(--footer-g3));
 
       --panelStripBg: #f2f2f2;
       --panelStripOutline: rgba(6,97,0,0.55);
       --titleOutline: var(--pale);
+
+      --sbW: 14px;
+      --sbTrack: rgba(55,65,81,0.55);
+      --sbThumb: rgba(31,41,55,0.88);
+      --sbThumbHover: rgba(31,41,55,0.98);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -105,20 +110,20 @@
       overscroll-behavior-y:none;
     }
 
-    /* Scrollbar: thicker/dark like modern retail sites, no transparency bleed */
+    /* Scrollbar: dark track like Chick-fil-A style */
     @media (min-width: 981px){
-      ::-webkit-scrollbar{ width: 14px; }
-      ::-webkit-scrollbar-track{ background: rgba(31,41,55,0.22); }
+      ::-webkit-scrollbar{ width: var(--sbW); }
+      ::-webkit-scrollbar-track{ background: var(--sbTrack); }
       ::-webkit-scrollbar-thumb{
-        background: rgba(55,65,81,0.70);
+        background: var(--sbThumb);
         border-radius: 999px;
-        border: 3px solid rgba(31,41,55,0.22);
+        border: 3px solid var(--sbTrack);
         background-clip: padding-box;
       }
-      ::-webkit-scrollbar-thumb:hover{ background: rgba(55,65,81,0.85); }
+      ::-webkit-scrollbar-thumb:hover{ background: var(--sbThumbHover); }
       body{
         scrollbar-width: auto;
-        scrollbar-color: rgba(55,65,81,0.70) rgba(31,41,55,0.22);
+        scrollbar-color: var(--sbThumb) var(--sbTrack);
       }
     }
 
@@ -135,7 +140,6 @@
       z-index:999;
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
-      border-bottom: 1px solid rgba(12,90,42,0.55);
       transform: translateZ(0);
     }
 
@@ -151,6 +155,7 @@
       justify-content:center;
       position:relative;
       min-height: var(--navH);
+      background-color: var(--sbTrack); /* fills the clipped right strip so it blends with scrollbar */
     }
     .site-header::after{
       content:""; position:absolute; inset:0;
@@ -158,11 +163,12 @@
       pointer-events:none;
     }
 
-    /* Clip header background before scrollbar strip */
+    /* Clip header background before scrollbar strip so it never overlaps the scrollbar */
     @media (min-width: 981px){
       .site-header{
-        padding-right: 14px;           /* must match scrollbar width */
-        background-clip: content-box;  /* prevents background painting into the padding strip */
+        padding-right: var(--sbW);
+        background-clip: content-box;
+        background-origin: content-box;
       }
     }
 
@@ -326,7 +332,7 @@
     }
     .head-line{
       height: var(--ruleH);
-      background: var(--ruleColor);
+      background: var(--ruleGrad);
       border-radius:999px;
       flex:1 1 auto;
       opacity:1;
@@ -369,7 +375,8 @@
     }
     .headline .sub .sub-emoji{ text-decoration:none !important; }
 
-    .para{ padding: 12px 14px 14px; background:#ffffff; }
+    /* Paragraph + images: adhered (no gap beneath paragraph box) */
+    .para{ padding: 12px 14px 0; background:#ffffff; }
     .para p{
       margin:0;
       font-family: var(--font-pretty);
@@ -385,19 +392,21 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* Connect top paragraph to images on desktop */
+    /* WHAT IS MAYANUT: connect paragraph to images */
     @media (min-width: 981px){
       .panel[aria-label="What is MayaNut"] .para p{
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        margin-bottom: 0;
       }
-      .panel[aria-label="What is MayaNut"] .img-grid{ padding-top: 0; margin-top: 0; }
+      .panel[aria-label="What is MayaNut"] .img-grid{
+        padding: 0 14px 14px;
+        margin-top: 0;
+      }
       .panel[aria-label="What is MayaNut"] .img-grid img{
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        height:auto;
         aspect-ratio: 1 / 1;
+        height: auto;
       }
     }
 
@@ -702,7 +711,7 @@
       background: rgba(255,255,255,0.96);
       box-shadow:0 10px 18px rgba(15,23,42,0.05);
       display:grid;
-      grid-template-columns: 34px 1fr 34px; /* less room for +/-; more for number */
+      grid-template-columns: 34px 1fr 34px;
       align-items:center;
       overflow:hidden;
       user-select:none;
@@ -769,7 +778,7 @@
       letter-spacing: .02em;
     }
 
-    /* View store centered with lines */
+    /* View store centered with gradient lines */
     .view-store-wrap{
       display:flex;
       align-items:center;
@@ -778,7 +787,7 @@
     }
     .view-line{
       height: var(--ruleH);
-      background: var(--ruleColor);
+      background: var(--ruleGrad);
       border-radius:999px;
       flex:1 1 auto;
       opacity:1;
@@ -822,44 +831,49 @@
       display:flex;
       flex-direction:column;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
+      padding: 12px; /* inset so image width matches paragraph box */
+      gap: 10px;
     }
-    .about-card .para{ padding: 12px; background:#ffffff; }
-    .about-card .para p{
-      background: var(--pale);
-      border: 1px solid rgba(12,90,42,0.55);
-      border-radius: 16px;
-      padding: 16px;
+
+    .about-box{
+      display:flex;
+      flex-direction:column;
+    }
+    .about-box p{
+      margin:0;
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
       line-height: 1.75;
       color: rgba(12,90,42,0.95);
+      background: var(--pale);
+      border: 1px solid rgba(12,90,42,0.55);
+      border-radius: 16px 16px 0 0; /* straight bottom */
+      padding: 16px;
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
-    /* Connect paragraph to image */
-    .about-card .para p{ border-bottom-left-radius:0; border-bottom-right-radius:0; margin-bottom:0; }
-    .about-card img{
+    .about-box img{
       width:100%;
-      height: 280px;
+      height: 220px; /* smaller */
       object-fit: cover;
       object-position: center 50%;
+      border: 1px solid rgba(12,90,42,0.55);
       border-top: none;
-      border-top-left-radius:0;
-      border-top-right-radius:0;
+      border-radius: 0 0 16px 16px;
       background:#fff;
       display:block;
     }
 
     .about-actions{
-      padding: 12px;
-      background:#ffffff;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:12px;
+      padding: 0 2px 2px;
     }
     .about-actions .btnline{
       height: var(--ruleH);
-      background: var(--ruleColor);
+      background: var(--ruleGrad);
       border-radius:999px;
       flex:1 1 auto;
       opacity:1;
@@ -991,7 +1005,6 @@
     .yt-body{ fill:#ffffff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
-    /* Copyright: centered (clean and standard for single-line footer) */
     .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
@@ -1003,7 +1016,7 @@
       text-align:center;
     }
 
-    /* Toast (used for checkout + bulk message) */
+    /* Toast */
     .toast{
       position: fixed;
       left: 50%;
@@ -1043,6 +1056,7 @@
         background-position: center 40%;
         padding: 22px 0 22px;
         min-height: 140px;
+        background-color: transparent;
       }
       .brand-group{
         top:64%;
@@ -1072,6 +1086,7 @@
       .footer-tagline{ font-size: 12px; justify-content:center; }
       .footer-florida{ width: 20px; height: 20px; }
       .footer-left{ align-items:center; }
+      .about-box img{ height: 200px; }
     }
   </style>
 
@@ -1296,14 +1311,15 @@
           <div class="section-body">
             <div class="about-grid">
               <div class="about-card" aria-label="About card 1">
-                <div class="para">
+                <div class="about-box">
                   <p>
                     In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                   </p>
+                  <img src="the-maya-nut-company-bubba-image.jpg"
+                       alt="Historic Florida farming legacy image referencing Kennesaw Fruit Company founded by Herbert “Buba” Humphreys in 1923."
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                 </div>
-                <img src="the-maya-nut-company-bubba-image.jpg"
-                     alt="Historic Florida farming legacy image referencing Kennesaw Fruit Company founded by Herbert “Buba” Humphreys in 1923."
-                     loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
                 <div class="about-actions" aria-label="Learn more button">
                   <div class="btnline" aria-hidden="true"></div>
                   <a class="about-btn" href="about.html" aria-label="Learn more about The MayaNut Company">LEARN MORE</a>
@@ -1312,14 +1328,15 @@
               </div>
 
               <div class="about-card" aria-label="About card 2">
-                <div class="para">
+                <div class="about-box">
                   <p>
                     To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
                   </p>
+                  <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                       alt="August Kokus with MayaNut (Brosimum alicastrum) trees in South Florida during early cultivation trials."
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                 </div>
-                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                     alt="August Kokus with MayaNut (Brosimum alicastrum) trees in South Florida during early cultivation trials."
-                     loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
                 <div class="about-actions" aria-label="Explore research button">
                   <div class="btnline" aria-hidden="true"></div>
                   <a class="about-btn" href="research.html" aria-label="Explore MayaNut research">EXPLORE RESEARCH</a>

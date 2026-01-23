@@ -28,19 +28,16 @@
   <meta name="twitter:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
   <meta name="twitter:image:alt" content="MayaNut tropical food tree (Brosimum alicastrum) and roasted MayaNut powder from The MayaNut Company in South Florida." />
 
-  <!-- Favicons -->
   <link rel="icon" type="image/png" href="mayanut-the-mayanut-comapny-logo.png" />
   <link rel="apple-touch-icon" href="mayanut-the-mayanut-comapny-logo.png" />
   <meta name="theme-color" content="#066100" />
   <meta name="format-detection" content="telephone=no" />
 
-  <!-- Preload -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" />
   <link rel="preload" as="image" href="maya-nut-mayanut-plant-tree-nursery.jpg" />
   <link rel="preload" as="image" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
@@ -51,8 +48,7 @@
       --greenDeep:#0b3b17;
 
       --orange:#fd6c02;
-      --orangeBadge:#fd6c02;
-      --orangeBadgeHover:#d24f02;
+      --orangeDark:#d24f02;
 
       --lime:#d8ff6a;
       --pale:#e9ffd6;
@@ -80,19 +76,16 @@
       --ruleH: 2px;
       --ruleGrad: linear-gradient(to right, var(--footer-g1), var(--footer-g2), var(--footer-g3));
 
-      --panelStripBg: #f2f2f2;
-      --panelStripOutline: rgba(6,97,0,0.55);
-      --titleOutline: var(--pale);
+      --stripBg: #f2f2f2;
 
       --sbW: 14px;
-      --sbTrack: rgba(55,65,81,0.55);
-      --sbThumb: rgba(31,41,55,0.88);
-      --sbThumbHover: rgba(31,41,55,0.98);
+      --sbTrack: rgba(31,41,55,0.88);
+      --sbThumb: rgba(229,231,235,0.85);
+      --sbThumbHover: rgba(229,231,235,0.98);
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
-
     html{
       background: var(--page);
       overflow-x:hidden;
@@ -110,7 +103,7 @@
       overscroll-behavior-y:none;
     }
 
-    /* Scrollbar: dark track like Chick-fil-A style */
+    /* Scrollbar: dark background + light thumb */
     @media (min-width: 981px){
       ::-webkit-scrollbar{ width: var(--sbW); }
       ::-webkit-scrollbar-track{ background: var(--sbTrack); }
@@ -121,17 +114,13 @@
         background-clip: padding-box;
       }
       ::-webkit-scrollbar-thumb:hover{ background: var(--sbThumbHover); }
-      body{
-        scrollbar-width: auto;
-        scrollbar-color: var(--sbThumb) var(--sbTrack);
-      }
+      body{ scrollbar-width: auto; scrollbar-color: var(--sbThumb) var(--sbTrack); }
     }
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* ===================== TOP ===================== */
     .top-banner{ height: var(--bannerH); background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
     .frame-wrap{ position:relative; width:100%; min-height:100vh; padding-top: var(--stickyOffset); }
 
@@ -141,6 +130,7 @@
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       transform: translateZ(0);
+      border: none;
     }
 
     .site-header{
@@ -155,21 +145,16 @@
       justify-content:center;
       position:relative;
       min-height: var(--navH);
-      background-color: var(--sbTrack); /* fills the clipped right strip so it blends with scrollbar */
+      overflow:hidden;
     }
     .site-header::after{
       content:""; position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 58%);
       pointer-events:none;
     }
-
-    /* Clip header background before scrollbar strip so it never overlaps the scrollbar */
+    /* Cut header background before scrollbar strip (no outlines) */
     @media (min-width: 981px){
-      .site-header{
-        padding-right: var(--sbW);
-        background-clip: content-box;
-        background-origin: content-box;
-      }
+      .site-header{ clip-path: inset(0 var(--sbW) 0 0); }
     }
 
     .brand-group{
@@ -235,10 +220,10 @@
       text-transform:uppercase;
       font-size:12px;
       font-weight:900;
-      transition: box-shadow .12s ease, filter .12s ease;
+      transition: box-shadow .12s ease;
     }
     .pill-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 22px rgba(15,23,42,0.12); }
-    .pill-btn:active{ filter: brightness(0.92); }
+    .pill-btn:active{ background: var(--orangeDark); } /* only while pressing */
 
     .menu-row{
       position:absolute;
@@ -283,7 +268,6 @@
     .menu-row a.is-active{ color: var(--orange); }
     .menu-row a.is-active::after{ transform: scaleX(1); background: var(--orange); opacity:1; }
 
-    /* ===================== MAIN ===================== */
     main{
       background:#ffffff;
       min-height: calc(100vh - var(--stickyOffset));
@@ -340,14 +324,15 @@
 
     .section-body{ background:#ffffff; flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
 
-    /* Grey strip behind headline only */
-    .headline{
-      background: var(--panelStripBg);
-      border: 1px solid var(--panelStripOutline);
-      border-radius: 16px;
+    /* Full-width grey strip inside section */
+    .strip{
+      background: var(--stripBg);
+      border-top: 1px solid rgba(6,97,0,0.18);
+      border-bottom: 1px solid rgba(6,97,0,0.18);
       padding: 14px;
-      margin: 14px 14px 0;
     }
+
+    .headline{ padding:0; margin:0; background:transparent; }
     .headline .big{
       font-weight: 950;
       font-size: 30px;
@@ -361,21 +346,17 @@
       font-size: 17px;
       line-height: 1.1;
       color: var(--orange);
-      width: fit-content;
       display:inline-flex;
       align-items:baseline;
       gap:6px;
     }
     .headline .sub .sub-uline{
-      color: var(--orange);
       text-decoration: underline !important;
       text-decoration-color: var(--orange) !important;
       text-decoration-thickness: 2px !important;
       text-underline-offset: 4px !important;
     }
-    .headline .sub .sub-emoji{ text-decoration:none !important; }
 
-    /* Paragraph + images: adhered (no gap beneath paragraph box) */
     .para{ padding: 12px 14px 0; background:#ffffff; }
     .para p{
       margin:0;
@@ -389,10 +370,9 @@
       border: 1px solid rgba(12,90,42,0.55);
       border-radius: 14px;
       padding: 14px;
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* WHAT IS MAYANUT: connect paragraph to images */
+    /* Connect paragraph to images + reduce image height slightly for spacing */
     @media (min-width: 981px){
       .panel[aria-label="What is MayaNut"] .para p{
         border-bottom-left-radius: 0;
@@ -401,12 +381,13 @@
       .panel[aria-label="What is MayaNut"] .img-grid{
         padding: 0 14px 14px;
         margin-top: 0;
+        gap: 10px;
       }
       .panel[aria-label="What is MayaNut"] .img-grid img{
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        aspect-ratio: 1 / 1;
-        height: auto;
+        height: 190px;     /* less tall */
+        object-fit: cover;
       }
     }
 
@@ -428,7 +409,7 @@
       background:#fff;
     }
 
-    /* ===================== MINI STORE ===================== */
+    /* MINI STORE */
     .mini-store-body{
       padding: 14px;
       background:#ffffff;
@@ -439,17 +420,15 @@
       min-height:0;
     }
 
-    /* Grey strip behind store controls only */
-    .mini-bar{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      width:100%;
-      flex:0 0 auto;
-      background: var(--panelStripBg);
-      border: 1px solid var(--panelStripOutline);
-      border-radius: 16px;
+    .mini-bar-strip{
+      background: var(--stripBg);
+      border-top: 1px solid rgba(6,97,0,0.18);
+      border-bottom: 1px solid rgba(6,97,0,0.18);
       padding: 12px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      width:100%;
     }
 
     .mini-search{
@@ -504,10 +483,11 @@
       flex:0 0 auto;
       min-width: 132px;
       position:relative;
-      transition: filter .12s ease, box-shadow .12s ease;
+      transition: box-shadow .12s ease, background .12s ease;
     }
     .mini-checkout:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 18px rgba(15,23,42,0.10); }
-    .mini-checkout:active{ filter: brightness(0.92); }
+    .mini-checkout:active{ background: var(--orangeDark); } /* only while pressed */
+
     .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
     .mini-cart-wrap{
@@ -552,7 +532,7 @@
       flex:1 1 auto;
       min-height:0;
       align-content:start;
-      margin-top: 2px;
+      margin-top: 6px; /* evens spacing above view button */
     }
 
     .mini-card{
@@ -569,7 +549,6 @@
     .mini-title-row{
       background: var(--pale);
       border-bottom: var(--softBorder);
-      border: 1px solid var(--titleOutline);
       padding: 10px;
       display:flex;
       align-items:center;
@@ -635,14 +614,15 @@
       user-select:none;
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
-      transition: transform .08s ease, box-shadow .12s ease, filter .12s ease;
+      transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
       flex: 0 0 auto;
       cursor:pointer;
     }
     .add-to-cart:hover{
       box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay);
     }
-    .add-to-cart:active{ transform: translateY(1px); filter: brightness(0.92); }
+    .add-to-cart:active{ background: var(--orangeDark); transform: translateY(1px); } /* only while pressed */
+    .add-to-cart[disabled]{ opacity:.65; cursor:default; }
 
     .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
     .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
@@ -698,11 +678,8 @@
       opacity:.9;
       flex:0 0 auto;
     }
-    .mini-rect.btnlike{ cursor:pointer; transition: box-shadow .12s ease, filter .12s ease; }
-    .mini-rect.btnlike:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.04), 0 10px 18px rgba(15,23,42,0.05); }
-    .mini-rect.btnlike:active{ filter: brightness(0.96); }
+    .mini-rect.btnlike{ cursor:pointer; }
 
-    /* Qty pill (thin separators, more room for number) */
     .qty-pill{
       height: 26px;
       width:100%;
@@ -736,18 +713,15 @@
       font-size: 16px;
       color:#0b1220;
       line-height:1;
-      transition: background .12s ease, filter .12s ease, color .12s ease;
+      transition: background .12s ease, color .12s ease;
     }
     .qty-btn:hover{ background: rgba(0,0,0,0.04); }
-    .qty-btn:active{ filter: brightness(0.92); }
-
+    .qty-btn:active{ background: rgba(0,0,0,0.08); } /* only while pressed */
     .qty-btn.is-disabled{
       cursor: default;
       color: var(--muted);
     }
     .qty-btn.is-disabled:hover{ background: transparent; }
-    .qty-btn.is-disabled:active{ filter:none; }
-
     .qty-mid{
       height:100%;
       display:flex;
@@ -765,12 +739,18 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
+    .qty-display.bulk{
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space:normal;
+      text-align:center;
+      padding: 0 6px;
+    }
 
-    /* Descriptions: Acme + placeholder gray */
     .mini-desc{
       margin-top: 2px;
       font-family: var(--font-ui);
-      font-style: normal;
       font-weight: 900;
       font-size: 12px;
       color: var(--muted);
@@ -778,12 +758,11 @@
       letter-spacing: .02em;
     }
 
-    /* View store centered with gradient lines */
     .view-store-wrap{
       display:flex;
       align-items:center;
       gap:12px;
-      margin-top: 6px;
+      margin-top: 8px; /* more even spacing */
     }
     .view-line{
       height: var(--ruleH);
@@ -808,11 +787,11 @@
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       user-select:none;
       cursor:pointer;
-      transition: box-shadow .12s ease, filter .12s ease;
+      transition: box-shadow .12s ease, background .12s ease;
       white-space:nowrap;
     }
     .view-store:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay); }
-    .view-store:active{ transform: translateY(1px); filter: brightness(0.92); }
+    .view-store:active{ background: var(--orangeDark); } /* only while pressed */
 
     /* ABOUT */
     .about-wrap{ margin-top: 16px; }
@@ -831,10 +810,9 @@
       display:flex;
       flex-direction:column;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      padding: 12px; /* inset so image width matches paragraph box */
+      padding: 12px;
       gap: 10px;
     }
-
     .about-box{
       display:flex;
       flex-direction:column;
@@ -848,13 +826,12 @@
       color: rgba(12,90,42,0.95);
       background: var(--pale);
       border: 1px solid rgba(12,90,42,0.55);
-      border-radius: 16px 16px 0 0; /* straight bottom */
+      border-radius: 16px 16px 0 0;
       padding: 16px;
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
     .about-box img{
       width:100%;
-      height: 220px; /* smaller */
+      height: 210px; /* slightly smaller */
       object-fit: cover;
       object-position: center 50%;
       border: 1px solid rgba(12,90,42,0.55);
@@ -896,10 +873,10 @@
       cursor:pointer;
       user-select:none;
       white-space:nowrap;
-      transition: box-shadow .12s ease, filter .12s ease;
+      transition: box-shadow .12s ease, background .12s ease;
     }
     .about-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 14px 30px rgba(15,23,42,0.10); }
-    .about-btn:active{ filter: brightness(0.92); transform: translateY(1px); }
+    .about-btn:active{ background: var(--orangeDark); } /* only while pressed */
 
     /* FOOTER */
     .footer{
@@ -936,10 +913,10 @@
       text-transform: uppercase;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       white-space:nowrap;
-      justify-content:center;
+      justify-content:flex-start;
     }
     .footer-florida{ width: 26px; height: 26px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.35)); }
-    .footer-logo-wrap{ width:100%; display:flex; justify-content:center; }
+    .footer-logo-wrap{ width:100%; display:flex; justify-content:flex-start; }
     .footer-logo{ width: 240px; height: auto; filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22)); user-select:none; }
 
     .footer-right{
@@ -988,10 +965,10 @@
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
       text-decoration:none;
       user-select:none;
-      transition: box-shadow .12s ease, filter .12s ease;
+      transition: box-shadow .12s ease, background .12s ease;
     }
     .icon-pill:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.18); }
-    .icon-pill:active{ filter: brightness(0.92); }
+    .icon-pill:active{ background: var(--orangeDark); } /* only while pressed */
     .icon-pill svg{
       width: 18px;
       height: 18px;
@@ -1005,6 +982,7 @@
     .yt-body{ fill:#ffffff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
+    /* Align copyright left with the “S” of Started in South Florida */
     .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
@@ -1013,7 +991,7 @@
       font-weight: 900;
       font-size: 14px;
       text-shadow: 0 2px 12px rgba(0,0,0,0.25);
-      text-align:center;
+      text-align:left;
     }
 
     /* Toast */
@@ -1040,7 +1018,7 @@
     }
     .toast.show{ display:block; }
 
-    /* RESPONSIVE */
+    /* Responsive */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .mini-grid{ grid-template-columns:1fr; }
@@ -1056,36 +1034,47 @@
         background-position: center 40%;
         padding: 22px 0 22px;
         min-height: 140px;
-        background-color: transparent;
       }
+
+      /* Mobile: move buttons to corners + smaller header */
+      .main-nav{
+        top: 8px;
+        transform:none;
+        height:auto;
+      }
+      .nav-left{ top: 8px; transform:none; left: 10px; }
+      .nav-right{ top: 8px; transform:none; right: 10px; }
+
       .brand-group{
         top:64%;
         left:50%;
         transform: translate(-50%, -50%);
-        max-width: calc(100vw - 36px);
+        max-width: calc(100vw - 24px);
       }
-      .brand-logo{ width:56px; height:56px; }
+      .brand-logo{ width:52px; height:52px; }
       .brand-text{
-        font-size: 26px;
-        letter-spacing:.05em;
+        font-size: 22px;          /* smaller so it fits */
+        letter-spacing:.04em;
         max-width: calc(100vw - 110px);
         overflow:hidden;
         text-overflow:ellipsis;
+        white-space:nowrap;
       }
+
       .menu-row{
         top: calc(64% + 34px);
         transform: translate(-50%, -50%);
         gap: 12px;
       }
       .menu-row a{ font-size: 14px; letter-spacing:.07em; }
-      .main-nav{ top: 8px; transform:none; height:auto; }
-      .nav-left,.nav-right{ top: 8px; transform:none; }
-      .mini-bar{ flex-direction:column; align-items:stretch; }
+
+      .mini-bar-strip{ flex-direction:column; align-items:stretch; }
       .mini-checkout{ width:100%; min-width:0; }
+
       .img-grid img{ height: 160px; }
-      .footer-tagline{ font-size: 12px; justify-content:center; }
+      .footer-tagline{ font-size: 12px; justify-content:flex-start; }
       .footer-florida{ width: 20px; height: 20px; }
-      .footer-left{ align-items:center; }
+      .footer-left{ align-items:flex-start; }
       .about-box img{ height: 200px; }
     }
   </style>
@@ -1148,11 +1137,13 @@
             </div>
 
             <div class="section-body">
-              <div class="headline" aria-label="Hero headline">
-                <div class="big">Aromatic &amp; Delicious</div>
-                <div class="sub">
-                  <span class="sub-uline">Introducing MayaNut to You</span>
-                  <span class="sub-emoji" aria-hidden="true">🫵</span>
+              <div class="strip" aria-label="Intro strip">
+                <div class="headline" aria-label="Hero headline">
+                  <div class="big">Aromatic &amp; Delicious</div>
+                  <div class="sub">
+                    <span class="sub-uline">Introducing MayaNut to You</span>
+                    <span aria-hidden="true">🫵</span>
+                  </div>
                 </div>
               </div>
 
@@ -1181,7 +1172,7 @@
             </div>
 
             <div class="mini-store-body">
-              <div class="mini-bar" aria-label="Mini store controls">
+              <div class="mini-bar-strip" aria-label="Mini store controls strip">
                 <div class="mini-search" aria-label="Search the store">
                   <div class="mag" aria-hidden="true">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1320,7 +1311,7 @@
                        loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                 </div>
 
-                <div class="about-actions" aria-label="Learn more button">
+                <div class="about-actions">
                   <div class="btnline" aria-hidden="true"></div>
                   <a class="about-btn" href="about.html" aria-label="Learn more about The MayaNut Company">LEARN MORE</a>
                   <div class="btnline" aria-hidden="true"></div>
@@ -1337,7 +1328,7 @@
                        loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                 </div>
 
-                <div class="about-actions" aria-label="Explore research button">
+                <div class="about-actions">
                   <div class="btnline" aria-hidden="true"></div>
                   <a class="about-btn" href="research.html" aria-label="Explore MayaNut research">EXPLORE RESEARCH</a>
                   <div class="btnline" aria-hidden="true"></div>
@@ -1372,7 +1363,6 @@
             <a class="footer-link" href="stories.html">Stories</a>
             <a class="footer-link" href="recipes.html">Recipes</a>
             <a class="footer-link" href="contact.html">Contact Us</a>
-            <a class="footer-link" href="#" id="footer-ai-link" onclick="return false;">MayaNut AI (Beta)</a>
           </div>
 
           <div class="footer-col">
@@ -1394,23 +1384,14 @@
                   <circle cx="17.3" cy="6.7" r="0.9"></circle>
                 </svg>
               </a>
-
               <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
                 </svg>
               </a>
-
               <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
-                </svg>
-              </a>
-
-              <a class="icon-pill" href="#" aria-label="YouTube" onclick="return false;">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>
-                  <path class="yt-play" d="M11.0 9.4v5.2l4.6-2.6-4.6-2.6Z"></path>
                 </svg>
               </a>
             </div>
@@ -1422,50 +1403,37 @@
     </footer>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <!-- Dropdown root -->
-  <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
+  <div id="menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
   <script>
     (function(){
+      // Sticky offset
+      function setStickyOffset(){
+        const sticky = document.getElementById("sticky-top");
+        if(!sticky) return;
+        const h = Math.ceil(sticky.getBoundingClientRect().height);
+        document.documentElement.style.setProperty("--stickyOffset", h + "px");
+      }
+      window.addEventListener("load", setStickyOffset, { once:true });
+      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
+      window.addEventListener("pageshow", setStickyOffset);
+
       // Toast
       const toast = document.getElementById("toast");
       let toastTimer = null;
       function showToast(msg){
-        if(!toast) return;
         toast.textContent = msg;
         toast.classList.add("show");
         clearTimeout(toastTimer);
         toastTimer = setTimeout(()=> toast.classList.remove("show"), 1600);
       }
 
-      // Mini-store state
-      const MAX_QTY = 9;
-      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
-      const cart = new Map();
-      const badge = document.getElementById("mini-badge");
-
-      // Dropdown
-      const menuRoot = document.getElementById("weight-menu-root");
+      // Dropdown menu
+      const menuRoot = document.getElementById("menu-root");
       let menuEl = null;
 
-      const WEIGHTS = [
-        { key:"qtr", label:"1/4 LB", price:9.95 },
-        { key:"half", label:"1/2 LB", price:18.95 },
-        { key:"one", label:"1 LB", price:35.95 }
-      ];
-      const PACKS = [
-        { key:"10", label:"10" },
-        { key:"25", label:"25" }
-      ];
-      let activeWeight = "qtr";
-      let activePack = "10";
-
-      function closeMenu(){
-        if(menuEl){ menuEl.remove(); menuEl = null; }
-      }
+      function closeMenu(){ if(menuEl){ menuEl.remove(); menuEl = null; } }
       function openMenu(anchor, options, activeKey, onPick){
         closeMenu();
         const r = anchor.getBoundingClientRect();
@@ -1494,12 +1462,10 @@
           row.style.background = "rgba(233,255,214,0.95)";
           row.style.border = "1px solid rgba(12,90,42,0.55)";
           row.style.marginBottom = "6px";
-
           if(String(opt.key) === String(activeKey)){
             row.style.outline = "2px solid rgba(12,90,42,0.55)";
             row.style.outlineOffset = "-2px";
           }
-
           row.addEventListener("click", ()=>{ onPick(opt); closeMenu(); });
           m.appendChild(row);
         });
@@ -1518,44 +1484,58 @@
       });
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
+      // Store state
+      const MAX_QTY = 9;
+      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
+      const cart = new Map();
+      const badge = document.getElementById("mini-badge");
+
+      const WEIGHTS = [
+        { key:"qtr", label:"1/4 LB", price:9.95 },
+        { key:"half", label:"1/2 LB", price:18.95 },
+        { key:"one", label:"1 LB", price:35.95 }
+      ];
+      const PACKS = [
+        { key:"10", label:"10" },
+        { key:"25", label:"25" }
+      ];
+      let activeWeight = "qtr";
+      let activePack = "10";
+
       function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
       function renderBadge(){
-        if(!badge) return;
         const n = cartCount();
         badge.textContent = String(n > 9 ? 9 : n);
       }
 
-      // Search clear
+      // Search
       const s = document.getElementById("mini-search");
       const clearBtn = document.getElementById("mini-search-clear");
       function applySearch(){
-        const q = String(s?.value || "").toLowerCase().trim();
+        const q = String(s.value || "").toLowerCase().trim();
         document.querySelectorAll(".mini-card").forEach(card=>{
           const t = String(card.getAttribute("data-title")||"").toLowerCase().trim();
           card.style.display = (!q || t.includes(q)) ? "" : "none";
         });
       }
-      s?.addEventListener("input", applySearch);
-      clearBtn?.addEventListener("click", ()=>{ if(!s) return; s.value=""; applySearch(); s.focus(); });
+      s.addEventListener("input", applySearch);
+      clearBtn.addEventListener("click", ()=>{ s.value=""; applySearch(); s.focus(); });
       applySearch();
 
-      // Checkout message
-      document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
+      // Checkout toast
+      document.getElementById("mini-checkout").addEventListener("click", ()=>{
         showToast("This function is currently unavailable.");
       });
 
-      // Helpers for press-and-hold repeat
+      // Hold repeat helper
       function addHoldRepeat(el, onStep){
         let holdTimer = null;
         let repeatTimer = null;
-
         function start(){
           onStep();
           clearTimeout(holdTimer);
           clearInterval(repeatTimer);
-          holdTimer = setTimeout(()=>{
-            repeatTimer = setInterval(onStep, 120);
-          }, 350);
+          holdTimer = setTimeout(()=>{ repeatTimer = setInterval(onStep, 120); }, 350);
         }
         function stop(){
           clearTimeout(holdTimer);
@@ -1563,40 +1543,37 @@
           holdTimer = null;
           repeatTimer = null;
         }
-
         el.addEventListener("mousedown", (e)=>{ e.preventDefault(); start(); });
         document.addEventListener("mouseup", stop);
         el.addEventListener("mouseleave", stop);
-
         el.addEventListener("touchstart", (e)=>{ e.preventDefault(); start(); }, { passive:false });
         el.addEventListener("touchend", stop);
         el.addEventListener("touchcancel", stop);
       }
 
-      function wireQtyPill(card){
+      // Wire each card
+      document.querySelectorAll(".mini-card").forEach(card=>{
+        const title = card.getAttribute("data-title") || "Item";
+        const addBtn = card.querySelector("[data-add]");
         const qtyDisplay = card.querySelector("[data-qty]");
         const plus = card.querySelector("[data-plus]");
         const minus = card.querySelector("[data-minus]");
+        const weightBtn = card.querySelector("[data-weight]");
+        const packBtn = card.querySelector("[data-pack]");
+
         let qtyVal = 1;
 
-        function updateButtons(){
-          if(!minus || !plus) return;
+        function updateDisabled(){
           const atMin = qtyVal <= 1;
           const atMax = qtyVal >= MAX_QTY;
-
           minus.classList.toggle("is-disabled", atMin);
-          minus.setAttribute("aria-disabled", atMin ? "true" : "false");
-          minus.tabIndex = atMin ? -1 : 0;
-
           plus.classList.toggle("is-disabled", atMax);
-          plus.setAttribute("aria-disabled", atMax ? "true" : "false");
-          plus.tabIndex = atMax ? -1 : 0;
         }
 
         function setQty(n){
           qtyVal = clamp(n);
-          if(qtyDisplay) qtyDisplay.textContent = String(qtyVal);
-          updateButtons();
+          qtyDisplay.textContent = String(qtyVal);
+          updateDisabled();
         }
 
         function stepPlus(){
@@ -1613,42 +1590,26 @@
 
         setQty(1);
 
-        // Click
-        plus?.addEventListener("click", ()=>{ if(!plus.classList.contains("is-disabled")) stepPlus(); else showToast("Contact Us for Bulk Orders!"); });
-        minus?.addEventListener("click", ()=>{ if(!minus.classList.contains("is-disabled")) stepMinus(); });
+        plus.addEventListener("click", ()=>{ if(plus.classList.contains("is-disabled")) showToast("Contact Us for Bulk Orders!"); else stepPlus(); });
+        minus.addEventListener("click", ()=>{ if(!minus.classList.contains("is-disabled")) stepMinus(); });
 
-        // Hold
-        if(plus) addHoldRepeat(plus, stepPlus);
-        if(minus) addHoldRepeat(minus, stepMinus);
+        addHoldRepeat(plus, stepPlus);
+        addHoldRepeat(minus, stepMinus);
 
-        return ()=>qtyVal;
-      }
-
-      function wireCard(card){
-        const title = card.getAttribute("data-title") || "Item";
-        const add = card.querySelector("[data-add]");
-        const getQty = wireQtyPill(card);
-
-        const weightBtn = card.querySelector("[data-weight]");
-        const packBtn = card.querySelector("[data-pack]");
-
+        // Weight / pack dropdowns
         if(weightBtn){
           weightBtn.addEventListener("click",(e)=>{
             e.preventDefault(); e.stopPropagation();
             openMenu(weightBtn, WEIGHTS, activeWeight, (opt)=>{
               activeWeight = opt.key;
               document.querySelectorAll("[data-weight-val]").forEach(el=> el.textContent = opt.label);
-
               const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
               const priceEl = powder?.querySelector("[data-price]");
               if(priceEl) priceEl.textContent = "$" + opt.price.toFixed(2);
             });
           });
-          weightBtn.addEventListener("keydown",(e)=>{
-            if(e.key==="Enter" || e.key===" "){ e.preventDefault(); weightBtn.click(); }
-          });
+          weightBtn.addEventListener("keydown",(e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); weightBtn.click(); } });
         }
-
         if(packBtn){
           packBtn.addEventListener("click",(e)=>{
             e.preventDefault(); e.stopPropagation();
@@ -1657,19 +1618,32 @@
               document.querySelectorAll("[data-pack-val]").forEach(el=> el.textContent = opt.label);
             });
           });
-          packBtn.addEventListener("keydown",(e)=>{
-            if(e.key==="Enter" || e.key===" "){ e.preventDefault(); packBtn.click(); }
-          });
+          packBtn.addEventListener("keydown",(e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); packBtn.click(); } });
         }
 
-        add?.addEventListener("click", ()=>{
-          const q = getQty ? getQty() : 1;
+        // Add-to-cart “ADDED” + check below
+        function brieflyAdded(btn){
+          const main = btn.querySelector(".add-main");
+          const sub  = btn.querySelector(".add-sub");
+          const oldMain = main.textContent;
+          const oldSub  = sub.textContent;
+
+          main.textContent = "ADDED";
+          sub.textContent = "✓";
+
+          setTimeout(()=>{
+            main.textContent = oldMain;
+            sub.textContent = oldSub;
+          }, 550);
+        }
+
+        addBtn.addEventListener("click", ()=>{
+          const q = qtyVal;
           cart.set(title, (cart.get(title)||0) + q);
           renderBadge();
+          brieflyAdded(addBtn);
         });
-      }
-
-      document.querySelectorAll(".mini-card").forEach(wireCard);
+      });
 
       // init defaults
       const initW = WEIGHTS.find(w=>w.key===activeWeight);

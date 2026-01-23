@@ -71,10 +71,6 @@
       --footer-g2:#7ae78a;
       --footer-g3:#066100;
 
-      --muted: rgba(15,23,42,0.55);
-      --muted2: rgba(15,23,42,0.65);
-
-      --ruleH: 2px;
       --ruleGrad: linear-gradient(to right, var(--footer-g1), var(--footer-g2), var(--footer-g3));
 
       --stripBg: #f2f2f2;
@@ -151,8 +147,8 @@
       position:relative;
       min-height: var(--navH);
       overflow:hidden;
-      border-bottom: 1px solid rgba(6,97,0,0.55); /* thin green outline */
-      padding-right: var(--headerSafeRight);       /* keep controls away from scrollbar */
+      border-bottom: 1px solid rgba(6,97,0,0.55);
+      padding-right: var(--headerSafeRight);
     }
     .site-header::after{
       content:""; position:absolute; inset:0;
@@ -286,17 +282,30 @@
       position: relative;
       z-index: 1;
     }
+
+    /* Grey band behind hero strip + mini store strip, extending a bit lower */
+    .top-band{
+      background: var(--stripBg);
+      border-bottom: 1px solid rgba(6,97,0,0.18);
+      width:100%;
+      padding-bottom: 10px; /* extend slightly lower */
+    }
+
     .content-wrapper{
       padding: 18px 16px 28px;
       max-width: 1200px;
       margin: 0 auto;
     }
+
     .layout{
       display:grid;
       grid-template-columns: 1.15fr 1fr;
       gap: 16px;
       align-items: stretch;
     }
+
+    /* Continuity: align panel tops perfectly */
+    .layout > *{ align-self: stretch; }
 
     .panel{
       border-radius:18px;
@@ -336,7 +345,7 @@
     .section-body{ background:#ffffff; flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
 
     .strip{
-      background: var(--stripBg);
+      background: transparent; /* top-band provides the grey */
       border-top: 1px solid rgba(6,97,0,0.18);
       border-bottom: 1px solid rgba(6,97,0,0.18);
       padding: 14px;
@@ -366,7 +375,8 @@
       text-underline-offset: 4px !important;
     }
 
-    .para{ padding: 12px 14px 0; background:#ffffff; }
+    /* Paragraph should start right under the grey band */
+    .para{ padding: 0 14px 0; background:#ffffff; }
     .para p{
       margin:0;
       font-family: var(--font-pretty);
@@ -379,6 +389,7 @@
       border: 1px solid rgba(12,90,42,0.55);
       border-radius: 14px;
       padding: 14px;
+      margin-top: 0;
     }
 
     .img-grid{
@@ -389,9 +400,10 @@
       background:#ffffff;
       margin-top: 0;
     }
+    /* Slightly taller, tuned to line up with View Full Store button area */
     .img-grid img{
       width:100%;
-      height: 240px;              /* taller without changing section height (panel uses flex) */
+      height: 256px; /* a little taller */
       object-fit: cover;
       object-position: center 50%;
       border-radius: 0 0 16px 16px;
@@ -427,7 +439,7 @@
     }
 
     .mini-bar-strip{
-      background: var(--stripBg);
+      background: transparent; /* top-band provides grey */
       border-top: 1px solid rgba(6,97,0,0.18);
       border-bottom: 1px solid rgba(6,97,0,0.18);
       padding: 12px;
@@ -511,22 +523,24 @@
       stroke-linejoin:round;
       display:block;
     }
+    /* Slightly smaller badge so it doesn't touch inside top edge */
     .mini-badge{
       position:absolute;
-      top:-7px;
-      right:-7px;
-      width: 14px;
-      height: 14px;
+      top:-6px;
+      right:-6px;
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
       background: #ff7a1a;
       border:1px solid rgba(255,255,255,0.75);
       color:#ffffff;
       font-weight:950;
-      font-size:8px;
+      font-size:7px;
       display:flex;
       align-items:center;
       justify-content:center;
       pointer-events:none;
+      line-height:1;
     }
 
     .mini-grid{
@@ -691,7 +705,7 @@
       background: rgba(255,255,255,0.96);
       box-shadow:0 10px 18px rgba(15,23,42,0.05);
       display:grid;
-      grid-template-columns: 34px 1fr 34px;
+      grid-template-columns: 32px 1fr 32px;
       align-items:center;
       overflow:hidden;
       user-select:none;
@@ -731,7 +745,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 0 8px;
+      padding: 0 10px;
       min-width:0;
     }
     .qty-display{
@@ -822,7 +836,7 @@
     }
     .about-box img{
       width:100%;
-      height: 260px;               /* taller; about section becomes taller */
+      height: 282px; /* taller so section gets taller */
       object-fit: cover;
       object-position: center 50%;
       border: 1px solid rgba(12,90,42,0.55);
@@ -1062,8 +1076,8 @@
       .mini-bar-strip{ flex-direction:column; align-items:stretch; }
       .mini-checkout{ width:100%; min-width:0; }
 
-      .img-grid img{ height: 190px; border-radius: 16px; border-top: var(--softBorder); }
-      .about-box img{ height: 230px; }
+      .img-grid img{ height: 210px; border-radius: 16px; border-top: var(--softBorder); }
+      .about-box img{ height: 250px; }
 
       .footer-tagline{ font-size: 12px; justify-content:flex-start; }
       .footer-florida{ width: 20px; height: 20px; }
@@ -1129,14 +1143,17 @@
             </div>
 
             <div class="section-body">
-              <div class="strip" aria-label="Intro strip">
-                <div class="headline" aria-label="Hero headline">
-                  <div class="big">Aromatic &amp; Delicious</div>
-                  <div class="sub">
-                    <span class="sub-uline">Introducing MayaNut to You</span>
-                    <span aria-hidden="true">🫵</span>
+              <div class="top-band">
+                <div class="strip" aria-label="Intro strip">
+                  <div class="headline" aria-label="Hero headline">
+                    <div class="big">Aromatic &amp; Delicious</div>
+                    <div class="sub">
+                      <span class="sub-uline">Introducing MayaNut to You</span>
+                      <span aria-hidden="true">🫵</span>
+                    </div>
                   </div>
                 </div>
+                <div style="height:6px"></div>
               </div>
 
               <div class="para">
@@ -1163,121 +1180,126 @@
               <div class="head-line" aria-hidden="true"></div>
             </div>
 
-            <div class="mini-store-body">
-              <div class="mini-bar-strip" aria-label="Mini store controls strip">
-                <div class="mini-search" aria-label="Search the store">
-                  <div class="mag" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="11" cy="11" r="6.5"></circle>
-                      <path d="M16.2 16.2L21 21"></path>
-                    </svg>
+            <div class="section-body">
+              <div class="top-band">
+                <div class="mini-bar-strip" aria-label="Mini store controls strip">
+                  <div class="mini-search" aria-label="Search the store">
+                    <div class="mag" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="M16.2 16.2L21 21"></path>
+                      </svg>
+                    </div>
+                    <input id="mini-search" type="text" placeholder="Search MayaNut Store..." autocomplete="off" />
+                    <div class="xbtn" id="mini-search-clear" aria-label="Clear search" role="button" tabindex="0">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 6L18 18M18 6L6 18"></path>
+                      </svg>
+                    </div>
                   </div>
-                  <input id="mini-search" type="text" placeholder="Search MayaNut Store..." autocomplete="off" />
-                  <div class="xbtn" id="mini-search-clear" aria-label="Clear search" role="button" tabindex="0">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 6L18 18M18 6L6 18"></path>
-                    </svg>
-                  </div>
+
+                  <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
+                    <span class="mini-cart-wrap" aria-hidden="true">
+                      <span class="mini-badge" id="mini-badge">0</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                      </svg>
+                    </span>
+                    <span class="txt">CHECKOUT</span>
+                  </button>
+                </div>
+                <div style="height:6px"></div>
+              </div>
+
+              <div class="mini-store-body">
+                <div class="mini-grid" id="mini-grid">
+                  <!-- POWDER -->
+                  <article class="mini-card" data-title="MayaNut Powder">
+                    <div class="mini-title-row">
+                      <div class="mini-title">MayaNut Powder</div>
+                      <div class="mini-price" data-price>$9.95</div>
+                    </div>
+
+                    <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                         alt="Roasted MayaNut powder made from ground Brosimum alicastrum seeds."
+                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
+                    <div class="mini-bot">
+                      <div class="mini-actions" aria-label="Actions">
+                        <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
+                          <div class="add-main">ADD</div>
+                          <div class="add-sub">TO CART</div>
+                        </button>
+
+                        <div class="mini-stack" aria-label="Options">
+                          <div class="mini-rect btnlike" role="button" tabindex="0" data-weight aria-label="Select weight">
+                            <div class="lbl">WEIGHT:</div>
+                            <div class="val">
+                              <span data-weight-val>1/4 LB</span>
+                              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                            </div>
+                          </div>
+
+                          <div class="qty-pill" aria-label="Quantity selector (max 9)">
+                            <div class="qty-seg left"><button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button></div>
+                            <div class="qty-mid"><div class="qty-display" data-qty>1</div></div>
+                            <div class="qty-seg right"><button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mini-desc">Flavorful powder, great for acai bowls, granola, and much more!</div>
+                    </div>
+                  </article>
+
+                  <!-- SEEDS -->
+                  <article class="mini-card" data-title="MayaNut Seeds">
+                    <div class="mini-title-row">
+                      <div class="mini-title">MayaNut Seeds</div>
+                      <div class="mini-price">$9.95</div>
+                    </div>
+
+                    <img class="mini-img" src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                         alt="MayaNut seeds from Brosimum alicastrum, a tropical tree also known as ramón or ojoche."
+                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
+                    <div class="mini-bot">
+                      <div class="mini-actions" aria-label="Actions">
+                        <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
+                          <div class="add-main">ADD</div>
+                          <div class="add-sub">TO CART</div>
+                        </button>
+
+                        <div class="mini-stack" aria-label="Options">
+                          <div class="mini-rect btnlike" role="button" tabindex="0" data-pack aria-label="Select pack size">
+                            <div class="lbl">PACK:</div>
+                            <div class="val">
+                              <span data-pack-val>10</span>
+                              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                            </div>
+                          </div>
+
+                          <div class="qty-pill" aria-label="Quantity selector (max 9)">
+                            <div class="qty-seg left"><button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button></div>
+                            <div class="qty-mid"><div class="qty-display" data-qty>1</div></div>
+                            <div class="qty-seg right"><button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mini-desc">Grow your own tropical MayaNut plants! *Seeds are shipped in moist vermiculite.</div>
+                    </div>
+                  </article>
                 </div>
 
-                <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
-                  <span class="mini-cart-wrap" aria-hidden="true">
-                    <span class="mini-badge" id="mini-badge">0</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                      <path d="M6 7l-1-3H2.5"></path>
-                      <circle cx="9" cy="19" r="1.6"></circle>
-                      <circle cx="17" cy="19" r="1.6"></circle>
-                    </svg>
-                  </span>
-                  <span class="txt">CHECKOUT</span>
-                </button>
-              </div>
-
-              <div class="mini-grid" id="mini-grid">
-                <!-- POWDER -->
-                <article class="mini-card" data-title="MayaNut Powder">
-                  <div class="mini-title-row">
-                    <div class="mini-title">MayaNut Powder</div>
-                    <div class="mini-price" data-price>$9.95</div>
-                  </div>
-
-                  <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                       alt="Roasted MayaNut powder made from ground Brosimum alicastrum seeds."
-                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-
-                  <div class="mini-bot">
-                    <div class="mini-actions" aria-label="Actions">
-                      <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
-                        <div class="add-main">ADD</div>
-                        <div class="add-sub">TO CART</div>
-                      </button>
-
-                      <div class="mini-stack" aria-label="Options">
-                        <div class="mini-rect btnlike" role="button" tabindex="0" data-weight aria-label="Select weight">
-                          <div class="lbl">WEIGHT:</div>
-                          <div class="val">
-                            <span data-weight-val>1/4 LB</span>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
-                          </div>
-                        </div>
-
-                        <div class="qty-pill" aria-label="Quantity selector (max 9)">
-                          <div class="qty-seg left"><button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button></div>
-                          <div class="qty-mid"><div class="qty-display" data-qty>1</div></div>
-                          <div class="qty-seg right"><button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="mini-desc">Flavorful powder, great for acai bowls, granola, and much more!</div>
-                  </div>
-                </article>
-
-                <!-- SEEDS -->
-                <article class="mini-card" data-title="MayaNut Seeds">
-                  <div class="mini-title-row">
-                    <div class="mini-title">MayaNut Seeds</div>
-                    <div class="mini-price">$9.95</div>
-                  </div>
-
-                  <img class="mini-img" src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                       alt="MayaNut seeds from Brosimum alicastrum, a tropical tree also known as ramón or ojoche."
-                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-
-                  <div class="mini-bot">
-                    <div class="mini-actions" aria-label="Actions">
-                      <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
-                        <div class="add-main">ADD</div>
-                        <div class="add-sub">TO CART</div>
-                      </button>
-
-                      <div class="mini-stack" aria-label="Options">
-                        <div class="mini-rect btnlike" role="button" tabindex="0" data-pack aria-label="Select pack size">
-                          <div class="lbl">PACK:</div>
-                          <div class="val">
-                            <span data-pack-val>10</span>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
-                          </div>
-                        </div>
-
-                        <div class="qty-pill" aria-label="Quantity selector (max 9)">
-                          <div class="qty-seg left"><button class="qty-btn" type="button" data-minus aria-label="Decrease quantity">−</button></div>
-                          <div class="qty-mid"><div class="qty-display" data-qty>1</div></div>
-                          <div class="qty-seg right"><button class="qty-btn" type="button" data-plus aria-label="Increase quantity">+</button></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="mini-desc">Grow your own tropical MayaNut plants! *Seeds are shipped in moist vermiculite.</div>
-                  </div>
-                </article>
-              </div>
-
-              <div class="view-store-wrap" aria-label="View store">
-                <div class="view-line" aria-hidden="true"></div>
-                <a class="view-store" href="store.html" aria-label="View full store">VIEW FULL STORE</a>
-                <div class="view-line" aria-hidden="true"></div>
+                <div class="view-store-wrap" aria-label="View store">
+                  <div class="view-line" aria-hidden="true"></div>
+                  <a class="view-store" href="store.html" aria-label="View full store">VIEW FULL STORE</a>
+                  <div class="view-line" aria-hidden="true"></div>
+                </div>
               </div>
             </div>
           </aside>

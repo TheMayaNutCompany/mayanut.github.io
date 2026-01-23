@@ -55,6 +55,7 @@
 
       --page:#ffffff;
       --softBorder: 1px solid rgba(12,90,42,0.45);
+
       --sectionOutline: rgba(6,97,0,0.55);
 
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -78,10 +79,14 @@
 
       --stripBg: #f2f2f2;
 
+      /* Scrollbar */
       --sbW: 14px;
-      --sbTrack: rgba(31,41,55,0.88);
+      --sbTrack: rgba(31,41,55,0.90);
       --sbThumb: rgba(229,231,235,0.85);
       --sbThumbHover: rgba(229,231,235,0.98);
+
+      /* Header safe right padding so nothing can overlap the scrollbar */
+      --headerSafeRight: 18px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -103,7 +108,7 @@
       overscroll-behavior-y:none;
     }
 
-    /* Scrollbar: dark background + light thumb */
+    /* Scrollbar: dark track + light thumb */
     @media (min-width: 981px){
       ::-webkit-scrollbar{ width: var(--sbW); }
       ::-webkit-scrollbar-track{ background: var(--sbTrack); }
@@ -130,9 +135,9 @@
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       transform: translateZ(0);
-      border: none;
     }
 
+    /* Restored top menu with thin green outline along the bottom edge */
     .site-header{
       width:100%;
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
@@ -146,15 +151,21 @@
       position:relative;
       min-height: var(--navH);
       overflow:hidden;
+      border-bottom: 1px solid rgba(6,97,0,0.55); /* thin green outline */
+      padding-right: var(--headerSafeRight);       /* keep controls away from scrollbar */
     }
     .site-header::after{
       content:""; position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 58%);
       pointer-events:none;
     }
-    /* Cut header background before scrollbar strip (no outlines) */
+
+    /* Never overlap scrollbar: shrink header background painting on the right */
     @media (min-width: 981px){
-      .site-header{ clip-path: inset(0 var(--sbW) 0 0); }
+      .site-header{
+        padding-right: calc(var(--headerSafeRight) + var(--sbW));
+        clip-path: inset(0 calc(var(--sbW) + 2px) 0 0);
+      }
     }
 
     .brand-group{
@@ -169,7 +180,7 @@
       pointer-events:none;
       user-select:none;
       white-space:nowrap;
-      max-width: calc(100vw - 120px);
+      max-width: calc(100vw - 160px);
     }
     .brand-logo{ width:78px; height:78px; object-fit:contain; filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22)); }
     .brand-text{
@@ -200,8 +211,9 @@
       white-space:nowrap;
       z-index:6;
     }
-    .nav-left{ left:12px; }
-    .nav-right{ right:12px; }
+    /* moved inward */
+    .nav-left{ left:24px; }
+    .nav-right{ right:24px; }
 
     .pill-btn{
       height:40px;
@@ -220,10 +232,10 @@
       text-transform:uppercase;
       font-size:12px;
       font-weight:900;
-      transition: box-shadow .12s ease;
+      transition: box-shadow .12s ease, background .12s ease;
     }
     .pill-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 22px rgba(15,23,42,0.12); }
-    .pill-btn:active{ background: var(--orangeDark); } /* only while pressing */
+    .pill-btn:active{ background: var(--orangeDark); } /* only while pressed */
 
     .menu-row{
       position:absolute;
@@ -315,16 +327,14 @@
       white-space:nowrap;
     }
     .head-line{
-      height: var(--ruleH);
+      height: 2px;
       background: var(--ruleGrad);
       border-radius:999px;
       flex:1 1 auto;
-      opacity:1;
     }
 
     .section-body{ background:#ffffff; flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
 
-    /* Full-width grey strip inside section */
     .strip{
       background: var(--stripBg);
       border-top: 1px solid rgba(6,97,0,0.18);
@@ -332,7 +342,6 @@
       padding: 14px;
     }
 
-    .headline{ padding:0; margin:0; background:transparent; }
     .headline .big{
       font-weight: 950;
       font-size: 30px;
@@ -372,41 +381,38 @@
       padding: 14px;
     }
 
-    /* Connect paragraph to images + reduce image height slightly for spacing */
+    .img-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 14px 14px;
+      background:#ffffff;
+      margin-top: 0;
+    }
+    .img-grid img{
+      width:100%;
+      height: 240px;              /* taller without changing section height (panel uses flex) */
+      object-fit: cover;
+      object-position: center 50%;
+      border-radius: 0 0 16px 16px;
+      border: var(--softBorder);
+      border-top: none;
+      background:#fff;
+    }
+
+    /* Connect What Is paragraph to images */
     @media (min-width: 981px){
       .panel[aria-label="What is MayaNut"] .para p{
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
       .panel[aria-label="What is MayaNut"] .img-grid{
-        padding: 0 14px 14px;
-        margin-top: 0;
-        gap: 10px;
+        padding-top: 0;
       }
       .panel[aria-label="What is MayaNut"] .img-grid img{
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        height: 190px;     /* less tall */
-        object-fit: cover;
       }
-    }
-
-    .img-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 14px;
-      background:#ffffff;
-      margin-top:auto;
-    }
-    .img-grid img{
-      width:100%;
-      height: 214px;
-      object-fit: cover;
-      object-position: center 50%;
-      border-radius: 16px;
-      border: var(--softBorder);
-      background:#fff;
     }
 
     /* MINI STORE */
@@ -451,7 +457,7 @@
       padding:0 10px 0 2px; width:100%; min-width:0;
       caret-color: var(--orange);
     }
-    .mini-search input::placeholder{ color: var(--muted); opacity:1; }
+    .mini-search input::placeholder{ color: rgba(15,23,42,0.55); opacity:1; }
 
     .mini-search .xbtn{
       width:34px; height:36px;
@@ -460,7 +466,7 @@
     }
     .mini-search .xbtn svg{ width:16px; height:16px; }
     .mini-search .xbtn svg path{
-      stroke: var(--muted2);
+      stroke: rgba(15,23,42,0.65);
       fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -485,8 +491,8 @@
       position:relative;
       transition: box-shadow .12s ease, background .12s ease;
     }
-    .mini-checkout:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 10px 18px rgba(15,23,42,0.10); }
-    .mini-checkout:active{ background: var(--orangeDark); } /* only while pressed */
+    .mini-checkout:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 18px rgba(15,23,42,0.10); }
+    .mini-checkout:active{ background: var(--orangeDark); }
 
     .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
@@ -512,7 +518,7 @@
       width: 14px;
       height: 14px;
       border-radius: 999px;
-      background: var(--orangeBadge);
+      background: #ff7a1a;
       border:1px solid rgba(255,255,255,0.75);
       color:#ffffff;
       font-weight:950;
@@ -521,9 +527,7 @@
       align-items:center;
       justify-content:center;
       pointer-events:none;
-      transition: background .12s ease;
     }
-    .mini-checkout:hover .mini-badge{ background: var(--orangeBadgeHover); }
 
     .mini-grid{
       display:grid;
@@ -532,7 +536,7 @@
       flex:1 1 auto;
       min-height:0;
       align-content:start;
-      margin-top: 6px; /* evens spacing above view button */
+      margin-top: 6px;
     }
 
     .mini-card{
@@ -619,10 +623,9 @@
       cursor:pointer;
     }
     .add-to-cart:hover{
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay);
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px rgba(0,0,0,0.18);
     }
-    .add-to-cart:active{ background: var(--orangeDark); transform: translateY(1px); } /* only while pressed */
-    .add-to-cart[disabled]{ opacity:.65; cursor:default; }
+    .add-to-cart:active{ background: var(--orangeDark); transform: translateY(1px); }
 
     .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
     .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
@@ -716,12 +719,13 @@
       transition: background .12s ease, color .12s ease;
     }
     .qty-btn:hover{ background: rgba(0,0,0,0.04); }
-    .qty-btn:active{ background: rgba(0,0,0,0.08); } /* only while pressed */
+    .qty-btn:active{ background: rgba(0,0,0,0.08); }
     .qty-btn.is-disabled{
       cursor: default;
-      color: var(--muted);
+      color: rgba(15,23,42,0.55);
     }
     .qty-btn.is-disabled:hover{ background: transparent; }
+
     .qty-mid{
       height:100%;
       display:flex;
@@ -739,21 +743,13 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .qty-display.bulk{
-      font-size: 9px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      white-space:normal;
-      text-align:center;
-      padding: 0 6px;
-    }
 
     .mini-desc{
       margin-top: 2px;
       font-family: var(--font-ui);
       font-weight: 900;
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(15,23,42,0.55);
       line-height: 1.35;
       letter-spacing: .02em;
     }
@@ -762,14 +758,13 @@
       display:flex;
       align-items:center;
       gap:12px;
-      margin-top: 8px; /* more even spacing */
+      margin-top: 8px;
     }
     .view-line{
-      height: var(--ruleH);
+      height: 2px;
       background: var(--ruleGrad);
       border-radius:999px;
       flex:1 1 auto;
-      opacity:1;
     }
     .view-store{
       height: 42px;
@@ -790,8 +785,8 @@
       transition: box-shadow .12s ease, background .12s ease;
       white-space:nowrap;
     }
-    .view-store:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px var(--darkOverlay); }
-    .view-store:active{ background: var(--orangeDark); } /* only while pressed */
+    .view-store:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px rgba(0,0,0,0.18); }
+    .view-store:active{ background: var(--orangeDark); }
 
     /* ABOUT */
     .about-wrap{ margin-top: 16px; }
@@ -813,10 +808,6 @@
       padding: 12px;
       gap: 10px;
     }
-    .about-box{
-      display:flex;
-      flex-direction:column;
-    }
     .about-box p{
       margin:0;
       font-family: var(--font-pretty);
@@ -831,7 +822,7 @@
     }
     .about-box img{
       width:100%;
-      height: 210px; /* slightly smaller */
+      height: 260px;               /* taller; about section becomes taller */
       object-fit: cover;
       object-position: center 50%;
       border: 1px solid rgba(12,90,42,0.55);
@@ -849,11 +840,10 @@
       padding: 0 2px 2px;
     }
     .about-actions .btnline{
-      height: var(--ruleH);
+      height: 2px;
       background: var(--ruleGrad);
       border-radius:999px;
       flex:1 1 auto;
-      opacity:1;
     }
     .about-btn{
       height: 40px;
@@ -875,8 +865,8 @@
       white-space:nowrap;
       transition: box-shadow .12s ease, background .12s ease;
     }
-    .about-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOverlay), 0 14px 30px rgba(15,23,42,0.10); }
-    .about-btn:active{ background: var(--orangeDark); } /* only while pressed */
+    .about-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
+    .about-btn:active{ background: var(--orangeDark); }
 
     /* FOOTER */
     .footer{
@@ -968,7 +958,8 @@
       transition: box-shadow .12s ease, background .12s ease;
     }
     .icon-pill:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.18); }
-    .icon-pill:active{ background: var(--orangeDark); } /* only while pressed */
+    .icon-pill:active{ background: var(--orangeDark); }
+
     .icon-pill svg{
       width: 18px;
       height: 18px;
@@ -979,10 +970,11 @@
       stroke-linejoin: round;
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
+
+    /* YouTube icon */
     .yt-body{ fill:#ffffff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
-    /* Align copyright left with the “S” of Started in South Florida */
     .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
@@ -1036,14 +1028,13 @@
         min-height: 140px;
       }
 
-      /* Mobile: move buttons to corners + smaller header */
       .main-nav{
         top: 8px;
         transform:none;
         height:auto;
       }
-      .nav-left{ top: 8px; transform:none; left: 10px; }
-      .nav-right{ top: 8px; transform:none; right: 10px; }
+      .nav-left{ top: 8px; transform:none; left: 18px; }
+      .nav-right{ top: 8px; transform:none; right: 18px; }
 
       .brand-group{
         top:64%;
@@ -1053,7 +1044,7 @@
       }
       .brand-logo{ width:52px; height:52px; }
       .brand-text{
-        font-size: 22px;          /* smaller so it fits */
+        font-size: 22px;
         letter-spacing:.04em;
         max-width: calc(100vw - 110px);
         overflow:hidden;
@@ -1071,11 +1062,12 @@
       .mini-bar-strip{ flex-direction:column; align-items:stretch; }
       .mini-checkout{ width:100%; min-width:0; }
 
-      .img-grid img{ height: 160px; }
+      .img-grid img{ height: 190px; border-radius: 16px; border-top: var(--softBorder); }
+      .about-box img{ height: 230px; }
+
       .footer-tagline{ font-size: 12px; justify-content:flex-start; }
       .footer-florida{ width: 20px; height: 20px; }
       .footer-left{ align-items:flex-start; }
-      .about-box img{ height: 200px; }
     }
   </style>
 
@@ -1287,7 +1279,6 @@
                 <a class="view-store" href="store.html" aria-label="View full store">VIEW FULL STORE</a>
                 <div class="view-line" aria-hidden="true"></div>
               </div>
-
             </div>
           </aside>
         </section>
@@ -1384,14 +1375,23 @@
                   <circle cx="17.3" cy="6.7" r="0.9"></circle>
                 </svg>
               </a>
+
               <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
                 </svg>
               </a>
+
               <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+                </svg>
+              </a>
+
+              <a class="icon-pill" href="https://www.youtube.com/@themayanutcompany" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="yt-body" d="M22 12.05c0-2.02-.2-3.37-.63-4.38-.37-.9-1.09-1.62-1.99-1.99C18.37 5.25 16.9 5 12 5s-6.37.25-7.38.68c-.9.37-1.62 1.09-1.99 1.99C2.2 8.68 2 10.03 2 12.05s.2 3.37.63 4.38c.37.9 1.09 1.62 1.99 1.99C5.63 18.85 7.1 19.1 12 19.1s6.37-.25 7.38-.68c.9-.37 1.62-1.09 1.99-1.99.43-1.01.63-2.36.63-4.38z"></path>
+                  <path class="yt-play" d="M10 9.5v5.1l5-2.55-5-2.55z"></path>
                 </svg>
               </a>
             </div>
@@ -1596,7 +1596,6 @@
         addHoldRepeat(plus, stepPlus);
         addHoldRepeat(minus, stepMinus);
 
-        // Weight / pack dropdowns
         if(weightBtn){
           weightBtn.addEventListener("click",(e)=>{
             e.preventDefault(); e.stopPropagation();
@@ -1621,7 +1620,6 @@
           packBtn.addEventListener("keydown",(e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); packBtn.click(); } });
         }
 
-        // Add-to-cart “ADDED” + check below
         function brieflyAdded(btn){
           const main = btn.querySelector(".add-main");
           const sub  = btn.querySelector(".add-sub");
@@ -1645,8 +1643,7 @@
         });
       });
 
-      // init defaults
-      const initW = WEIGHTS.find(w=>w.key===activeWeight);
+      const initW = WEIGHTS.find(w=>w.key==="qtr");
       if(initW){
         const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
         const priceEl = powder?.querySelector("[data-price]");
@@ -1654,7 +1651,7 @@
         if(priceEl) priceEl.textContent = "$" + initW.price.toFixed(2);
         if(valEl) valEl.textContent = initW.label;
       }
-      document.querySelectorAll("[data-pack-val]").forEach(el=> el.textContent = activePack);
+      document.querySelectorAll("[data-pack-val]").forEach(el=> el.textContent = "10");
 
       renderBadge();
     })();

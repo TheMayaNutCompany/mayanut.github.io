@@ -417,7 +417,6 @@
       flex:0 0 auto;
     }
 
-    /* remove weird shadow */
     .mini-search{
       height:36px;
       border-radius:14px;
@@ -492,7 +491,6 @@
       stroke-linecap:round; stroke-linejoin:round;
       display:block;
     }
-    /* badge pinned to cart tip */
     .mini-badge{
       position:absolute;
       top:-4px;
@@ -515,7 +513,6 @@
     .mini-checkout:hover .mini-badge{ background: var(--orangeBadgeHover); }
     .mini-checkout:active .mini-badge{ background: var(--orangePress); }
 
-    /* message area adds no blank space when hidden */
     .mini-msg-wrap{ padding: 0 14px; }
     .mini-msg{
       display:none;
@@ -532,14 +529,14 @@
     }
     .mini-msg.show{ display:block; }
 
-    /* LOWER products slightly so their top pale green band matches paragraph top */
+    /* ALIGN: level product top with "What is MayaNut" paragraph top */
     .mini-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 10px 14px 14px; /* slightly more top padding than before */
+      padding: 0 14px 14px;      /* was 10px top */
       background:#ffffff;
-      margin-top: 6px;         /* pushes products down to align with paragraph */
+      margin-top: 0;             /* was 6px */
       flex:1 1 auto;
       min-height:0;
       align-content:start;
@@ -793,8 +790,8 @@
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
     }
 
-    /* reduce excess space: clamp fewer lines */
-    .about-card .para{ padding: 12px; }
+    /* Make image + button "touch" the paragraph (no gaps) */
+    .about-card .para{ padding: 12px; padding-bottom: 0; } /* was 12px (left 12px bottom 12px) */
     .about-card .para p{
       background: var(--pale);
       border-radius: 14px;
@@ -805,12 +802,20 @@
       -webkit-line-clamp: 6;
       overflow: hidden;
       min-height: calc(1.85em * 6 + 28px);
+      margin-bottom: 0; /* ensure no gap */
     }
 
-    /* connect images to paragraphs: no top gap, same width, no stray spacing */
-    .about-card img{
+    /* Wrap image + button together so both are full width and aligned */
+    .about-media{
       width: calc(100% - 24px);
       margin: 0 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .about-media img{
+      width: 100%;
       height: 320px;
       object-fit: cover;
       object-position: center 50%;
@@ -820,22 +825,9 @@
       background:#fff;
     }
 
-    .about-actions{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 0 14px 14px;
-    }
-    .about-action-row{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap: 12px;
-    }
-    .about-action-row .hline{ max-width: 240px; }
-
-    .action-btn{
+    .about-cta{
       height: 44px;
+      width: 100%;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -852,10 +844,13 @@
       transition: background .08s ease, box-shadow .12s ease, transform .08s ease;
       -webkit-tap-highlight-color: transparent;
       text-align:center;
-      line-height: 1.1;
+      line-height: 1.15;
     }
-    .action-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
-    .action-btn:active{ transform: translateY(1px); background: var(--orangePress); }
+    .about-cta:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
+    .about-cta:active{ transform: translateY(1px); background: var(--orangePress); }
+
+    /* Remove old centered "about-actions" row (replaced by per-card CTAs) */
+    .about-actions{ display:none; }
 
     /* ===================== FOOTER (kept) ===================== */
     .footer{
@@ -987,7 +982,6 @@
       .layout{ grid-template-columns:1fr; }
       .mini-grid{ grid-template-columns:1fr; }
       .about-grid{ grid-template-columns:1fr; }
-      .about-actions{ grid-template-columns:1fr; }
 
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
@@ -1033,13 +1027,18 @@
 
       .img-grid img{ height: 200px; }
 
-      .about-card img{
+      /* Mobile: make About images more square (cropped) */
+      .about-media{
         width: calc(100% - 44px);
         margin: 0 22px 12px;
-        height: 300px;
+      }
+      .about-media img{
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        object-position: center 50%;
       }
 
-      /* keep badge correct in stacked button */
       .mini-badge{ top:-4px; right:-6px; }
     }
   </style>
@@ -1272,9 +1271,13 @@
                     In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                   </p>
                 </div>
-                <img src="the-maya-nut-company-bubba-image.jpg"
-                     alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
-                     loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
+                <div class="about-media">
+                  <img src="the-maya-nut-company-bubba-image.jpg"
+                       alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
+                </div>
               </div>
 
               <div class="about-card" aria-label="About card 2">
@@ -1283,12 +1286,19 @@
                     To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
                   </p>
                 </div>
-                <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                     alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
-                     loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
+                <div class="about-media">
+                  <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                       alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
+                    EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
+                  </a>
+                </div>
               </div>
             </div>
 
+            <!-- Old centered about-actions removed (kept in DOM optional, but hidden via CSS) -->
             <div class="about-actions" aria-label="About section buttons">
               <div class="about-action-row">
                 <div class="hline" aria-hidden="true"></div>

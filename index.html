@@ -15,7 +15,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="The MayaNut Company | America's Premier MayaNut Farm" />
-  <meta property="og:description" content="Building America’s first MayaNut farm in South Florida while sharing research on MayaNut (maya nut), Brosimum alicastrum—roasted seed powder, cultivation, recipes, and sustainable tropical agriculture." />
+  <meta property="og:description" content="Building America’s first MayaNut farm in South Florida while sharing research on MayaNut (maya nut), Brosimum alicastrum—roasted seed powder, cultivation, recipes, and sustainable agriculture." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mayanut.com/index.html" />
   <meta property="og:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
@@ -24,7 +24,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The MayaNut Company | America's Premier MayaNut Farm" />
-  <meta name="twitter:description" content="Building America’s first MayaNut farm in South Florida while sharing research on MayaNut (maya nut), Brosimum alicastrum—roasted seed powder, cultivation, recipes, and sustainable tropical agriculture." />
+  <meta name="twitter:description" content="Building America’s first MayaNut farm in South Florida while sharing research on MayaNut (maya nut), Brosimum alicastrum—roasted seed powder, cultivation, recipes, and sustainable agriculture." />
   <meta name="twitter:image" content="https://mayanut.com/mayanut-the-mayanut-comapny-logo.png" />
   <meta name="twitter:image:alt" content="The MayaNut Company logo" />
 
@@ -47,6 +47,8 @@
   <style>
     :root{
       --green:#066100;
+      --greenDeep:#0b3b17;
+
       --orange:#fd6c02;
       --orangePress:#c84b02;
       --orangeBadge:#fd6c02;
@@ -57,6 +59,8 @@
 
       --page:#ffffff;
       --softBorder: 1px solid rgba(12,90,42,0.45);
+
+      --shadow: 0 18px 55px rgba(15,23,42,0.18);
 
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -69,9 +73,13 @@
       --footer-g2:#7ae78a;
       --footer-g3:#066100;
 
-      --scrollTrack:#2f2f2f;
-      --scrollThumb:#9a9a9a;
-      --scrollThumbHover:#b0b0b0;
+      /* scrollbar colors */
+      --scrollTrack:#3b3f45;     /* dark grey background */
+      --scrollThumb:#c8ccd2;     /* lighter grey thumb */
+      --scrollThumbHover:#b8bcc3;
+
+      /* computed scrollbar width so fixed header never paints under it */
+      --sbw: 0px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -96,6 +104,7 @@
       overscroll-behavior-y:none;
     }
 
+    /* WebKit scrollbars */
     ::-webkit-scrollbar{ width: 14px; }
     ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     ::-webkit-scrollbar-thumb{
@@ -111,7 +120,11 @@
     button,input,select{ font-family:inherit; }
 
     /* ===================== TOP ===================== */
-    .top-banner{ height: var(--bannerH); background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
+    .top-banner{
+      height: var(--bannerH);
+      background: var(--green);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
 
     .frame-wrap{
       position:relative;
@@ -121,8 +134,9 @@
       background: var(--page);
     }
 
+    /* keep fixed header from painting under the scrollbar */
     .sticky-top{
-      position:fixed; top:0; left:0; right:0;
+      position:fixed; top:0; left:0; right: var(--sbw);
       z-index:999;
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
@@ -151,6 +165,7 @@
       pointer-events:none;
     }
 
+    /* Brand header centered, one line */
     .brand-group{
       position:absolute;
       left:50%;
@@ -163,9 +178,12 @@
       pointer-events:none;
       user-select:none;
       white-space:nowrap;
-      max-width: calc(100% - 140px);
+      max-width: calc(100vw - 140px);
     }
-    .brand-logo{ width:78px; height:78px; object-fit:contain; filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22)); }
+    .brand-logo{
+      width:78px; height:78px; object-fit:contain;
+      filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22));
+    }
     .brand-text{
       font-weight:900;
       letter-spacing:.06em;
@@ -186,6 +204,7 @@
       height:56px;
       z-index:5;
       pointer-events:none;
+      overflow:visible;
     }
     .nav-left,.nav-right{
       position:absolute;
@@ -198,10 +217,9 @@
       white-space:nowrap;
       z-index:6;
     }
-
-    /* Move CONTACT / ESPAÑOL inward */
-    .nav-left{ left:40px; }
-    .nav-right{ right:40px; }
+    /* moved inward */
+    .nav-left{ left:30px; }
+    .nav-right{ right:30px; }
 
     .pill-btn{
       height:40px;
@@ -215,17 +233,22 @@
       cursor:pointer;
       user-select:none;
       padding:0 14px;
+      gap:8px;
       color:#ffffff;
       letter-spacing:0.12em;
       text-transform:uppercase;
       font-size:12px;
       font-weight:900;
+      white-space:nowrap;
       transition: box-shadow .12s ease, background .08s ease;
       -webkit-tap-highlight-color: transparent;
     }
-    .pill-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 22px rgba(15,23,42,0.12); }
+    .pill-btn:hover{
+      box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 22px rgba(15,23,42,0.12);
+    }
     .pill-btn:active{ background: var(--orangePress); }
 
+    /* MENU */
     .menu-row{
       position:absolute;
       left:50%;
@@ -300,6 +323,7 @@
       height:100%;
     }
 
+    /* header row with longer line */
     .panel-head{
       background: var(--green);
       border-bottom: 1px solid rgba(255,255,255,0.18);
@@ -316,7 +340,6 @@
       font-size: 14px;
       color:#ffffff;
       white-space:nowrap;
-      flex: 0 0 auto;
     }
     .head-line{
       height: 6px;
@@ -324,8 +347,9 @@
       border-radius: 999px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 55%, var(--footer-g3) 100%);
       opacity: .95;
-      max-width: none;
-      min-width: 260px;
+      max-width: none;           /* longer */
+      min-width: 180px;          /* prevents looking cut off */
+      margin-left:auto;
     }
 
     .section-body{
@@ -336,10 +360,7 @@
       min-height:0;
     }
 
-    .headline{
-      padding: 14px 14px 12px;
-      background: transparent;
-    }
+    .headline{ padding: 14px 14px 12px; background: transparent; }
     .headline .big{
       font-weight: 950;
       font-size: 30px;
@@ -347,6 +368,7 @@
       color:#0b1220;
       letter-spacing: .02em;
       width:100%;
+      padding: 0 10px;
     }
     .headline .sub{
       margin-top: 6px;
@@ -354,6 +376,7 @@
       font-size: 17px;
       line-height: 1.1;
       width: fit-content;
+      padding: 0 10px;
     }
     .sub .uline{
       color: var(--orange);
@@ -362,7 +385,7 @@
       text-decoration-thickness: 2px;
     }
 
-    .para{ padding: 0 14px; background: #ffffff; }
+    .para{ padding: 0 14px; background: #ffffff; padding-top: 0; }
     .para p{
       margin:0;
       font-family: var(--font-pretty);
@@ -375,7 +398,10 @@
       border: 1px solid rgba(12,90,42,0.55);
       padding: 14px;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
-      border-radius: 14px 14px 0 0;
+      border-top-left-radius: 16px;   /* rounded again */
+      border-top-right-radius: 16px;  /* rounded again */
+      border-bottom-left-radius: 0;   /* flat to connect to images */
+      border-bottom-right-radius: 0;  /* flat to connect to images */
     }
 
     .img-grid{
@@ -388,18 +414,20 @@
     }
     .img-grid img{
       width:100%;
-      height: 252px;
+      height: 240px;
       object-fit: cover;
       object-position: center 50%;
-      border-radius: 0 0 16px 16px;
       border: var(--softBorder);
-      border-top: none;
       background:#fff;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
     }
 
     /* ===================== MINI STORE ===================== */
     .mini-store-body{
-      padding: 14px;
+      padding: 0;
       background:#ffffff;
       display:flex;
       flex-direction:column;
@@ -408,8 +436,13 @@
       min-height:0;
     }
 
-    /* extra space above search bar */
-    .mini-top-spacer{ height: 18px; }
+    /* extra space above search bar + baseline alignment */
+    .mini-top-spacer{ height: 8px; background:#fff; }
+
+    .mini-band{
+      background: transparent;
+      padding: 0 14px;
+    }
 
     .mini-bar{
       display:flex;
@@ -446,8 +479,14 @@
       display:flex; align-items:center; justify-content:center;
       flex:0 0 34px; cursor:pointer; background:transparent;
     }
-    .mini-search .xbtn svg{ width:16px; height:16px; display:block; }
-    .mini-search .xbtn .xfill{ fill: rgba(15,23,42,0.45); }
+    .mini-search .xbtn svg{
+      width:16px; height:16px;
+      stroke: rgba(15,23,42,0.45);
+      fill:none;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
 
     .mini-checkout{
       height:36px;
@@ -470,34 +509,36 @@
     }
     .mini-checkout:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 18px rgba(15,23,42,0.10); }
     .mini-checkout:active{ background: var(--orangePress); }
+    .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
 
-    .cart-icon-wrap{
+    /* badge pinned to cart icon tip */
+    .cart-ico{
       position:relative;
       width:22px;
       height:22px;
-      display:flex;
+      display:inline-flex;
       align-items:center;
       justify-content:center;
-      flex:0 0 22px;
+      flex:0 0 auto;
     }
-    .cart-icon-wrap svg{
+    .cart-ico svg{
       width:22px; height:22px;
-      stroke:#fff; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;
+      stroke:#fff; fill:none; stroke-width:2.2;
+      stroke-linecap:round; stroke-linejoin:round;
+      display:block;
     }
-
-    /* badge pinned to cart "tip" (top-right of the icon) */
     .mini-badge{
       position:absolute;
-      top:-5px;
-      right:-5px;
-      width: 12px;
-      height: 12px;
+      top:-4px;
+      right:-6px;
+      width: 13px;
+      height: 13px;
       border-radius: 999px;
       background: var(--orangeBadge);
-      border:1px solid rgba(255,255,255,0.85);
+      border:1px solid rgba(255,255,255,0.75);
       color:#ffffff;
       font-weight:900;
-      font-size:8px;
+      font-size:8.5px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -508,17 +549,37 @@
     .mini-checkout:hover .mini-badge{ background: var(--orangeBadgeHover); }
     .mini-checkout:active .mini-badge{ background: var(--orangePress); }
 
-    .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
+    /* inline message (checkout + bulk orders) */
+    .mini-msg-wrap{
+      padding: 8px 14px 0;
+      background:#fff;
+    }
+    .mini-msg{
+      display:none;
+      border-radius:14px;
+      border: var(--softBorder);
+      padding: 10px 12px;
+      background: var(--pale);
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.45;
+      box-shadow:0 10px 18px rgba(15,23,42,0.06);
+    }
+    .mini-msg.show{ display:block; }
 
+    /* push products slightly down; and align baseline with paragraph top */
     .mini-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 12px 0 0;
+      padding: 14px;
       flex:1 1 auto;
       min-height:0;
       align-content:start;
-      background:transparent;
+      background:#ffffff;
+      margin-top: 4px;
     }
 
     .mini-card{
@@ -529,7 +590,7 @@
       display:flex;
       flex-direction:column;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      min-height: 318px;
+      min-height: 322px;
     }
 
     .mini-titlebar{
@@ -604,14 +665,29 @@
       flex: 0 0 auto;
       -webkit-tap-highlight-color: transparent;
     }
-    .add-to-cart:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
+    .add-to-cart:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px rgba(0,0,0,0.18); }
     .add-to-cart:active{ transform: translateY(1px); background: var(--orangePress); }
     .add-to-cart[disabled]{ opacity: .65; cursor: default; transform:none; }
 
-    .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-    .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
+    .add-main{
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .add-sub{
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
     .added-state{ animation: pop .35s ease; }
-    @keyframes pop{ 0%{ transform: scale(1); } 50%{ transform: scale(1.02); } 100%{ transform: scale(1); } }
+    @keyframes pop{
+      0%{ transform: scale(1); }
+      50%{ transform: scale(1.02); }
+      100%{ transform: scale(1); }
+    }
 
     .right-stack{
       flex: 1 1 auto;
@@ -637,6 +713,8 @@
       min-width:0;
       -webkit-tap-highlight-color: transparent;
     }
+    .mini-rect:active{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.05); }
+
     .mini-rect .lbl{
       font-weight:900;
       letter-spacing:.12em;
@@ -650,8 +728,6 @@
       font-size:11px;
       color:#0b1220;
       white-space:nowrap;
-      overflow:visible;
-      text-overflow:clip;
       flex:1 1 auto;
       text-align:right;
       min-width:0;
@@ -665,6 +741,7 @@
       flex:0 0 auto;
     }
 
+    /* qty: thin separators only, no nested boxes */
     .qty-rect{
       height: 28px;
       border-radius: 14px;
@@ -681,15 +758,14 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      flex: 0 0 30px;
+      flex: 0 0 30px; /* less room for +/- */
       font-weight: 950;
       font-size: 14px;
       color:#0b1220;
       cursor:pointer;
-      user-select:none;
     }
     .qty-seg.mid{
-      flex: 1 1 auto;
+      flex: 1 1 auto; /* more room for number */
       cursor:default;
       color:#000;
       letter-spacing:.04em;
@@ -697,6 +773,7 @@
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
     .qty-seg.disabled{ color: rgba(15,23,42,0.35); cursor: default; }
 
+    /* product descriptions: visible 2 lines */
     .mini-desc{
       margin-top: 2px;
       font-weight: 850;
@@ -704,8 +781,8 @@
       letter-spacing: .01em;
       color: rgba(15,23,42,0.45);
       display: -webkit-box;
-      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       overflow: hidden;
       white-space: normal;
       line-height: 1.35;
@@ -713,13 +790,12 @@
     }
 
     .view-store-wrap{
-      padding: 0;
-      background:transparent;
+      padding: 0 14px 14px;
+      background:#ffffff;
       display:flex;
       align-items:center;
       justify-content:center;
       gap: 12px;
-      margin-top: 6px;
     }
 
     .hline{
@@ -748,16 +824,12 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
       transition: background .08s ease, box-shadow .12s ease, transform .08s ease;
-      text-align:center;
-      line-height:1.05;
     }
     .view-store:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
     .view-store:active{ transform: translateY(1px); background: var(--orangePress); }
 
     /* ===================== ABOUT ===================== */
     .about-wrap{ margin-top: 16px; }
-    .about-mocha{ background: transparent; }
-
     .about-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -767,96 +839,78 @@
     }
 
     .about-card{
-      border: none;
-      background: transparent;
-      box-shadow: none;
-      overflow: visible;
+      border-radius:18px;
+      border: var(--softBorder);
+      background:#ffffff;
+      overflow:hidden;
       display:flex;
       flex-direction:column;
-      gap: 0;
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
     }
 
-    /* clamp both paragraphs to the same line count */
-    .about-card .para{
-      padding: 0;
-      background: transparent;
-    }
+    /* paragraph fused to image: same width, bottom flat, image top flat */
+    .about-card .para{ padding: 12px; background:#ffffff; }
     .about-card .para p{
-      margin:0;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size: 14px;
-      line-height: 1.85;
-      color: rgba(12,90,42,0.95);
       background: var(--pale);
-      border: 1px solid rgba(12,90,42,0.55);
-      padding: 14px;
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
-      border-radius: 14px 14px 0 0;
-
+      border-radius: 14px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 7;  /* same number of lines */
+      -webkit-line-clamp: 7; /* keeps both cards visually equal height */
       overflow: hidden;
-
-      min-height: calc((1.85em * 7) + 28px); /* 7 lines + 14px top + 14px bottom */
+      min-height: calc(1.85em * 7 + 28px);
     }
-
     .about-card img{
-      width: 100%;
-      margin: 0;
+      width: calc(100% - 24px);
+      margin: 0 12px 12px;
       height: 320px;
       object-fit: cover;
       object-position: center 50%;
-      border: 1px solid rgba(12,90,42,0.55);
-      border-top: none;
+      border: var(--softBorder);
+      border-top:none;
       border-radius: 0 0 14px 14px;
       background:#fff;
     }
 
-    /* only two buttons for the entire About section */
-    .about-cta{
-      padding: 0 14px 14px;
-      background: transparent;
-    }
-    .about-cta-grid{
+    /* custom two buttons with lines, one per column */
+    .about-actions{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      align-items:center;
+      padding: 0 14px 14px;
+      background: transparent;
     }
-    .cta-row{
+    .about-action-row{
       display:flex;
       align-items:center;
       justify-content:center;
       gap: 12px;
-      width:100%;
     }
-    .cta-row .hline{ max-width: 190px; }
-    .cta-btn{
-      height: 42px;
-      padding: 0 18px;
+    .about-action-row .hline{ max-width: 240px; }
+
+    .action-btn{
+      height: 44px;
       border-radius: 14px;
-      background: var(--orange);
       border: 1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
       color:#fff;
       font-weight: 900;
-      letter-spacing: .12em;
+      letter-spacing: .10em;
       text-transform: uppercase;
       display:flex;
       align-items:center;
       justify-content:center;
+      padding: 0 14px;
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
       transition: background .08s ease, box-shadow .12s ease, transform .08s ease;
+      -webkit-tap-highlight-color: transparent;
       text-align:center;
-      line-height:1.05;
-      white-space:nowrap;
+      line-height: 1.1;
     }
-    .cta-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
-    .cta-btn:active{ transform: translateY(1px); background: var(--orangePress); }
+    .action-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); }
+    .action-btn:active{ transform: translateY(1px); background: var(--orangePress); }
 
     /* ===================== FOOTER ===================== */
     .footer{
@@ -986,18 +1040,149 @@
       text-align:left;
     }
 
+    /* ===================== MayaNut AI (Beta) modal ===================== */
+    .ai-overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,0.28);
+      backdrop-filter: blur(6px);
+      display:none;
+      z-index:1900;
+      padding: 18px;
+    }
+    body.ai-open .ai-overlay{ display:block; }
+    .ai-drawer{
+      max-width: 560px;
+      margin-left:auto;
+      height: calc(100vh - 36px);
+      border-radius:18px;
+      border: 2px solid rgba(12,90,42,0.65);
+      background: rgba(255,255,255,0.94);
+      box-shadow:0 18px 60px rgba(15,23,42,0.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .ai-head{
+      background: var(--green);
+      color:#fff;
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:950;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .ai-close{
+      width:40px;height:40px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: background .08s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ai-close:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18); }
+    .ai-close:active{ background: var(--orangePress); }
+    .ai-close svg{ width:18px;height:18px; stroke:#fff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+    .ai-body{
+      flex:1 1 auto;
+      padding: 12px 14px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .ai-msg{
+      border-radius:14px;
+      border: var(--softBorder);
+      padding: 10px 12px;
+      background: #ffffff;
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.55;
+      white-space:pre-line;
+    }
+    .ai-msg.ai{ background: var(--pale); }
+    .ai-quick{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 2px;
+    }
+    .ai-qbtn{
+      border-radius:14px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(233,255,214,0.95);
+      color:#0b1220;
+      font-weight:950;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:11px;
+      padding: 10px 12px;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ai-qbtn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.06); }
+    .ai-foot{
+      padding: 12px 14px 14px;
+      border-top: 2px solid rgba(6,97,0,0.35);
+      background: rgba(255,255,255,0.70);
+    }
+    .ai-inputrow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .ai-input{
+      flex:1 1 auto;
+      height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(12,90,42,0.65);
+      background: rgba(255,255,255,0.92);
+      padding: 0 12px;
+      font-weight:900;
+      font-size:12px;
+      outline:none;
+    }
+    .ai-send{
+      height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      color:#fff;
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:11px;
+      padding:0 14px;
+      cursor:pointer;
+      white-space:nowrap;
+      transition: background .08s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ai-send:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18); }
+    .ai-send:active{ background: var(--orangePress); }
+
     /* ===================== RESPONSIVE ===================== */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .mini-grid{ grid-template-columns:1fr; }
       .about-grid{ grid-template-columns:1fr; }
-      .about-cta-grid{ grid-template-columns:1fr; }
-      .cta-row .hline{ max-width: 220px; }
-
+      .about-actions{ grid-template-columns:1fr; }
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
 
+      /* Mobile footer: Started+logo left; WHO/Support/Follow stacked right, right-aligned */
       .footer-inner{
         display:grid;
         grid-template-columns: 1fr 1fr;
@@ -1014,13 +1199,15 @@
       }
       .footer-col{ text-align:right; }
       .footer-link{ margin-left:auto; }
+
+      /* Mobile divider not touching walls */
       .footer-divider{ max-width: calc(100% - 36px); }
     }
 
     @media(max-width:780px){
       .site-header{
         background-size: 175% auto;
-        background-position: center 40%;
+        background-position: center 42%;
         padding: 22px 0 22px;
         min-height: 140px;
       }
@@ -1048,6 +1235,7 @@
 
       .main-nav{ top: 8px; transform:none; height:auto; }
       .nav-left,.nav-right{ top: 8px; transform:none; }
+      /* moved inward on mobile */
       .nav-left{ left: 34px; }
       .nav-right{ right: 34px; }
 
@@ -1055,11 +1243,17 @@
       .mini-checkout{ width:100%; min-width:0; }
       .mini-search{ width:100%; }
 
-      .img-grid img{ height: 210px; }
+      .img-grid img{ height: 200px; }
+
+      /* About images: keep aligned within paragraph width */
+      .about-card img{
+        width: calc(100% - 44px);
+        margin: 0 22px 12px;
+        height: 300px;
+      }
+
       .footer-tagline{ font-size: 12px; }
       .footer-florida{ width: 20px; height: 20px; }
-
-      .cta-btn{ white-space: normal; }
     }
   </style>
 
@@ -1071,10 +1265,21 @@
         const h = Math.ceil(sticky.getBoundingClientRect().height);
         document.documentElement.style.setProperty("--stickyOffset", h + "px");
       }
-      window.addEventListener("load", setStickyOffset, { once:true });
-      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(setStickyOffset,80); });
-      window.addEventListener("pageshow", setStickyOffset);
-      document.addEventListener("DOMContentLoaded", setStickyOffset);
+
+      function setScrollbarWidth(){
+        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+        document.documentElement.style.setProperty("--sbw", sbw + "px");
+      }
+
+      function sync(){
+        setStickyOffset();
+        setScrollbarWidth();
+      }
+
+      window.addEventListener("load", sync, { once:true });
+      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
+      window.addEventListener("pageshow", sync);
+      document.addEventListener("DOMContentLoaded", sync);
     })();
   </script>
 </head>
@@ -1153,34 +1358,41 @@
             <div class="mini-store-body">
               <div class="mini-top-spacer" aria-hidden="true"></div>
 
-              <div class="mini-bar" aria-label="Mini store controls">
-                <div class="mini-search" aria-label="Search the store">
-                  <div class="mag" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="11" cy="11" r="6.5"></circle>
-                      <path d="M16.2 16.2L21 21"></path>
-                    </svg>
+              <div class="mini-band">
+                <div class="mini-bar" aria-label="Mini store controls">
+                  <div class="mini-search" aria-label="Search the store">
+                    <div class="mag" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="M16.2 16.2L21 21"></path>
+                      </svg>
+                    </div>
+                    <input id="mini-search" type="text" placeholder="Search MayaNut Store..." autocomplete="off" />
+                    <div class="xbtn" id="mini-search-clear" aria-label="Clear search" role="button" tabindex="0">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 6l12 12"></path>
+                        <path d="M18 6L6 18"></path>
+                      </svg>
+                    </div>
                   </div>
-                  <input id="mini-search" type="text" placeholder="Search MayaNut Store..." autocomplete="off" />
-                  <div class="xbtn" id="mini-search-clear" aria-label="Clear search" role="button" tabindex="0">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path class="xfill" d="M7.05 5.64L12 10.59l4.95-4.95 1.41 1.41L13.41 12l4.95 4.95-1.41 1.41L12 13.41l-4.95 4.95-1.41-1.41L10.59 12 5.64 7.05z"></path>
-                    </svg>
-                  </div>
-                </div>
 
-                <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
-                  <span class="cart-icon-wrap" aria-hidden="true">
-                    <span class="mini-badge" id="mini-badge" aria-hidden="true">0</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                      <path d="M6 7l-1-3H2.5"></path>
-                      <circle cx="9" cy="19" r="1.6"></circle>
-                      <circle cx="17" cy="19" r="1.6"></circle>
-                    </svg>
-                  </span>
-                  <span class="txt">CHECKOUT</span>
-                </button>
+                  <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
+                    <span class="cart-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                      </svg>
+                      <span class="mini-badge" id="mini-badge">0</span>
+                    </span>
+                    <span class="txt">CHECKOUT</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mini-msg-wrap" aria-live="polite" aria-atomic="true">
+                <div class="mini-msg" id="mini-msg"></div>
               </div>
 
               <div class="mini-grid" id="mini-grid">
@@ -1252,7 +1464,7 @@
                       </div>
                     </div>
 
-                    <div class="mini-desc">Grow your own tropical MayaNut plants! Seeds ship in moist vermiculite for freshness.</div>
+                    <div class="mini-desc">Grow your own tropical MayaNut plants! *Seeds are shipped in moist vermiculite.</div>
                   </div>
                 </article>
               </div>
@@ -1272,7 +1484,7 @@
             <div class="head-line" aria-hidden="true"></div>
           </div>
 
-          <div class="section-body about-mocha">
+          <div class="section-body">
             <div class="about-grid">
               <div class="about-card" aria-label="About card 1">
                 <div class="para">
@@ -1281,7 +1493,7 @@
                   </p>
                 </div>
                 <img src="the-maya-nut-company-bubba-image.jpg"
-                     alt="Historic Florida farming legacy connected to Kennesaw Fruit Company and early tropical crops"
+                     alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
                      loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
               </div>
 
@@ -1297,19 +1509,17 @@
               </div>
             </div>
 
-            <div class="about-cta" aria-label="About section actions">
-              <div class="about-cta-grid">
-                <div class="cta-row" aria-label="Learn more about MayaNut">
-                  <div class="hline" aria-hidden="true"></div>
-                  <a class="cta-btn" href="about.html" aria-label="Learn more about MayaNut">LEARN MORE ABOUT MAYANUT</a>
-                  <div class="hline" aria-hidden="true"></div>
-                </div>
+            <div class="about-actions" aria-label="About section buttons">
+              <div class="about-action-row">
+                <div class="hline" aria-hidden="true"></div>
+                <a class="action-btn" href="about.html" aria-label="Learn more about MayaNut">LEARN MORE ABOUT MAYANUT</a>
+                <div class="hline" aria-hidden="true"></div>
+              </div>
 
-                <div class="cta-row" aria-label="View all MayaNut research and data">
-                  <div class="hline" aria-hidden="true"></div>
-                  <a class="cta-btn" href="research.html" aria-label="View all MayaNut research and data">VIEW ALL MAYANUT RESEARCH &amp; DATA</a>
-                  <div class="hline" aria-hidden="true"></div>
-                </div>
+              <div class="about-action-row">
+                <div class="hline" aria-hidden="true"></div>
+                <a class="action-btn" href="research.html" aria-label="View all MayaNut research and data">VIEW ALL MAYANUT RESEARCH &amp; DATA</a>
+                <div class="hline" aria-hidden="true"></div>
               </div>
             </div>
           </div>
@@ -1339,6 +1549,7 @@
             <a class="footer-link" href="social-responsibility.html">Social Responsibility</a>
             <a class="footer-link" href="stories.html">Stories</a>
             <a class="footer-link" href="contact.html">Contact Us</a>
+            <a class="footer-link" href="#" id="footer-ai-link">MayaNut AI (Beta)</a>
             <a class="footer-link" href="recipes.html">Recipes</a>
           </div>
 
@@ -1393,6 +1604,42 @@
     </footer>
   </div>
 
+  <!-- MayaNut AI (Beta) overlay -->
+  <div class="ai-overlay" id="ai-overlay" aria-hidden="true">
+    <div class="ai-drawer" role="dialog" aria-modal="true" aria-label="MayaNut AI (Beta)">
+      <div class="ai-head">
+        <div>MAYANUT AI (BETA)</div>
+        <button class="ai-close" id="ai-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="ai-body" id="ai-body">
+        <div class="ai-msg ai">
+Hello! I’m MayaNut AI (Beta).
+Ask me about MayaNut (maya nut), Brosimum alicastrum, growing in Florida, recipes, or what’s on this site.
+        </div>
+
+        <div class="ai-quick" aria-label="Suggested questions">
+          <button class="ai-qbtn" type="button" data-q="What is MayaNut?">What is MayaNut?</button>
+          <button class="ai-qbtn" type="button" data-q="Where does MayaNut grow?">Where does it grow?</button>
+          <button class="ai-qbtn" type="button" data-q="What is The MayaNut Company?">What is the company?</button>
+          <button class="ai-qbtn" type="button" data-q="How will the store work?">How will the store work?</button>
+        </div>
+      </div>
+
+      <div class="ai-foot">
+        <div class="ai-inputrow">
+          <input class="ai-input" id="ai-input" type="text" placeholder="Ask a question…" autocomplete="off" />
+          <button class="ai-send" id="ai-send" type="button">SEND</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Weight/Pack dropdown menu root -->
   <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
@@ -1400,17 +1647,18 @@
     (function(){
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
-
       const cart = new Map();
+
       const badge = document.getElementById("mini-badge");
+      const msgEl = document.getElementById("mini-msg");
 
       const root = document.getElementById("weight-menu-root");
       let menu = null;
 
       const WEIGHTS = [
-        { key:"qtr",  label:"1/4 LB", price:9.95 },
+        { key:"qtr", label:"1/4 LB", price:9.95 },
         { key:"half", label:"1/2 LB", price:18.95 },
-        { key:"one",  label:"1 LB",   price:35.95 }
+        { key:"one", label:"1 LB", price:35.95 }
       ];
       const PACKS = [
         { key:"p10", label:"PK 10" },
@@ -1419,6 +1667,14 @@
 
       let activeWeight = "qtr";
       let activePack = "p10";
+
+      function showMiniMessage(text){
+        if(!msgEl) return;
+        msgEl.textContent = text;
+        msgEl.classList.add("show");
+        clearTimeout(window.__miniMsgT);
+        window.__miniMsgT = setTimeout(()=>{ msgEl.classList.remove("show"); }, 1800);
+      }
 
       function closeMenu(){
         if(menu){ menu.remove(); menu = null; }
@@ -1452,6 +1708,7 @@
           row.style.background = "rgba(233,255,214,0.95)";
           row.style.border = "1px solid rgba(12,90,42,0.55)";
           row.style.marginBottom = "6px";
+
           row.addEventListener("click", ()=>{
             onPick(opt);
             closeMenu();
@@ -1472,8 +1729,13 @@
       });
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-      function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
-      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
+      function cartCount(){
+        let t = 0; cart.forEach(v=> t += Math.max(0, v|0)); return t;
+      }
+      function renderBadge(){
+        if(!badge) return;
+        badge.textContent = String(cartCount());
+      }
 
       function brieflyAdded(btn){
         btn.classList.add("added-state");
@@ -1481,8 +1743,10 @@
         const sub  = btn.querySelector(".add-sub");
         const oldMain = main?.textContent || "ADD";
         const oldSub  = sub?.textContent || "TO CART";
+
         if(main) main.textContent = "ADDED";
         if(sub)  sub.textContent  = "✓";
+
         setTimeout(()=>{
           if(main) main.textContent = oldMain;
           if(sub)  sub.textContent  = oldSub;
@@ -1494,40 +1758,79 @@
         const qtyEl = card.querySelector("[data-qty]");
         const minus = card.querySelector("[data-minus]");
         const plus  = card.querySelector("[data-plus]");
+
         let qtyVal = 1;
-        let holdTimer = null;
+        let holdInterval = null;
+        let isHolding = false;
 
         function render(){
           if(qtyEl) qtyEl.textContent = String(qtyVal);
           if(minus) minus.classList.toggle("disabled", qtyVal <= 1);
           if(plus)  plus.classList.toggle("disabled", qtyVal >= MAX_QTY);
         }
-        function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); render(); }
+
+        function setQty(n){
+          qtyVal = clamp(parseInt(n,10) || 1);
+          render();
+        }
 
         function step(dir){
           if(dir > 0){
-            if(qtyVal >= MAX_QTY){ alert("Contact Us for Bulk Orders!"); return; }
+            if(qtyVal >= MAX_QTY){
+              showMiniMessage("Contact Us for Bulk Orders!");
+              render();
+              return;
+            }
             setQty(qtyVal + 1);
           }else{
             setQty(qtyVal - 1);
           }
         }
 
-        function startHold(dir){
-          stopHold();
-          step(dir);
-          holdTimer = setInterval(()=> step(dir), 220);
-        }
         function stopHold(){
-          if(holdTimer){ clearInterval(holdTimer); holdTimer = null; }
+          if(holdInterval){
+            clearInterval(holdInterval);
+            holdInterval = null;
+          }
+          setTimeout(()=>{ isHolding = false; }, 0);
+        }
+
+        function startHold(dir){
+          if((dir < 0 && qtyVal <= 1) || (dir > 0 && qtyVal >= MAX_QTY)){
+            if(dir > 0 && qtyVal >= MAX_QTY) showMiniMessage("Contact Us for Bulk Orders!");
+            return;
+          }
+          isHolding = true;
+          step(dir);
+          holdInterval = setInterval(()=>{ step(dir); }, 220);
         }
 
         function bind(el, dir){
           if(!el) return;
-          el.addEventListener("pointerdown", (e)=>{ e.preventDefault(); if(dir<0 && qtyVal<=1) return; startHold(dir); });
-          el.addEventListener("pointerup", stopHold);
+
+          el.addEventListener("pointerdown", (e)=>{
+            e.preventDefault();
+            startHold(dir);
+          });
+          el.addEventListener("pointerup", (e)=>{
+            e.preventDefault();
+            stopHold();
+          });
           el.addEventListener("pointercancel", stopHold);
           el.addEventListener("pointerleave", stopHold);
+
+          el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            if(isHolding) return; /* prevent double-step */
+            step(dir);
+          });
+
+          el.addEventListener("keydown",(e)=>{
+            if(e.key === "Enter" || e.key === " "){
+              e.preventDefault();
+              step(dir);
+            }
+          });
         }
 
         bind(plus, +1);
@@ -1547,6 +1850,7 @@
           weightBtn.addEventListener("click",(e)=>{
             e.preventDefault(); e.stopPropagation();
             openMenu(weightBtn, WEIGHTS, (opt)=>{
+              activeWeight = opt.key;
               card.querySelector("[data-weight-val]")?.textContent = opt.label;
               card.querySelector("[data-price]")?.textContent = "$" + opt.price.toFixed(2);
             });
@@ -1558,6 +1862,7 @@
           packBtn.addEventListener("click",(e)=>{
             e.preventDefault(); e.stopPropagation();
             openMenu(packBtn, PACKS, (opt)=>{
+              activePack = opt.key;
               card.querySelector("[data-pack-val]")?.textContent = opt.label;
             });
           });
@@ -1568,6 +1873,7 @@
           const q = clamp(getQty());
           cart.set(title, (cart.get(title)||0) + q);
           renderBadge();
+
           add.disabled = true;
           brieflyAdded(add);
           setTimeout(()=>{ add.disabled = false; }, 350);
@@ -1577,7 +1883,7 @@
       document.querySelectorAll(".mini-card").forEach(wireCard);
 
       document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
-        alert("This function is currently unavailable.");
+        showMiniMessage("This function is currently unavailable.");
       });
 
       const s = document.getElementById("mini-search");
@@ -1593,15 +1899,91 @@
       }
 
       s?.addEventListener("input", apply);
-      c?.addEventListener("click", ()=>{
-        if(!s) return;
-        s.value="";
-        apply();
-        s.focus();
-      });
+      c?.addEventListener("click", ()=>{ if(!s) return; s.value=""; apply(); s.focus(); });
+
+      /* initial selections */
+      const initW = WEIGHTS.find(w=>w.key===activeWeight);
+      if(initW){
+        const powder = document.querySelector(".mini-card[data-title='MayaNut Powder']");
+        powder?.querySelector("[data-price]")?.textContent = "$" + initW.price.toFixed(2);
+        powder?.querySelector("[data-weight-val]")?.textContent = initW.label;
+      }
+      const initP = PACKS.find(p=>p.key===activePack);
+      if(initP){
+        const seeds = document.querySelector(".mini-card[data-title='MayaNut Seeds']");
+        seeds?.querySelector("[data-pack-val]")?.textContent = initP.label;
+      }
 
       renderBadge();
       apply();
+    })();
+
+    (function(){
+      const link = document.getElementById("footer-ai-link");
+      const overlay = document.getElementById("ai-overlay");
+      const closeBtn = document.getElementById("ai-close");
+      const body = document.getElementById("ai-body");
+      const input = document.getElementById("ai-input");
+      const send = document.getElementById("ai-send");
+
+      function open(){
+        document.body.classList.add("ai-open");
+        overlay?.setAttribute("aria-hidden","false");
+        input?.focus();
+      }
+      function close(){
+        document.body.classList.remove("ai-open");
+        overlay?.setAttribute("aria-hidden","true");
+      }
+
+      function addMsg(text, who){
+        const div = document.createElement("div");
+        div.className = "ai-msg" + (who === "ai" ? " ai" : "");
+        div.textContent = text;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+      }
+
+      function reply(q){
+        const n = String(q||"").toLowerCase();
+        if(n.includes("what is mayanut") || n.includes("maya nut")){
+          return "MayaNut (maya nut) is the seed of the tropical tree Brosimum alicastrum. When roasted and ground, it becomes a rich, cocoa-coffee style powder used in foods and drinks.";
+        }
+        if(n.includes("where") && (n.includes("grow") || n.includes("native"))){
+          return "Brosimum alicastrum is native to Mesoamerica and grows in tropical to subtropical climates. The project focuses on developing it as a long-term crop in South Florida.";
+        }
+        if(n.includes("company") || n.includes("mayanut company")){
+          return "The MayaNut Company is developing America’s first MayaNut farm in South Florida and documenting cultivation and research so others can adopt and grow the crop.";
+        }
+        if(n.includes("store")){
+          return "The store is a concept preview while production and supply chain are being built. Items are placeholders until inventory is available.";
+        }
+        return "Ask me about MayaNut basics, growing, recipes, or what’s on the site. Try: “What is MayaNut?” or “Where does it grow?”";
+      }
+
+      function handleSend(){
+        const q = input.value.trim();
+        if(!q) return;
+        addMsg(q, "user");
+        input.value = "";
+        addMsg(reply(q), "ai");
+      }
+
+      link?.addEventListener("click", (e)=>{ e.preventDefault(); open(); });
+      closeBtn?.addEventListener("click", close);
+      overlay?.addEventListener("click", (e)=>{ if(e.target && e.target.id === "ai-overlay") close(); });
+      document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") close(); });
+
+      send?.addEventListener("click", handleSend);
+      input?.addEventListener("keydown", (e)=>{ if(e.key === "Enter") handleSend(); });
+
+      body?.addEventListener("click", (e)=>{
+        const btn = e.target.closest?.("[data-q]");
+        if(!btn) return;
+        const q = btn.getAttribute("data-q") || "";
+        addMsg(q, "user");
+        addMsg(reply(q), "ai");
+      });
     })();
   </script>
 </body>

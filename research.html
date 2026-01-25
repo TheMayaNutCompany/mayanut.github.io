@@ -9,7 +9,7 @@
 
   <!-- SEO -->
   <meta name="description" content="Research Database for MayaNut™ (Brosimum alicastrum): explore research and facts about MayaNut—cultivation, range, food traits, cold tolerance, processing, and Florida observations." />
-  <meta name="keywords" content="The MayaNut Company,MayaNut,Brosimum alicastrum,research database,cultivation,cold hardiness,range,agriculture,reforestation,processing,seed traits,Florida farm,morphology" />
+  <meta name="keywords" content="The MayaNut Company,MayaNut,Brosimum alicastrum,research database,cultivation,cold hardiness,range,agriculture,reforestation,processing,seed traits,Florida farm" />
   <link rel="canonical" href="https://mayanut.com/research.html" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
 
@@ -26,8 +26,11 @@
   <style>
     :root{
       --green:#066100;
+      --greenDeep:#0b3b17;
       --orange:#fd6c02;
+      --orangeBadge:#d24f02;
 
+      --lime:#d8ff6a;
       --pale:#e9ffd6;
 
       --page:#ffffff;
@@ -41,13 +44,12 @@
 
       --darkOrange: rgba(0,0,0,0.18);
 
-      /* match index/store walls */
-      --maxw: 1200px;
+      /* Match store/index interior width feel */
+      --maxw: 1400px;
 
-      --titleDark:#1f2937;
-      --subGrey: rgba(31,41,55,.62);
-
-      --searchLine: rgba(216,255,106,0.75); /* lime-ish divider in green bar */
+      --footer-g1:#d8ff6a;
+      --footer-g2:#7ae78a;
+      --footer-g3:#066100;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -60,15 +62,25 @@
       text-rendering: geometricPrecision;
       -webkit-text-size-adjust: 100%;
     }
-
     body{
       font-family: var(--font-ui);
-      background:#fff;
+      background: var(--page);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
       overscroll-behavior-y:none;
     }
+
+    /* Scrollbar (aligned at the far right) */
+    *{ scrollbar-width: thin; scrollbar-color: rgba(6,97,0,0.85) rgba(233,255,214,0.9); }
+    ::-webkit-scrollbar{ width:12px; }
+    ::-webkit-scrollbar-track{ background: rgba(233,255,214,0.85); }
+    ::-webkit-scrollbar-thumb{
+      background: rgba(6,97,0,0.85);
+      border-radius: 999px;
+      border: 3px solid rgba(233,255,214,0.85);
+    }
+    ::-webkit-scrollbar-thumb:hover{ background: rgba(6,97,0,0.95); }
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
@@ -122,9 +134,10 @@
       font-weight:900;
       letter-spacing:.06em;
       font-size:44px;
-      color: #d8ff6a;
+      color: var(--lime);
       -webkit-text-stroke: 0.9px rgba(11,59,23,0.95);
       text-shadow:0 14px 34px rgba(15,23,42,0.20);
+      text-align:center;
     }
 
     .main-nav{
@@ -169,7 +182,6 @@
       font-weight:900;
       white-space:nowrap;
       transition: box-shadow .12s ease;
-      -webkit-tap-highlight-color: transparent;
     }
     .pill-btn:hover{ box-shadow: inset 0 0 0 999px var(--darkOrange), 0 10px 22px rgba(15,23,42,0.12); }
 
@@ -198,12 +210,35 @@
       padding:2px 0;
       line-height:1;
     }
+    .menu-row a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-2px;
+      height:2px;
+      width:100%;
+      background:#ffffff;
+      border-radius:999px;
+      transform: scaleX(0);
+      transform-origin:left;
+      transition: transform .18s ease;
+      opacity:0.95;
+    }
+    .menu-row a:hover::after{ transform: scaleX(1); }
     .menu-row a.is-active{ color: var(--orange); }
+    .menu-row a.is-active::after{ transform: scaleX(1); background: var(--orange); opacity:1; }
 
-    main{ background:#ffffff; min-height: calc(100vh - var(--stickyOffset)); }
+    main{
+      background:#ffffff;
+      min-height: calc(100vh - var(--stickyOffset));
+      overflow: visible;
+      position: relative;
+      z-index: 1;
+    }
 
+    /* Keep same “white gaps” on left/right */
     .content-wrapper{
-      padding: 18px 16px 28px;
+      padding:12px 10px 18px;
       max-width: var(--maxw);
       margin:0 auto;
     }
@@ -217,58 +252,104 @@
       overflow:hidden;
     }
 
-    /* ===== TOP GREEN BAR (now full “normal” thickness) ===== */
     .frame-topbar{
-      height: 56px; /* was thin; now “normal thickness” */
+      height: 18px;
       background: var(--green);
       border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .research-head{
+      background:#ffffff;
+      padding: 14px 14px 10px;
+      border-bottom: var(--softBorder);
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
-      gap:14px;
-      padding: 0 14px;
-    }
-
-    .topbar-title{
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:14px;
-      color:#ffffff;
-      white-space:nowrap;
-    }
-
-    .topbar-right{
-      display:flex;
-      align-items:center;
       gap:12px;
+    }
+
+    .head-left{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
       min-width: 0;
     }
+    .head-title{
+      font-weight:900;
+      letter-spacing:.06em;
+      font-size:26px;
+      color:#0b1220;
+      line-height:1.05;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .head-sub{
+      font-weight:900;
+      font-size:14px;
+      letter-spacing:.06em;
+      color: var(--orange);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
 
-    .topbar-divider{
-      width: 6px;
-      height: 34px;
-      border-radius: 999px;
-      background: var(--searchLine);
-      opacity: .95;
+    .head-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
       flex:0 0 auto;
     }
+
+    .view-toggle{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    .vt-btn{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      border: var(--softBorder);
+      background: rgba(255,255,255,0.92);
+      box-shadow:0 10px 18px rgba(15,23,42,0.06);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+      transition: box-shadow .12s ease, transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .vt-btn:hover{ box-shadow:0 12px 24px rgba(15,23,42,0.10); transform: translateY(-1px); }
+    .vt-btn svg{ width:18px; height:18px; stroke:#64748b; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+    .vt-btn.is-active{
+      background: var(--orange);
+      border-color: rgba(253,108,2,0.65);
+    }
+    .vt-btn.is-active svg{ stroke:#ffffff; }
 
     .searchbar{
       height:40px;
       border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: rgba(255,255,255,0.96);
+      border: var(--softBorder);
+      background:#fff;
       display:flex;
       align-items:center;
       overflow:hidden;
       width: 420px;
       max-width: min(520px, 48vw);
-      box-shadow:0 10px 18px rgba(15,23,42,0.10);
+      box-shadow:0 10px 18px rgba(15,23,42,0.06);
     }
     .searchbar .mag{
-      width:40px; height:40px;
-      display:flex; align-items:center; justify-content:center;
+      width:40px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       flex:0 0 40px;
       user-select:none;
     }
@@ -280,77 +361,132 @@
       caret-color: var(--orange);
     }
     .searchbar .xbtn{
-      width:40px; height:40px;
-      display:flex; align-items:center; justify-content:center;
-      flex:0 0 40px; cursor:pointer;
-      user-select:none;
-      background:transparent;
+      width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+      flex:0 0 40px; cursor:pointer; user-select:none; background:transparent;
     }
-    .searchbar .xbtn svg{ width:16px; height:16px; stroke: rgba(15,23,42,0.70); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+    .searchbar .xbtn svg{ width:16px; height:16px; stroke: rgba(15,23,42,0.65); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 
-    /* ===== WHITE HEADER (updated copy) ===== */
-    .research-head{
+    .research-body{
       background:#ffffff;
-      padding: 14px 14px 12px;
-      border-bottom: var(--softBorder);
+      padding: 12px 14px 16px;
+    }
+
+    .db-layout{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      align-items:start;
+    }
+
+    /* Single unified list where each “row” contains left meta + right pale desc */
+    .list-panel{
+      border-radius:18px;
+      border: var(--softBorder);
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
+      overflow:hidden;
+      background:#ffffff;
+    }
+    .list-head{
+      background: var(--green);
+      color:#fff;
+      padding:10px 12px;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
       display:flex;
-      flex-direction:column;
-      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: var(--softBorder);
+      min-height:46px;
     }
-    .head-title{
-      font-weight:950;
-      letter-spacing:.02em;
-      font-size:26px;
-      color:#0b1220;
-      line-height:1.05;
-    }
-    .head-sub{
-      font-weight:950;
-      font-size:14px;
-      letter-spacing:.02em;
-      color: var(--orange);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      line-height:1.25;
+    .count{
+      font-weight:900;
+      letter-spacing:.10em;
+      font-size:10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
     }
 
-    .research-body{ background:#ffffff; padding: 12px 14px 16px; }
-
-    /* ===== LIST (no “PROJECT FILES” green tab) ===== */
-    .panel-body{
-      padding: 0;
+    .list-body{
+      padding: 10px;
       display:flex;
       flex-direction:column;
       gap:10px;
+      background:#ffffff;
     }
 
-    /* Row format: [icon] [title/sub] [ONE image] */
-    .topic-row{
+    /* Unified “row” */
+    .db-row{
       display:grid;
-      grid-template-columns: 72px 1fr 132px;
-      gap:12px;
-      align-items:center;
+      grid-template-columns: 1fr 1fr;
+      gap:0;
       border-radius:16px;
+      overflow:hidden;
       border: var(--softBorder);
       background:#ffffff;
-      overflow:hidden;
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
       transition: transform .12s ease, box-shadow .12s ease;
     }
-    .topic-row:hover{
+    .db-row:hover{
       transform: translateY(-1px);
       box-shadow:0 14px 26px rgba(15,23,42,0.10);
     }
 
-    .topic-icon{
+    /* LEFT half (white): images + title/tags (clickable link) */
+    .row-left{
+      background:#ffffff;
+      padding: 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-width:0;
+    }
+
+    .thumbs{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:8px;
+    }
+    .thumb{
+      border-radius:12px;
+      border: var(--softBorder);
+      overflow:hidden;
+      background:#fff;
+      box-shadow:0 10px 18px rgba(15,23,42,0.06);
+      aspect-ratio: 4 / 3;
+    }
+    .thumb img{
+      width:100%;
       height:100%;
-      min-height:74px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .file-link{
+      display:flex;
+      gap:12px;
+      align-items:stretch;
+      border-radius:14px;
+      border: var(--softBorder);
+      overflow:hidden;
+      background:#ffffff;
+    }
+    .file-icon{
+      width: 84px;
+      min-width:84px;
       background: var(--orange);
       display:flex;
       align-items:center;
       justify-content:center;
     }
-    .topic-icon svg{
-      width:34px; height:34px;
+    .file-icon svg{
+      width: 40px;
+      height: 40px;
       fill:none;
       stroke:#ffffff;
       stroke-width:2.2;
@@ -360,90 +496,224 @@
       filter: drop-shadow(0 10px 18px rgba(15,23,42,0.16));
     }
 
-    .topic-text{
-      padding: 10px 0;
+    .file-meta{
+      flex:1 1 auto;
       min-width:0;
+      padding: 12px 12px;
       display:flex;
       flex-direction:column;
+      justify-content:center;
       gap:6px;
     }
-    .topic-title{
-      font-weight:950;
+    .file-title{
+      font-weight:900;
       letter-spacing:.06em;
       text-transform:uppercase;
       font-size:14px;
-      color: var(--titleDark);
+      color:#0b1220;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      line-height:1.12;
+      line-height:1.1;
     }
-    .topic-sub{
+    .file-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .tag{
       font-weight:900;
-      font-size:12.5px;
-      line-height:1.45;
-      color: var(--subGrey);
-      overflow:hidden;
-      display:-webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      padding-right: 8px;
-    }
-
-    .topic-image{
-      height:100%;
-      background: var(--pale);
-      border-left: var(--softBorder);
-      padding: 10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .topic-image img{
-      width:100%;
-      aspect-ratio: 1 / 1;
-      border-radius:12px;
-      border: var(--softBorder);
-      object-fit:cover;
-      background:#ffffff;
-    }
-
-    /* Small line under list for match count */
-    .count-row{
-      margin-top: 10px;
-      display:flex;
-      justify-content:flex-end;
-    }
-    .count-pill{
-      font-weight:950;
+      font-size:10px;
       letter-spacing:.10em;
       text-transform:uppercase;
-      font-size:10px;
-      background: var(--pale);
-      border: var(--softBorder);
-      padding:8px 12px;
       border-radius:999px;
+      padding:6px 10px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(233,255,214,0.85);
       color:#0b1220;
+      white-space:nowrap;
     }
 
+    /* RIGHT half (pale): description */
+    .row-right{
+      background: var(--pale);
+      padding: 12px 12px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:8px;
+      border-left: var(--softBorder);
+      min-width:0;
+    }
+    .desc-title{
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .desc-text{
+      font-weight:800;
+      font-size:13px;
+      line-height:1.55;
+      color: rgba(0,0,0,0.70);
+      display:-webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+
+    /* Grid mode: show tiles (still unified, but stacked) */
+    .list-body.grid-mode{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+    .list-body.grid-mode .db-row{
+      grid-template-columns: 1fr;
+    }
+    .list-body.grid-mode .row-right{
+      border-left:none;
+      border-top: var(--softBorder);
+    }
+
+    /* Footer */
+    .footer{
+      background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
+      border-top: 2px solid rgba(6,97,0,0.65);
+      box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
+      margin-top: 18px;
+      color:#ffffff;
+    }
+    .footer-inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 18px 14px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .footer-left{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .footer-tagline{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-weight: 950;
+      letter-spacing: .06em;
+      font-size: 15px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.20);
+      white-space:nowrap;
+    }
+    .footer-florida{
+      width: 22px;
+      height: 22px;
+      filter: drop-shadow(0 2px 6px rgba(15,23,42,0.14));
+    }
+    .footer-logo{
+      width: 280px;
+      height: auto;
+      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
+      user-select:none;
+    }
+
+    .footer-right{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      align-items:start;
+    }
+    .footer-col-title{
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 14px;
+      color: #ffffff;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.20);
+      margin-bottom: 10px;
+    }
+    .footer-link{
+      display:block;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: .02em;
+      color:#ffffff;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      width: fit-content;
+    }
+    .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
+
+    .footer-social-row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 2px;
+    }
+    .footer-icon-pill{
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: #fd6c02;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
+    }
+    .footer-icon-pill svg{
+      width: 20px;
+      height: 20px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .footer-icon-pill .fill{ fill:#ffffff; stroke:none; }
+
+    .footer-bottom{
+      border-top: 2px solid rgba(6,97,0,0.65);
+      padding: 10px 18px 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      font-weight: 900;
+      font-size: 14px;
+      color:#ffffff;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.20);
+    }
+
+    @media(max-width:1100px){
+      .searchbar{ width: 100%; max-width:none; }
+      .head-right{ width:100%; justify-content:flex-end; flex-wrap:wrap; }
+      .research-head{ flex-direction:column; align-items:stretch; }
+      .head-right{ justify-content:space-between; }
+      .db-row{ grid-template-columns: 1fr; }
+      .row-right{ border-left:none; border-top: var(--softBorder); }
+      .list-body.grid-mode{ grid-template-columns: 1fr; }
+    }
     @media(max-width:980px){
       .brand-text{ font-size:36px; }
       .menu-row{ flex-wrap:wrap; gap:14px; }
-    }
-    @media(max-width:860px){
-      .searchbar{ width: 100%; max-width:none; }
-      .frame-topbar{ flex-wrap:wrap; height:auto; padding: 10px 14px; }
-      .topbar-right{ width:100%; justify-content:flex-end; }
-    }
-    @media(max-width:680px){
-      .topic-row{ grid-template-columns: 72px 1fr; }
-      .topic-image{
-        grid-column: 1 / -1;
-        border-left:none;
-        border-top: var(--softBorder);
-        justify-content:flex-start;
-      }
-      .topic-image img{ width: 160px; }
+      .footer-inner{ grid-template-columns: 1fr; }
+      .footer-right{ grid-template-columns: 1fr; }
+      .footer-logo{ width: 260px; }
     }
   </style>
 </head>
@@ -481,14 +751,15 @@
       <div class="content-wrapper">
 
         <section class="oframe" aria-label="Research frame">
+          <div class="frame-topbar" aria-hidden="true"></div>
 
-          <!-- TOP GREEN BAR: title left, divider + search upper right -->
-          <div class="frame-topbar" aria-label="Research top bar">
-            <div class="topbar-title">RESEARCH &amp; DATABASE</div>
+          <div class="research-head" aria-label="Research header">
+            <div class="head-left">
+              <div class="head-title">Research Database</div>
+              <div class="head-sub">Explore research and facts about MayaNut.</div>
+            </div>
 
-            <div class="topbar-right" aria-label="Search">
-              <div class="topbar-divider" aria-hidden="true"></div>
-
+            <div class="head-right" aria-label="Search and view options">
               <div class="searchbar" aria-label="Search key terms in our database">
                 <div class="mag" aria-hidden="true">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -504,33 +775,123 @@
                   </svg>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- WHITE HEADER: updated text -->
-          <div class="research-head" aria-label="Research header">
-            <div class="head-title">Explore Field Notes, Data, &amp; More</div>
-            <div class="head-sub">Click on a file to read in-depth research about each topic relating to Brosimum alicastrum.</div>
+              <div class="view-toggle" aria-label="Layout toggle">
+                <button class="vt-btn is-active" id="btn-col" type="button" aria-label="Column view" title="Column view">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6h12"></path>
+                    <path d="M6 12h12"></path>
+                    <path d="M6 18h12"></path>
+                  </svg>
+                </button>
+                <button class="vt-btn" id="btn-grid" type="button" aria-label="Grid view" title="Grid view">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6h5v5H6z"></path>
+                    <path d="M13 6h5v5h-5z"></path>
+                    <path d="M6 13h5v5H6z"></path>
+                    <path d="M13 13h5v5h-5z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class="research-body" aria-label="Research database content">
-            <div class="panel-body" id="file-panel">
-              <!-- Filled by JS -->
-            </div>
+            <section class="list-panel" aria-label="Project files list">
+              <div class="list-head">
+                <div>PROJECT FILES</div>
+                <div class="count" id="match-count">0 MATCHES</div>
+              </div>
 
-            <div class="count-row" aria-label="Match count">
-              <div class="count-pill" id="count-pill">0 MATCHES</div>
-            </div>
+              <div class="list-body" id="list-body">
+                <!-- Filled by JS -->
+              </div>
+            </section>
           </div>
-
         </section>
 
       </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer" aria-label="Footer">
+      <div class="footer-inner">
+
+        <div class="footer-left" aria-label="Brand">
+          <div class="footer-tagline">
+            <span>Started in South Florida</span>
+            <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida" onerror="this.style.display='none';">
+          </div>
+
+          <a href="index.html" aria-label="The MayaNut Company home">
+            <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
+          </a>
+        </div>
+
+        <div class="footer-right" aria-label="Footer links">
+          <div class="footer-col">
+            <div class="footer-col-title">WHO WE ARE</div>
+            <a class="footer-link" href="social-responsibility.html">Social Responsibility</a>
+            <a class="footer-link" href="stories.html">Stories</a>
+            <a class="footer-link" href="contact.html">Contact Us</a>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">SUPPORT</div>
+            <a class="footer-link" href="accessibility.html">Accessibility</a>
+            <a class="footer-link" href="terms.html">Terms</a>
+            <a class="footer-link" href="privacy.html">Privacy</a>
+            <a class="footer-link" href="sitemap.html">Sitemap</a>
+            <a class="footer-link" href="do-not-sell.html">Do Not Sell My Info</a>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">FOLLOW</div>
+
+            <div class="footer-social-row" aria-label="Social links">
+              <a class="footer-icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4.2"></circle>
+                  <circle cx="17.3" cy="6.7" r="0.86"></circle>
+                </svg>
+              </a>
+
+              <a class="footer-icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+                </svg>
+              </a>
+
+              <a class="footer-icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+                </svg>
+              </a>
+
+              <a class="footer-icon-pill" href="#" aria-label="YouTube" onclick="return false;">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="fill" d="M21.4 8.1c-.2-1.1-1.1-1.9-2.2-2.1C17.4 5.6 12 5.6 12 5.6s-5.4 0-7.2.4C3.7 6.2 2.8 7 2.6 8.1 2.2 9.9 2.2 12 2.2 12s0 2.1.4 3.9c.2 1.1 1.1 1.9 2.2 2.1 1.8.4 7.2.4 7.2.4s5.4 0 7.2-.4c1.1-.2 2-1 2.2-2.1.4-1.8.4-3.9.4-3.9s0-2.1-.4-3.9z"></path>
+                  <path class="fill" d="M10.4 9.6v4.8L15.0 12l-4.6-2.4z"></path>
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 The MayaNut Company, Inc.</div>
+      </div>
+    </footer>
+
   </div>
 
   <script>
-    const $ = (s, r=document)=> r.querySelector(s);
+    const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
+    const $  = (s, r=document)=> r.querySelector(s);
 
     (function(){
       function setStickyOffset(){
@@ -546,50 +907,94 @@
     })();
 
     (function(){
-      // Use ONE consistent placeholder image you already use elsewhere on the site.
-      // Replace this with your actual placeholder file name/path.
-      const PLACEHOLDER_IMG = "placeholder-image.jpg";
-
       const FILES = [
-        { id:"reforestation", title:"Reforestation", href:"research-reforestation.html",
-          desc:"Why a long-lived evergreen food tree can matter in reforestation projects; survival traits, shade architecture, and considerations for responsible planting." },
-
-        { id:"agriculture", title:"Use in Agriculture", href:"research-agriculture.html",
-          desc:"Practical notes on how MayaNut may fit into farm systems: long-horizon structure, spacing logic, pruning philosophy, and operational realities." },
-
-        { id:"morphology", title:"Morphology", href:"research-morphology.html",
-          desc:"Botanical morphology notes: leaf structure, venation, fruit size ranges, seed traits, and descriptive measurements for Brosimum alicastrum." },
-
-        { id:"flavor", title:"Fruit Taste", href:"research-fruit-taste.html",
-          desc:"Observed flavor descriptors for fruit and roasted seed, including how handling, maturity, and processing may shift taste and aroma." },
-
-        { id:"range", title:"Range & Habitat", href:"research-range.html",
-          desc:"Geographic range context and habitat notes; how to interpret regional presence without overgeneralizing performance in new environments." },
-
-        { id:"history", title:"Discovery & Naming", href:"research-history-naming.html",
-          desc:"A clear breakdown of naming conventions and terminology used for Brosimum alicastrum, plus context for how names appear across regions." },
-
-        { id:"cold", title:"Cold Hardiness", href:"research-cold-hardiness.html",
-          desc:"Cold exposure notes, symptoms to watch for, recovery behavior, and how to track tolerance across seed-grown variation over time." },
-
-        { id:"ourplants", title:"Our Trees", href:"research-our-trees.html",
-          desc:"Observations from the company’s seed-grown population: structure differences, vigor signals, and what gets tracked for long-horizon selection." },
-
-        { id:"processing", title:"Processing & Products", href:"research-processing.html",
-          desc:"Processing observations: cleaning, drying, roasting response, milling behavior, and repeatable notes for creating consistent powder." },
-
-        { id:"germination", title:"Germination", href:"research-germination.html",
-          desc:"What is tracked from sowing to emergence: timing variation, failure modes, handling sensitivity, and early-stage growth behavior." },
-
-        { id:"soil", title:"Soil & Water", href:"research-soil-water.html",
-          desc:"Soil media behavior, watering patterns, and root-zone observations—especially where small differences change outcomes in containers and early field trials." }
+        {
+          id:"reforestation",
+          title:"Reforestation",
+          href:"research-reforestation.html",
+          tags:["ecosystem","carbon","canopy"],
+          desc:"Why a long-lived evergreen food tree can matter in reforestation projects; survival traits, shade architecture, and considerations for responsible planting."
+        },
+        {
+          id:"agriculture",
+          title:"Use in Agriculture",
+          href:"research-agriculture.html",
+          tags:["farm","perennial","systems"],
+          desc:"Practical notes on how MayaNut may fit into farm systems: long-horizon structure, spacing logic, pruning philosophy, and operational realities."
+        },
+        {
+          id:"flavor",
+          title:"Fruit Taste",
+          href:"research-fruit-taste.html",
+          tags:["fruit","seed","flavor"],
+          desc:"Observed flavor descriptors for fruit and roasted seed, including how handling, maturity, and processing may shift taste and aroma."
+        },
+        {
+          id:"range",
+          title:"Range & Habitat",
+          href:"research-range.html",
+          tags:["distribution","climate","habitat"],
+          desc:"Geographic range context and habitat notes; how to interpret regional presence without overgeneralizing performance in new environments."
+        },
+        {
+          id:"history",
+          title:"Discovery & Naming",
+          href:"research-history-naming.html",
+          tags:["taxonomy","history","terms"],
+          desc:"A clear breakdown of naming conventions and terminology used for Brosimum alicastrum, plus context for how names appear across regions."
+        },
+        {
+          id:"cold",
+          title:"Cold Hardiness",
+          href:"research-cold-hardiness.html",
+          tags:["temperature","stress","recovery"],
+          desc:"Cold exposure notes, symptoms to watch for, recovery behavior, and how to track tolerance across seed-grown variation over time."
+        },
+        {
+          id:"ourplants",
+          title:"Our Trees",
+          href:"research-our-trees.html",
+          tags:["inventory","selection","phenotypes"],
+          desc:"Observations from the company’s seed-grown population: structure differences, vigor signals, and what gets tracked for long-horizon selection."
+        },
+        {
+          id:"processing",
+          title:"Processing & Products",
+          href:"research-processing.html",
+          tags:["roast","mill","powder"],
+          desc:"Processing observations: cleaning, drying, roasting response, milling behavior, and repeatable notes for creating consistent powder."
+        },
+        {
+          id:"germination",
+          title:"Germination",
+          href:"research-germination.html",
+          tags:["seed","sprout","timing"],
+          desc:"What is tracked from sowing to emergence: timing variation, failure modes, handling sensitivity, and early-stage growth behavior."
+        },
+        {
+          id:"soil",
+          title:"Soil & Water",
+          href:"research-soil-water.html",
+          tags:["moisture","roots","media"],
+          desc:"Soil media behavior, watering patterns, and root-zone observations—especially where small differences change outcomes in containers and early field trials."
+        }
       ];
 
-      const filePanel = document.getElementById("file-panel");
-      const countPill = document.getElementById("count-pill");
+      /* Placeholder images (replace later with your real assets) */
+      const PLACEHOLDER_IMGS = [
+        "placeholder-1.jpg",
+        "placeholder-2.jpg",
+        "placeholder-3.jpg"
+      ];
+
+      const listBody = document.getElementById("list-body");
+      const matchCount = document.getElementById("match-count");
 
       const search = document.getElementById("db-search");
       const clear = document.getElementById("db-search-clear");
+
+      const btnCol = document.getElementById("btn-col");
+      const btnGrid = document.getElementById("btn-grid");
 
       const folderIcon = `
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -600,51 +1005,94 @@
 
       function norm(s){ return String(s||"").toLowerCase().trim(); }
 
+      function rowHTML(f){
+        const alt1 = `Research image 1 for ${f.title}`;
+        const alt2 = `Research image 2 for ${f.title}`;
+        const alt3 = `Research image 3 for ${f.title}`;
+
+        return `
+          <div class="db-row" data-title="${f.title}" data-tags="${(f.tags||[]).join(" ")}" data-desc="${f.desc}">
+            <div class="row-left">
+              <div class="thumbs" aria-label="Preview images for ${f.title}">
+                <div class="thumb"><img src="${PLACEHOLDER_IMGS[0]}" alt="${alt1}" loading="lazy" decoding="async"></div>
+                <div class="thumb"><img src="${PLACEHOLDER_IMGS[1]}" alt="${alt2}" loading="lazy" decoding="async"></div>
+                <div class="thumb"><img src="${PLACEHOLDER_IMGS[2]}" alt="${alt3}" loading="lazy" decoding="async"></div>
+              </div>
+
+              <a class="file-link" href="${f.href}" aria-label="Open ${f.title}">
+                <div class="file-icon" aria-hidden="true">${folderIcon}</div>
+                <div class="file-meta">
+                  <div class="file-title">${f.title}</div>
+                  <div class="file-tags">
+                    ${(f.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class="row-right" aria-label="Description for ${f.title}">
+              <div class="desc-title">${f.title}</div>
+              <div class="desc-text">${f.desc}</div>
+            </div>
+          </div>
+        `;
+      }
+
       function render(list){
-        filePanel.innerHTML = "";
-
-        list.forEach(f=>{
-          const a = document.createElement("a");
-          a.className = "topic-row";
-          a.href = f.href;
-          a.setAttribute("aria-label", f.title);
-
-          a.innerHTML = `
-            <div class="topic-icon" aria-hidden="true">${folderIcon}</div>
-
-            <div class="topic-text">
-              <div class="topic-title">${f.title}</div>
-              <div class="topic-sub">${f.desc}</div>
-            </div>
-
-            <div class="topic-image" aria-hidden="true">
-              <img src="${PLACEHOLDER_IMG}" alt="" loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-            </div>
-          `;
-
-          filePanel.appendChild(a);
-        });
-
-        countPill.textContent = `${list.length} MATCHES`;
+        listBody.innerHTML = list.map(rowHTML).join("");
+        matchCount.textContent = `${list.length} MATCHES`;
       }
 
       function applySearch(){
         const q = norm(search?.value);
         if(!q){ render(FILES); return; }
         const filtered = FILES.filter(f=>{
-          const hay = norm(`${f.title} ${f.desc}`);
+          const hay = norm(`${f.title} ${(f.tags||[]).join(" ")} ${f.desc}`);
           return hay.includes(q);
         });
         render(filtered);
       }
 
+      function setMode(mode){
+        const isGrid = mode === "grid";
+        btnGrid.classList.toggle("is-active", isGrid);
+        btnCol.classList.toggle("is-active", !isGrid);
+
+        listBody.classList.toggle("grid-mode", isGrid);
+
+        try{ localStorage.setItem("research_view_mode", isGrid ? "grid" : "col"); }catch(e){}
+      }
+
+      // Init
       render(FILES);
-
-      search?.addEventListener("input", applySearch);
-      clear?.addEventListener("click", ()=>{ if(!search) return; search.value=""; applySearch(); search.focus(); });
-      clear?.addEventListener("keydown",(e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); clear.click(); } });
-
       applySearch();
+
+      // Search wiring
+      search?.addEventListener("input", applySearch);
+      clear?.addEventListener("click", ()=>{
+        if(!search) return;
+        search.value = "";
+        applySearch();
+        search.focus();
+      });
+      clear?.addEventListener("keydown",(e)=>{
+        if(e.key==="Enter" || e.key===" "){
+          e.preventDefault();
+          clear.click();
+        }
+      });
+
+      // View toggle
+      btnCol?.addEventListener("click", ()=> setMode("col"));
+      btnGrid?.addEventListener("click", ()=> setMode("grid"));
+
+      // Restore mode
+      try{
+        const saved = localStorage.getItem("research_view_mode");
+        setMode(saved === "grid" ? "grid" : "col");
+      }catch(e){
+        setMode("col");
+      }
     })();
   </script>
 </body>

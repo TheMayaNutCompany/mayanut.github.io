@@ -73,12 +73,15 @@
       --padX: 16px;
       --gap: 16px;
 
-      /* circles + product sizing (stacked circles ~= product height) */
+      /* circles + product sizing */
       --circleGap: 12px;
       --circleBtn: 118px;
 
-      /* computed target height (two circles + gap) */
-      --stackH: calc((var(--circleBtn) * 2) + var(--circleGap));
+      /* computed heights */
+      --stackH: calc((var(--circleBtn) * 2) + var(--circleGap)); /* two circles + gap */
+      --checkoutH: 42px;
+      --checkoutGap: 10px;
+      --storeTotalH: calc(var(--stackH) + var(--checkoutGap) + var(--checkoutH)); /* circles + checkout */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -293,10 +296,10 @@
       margin: 0 auto;
     }
 
-    /* WHAT IS wider, STORE narrower */
+    /* bring WHAT IS back (less wide) + store a bit bigger */
     .layout{
       display:grid;
-      grid-template-columns: 1.65fr 0.75fr;
+      grid-template-columns: 1.18fr 0.98fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -399,16 +402,16 @@
     }
 
     /* ===================== SLANT (right-leaning sides, flat top/bottom) ===================== */
+    /* reduced cut so text never gets clipped */
     .slant-right{
-      clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
-      -webkit-clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+      clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+      -webkit-clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
     }
-    /* dark green outline that follows the clipped shape */
     .slant-outline{
       box-shadow: inset 0 0 0 1px rgba(6,97,0,0.95);
     }
 
-    /* ===================== WHAT IS: SLANTED PARAGRAPH (NO CIRCLES) ===================== */
+    /* ===================== WHAT IS: SLANTED PARAGRAPH ===================== */
     .what-para-wrap{ padding: 0 14px 14px; }
     .what-para-shell{
       border: 1px solid rgba(12,90,42,0.55);
@@ -418,12 +421,11 @@
       margin: 6px auto 0;
       overflow: hidden;
       position:relative;
-      /* allow auto height so text never gets cut off */
-      min-height: 140px;
-      height: auto;
+      height: auto;              /* no cut-off */
+      min-height: 128px;
     }
     .what-para-inner{
-      padding: 14px 28px; /* extra side padding so slant never clips text */
+      padding: 14px 44px;        /* extra padding so clip never touches text */
       display:flex;
       align-items:center;
     }
@@ -473,7 +475,7 @@
       justify-content:flex-end;
     }
 
-    /* circles column (two circles ~= product height), checkout sits under circles */
+    /* circles column */
     .store-circles{
       flex: 0 0 var(--circleBtn);
       display:flex;
@@ -527,8 +529,8 @@
       justify-content:center;
     }
     .big-circle-icon svg{
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       stroke: #fff;
       fill: none;
       stroke-width: 2.4;
@@ -536,9 +538,9 @@
       stroke-linejoin: round;
     }
 
-    /* compact single product (narrower) */
+    /* compact single product - now taller to reach checkout level */
     .mini-card{
-      width: 236px;                 /* less wide */
+      width: 248px;
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -546,7 +548,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: var(--stackH);    /* match the two-circle stack height */
+      min-height: var(--storeTotalH);     /* match circles+checkout total height */
       transition: transform .10s ease, box-shadow .12s ease;
     }
     .mini-card:hover{
@@ -585,7 +587,7 @@
 
     .mini-img{
       width:100%;
-      height: 126px; /* smaller */
+      height: 134px;
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -599,7 +601,7 @@
       display:flex;
       flex-direction:column;
       gap: 7px;
-      flex:1 1 auto;
+      flex: 1 1 auto; /* fill remaining space so card reaches bottom */
     }
 
     .mini-actions{
@@ -609,8 +611,8 @@
     }
 
     .add-to-cart{
-      width: 78px;
-      min-height: 50px;
+      width: 82px;
+      min-height: 52px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -644,7 +646,7 @@
     }
 
     .mini-rect{
-      height: 24px;
+      height: 26px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
@@ -690,7 +692,7 @@
     }
 
     .qty-rect{
-      height: 24px;
+      height: 26px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
@@ -721,7 +723,7 @@
     .qty-seg.disabled{ color: rgba(15,23,42,0.35); cursor: default; }
 
     .mini-desc{
-      margin-top: 1px;
+      margin-top: 2px;
       font-weight: 850;
       font-size: 11px;
       letter-spacing: .01em;
@@ -735,10 +737,10 @@
       min-height: calc(1.3em * 2);
     }
 
-    /* checkout under circles */
+    /* checkout under circles + bigger icon + badge circle */
     .checkout-under-circles{
-      margin-top: 10px;
-      height: 42px;
+      margin-top: var(--checkoutGap);
+      height: var(--checkoutH);
       width: var(--circleBtn);
       border-radius: 14px;
       background: var(--orange);
@@ -770,24 +772,24 @@
       white-space:nowrap;
     }
     .checkout-under-circles svg{
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       stroke:#fff;
       fill:none;
-      stroke-width:2.2;
+      stroke-width:2.3;
       stroke-linecap:round;
       stroke-linejoin:round;
       flex:0 0 auto;
     }
     .mini-badge{
       position:absolute;
-      top: -8px;
-      right: -8px;
-      width: 20px;
-      height: 20px;
+      top: -10px;
+      right: -10px;
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
       background: rgba(255,255,255,0.98);
-      border: 1px solid rgba(255,255,255,0.98);
+      border: 2px solid rgba(255,255,255,0.98);
       color:#0b1220;
       font-weight:950;
       font-size:10px;
@@ -796,6 +798,7 @@
       justify-content:center;
       line-height:1;
       pointer-events:none;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.10);
     }
 
     /* ===================== ABOUT ===================== */
@@ -832,17 +835,13 @@
       text-align:left;
     }
 
-    .about-card .para{ padding: 0; }
-
-    /* slanted paragraph + slanted image, with extra padding so text never clips */
     .about-para-shell{
       margin: 0 14px 0;
-      border: 0;
       background: var(--pale);
       overflow:hidden;
     }
     .about-para-inner{
-      padding: 14px 28px; /* extra side padding prevents clip cut */
+      padding: 14px 44px; /* more padding so text never clips */
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
@@ -865,7 +864,6 @@
       height: 320px;
       object-fit: cover;
       object-position: center 50%;
-      border: 0;
       background:#fff;
       filter: saturate(1.03) contrast(1.03);
       overflow:hidden;
@@ -1044,23 +1042,12 @@
         align-items:flex-end;
       }
 
-      /* in single-column: place circles+checkout in a row above product */
       .store-circles{
         width: 100%;
         flex: 0 0 auto;
         flex-direction:row;
         justify-content:flex-end;
         align-items:flex-start;
-      }
-      .store-circles .stack{
-        display:flex;
-        gap: var(--circleGap);
-      }
-      .store-circles .stack,
-      .store-circles .checkout-wrap{
-        display:flex;
-        flex-direction:column;
-        align-items:stretch;
       }
     }
 
@@ -1097,7 +1084,8 @@
       .nav-left{ left: 34px; }
       .nav-right{ right: 34px; }
 
-      .mini-card{ width: 260px; }
+      .mini-card{ width: 270px; }
+      .what-para-inner{ padding: 14px 40px; }
     }
   </style>
 
@@ -1191,7 +1179,6 @@
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -1208,6 +1195,7 @@
               </div>
 
               <div class="store-row" aria-label="Store row">
+
                 <div class="store-circles" aria-label="Store quick actions">
                   <a class="big-circle-btn" href="store.html" aria-label="View full store">
                     <span class="t1">VIEW</span>
@@ -1272,6 +1260,7 @@
                     <div class="mini-desc">Flavorful powder, great for acai bowls, granola, and much more!</div>
                   </div>
                 </article>
+
               </div>
             </div>
           </aside>

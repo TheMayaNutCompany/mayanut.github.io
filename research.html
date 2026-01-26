@@ -59,11 +59,8 @@
       --bannerH: 18px;
       --navH: 152px;
 
-      /* “Thick green bar” height */
-      --barH: 46px;
-
-      /* left green category rail width (like store) */
-      --catW: 56px;
+      --barH: 46px;       /* thick green bar height */
+      --catW: 56px;       /* left green rail width (like store) */
 
       --footer-g1:#d8ff6a;
       --footer-g2:#7ae78a;
@@ -248,7 +245,7 @@
       padding: 12px 16px 28px;
     }
     .content-wrapper{
-      max-width: 1200px;          /* same feel as index/store */
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -258,9 +255,10 @@
       box-shadow:0 14px 40px rgba(15,23,42,0.06);
       overflow:hidden;
       background:#fff;
+      position:relative;
     }
 
-    /* top green tab above database (same thickness as other green bars) */
+    /* connected top tab (single, full width) */
     .frame-topbar{
       min-height: var(--barH);
       background: var(--green);
@@ -385,7 +383,52 @@
 
     .research-body{ padding: 12px 14px 16px; }
 
-    /* LIST PANEL with left green rail (like Store) */
+    /* ===== Under “Explore…” horizontal section pills (left aligned) ===== */
+    .section-pills{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+      margin: 2px 0 12px;
+      padding: 0 2px;
+    }
+    .sec-pill{
+      height:34px;
+      border-radius:999px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(233,255,214,0.75);
+      box-shadow:0 10px 18px rgba(15,23,42,0.06);
+      padding: 0 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      -webkit-tap-highlight-color: transparent;
+      transition: box-shadow .12s ease, transform .12s ease, background .12s ease;
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:11px;
+      color:#0b1220;
+      white-space:nowrap;
+    }
+    .sec-pill:hover{ box-shadow:0 14px 26px rgba(15,23,42,0.10); transform: translateY(-1px); }
+    .sec-pill .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--orange);
+      box-shadow:0 2px 10px rgba(0,0,0,0.16);
+      flex:0 0 auto;
+    }
+    .sec-pill.is-active{
+      background: var(--orange);
+      border-color: rgba(253,108,2,0.65);
+      color:#fff;
+    }
+    .sec-pill.is-active .dot{ background:#fff; }
+
+    /* ===== Database panel ===== */
     .list-panel{
       border-radius:18px;
       border: var(--softBorder);
@@ -402,7 +445,7 @@
       background:#fff;
     }
 
-    /* Left green column with vertical section titles */
+    /* Connected green rail: now includes the top horizontal bar connection via a “cap” */
     .cat-rail{
       width: var(--catW);
       flex:0 0 var(--catW);
@@ -410,11 +453,29 @@
       border-right: var(--softBorder);
       display:flex;
       flex-direction:column;
+      justify-content:flex-start;
+      gap: 0;
+      user-select:none;
+      position:relative;
+    }
+
+    /* “connect” the rail to the section header bars visually */
+    .rail-top-cap{
+      height: var(--barH);
+      border-bottom: var(--softBorder);
+      background: var(--green);
+      flex:0 0 var(--barH);
+    }
+
+    .rail-stack{
+      display:flex;
+      flex-direction:column;
       justify-content:center;
       gap: 26px;
-      padding: 16px 0;
-      user-select:none;
+      padding: 16px 0 18px;
+      flex:1 1 auto;
     }
+
     .rail-btn{
       border:none;
       background:transparent;
@@ -444,6 +505,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      padding: 2px 0;
     }
     .rail-dot{
       width:14px; height:14px;
@@ -469,7 +531,10 @@
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       overflow:hidden;
       background:#fff;
+      position:relative;
     }
+
+    /* Header bars “connect” visually into the left rail */
     .sec-head{
       background: var(--green);
       min-height: var(--barH);
@@ -484,6 +549,16 @@
       letter-spacing:.14em;
       text-transform:uppercase;
       font-size:12px;
+      position:relative;
+    }
+    .sec-head::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width: 10px;
+      background: var(--green);
     }
     .sec-head .line{
       height:2px;
@@ -493,6 +568,33 @@
       opacity:.55;
       min-width:18px;
     }
+
+    /* Vertical adjacent section name spanning near its section (right beside rail) */
+    .vlabel{
+      position:absolute;
+      left: -12px; /* sits adjacent to rail edge */
+      top: calc(var(--barH) + 10px);
+      bottom: 10px;
+      width: 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      user-select:none;
+    }
+    .vlabel span{
+      display:inline-block;
+      transform: rotate(-90deg);
+      font-weight:950;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:11px;
+      color:#ffffff;
+      opacity:.95;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      white-space:nowrap;
+    }
+
     .sec-body{
       padding: 10px;
       display:flex;
@@ -661,12 +763,14 @@
       .db-row{ grid-template-columns: 1fr; }
       .row-right{ border-left:none; border-top: var(--softBorder); }
       .grid-mode .sec-body{ grid-template-columns: 1fr; }
+      .vlabel{ display:none; }
     }
     @media(max-width:980px){
       .cat-rail{ display:none; }
       .list-right{ padding: 10px; }
       .brand-text{ font-size:36px; }
       .menu-row{ flex-wrap:wrap; gap:14px; }
+      .section-pills{ margin-top: 8px; }
     }
   </style>
 </head>
@@ -710,6 +814,19 @@
             <div class="head-left">
               <div class="head-title">Research Database</div>
               <div class="head-sub">Explore research and facts about MayaNut.</div>
+
+              <!-- NEW: left aligned section pills under orange line -->
+              <div class="section-pills" aria-label="Quick sections">
+                <button class="sec-pill is-active" type="button" data-pill="#sec-ecology" aria-label="Go to Ecology">
+                  <span class="dot" aria-hidden="true"></span> ECOLOGY
+                </button>
+                <button class="sec-pill" type="button" data-pill="#sec-farm" aria-label="Go to Farm Trials">
+                  <span class="dot" aria-hidden="true"></span> FARM TRIALS
+                </button>
+                <button class="sec-pill" type="button" data-pill="#sec-food" aria-label="Go to Food and Processing">
+                  <span class="dot" aria-hidden="true"></span> FOOD &amp; PROCESSING
+                </button>
+              </div>
             </div>
 
             <div class="head-right" aria-label="Search and view options">
@@ -753,29 +870,33 @@
             <section class="list-panel" aria-label="Project files">
               <div class="list-shell">
 
-                <!-- LEFT green rail (like store) -->
+                <!-- LEFT green rail (connected cap + circles) -->
                 <aside class="cat-rail" aria-label="Research sections">
-                  <button class="rail-btn" type="button" data-jump="#sec-ecology" aria-label="Jump to Ecology">
-                    <span class="rail-text">
-                      <span>E</span><span>C</span><span>O</span><span>L</span><span>O</span><span>G</span><span>Y</span>
-                    </span>
-                  </button>
+                  <div class="rail-top-cap" aria-hidden="true"></div>
 
-                  <div class="rail-gap" aria-hidden="true"><span class="rail-dot"></span></div>
+                  <div class="rail-stack">
+                    <button class="rail-btn" type="button" data-jump="#sec-ecology" aria-label="Jump to Ecology">
+                      <span class="rail-text">
+                        <span>E</span><span>C</span><span>O</span><span>L</span><span>O</span><span>G</span><span>Y</span>
+                      </span>
+                    </button>
 
-                  <button class="rail-btn" type="button" data-jump="#sec-farm" aria-label="Jump to Farm Trials">
-                    <span class="rail-text">
-                      <span>F</span><span>A</span><span>R</span><span>M</span>
-                    </span>
-                  </button>
+                    <div class="rail-gap" aria-hidden="true"><span class="rail-dot"></span></div>
 
-                  <div class="rail-gap" aria-hidden="true"><span class="rail-dot"></span></div>
+                    <button class="rail-btn" type="button" data-jump="#sec-farm" aria-label="Jump to Farm Trials">
+                      <span class="rail-text">
+                        <span>F</span><span>A</span><span>R</span><span>M</span>
+                      </span>
+                    </button>
 
-                  <button class="rail-btn" type="button" data-jump="#sec-food" aria-label="Jump to Food & Processing">
-                    <span class="rail-text">
-                      <span>F</span><span>O</span><span>O</span><span>D</span>
-                    </span>
-                  </button>
+                    <div class="rail-gap" aria-hidden="true"><span class="rail-dot"></span></div>
+
+                    <button class="rail-btn" type="button" data-jump="#sec-food" aria-label="Jump to Food & Processing">
+                      <span class="rail-text">
+                        <span>F</span><span>O</span><span>O</span><span>D</span>
+                      </span>
+                    </button>
+                  </div>
                 </aside>
 
                 <!-- RIGHT content -->
@@ -786,6 +907,7 @@
                       <div>ECOLOGY</div>
                       <div class="line" aria-hidden="true"></div>
                     </div>
+                    <div class="vlabel" aria-hidden="true"><span>ECOLOGY</span></div>
                     <div class="sec-body" id="sec-body-ecology"></div>
                   </section>
 
@@ -794,6 +916,7 @@
                       <div>FARM TRIALS</div>
                       <div class="line" aria-hidden="true"></div>
                     </div>
+                    <div class="vlabel" aria-hidden="true"><span>FARM</span></div>
                     <div class="sec-body" id="sec-body-farm"></div>
                   </section>
 
@@ -802,6 +925,7 @@
                       <div>FOOD &amp; PROCESSING</div>
                       <div class="line" aria-hidden="true"></div>
                     </div>
+                    <div class="vlabel" aria-hidden="true"><span>FOOD</span></div>
                     <div class="sec-body" id="sec-body-food"></div>
                   </section>
 
@@ -841,6 +965,41 @@
           if(el) el.scrollIntoView({ behavior:"smooth", block:"start" });
         });
       });
+    })();
+
+    /* pills jump + active state */
+    (function(){
+      const pills = $$("[data-pill]");
+      function setActive(targetId){
+        pills.forEach(p=> p.classList.toggle("is-active", p.getAttribute("data-pill") === targetId));
+      }
+      pills.forEach(p=>{
+        p.addEventListener("click", ()=>{
+          const id = p.getAttribute("data-pill");
+          const el = id ? document.querySelector(id) : null;
+          if(el){
+            setActive(id);
+            el.scrollIntoView({ behavior:"smooth", block:"start" });
+          }
+        });
+      });
+
+      // update active pill on scroll (simple)
+      const sections = ["#sec-ecology","#sec-farm","#sec-food"].map(sel=>document.querySelector(sel)).filter(Boolean);
+      let ticking = false;
+      window.addEventListener("scroll", ()=>{
+        if(ticking) return;
+        ticking = true;
+        requestAnimationFrame(()=>{
+          ticking = false;
+          const y = window.scrollY + (parseInt(getComputedStyle(document.documentElement).getPropertyValue("--stickyOffset")) || 170) + 80;
+          let current = "#sec-ecology";
+          sections.forEach(sec=>{
+            if(sec.offsetTop <= y) current = "#" + sec.id;
+          });
+          setActive(current);
+        });
+      }, { passive:true });
     })();
 
     (function(){

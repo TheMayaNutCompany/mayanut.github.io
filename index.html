@@ -77,6 +77,9 @@
       --gap: 16px;
 
       --outlineDark: #064d2a;
+
+      /* unified slant angle (approx “80°” vertical -> 10° tilt) */
+      --slantPct: 8%;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -291,10 +294,10 @@
       margin: 0 auto;
     }
 
-    /* widened left panel slightly to make paragraph wider + shorter */
+    /* slightly wider left panel so paragraph can be shorter */
     .layout{
       display:grid;
-      grid-template-columns: 1.32fr 0.88fr;
+      grid-template-columns: 1.35fr 0.85fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -396,7 +399,7 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===================== SLANTED (NO CLIP) ===================== */
+    /* ===================== SLANTED (TOUCHING, FULL OUTLINE) ===================== */
     .slant-row{
       display:grid;
       grid-template-columns: 0.92fr 1.65fr;
@@ -404,13 +407,26 @@
       padding: 8px 14px 14px;
       align-items: stretch;
     }
-    .slant-img{
+
+    .slant-shape{
       position: relative;
-      border: 1.5px solid var(--outlineDark);
-      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
       overflow:hidden;
       background:#fff;
-      height: 180px; /* controls overall paragraph height too */
+    }
+
+    /* full outline on ALL edges (including slanted sides) */
+    .slant-shape::after{
+      content:"";
+      position:absolute;
+      inset:-2px; /* pushes border slightly outside clipped edge so sides never disappear */
+      pointer-events:none;
+      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
+      border: 1.6px solid var(--outlineDark);
+    }
+
+    .slant-img{
+      height: 180px;
     }
     .slant-img img{
       width:100%;
@@ -421,15 +437,11 @@
     }
 
     .slant-box{
-      position: relative;
       background: var(--pale);
-      border: 1.5px solid var(--outlineDark);
-      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
       padding: 12px 16px;
-      height: 180px; /* match image exactly */
+      height: 180px;
       display:flex;
       align-items:center;
-      overflow: visible;
     }
     .slant-box p{
       margin:0;
@@ -440,7 +452,6 @@
       line-height: 1.75;
       color: rgba(12,90,42,0.95);
       width:100%;
-      /* prevent any accidental clipping */
       padding-right: 6px;
     }
 
@@ -455,7 +466,6 @@
       min-height:0;
     }
 
-    /* one-row layout: circles left, product right */
     .mini-store-row{
       display:flex;
       gap: 14px;
@@ -465,7 +475,7 @@
     }
 
     .store-left{
-      width: 140px;
+      width: 152px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -482,9 +492,10 @@
       padding-top: 2px;
     }
 
+    /* bigger “view other products” */
     .big-circle{
-      width: 92px;
-      height: 92px;
+      width: 104px;
+      height: 104px;
       border-radius: 50%;
       background: var(--orange);
       border: 2px solid #ffffff;
@@ -506,6 +517,7 @@
     }
     .big-circle:active{ background: var(--orangePress); }
 
+    /* smaller circle: NO cart icon */
     .small-circle{
       width: 46px;
       height: 46px;
@@ -520,16 +532,11 @@
       -webkit-tap-highlight-color: transparent;
       cursor:pointer;
       position:relative;
-    }
-    .small-circle svg{
-      width: 24px;
-      height: 24px;
-      stroke:#fff;
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      display:block;
+      color:#fff;
+      font-weight: 950;
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
     }
 
     .mini-badge{
@@ -570,6 +577,7 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
       margin-top:auto;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
     }
     .checkout-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
     .checkout-btn:active{ background: var(--orangePress); transform: translateY(0px); }
@@ -617,7 +625,7 @@
     }
 
     .mini-card{
-      width: 252px; /* compact, less wide */
+      width: 258px;
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -625,7 +633,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: 338px; /* helps align bottom near checkout */
+      min-height: 338px;
       transition: transform .10s ease, box-shadow .12s ease;
     }
     .mini-card:hover{
@@ -860,21 +868,26 @@
       color:#0b1220;
       letter-spacing: .02em;
       text-align:left;
-      /* nudge slightly right vs hard edge */
       margin-left: 6px;
     }
 
     .about-card .para{ padding: 10px 12px 0; }
 
-    /* slanted paragraph + outline (no clipping) */
-    .about-card .para .slant-box{
-      height: auto;
+    /* slanted paragraph with consistent angle + full outline */
+    .about-card .para .slant-shape{
+      background: var(--pale);
       padding: 12px 16px;
-      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
-      border: 1.5px solid var(--outlineDark);
+    }
+    .about-card .para .slant-shape p{
+      margin:0;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(12,90,42,0.95);
     }
 
-    /* keep the retro jagged offset only in About */
     .about-media{
       width: calc(100% - 24px);
       margin: 0 12px 12px;
@@ -884,11 +897,10 @@
       margin-top: 0;
     }
 
+    /* keep the retro jagged offset only in About */
     .about-media .slant-img{
       height: 320px;
-      margin-top: 10px; /* slight offset down for retro jagged look */
-      border: 1.5px solid var(--outlineDark);
-      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+      margin-top: 10px;
     }
 
     .about-cta{
@@ -1101,7 +1113,7 @@
       .nav-right{ right: 34px; }
 
       .about-media .slant-img{ height: auto; aspect-ratio: 1 / 1; }
-      .big-circle{ width: 84px; height: 84px; font-size: 9.5px; }
+      .big-circle{ width: 96px; height: 96px; font-size: 9.5px; }
       .small-circle{ width: 44px; height: 44px; }
     }
   </style>
@@ -1184,16 +1196,16 @@
                 </div>
               </div>
 
-              <!-- slanted image + paragraph: touching, same height -->
+              <!-- slanted image + paragraph: touching + same angle -->
               <div class="slant-row" aria-label="MayaNut intro">
-                <div class="slant-img" aria-label="MayaNut fruit image">
+                <div class="slant-shape slant-img" aria-label="MayaNut fruit image">
                   <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                        alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
                        loading="eager" decoding="async"
                        onerror="this.style.opacity='.35';" />
                 </div>
 
-                <div class="slant-box" aria-label="MayaNut paragraph">
+                <div class="slant-shape slant-box" aria-label="MayaNut paragraph">
                   <p>
                     MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. Used for centuries by the Maya,
                     it becomes a rich, flavorful powder when roasted and ground—enjoyed in drinks, baking, and everyday recipes,
@@ -1223,12 +1235,7 @@
                     </a>
 
                     <button class="small-circle" type="button" id="open-cart" aria-label="View cart">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                        <path d="M6 7l-1-3H2.5"></path>
-                        <circle cx="9" cy="19" r="1.6"></circle>
-                        <circle cx="17" cy="19" r="1.6"></circle>
-                      </svg>
+                      CART
                       <span class="mini-badge" id="mini-badge">0</span>
                     </button>
                   </div>
@@ -1303,7 +1310,7 @@
                 <div class="about-subtitle">How It All Started...</div>
 
                 <div class="para">
-                  <div class="slant-box">
+                  <div class="slant-shape">
                     <p>
                       In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
                       growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
@@ -1313,7 +1320,7 @@
                 </div>
 
                 <div class="about-media">
-                  <div class="slant-img">
+                  <div class="slant-shape slant-img">
                     <img src="the-maya-nut-company-bubba-image.jpg"
                          alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
                          loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
@@ -1326,7 +1333,7 @@
                 <div class="about-subtitle">We're Nuts For MayaNut!</div>
 
                 <div class="para">
-                  <div class="slant-box">
+                  <div class="slant-shape">
                     <p>
                       To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm
                       while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable,
@@ -1336,7 +1343,7 @@
                 </div>
 
                 <div class="about-media">
-                  <div class="slant-img">
+                  <div class="slant-shape slant-img">
                     <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                          alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
                          loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />

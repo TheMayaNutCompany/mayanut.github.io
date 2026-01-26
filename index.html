@@ -72,6 +72,8 @@
       --sbw: 0px;
       --padX: 16px;
       --gap: 16px;
+
+      --circle: 168px; /* slightly smaller for compact store layout */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -340,7 +342,7 @@
       min-height:0;
     }
 
-    .headline{ padding: 14px 14px 12px; }
+    .headline{ padding: 14px 14px 10px; }
     .headline .big{
       font-weight: 950;
       font-size: 30px;
@@ -390,33 +392,89 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===================== WHAT IS: SLANTED PARAGRAPH + LEFT STACKED CIRCLES ===================== */
-    .what-media-wrap{
-      padding: 0 14px 14px;
-      position: relative;
+    /* ===================== SLANT (RIGHT-LEANING: top/bottom straight) ===================== */
+    .slant-right{
+      clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+      -webkit-clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
     }
 
-    .what-row{
+    /* ===================== WHAT IS: COMPACT SLANTED PARAGRAPH (NO CIRCLES) ===================== */
+    .what-para-wrap{
+      padding: 0 14px 14px;
+    }
+    .what-para-shell{
+      border: 1px solid rgba(12,90,42,0.55);
+      background: var(--pale);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+      height: var(--circle);
+      width: calc(100% - 6px);
+      margin: 6px auto 0;
+      overflow:hidden;
+      position:relative;
+    }
+    .what-para-inner{
+      height:100%;
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+    }
+    .what-para-inner p{
+      margin:0;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(12,90,42,0.95);
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+    }
+
+    /* ===================== MINI STORE (CIRCLES LEFT OF ONE PRODUCT) ===================== */
+    .mini-store-body{
+      padding: 0;
+      background:#ffffff;
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      flex:1 1 auto;
+      min-height:0;
+    }
+
+    .mini-msg-wrap{ padding: 0 14px; }
+    .mini-msg{
+      display:none;
+      border-radius:14px;
+      border: var(--softBorder);
+      padding: 10px 12px;
+      background: var(--pale);
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.45;
+      margin-top: 8px;
+    }
+    .mini-msg.show{ display:block; }
+
+    .store-row{
+      padding: 14px 14px 10px;
       display:flex;
       gap: 12px;
-      align-items: stretch;
-      width: 100%;
-      margin-top: 6px;
+      align-items:flex-start;
+      justify-content:flex-end;
     }
 
-    /* left column: stacked big circles */
-    .what-left-circles{
-      flex: 0 0 180px;
+    .store-circles{
+      flex: 0 0 var(--circle);
       display:flex;
       flex-direction:column;
       gap: 12px;
-      align-items: stretch;
-      justify-content:flex-start;
+      align-items:stretch;
     }
 
     .big-circle-btn{
-      width: 180px;
-      height: 180px;
+      width: var(--circle);
+      height: var(--circle);
       border-radius: 999px;
       background: var(--orange);
       border: 2px solid rgba(255,255,255,0.95);
@@ -467,82 +525,9 @@
       stroke-linejoin: round;
     }
 
-    /* right column: slanted paragraph, left-aligned, leaving room on right for circles if needed */
-    .slant-shape{
-      clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-      -webkit-clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-    }
-    .slant-para{
-      flex: 1 1 auto;
-      min-height: 372px;
-      position: relative;
-      display:flex;
-      align-items: stretch;
-    }
-    .slant-box{
-      width: 100%;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: var(--pale);
-      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      padding: 18px 18px;
-      /* reserve room on the right so text doesn't collide visually with big circles */
-      padding-right: 200px;
-    }
-    .slant-para p{
-      margin:0;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size: 14px;
-      line-height: 1.85;
-      color: rgba(12,90,42,0.95);
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
-    }
-
-    /* remove any "circle next to paragraph" (none used) */
-
-    /* ===================== MINI STORE ===================== */
-    .mini-store-body{
-      padding: 0;
-      background:#ffffff;
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-      flex:1 1 auto;
-      min-height:0;
-    }
-
-    .mini-msg-wrap{ padding: 0 14px; }
-    .mini-msg{
-      display:none;
-      border-radius:14px;
-      border: var(--softBorder);
-      padding: 10px 12px;
-      background: var(--pale);
-      color:#0b1220;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:850;
-      line-height:1.45;
-      margin-top: 8px;
-    }
-    .mini-msg.show{ display:block; }
-
-    /* single product, right-aligned */
-    .mini-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      padding: 14px 14px 10px;
-      background:#ffffff;
-      margin-top: 0;
-      flex:1 1 auto;
-      min-height:0;
-      align-content:start;
-      justify-items:end;
-    }
+    /* compact single product */
     .mini-card{
-      width: min(100%, 360px);
+      width: 292px;            /* more compact */
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -550,7 +535,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: 322px;
+      min-height: 290px;       /* smaller */
       transition: transform .10s ease, box-shadow .12s ease;
     }
     .mini-card:hover{
@@ -561,18 +546,18 @@
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--softBorder);
-      padding: 10px;
+      padding: 8px 9px;        /* tighter */
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
+      gap:8px;
     }
     .mini-title{
       color:#0b1220;
       font-weight: 950;
       letter-spacing: .06em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 11.5px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -581,7 +566,7 @@
     }
     .mini-price{
       font-weight:950;
-      font-size: 12px;
+      font-size: 11.5px;
       color:#0b1220;
       white-space:nowrap;
       flex:0 0 auto;
@@ -589,7 +574,7 @@
 
     .mini-img{
       width:100%;
-      height: 186px;
+      height: 158px;           /* smaller */
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -599,22 +584,22 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 10px;
+      padding: 9px;
       display:flex;
       flex-direction:column;
-      gap: 10px;
+      gap: 8px;
       flex:1 1 auto;
     }
 
     .mini-actions{
       display:flex;
-      gap:10px;
+      gap:8px;
       align-items:stretch;
     }
 
     .add-to-cart{
-      width: 96px;
-      min-height: 58px;
+      width: 88px;             /* tighter */
+      min-height: 54px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -623,7 +608,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding: 10px 8px;
+      padding: 9px 8px;
       user-select:none;
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
@@ -636,27 +621,27 @@
     .add-to-cart:active{ transform: translateY(0px); background: var(--orangePress); }
     .add-to-cart[disabled]{ opacity: .65; cursor: default; transform:none; }
 
-    .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-    .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
+    .add-main{ font-size: 15px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .add-sub{ font-size: 9.5px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
 
     .right-stack{
       flex: 1 1 auto;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:8px;
       min-width: 0;
     }
 
     .mini-rect{
-      height: 28px;
+      height: 26px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding: 0 10px;
-      gap:8px;
+      padding: 0 9px;
+      gap:7px;
       box-shadow:none;
       cursor:pointer;
       user-select:none;
@@ -671,13 +656,13 @@
       font-weight:900;
       letter-spacing:.12em;
       text-transform:uppercase;
-      font-size:10px;
+      font-size:9.5px;
       color:#0b1220;
       flex:0 0 auto;
     }
     .mini-rect .val{
       font-weight:900;
-      font-size:11px;
+      font-size:10.5px;
       color:#0b1220;
       white-space:nowrap;
       flex:1 1 auto;
@@ -694,7 +679,7 @@
     }
 
     .qty-rect{
-      height: 28px;
+      height: 26px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
@@ -709,7 +694,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      flex: 0 0 30px;
+      flex: 0 0 28px;
       font-weight: 950;
       font-size: 14px;
       color:#0b1220;
@@ -725,9 +710,9 @@
     .qty-seg.disabled{ color: rgba(15,23,42,0.35); cursor: default; }
 
     .mini-desc{
-      margin-top: 2px;
+      margin-top: 1px;
       font-weight: 850;
-      font-size: 12px;
+      font-size: 11.5px;
       letter-spacing: .01em;
       color: rgba(15,23,42,0.45);
       display: -webkit-box;
@@ -735,11 +720,11 @@
       -webkit-line-clamp: 2;
       overflow: hidden;
       white-space: normal;
-      line-height: 1.35;
-      min-height: calc(1.35em * 2);
+      line-height: 1.32;
+      min-height: calc(1.32em * 2);
     }
 
-    /* centered checkout button with cart icon (only one checkout control) */
+    /* centered checkout button with cart icon */
     .mini-checkout-row{
       display:flex;
       align-items:center;
@@ -843,13 +828,16 @@
     }
 
     .about-card .para{ padding: 0; }
-    .about-card .para p{
-      background: var(--pale);
-      border-radius: 14px 14px 0 0;
-      max-width:none;
+
+    /* slanted paragraph + slanted image (top/bottom straight, sides tilted right) */
+    .about-para-shell{
       margin: 0 14px 0;
       border: 1px solid rgba(12,90,42,0.45);
       border-bottom: 0;
+      background: var(--pale);
+      overflow:hidden;
+    }
+    .about-para-inner{
       padding: 14px;
       font-family: var(--font-pretty);
       font-style: italic;
@@ -875,9 +863,9 @@
       object-position: center 50%;
       border: 1px solid rgba(12,90,42,0.45);
       border-top: 0;
-      border-radius: 0 0 14px 14px;
       background:#fff;
       filter: saturate(1.03) contrast(1.03);
+      overflow:hidden;
     }
 
     .about-cta{
@@ -1047,15 +1035,21 @@
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
 
-      .what-row{ flex-direction:column; }
-      .what-left-circles{
-        flex: 0 0 auto;
-        flex-direction:row;
-        justify-content:flex-start;
+      .store-row{
+        flex-direction:column;
+        align-items:flex-end;
       }
-      .big-circle-btn{ width: 160px; height: 160px; }
-      .slant-para{ min-height: 0; }
-      .slant-box{ padding-right: 18px; }
+      .store-circles{
+        flex-direction:row;
+        width: 100%;
+        justify-content:flex-end;
+      }
+      .big-circle-btn{
+        width: 150px;
+        height: 150px;
+      }
+      .mini-card{ width: 320px; }
+      .what-para-shell{ height: 150px; }
     }
 
     @media(max-width:780px){
@@ -1090,8 +1084,6 @@
       .nav-left,.nav-right{ top: 8px; transform:none; }
       .nav-left{ left: 34px; }
       .nav-right{ right: 34px; }
-
-      .big-circle-btn{ width: 148px; height: 148px; }
     }
   </style>
 
@@ -1151,6 +1143,7 @@
 
         <section class="layout" aria-label="Top content">
 
+          <!-- WHAT IS MAYANUT -->
           <div class="panel" aria-label="What is MayaNut">
             <div class="panel-head">
               <div class="panel-title">What Is MayaNut?</div>
@@ -1173,44 +1166,22 @@
                 </div>
               </div>
 
-              <div class="what-media-wrap" aria-label="What is MayaNut section body">
-                <div class="what-row">
-
-                  <!-- LEFT: stacked circles where image used to be -->
-                  <div class="what-left-circles" aria-label="Store quick actions">
-                    <a class="big-circle-btn" href="store.html" aria-label="View full store">
-                      <span class="t1">VIEW</span>
-                      <span class="t2">FULL STORE</span>
-                    </a>
-
-                    <button class="big-circle-btn" type="button" id="view-cart" aria-label="View cart">
-                      <span class="big-circle-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                          <path d="M6 7l-1-3H2.5"></path>
-                          <circle cx="9" cy="19" r="1.6"></circle>
-                          <circle cx="17" cy="19" r="1.6"></circle>
-                        </svg>
-                      </span>
-                    </button>
+              <div class="what-para-wrap" aria-label="MayaNut description">
+                <div class="what-para-shell slant-right" aria-label="Slanted paragraph box">
+                  <div class="what-para-inner">
+                    <p>
+                      MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
+                      When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods
+                      and beverages—alongside its many nutritional benefits.
+                    </p>
                   </div>
-
-                  <!-- RIGHT: slanted paragraph starts left-aligned; space reserved on right -->
-                  <div class="slant-para" aria-label="MayaNut description">
-                    <div class="slant-box slant-shape">
-                      <p>
-                        MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
-                        When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods
-                        and beverages—alongside its many nutritional benefits.
-                      </p>
-                    </div>
-                  </div>
-
                 </div>
               </div>
+
             </div>
           </div>
 
+          <!-- MINI STORE -->
           <aside class="panel" aria-label="Mini store">
             <div class="panel-head">
               <div class="panel-title">MayaNut MINI-STORE</div>
@@ -1222,9 +1193,28 @@
                 <div class="mini-msg" id="mini-msg"></div>
               </div>
 
-              <!-- single product: MayaNut Powder, right aligned -->
-              <div class="mini-grid" id="mini-grid">
-                <article class="mini-card" data-title="MayaNut Powder">
+              <!-- CIRCLES LEFT OF ONE STORE OPTION -->
+              <div class="store-row" aria-label="Store row">
+                <div class="store-circles" aria-label="Store quick actions">
+                  <a class="big-circle-btn" href="store.html" aria-label="View full store">
+                    <span class="t1">VIEW</span>
+                    <span class="t2">FULL STORE</span>
+                  </a>
+
+                  <button class="big-circle-btn" type="button" id="view-cart" aria-label="View cart">
+                    <span class="big-circle-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+
+                <!-- single product: compact -->
+                <article class="mini-card" data-title="MayaNut Powder" aria-label="MayaNut Powder product">
                   <div class="mini-titlebar">
                     <div class="mini-title">MayaNut Powder</div>
                     <div class="mini-price" data-price>$9.95</div>
@@ -1278,6 +1268,7 @@
           </aside>
         </section>
 
+        <!-- ABOUT -->
         <section class="panel about-wrap" aria-label="A Little About Us">
           <div class="panel-head">
             <div class="panel-title">A Little About Us</div>
@@ -1288,14 +1279,17 @@
             <div class="about-grid">
               <div class="about-card" aria-label="About card 1">
                 <div class="about-title">How It All Started...</div>
+
                 <div class="para">
-                  <p>
-                    In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
-                  </p>
+                  <div class="about-para-shell slant-right">
+                    <div class="about-para-inner">
+                      In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                    </div>
+                  </div>
                 </div>
 
                 <div class="about-media">
-                  <img src="the-maya-nut-company-bubba-image.jpg"
+                  <img class="slant-right" src="the-maya-nut-company-bubba-image.jpg"
                        alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
                        loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                   <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
@@ -1304,14 +1298,17 @@
 
               <div class="about-card" aria-label="About card 2">
                 <div class="about-title">We're Nuts For MayaNut!</div>
+
                 <div class="para">
-                  <p>
-                    To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
-                  </p>
+                  <div class="about-para-shell slant-right">
+                    <div class="about-para-inner">
+                      To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
+                    </div>
+                  </div>
                 </div>
 
                 <div class="about-media">
-                  <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                  <img class="slant-right" src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                        alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
                        loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                   <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">

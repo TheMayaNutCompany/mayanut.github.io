@@ -35,8 +35,8 @@
 
   <!-- Preload -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" />
-  <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
   <link rel="preload" as="image" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" />
+  <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -70,26 +70,13 @@
       --scrollThumb:#c8ccd2;
       --scrollThumbHover:#b8bcc3;
 
+      /* measured scrollbar width (desktop) */
       --sbw: 0px;
+
       --padX: 16px;
       --gap: 16px;
 
-      /* circles + product sizing */
-      --circleGap: 12px;
-      --circleBig: 118px;
-      --circleSmall: calc(var(--circleBig) / 2);
-
-      --checkoutH: 42px;
-      --checkoutGap: 10px;
-
-      --stackH: calc(var(--circleBig) + var(--circleGap) + var(--circleSmall));
-      --storeTotalH: calc(var(--stackH) + var(--checkoutGap) + var(--checkoutH));
-
-      /* what-is image + para sizing */
-      --whatRowGap: 12px;
-      --whatImgW: 250px;
-      --whatImgH: 132px;
-      --whatOffset: 10px;
+      --outlineDark: #064d2a;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -125,7 +112,7 @@
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
-    button{ font-family:inherit; }
+    button,input,select{ font-family:inherit; }
 
     :focus-visible{
       outline: 3px solid rgba(216,255,106,0.95);
@@ -304,9 +291,10 @@
       margin: 0 auto;
     }
 
+    /* widened left panel slightly to make paragraph wider + shorter */
     .layout{
       display:grid;
-      grid-template-columns: 1.30fr 0.86fr;
+      grid-template-columns: 1.32fr 0.88fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -344,7 +332,7 @@
       height: 6px;
       flex: 1 1 auto;
       border-radius: 999px;
-      background: linear-gradient(to bottom, #d8ff6a 0%, #7ae78a 55%, #066100 100%);
+      background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 55%, var(--footer-g3) 100%);
       opacity: .95;
       min-width: 180px;
       margin-left:auto;
@@ -408,242 +396,151 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===================== SLANT (right-leaning sides, flat top/bottom) ===================== */
-    .slant-right{
-      clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
-      -webkit-clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+    /* ===================== SLANTED (NO CLIP) ===================== */
+    .slant-row{
+      display:grid;
+      grid-template-columns: 0.92fr 1.65fr;
+      gap:0;
+      padding: 8px 14px 14px;
+      align-items: stretch;
     }
-    .slant-outline{
-      box-shadow: inset 0 0 0 1px rgba(6,97,0,0.95);
-    }
-
-    /* ===================== WHAT IS: IMAGE + SLANTED PARAGRAPH ===================== */
-    .what-para-wrap{ padding: 0 14px 14px; }
-
-    .what-row{
-      display:flex;
-      gap: var(--whatRowGap);
-      align-items:flex-start;
-      justify-content:flex-start;
-      width:100%;
-      margin-top: 6px;
-    }
-
-    .what-img-shell{
-      flex: 0 0 var(--whatImgW);
-      width: var(--whatImgW);
-      height: var(--whatImgH);
-      border: 1px solid rgba(12,90,42,0.55);
-      background:#fff;
+    .slant-img{
+      position: relative;
+      border: 1.5px solid var(--outlineDark);
+      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
       overflow:hidden;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      margin-top: var(--whatOffset); /* offset slightly DOWN from paragraph level */
+      background:#fff;
+      height: 180px; /* controls overall paragraph height too */
     }
-    .what-img-shell img{
+    .slant-img img{
       width:100%;
       height:100%;
       object-fit: cover;
-      object-position: center 52%;
+      object-position: center 50%;
       filter: saturate(1.03) contrast(1.03);
     }
 
-    .what-para-shell{
-      flex: 1 1 auto;
-      border: 1px solid rgba(12,90,42,0.55);
+    .slant-box{
+      position: relative;
       background: var(--pale);
-      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      overflow:hidden;
-      position:relative;
-      min-height: var(--whatImgH);
-    }
-    .what-para-inner{
-      padding: 14px 44px; /* extra padding so text never gets clipped by slant */
+      border: 1.5px solid var(--outlineDark);
+      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+      padding: 12px 16px;
+      height: 180px; /* match image exactly */
       display:flex;
       align-items:center;
-      min-height: var(--whatImgH);
+      overflow: visible;
     }
-    .what-para-inner p{
+    .slant-box p{
       margin:0;
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
       font-size: 14px;
-      line-height: 1.72;
+      line-height: 1.75;
       color: rgba(12,90,42,0.95);
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+      width:100%;
+      /* prevent any accidental clipping */
+      padding-right: 6px;
     }
 
     /* ===================== MINI STORE ===================== */
     .mini-store-body{
-      padding: 0;
+      padding: 10px 14px 14px;
       background:#ffffff;
       display:flex;
       flex-direction:column;
-      gap: 6px;
+      gap: 10px;
       flex:1 1 auto;
       min-height:0;
     }
 
-    .mini-msg-wrap{ padding: 0 14px; }
-    .mini-msg{
-      display:none;
-      border-radius:14px;
-      border: var(--softBorder);
-      padding: 10px 12px;
-      background: var(--pale);
-      color:#0b1220;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:850;
-      line-height:1.45;
-      margin-top: 8px;
-    }
-    .mini-msg.show{ display:block; }
-
-    .store-row{
-      padding: 14px 14px 10px;
+    /* one-row layout: circles left, product right */
+    .mini-store-row{
       display:flex;
+      gap: 14px;
+      align-items: stretch;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .store-left{
+      width: 140px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:space-between;
       gap: 12px;
-      align-items:flex-start;
-      justify-content:flex-end;
+      padding: 2px 0;
     }
 
-    /* circles column */
-    .store-circles{
-      flex: 0 0 var(--circleBig);
+    .circle-stack{
       display:flex;
       flex-direction:column;
-      gap: var(--circleGap);
       align-items:center;
-      justify-content:flex-start;
-      width: var(--circleBig);
-    }
-
-    .big-circle-btn{
-      width: var(--circleBig);
-      height: var(--circleBig);
-      border-radius: 999px;
-      background: var(--orange);
-      border: 2px solid rgba(255,255,255,0.95);
-      box-shadow: 0 18px 40px rgba(15,23,42,0.12);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap: 6px;
-      text-align:center;
-      user-select:none;
-      cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-    }
-    .big-circle-btn:hover{
-      box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 18px 40px rgba(15,23,42,0.12);
-      transform: translateY(-1px);
-    }
-    .big-circle-btn:active{ background: var(--orangePress); transform: translateY(0px); }
-
-    .big-circle-btn .t1,
-    .big-circle-btn .t2{
-      color:#fff;
-      font-weight: 950;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      line-height: 1.05;
-    }
-    .big-circle-btn .t1{ font-size: 12.5px; }
-    .big-circle-btn .t2{ font-size: 10.5px; }
-
-    .big-circle-btn.small{
-      width: var(--circleSmall);
-      height: var(--circleSmall);
-      gap: 0;
-    }
-    .big-circle-btn.small .big-circle-icon{
-      width: var(--circleSmall);
-      height: var(--circleSmall);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .big-circle-btn.small .big-circle-icon svg{
-      width: 26px;
-      height: 26px;
-      stroke-width: 2.6;
-    }
-
-    .big-circle-icon{
-      width: 54px;
-      height: 54px;
-      border-radius: 999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .big-circle-icon svg{
-      width: 36px;
-      height: 36px;
-      stroke: #fff;
-      fill: none;
-      stroke-width: 2.4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* checkout under circles */
-    .checkout-under-circles{
-      margin-top: var(--checkoutGap);
-      height: var(--checkoutH);
-      width: var(--circleBig);
-      border-radius: 14px;
-      background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.55);
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
       gap: 10px;
-      cursor:pointer;
+      padding-top: 2px;
+    }
+
+    .big-circle{
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 2px solid #ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#ffffff;
+      text-align:center;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      line-height: 1.05;
+      font-size: 10px;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.12);
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      cursor:pointer;
+      padding: 10px;
+    }
+    .big-circle:active{ background: var(--orangePress); }
+
+    .small-circle{
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 2px solid #ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.12);
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      cursor:pointer;
       position:relative;
     }
-    .checkout-under-circles:hover{
-      box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10);
-      transform: translateY(-1px);
-    }
-    .checkout-under-circles:active{ background: var(--orangePress); transform: translateY(0px); }
-
-    .checkout-under-circles .txt{
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size: 10.5px;
-      line-height:1;
-      white-space:nowrap;
-    }
-    .checkout-under-circles svg{
-      width: 26px;
-      height: 26px;
+    .small-circle svg{
+      width: 24px;
+      height: 24px;
       stroke:#fff;
       fill:none;
       stroke-width:2.4;
       stroke-linecap:round;
       stroke-linejoin:round;
-      flex:0 0 auto;
+      display:block;
     }
 
     .mini-badge{
       position:absolute;
-      top: -10px;
-      right: -10px;
-      width: 22px;
-      height: 22px;
+      top:-6px;
+      right:-6px;
+      width: 18px;
+      height: 18px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.98);
-      border: 2px solid rgba(255,255,255,0.98);
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.25);
       color:#0b1220;
       font-weight:950;
       font-size:10px;
@@ -652,12 +549,75 @@
       justify-content:center;
       line-height:1;
       pointer-events:none;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.10);
     }
 
-    /* product */
+    .checkout-btn{
+      width: 126px;
+      height: 44px;
+      border-radius: 16px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      color:#ffffff;
+      font-weight: 950;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      margin-top:auto;
+    }
+    .checkout-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
+    .checkout-btn:active{ background: var(--orangePress); transform: translateY(0px); }
+
+    .checkout-cart{
+      position:relative;
+      width: 26px;
+      height: 26px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .checkout-cart svg{
+      width: 26px;
+      height: 26px;
+      stroke:#fff;
+      fill:none;
+      stroke-width:2.5;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .checkout-badge{
+      position:absolute;
+      top:-7px;
+      right:-8px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.25);
+      color:#0b1220;
+      font-weight:950;
+      font-size:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+    }
+
+    .store-right{
+      flex:1 1 auto;
+      display:flex;
+      justify-content:flex-end;
+      min-width:0;
+    }
+
     .mini-card{
-      width: 270px;
+      width: 252px; /* compact, less wide */
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -665,7 +625,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: var(--storeTotalH);
+      min-height: 338px; /* helps align bottom near checkout */
       transition: transform .10s ease, box-shadow .12s ease;
     }
     .mini-card:hover{
@@ -676,18 +636,18 @@
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--softBorder);
-      padding: 8px 9px;
+      padding: 9px 10px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:8px;
+      gap:10px;
     }
     .mini-title{
       color:#0b1220;
       font-weight: 950;
       letter-spacing: .06em;
       text-transform: uppercase;
-      font-size: 11px;
+      font-size: 12px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -696,7 +656,7 @@
     }
     .mini-price{
       font-weight:950;
-      font-size: 11px;
+      font-size: 12px;
       color:#0b1220;
       white-space:nowrap;
       flex:0 0 auto;
@@ -704,7 +664,7 @@
 
     .mini-img{
       width:100%;
-      height: 150px;
+      height: 160px;
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -714,22 +674,22 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 9px;
+      padding: 10px;
       display:flex;
       flex-direction:column;
-      gap: 8px;
-      flex: 1 1 auto;
+      gap: 10px;
+      flex:1 1 auto;
     }
 
     .mini-actions{
       display:flex;
-      gap:8px;
+      gap:10px;
       align-items:stretch;
     }
 
     .add-to-cart{
-      width: 86px;
-      min-height: 54px;
+      width: 92px;
+      min-height: 58px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -738,7 +698,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding: 9px 7px;
+      padding: 10px 8px;
       user-select:none;
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
@@ -751,33 +711,34 @@
     .add-to-cart:active{ transform: translateY(0px); background: var(--orangePress); }
     .add-to-cart[disabled]{ opacity: .65; cursor: default; transform:none; }
 
-    .add-main{ font-size: 14px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-    .add-sub{ font-size: 9px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
+    .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
+    .added-state{ animation: pop .35s ease; }
+    @keyframes pop{ 0%{ transform: scale(1); } 50%{ transform: scale(1.02); } 100%{ transform: scale(1); } }
 
     .right-stack{
       flex: 1 1 auto;
       display:flex;
       flex-direction:column;
-      gap:7px;
+      gap:10px;
       min-width: 0;
     }
 
     .mini-rect{
-      height: 27px;
+      height: 28px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding: 0 8px;
-      gap:7px;
-      box-shadow:none;
-      cursor:pointer;
+      padding: 0 10px;
+      gap:8px;
       user-select:none;
       min-width:0;
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, box-shadow .12s ease;
+      cursor:pointer;
     }
     .mini-rect:hover{ transform: translateY(-1px); box-shadow: 0 12px 24px rgba(15,23,42,0.06); }
     .mini-rect:active{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.05); transform: translateY(0px); }
@@ -786,13 +747,13 @@
       font-weight:900;
       letter-spacing:.12em;
       text-transform:uppercase;
-      font-size:9px;
+      font-size:10px;
       color:#0b1220;
       flex:0 0 auto;
     }
     .mini-rect .val{
       font-weight:900;
-      font-size:10px;
+      font-size:11px;
       color:#0b1220;
       white-space:nowrap;
       flex:1 1 auto;
@@ -809,14 +770,13 @@
     }
 
     .qty-rect{
-      height: 27px;
+      height: 28px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
       display:flex;
       align-items:stretch;
       overflow:hidden;
-      box-shadow:none;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -824,7 +784,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      flex: 0 0 26px;
+      flex: 0 0 30px;
       font-weight: 950;
       font-size: 14px;
       color:#0b1220;
@@ -842,7 +802,7 @@
     .mini-desc{
       margin-top: 2px;
       font-weight: 850;
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: .01em;
       color: rgba(15,23,42,0.45);
       display: -webkit-box;
@@ -850,11 +810,25 @@
       -webkit-line-clamp: 2;
       overflow: hidden;
       white-space: normal;
-      line-height: 1.3;
-      min-height: calc(1.3em * 2);
+      line-height: 1.35;
+      min-height: calc(1.35em * 2);
     }
 
-    /* ===================== ABOUT (kept) ===================== */
+    .mini-msg{
+      display:none;
+      border-radius:14px;
+      border: var(--softBorder);
+      padding: 10px 12px;
+      background: var(--pale);
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.45;
+    }
+    .mini-msg.show{ display:block; }
+
+    /* ===================== ABOUT ===================== */
     .about-wrap{ margin-top: 16px; }
     .about-grid{
       display:grid;
@@ -862,6 +836,7 @@
       gap: 12px;
       padding: 14px;
     }
+
     .about-card{
       border-radius:18px;
       border: var(--softBorder);
@@ -872,47 +847,50 @@
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       transition: transform .10s ease, box-shadow .12s ease;
     }
-    .about-card:hover{ transform: translateY(-1px); box-shadow: 0 18px 40px rgba(15,23,42,0.08); }
+    .about-card:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+    }
 
-    .about-title{
+    .about-subtitle{
+      padding: 12px 12px 0;
       font-weight: 950;
-      font-size: 26px;
+      font-size: 30px;
       line-height: 1.05;
       color:#0b1220;
       letter-spacing: .02em;
-      padding: 14px 14px 6px;
       text-align:left;
+      /* nudge slightly right vs hard edge */
+      margin-left: 6px;
     }
 
-    .about-para-shell{ margin: 0 14px 0; background: var(--pale); overflow:hidden; }
-    .about-para-inner{
-      padding: 14px 44px;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size: 14px;
-      line-height: 1.85;
-      color: rgba(12,90,42,0.95);
-      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+    .about-card .para{ padding: 10px 12px 0; }
+
+    /* slanted paragraph + outline (no clipping) */
+    .about-card .para .slant-box{
+      height: auto;
+      padding: 12px 16px;
+      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+      border: 1.5px solid var(--outlineDark);
     }
 
+    /* keep the retro jagged offset only in About */
     .about-media{
-      width: calc(100% - 28px);
-      margin: 0 14px 14px;
+      width: calc(100% - 24px);
+      margin: 0 12px 12px;
       display:flex;
       flex-direction:column;
-      gap: 0;
-    }
-    .about-media img{
-      width: 100%;
-      height: 320px;
-      object-fit: cover;
-      object-position: center 50%;
-      background:#fff;
-      filter: saturate(1.03) contrast(1.03);
-      overflow:hidden;
+      gap: 10px;
       margin-top: 0;
     }
+
+    .about-media .slant-img{
+      height: 320px;
+      margin-top: 10px; /* slight offset down for retro jagged look */
+      border: 1.5px solid var(--outlineDark);
+      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+    }
+
     .about-cta{
       height: 44px;
       width: 100%;
@@ -933,12 +911,11 @@
       -webkit-tap-highlight-color: transparent;
       text-align:center;
       line-height: 1.15;
-      margin-top: 10px;
     }
     .about-cta:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
     .about-cta:active{ transform: translateY(0px); background: var(--orangePress); }
 
-    /* ===================== FOOTER (kept) ===================== */
+    /* ===================== FOOTER ===================== */
     .footer{
       margin-top: 18px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -957,30 +934,64 @@
       gap: 22px;
       align-items: start;
     }
-    .footer-left{ display:flex; flex-direction:column; gap: 10px; align-items:flex-start; }
+    .footer-left{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      align-items:flex-start;
+    }
     .footer-tagline{
-      display:flex; align-items:center; gap: 8px;
-      font-weight: 950; letter-spacing: .06em; font-size: 15px;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-weight: 950;
+      letter-spacing: .06em;
+      font-size: 15px;
       text-transform: uppercase;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       white-space:nowrap;
     }
-    .footer-florida{ width: 26px; height: 26px; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35)); }
-    .footer-logo{ width: 240px; height: auto; filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22)); user-select:none; }
+    .footer-florida{
+      width: 26px; height: 26px;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35));
+    }
+    .footer-logo{
+      width: 240px; height: auto;
+      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
+      user-select:none;
+    }
 
-    .footer-right{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items:start; }
+    .footer-right{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      align-items:start;
+    }
     .footer-col-title{
-      font-weight: 950; letter-spacing: .12em; text-transform: uppercase; font-size: 14px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35); margin-bottom: 10px;
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      margin-bottom: 10px;
     }
     .footer-link{
-      display:block; font-weight: 900; font-size: 12px; letter-spacing: .02em;
-      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.25);
-      width: fit-content; text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      display:block;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .02em;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      width: fit-content;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
     }
     .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
 
-    .footer-divider{ border-top: 2px solid rgba(6,97,0,0.85); max-width: 1200px; margin: 0 auto; }
+    .footer-divider{
+      border-top: 2px solid rgba(6,97,0,0.85);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
     .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
@@ -992,23 +1003,38 @@
       text-align:left;
     }
 
-    .social-row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; margin-top: 2px; }
+    .social-row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 2px;
+    }
     .icon-pill{
-      width: 34px; height: 34px; border-radius: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.55);
       background: #fd6c02;
-      display:inline-flex; align-items:center; justify-content:center;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      text-decoration:none; user-select:none;
+      text-decoration:none;
+      user-select:none;
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
     }
     .icon-pill:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.18); transform: translateY(-1px); }
     .icon-pill:active{ background: var(--orangePress); transform: translateY(0px); }
     .icon-pill svg{
-      width: 18px; height: 18px;
-      stroke: #ffffff; fill: none; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round;
+      width: 18px;
+      height: 18px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
     .yt-body{ fill:#ffffff; stroke:none; }
@@ -1016,43 +1042,29 @@
 
     @media (prefers-reduced-motion: reduce){
       *{ scroll-behavior:auto !important; }
-      .pill-btn, .big-circle-btn, .mini-card, .add-to-cart, .mini-rect, .checkout-under-circles, .about-card, .about-cta, .icon-pill{
+      .pill-btn, .mini-card, .about-card, .add-to-cart, .mini-rect, .about-cta, .icon-pill, .checkout-btn, .big-circle, .small-circle{
         transition: none !important;
         animation: none !important;
       }
     }
 
-    /* ===================== RESPONSIVE ===================== */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .about-grid{ grid-template-columns:1fr; }
+
+      .mini-store-row{ flex-direction:column; }
+      .store-left{ width:100%; flex-direction:row; align-items:flex-start; justify-content:space-between; }
+      .circle-stack{ flex-direction:row; gap: 12px; }
+      .store-right{ justify-content:flex-start; }
+      .mini-card{ width:100%; max-width: 360px; }
 
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
 
-      .store-row{ flex-direction:column; align-items:flex-end; }
-      .store-circles{
-        width: 100%;
-        flex: 0 0 auto;
-        flex-direction:row;
-        justify-content:flex-end;
-        align-items:flex-start;
-      }
-      .checkout-under-circles{ margin-top: 0; }
-
-      .what-row{
-        flex-direction:column;
-        gap: 12px;
-      }
-      .what-img-shell{
-        width: 100%;
-        flex: 0 0 auto;
-        height: 190px;
-        margin-top: 0;
-      }
-      .what-para-shell{ min-height: auto; }
-      .what-para-inner{ min-height: auto; }
+      .slant-row{ grid-template-columns: 1fr; gap: 10px; }
+      .slant-img, .slant-box{ height:auto; }
+      .slant-box{ align-items:flex-start; }
     }
 
     @media(max-width:780px){
@@ -1088,7 +1100,9 @@
       .nav-left{ left: 34px; }
       .nav-right{ right: 34px; }
 
-      .what-para-inner{ padding: 14px 40px; }
+      .about-media .slant-img{ height: auto; aspect-ratio: 1 / 1; }
+      .big-circle{ width: 84px; height: 84px; font-size: 9.5px; }
+      .small-circle{ width: 44px; height: 44px; }
     }
   </style>
 
@@ -1105,7 +1119,6 @@
         document.documentElement.style.setProperty("--sbw", sbw + "px");
       }
       function sync(){ setStickyOffset(); setScrollbarWidth(); }
-
       window.addEventListener("load", sync, { once:true });
       window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
       window.addEventListener("pageshow", sync);
@@ -1159,7 +1172,7 @@
               <div class="headline" aria-label="Hero headline">
                 <div class="big">Aromatic &amp; Delicious</div>
                 <div class="sub">
-                  <span class="uline">Introducing MayaNut to You</span> <span aria-hidden="true">🫵</span>
+                  <span class="uline">Introducing MayaNut to You</span>
                 </div>
 
                 <div class="hero-meta" aria-label="Quick facts">
@@ -1171,32 +1184,23 @@
                 </div>
               </div>
 
-              <div class="what-para-wrap" aria-label="MayaNut description + image">
-                <div class="what-row" aria-label="What is MayaNut row">
-                  <!-- slanted fruit placeholder image, slightly DOWN-offset -->
-                  <div class="what-img-shell slant-right slant-outline" aria-label="Fruit placeholder image">
-                    <img
-                      src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                      alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
-                      loading="eager"
-                      decoding="async"
-                      onerror="this.style.opacity='.35';"
-                    />
-                  </div>
+              <!-- slanted image + paragraph: touching, same height -->
+              <div class="slant-row" aria-label="MayaNut intro">
+                <div class="slant-img" aria-label="MayaNut fruit image">
+                  <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                       alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
+                       loading="eager" decoding="async"
+                       onerror="this.style.opacity='.35';" />
+                </div>
 
-                  <!-- slanted paragraph connected to image -->
-                  <div class="what-para-shell slant-right slant-outline" aria-label="Slanted paragraph box">
-                    <div class="what-para-inner">
-                      <p>
-                        MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
-                        When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods
-                        and beverages—alongside its many nutritional benefits.
-                      </p>
-                    </div>
-                  </div>
+                <div class="slant-box" aria-label="MayaNut paragraph">
+                  <p>
+                    MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. Used for centuries by the Maya,
+                    it becomes a rich, flavorful powder when roasted and ground—enjoyed in drinks, baking, and everyday recipes,
+                    alongside its many nutritional benefits.
+                  </p>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -1208,77 +1212,79 @@
             </div>
 
             <div class="mini-store-body">
-              <div class="mini-msg-wrap" aria-live="polite" aria-atomic="true">
-                <div class="mini-msg" id="mini-msg"></div>
-              </div>
+              <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
 
-              <div class="store-row" aria-label="Store row">
+              <div class="mini-store-row" aria-label="Mini store layout">
+                <!-- LEFT: circles + checkout -->
+                <div class="store-left" aria-label="Mini store actions">
+                  <div class="circle-stack" aria-label="Store circles">
+                    <a class="big-circle" href="store.html" aria-label="View other products">
+                      VIEW<br>OTHER<br>PRODUCTS
+                    </a>
 
-                <div class="store-circles" aria-label="Store quick actions">
-                  <a class="big-circle-btn" href="store.html" aria-label="View other products">
-                    <span class="t1">VIEW</span>
-                    <span class="t2">OTHER PRODUCTS</span>
-                  </a>
-
-                  <button class="big-circle-btn small" type="button" id="view-cart" aria-label="View cart">
-                    <span class="big-circle-icon" aria-hidden="true">
+                    <button class="small-circle" type="button" id="open-cart" aria-label="View cart">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
                         <path d="M6 7l-1-3H2.5"></path>
                         <circle cx="9" cy="19" r="1.6"></circle>
                         <circle cx="17" cy="19" r="1.6"></circle>
                       </svg>
-                    </span>
-                  </button>
+                      <span class="mini-badge" id="mini-badge">0</span>
+                    </button>
+                  </div>
 
-                  <button class="checkout-under-circles" type="button" id="mini-checkout" aria-label="Checkout">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                      <path d="M6 7l-1-3H2.5"></path>
-                      <circle cx="9" cy="19" r="1.6"></circle>
-                      <circle cx="17" cy="19" r="1.6"></circle>
-                    </svg>
-                    <span class="txt">CHECKOUT</span>
-                    <span class="mini-badge" id="mini-badge">0</span>
+                  <button class="checkout-btn" type="button" id="mini-checkout" aria-label="Checkout">
+                    <span class="checkout-cart" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                      </svg>
+                      <span class="checkout-badge" id="checkout-badge">0</span>
+                    </span>
+                    CHECKOUT
                   </button>
                 </div>
 
-                <article class="mini-card" data-title="MayaNut Powder" aria-label="MayaNut Powder product">
-                  <div class="mini-titlebar">
-                    <div class="mini-title">MayaNut Powder</div>
-                    <div class="mini-price" data-price>$9.95</div>
-                  </div>
-
-                  <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                       alt="Roasted MayaNut powder (maya nut) made from Brosimum alicastrum seed"
-                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
-
-                  <div class="mini-bot">
-                    <div class="mini-actions" aria-label="Actions">
-                      <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
-                        <div class="add-main">ADD</div>
-                        <div class="add-sub">TO CART</div>
-                      </button>
-
-                      <div class="right-stack" aria-label="Options">
-                        <button class="mini-rect" type="button" data-weight aria-label="Select weight">
-                          <span class="lbl">WEIGHT:</span>
-                          <span class="val" data-weight-val>1/4 LB</span>
-                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
-                        </button>
-
-                        <div class="qty-rect" aria-label="Quantity selector (max 9)">
-                          <div class="qty-seg" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
-                          <div class="qty-seg mid" data-qty aria-label="Quantity">1</div>
-                          <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
-                        </div>
-                      </div>
+                <!-- RIGHT: single compact product -->
+                <div class="store-right" aria-label="Mini store product">
+                  <article class="mini-card" data-title="MayaNut Powder">
+                    <div class="mini-titlebar">
+                      <div class="mini-title">MayaNut Powder</div>
+                      <div class="mini-price" data-price>$9.95</div>
                     </div>
 
-                    <div class="mini-desc">Flavorful powder, great for acai bowls, granola, and much more!</div>
-                  </div>
-                </article>
+                    <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                         alt="Roasted MayaNut powder (maya nut) made from Brosimum alicastrum seed"
+                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
 
+                    <div class="mini-bot">
+                      <div class="mini-actions" aria-label="Actions">
+                        <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
+                          <div class="add-main">ADD</div>
+                          <div class="add-sub">TO CART</div>
+                        </button>
+
+                        <div class="right-stack" aria-label="Options">
+                          <button class="mini-rect" type="button" data-weight aria-label="Select weight">
+                            <span class="lbl">WEIGHT:</span>
+                            <span class="val" data-weight-val>1/4 LB</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                          </button>
+
+                          <div class="qty-rect" aria-label="Quantity selector (max 9)">
+                            <div class="qty-seg" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
+                            <div class="qty-seg mid" data-qty aria-label="Quantity">1</div>
+                            <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mini-desc">Flavorful powder, great for acai bowls, granola, and much more!</div>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
           </aside>
@@ -1294,39 +1300,47 @@
           <div class="section-body">
             <div class="about-grid">
               <div class="about-card" aria-label="About card 1">
-                <div class="about-title">How It All Started...</div>
+                <div class="about-subtitle">How It All Started...</div>
 
                 <div class="para">
-                  <div class="about-para-shell slant-right slant-outline">
-                    <div class="about-para-inner">
-                      In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
-                    </div>
+                  <div class="slant-box">
+                    <p>
+                      In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
+                      growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
+                      founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                    </p>
                   </div>
                 </div>
 
                 <div class="about-media">
-                  <img class="slant-right slant-outline" src="the-maya-nut-company-bubba-image.jpg"
-                       alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
-                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="slant-img">
+                    <img src="the-maya-nut-company-bubba-image.jpg"
+                         alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
+                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  </div>
                   <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
                 </div>
               </div>
 
               <div class="about-card" aria-label="About card 2">
-                <div class="about-title">We're Nuts For MayaNut!</div>
+                <div class="about-subtitle">We're Nuts For MayaNut!</div>
 
                 <div class="para">
-                  <div class="about-para-shell slant-right slant-outline">
-                    <div class="about-para-inner">
-                      To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
-                    </div>
+                  <div class="slant-box">
+                    <p>
+                      To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm
+                      while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable,
+                      long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
+                    </p>
                   </div>
                 </div>
 
                 <div class="about-media">
-                  <img class="slant-right slant-outline" src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                       alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
-                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="slant-img">
+                    <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                         alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
+                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  </div>
                   <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
                     EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
                   </a>
@@ -1425,6 +1439,7 @@
       const cart = new Map();
 
       const badge = document.getElementById("mini-badge");
+      const badge2 = document.getElementById("checkout-badge");
       const msgEl = document.getElementById("mini-msg");
       const root = document.getElementById("weight-menu-root");
       let menu = null;
@@ -1490,8 +1505,16 @@
       });
       document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
 
-      function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
-      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
+      function cartCount(){
+        let t=0;
+        cart.forEach(v=> t += Math.max(0, v|0));
+        return t;
+      }
+      function renderBadges(){
+        const n = String(cartCount());
+        if(badge) badge.textContent = n;
+        if(badge2) badge2.textContent = n;
+      }
 
       function brieflyAdded(btn){
         btn.classList.add("added-state");
@@ -1551,7 +1574,6 @@
 
         function bind(el, dir){
           if(!el) return;
-
           el.addEventListener("pointerdown", (e)=>{ e.preventDefault(); startHold(dir); });
           el.addEventListener("pointerup", (e)=>{ e.preventDefault(); stopHold(); });
           el.addEventListener("pointercancel", stopHold);
@@ -1590,7 +1612,7 @@
           if(add.disabled) return;
           const q = clamp(getQty());
           cart.set(title, (cart.get(title)||0) + q);
-          renderBadge();
+          renderBadges();
           add.disabled = true;
           brieflyAdded(add);
           setTimeout(()=>{ add.disabled = false; }, 350);
@@ -1603,11 +1625,11 @@
         showMiniMessage("This function is currently unavailable.");
       });
 
-      document.getElementById("view-cart")?.addEventListener("click", ()=>{
-        showMiniMessage("Cart preview coming soon.");
+      document.getElementById("open-cart")?.addEventListener("click", ()=>{
+        showMiniMessage("Cart preview is currently unavailable.");
       });
 
-      renderBadge();
+      renderBadges();
     })();
   </script>
 </body>

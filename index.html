@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -132,17 +132,16 @@
       background: var(--page);
     }
 
-    /* FIX: prevent header art from painting under scrollbar */
+    /* keep header from ever painting under scrollbar */
     .sticky-top{
       position:fixed;
-      top:0; left:0; right:0;
-      padding-right: var(--sbw);
+      top:0; left:0;
+      right: var(--sbw);
       z-index:999;
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       border-bottom: 1px solid rgba(12,90,42,0.55);
       transform: translateZ(0);
-      overflow:hidden;
     }
 
     .site-header{
@@ -398,17 +397,19 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===== What Is MayaNut? paragraph overlay + narrower width ===== */
+    /* ===================== WHAT IS MAYANUT (PARA OVER IMAGES + BUTTONS) ===================== */
     .what-media-wrap{
       position:relative;
-      padding: 0 14px 14px;
+      padding: 0 14px 14px; /* matches your image left edge */
     }
+
+    /* paragraph box aligned to the left image edge (connected visually) */
     .para{
       position:absolute;
-      left:14px;
-      top:0;
-      width: 76%;              /* fully over left image + halfway over right */
-      z-index:3;
+      left: 14px;           /* exactly the same as inner padding => flush with left image edge */
+      top: 0;
+      width: 62%;
+      z-index: 3;
       padding: 0;
     }
     .para p{
@@ -421,17 +422,24 @@
       color: rgba(12,90,42,0.95);
       background: var(--pale);
       border: 1px solid rgba(12,90,42,0.55);
-      padding: 18px 16px;      /* a bit taller to compensate */
+      padding: 18px 16px;
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
       border-radius: 16px;
       max-width: none;
     }
 
+    /* optional slanted text direction feel */
+    .para-slant p{
+      transform: skewX(-6deg) rotate(-1.2deg);
+      transform-origin: top right;
+    }
+
+    /* reserve vertical space so paragraph sits over images */
     .img-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 160px 0 0;      /* reserve height so paragraph sits “into” images */
+      padding: 160px 0 0;   /* space behind the overlay paragraph */
       position:relative;
       z-index:1;
     }
@@ -442,96 +450,43 @@
       object-position: center 50%;
       border: var(--softBorder);
       background:#fff;
-      border-radius: 16px;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
       filter: saturate(1.03) contrast(1.03);
     }
-    /* right upper side of the right image curved (emphasized) */
+    .img-grid img:nth-child(1){
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
     .img-grid img:nth-child(2){
-      border-top-right-radius: 26px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 26px; /* more curved upper right */
     }
 
-    /* ===================== MINI STORE ===================== */
-    .mini-store-body{
-      padding: 0;
-      background:#ffffff;
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
-      flex:1 1 auto;
-      min-height:0;
-    }
-
-    /* panel head: add View Full Store on the right */
-    .mini-head-right{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex:0 0 auto;
-    }
-    .mini-sep{
-      width:2px;
-      height:18px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.55);
-      flex:0 0 auto;
-      opacity:.9;
-    }
-    .mini-head-link{
-      height: 30px;
-      padding: 0 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      color:#fff;
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-size: 10px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-      white-space:nowrap;
-    }
-    .mini-head-link:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 18px rgba(15,23,42,0.10); transform: translateY(-1px); }
-    .mini-head-link:active{ background: var(--orangePress); transform: translateY(0px); }
-
-    .mini-band{ padding: 8px 14px 0; }
-
-    .mini-bar{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end; /* search removed, keep checkout aligned */
-      gap: 10px;
-      width:100%;
-      flex:0 0 auto;
-    }
-
-    .mini-checkout{
-      height:36px;
-      border-radius:14px;
-      padding:0 10px;
+    /* small circular CHECKOUT next to paragraph */
+    .para-cart{
+      position:absolute;
+      right: -56px;
+      top: 14px;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
       cursor:pointer;
-      box-shadow:0 10px 18px rgba(15,23,42,0.10);
-      user-select:none;
-      flex:0 0 auto;
-      min-width: 132px;
-      position:relative;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.12);
       -webkit-tap-highlight-color: transparent;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      z-index: 4;
     }
-    .mini-checkout:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 18px rgba(15,23,42,0.10); transform: translateY(-1px); }
-    .mini-checkout:active{ background: var(--orangePress); transform: translateY(0px); }
-    .mini-checkout .txt{ font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:10px; color:#fff; }
+    .para-cart:hover{
+      box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.12);
+      transform: translateY(-1px);
+    }
+    .para-cart:active{ background: var(--orangePress); transform: translateY(0px); }
 
     .cart-ico{
       position:relative;
@@ -567,8 +522,94 @@
       pointer-events:none;
       transition: background .12s ease;
     }
-    .mini-checkout:hover .mini-badge{ background: var(--orangeBadgeHover); }
-    .mini-checkout:active .mini-badge{ background: var(--orangePress); }
+
+    /* big circular VIEW FULL STORE button in the empty right space */
+    .big-store-circle{
+      position:absolute;
+      right: 18px;
+      top: 18px;
+      width: 140px;
+      height: 140px;
+      border-radius: 999px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap: 6px;
+      text-align:center;
+      user-select:none;
+      z-index: 2;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+    }
+    .big-store-circle:hover{
+      box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 18px 40px rgba(15,23,42,0.12);
+      transform: translateY(-1px);
+    }
+    .big-store-circle:active{ background: var(--orangePress); transform: translateY(0px); }
+    .big-store-circle .t1,
+    .big-store-circle .t2{
+      color:#fff;
+      font-weight: 950;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+    .big-store-circle .t1{ font-size: 14px; }
+    .big-store-circle .t2{ font-size: 12px; }
+
+    /* ===================== MINI STORE ===================== */
+    .mini-store-body{
+      padding: 0;
+      background:#ffffff;
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      flex:1 1 auto;
+      min-height:0;
+    }
+
+    /* view full store in upper-right of green tab with separator */
+    .mini-head-right{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      margin-left:auto;
+      flex: 0 0 auto;
+    }
+    .mini-head-sep{
+      width: 2px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.55);
+    }
+    .mini-head-link{
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 12px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.55);
+      color:#fff;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      white-space:nowrap;
+    }
+    .mini-head-link:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 18px rgba(15,23,42,0.10); transform: translateY(-1px); }
+    .mini-head-link:active{ background: var(--orangePress); transform: translateY(0px); }
+
+    .mini-band{ padding: 8px 14px 0; }
+    .mini-bar{ display:flex; align-items:center; gap: 10px; width:100%; flex:0 0 auto; min-height: 6px; }
 
     .mini-msg-wrap{ padding: 0 14px; }
     .mini-msg{
@@ -590,7 +631,7 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 0 14px 0;
+      padding: 0 14px 14px;
       background:#ffffff;
       margin-top: 0;
       flex:1 1 auto;
@@ -796,14 +837,14 @@
       min-height: calc(1.35em * 2);
     }
 
-    /* NEW: rounded orange bar full width under products */
-    .mini-underbar{
-      height: 14px;
+    /* rounded orange bar full width under products */
+    .mini-orange-bar{
+      height: 44px;
+      margin: 0 14px 14px;
       border-radius: 999px;
       background: var(--orange);
-      margin: 12px 14px 14px;
-      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
-      flex:0 0 auto;
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
     }
 
     /* ===================== ABOUT ===================== */
@@ -830,40 +871,45 @@
       box-shadow: 0 18px 40px rgba(15,23,42,0.08);
     }
 
-    /* NEW: about titles matching Aromatic & Delicious style */
-    .about-top-title{
-      padding: 14px 12px 0;
+    /* About: title like "Aromatic & Delicious" style, black, left aligned */
+    .about-title{
       font-weight: 950;
-      font-size: 30px;
+      font-size: 26px;
       line-height: 1.05;
       color:#0b1220;
       letter-spacing: .02em;
+      padding: 14px 14px 6px;
+      text-align:left;
     }
-    .about-top-title.center{ text-align:center; }
-    .about-top-title.left{ text-align:left; }
 
-    .about-card .para{ padding: 12px; padding-bottom: 0; }
+    /* About: paragraph + media connected (no gaps) */
+    .about-card .para{
+      position: static;
+      width: auto;
+      padding: 0;
+      left:auto; top:auto;
+    }
     .about-card .para p{
       background: var(--pale);
       border-radius: 14px;
-      border: 1px solid rgba(12,90,42,0.55);
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 6;
-      overflow: hidden;
-      min-height: calc(1.85em * 6 + 28px);
-      margin-bottom: 0;
-      max-width: none;
+      max-width:none;
+      margin: 0;
+      border-left: 0;
+      border-right: 0;
+      border-top: 0;
+      border-bottom: 0;
+      padding: 14px;
     }
 
     .about-media{
-      width: calc(100% - 24px);
-      margin: 0 12px 12px;
+      width: 100%;
+      margin: 0;
       display:flex;
       flex-direction:column;
-      gap: 10px;
+      gap: 0;               /* connect image to paragraph */
+      padding: 0;
     }
 
     .about-media img{
@@ -871,9 +917,9 @@
       height: 320px;
       object-fit: cover;
       object-position: center 50%;
-      border: var(--softBorder);
-      border-top: none;
-      border-radius: 0 0 14px 14px;
+      border: none;
+      border-top: 1px solid rgba(12,90,42,0.45); /* subtle seam */
+      border-radius: 0;      /* fully connected */
       background:#fff;
       filter: saturate(1.03) contrast(1.03);
     }
@@ -881,7 +927,7 @@
     .about-cta{
       height: 44px;
       width: 100%;
-      border-radius: 14px;
+      border-radius: 0 0 18px 18px; /* connect to bottom */
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
       color:#fff;
@@ -902,9 +948,7 @@
     .about-cta:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
     .about-cta:active{ transform: translateY(0px); background: var(--orangePress); }
 
-    .about-actions{ display:none; }
-
-    /* ===================== FOOTER (kept) ===================== */
+    /* ===================== FOOTER ===================== */
     .footer{
       margin-top: 18px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -1031,7 +1075,7 @@
 
     @media (prefers-reduced-motion: reduce){
       *{ scroll-behavior:auto !important; }
-      .pill-btn, .mini-card, .about-card, .mini-checkout, .add-to-cart, .mini-rect, .mini-head-link, .about-cta, .icon-pill{
+      .pill-btn, .mini-card, .about-card, .add-to-cart, .mini-rect, .mini-head-link, .big-store-circle, .para-cart, .about-cta, .icon-pill{
         transition: none !important;
         animation: none !important;
       }
@@ -1047,7 +1091,11 @@
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
 
-      .para{ width: 92%; } /* on smaller screens keep paragraph from clipping */
+      /* avoid crowding on small screens */
+      .big-store-circle{ display:none; }
+      .para{ width: 92%; }
+      .para-cart{ right: 10px; top: -62px; }
+      .img-grid{ padding-top: 190px; }
     }
 
     @media(max-width:780px){
@@ -1083,26 +1131,8 @@
       .nav-left{ left: 34px; }
       .nav-right{ right: 34px; }
 
-      .mini-bar{ flex-direction:column; align-items:stretch; }
-      .mini-checkout{ width:100%; min-width:0; }
-
       .img-grid img{ height: 200px; }
-      .img-grid{ padding-top: 178px; }
-
-      .about-media{
-        width: calc(100% - 44px);
-        margin: 0 22px 12px;
-      }
-      .about-media img{
-        height: auto;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        object-position: center 50%;
-      }
-
-      .mini-badge{ top:-4px; right:-6px; }
-
-      .mini-head-right{ display:none; } /* prevent crowding in the green tab on tiny screens */
+      .about-media img{ height: auto; aspect-ratio: 1 / 1; }
     }
   </style>
 
@@ -1184,13 +1214,32 @@
                 </div>
               </div>
 
-              <!-- paragraph now overlays images, narrower, with empty space on right -->
+              <!-- paragraph connected to left image + checkout circle + big view circle -->
               <div class="what-media-wrap" aria-label="What is MayaNut media block">
-                <div class="para">
+                <div class="para para-slant">
+                  <button class="para-cart" type="button" id="para-checkout" aria-label="Checkout">
+                    <span class="cart-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                      </svg>
+                      <span class="mini-badge" id="mini-badge">0</span>
+                    </span>
+                  </button>
+
                   <p>
-                    MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya. When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods and beverages—alongside its many nutritional benefits.
+                    MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
+                    When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods
+                    and beverages—alongside its many nutritional benefits.
                   </p>
                 </div>
+
+                <a class="big-store-circle" href="store.html" aria-label="View full store">
+                  <span class="t1">VIEW</span>
+                  <span class="t2">FULL STORE</span>
+                </a>
 
                 <div class="img-grid" aria-label="What is MayaNut images">
                   <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
@@ -1207,37 +1256,24 @@
           <aside class="panel" aria-label="Mini store">
             <div class="panel-head">
               <div class="panel-title">MayaNut MINI-STORE</div>
-              <div class="head-line" aria-hidden="true"></div>
 
-              <!-- View Full Store moved into the green tab (upper right) -->
-              <div class="mini-head-right" aria-label="Mini store header controls">
-                <span class="mini-sep" aria-hidden="true"></span>
+              <div class="mini-head-right" aria-label="Mini store header actions">
+                <div class="mini-head-sep" aria-hidden="true"></div>
                 <a class="mini-head-link" href="store.html" aria-label="View full store">VIEW FULL STORE</a>
               </div>
             </div>
 
             <div class="mini-store-body">
+              <!-- no search bar + no checkout button -->
               <div class="mini-band">
-                <div class="mini-bar" aria-label="Mini store controls">
-                  <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Checkout">
-                    <span class="cart-ico" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                        <path d="M6 7l-1-3H2.5"></path>
-                        <circle cx="9" cy="19" r="1.6"></circle>
-                        <circle cx="17" cy="19" r="1.6"></circle>
-                      </svg>
-                      <span class="mini-badge" id="mini-badge">0</span>
-                    </span>
-                    <span class="txt">CHECKOUT</span>
-                  </button>
-                </div>
+                <div class="mini-bar" aria-label="Mini store controls"></div>
               </div>
 
               <div class="mini-msg-wrap" aria-live="polite" aria-atomic="true">
                 <div class="mini-msg" id="mini-msg"></div>
               </div>
 
+              <!-- two top items -->
               <div class="mini-grid" id="mini-grid">
                 <article class="mini-card" data-title="MayaNut Powder">
                   <div class="mini-titlebar">
@@ -1312,8 +1348,8 @@
                 </article>
               </div>
 
-              <!-- orange full-width rounded bar under products -->
-              <div class="mini-underbar" aria-hidden="true"></div>
+              <!-- rounded orange bar under products -->
+              <div class="mini-orange-bar" aria-hidden="true"></div>
             </div>
           </aside>
         </section>
@@ -1327,9 +1363,8 @@
           <div class="section-body">
             <div class="about-grid">
               <div class="about-card" aria-label="About card 1">
-                <div class="about-top-title center">Farming's in Our Blood</div>
-
-                <div class="para" style="position:static; width:auto; left:auto; top:auto; z-index:auto; padding:12px;">
+                <div class="about-title">How It All Started...</div>
+                <div class="para">
                   <p>
                     In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                   </p>
@@ -1344,9 +1379,8 @@
               </div>
 
               <div class="about-card" aria-label="About card 2">
-                <div class="about-top-title left">We're Nuts For MayaNut!</div>
-
-                <div class="para" style="position:static; width:auto; left:auto; top:auto; z-index:auto; padding:12px;">
+                <div class="about-title">We're Nuts For MayaNut!</div>
+                <div class="para">
                   <p>
                     To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
                   </p>
@@ -1362,8 +1396,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="about-actions" aria-label="About section buttons"></div>
           </div>
         </section>
 
@@ -1644,7 +1676,8 @@
 
       document.querySelectorAll(".mini-card").forEach(wireCard);
 
-      document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
+      // checkout circle near paragraph
+      document.getElementById("para-checkout")?.addEventListener("click", ()=>{
         showMiniMessage("This function is currently unavailable.");
       });
 

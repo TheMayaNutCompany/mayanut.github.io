@@ -36,6 +36,7 @@
   <!-- Preload -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
+  <link rel="preload" as="image" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -83,6 +84,12 @@
 
       --stackH: calc(var(--circleBig) + var(--circleGap) + var(--circleSmall));
       --storeTotalH: calc(var(--stackH) + var(--checkoutGap) + var(--checkoutH));
+
+      /* what-is image + para sizing */
+      --whatRowGap: 12px;
+      --whatImgW: 250px;
+      --whatImgH: 132px;
+      --whatOffset: 10px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -297,7 +304,6 @@
       margin: 0 auto;
     }
 
-    /* extend WHAT IS slightly right; make MINI STORE slightly smaller */
     .layout{
       display:grid;
       grid-template-columns: 1.30fr 0.86fr;
@@ -411,22 +417,50 @@
       box-shadow: inset 0 0 0 1px rgba(6,97,0,0.95);
     }
 
-    /* ===================== WHAT IS: SLANTED PARAGRAPH ===================== */
+    /* ===================== WHAT IS: IMAGE + SLANTED PARAGRAPH ===================== */
     .what-para-wrap{ padding: 0 14px 14px; }
+
+    .what-row{
+      display:flex;
+      gap: var(--whatRowGap);
+      align-items:flex-start;
+      justify-content:flex-start;
+      width:100%;
+      margin-top: 6px;
+    }
+
+    .what-img-shell{
+      flex: 0 0 var(--whatImgW);
+      width: var(--whatImgW);
+      height: var(--whatImgH);
+      border: 1px solid rgba(12,90,42,0.55);
+      background:#fff;
+      overflow:hidden;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+      margin-top: var(--whatOffset); /* offset slightly DOWN from paragraph level */
+    }
+    .what-img-shell img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      object-position: center 52%;
+      filter: saturate(1.03) contrast(1.03);
+    }
+
     .what-para-shell{
+      flex: 1 1 auto;
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      width: calc(100% - 6px);
-      margin: 6px auto 0;
-      overflow: hidden;
+      overflow:hidden;
       position:relative;
-      min-height: 128px;
+      min-height: var(--whatImgH);
     }
     .what-para-inner{
-      padding: 14px 44px;
+      padding: 14px 44px; /* extra padding so text never gets clipped by slant */
       display:flex;
       align-items:center;
+      min-height: var(--whatImgH);
     }
     .what-para-inner p{
       margin:0;
@@ -480,7 +514,7 @@
       display:flex;
       flex-direction:column;
       gap: var(--circleGap);
-      align-items:center;                 /* centers small circle under big */
+      align-items:center;
       justify-content:flex-start;
       width: var(--circleBig);
     }
@@ -621,7 +655,7 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.10);
     }
 
-    /* product slightly bigger and forced to align with checkout bottom */
+    /* product */
     .mini-card{
       width: 270px;
       border-radius:18px;
@@ -1006,6 +1040,19 @@
         align-items:flex-start;
       }
       .checkout-under-circles{ margin-top: 0; }
+
+      .what-row{
+        flex-direction:column;
+        gap: 12px;
+      }
+      .what-img-shell{
+        width: 100%;
+        flex: 0 0 auto;
+        height: 190px;
+        margin-top: 0;
+      }
+      .what-para-shell{ min-height: auto; }
+      .what-para-inner{ min-height: auto; }
     }
 
     @media(max-width:780px){
@@ -1124,17 +1171,32 @@
                 </div>
               </div>
 
-              <div class="what-para-wrap" aria-label="MayaNut description">
-                <div class="what-para-shell slant-right slant-outline" aria-label="Slanted paragraph box">
-                  <div class="what-para-inner">
-                    <p>
-                      MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
-                      When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods
-                      and beverages—alongside its many nutritional benefits.
-                    </p>
+              <div class="what-para-wrap" aria-label="MayaNut description + image">
+                <div class="what-row" aria-label="What is MayaNut row">
+                  <!-- slanted fruit placeholder image, slightly DOWN-offset -->
+                  <div class="what-img-shell slant-right slant-outline" aria-label="Fruit placeholder image">
+                    <img
+                      src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                      alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
+                      loading="eager"
+                      decoding="async"
+                      onerror="this.style.opacity='.35';"
+                    />
+                  </div>
+
+                  <!-- slanted paragraph connected to image -->
+                  <div class="what-para-shell slant-right slant-outline" aria-label="Slanted paragraph box">
+                    <div class="what-para-inner">
+                      <p>
+                        MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
+                        When roasted and ground, MayaNut becomes a rich, flavorful powder that can be enjoyed in a wide variety of foods
+                        and beverages—alongside its many nutritional benefits.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 

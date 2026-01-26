@@ -70,16 +70,14 @@
       --scrollThumb:#c8ccd2;
       --scrollThumbHover:#b8bcc3;
 
-      /* measured scrollbar width (desktop) */
       --sbw: 0px;
-
       --padX: 16px;
       --gap: 16px;
 
       --outlineDark: #064d2a;
 
-      /* unified slant angle (approx “80°” vertical -> 10° tilt) */
-      --slantPct: 8%;
+      /* 85° slant (very subtle): smaller cut */
+      --slantPct: 4%;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -294,7 +292,7 @@
       margin: 0 auto;
     }
 
-    /* slightly wider left panel so paragraph can be shorter */
+    /* same layout: left slightly bigger than right */
     .layout{
       display:grid;
       grid-template-columns: 1.35fr 0.85fr;
@@ -399,7 +397,23 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===================== SLANTED (TOUCHING, FULL OUTLINE) ===================== */
+    /* ===================== SLANTED SHAPE CORE ===================== */
+    .slant-shape{
+      position: relative;
+      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
+      overflow:hidden;
+      background:#fff;
+    }
+    .slant-shape::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
+      border: 1.6px solid var(--outlineDark);
+    }
+
+    /* WHAT IS row */
     .slant-row{
       display:grid;
       grid-template-columns: 0.92fr 1.65fr;
@@ -407,27 +421,7 @@
       padding: 8px 14px 14px;
       align-items: stretch;
     }
-
-    .slant-shape{
-      position: relative;
-      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
-      overflow:hidden;
-      background:#fff;
-    }
-
-    /* full outline on ALL edges (including slanted sides) */
-    .slant-shape::after{
-      content:"";
-      position:absolute;
-      inset:-2px; /* pushes border slightly outside clipped edge so sides never disappear */
-      pointer-events:none;
-      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
-      border: 1.6px solid var(--outlineDark);
-    }
-
-    .slant-img{
-      height: 180px;
-    }
+    .slant-img{ height: 180px; }
     .slant-img img{
       width:100%;
       height:100%;
@@ -435,7 +429,6 @@
       object-position: center 50%;
       filter: saturate(1.03) contrast(1.03);
     }
-
     .slant-box{
       background: var(--pale);
       padding: 12px 16px;
@@ -465,6 +458,19 @@
       flex:1 1 auto;
       min-height:0;
     }
+    .mini-msg{
+      display:none;
+      border-radius:14px;
+      border: var(--softBorder);
+      padding: 10px 12px;
+      background: var(--pale);
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.45;
+    }
+    .mini-msg.show{ display:block; }
 
     .mini-store-row{
       display:flex;
@@ -475,7 +481,7 @@
     }
 
     .store-left{
-      width: 152px;
+      width: 164px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -488,14 +494,14 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap: 10px;
+      gap: 12px;
       padding-top: 2px;
     }
 
-    /* bigger “view other products” */
+    /* bigger view button + bigger text */
     .big-circle{
-      width: 104px;
-      height: 104px;
+      width: 118px;
+      height: 118px;
       border-radius: 50%;
       background: var(--orange);
       border: 2px solid #ffffff;
@@ -506,9 +512,9 @@
       text-align:center;
       font-weight: 950;
       text-transform: uppercase;
-      letter-spacing: .08em;
+      letter-spacing: .09em;
       line-height: 1.05;
-      font-size: 10px;
+      font-size: 11px;
       box-shadow: 0 14px 30px rgba(15,23,42,0.12);
       user-select:none;
       -webkit-tap-highlight-color: transparent;
@@ -517,50 +523,10 @@
     }
     .big-circle:active{ background: var(--orangePress); }
 
-    /* smaller circle: NO cart icon */
-    .small-circle{
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: var(--orange);
-      border: 2px solid #ffffff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 14px 30px rgba(15,23,42,0.12);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      cursor:pointer;
-      position:relative;
-      color:#fff;
-      font-weight: 950;
-      font-size: 9px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .mini-badge{
-      position:absolute;
-      top:-6px;
-      right:-6px;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.25);
-      color:#0b1220;
-      font-weight:950;
-      font-size:10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      line-height:1;
-      pointer-events:none;
-    }
-
+    /* removed: the small cart circle entirely */
     .checkout-btn{
-      width: 126px;
-      height: 44px;
+      width: 140px;
+      height: 46px;
       border-radius: 16px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.55);
@@ -584,18 +550,18 @@
 
     .checkout-cart{
       position:relative;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       display:flex;
       align-items:center;
       justify-content:center;
     }
     .checkout-cart svg{
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       stroke:#fff;
       fill:none;
-      stroke-width:2.5;
+      stroke-width:2.6;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
@@ -822,20 +788,6 @@
       min-height: calc(1.35em * 2);
     }
 
-    .mini-msg{
-      display:none;
-      border-radius:14px;
-      border: var(--softBorder);
-      padding: 10px 12px;
-      background: var(--pale);
-      color:#0b1220;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight:850;
-      line-height:1.45;
-    }
-    .mini-msg.show{ display:block; }
-
     /* ===================== ABOUT ===================== */
     .about-wrap{ margin-top: 16px; }
     .about-grid{
@@ -855,11 +807,9 @@
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       transition: transform .10s ease, box-shadow .12s ease;
     }
-    .about-card:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(15,23,42,0.08);
-    }
+    .about-card:hover{ transform: translateY(-1px); box-shadow: 0 18px 40px rgba(15,23,42,0.08); }
 
+    /* align subtitle with TOP-LEFT of slanted paragraph (not bottom-left) */
     .about-subtitle{
       padding: 12px 12px 0;
       font-weight: 950;
@@ -868,12 +818,12 @@
       color:#0b1220;
       letter-spacing: .02em;
       text-align:left;
-      margin-left: 6px;
+      margin-left: calc(12px + (var(--slantPct) * 2)); /* slight nudge right */
     }
 
     .about-card .para{ padding: 10px 12px 0; }
 
-    /* slanted paragraph with consistent angle + full outline */
+    /* slanted paragraphs in About use same slant angle + full outline */
     .about-card .para .slant-shape{
       background: var(--pale);
       padding: 12px 16px;
@@ -894,18 +844,19 @@
       display:flex;
       flex-direction:column;
       gap: 10px;
-      margin-top: 0;
     }
 
-    /* keep the retro jagged offset only in About */
+    /* retro offset stays for images only */
     .about-media .slant-img{
       height: 320px;
       margin-top: 10px;
     }
 
+    /* buttons: slightly less wide on right to align with bottom of slanted image */
     .about-cta{
       height: 44px;
-      width: 100%;
+      width: calc(100% - 12px);
+      align-self: flex-start;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -927,7 +878,7 @@
     .about-cta:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
     .about-cta:active{ transform: translateY(0px); background: var(--orangePress); }
 
-    /* ===================== FOOTER ===================== */
+    /* ===================== FOOTER (unchanged) ===================== */
     .footer{
       margin-top: 18px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -936,7 +887,6 @@
       color:#ffffff;
     }
     .footer *{ color:#ffffff; }
-
     .footer-inner{
       max-width: 1200px;
       margin: 0 auto;
@@ -946,64 +896,27 @@
       gap: 22px;
       align-items: start;
     }
-    .footer-left{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      align-items:flex-start;
-    }
+    .footer-left{ display:flex; flex-direction:column; gap: 10px; align-items:flex-start; }
     .footer-tagline{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      font-weight: 950;
-      letter-spacing: .06em;
-      font-size: 15px;
-      text-transform: uppercase;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      display:flex; align-items:center; gap: 8px;
+      font-weight: 950; letter-spacing: .06em; font-size: 15px;
+      text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       white-space:nowrap;
     }
-    .footer-florida{
-      width: 26px; height: 26px;
-      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35));
-    }
-    .footer-logo{
-      width: 240px; height: auto;
-      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
-      user-select:none;
-    }
-
-    .footer-right{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 18px;
-      align-items:start;
-    }
+    .footer-florida{ width: 26px; height: 26px; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35)); }
+    .footer-logo{ width: 240px; height: auto; filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22)); user-select:none; }
+    .footer-right{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items:start; }
     .footer-col-title{
-      font-weight: 950;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-size: 14px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      margin-bottom: 10px;
+      font-weight: 950; letter-spacing: .12em; text-transform: uppercase; font-size: 14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35); margin-bottom: 10px;
     }
     .footer-link{
-      display:block;
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing: .02em;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.25);
-      width: fit-content;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      display:block; font-weight: 900; font-size: 12px; letter-spacing: .02em;
+      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.25);
+      width: fit-content; text-shadow: 0 2px 12px rgba(0,0,0,0.25);
     }
     .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
-
-    .footer-divider{
-      border-top: 2px solid rgba(6,97,0,0.85);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-divider{ border-top: 2px solid rgba(6,97,0,0.85); max-width: 1200px; margin: 0 auto; }
     .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
@@ -1015,50 +928,27 @@
       text-align:left;
     }
 
-    .social-row{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-      margin-top: 2px;
-    }
+    .social-row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; margin-top: 2px; }
     .icon-pill{
-      width: 34px;
-      height: 34px;
-      border-radius: 14px;
+      width: 34px; height: 34px; border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.55);
       background: #fd6c02;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+      display:inline-flex; align-items:center; justify-content:center;
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      text-decoration:none;
-      user-select:none;
+      text-decoration:none; user-select:none;
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
     }
     .icon-pill:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.18); transform: translateY(-1px); }
     .icon-pill:active{ background: var(--orangePress); transform: translateY(0px); }
     .icon-pill svg{
-      width: 18px;
-      height: 18px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 18px; height: 18px;
+      stroke: #ffffff; fill: none; stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round;
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
     .yt-body{ fill:#ffffff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ scroll-behavior:auto !important; }
-      .pill-btn, .mini-card, .about-card, .add-to-cart, .mini-rect, .about-cta, .icon-pill, .checkout-btn, .big-circle, .small-circle{
-        transition: none !important;
-        animation: none !important;
-      }
-    }
 
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
@@ -1077,44 +967,6 @@
       .slant-row{ grid-template-columns: 1fr; gap: 10px; }
       .slant-img, .slant-box{ height:auto; }
       .slant-box{ align-items:flex-start; }
-    }
-
-    @media(max-width:780px){
-      .site-header{
-        background-size: 175% auto;
-        background-position: center 42%;
-        padding: 22px 0 22px;
-        min-height: 140px;
-      }
-
-      .brand-group{
-        top:56%;
-        left:50%;
-        transform: translate(-50%, -50%);
-        max-width: calc(100vw - 44px);
-      }
-      .brand-logo{ width:46px; height:46px; }
-      .brand-text{
-        font-size: 20px;
-        letter-spacing:.05em;
-        max-width: calc(100vw - 120px);
-      }
-
-      .menu-row{
-        top: calc(56% + 34px);
-        transform: translate(-50%, -50%);
-        gap: 12px;
-      }
-      .menu-row a{ font-size: 14px; letter-spacing:.07em; }
-
-      .main-nav{ top: 8px; transform:none; height:auto; }
-      .nav-left,.nav-right{ top: 8px; transform:none; }
-      .nav-left{ left: 34px; }
-      .nav-right{ right: 34px; }
-
-      .about-media .slant-img{ height: auto; aspect-ratio: 1 / 1; }
-      .big-circle{ width: 96px; height: 96px; font-size: 9.5px; }
-      .small-circle{ width: 44px; height: 44px; }
     }
   </style>
 
@@ -1196,7 +1048,6 @@
                 </div>
               </div>
 
-              <!-- slanted image + paragraph: touching + same angle -->
               <div class="slant-row" aria-label="MayaNut intro">
                 <div class="slant-shape slant-img" aria-label="MayaNut fruit image">
                   <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
@@ -1227,17 +1078,11 @@
               <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
 
               <div class="mini-store-row" aria-label="Mini store layout">
-                <!-- LEFT: circles + checkout -->
                 <div class="store-left" aria-label="Mini store actions">
-                  <div class="circle-stack" aria-label="Store circles">
+                  <div class="circle-stack" aria-label="Store circle">
                     <a class="big-circle" href="store.html" aria-label="View other products">
                       VIEW<br>OTHER<br>PRODUCTS
                     </a>
-
-                    <button class="small-circle" type="button" id="open-cart" aria-label="View cart">
-                      CART
-                      <span class="mini-badge" id="mini-badge">0</span>
-                    </button>
                   </div>
 
                   <button class="checkout-btn" type="button" id="mini-checkout" aria-label="Checkout">
@@ -1254,7 +1099,6 @@
                   </button>
                 </div>
 
-                <!-- RIGHT: single compact product -->
                 <div class="store-right" aria-label="Mini store product">
                   <article class="mini-card" data-title="MayaNut Powder">
                     <div class="mini-titlebar">
@@ -1310,7 +1154,7 @@
                 <div class="about-subtitle">How It All Started...</div>
 
                 <div class="para">
-                  <div class="slant-shape">
+                  <div class="slant-shape" style="background: var(--pale); padding: 12px 16px;">
                     <p>
                       In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
                       growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
@@ -1333,7 +1177,7 @@
                 <div class="about-subtitle">We're Nuts For MayaNut!</div>
 
                 <div class="para">
-                  <div class="slant-shape">
+                  <div class="slant-shape" style="background: var(--pale); padding: 12px 16px;">
                     <p>
                       To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm
                       while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable,
@@ -1358,8 +1202,6 @@
         </section>
 
       </div>
-
-      <div class="top-banner" aria-hidden="true" style="border-top:1px solid rgba(255,255,255,0.18); border-bottom:none;"></div>
     </main>
 
     <!-- FOOTER -->
@@ -1436,7 +1278,6 @@
     </footer>
   </div>
 
-  <!-- Weight dropdown menu root -->
   <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
   <script>
@@ -1445,7 +1286,6 @@
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
       const cart = new Map();
 
-      const badge = document.getElementById("mini-badge");
       const badge2 = document.getElementById("checkout-badge");
       const msgEl = document.getElementById("mini-msg");
       const root = document.getElementById("weight-menu-root");
@@ -1519,7 +1359,6 @@
       }
       function renderBadges(){
         const n = String(cartCount());
-        if(badge) badge.textContent = n;
         if(badge2) badge2.textContent = n;
       }
 
@@ -1630,10 +1469,6 @@
 
       document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
         showMiniMessage("This function is currently unavailable.");
-      });
-
-      document.getElementById("open-cart")?.addEventListener("click", ()=>{
-        showMiniMessage("Cart preview is currently unavailable.");
       });
 
       renderBadges();

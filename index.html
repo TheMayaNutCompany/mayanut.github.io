@@ -76,8 +76,8 @@
 
       --outlineDark: #064d2a;
 
-      /* 85° slant (very subtle): smaller cut */
-      --slantPct: 4%;
+      /* 83° slant (slightly more cut than 85°) */
+      --slantPct: 6%;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -292,7 +292,6 @@
       margin: 0 auto;
     }
 
-    /* same layout: left slightly bigger than right */
     .layout{
       display:grid;
       grid-template-columns: 1.35fr 0.85fr;
@@ -404,13 +403,15 @@
       overflow:hidden;
       background:#fff;
     }
+    /* full outline (including slanted sides) */
     .slant-shape::after{
       content:"";
       position:absolute;
-      inset:-2px;
+      inset:0;
       pointer-events:none;
       clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
       border: 1.6px solid var(--outlineDark);
+      border-radius: 0;
     }
 
     /* WHAT IS row */
@@ -431,7 +432,7 @@
     }
     .slant-box{
       background: var(--pale);
-      padding: 12px 16px;
+      padding: 12px 18px 12px 24px; /* more left padding so text never clips */
       height: 180px;
       display:flex;
       align-items:center;
@@ -445,7 +446,7 @@
       line-height: 1.75;
       color: rgba(12,90,42,0.95);
       width:100%;
-      padding-right: 6px;
+      padding-right: 8px;
     }
 
     /* ===================== MINI STORE ===================== */
@@ -481,11 +482,11 @@
     }
 
     .store-left{
-      width: 164px;
+      width: 170px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-start;
       gap: 12px;
       padding: 2px 0;
     }
@@ -494,14 +495,14 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap: 12px;
+      gap: 10px;
       padding-top: 2px;
+      width:100%;
     }
 
-    /* bigger view button + bigger text */
     .big-circle{
-      width: 118px;
-      height: 118px;
+      width: 122px;
+      height: 122px;
       border-radius: 50%;
       background: var(--orange);
       border: 2px solid #ffffff;
@@ -514,7 +515,7 @@
       text-transform: uppercase;
       letter-spacing: .09em;
       line-height: 1.05;
-      font-size: 11px;
+      font-size: 12px;
       box-shadow: 0 14px 30px rgba(15,23,42,0.12);
       user-select:none;
       -webkit-tap-highlight-color: transparent;
@@ -523,7 +524,54 @@
     }
     .big-circle:active{ background: var(--orangePress); }
 
-    /* removed: the small cart circle entirely */
+    /* re-added smaller cart circle (icon only) */
+    .cart-circle{
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 2px solid #ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .cart-circle:active{ background: var(--orangePress); }
+    .cart-circle svg{
+      width: 28px;
+      height: 28px;
+      stroke:#fff;
+      fill:none;
+      stroke-width:2.6;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    /* really tiny count badge on cart “tip” */
+    .cart-badge{
+      position:absolute;
+      top: 6px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.25);
+      color:#0b1220;
+      font-weight:950;
+      font-size:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      line-height:1;
+      transform: translate(50%,-50%);
+    }
+
     .checkout-btn{
       width: 140px;
       height: 46px;
@@ -533,7 +581,6 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      gap: 10px;
       color:#ffffff;
       font-weight: 950;
       letter-spacing: .14em;
@@ -542,46 +589,11 @@
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      margin-top:auto;
+      margin-top: 6px;
       transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
     }
     .checkout-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
     .checkout-btn:active{ background: var(--orangePress); transform: translateY(0px); }
-
-    .checkout-cart{
-      position:relative;
-      width: 28px;
-      height: 28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .checkout-cart svg{
-      width: 28px;
-      height: 28px;
-      stroke:#fff;
-      fill:none;
-      stroke-width:2.6;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-    .checkout-badge{
-      position:absolute;
-      top:-7px;
-      right:-8px;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.25);
-      color:#0b1220;
-      font-weight:950;
-      font-size:10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      pointer-events:none;
-    }
 
     .store-right{
       flex:1 1 auto;
@@ -591,7 +603,7 @@
     }
 
     .mini-card{
-      width: 258px;
+      width: 262px;
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -599,7 +611,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: 338px;
+      min-height: 342px;
       transition: transform .10s ease, box-shadow .12s ease;
     }
     .mini-card:hover{
@@ -809,7 +821,6 @@
     }
     .about-card:hover{ transform: translateY(-1px); box-shadow: 0 18px 40px rgba(15,23,42,0.08); }
 
-    /* align subtitle with TOP-LEFT of slanted paragraph (not bottom-left) */
     .about-subtitle{
       padding: 12px 12px 0;
       font-weight: 950;
@@ -818,15 +829,13 @@
       color:#0b1220;
       letter-spacing: .02em;
       text-align:left;
-      margin-left: calc(12px + (var(--slantPct) * 2)); /* slight nudge right */
+      margin-left: calc(12px + (var(--slantPct) * 2));
     }
 
     .about-card .para{ padding: 10px 12px 0; }
-
-    /* slanted paragraphs in About use same slant angle + full outline */
     .about-card .para .slant-shape{
       background: var(--pale);
-      padding: 12px 16px;
+      padding: 12px 18px 12px 24px; /* extra left padding to avoid any clip */
     }
     .about-card .para .slant-shape p{
       margin:0;
@@ -846,13 +855,11 @@
       gap: 10px;
     }
 
-    /* retro offset stays for images only */
     .about-media .slant-img{
       height: 320px;
-      margin-top: 10px;
+      margin-top: 10px; /* keep offset look for about images */
     }
 
-    /* buttons: slightly less wide on right to align with bottom of slanted image */
     .about-cta{
       height: 44px;
       width: calc(100% - 12px);
@@ -955,7 +962,13 @@
       .about-grid{ grid-template-columns:1fr; }
 
       .mini-store-row{ flex-direction:column; }
-      .store-left{ width:100%; flex-direction:row; align-items:flex-start; justify-content:space-between; }
+      .store-left{
+        width:100%;
+        flex-direction:row;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap: 14px;
+      }
       .circle-stack{ flex-direction:row; gap: 12px; }
       .store-right{ justify-content:flex-start; }
       .mini-card{ width:100%; max-width: 360px; }
@@ -1079,22 +1092,23 @@
 
               <div class="mini-store-row" aria-label="Mini store layout">
                 <div class="store-left" aria-label="Mini store actions">
-                  <div class="circle-stack" aria-label="Store circle">
+                  <div class="circle-stack" aria-label="Store circles">
                     <a class="big-circle" href="store.html" aria-label="View other products">
                       VIEW<br>OTHER<br>PRODUCTS
                     </a>
-                  </div>
 
-                  <button class="checkout-btn" type="button" id="mini-checkout" aria-label="Checkout">
-                    <span class="checkout-cart" aria-hidden="true">
+                    <button class="cart-circle" type="button" id="mini-cart" aria-label="View cart">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
                         <path d="M6 7l-1-3H2.5"></path>
                         <circle cx="9" cy="19" r="1.6"></circle>
                         <circle cx="17" cy="19" r="1.6"></circle>
                       </svg>
-                      <span class="checkout-badge" id="checkout-badge">0</span>
-                    </span>
+                      <span class="cart-badge" id="mini-badge">0</span>
+                    </button>
+                  </div>
+
+                  <button class="checkout-btn" type="button" id="mini-checkout" aria-label="Checkout">
                     CHECKOUT
                   </button>
                 </div>
@@ -1154,12 +1168,14 @@
                 <div class="about-subtitle">How It All Started...</div>
 
                 <div class="para">
-                  <div class="slant-shape" style="background: var(--pale); padding: 12px 16px;">
-                    <p>
-                      In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
-                      growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
-                      founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
-                    </p>
+                  <div class="slant-shape">
+                    <div style="background: var(--pale); padding: 12px 18px 12px 24px;">
+                      <p style="margin:0; font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size: 14px; line-height: 1.75; color: rgba(12,90,42,0.95);">
+                        In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
+                        growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
+                        founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -1177,12 +1193,14 @@
                 <div class="about-subtitle">We're Nuts For MayaNut!</div>
 
                 <div class="para">
-                  <div class="slant-shape" style="background: var(--pale); padding: 12px 16px;">
-                    <p>
-                      To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm
-                      while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable,
-                      long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
-                    </p>
+                  <div class="slant-shape">
+                    <div style="background: var(--pale); padding: 12px 18px 12px 24px;">
+                      <p style="margin:0; font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size: 14px; line-height: 1.75; color: rgba(12,90,42,0.95);">
+                        To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm
+                        while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable,
+                        long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -1286,7 +1304,7 @@
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
       const cart = new Map();
 
-      const badge2 = document.getElementById("checkout-badge");
+      const badge = document.getElementById("mini-badge");
       const msgEl = document.getElementById("mini-msg");
       const root = document.getElementById("weight-menu-root");
       let menu = null;
@@ -1357,9 +1375,9 @@
         cart.forEach(v=> t += Math.max(0, v|0));
         return t;
       }
-      function renderBadges(){
-        const n = String(cartCount());
-        if(badge2) badge2.textContent = n;
+      function renderBadge(){
+        if(!badge) return;
+        badge.textContent = String(cartCount());
       }
 
       function brieflyAdded(btn){
@@ -1458,7 +1476,7 @@
           if(add.disabled) return;
           const q = clamp(getQty());
           cart.set(title, (cart.get(title)||0) + q);
-          renderBadges();
+          renderBadge();
           add.disabled = true;
           brieflyAdded(add);
           setTimeout(()=>{ add.disabled = false; }, 350);
@@ -1471,7 +1489,11 @@
         showMiniMessage("This function is currently unavailable.");
       });
 
-      renderBadges();
+      document.getElementById("mini-cart")?.addEventListener("click", ()=>{
+        showMiniMessage("Cart preview is currently unavailable.");
+      });
+
+      renderBadge();
     })();
   </script>
 </body>

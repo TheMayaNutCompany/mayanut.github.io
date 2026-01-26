@@ -76,8 +76,11 @@
 
       --outlineDark: #064d2a;
 
-      /* 83° slant (slightly more cut than 85°) */
+      /* 83° slant feel (consistent everywhere) */
       --slantPct: 6%;
+
+      /* slant outline thickness */
+      --slantStroke: 1.8px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -396,22 +399,28 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===================== SLANTED SHAPE CORE ===================== */
+    /* ===================== SLANT (outline + consistent angle) ===================== */
+    .slant-clip{
+      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
+    }
+    /* outer gives perfect outline on slanted sides */
     .slant-shape{
       position: relative;
-      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
-      overflow:hidden;
-      background:#fff;
+      background: var(--outlineDark);
+      padding: var(--slantStroke);
+      overflow: hidden;
     }
-    /* full outline (including slanted sides) */
-    .slant-shape::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
+    .slant-shape.slant-clip{ /* ensure clip applies to the outline too */
       clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
-      border: 1.6px solid var(--outlineDark);
-      border-radius: 0;
+    }
+    .slant-surface{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      background:#ffffff;
+    }
+    .slant-surface.slant-clip{
+      clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
     }
 
     /* WHAT IS row */
@@ -431,11 +440,16 @@
       filter: saturate(1.03) contrast(1.03);
     }
     .slant-box{
-      background: var(--pale);
-      padding: 12px 18px 12px 24px; /* more left padding so text never clips */
       height: 180px;
       display:flex;
       align-items:center;
+      background: transparent;
+    }
+    .slant-box .slant-surface{
+      background: var(--pale);
+      display:flex;
+      align-items:center;
+      padding: 12px 18px 12px 28px; /* more left padding so text never clips */
     }
     .slant-box p{
       margin:0;
@@ -446,7 +460,7 @@
       line-height: 1.75;
       color: rgba(12,90,42,0.95);
       width:100%;
-      padding-right: 8px;
+      padding-right: 10px;
     }
 
     /* ===================== MINI STORE ===================== */
@@ -524,7 +538,6 @@
     }
     .big-circle:active{ background: var(--orangePress); }
 
-    /* re-added smaller cart circle (icon only) */
     .cart-circle{
       width: 62px;
       height: 62px;
@@ -551,7 +564,6 @@
       stroke-linejoin:round;
     }
 
-    /* really tiny count badge on cart “tip” */
     .cart-badge{
       position:absolute;
       top: 6px;
@@ -833,11 +845,11 @@
     }
 
     .about-card .para{ padding: 10px 12px 0; }
-    .about-card .para .slant-shape{
+    .about-card .para .slant-surface{
       background: var(--pale);
-      padding: 12px 18px 12px 24px; /* extra left padding to avoid any clip */
+      padding: 12px 18px 12px 28px;
     }
-    .about-card .para .slant-shape p{
+    .about-card .para p{
       margin:0;
       font-family: var(--font-pretty);
       font-style: italic;
@@ -857,7 +869,7 @@
 
     .about-media .slant-img{
       height: 320px;
-      margin-top: 10px; /* keep offset look for about images */
+      margin-top: 10px; /* keep offset look in About section only */
     }
 
     .about-cta{
@@ -957,29 +969,133 @@
     .yt-body{ fill:#ffffff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
+    /* ===================== RESPONSIVE ===================== */
+
+    /* Mobile: toolbar row (view other products + cart + checkout side-by-side),
+       product less wide and aligned more to the right */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .about-grid{ grid-template-columns:1fr; }
 
-      .mini-store-row{ flex-direction:column; }
-      .store-left{
-        width:100%;
-        flex-direction:row;
-        align-items:flex-start;
-        justify-content:space-between;
-        gap: 14px;
+      .slant-row{ grid-template-columns: 1fr; gap: 10px; }
+      .slant-img, .slant-box{ height:auto; }
+      .slant-box .slant-surface{ align-items:flex-start; }
+
+      .mini-store-row{
+        flex-direction:column;
+        gap: 12px;
       }
-      .circle-stack{ flex-direction:row; gap: 12px; }
-      .store-right{ justify-content:flex-start; }
-      .mini-card{ width:100%; max-width: 360px; }
+
+      .store-left{
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0;
+      }
+
+      .circle-stack{
+        width: auto;
+        flex-direction: row;
+        gap: 10px;
+        padding: 0;
+        align-items:center;
+      }
+
+      /* make controls smaller on mobile and keep them left */
+      .big-circle{
+        width: 98px;
+        height: 56px;
+        border-radius: 18px;
+        font-size: 10px;
+        letter-spacing: .10em;
+        line-height: 1.05;
+        padding: 8px 10px;
+      }
+
+      .big-circle br{ display:none; } /* compact */
+      .big-circle{ white-space:nowrap; }
+      .big-circle::after{ content:""; }
+
+      .cart-circle{
+        width: 52px;
+        height: 52px;
+      }
+      .cart-circle svg{ width: 24px; height: 24px; }
+      .cart-badge{
+        width: 12px; height: 12px;
+        top: 6px; right: 9px;
+        font-size: 8px;
+      }
+
+      .checkout-btn{
+        width: 120px;
+        height: 52px;
+        margin-top: 0;
+        border-radius: 18px;
+        letter-spacing: .12em;
+        font-size: 12px;
+      }
+
+      .store-right{
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .mini-card{
+        width: 78%;
+        max-width: 340px;
+        min-width: 260px;
+        margin-left: auto;
+      }
 
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
+    }
 
-      .slant-row{ grid-template-columns: 1fr; gap: 10px; }
-      .slant-img, .slant-box{ height:auto; }
-      .slant-box{ align-items:flex-start; }
+    @media(max-width:780px){
+      .site-header{
+        background-size: 175% auto;
+        background-position: center 42%;
+        padding: 22px 0 22px;
+        min-height: 140px;
+      }
+
+      .brand-group{
+        top:56%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        max-width: calc(100vw - 44px);
+      }
+      .brand-logo{ width:46px; height:46px; }
+      .brand-text{
+        font-size: 20px;
+        letter-spacing:.05em;
+        max-width: calc(100vw - 120px);
+      }
+
+      .menu-row{
+        top: calc(56% + 34px);
+        transform: translate(-50%, -50%);
+        gap: 12px;
+      }
+      .menu-row a{ font-size: 14px; letter-spacing:.07em; }
+
+      .main-nav{ top: 8px; transform:none; height:auto; }
+      .nav-left,.nav-right{ top: 8px; transform:none; }
+      .nav-left{ left: 34px; }
+      .nav-right{ right: 34px; }
+
+      .about-media{
+        width: calc(100% - 44px);
+        margin: 0 22px 12px;
+      }
+      .about-media .slant-img{
+        height: auto;
+        aspect-ratio: 1 / 1;
+      }
     }
   </style>
 
@@ -1062,19 +1178,23 @@
               </div>
 
               <div class="slant-row" aria-label="MayaNut intro">
-                <div class="slant-shape slant-img" aria-label="MayaNut fruit image">
-                  <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                       alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
-                       loading="eager" decoding="async"
-                       onerror="this.style.opacity='.35';" />
+                <div class="slant-shape slant-clip slant-img" aria-label="MayaNut fruit image">
+                  <div class="slant-surface slant-clip">
+                    <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                         alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
+                         loading="eager" decoding="async"
+                         onerror="this.style.opacity='.35';" />
+                  </div>
                 </div>
 
-                <div class="slant-shape slant-box" aria-label="MayaNut paragraph">
-                  <p>
-                    MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. Used for centuries by the Maya,
-                    it becomes a rich, flavorful powder when roasted and ground—enjoyed in drinks, baking, and everyday recipes,
-                    alongside its many nutritional benefits.
-                  </p>
+                <div class="slant-shape slant-clip slant-box" aria-label="MayaNut paragraph">
+                  <div class="slant-surface slant-clip">
+                    <p>
+                      MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. Used for centuries by the Maya,
+                      it becomes a rich, flavorful powder when roasted and ground—enjoyed in drinks, baking, and everyday recipes,
+                      alongside its many nutritional benefits.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1092,9 +1212,9 @@
 
               <div class="mini-store-row" aria-label="Mini store layout">
                 <div class="store-left" aria-label="Mini store actions">
-                  <div class="circle-stack" aria-label="Store circles">
+                  <div class="circle-stack" aria-label="Store actions">
                     <a class="big-circle" href="store.html" aria-label="View other products">
-                      VIEW<br>OTHER<br>PRODUCTS
+                      VIEW OTHER PRODUCTS
                     </a>
 
                     <button class="cart-circle" type="button" id="mini-cart" aria-label="View cart">
@@ -1168,9 +1288,9 @@
                 <div class="about-subtitle">How It All Started...</div>
 
                 <div class="para">
-                  <div class="slant-shape">
-                    <div style="background: var(--pale); padding: 12px 18px 12px 24px;">
-                      <p style="margin:0; font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size: 14px; line-height: 1.75; color: rgba(12,90,42,0.95);">
+                  <div class="slant-shape slant-clip">
+                    <div class="slant-surface slant-clip" style="background: var(--pale); padding: 12px 18px 12px 28px;">
+                      <p>
                         In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
                         growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
                         founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
@@ -1180,11 +1300,14 @@
                 </div>
 
                 <div class="about-media">
-                  <div class="slant-shape slant-img">
-                    <img src="the-maya-nut-company-bubba-image.jpg"
-                         alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
-                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="slant-shape slant-clip slant-img">
+                    <div class="slant-surface slant-clip">
+                      <img src="the-maya-nut-company-bubba-image.jpg"
+                           alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
+                           loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                    </div>
                   </div>
+
                   <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
                 </div>
               </div>
@@ -1193,9 +1316,9 @@
                 <div class="about-subtitle">We're Nuts For MayaNut!</div>
 
                 <div class="para">
-                  <div class="slant-shape">
-                    <div style="background: var(--pale); padding: 12px 18px 12px 24px;">
-                      <p style="margin:0; font-family: var(--font-pretty); font-style: italic; font-weight: 850; font-size: 14px; line-height: 1.75; color: rgba(12,90,42,0.95);">
+                  <div class="slant-shape slant-clip">
+                    <div class="slant-surface slant-clip" style="background: var(--pale); padding: 12px 18px 12px 28px;">
+                      <p>
                         To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm
                         while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable,
                         long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
@@ -1205,11 +1328,14 @@
                 </div>
 
                 <div class="about-media">
-                  <div class="slant-shape slant-img">
-                    <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                         alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
-                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="slant-shape slant-clip slant-img">
+                    <div class="slant-surface slant-clip">
+                      <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                           alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
+                           loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                    </div>
                   </div>
+
                   <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
                     EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
                   </a>

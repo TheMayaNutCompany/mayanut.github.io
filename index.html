@@ -74,14 +74,11 @@
       --padX: 16px;
       --gap: 16px;
 
-      --outlineDark:#064d2a;
+      --outlineDark: #064d2a;
 
-      /* 83° slant feel: subtle */
+      /* 83° slant */
       --slantPct: 6%;
       --slantStroke: 2px;
-
-      /* text skew to simulate retro diagonal drift */
-      --textSkew: -6deg;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -118,12 +115,6 @@
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
-
-    :focus-visible{
-      outline: 3px solid rgba(216,255,106,0.95);
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
 
     /* ===================== TOP ===================== */
     .top-banner{ height: var(--bannerH); background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
@@ -239,8 +230,6 @@
       transition: transform .08s ease, box-shadow .12s ease, background .08s ease;
       -webkit-tap-highlight-color: transparent;
     }
-    .pill-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 10px 22px rgba(15,23,42,0.12); transform: translateY(-1px); }
-    .pill-btn:active{ background: var(--orangePress); transform: translateY(0px); }
 
     .menu-row{
       position:absolute;
@@ -265,23 +254,6 @@
       padding:2px 0;
       line-height:1;
     }
-    .menu-row a::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:-3px;
-      height:2px;
-      width:100%;
-      background:#ffffff;
-      border-radius:999px;
-      transform: scaleX(0);
-      transform-origin:left;
-      transition: transform .18s ease;
-      opacity:0.95;
-    }
-    .menu-row a:hover::after{ transform: scaleX(1); }
-    .menu-row a.is-active{ color: var(--orange); }
-    .menu-row a.is-active::after{ transform: scaleX(1); background: var(--orange); opacity:1; }
 
     /* ===================== MAIN ===================== */
     main{
@@ -296,10 +268,9 @@
       margin: 0 auto;
     }
 
-    /* Make What Is a touch wider so mini store is a bit smaller, but keep alignment sane */
     .layout{
       display:grid;
-      grid-template-columns: 1.42fr 0.78fr;
+      grid-template-columns: 1.35fr 0.85fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -375,7 +346,6 @@
       text-decoration-thickness: 2px;
     }
 
-    /* ======== bubble row (2) ======== */
     .hero-meta{
       margin-top: 10px;
       padding: 0 10px;
@@ -398,28 +368,34 @@
       white-space:nowrap;
     }
 
-    /* ======== slant outline wrapper (FULL outline on all edges) ======== */
+    /* ===================== SLANT (MATCHED PARALLEL EDGES) ===================== */
     .slantPoly{
       clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%);
     }
-    .slant-outline{
-      background: var(--outlineDark);
+    .slant-shape{
+      position: relative;
+      background: var(--outlineDark); /* outline color */
       padding: var(--slantStroke);
+      overflow: hidden;
     }
-    .slant-inner{
-      background:#ffffff;
-      overflow:hidden;
-    }
+    .slant-shape.slantPoly{ clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%); }
 
-    /* ======== WHAT IS row (image + paragraph touching, same height) ======== */
+    .slant-surface{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      background:#ffffff;
+    }
+    .slant-surface.slantPoly{ clip-path: polygon(var(--slantPct) 0%, 100% 0%, calc(100% - var(--slantPct)) 100%, 0% 100%); }
+
     .slant-row{
       display:grid;
-      grid-template-columns: 0.95fr 1.85fr;
+      grid-template-columns: 0.92fr 1.65fr;
       gap:0;
       padding: 8px 14px 14px;
       align-items: stretch;
     }
-    .slant-img{ height: 170px; }
+    .slant-img{ height: 180px; }
     .slant-img img{
       width:100%;
       height:100%;
@@ -428,29 +404,35 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    .slant-box{ height: 170px; display:flex; background:transparent; }
-    .slant-box .slant-inner{
+    .slant-box{
+      height: 180px;
+      display:flex;
+      align-items:center;
+      background: transparent;
+    }
+    .slant-box .slant-surface{
       background: var(--pale);
       display:flex;
       align-items:center;
-      padding: 12px 18px 12px 44px; /* extra left so text never clips on slant */
-      width:100%;
+      padding: 12px 18px 12px 40px; /* move text right so left edge never clips */
     }
-    .slant-text{
+
+    /* text “slant” / drift left as lines go down */
+    .slant-box p{
       margin:0;
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.75;
       color: rgba(12,90,42,0.95);
       width:100%;
-      padding-right: 8px;
-      transform: skewX(var(--textSkew));
+      padding-right: 10px;
+      transform: skewX(6deg);
       transform-origin: top left;
     }
 
-    /* ===================== MINI STORE ===================== */
+    /* ===================== MINI STORE (unchanged layout) ===================== */
     .mini-store-body{
       padding: 10px 14px 14px;
       background:#ffffff;
@@ -460,7 +442,6 @@
       flex:1 1 auto;
       min-height:0;
     }
-
     .mini-msg{
       display:none;
       border-radius:14px;
@@ -477,20 +458,20 @@
 
     .mini-store-row{
       display:flex;
-      gap: 12px;
+      gap: 14px;
       align-items: stretch;
       flex: 1 1 auto;
       min-height: 0;
     }
 
-    /* Left controls: circles + checkout aligned to card bottom */
     .store-left{
-      width: 156px;
+      width: 170px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:space-between;
-      padding: 4px 0 0;
+      justify-content:flex-start;
+      gap: 12px;
+      padding: 2px 0;
     }
 
     .circle-stack{
@@ -498,19 +479,20 @@
       flex-direction:column;
       align-items:center;
       gap: 10px;
+      padding-top: 2px;
       width:100%;
     }
 
     .big-circle{
-      width: 108px;
-      height: 108px;
+      width: 122px;
+      height: 122px;
       border-radius: 50%;
       background: var(--orange);
-      border: 2px solid #fff;
+      border: 2px solid #ffffff;
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#fff;
+      color:#ffffff;
       text-align:center;
       font-weight: 950;
       text-transform: uppercase;
@@ -523,15 +505,13 @@
       cursor:pointer;
       padding: 10px;
     }
-    .big-circle .big-top{ font-size: 14px; letter-spacing: .10em; }
-    .big-circle .big-sub{ font-size: 12px; letter-spacing: .10em; margin-top: 4px; }
 
     .cart-circle{
-      width: 54px;
-      height: 54px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
       background: var(--orange);
-      border: 2px solid #fff;
+      border: 2px solid #ffffff;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -542,34 +522,35 @@
       position: relative;
     }
     .cart-circle svg{
-      width: 24px; height: 24px;
-      stroke:#fff; fill:none;
+      width: 28px;
+      height: 28px;
+      stroke:#fff;
+      fill:none;
       stroke-width:2.6;
-      stroke-linecap:round; stroke-linejoin:round;
+      stroke-linecap:round;
+      stroke-linejoin:round;
     }
-    /* tiny badge on the cart “tip” */
     .cart-badge{
       position:absolute;
-      top: 7px;
+      top: 6px;
       right: 10px;
       width: 12px;
       height: 12px;
       border-radius: 999px;
       background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.28);
+      border: 1px solid rgba(0,0,0,0.25);
       color:#0b1220;
       font-weight:950;
       font-size:8px;
       display:flex;
       align-items:center;
       justify-content:center;
+      pointer-events:none;
       line-height:1;
       transform: translate(50%,-50%);
-      pointer-events:none;
     }
-
     .checkout-btn{
-      width: 138px;
+      width: 140px;
       height: 46px;
       border-radius: 16px;
       background: var(--orange);
@@ -577,7 +558,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#fff;
+      color:#ffffff;
       font-weight: 950;
       letter-spacing: .14em;
       text-transform: uppercase;
@@ -585,10 +566,8 @@
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      margin-top: 8px;
+      margin-top: 6px;
     }
-    .checkout-btn:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.16), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
-    .checkout-btn:active{ background: var(--orangePress); transform: translateY(0px); }
 
     .store-right{
       flex:1 1 auto;
@@ -598,7 +577,7 @@
     }
 
     .mini-card{
-      width: 270px; /* compact */
+      width: 262px;
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -606,8 +585,9 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: 350px; /* bottom aligns visually with checkout */
+      min-height: 342px;
     }
+
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--softBorder);
@@ -638,7 +618,7 @@
     }
     .mini-img{
       width:100%;
-      height: 168px;
+      height: 160px;
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -653,7 +633,11 @@
       gap: 10px;
       flex:1 1 auto;
     }
-    .mini-actions{ display:flex; gap:10px; align-items:stretch; }
+    .mini-actions{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+    }
     .add-to-cart{
       width: 92px;
       min-height: 58px;
@@ -670,16 +654,16 @@
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-      flex: 0 0 auto;
     }
-    .add-to-cart:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.10), inset 0 0 0 999px rgba(0,0,0,0.16); transform: translateY(-1px); }
-    .add-to-cart:active{ transform: translateY(0px); background: var(--orangePress); }
     .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
     .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
-
-    .right-stack{ flex: 1 1 auto; display:flex; flex-direction:column; gap:10px; min-width: 0; }
+    .right-stack{
+      flex: 1 1 auto;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-width: 0;
+    }
     .mini-rect{
       height: 28px;
       border-radius: 14px;
@@ -691,13 +675,23 @@
       padding: 0 10px;
       gap:8px;
       cursor:pointer;
-      user-select:none;
-      min-width:0;
-      -webkit-tap-highlight-color: transparent;
     }
-    .mini-rect .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color:#0b1220; flex:0 0 auto; }
-    .mini-rect .val{ font-weight:900; font-size:11px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; min-width:0; }
-
+    .mini-rect .lbl{
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:10px;
+      color:#0b1220;
+    }
+    .mini-rect .val{
+      font-weight:900;
+      font-size:11px;
+      color:#0b1220;
+      white-space:nowrap;
+      flex:1 1 auto;
+      text-align:right;
+      min-width:0;
+    }
     .qty-rect{
       height: 28px;
       border-radius: 14px;
@@ -706,8 +700,6 @@
       display:flex;
       align-items:stretch;
       overflow:hidden;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
     .qty-seg{
       display:flex;
@@ -726,7 +718,6 @@
       letter-spacing:.04em;
     }
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
-
     .mini-desc{
       margin-top: 2px;
       font-weight: 850;
@@ -742,260 +733,177 @@
       min-height: calc(1.35em * 2);
     }
 
-    /* ===================== ABOUT (RESTORED + STABLE) ===================== */
-    .about-wrap{ margin-top: 16px; }
-    .about-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 14px;
-    }
-
-    .about-card{
-      border-radius:18px;
-      border: var(--softBorder);
-      background:#ffffff;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      transition: transform .10s ease, box-shadow .12s ease;
-    }
-    .about-card:hover{ transform: translateY(-1px); box-shadow: 0 18px 40px rgba(15,23,42,0.08); }
-
-    /* Titles: left aligned to TOP-left of slanted paragraph (not bottom edge) */
-    .about-title{
-      font-weight: 950;
-      font-size: 30px;
-      line-height: 1.05;
-      color:#0b1220;
-      letter-spacing: .02em;
-      padding: 12px 12px 0;
-      text-align:left;
-      margin-left: calc(12px + (var(--slantPct) * 2));
-    }
-
-    .about-para-wrap{ padding: 10px 12px 0; }
-
-    .about-para-inner{
-      background: var(--pale);
-      padding: 12px 18px 12px 34px;
-    }
-    .about-para-inner p{
-      margin:0;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size: 14px;
-      line-height: 1.75;
-      color: rgba(12,90,42,0.95);
-      transform: skewX(var(--textSkew));
-      transform-origin: top left;
-      padding-right: 8px;
-    }
-
-    .about-media{
-      width: calc(100% - 24px);
-      margin: 0 12px 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-
-    /* Offset the image down a touch for the retro jagged look */
-    .about-img-offset{ margin-top: 10px; }
-
-    /* CTA buttons: slightly less wide on the right to align with bottom slant */
-    .about-cta{
-      height: 44px;
-      width: calc(100% - 12px);
-      align-self: flex-start;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      color:#fff;
-      font-weight: 900;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 0 14px;
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      text-align:center;
-      line-height: 1.15;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-    }
-    .about-cta:hover{ box-shadow: inset 0 0 0 999px rgba(0,0,0,0.16), 0 14px 30px rgba(15,23,42,0.10); transform: translateY(-1px); }
-    .about-cta:active{ transform: translateY(0px); background: var(--orangePress); }
-
-    /* ===================== FOOTER (RESTORED) ===================== */
-    .footer{
-      margin-top: 18px;
-      background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
-      border-top: 2px solid rgba(6,97,0,0.65);
-      box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
-      color:#ffffff;
-    }
-    .footer *{ color:#ffffff; }
-
-    .footer-inner{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 18px 18px 14px;
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-    .footer-left{ display:flex; flex-direction:column; gap: 10px; align-items:flex-start; }
-    .footer-tagline{
-      display:flex; align-items:center; gap: 8px;
-      font-weight: 950; letter-spacing: .06em; font-size: 15px;
-      text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      white-space:nowrap;
-    }
-    .footer-florida{ width: 26px; height: 26px; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35)); }
-    .footer-logo{ width: 240px; height: auto; filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22)); user-select:none; }
-
-    .footer-right{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items:start; }
-    .footer-col-title{
-      font-weight: 950; letter-spacing: .12em; text-transform: uppercase; font-size: 14px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35); margin-bottom: 10px;
-    }
-    .footer-link{
-      display:block; font-weight: 900; font-size: 12px; letter-spacing: .02em;
-      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.25);
-      width: fit-content; text-shadow: 0 2px 12px rgba(0,0,0,0.25);
-    }
-    .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
-
-    .footer-divider{ border-top: 2px solid rgba(6,97,0,0.85); max-width: 1200px; margin: 0 auto; }
-    .footer-bottom{
-      border-top: 2px solid rgba(6,97,0,0.65);
-      padding: 10px 18px 12px;
-      max-width: 1200px;
-      margin: 0 auto;
-      font-weight: 900;
-      font-size: 14px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
-      text-align:left;
-    }
-
-    .social-row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; margin-top: 2px; }
-    .icon-pill{
-      width: 34px; height: 34px; border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: #fd6c02;
-      display:inline-flex; align-items:center; justify-content:center;
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      text-decoration:none; user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-    }
-    .icon-pill:hover{ box-shadow: 0 12px 24px rgba(15,23,42,0.12), inset 0 0 0 999px rgba(0,0,0,0.16); transform: translateY(-1px); }
-    .icon-pill:active{ background: var(--orangePress); transform: translateY(0px); }
-    .icon-pill svg{
-      width: 18px; height: 18px;
-      stroke: #ffffff; fill: none; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round;
-    }
-    .icon-pill .fill{ fill:#ffffff; stroke:none; }
-
-    /* ===================== RESPONSIVE ===================== */
+    /* MOBILE */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
-
-      .slant-row{
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
+      .slant-row{ grid-template-columns: 1fr; gap: 10px; }
       .slant-img, .slant-box{ height:auto; }
-      .slant-box .slant-inner{ padding-left: 38px; }
+      .slant-box .slant-surface{ align-items:flex-start; padding-left: 34px; }
 
-      .about-grid{ grid-template-columns:1fr; }
-      .footer-inner{ grid-template-columns: 1fr; }
-      .footer-right{ grid-template-columns: 1fr; }
-      .footer-logo{ width: 220px; }
-    }
-
-    /* Mobile store controls: view other products, cart, checkout side-by-side */
-    @media(max-width:780px){
       .mini-store-row{ flex-direction:column; gap: 12px; }
-
       .store-left{
-        width: 100%;
+        width:100%;
         flex-direction:row;
+        align-items:center;
         justify-content:space-between;
-        align-items:center;
-        padding: 0;
-      }
-
-      .circle-stack{
-        flex-direction:row;
-        align-items:center;
         gap: 10px;
-        width:auto;
       }
-
+      .circle-stack{ flex-direction:row; gap: 10px; width:auto; }
       .big-circle{
-        width: 170px;
+        width: 168px;
         height: 54px;
         border-radius: 18px;
+        font-size: 11px;
+        letter-spacing: .10em;
         padding: 0 14px;
         line-height: 1;
-        text-align:left;
-        justify-content:flex-start;
+        white-space:nowrap;
       }
-      .big-circle .big-top{ font-size: 13px; }
-      .big-circle .big-sub{ font-size: 11px; margin-top: 0; }
-
       .cart-circle{ width: 54px; height: 54px; }
+      .cart-circle svg{ width: 24px; height: 24px; }
+
       .checkout-btn{
-        width: 140px;
+        width: 126px;
         height: 54px;
         margin-top: 0;
         border-radius: 18px;
+        font-size: 12px;
       }
 
       .store-right{ width:100%; justify-content:flex-end; }
-      .mini-card{
-        width: 78%;
-        max-width: 360px;
-        min-width: 260px;
-        margin-left:auto;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ scroll-behavior:auto !important; }
-      .pill-btn, .about-card, .add-to-cart, .icon-pill, .checkout-btn{
-        transition: none !important;
-        animation: none !important;
-      }
+      .mini-card{ width: 78%; max-width: 340px; min-width: 260px; margin-left:auto; }
     }
   </style>
 
   <script>
     (function(){
-      function setStickyOffset(){
-        const sticky = document.getElementById("sticky-top");
-        if(!sticky) return;
-        const h = Math.ceil(sticky.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--stickyOffset", h + "px");
-      }
-      function setScrollbarWidth(){
-        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        document.documentElement.style.setProperty("--sbw", sbw + "px");
-      }
-      function sync(){ setStickyOffset(); setScrollbarWidth(); }
+      const MAX_QTY = 9;
+      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
+      const cart = new Map();
 
-      window.addEventListener("load", sync, { once:true });
-      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
-      window.addEventListener("pageshow", sync);
-      document.addEventListener("DOMContentLoaded", sync);
+      const badge = document.getElementById("mini-badge");
+      const msgEl = document.getElementById("mini-msg");
+
+      function showMiniMessage(text){
+        if(!msgEl) return;
+        msgEl.textContent = text;
+        msgEl.classList.add("show");
+        clearTimeout(window.__miniMsgT);
+        window.__miniMsgT = setTimeout(()=>{ msgEl.classList.remove("show"); }, 1800);
+      }
+
+      function cartCount(){
+        let t=0;
+        cart.forEach(v=> t += Math.max(0, v|0));
+        return t;
+      }
+      function renderBadge(){
+        if(!badge) return;
+        badge.textContent = String(cartCount());
+      }
+
+      function brieflyAdded(btn){
+        btn.classList.add("added-state");
+        const main = btn.querySelector(".add-main");
+        const sub  = btn.querySelector(".add-sub");
+        const oldMain = main?.textContent || "ADD";
+        const oldSub  = sub?.textContent || "TO CART";
+        if(main) main.textContent = "ADDED";
+        if(sub)  sub.textContent  = "✓";
+        setTimeout(()=>{
+          if(main) main.textContent = oldMain;
+          if(sub)  sub.textContent  = oldSub;
+          btn.classList.remove("added-state");
+        }, 550);
+      }
+
+      function wireQty(card){
+        const qtyEl = card.querySelector("[data-qty]");
+        const minus = card.querySelector("[data-minus]");
+        const plus  = card.querySelector("[data-plus]");
+
+        let qtyVal = 1;
+        let holdInterval = null;
+        let isHolding = false;
+
+        function render(){
+          if(qtyEl) qtyEl.textContent = String(qtyVal);
+          if(minus) minus.classList.toggle("disabled", qtyVal <= 1);
+          if(plus)  plus.classList.toggle("disabled", qtyVal >= MAX_QTY);
+        }
+
+        function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); render(); }
+
+        function step(dir){
+          if(dir > 0){
+            if(qtyVal >= MAX_QTY){ showMiniMessage("Contact Us for Bulk Orders!"); return; }
+            setQty(qtyVal + 1);
+          }else{
+            setQty(qtyVal - 1);
+          }
+        }
+
+        function stopHold(){
+          if(holdInterval){ clearInterval(holdInterval); holdInterval = null; }
+          setTimeout(()=>{ isHolding = false; }, 0);
+        }
+
+        function startHold(dir){
+          if((dir < 0 && qtyVal <= 1) || (dir > 0 && qtyVal >= MAX_QTY)){
+            if(dir > 0 && qtyVal >= MAX_QTY) showMiniMessage("Contact Us for Bulk Orders!");
+            return;
+          }
+          isHolding = true;
+          step(dir);
+          holdInterval = setInterval(()=>{ step(dir); }, 220);
+        }
+
+        function bind(el, dir){
+          if(!el) return;
+          el.addEventListener("pointerdown", (e)=>{ e.preventDefault(); startHold(dir); });
+          el.addEventListener("pointerup", (e)=>{ e.preventDefault(); stopHold(); });
+          el.addEventListener("pointercancel", stopHold);
+          el.addEventListener("pointerleave", stopHold);
+
+          el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            if(isHolding) return;
+            step(dir);
+          });
+        }
+
+        bind(plus, +1);
+        bind(minus, -1);
+        render();
+        return ()=>qtyVal;
+      }
+
+      function wireCard(card){
+        const title = card.getAttribute("data-title") || "Item";
+        const add = card.querySelector("[data-add]");
+        const getQty = wireQty(card);
+
+        add?.addEventListener("click", ()=>{
+          if(add.disabled) return;
+          const q = clamp(getQty());
+          cart.set(title, (cart.get(title)||0) + q);
+          renderBadge();
+          add.disabled = true;
+          brieflyAdded(add);
+          setTimeout(()=>{ add.disabled = false; }, 350);
+        });
+      }
+
+      document.querySelectorAll(".mini-card").forEach(wireCard);
+
+      document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
+        showMiniMessage("This function is currently unavailable.");
+      });
+      document.getElementById("mini-cart")?.addEventListener("click", ()=>{
+        showMiniMessage("Cart preview is currently unavailable.");
+      });
+
+      renderBadge();
     })();
   </script>
 </head>
@@ -1034,7 +942,6 @@
 
         <section class="layout" aria-label="Top content">
 
-          <!-- WHAT IS MAYANUT -->
           <div class="panel" aria-label="What is MayaNut">
             <div class="panel-head">
               <div class="panel-title">What Is MayaNut?</div>
@@ -1054,19 +961,18 @@
                 </div>
               </div>
 
-              <!-- slanted image + slanted paragraph, touching, same height, full outline -->
               <div class="slant-row" aria-label="MayaNut intro">
-                <div class="slant-outline slantPoly slant-img">
-                  <div class="slant-inner slantPoly">
+                <div class="slant-shape slantPoly slant-img">
+                  <div class="slant-surface slantPoly">
                     <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                          alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
-                         loading="eager" decoding="async" onerror="this.style.opacity='.35';" />
+                         loading="eager" decoding="async" />
                   </div>
                 </div>
 
-                <div class="slant-outline slantPoly slant-box">
-                  <div class="slant-inner slantPoly" style="background: var(--pale);">
-                    <p class="slant-text">
+                <div class="slant-shape slantPoly slant-box">
+                  <div class="slant-surface slantPoly">
+                    <p>
                       MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. Used for centuries by the Maya,
                       it becomes a rich, flavorful powder when roasted and ground—enjoyed in drinks, baking, and everyday recipes,
                       alongside its many nutritional benefits.
@@ -1077,7 +983,6 @@
             </div>
           </div>
 
-          <!-- MINI STORE -->
           <aside class="panel" aria-label="Mini store">
             <div class="panel-head">
               <div class="panel-title">MayaNut MINI-STORE</div>
@@ -1088,14 +993,9 @@
               <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
 
               <div class="mini-store-row">
-                <div class="store-left" aria-label="Store controls">
-                  <div class="circle-stack" aria-label="Quick actions">
-                    <a class="big-circle" href="store.html" aria-label="View other products">
-                      <div>
-                        <div class="big-top">VIEW</div>
-                        <div class="big-sub">OTHER PRODUCTS</div>
-                      </div>
-                    </a>
+                <div class="store-left">
+                  <div class="circle-stack">
+                    <a class="big-circle" href="store.html" aria-label="View other products">VIEW OTHER PRODUCTS</a>
 
                     <button class="cart-circle" type="button" id="mini-cart" aria-label="View cart">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1115,30 +1015,30 @@
                   <article class="mini-card" data-title="MayaNut Powder">
                     <div class="mini-titlebar">
                       <div class="mini-title">MayaNut Powder</div>
-                      <div class="mini-price" data-price>$9.95</div>
+                      <div class="mini-price">$9.95</div>
                     </div>
 
                     <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
                          alt="Roasted MayaNut powder (maya nut) made from Brosimum alicastrum seed"
-                         loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                         loading="lazy" decoding="async" />
 
                     <div class="mini-bot">
-                      <div class="mini-actions" aria-label="Actions">
-                        <button class="add-to-cart" type="button" data-add aria-label="Add to cart">
+                      <div class="mini-actions">
+                        <button class="add-to-cart" type="button" data-add>
                           <div class="add-main">ADD</div>
                           <div class="add-sub">TO CART</div>
                         </button>
 
-                        <div class="right-stack" aria-label="Options">
-                          <button class="mini-rect" type="button" data-weight aria-label="Select weight">
+                        <div class="right-stack">
+                          <div class="mini-rect">
                             <span class="lbl">WEIGHT:</span>
-                            <span class="val" data-weight-val>1/4 LB</span>
-                          </button>
+                            <span class="val">1/4 LB</span>
+                          </div>
 
-                          <div class="qty-rect" aria-label="Quantity selector (max 9)">
-                            <div class="qty-seg" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
-                            <div class="qty-seg mid" data-qty aria-label="Quantity">1</div>
-                            <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
+                          <div class="qty-rect">
+                            <div class="qty-seg" data-minus role="button" tabindex="0">−</div>
+                            <div class="qty-seg mid" data-qty>1</div>
+                            <div class="qty-seg" data-plus role="button" tabindex="0">+</div>
                           </div>
                         </div>
                       </div>
@@ -1153,7 +1053,6 @@
 
         </section>
 
-        <!-- A LITTLE ABOUT US (RESTORED) -->
         <section class="panel about-wrap" aria-label="A Little About Us">
           <div class="panel-head">
             <div class="panel-title">A Little About Us</div>
@@ -1163,42 +1062,38 @@
           <div class="section-body">
             <div class="about-grid">
 
-              <!-- Card 1 -->
-              <div class="about-card" aria-label="About card 1">
-                <div class="about-title">How It All Started...</div>
+              <div class="panel about-card">
+                <div class="about-subtitle">How It All Started...</div>
 
-                <div class="about-para-wrap">
-                  <div class="slant-outline slantPoly">
-                    <div class="slant-inner slantPoly about-para-inner">
+                <div class="para" style="padding: 10px 12px 0;">
+                  <div class="slant-shape slantPoly">
+                    <div class="slant-surface slantPoly" style="background: var(--pale); padding: 12px 18px 12px 34px;">
                       <p>
                         In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
-                        growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded
-                        The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                        growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus,
+                        founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <div class="about-media">
-                  <div class="about-img-offset slant-outline slantPoly slant-img" style="height: 230px;">
-                    <div class="slant-inner slantPoly">
-                      <img src="the-maya-nut-company-bubba-image.jpg"
-                           alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
-                           loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="slant-shape slantPoly slant-img" style="height:320px; margin-top:10px;">
+                    <div class="slant-surface slantPoly">
+                      <img src="the-maya-nut-company-bubba-image.jpg" alt="Historic Florida farming legacy" loading="lazy" decoding="async" />
                     </div>
                   </div>
 
-                  <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
+                  <a class="about-cta" href="about.html">LEARN MORE</a>
                 </div>
               </div>
 
-              <!-- Card 2 -->
-              <div class="about-card" aria-label="About card 2">
-                <div class="about-title">Why We're Nuts for MayaNut</div>
+              <div class="panel about-card">
+                <div class="about-subtitle">Why We're Nuts for MayaNut</div>
 
-                <div class="about-para-wrap">
-                  <div class="slant-outline slantPoly">
-                    <div class="slant-inner slantPoly about-para-inner">
+                <div class="para" style="padding: 10px 12px 0;">
+                  <div class="slant-shape slantPoly">
+                    <div class="slant-surface slantPoly" style="background: var(--pale); padding: 12px 18px 12px 34px;">
                       <p>
                         MayaNut is a productive, resilient tree overlooked by American agriculture. Since 2025, August Kokus and
                         The MayaNut Company have been working to establish Florida's first MayaNut farm. It is our duty and privilege
@@ -1209,17 +1104,13 @@
                 </div>
 
                 <div class="about-media">
-                  <div class="about-img-offset slant-outline slantPoly slant-img" style="height: 230px;">
-                    <div class="slant-inner slantPoly">
-                      <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
-                           alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
-                           loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <div class="slant-shape slantPoly slant-img" style="height:320px; margin-top:10px;">
+                    <div class="slant-surface slantPoly">
+                      <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg" alt="August Kokus with young MayaNut trees" loading="lazy" decoding="async" />
                     </div>
                   </div>
 
-                  <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
-                    EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
-                  </a>
+                  <a class="about-cta" href="research.html">EXPLORE RESEARCH, DATA, &amp; FIELD NOTES</a>
                 </div>
               </div>
 
@@ -1230,20 +1121,19 @@
       </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer" aria-label="Footer">
       <div class="footer-inner">
-        <div class="footer-left" aria-label="Brand">
+        <div class="footer-left">
           <div class="footer-tagline">
             <span>Started in South Florida</span>
             <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
           </div>
-          <a href="index.html" aria-label="The MayaNut Company home">
+          <a href="index.html">
             <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
           </a>
         </div>
 
-        <div class="footer-right" aria-label="Footer links">
+        <div class="footer-right">
           <div class="footer-col">
             <div class="footer-col-title">WHO WE ARE</div>
             <a class="footer-link" href="social-responsibility.html">Social Responsibility</a>
@@ -1264,7 +1154,7 @@
 
           <div class="footer-col">
             <div class="footer-col-title">FOLLOW</div>
-            <div class="social-row" aria-label="Social links">
+            <div class="social-row">
               <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
@@ -1290,88 +1180,8 @@
       </div>
 
       <div class="footer-divider" aria-hidden="true"></div>
-
-      <div class="footer-bottom">
-        <div>© 2026 The MayaNut Company, Inc.</div>
-      </div>
+      <div class="footer-bottom">© 2026 The MayaNut Company, Inc.</div>
     </footer>
   </div>
-
-  <script>
-    (function(){
-      const MAX_QTY = 9;
-      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
-      const cart = new Map();
-
-      const badge = document.getElementById("mini-badge");
-      const msgEl = document.getElementById("mini-msg");
-      const checkoutBtn = document.getElementById("mini-checkout");
-      const cartBtn = document.getElementById("mini-cart");
-
-      function showMiniMessage(text){
-        if(!msgEl) return;
-        msgEl.textContent = text;
-        msgEl.classList.add("show");
-        clearTimeout(window.__miniMsgT);
-        window.__miniMsgT = setTimeout(()=>{ msgEl.classList.remove("show"); }, 1800);
-      }
-
-      function cartCount(){
-        let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t;
-      }
-      function renderBadge(){
-        if(badge) badge.textContent = String(cartCount());
-      }
-
-      function brieflyAdded(btn){
-        const main = btn.querySelector(".add-main");
-        const sub  = btn.querySelector(".add-sub");
-        const oldMain = main?.textContent || "ADD";
-        const oldSub  = sub?.textContent || "TO CART";
-        if(main) main.textContent = "ADDED";
-        if(sub)  sub.textContent  = "✓";
-        setTimeout(()=>{
-          if(main) main.textContent = oldMain;
-          if(sub)  sub.textContent  = oldSub;
-        }, 550);
-      }
-
-      function wireQty(card){
-        const qtyEl = card.querySelector("[data-qty]");
-        const minus = card.querySelector("[data-minus]");
-        const plus  = card.querySelector("[data-plus]");
-        let qtyVal = 1;
-
-        function render(){ if(qtyEl) qtyEl.textContent = String(qtyVal); }
-        function step(dir){ qtyVal = clamp(qtyVal + dir); render(); }
-
-        plus?.addEventListener("click", (e)=>{ e.preventDefault(); step(+1); });
-        minus?.addEventListener("click",(e)=>{ e.preventDefault(); step(-1); });
-
-        render();
-        return ()=>qtyVal;
-      }
-
-      function wireCard(card){
-        const title = card.getAttribute("data-title") || "Item";
-        const add = card.querySelector("[data-add]");
-        const getQty = wireQty(card);
-
-        add?.addEventListener("click", ()=>{
-          const q = clamp(getQty());
-          cart.set(title, (cart.get(title)||0) + q);
-          renderBadge();
-          brieflyAdded(add);
-        });
-      }
-
-      document.querySelectorAll(".mini-card").forEach(wireCard);
-
-      checkoutBtn?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
-      cartBtn?.addEventListener("click", ()=>{ showMiniMessage("Cart preview is currently unavailable."); });
-
-      renderBadge();
-    })();
-  </script>
 </body>
 </html>

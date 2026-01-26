@@ -73,7 +73,12 @@
       --padX: 16px;
       --gap: 16px;
 
-      --circle: 168px; /* slightly smaller for compact store layout */
+      /* circles + product sizing (stacked circles ~= product height) */
+      --circleGap: 12px;
+      --circleBtn: 118px;
+
+      /* computed target height (two circles + gap) */
+      --stackH: calc((var(--circleBtn) * 2) + var(--circleGap));
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -288,9 +293,10 @@
       margin: 0 auto;
     }
 
+    /* WHAT IS wider, STORE narrower */
     .layout{
       display:grid;
-      grid-template-columns: 1.15fr 1fr;
+      grid-template-columns: 1.65fr 0.75fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -392,29 +398,32 @@
       box-shadow: 0 8px 18px rgba(15,23,42,0.04);
     }
 
-    /* ===================== SLANT (RIGHT-LEANING: top/bottom straight) ===================== */
+    /* ===================== SLANT (right-leaning sides, flat top/bottom) ===================== */
     .slant-right{
-      clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
-      -webkit-clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+      clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+      -webkit-clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+    }
+    /* dark green outline that follows the clipped shape */
+    .slant-outline{
+      box-shadow: inset 0 0 0 1px rgba(6,97,0,0.95);
     }
 
-    /* ===================== WHAT IS: COMPACT SLANTED PARAGRAPH (NO CIRCLES) ===================== */
-    .what-para-wrap{
-      padding: 0 14px 14px;
-    }
+    /* ===================== WHAT IS: SLANTED PARAGRAPH (NO CIRCLES) ===================== */
+    .what-para-wrap{ padding: 0 14px 14px; }
     .what-para-shell{
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      height: var(--circle);
       width: calc(100% - 6px);
       margin: 6px auto 0;
-      overflow:hidden;
+      overflow: hidden;
       position:relative;
+      /* allow auto height so text never gets cut off */
+      min-height: 140px;
+      height: auto;
     }
     .what-para-inner{
-      height:100%;
-      padding: 14px 16px;
+      padding: 14px 28px; /* extra side padding so slant never clips text */
       display:flex;
       align-items:center;
     }
@@ -424,12 +433,12 @@
       font-style: italic;
       font-weight: 850;
       font-size: 14px;
-      line-height: 1.75;
+      line-height: 1.72;
       color: rgba(12,90,42,0.95);
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* ===================== MINI STORE (CIRCLES LEFT OF ONE PRODUCT) ===================== */
+    /* ===================== MINI STORE ===================== */
     .mini-store-body{
       padding: 0;
       background:#ffffff;
@@ -464,17 +473,19 @@
       justify-content:flex-end;
     }
 
+    /* circles column (two circles ~= product height), checkout sits under circles */
     .store-circles{
-      flex: 0 0 var(--circle);
+      flex: 0 0 var(--circleBtn);
       display:flex;
       flex-direction:column;
-      gap: 12px;
+      gap: var(--circleGap);
       align-items:stretch;
+      justify-content:flex-start;
     }
 
     .big-circle-btn{
-      width: var(--circle);
-      height: var(--circle);
+      width: var(--circleBtn);
+      height: var(--circleBtn);
       border-radius: 999px;
       background: var(--orange);
       border: 2px solid rgba(255,255,255,0.95);
@@ -504,8 +515,8 @@
       text-transform: uppercase;
       line-height: 1.05;
     }
-    .big-circle-btn .t1{ font-size: 14px; }
-    .big-circle-btn .t2{ font-size: 12px; }
+    .big-circle-btn .t1{ font-size: 12.5px; }
+    .big-circle-btn .t2{ font-size: 10.5px; }
 
     .big-circle-icon{
       width: 54px;
@@ -525,9 +536,9 @@
       stroke-linejoin: round;
     }
 
-    /* compact single product */
+    /* compact single product (narrower) */
     .mini-card{
-      width: 292px;            /* more compact */
+      width: 236px;                 /* less wide */
       border-radius:18px;
       background:#ffffff;
       border: var(--softBorder);
@@ -535,7 +546,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: 290px;       /* smaller */
+      min-height: var(--stackH);    /* match the two-circle stack height */
       transition: transform .10s ease, box-shadow .12s ease;
     }
     .mini-card:hover{
@@ -546,7 +557,7 @@
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--softBorder);
-      padding: 8px 9px;        /* tighter */
+      padding: 7px 8px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -557,7 +568,7 @@
       font-weight: 950;
       letter-spacing: .06em;
       text-transform: uppercase;
-      font-size: 11.5px;
+      font-size: 11px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -566,7 +577,7 @@
     }
     .mini-price{
       font-weight:950;
-      font-size: 11.5px;
+      font-size: 11px;
       color:#0b1220;
       white-space:nowrap;
       flex:0 0 auto;
@@ -574,7 +585,7 @@
 
     .mini-img{
       width:100%;
-      height: 158px;           /* smaller */
+      height: 126px; /* smaller */
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -584,10 +595,10 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 9px;
+      padding: 8px;
       display:flex;
       flex-direction:column;
-      gap: 8px;
+      gap: 7px;
       flex:1 1 auto;
     }
 
@@ -598,8 +609,8 @@
     }
 
     .add-to-cart{
-      width: 88px;             /* tighter */
-      min-height: 54px;
+      width: 78px;
+      min-height: 50px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -608,7 +619,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding: 9px 8px;
+      padding: 8px 7px;
       user-select:none;
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
@@ -621,26 +632,26 @@
     .add-to-cart:active{ transform: translateY(0px); background: var(--orangePress); }
     .add-to-cart[disabled]{ opacity: .65; cursor: default; transform:none; }
 
-    .add-main{ font-size: 15px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-    .add-sub{ font-size: 9.5px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
+    .add-main{ font-size: 14px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .add-sub{ font-size: 9px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; }
 
     .right-stack{
       flex: 1 1 auto;
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:7px;
       min-width: 0;
     }
 
     .mini-rect{
-      height: 26px;
+      height: 24px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding: 0 9px;
+      padding: 0 8px;
       gap:7px;
       box-shadow:none;
       cursor:pointer;
@@ -656,13 +667,13 @@
       font-weight:900;
       letter-spacing:.12em;
       text-transform:uppercase;
-      font-size:9.5px;
+      font-size:9px;
       color:#0b1220;
       flex:0 0 auto;
     }
     .mini-rect .val{
       font-weight:900;
-      font-size:10.5px;
+      font-size:10px;
       color:#0b1220;
       white-space:nowrap;
       flex:1 1 auto;
@@ -679,7 +690,7 @@
     }
 
     .qty-rect{
-      height: 26px;
+      height: 24px;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.96);
@@ -694,7 +705,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      flex: 0 0 28px;
+      flex: 0 0 26px;
       font-weight: 950;
       font-size: 14px;
       color:#0b1220;
@@ -712,7 +723,7 @@
     .mini-desc{
       margin-top: 1px;
       font-weight: 850;
-      font-size: 11.5px;
+      font-size: 11px;
       letter-spacing: .01em;
       color: rgba(15,23,42,0.45);
       display: -webkit-box;
@@ -720,26 +731,20 @@
       -webkit-line-clamp: 2;
       overflow: hidden;
       white-space: normal;
-      line-height: 1.32;
-      min-height: calc(1.32em * 2);
+      line-height: 1.3;
+      min-height: calc(1.3em * 2);
     }
 
-    /* centered checkout button with cart icon */
-    .mini-checkout-row{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 0 14px 14px;
-      background:#fff;
-    }
-    .mini-checkout-btn{
-      height: 46px;
-      padding: 0 18px 0 14px;
+    /* checkout under circles */
+    .checkout-under-circles{
+      margin-top: 10px;
+      height: 42px;
+      width: var(--circleBtn);
       border-radius: 14px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.55);
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      display:inline-flex;
+      display:flex;
       align-items:center;
       justify-content:center;
       gap: 10px;
@@ -748,25 +753,25 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
       position:relative;
-      min-width: 220px;
     }
-    .mini-checkout-btn:hover{
+    .checkout-under-circles:hover{
       box-shadow: inset 0 0 0 999px rgba(0,0,0,0.18), 0 14px 30px rgba(15,23,42,0.10);
       transform: translateY(-1px);
     }
-    .mini-checkout-btn:active{ background: var(--orangePress); transform: translateY(0px); }
+    .checkout-under-circles:active{ background: var(--orangePress); transform: translateY(0px); }
 
-    .mini-checkout-btn .txt{
+    .checkout-under-circles .txt{
       color:#fff;
       font-weight:950;
       letter-spacing:.14em;
       text-transform:uppercase;
-      font-size: 12px;
+      font-size: 10.5px;
       line-height:1;
+      white-space:nowrap;
     }
-    .mini-checkout-btn svg{
-      width: 20px;
-      height: 20px;
+    .checkout-under-circles svg{
+      width: 18px;
+      height: 18px;
       stroke:#fff;
       fill:none;
       stroke-width:2.2;
@@ -829,16 +834,15 @@
 
     .about-card .para{ padding: 0; }
 
-    /* slanted paragraph + slanted image (top/bottom straight, sides tilted right) */
+    /* slanted paragraph + slanted image, with extra padding so text never clips */
     .about-para-shell{
       margin: 0 14px 0;
-      border: 1px solid rgba(12,90,42,0.45);
-      border-bottom: 0;
+      border: 0;
       background: var(--pale);
       overflow:hidden;
     }
     .about-para-inner{
-      padding: 14px;
+      padding: 14px 28px; /* extra side padding prevents clip cut */
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
@@ -861,11 +865,11 @@
       height: 320px;
       object-fit: cover;
       object-position: center 50%;
-      border: 1px solid rgba(12,90,42,0.45);
-      border-top: 0;
+      border: 0;
       background:#fff;
       filter: saturate(1.03) contrast(1.03);
       overflow:hidden;
+      margin-top: 0;
     }
 
     .about-cta{
@@ -1020,7 +1024,7 @@
 
     @media (prefers-reduced-motion: reduce){
       *{ scroll-behavior:auto !important; }
-      .pill-btn, .big-circle-btn, .mini-card, .add-to-cart, .mini-rect, .mini-checkout-btn, .about-card, .about-cta, .icon-pill{
+      .pill-btn, .big-circle-btn, .mini-card, .add-to-cart, .mini-rect, .checkout-under-circles, .about-card, .about-cta, .icon-pill{
         transition: none !important;
         animation: none !important;
       }
@@ -1039,17 +1043,25 @@
         flex-direction:column;
         align-items:flex-end;
       }
+
+      /* in single-column: place circles+checkout in a row above product */
       .store-circles{
-        flex-direction:row;
         width: 100%;
+        flex: 0 0 auto;
+        flex-direction:row;
         justify-content:flex-end;
+        align-items:flex-start;
       }
-      .big-circle-btn{
-        width: 150px;
-        height: 150px;
+      .store-circles .stack{
+        display:flex;
+        gap: var(--circleGap);
       }
-      .mini-card{ width: 320px; }
-      .what-para-shell{ height: 150px; }
+      .store-circles .stack,
+      .store-circles .checkout-wrap{
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+      }
     }
 
     @media(max-width:780px){
@@ -1084,6 +1096,8 @@
       .nav-left,.nav-right{ top: 8px; transform:none; }
       .nav-left{ left: 34px; }
       .nav-right{ right: 34px; }
+
+      .mini-card{ width: 260px; }
     }
   </style>
 
@@ -1167,7 +1181,7 @@
               </div>
 
               <div class="what-para-wrap" aria-label="MayaNut description">
-                <div class="what-para-shell slant-right" aria-label="Slanted paragraph box">
+                <div class="what-para-shell slant-right slant-outline" aria-label="Slanted paragraph box">
                   <div class="what-para-inner">
                     <p>
                       MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum. It was used for centuries by the Maya.
@@ -1193,7 +1207,6 @@
                 <div class="mini-msg" id="mini-msg"></div>
               </div>
 
-              <!-- CIRCLES LEFT OF ONE STORE OPTION -->
               <div class="store-row" aria-label="Store row">
                 <div class="store-circles" aria-label="Store quick actions">
                   <a class="big-circle-btn" href="store.html" aria-label="View full store">
@@ -1211,9 +1224,19 @@
                       </svg>
                     </span>
                   </button>
+
+                  <button class="checkout-under-circles" type="button" id="mini-checkout" aria-label="Checkout">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                      <path d="M6 7l-1-3H2.5"></path>
+                      <circle cx="9" cy="19" r="1.6"></circle>
+                      <circle cx="17" cy="19" r="1.6"></circle>
+                    </svg>
+                    <span class="txt">CHECKOUT</span>
+                    <span class="mini-badge" id="mini-badge">0</span>
+                  </button>
                 </div>
 
-                <!-- single product: compact -->
                 <article class="mini-card" data-title="MayaNut Powder" aria-label="MayaNut Powder product">
                   <div class="mini-titlebar">
                     <div class="mini-title">MayaNut Powder</div>
@@ -1250,20 +1273,6 @@
                   </div>
                 </article>
               </div>
-
-              <!-- centered checkout button with cart icon -->
-              <div class="mini-checkout-row" aria-label="Checkout row">
-                <button class="mini-checkout-btn" type="button" id="mini-checkout" aria-label="Checkout">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                    <path d="M6 7l-1-3H2.5"></path>
-                    <circle cx="9" cy="19" r="1.6"></circle>
-                    <circle cx="17" cy="19" r="1.6"></circle>
-                  </svg>
-                  <span class="txt">CHECKOUT</span>
-                  <span class="mini-badge" id="mini-badge">0</span>
-                </button>
-              </div>
             </div>
           </aside>
         </section>
@@ -1281,7 +1290,7 @@
                 <div class="about-title">How It All Started...</div>
 
                 <div class="para">
-                  <div class="about-para-shell slant-right">
+                  <div class="about-para-shell slant-right slant-outline">
                     <div class="about-para-inner">
                       In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
                     </div>
@@ -1289,7 +1298,7 @@
                 </div>
 
                 <div class="about-media">
-                  <img class="slant-right" src="the-maya-nut-company-bubba-image.jpg"
+                  <img class="slant-right slant-outline" src="the-maya-nut-company-bubba-image.jpg"
                        alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
                        loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                   <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
@@ -1300,7 +1309,7 @@
                 <div class="about-title">We're Nuts For MayaNut!</div>
 
                 <div class="para">
-                  <div class="about-para-shell slant-right">
+                  <div class="about-para-shell slant-right slant-outline">
                     <div class="about-para-inner">
                       To continue our family’s Florida farming heritage, August Kokus is establishing Florida’s first MayaNut farm while openly sharing research and data on Brosimum alicastrum. Our mission is to develop MayaNut as a sustainable, long-term crop so others can follow, learn, and take part in building a lasting legacy for generations to come.
                     </div>
@@ -1308,7 +1317,7 @@
                 </div>
 
                 <div class="about-media">
-                  <img class="slant-right" src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                  <img class="slant-right slant-outline" src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                        alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
                        loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
                   <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">

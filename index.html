@@ -71,15 +71,13 @@
       --scrollThumb:#c8ccd2;
       --scrollThumbHover:#b8bcc3;
 
-      /* scrollbar width compensation */
       --sbw: 0px;
-
-      /* 82° slant (steeper = smaller cut) */
-      --slantCut: 4.2%;
-      --slantStroke: 2px;
-
       --padX: 16px;
       --gap: 16px;
+
+      /* 82° slant */
+      --slantCut: 4.2%;
+      --slantStroke: 2px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -116,12 +114,6 @@
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
-
-    :focus-visible{
-      outline: 3px solid rgba(216,255,106,0.95);
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
 
     /* ===================== TOP ===================== */
     .top-banner{ height: var(--bannerH); background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
@@ -234,7 +226,7 @@
       text-transform:uppercase;
       font-size:12px;
       font-weight:900;
-      transition: transform .08s ease, box-shadow .12s ease, background .10s ease;
+      transition: background .12s ease, transform .08s ease;
       -webkit-tap-highlight-color: transparent;
     }
     .pill-btn:hover{ background: var(--orangeDark); transform: translateY(-1px); }
@@ -373,27 +365,8 @@
       text-decoration-thickness: 2px;
     }
 
-    .hero-meta{
-      margin-top: 10px;
-      padding: 0 10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .hero-pill{
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(233,255,214,0.92);
-      border-radius: 999px;
-      padding: 7px 12px;
-      box-shadow: 0 8px 18px rgba(15,23,42,0.04);
-      color: rgba(15,23,42,0.88);
-      font-weight: 950;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-size: 11px;
-      white-space:nowrap;
-    }
+    /* remove the two “useless bubbles” by hiding the container entirely */
+    .hero-meta{ display:none !important; }
 
     /* ===================== SLANTS (82 DEG) ===================== */
     .slantClip{
@@ -404,10 +377,13 @@
         0% 100%
       );
     }
+
+    /* Outline wrapper: thinner bottom edge */
     .slant-outline{
       background: var(--darkGreen);
       padding: var(--slantStroke);
       overflow:hidden;
+      position: relative;
     }
     .slant-outline.slantClip{
       clip-path: polygon(
@@ -417,6 +393,19 @@
         0% 100%
       );
     }
+    /* reduce bottom thickness by overlaying a pale strip that matches interior */
+    .slant-outline::after{
+      content:"";
+      position:absolute;
+      left:-40px;
+      right:-40px;
+      bottom:-1px;
+      height: 1px; /* removes the “thick” feel on bottom */
+      background: var(--darkGreen);
+      opacity: .55; /* lighter bottom edge */
+      pointer-events:none;
+    }
+
     .slant-surface{
       background: var(--pale);
       overflow:hidden;
@@ -436,14 +425,12 @@
       gap: 0;
       padding: 0 14px 14px;
       align-items: stretch;
+      margin-top: -6px;
     }
-
-    /* Make BOTH start at same level as Aromatic & Delicious by aligning to headline baseline */
-    .what-row{ margin-top: -6px; }
 
     .what-img,
     .what-para{
-      height: 238px; /* unified height */
+      height: 238px;
     }
 
     .what-img .slant-surface{ background:#fff; }
@@ -458,7 +445,7 @@
     .what-para .slant-surface{
       display:flex;
       align-items:flex-start;
-      padding: 14px 18px 14px 42px; /* extra left padding to prevent clip */
+      padding: 14px 18px 14px 42px;
     }
     .what-para p{
       margin:0;
@@ -469,18 +456,10 @@
       line-height: 1.75;
       color: rgba(12,90,42,0.95);
       width:100%;
-      /* subtle text slant + "line drift" via padding gradient */
       transform: skewX(6deg);
       transform-origin: top left;
       padding-right: 10px;
     }
-    /* "line drift" illusion */
-    .what-para p span.line{ display:block; }
-    .what-para p span.line:nth-child(1){ margin-left: 10px; }
-    .what-para p span.line:nth-child(2){ margin-left: 8px; }
-    .what-para p span.line:nth-child(3){ margin-left: 6px; }
-    .what-para p span.line:nth-child(4){ margin-left: 4px; }
-    .what-para p span.line:nth-child(5){ margin-left: 2px; }
 
     /* ===================== MINI STORE ===================== */
     .mini-store-body{
@@ -506,22 +485,35 @@
     }
     .mini-msg.show{ display:block; }
 
+    /* reduce store height slightly */
     .mini-store-row{
       display:flex;
-      gap: 14px;
+      gap: 12px;
       align-items: stretch;
-      flex: 1 1 auto;
       min-height: 0;
     }
 
+    /* NEW: gradient background “platform” behind buttons */
     .store-left{
-      width: 168px;
+      width: 178px;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
       gap: 12px;
-      padding: 2px 0;
+      padding: 10px 8px;
+      border-radius: 18px;
+      background: linear-gradient(to bottom, var(--lime) 0%, var(--green) 100%);
+      border: var(--softBorder);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+    }
+
+    /* divider between buttons column and product */
+    .store-divider{
+      width: 1px;
+      background: rgba(12,90,42,0.45);
+      border-radius: 999px;
+      margin: 4px 0;
     }
 
     .circle-stack{
@@ -533,8 +525,8 @@
     }
 
     .big-circle{
-      width: 108px;
-      height: 108px;
+      width: 104px;
+      height: 104px;
       border-radius: 50%;
       background: var(--orange);
       border: 2px solid #ffffff;
@@ -549,8 +541,6 @@
       line-height: 1.05;
       font-size: 12px;
       box-shadow: 0 14px 30px rgba(15,23,42,0.12);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
       cursor:pointer;
       transition: background .12s ease, transform .08s ease;
       padding: 10px;
@@ -559,8 +549,8 @@
     .big-circle:active{ transform: translateY(0px); }
 
     .cart-circle{
-      width: 56px;
-      height: 56px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
       background: var(--orange);
       border: 2px solid #ffffff;
@@ -569,8 +559,6 @@
       justify-content:center;
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
       position: relative;
       transition: background .12s ease, transform .08s ease;
     }
@@ -587,7 +575,6 @@
       stroke-linejoin:round;
     }
 
-    /* badge positioned on the cart "tip" and orange background */
     .cart-badge{
       position:absolute;
       top: 14px;
@@ -611,8 +598,8 @@
 
     .checkout-btn{
       width: 132px;
-      height: 62px;
-      border-radius: 14px; /* more square */
+      height: 58px;
+      border-radius: 14px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.55);
       display:flex;
@@ -625,7 +612,6 @@
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
       transition: background .12s ease, transform .08s ease;
       text-align:center;
       line-height:1.05;
@@ -649,7 +635,7 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      min-height: 360px;
+      min-height: 330px; /* reduced slightly */
     }
 
     .mini-titlebar{
@@ -683,7 +669,7 @@
 
     .mini-img{
       width:100%;
-      height: 172px;
+      height: 160px;
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -722,7 +708,7 @@
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       cursor:pointer;
-      transition: background .12s ease, transform .08s ease, box-shadow .12s ease;
+      transition: background .12s ease, transform .08s ease;
       -webkit-tap-highlight-color: transparent;
     }
     .add-to-cart:hover{ background: var(--orangeDark); transform: translateY(-1px); }
@@ -813,15 +799,14 @@
       min-height: calc(1.35em * 2);
     }
 
-    /* ===================== ABOUT (RESTORED SLANTED + FOOTER TAB) ===================== */
-    .about-wrap{ margin-top: 16px; padding-bottom: 0; }
+    /* ===================== ABOUT + FOOTER (unchanged from prior working) ===================== */
+    .about-wrap{ margin-top: 16px; }
     .about-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       padding: 14px;
     }
-
     .about-card{
       border-radius:18px;
       border: var(--softBorder);
@@ -831,26 +816,19 @@
       flex-direction:column;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
     }
-
     .about-title{
       font-weight: 950;
       letter-spacing: .06em;
-      text-transform: none;
       font-size: 18px;
       color:#0b1220;
       padding: 12px 12px 0;
       text-align:left;
     }
-
     .about-content{
       padding: 10px 12px 12px;
       display:flex;
       flex-direction:column;
       gap: 10px;
-    }
-
-    .about-slant{
-      /* full outline via slant-outline wrapper */
     }
     .about-slant .slant-surface{
       padding: 12px 18px 12px 40px;
@@ -866,19 +844,8 @@
       transform: skewX(6deg);
       transform-origin: top left;
     }
-
-    /* offset look like before (paragraph + image slightly offset) */
-    .about-media{
-      margin-top: 2px;
-    }
-    .about-media-offset{
-      margin-top: 10px;
-    }
-
-    .about-img{
-      height: 300px;
-      background:#fff;
-    }
+    .about-media-offset{ margin-top: 10px; }
+    .about-img{ height: 300px; background:#fff; }
     .about-img img{
       width:100%;
       height:100%;
@@ -886,10 +853,9 @@
       object-position: center 50%;
       filter: saturate(1.03) contrast(1.03);
     }
-
     .about-cta{
       height: 44px;
-      width: calc(100% - 6px); /* less wide on right */
+      width: calc(100% - 6px);
       margin-left: 3px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.55);
@@ -904,7 +870,7 @@
       padding: 0 14px;
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       user-select:none;
-      transition: background .12s ease, transform .08s ease, box-shadow .12s ease;
+      transition: background .12s ease, transform .08s ease;
       -webkit-tap-highlight-color: transparent;
       text-align:center;
       line-height: 1.15;
@@ -912,7 +878,6 @@
     .about-cta:hover{ background: var(--orangeDark); transform: translateY(-1px); }
     .about-cta:active{ transform: translateY(0px); }
 
-    /* ===================== FOOTER (RESTORED) ===================== */
     .footer{
       margin-top: 18px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -921,7 +886,6 @@
       color:#ffffff;
     }
     .footer *{ color:#ffffff; }
-
     .footer-inner{
       max-width: 1200px;
       margin: 0 auto;
@@ -931,64 +895,28 @@
       gap: 22px;
       align-items: start;
     }
-    .footer-left{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      align-items:flex-start;
-    }
+    .footer-left{ display:flex; flex-direction:column; gap: 10px; align-items:flex-start; }
     .footer-tagline{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      font-weight: 950;
-      letter-spacing: .06em;
-      font-size: 15px;
-      text-transform: uppercase;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      display:flex; align-items:center; gap: 8px;
+      font-weight: 950; letter-spacing: .06em; font-size: 15px;
+      text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       white-space:nowrap;
     }
-    .footer-florida{
-      width: 26px; height: 26px;
-      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35));
-    }
-    .footer-logo{
-      width: 240px; height: auto;
-      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
-      user-select:none;
-    }
+    .footer-florida{ width: 26px; height: 26px; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35)); }
+    .footer-logo{ width: 240px; height: auto; filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22)); user-select:none; }
 
-    .footer-right{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 18px;
-      align-items:start;
-    }
+    .footer-right{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items:start; }
     .footer-col-title{
-      font-weight: 950;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-size: 14px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      margin-bottom: 10px;
+      font-weight: 950; letter-spacing: .12em; text-transform: uppercase; font-size: 14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35); margin-bottom: 10px;
     }
     .footer-link{
-      display:block;
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing: .02em;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.25);
-      width: fit-content;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      display:block; font-weight: 900; font-size: 12px; letter-spacing: .02em;
+      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.25);
+      width: fit-content; text-shadow: 0 2px 12px rgba(0,0,0,0.25);
     }
     .footer-link:hover{ border-bottom-color: rgba(255,255,255,0.55); }
-
-    .footer-divider{
-      border-top: 2px solid rgba(6,97,0,0.85);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-divider{ border-top: 2px solid rgba(6,97,0,0.85); max-width: 1200px; margin: 0 auto; }
     .footer-bottom{
       border-top: 2px solid rgba(6,97,0,0.65);
       padding: 10px 18px 12px;
@@ -1000,103 +928,47 @@
       text-align:left;
     }
 
-    .social-row{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-      margin-top: 2px;
-    }
+    .social-row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; margin-top: 2px; }
     .icon-pill{
-      width: 34px;
-      height: 34px;
-      border-radius: 14px;
+      width: 34px; height: 34px; border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+      display:inline-flex; align-items:center; justify-content:center;
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      text-decoration:none;
-      user-select:none;
+      text-decoration:none; user-select:none;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .12s ease, box-shadow .12s ease;
+      transition: transform .08s ease, background .12s ease;
     }
     .icon-pill:hover{ background: var(--orangeDark); transform: translateY(-1px); }
     .icon-pill:active{ transform: translateY(0px); }
     .icon-pill svg{
-      width: 18px;
-      height: 18px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 18px; height: 18px;
+      stroke: #ffffff; fill: none; stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round;
     }
     .icon-pill .fill{ fill:#ffffff; stroke:none; }
 
-    /* ===================== RESPONSIVE ===================== */
+    /* RESPONSIVE */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .about-grid{ grid-template-columns:1fr; }
-
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
     }
 
     @media(max-width:780px){
-      .site-header{
-        background-size: 175% auto;
-        background-position: center 42%;
-        padding: 22px 0 22px;
-        min-height: 140px;
-      }
-
-      .brand-group{
-        top:56%;
-        left:50%;
-        transform: translate(-50%, -50%);
-        max-width: calc(100vw - 44px);
-      }
-      .brand-logo{ width:46px; height:46px; }
-      .brand-text{
-        font-size: 20px;
-        letter-spacing:.05em;
-        max-width: calc(100vw - 120px);
-      }
-
-      .menu-row{
-        top: calc(56% + 34px);
-        transform: translate(-50%, -50%);
-        gap: 12px;
-      }
-      .menu-row a{ font-size: 14px; letter-spacing:.07em; }
-
-      .main-nav{ top: 8px; transform:none; height:auto; }
-      .nav-left,.nav-right{ top: 8px; transform:none; }
-      .nav-left{ left: 34px; }
-      .nav-right{ right: 34px; }
-
-      /* Mobile store layout: view other products + cart + checkout side-by-side */
-      .mini-store-row{
-        flex-direction: column;
-        gap: 12px;
-      }
+      /* Mobile store controls side-by-side */
+      .mini-store-row{ flex-direction:column; gap: 12px; }
       .store-left{
-        width: 100%;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        width:100%;
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
         gap: 10px;
-        padding: 0;
+        padding: 10px 10px;
       }
-      .circle-stack{
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-        width: auto;
-      }
+      .circle-stack{ flex-direction:row; gap: 10px; width:auto; }
       .big-circle{
         width: 160px;
         height: 54px;
@@ -1107,14 +979,9 @@
         line-height: 1;
         white-space:nowrap;
       }
-      .cart-circle{
-        width: 54px;
-        height: 54px;
-      }
-      .cart-circle svg{
-        width: 24px;
-        height: 24px;
-      }
+      .big-circle br{ display:none; }
+      .cart-circle{ width: 54px; height: 54px; }
+      .cart-circle svg{ width: 24px; height: 24px; }
       .checkout-btn{
         width: 146px;
         height: 54px;
@@ -1123,48 +990,15 @@
         letter-spacing: .12em;
       }
 
-      .store-right{
-        width:100%;
-        justify-content:flex-end;
-      }
-      .mini-card{
-        width: 78%;
-        max-width: 360px;
-        min-width: 280px;
-        margin-left:auto;
-      }
+      .store-right{ width:100%; justify-content:flex-end; }
+      .mini-card{ width: 78%; max-width: 360px; min-width: 280px; margin-left:auto; }
 
-      .what-row{
-        grid-template-columns: 1fr;
-        gap: 10px;
-        margin-top: 0;
-      }
+      .what-row{ grid-template-columns: 1fr; gap: 10px; margin-top: 0; }
       .what-img, .what-para{ height:auto; }
       .what-img{ height: 220px; }
       .what-para .slant-surface{ padding-left: 34px; }
     }
   </style>
-
-  <script>
-    (function(){
-      function setStickyOffset(){
-        const sticky = document.getElementById("sticky-top");
-        if(!sticky) return;
-        const h = Math.ceil(sticky.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--stickyOffset", h + "px");
-      }
-      function setScrollbarWidth(){
-        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        document.documentElement.style.setProperty("--sbw", sbw + "px");
-      }
-      function sync(){ setStickyOffset(); setScrollbarWidth(); }
-
-      window.addEventListener("load", sync, { once:true });
-      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
-      window.addEventListener("pageshow", sync);
-      document.addEventListener("DOMContentLoaded", sync);
-    })();
-  </script>
 </head>
 
 <body>
@@ -1213,15 +1047,10 @@
                 <div class="sub">
                   <span class="uline">Introducing MayaNut to You</span>
                 </div>
-
-                <div class="hero-meta" aria-label="Quick facts">
-                  <span class="hero-pill">MayaNut is Tasty</span>
-                  <span class="hero-pill">A Forgotten Food</span>
-                </div>
               </div>
 
               <div class="what-row" aria-label="MayaNut image + slanted paragraph">
-                <div class="slant-outline slantClip what-img" aria-label="MayaNut fruit image outline">
+                <div class="slant-outline slantClip what-img">
                   <div class="slant-surface slantClip">
                     <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                          alt="MayaNut fruit on the tree (Brosimum alicastrum) in a tropical canopy"
@@ -1229,14 +1058,12 @@
                   </div>
                 </div>
 
-                <div class="slant-outline slantClip what-para" aria-label="MayaNut intro paragraph outline">
+                <div class="slant-outline slantClip what-para">
                   <div class="slant-surface slantClip">
                     <p>
-                      <span class="line">MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum.</span>
-                      <span class="line">Used for centuries by the Maya, it becomes a rich, flavorful powder</span>
-                      <span class="line">when roasted and ground—enjoyed in drinks, baking, and everyday recipes,</span>
-                      <span class="line">alongside its many nutritional benefits.</span>
-                      <span class="line">&nbsp;</span>
+                      MayaNut (maya nut) is a seed from the tropical tree Brosimum alicastrum.
+                      Used for centuries by the Maya, it becomes a rich, flavorful powder when roasted and ground—
+                      enjoyed in drinks, baking, and everyday recipes, alongside its many nutritional benefits.
                     </p>
                   </div>
                 </div>
@@ -1254,7 +1081,8 @@
               <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
 
               <div class="mini-store-row">
-                <div class="store-left" aria-label="Store buttons">
+
+                <div class="store-left" aria-label="Store controls platform">
                   <div class="circle-stack">
                     <a class="big-circle" href="store.html" aria-label="View other products">
                       VIEW OTHER<br>PRODUCTS
@@ -1276,7 +1104,9 @@
                   </button>
                 </div>
 
-                <div class="store-right" aria-label="Store product">
+                <div class="store-divider" aria-hidden="true"></div>
+
+                <div class="store-right">
                   <article class="mini-card" data-title="MayaNut Powder">
                     <div class="mini-titlebar">
                       <div class="mini-title">MayaNut Powder</div>
@@ -1312,8 +1142,8 @@
                     </div>
                   </article>
                 </div>
-              </div>
 
+              </div>
             </div>
           </aside>
 
@@ -1328,12 +1158,11 @@
           <div class="section-body">
             <div class="about-grid">
 
-              <!-- LEFT CARD -->
-              <div class="about-card" aria-label="About card 1">
+              <div class="about-card">
                 <div class="about-title">How It All Started...</div>
 
                 <div class="about-content">
-                  <div class="slant-outline slantClip about-slant" aria-label="About paragraph 1 outline">
+                  <div class="slant-outline slantClip about-slant">
                     <div class="slant-surface slantClip">
                       <p>
                         In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company,
@@ -1343,7 +1172,7 @@
                     </div>
                   </div>
 
-                  <div class="slant-outline slantClip about-img about-media-offset" aria-label="About image 1 outline">
+                  <div class="slant-outline slantClip about-img about-media-offset">
                     <div class="slant-surface slantClip" style="background:#fff;">
                       <img src="the-maya-nut-company-bubba-image.jpg"
                            alt="Historic Florida farming legacy tied to Kennesaw Fruit Company and tropical crops"
@@ -1351,16 +1180,15 @@
                     </div>
                   </div>
 
-                  <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
+                  <a class="about-cta" href="about.html">LEARN MORE</a>
                 </div>
               </div>
 
-              <!-- RIGHT CARD -->
-              <div class="about-card" aria-label="About card 2">
+              <div class="about-card">
                 <div class="about-title">Why We're Nuts for MayaNut</div>
 
                 <div class="about-content">
-                  <div class="slant-outline slantClip about-slant" aria-label="About paragraph 2 outline">
+                  <div class="slant-outline slantClip about-slant">
                     <div class="slant-surface slantClip">
                       <p>
                         MayaNut is a productive, resilient tree overlooked by American agriculture. Since 2025, August Kokus and
@@ -1370,7 +1198,7 @@
                     </div>
                   </div>
 
-                  <div class="slant-outline slantClip about-img about-media-offset" aria-label="About image 2 outline">
+                  <div class="slant-outline slantClip about-img about-media-offset">
                     <div class="slant-surface slantClip" style="background:#fff;">
                       <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                            alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
@@ -1378,9 +1206,7 @@
                     </div>
                   </div>
 
-                  <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
-                    EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
-                  </a>
+                  <a class="about-cta" href="research.html">EXPLORE RESEARCH, DATA, &amp; FIELD NOTES</a>
                 </div>
               </div>
 
@@ -1391,7 +1217,6 @@
       </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer" aria-label="Footer">
       <div class="footer-inner">
         <div class="footer-left" aria-label="Brand">

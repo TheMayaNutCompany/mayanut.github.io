@@ -46,7 +46,6 @@
   <style>
     :root{
       --green:#066100;
-      --greenDark:#05451f;
       --orange:#fd6c02;
       --orangePress:#c84b02;
       --lime:#d8ff6a;
@@ -75,11 +74,11 @@
       --padX: 16px;
       --gap: 16px;
 
-      /* slant */
+      /* slant (shared) */
       --slantCut: 4.1%;
       --slantStroke: 1px;
 
-      /* text skew */
+      /* text skew inside slanted paragraphs (match slant direction) */
       --textSkew: -5deg;
     }
 
@@ -207,6 +206,7 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
+      max-width: 100%;
     }
 
     .main-nav{
@@ -283,7 +283,7 @@
       z-index: 1;
     }
     .content-wrapper{
-      padding: 18px var(--padX) 12px; /* reduce excess bottom space */
+      padding: 18px var(--padX) 12px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -364,7 +364,7 @@
       text-decoration-thickness: 2px;
     }
 
-    /* ===================== SLANTED OUTLINE (consistent) ===================== */
+    /* ===================== SLANTED OUTLINE (shared, consistent) ===================== */
     .slant-outer{
       background: rgba(12,90,42,0.55);
       padding: var(--slantStroke);
@@ -381,7 +381,7 @@
 
     /* ===================== WHAT IS MAYANUT ===================== */
     .what-wrap{
-      padding: 0 14px 12px; /* tighter */
+      padding: 0 14px 12px;
       display:grid;
       grid-template-columns: 0.95fr 1.55fr;
       gap: 10px;
@@ -416,10 +416,10 @@
       padding-right: 10px;
     }
 
-    /* ===================== MINI STORE (layout fixed) ===================== */
+    /* ===================== MINI STORE ===================== */
     .mini-store-body{
       position:relative;
-      padding: 12px 14px 14px; /* tighter */
+      padding: 12px 14px 14px;
       background:#ffffff;
       flex:1 1 auto;
       min-height:0;
@@ -442,6 +442,7 @@
       cursor:pointer;
       transition: background .12s ease, transform .08s ease;
       -webkit-tap-highlight-color: transparent;
+      z-index: 5;
     }
     .mini-cart:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .mini-cart:active{ transform: translateY(0px); }
@@ -475,13 +476,14 @@
       transform: translate(60%,-60%);
     }
 
-    /* main store grid: left product column, right starburst */
+    /* store grid: align product top with cart top; align burst bottom with checkout */
     .store-grid{
       display:grid;
       grid-template-columns: 1fr 260px;
       gap: 14px;
-      align-items:start;
-      padding-top: 44px; /* leaves room for cart */
+      align-items:stretch;              /* lets right column use flex-end */
+      padding-top: 0;                   /* remove previous top padding */
+      margin-top: 12px;                 /* light breathing below head */
     }
 
     .store-left{
@@ -489,8 +491,11 @@
       flex-direction:column;
       gap: 10px;
       align-items:flex-start;
+      padding-top: 0;                   /* product starts at same level as cart top */
+      margin-top: 0;
     }
 
+    /* IMPORTANT: pull product up so its top edge aligns with cart top (12px from body top) */
     .mini-card{
       width: 260px;
       border-radius:18px;
@@ -500,7 +505,34 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+      margin-top: 0;
+      transform: translateY(-12px);     /* aligns top of product with cart top */
     }
+    .mini-checkout{
+      width: 260px;
+      height: 52px;
+      border-radius: 16px;
+      padding: 0 12px;
+      border: 2px solid rgba(255,255,255,0.95);
+      background: var(--orange);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 12px 22px rgba(15,23,42,0.10);
+      user-select:none;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      -webkit-tap-highlight-color: transparent;
+      font-weight:950;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#fff;
+      font-size:12px;
+      white-space:nowrap;
+      margin-top: -12px;                /* keep checkout aligned visually under shifted product */
+    }
+    .mini-checkout:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .mini-checkout:active{ transform: translateY(0px); }
 
     .mini-titlebar{
       background: var(--pale);
@@ -670,38 +702,13 @@
       line-height: 1.35;
     }
 
-    /* checkout button under product */
-    .mini-checkout{
-      width: 260px;
-      height: 52px;
-      border-radius: 16px;
-      padding: 0 12px;
-      border: 2px solid rgba(255,255,255,0.95);
-      background: var(--orange);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 12px 22px rgba(15,23,42,0.10);
-      user-select:none;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-      -webkit-tap-highlight-color: transparent;
-      font-weight:950;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:#fff;
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .mini-checkout:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .mini-checkout:active{ transform: translateY(0px); }
-
-    /* right side: spiky label */
+    /* RIGHT: burst bottom tip aligns with checkout (grid stretch + flex-end + translate) */
     .store-right{
       display:flex;
       justify-content:flex-end;
-      align-items:flex-start;
-      padding-top: 10px;
+      align-items:flex-end;             /* bottom-align within stretched cell */
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     .burst{
@@ -750,9 +757,11 @@
         28% 2%,
         40% 7%
       );
+      transform: translateY(12px);      /* drops burst so bottom tip meets checkout baseline */
     }
-    .burst:hover{ background: var(--orangePress); transform: translateY(-2px); }
-    .burst:active{ transform: translateY(0px); }
+    .burst:hover{ background: var(--orangePress); transform: translateY(10px); }
+    .burst:active{ transform: translateY(12px); }
+
     .burst .txt{
       font-weight: 950;
       letter-spacing: .10em;
@@ -763,7 +772,6 @@
     }
     .burst .txt b{ display:block; font-size: 22px; letter-spacing:.08em; margin-bottom: 6px; }
 
-    /* mini msg */
     .mini-msg{
       display:none;
       border-radius:14px;
@@ -999,9 +1007,13 @@
         grid-template-columns: 1fr;
         gap: 12px;
       }
-      .store-right{ justify-content:flex-start; }
-      .mini-card, .mini-checkout{ width: 100%; max-width: 360px; }
-      .burst{ width: 100%; max-width: 360px; height: 150px; }
+      .store-right{ justify-content:flex-start; align-items:flex-start; }
+      .mini-card, .mini-checkout{ width: 100%; max-width: 360px; transform:none; }
+      .mini-checkout{ margin-top: 0; }
+      .burst{ width: 100%; max-width: 360px; height: 150px; transform:none; }
+      .burst:hover{ transform: translateY(-2px); }
+      .burst:active{ transform: translateY(0px); }
+
       .about-grid{ grid-template-columns:1fr; }
 
       .footer-inner{ grid-template-columns: 1fr; }
@@ -1177,7 +1189,6 @@
                         </div>
                       </div>
 
-                      <!-- description restored -->
                       <div class="mini-desc">Flavorful powder, great for acai bowls, granola, baking, and more.</div>
                     </div>
                   </article>
@@ -1430,7 +1441,6 @@
       function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
 
       function brieflyAdded(btn){
-        btn.classList.add("added-state");
         const main = btn.querySelector(".add-main");
         const sub  = btn.querySelector(".add-sub");
         const oldMain = main?.textContent || "ADD";
@@ -1440,7 +1450,6 @@
         setTimeout(()=>{
           if(main) main.textContent = oldMain;
           if(sub)  sub.textContent  = oldSub;
-          btn.classList.remove("added-state");
         }, 650);
       }
 

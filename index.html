@@ -78,7 +78,7 @@
       --slantCut: 4.1%;
       --slantStroke: 1px;
 
-      /* text skew inside slanted paragraphs (match slant direction) */
+      /* text skew inside slanted paragraphs */
       --textSkew: -5deg;
     }
 
@@ -364,7 +364,7 @@
       text-decoration-thickness: 2px;
     }
 
-    /* ===================== SLANTED OUTLINE (shared, consistent) ===================== */
+    /* ===================== SLANTED OUTLINE (shared) ===================== */
     .slant-outer{
       background: rgba(12,90,42,0.55);
       padding: var(--slantStroke);
@@ -425,65 +425,13 @@
       min-height:0;
     }
 
-    /* cart icon upper right */
-    .mini-cart{
-      position:absolute;
-      top: 12px;
-      right: 14px;
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      background: var(--orange);
-      border: 2px solid rgba(255,255,255,0.95);
-      box-shadow:0 12px 24px rgba(15,23,42,0.12);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      transition: background .12s ease, transform .08s ease;
-      -webkit-tap-highlight-color: transparent;
-      z-index: 5;
-    }
-    .mini-cart:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .mini-cart:active{ transform: translateY(0px); }
-
-    .mini-cart svg{
-      width: 22px;
-      height: 22px;
-      stroke:#fff;
-      fill:none;
-      stroke-width:2.4;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-    .mini-badge{
-      position:absolute;
-      top: 6px;
-      right: 7px;
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: var(--orange);
-      border:1px solid rgba(255,255,255,0.85);
-      color:#ffffff;
-      font-weight:900;
-      font-size:8.5px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      line-height:1;
-      pointer-events:none;
-      transform: translate(60%,-60%);
-    }
-
-    /* store grid: align product top with cart top; align burst bottom with checkout */
+    /* store grid */
     .store-grid{
       display:grid;
-      grid-template-columns: 1fr 260px;
-      gap: 14px;
-      align-items:stretch;              /* lets right column use flex-end */
-      padding-top: 0;                   /* remove previous top padding */
-      margin-top: 12px;                 /* light breathing below head */
+      grid-template-columns: 1fr 270px;
+      gap: 16px;
+      align-items:stretch;
+      margin-top: 12px;
     }
 
     .store-left{
@@ -491,11 +439,11 @@
       flex-direction:column;
       gap: 10px;
       align-items:flex-start;
-      padding-top: 0;                   /* product starts at same level as cart top */
+      padding-top: 0;
       margin-top: 0;
+      min-height: 0;
     }
 
-    /* IMPORTANT: pull product up so its top edge aligns with cart top (12px from body top) */
     .mini-card{
       width: 260px;
       border-radius:18px;
@@ -506,33 +454,7 @@
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
       margin-top: 0;
-      transform: translateY(-12px);     /* aligns top of product with cart top */
     }
-    .mini-checkout{
-      width: 260px;
-      height: 52px;
-      border-radius: 16px;
-      padding: 0 12px;
-      border: 2px solid rgba(255,255,255,0.95);
-      background: var(--orange);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 12px 22px rgba(15,23,42,0.10);
-      user-select:none;
-      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
-      -webkit-tap-highlight-color: transparent;
-      font-weight:950;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:#fff;
-      font-size:12px;
-      white-space:nowrap;
-      margin-top: -12px;                /* keep checkout aligned visually under shifted product */
-    }
-    .mini-checkout:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .mini-checkout:active{ transform: translateY(0px); }
 
     .mini-titlebar{
       background: var(--pale);
@@ -579,6 +501,7 @@
       display:flex;
       flex-direction:column;
       gap: 10px;
+      min-height: 0;
     }
 
     .mini-actions{
@@ -693,24 +616,155 @@
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
     .qty-seg.disabled{ color: rgba(15,23,42,0.35); cursor: default; }
 
-    .mini-desc{
+    /* Bottom row: description (left) + checkout (right) */
+    .mini-bottom-row{
+      display:flex;
+      align-items:stretch;
+      gap: 12px;
       margin-top: 2px;
+    }
+    .mini-desc{
+      flex: 1 1 auto;
       font-weight: 850;
       font-size: 12px;
       letter-spacing: .01em;
       color: rgba(15,23,42,0.55);
       line-height: 1.35;
+      padding-top: 4px;
+      min-width: 0;
     }
+    .mini-checkout{
+      flex: 0 0 170px;
+      height: 44px;
+      border-radius: 16px;
+      padding: 0 12px;
+      border: 2px solid rgba(255,255,255,0.95);
+      background: var(--orange);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 12px 22px rgba(15,23,42,0.10);
+      user-select:none;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      -webkit-tap-highlight-color: transparent;
+      font-weight:950;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#fff;
+      font-size:11px;
+      white-space:nowrap;
+    }
+    .mini-checkout:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .mini-checkout:active{ transform: translateY(0px); }
 
-    /* RIGHT: burst bottom tip aligns with checkout (grid stretch + flex-end + translate) */
+    /* RIGHT COLUMN STACK: cart bar (top), polygon (middle), spacing */
     .store-right{
       display:flex;
-      justify-content:flex-end;
-      align-items:flex-end;             /* bottom-align within stretched cell */
+      flex-direction:column;
+      align-items:flex-start;       /* aligns left, close to product outer edge */
+      justify-content:flex-start;
+      gap: 12px;
       padding-top: 0;
       padding-bottom: 0;
     }
 
+    /* Cart bar aligned left (near product edge) */
+    .view-cart-bar{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      cursor:pointer;
+      margin-left: 2px;            /* "slightly to the right" of product outer edge */
+    }
+
+    .cart-circle{
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: var(--orange);
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow:0 12px 24px rgba(15,23,42,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      transition: background .12s ease, transform .08s ease;
+    }
+    .view-cart-bar:hover .cart-circle{ background: var(--orangePress); transform: translateY(-1px); }
+    .view-cart-bar:active .cart-circle{ transform: translateY(0px); }
+
+    .cart-circle svg{
+      width: 24px;
+      height: 24px;
+      stroke:#fff;
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .mini-badge{
+      position:absolute;
+      top: 6px;
+      right: 7px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--orange);
+      border:1px solid rgba(255,255,255,0.85);
+      color:#ffffff;
+      font-weight:900;
+      font-size:8.5px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1;
+      pointer-events:none;
+      transform: translate(60%,-60%);
+    }
+
+    .view-cart-pill{
+      height: 36px;
+      border-radius: 16px;
+      background: var(--orange);
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow:0 12px 24px rgba(15,23,42,0.10);
+      display:flex;
+      align-items:center;
+      padding: 0 14px;
+      color:#fff;
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: background .12s ease, transform .08s ease;
+      position:relative;
+    }
+
+    /* small connector to visually "attach" pill to circle */
+    .view-cart-pill::before{
+      content:"";
+      position:absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 18px;
+      background: var(--orange);
+      border-top: 2px solid rgba(255,255,255,0.95);
+      border-bottom: 2px solid rgba(255,255,255,0.95);
+      border-left: 0;
+      border-right: 0;
+      border-radius: 10px 0 0 10px;
+    }
+
+    .view-cart-bar:hover .view-cart-pill{ background: var(--orangePress); transform: translateY(-1px); }
+    .view-cart-bar:active .view-cart-pill{ transform: translateY(0px); }
+
+    /* Polygon (browse all products) placed BELOW cart bar, ABOVE checkout row */
     .burst{
       width: 240px;
       height: 160px;
@@ -757,10 +811,11 @@
         28% 2%,
         40% 7%
       );
-      transform: translateY(12px);      /* drops burst so bottom tip meets checkout baseline */
+      margin-top: 2px;
+      align-self: flex-end; /* keeps it right-aligned within right column */
     }
-    .burst:hover{ background: var(--orangePress); transform: translateY(10px); }
-    .burst:active{ transform: translateY(12px); }
+    .burst:hover{ background: var(--orangePress); transform: translateY(-2px); }
+    .burst:active{ transform: translateY(0px); }
 
     .burst .txt{
       font-weight: 950;
@@ -1007,12 +1062,14 @@
         grid-template-columns: 1fr;
         gap: 12px;
       }
-      .store-right{ justify-content:flex-start; align-items:flex-start; }
-      .mini-card, .mini-checkout{ width: 100%; max-width: 360px; transform:none; }
-      .mini-checkout{ margin-top: 0; }
-      .burst{ width: 100%; max-width: 360px; height: 150px; transform:none; }
-      .burst:hover{ transform: translateY(-2px); }
-      .burst:active{ transform: translateY(0px); }
+      .mini-card{ width: 100%; max-width: 360px; }
+      .store-right{
+        width: 100%;
+        align-items:flex-start;
+      }
+      .burst{ width: 100%; max-width: 360px; height: 150px; align-self:flex-start; }
+      .mini-bottom-row{ flex-direction: column; gap: 10px; }
+      .mini-checkout{ width: 100%; flex: 0 0 auto; }
 
       .about-grid{ grid-template-columns:1fr; }
 
@@ -1141,21 +1198,9 @@
             </div>
 
             <div class="mini-store-body">
-
-              <!-- cart icon top-right -->
-              <button class="mini-cart" type="button" id="mini-cart" aria-label="View cart">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                  <path d="M6 7l-1-3H2.5"></path>
-                  <circle cx="9" cy="19" r="1.6"></circle>
-                  <circle cx="17" cy="19" r="1.6"></circle>
-                </svg>
-                <span class="mini-badge" id="mini-badge">0</span>
-              </button>
-
               <div class="store-grid" aria-label="Mini store layout">
 
-                <!-- LEFT: product + checkout -->
+                <!-- LEFT: product -->
                 <div class="store-left">
                   <article class="mini-card" data-title="MayaNut Powder">
                     <div class="mini-titlebar">
@@ -1189,19 +1234,38 @@
                         </div>
                       </div>
 
-                      <div class="mini-desc">Flavorful powder, great for acai bowls, granola, baking, and more.</div>
+                      <!-- description left; checkout right (same baseline row) -->
+                      <div class="mini-bottom-row" aria-label="Description and checkout">
+                        <div class="mini-desc">Flavorful powder, great for acai bowls, granola, baking, and more.</div>
+                        <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Continue to checkout">
+                          CONTINUE TO CHECKOUT
+                        </button>
+                      </div>
                     </div>
                   </article>
-
-                  <button class="mini-checkout" type="button" id="mini-checkout" aria-label="Continue to checkout">
-                    CONTINUE TO CHECKOUT
-                  </button>
 
                   <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
                 </div>
 
-                <!-- RIGHT: browse burst -->
-                <div class="store-right">
+                <!-- RIGHT: cart bar (top), polygon (below) -->
+                <div class="store-right" aria-label="Store shortcuts">
+                  <!-- CART BAR -->
+                  <div class="view-cart-bar" id="view-cart" role="button" tabindex="0" aria-label="View cart">
+                    <div class="cart-circle" aria-hidden="true">
+                      <!-- cart + caret in the circle -->
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                        <path d="M9 4.7l3 3 3-3" opacity="0.98"></path>
+                      </svg>
+                      <span class="mini-badge" id="mini-badge">0</span>
+                    </div>
+                    <div class="view-cart-pill">VIEW CART</div>
+                  </div>
+
+                  <!-- POLYGON -->
                   <a class="burst" href="store.html" aria-label="Browse all products">
                     <div class="txt">
                       <b>BROWSE</b>
@@ -1511,9 +1575,10 @@
 
       document.querySelectorAll(".mini-card").forEach(wireCard);
 
-      document.getElementById("mini-cart")?.addEventListener("click", ()=>{
-        showMiniMessage("Cart view is currently unavailable.");
-      });
+      const viewCart = document.getElementById("view-cart");
+      function onViewCart(){ showMiniMessage("Cart view is currently unavailable."); }
+      viewCart?.addEventListener("click", onViewCart);
+      viewCart?.addEventListener("keydown", (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); onViewCart(); } });
 
       document.getElementById("mini-checkout")?.addEventListener("click", ()=>{
         showMiniMessage("Checkout is currently unavailable.");

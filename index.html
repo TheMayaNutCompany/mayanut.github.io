@@ -69,7 +69,7 @@
       --slantCut: 4.2%;
       --slantStroke: 1px;
 
-      /* text skew (other direction) */
+      /* text skew */
       --textSkew: 5deg;
     }
 
@@ -205,9 +205,7 @@
     .headline .big{ font-size:30px; font-weight:950; padding:0 10px; }
     .headline .sub{ margin-top:6px; padding:0 10px; font-weight:950; color:var(--orange); text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px; }
 
-    /* ===================== SLANTED OUTLINE (fix) ===================== */
-    /* The prior “glitch” was usually from combining border + clip-path directly.
-       This double layer is stable on all edges. */
+    /* ===================== SLANTED OUTLINE (stable) ===================== */
     .slant-frame{
       background: var(--darkGreen);
       padding: var(--slantStroke);
@@ -238,44 +236,36 @@
       padding-right: 8px;
     }
 
-    /* ===================== STORE ===================== */
-    .mini-store-body{ padding: 10px 14px 10px; }
-    .mini-store-row{ display:flex; gap:12px; align-items:stretch; }
+    /* ===================== STORE (NEW: everything on white) ===================== */
+    .mini-store-body{ padding: 10px 14px 12px; }
 
-    /* gradient section */
-    .store-left{
-      width: 186px;
-      padding: 10px 10px;
-      border-radius:18px;
-      background: linear-gradient(to bottom, var(--lime) 0%, var(--green) 100%);
-      border: var(--softBorder);
+    /* top-right cart on white background */
+    .store-topbar{
       display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      position:relative;
-      min-height: 270px;
+      justify-content:flex-end;
+      align-items:center;
+      padding: 10px 14px 0;
     }
-
-    /* cart icon only, upper right */
-    .cart-mini{
-      position:absolute;
-      top: 10px;
-      right: 10px;
+    .cart-top{
       width: 46px;
       height: 46px;
-      border-radius:50%;
+      border-radius: 50%;
       background: var(--orange);
       border: 2px solid #fff;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       cursor:pointer;
       transition:.12s;
+      position:relative;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.10);
     }
-    .cart-mini:hover{ background: var(--orangeDark); }
-    .cart-mini svg{ width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2.5; }
+    .cart-top:hover{ background: var(--orangeDark); }
+    .cart-top svg{ width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2.5; }
 
     .cart-badge{
       position:absolute;
-      top: 12px; right: 14px;
+      top: 10px; right: 12px;
       width:14px; height:14px;
       border-radius:999px;
       background: var(--orange);
@@ -288,43 +278,18 @@
       pointer-events:none;
     }
 
-    /* big circle at bottom of gradient, almost as wide */
-    .browse-circle{
-      width: 166px;
-      height: 166px;
-      border-radius:50%;
-      background: var(--orange);
-      border: 2px solid #fff;
+    /* one column: product + checkout under it */
+    .store-stack{
+      padding: 10px 14px 14px;
       display:flex;
-      align-items:center;
-      justify-content:center;
       flex-direction:column;
-      text-align:center;
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      line-height:1.05;
-      font-size: 12px;
-      cursor:pointer;
-      transition:.12s;
-      align-self:center;
-      margin-top:auto;
-      margin-bottom: 2px; /* level with checkout visually */
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      align-items:flex-end;
+      gap: 10px;
     }
-    .browse-circle:hover{ background: var(--orangeDark); transform: translateY(-1px); }
-    .browse-circle:active{ transform: translateY(0px); }
 
-    .browse-circle .l2{ margin-top:4px; }
-
-    .store-divider{ width:1px; background: rgba(12,90,42,0.45); margin:6px 0; border-radius:999px; }
-
-    .store-right{ flex:1; display:flex; justify-content:flex-end; }
-
-    /* narrower product to increase white gap */
+    /* product less wide */
     .mini-card{
-      width: 232px;
+      width: 240px;
       border-radius:18px;
       border: var(--softBorder);
       overflow:hidden;
@@ -332,7 +297,7 @@
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       display:flex;
       flex-direction:column;
-      min-height: 300px;
+      min-height: 312px;
     }
 
     .mini-titlebar{
@@ -347,10 +312,8 @@
     .mini-img{ height: 142px; object-fit:cover; border-bottom: var(--softBorder); }
 
     .mini-bot{ background: var(--pale); padding:10px; display:flex; flex-direction:column; gap:10px; flex:1; }
-
     .mini-actions{ display:flex; gap:10px; align-items:stretch; }
 
-    /* restore ADD + qty + weight */
     .add-to-cart{
       width: 92px;
       min-height: 58px;
@@ -406,23 +369,32 @@
     .qty-seg.mid{ flex:1; cursor:default; }
     .qty-seg + .qty-seg{ border-left:1px solid rgba(12,90,42,0.35); }
 
-    .mini-desc{
-      font-weight:850;
-      font-size:12px;
-      color: rgba(15,23,42,0.45);
-      line-height:1.35;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height: calc(1.35em * 2);
+    /* browse all products text where description was (bigger text) */
+    .browse-big{
+      border-radius: 14px;
+      border: 1px solid rgba(12,90,42,0.45);
+      background: rgba(255,255,255,0.96);
+      padding: 12px 12px;
+      font-weight: 950;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      font-size: 14px;
+      color:#0b1220;
+      text-align:center;
+      cursor:pointer;
+      transition:.12s;
     }
+    .browse-big:hover{
+      background: rgba(255,255,255,1);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
+      transform: translateY(-1px);
+    }
+    .browse-big:active{ transform: translateY(0px); }
 
-    /* Continue button under product aligned with description (same width as product) */
+    /* continue under product same width */
     .checkout-under{
-      width: 232px;
+      width: 240px;
       height: 48px;
-      margin-top: 10px;
       border-radius: 16px;
       background: var(--orange);
       border: 2px solid #fff;
@@ -438,7 +410,7 @@
     .checkout-under:hover{ background: var(--orangeDark); transform: translateY(-1px); }
     .checkout-under:active{ transform: translateY(0px); }
 
-    /* ABOUT (kept, text slant other direction) */
+    /* ABOUT (kept) */
     .about-wrap{ margin-top: 12px; }
     .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px; }
     .about-card{ border-radius:18px; border: var(--softBorder); background:#fff; box-shadow:0 10px 22px rgba(15,23,42,0.05); overflow:hidden; display:flex; flex-direction:column; }
@@ -460,23 +432,6 @@
     .about-imgH{ height: 300px; }
     .about-imgH img{ height:100%; object-fit:cover; }
 
-    .about-cta{
-      height:44px;
-      width: calc(100% - 24px);
-      margin: 0 12px 12px;
-      border-radius:14px;
-      background: var(--orange);
-      border:1px solid rgba(255,255,255,0.55);
-      color:#fff;
-      font-weight:900;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:.12s;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .about-cta:hover{ background: var(--orangeDark); }
-
     /* Responsive */
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
@@ -485,13 +440,7 @@
       .what-imgH{ height:220px; }
       .what-paraH .slant-inner{ padding-left: 28px; }
 
-      .mini-store-row{ flex-direction:column; gap:12px; }
-      .store-left{ width:100%; min-height:auto; padding: 10px; }
-      .cart-mini{ position:static; }
-      .browse-circle{ width: 190px; height: 190px; }
-
-      .store-divider{ display:none; }
-      .store-right{ justify-content:flex-end; }
+      .store-stack{ align-items:flex-end; }
       .mini-card{ width: 78%; max-width: 320px; min-width: 260px; }
       .checkout-under{ width: min(320px, 78%); }
 
@@ -578,71 +527,63 @@
             </div>
 
             <div class="mini-store-body">
-              <div class="mini-store-row">
 
-                <div class="store-left">
-                  <button class="cart-mini" id="mini-cart" aria-label="View cart">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                      <path d="M6 7l-1-3H2.5"></path>
-                      <circle cx="9" cy="19" r="1.6"></circle>
-                      <circle cx="17" cy="19" r="1.6"></circle>
-                    </svg>
-                    <span class="cart-badge" id="mini-badge">0</span>
-                  </button>
+              <!-- cart in upper right on white -->
+              <div class="store-topbar">
+                <button class="cart-top" type="button" id="mini-cart" aria-label="View cart">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                    <path d="M6 7l-1-3H2.5"></path>
+                    <circle cx="9" cy="19" r="1.6"></circle>
+                    <circle cx="17" cy="19" r="1.6"></circle>
+                  </svg>
+                  <span class="cart-badge" id="mini-badge">0</span>
+                </button>
+              </div>
 
-                  <a class="browse-circle" href="store.html" aria-label="Browse all products">
-                    <div>Browse All</div>
-                    <div class="l2">Products</div>
-                  </a>
-                </div>
+              <div class="store-stack">
 
-                <div class="store-divider" aria-hidden="true"></div>
-
-                <div class="store-right">
-                  <div>
-                    <article class="mini-card" data-title="MayaNut Powder">
-                      <div class="mini-titlebar">
-                        <div class="mini-title">MayaNut Powder</div>
-                        <div class="mini-price">$9.95</div>
-                      </div>
-
-                      <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                           alt="Roasted MayaNut powder made from Brosimum alicastrum seed"
-                           loading="lazy" decoding="async" />
-
-                      <div class="mini-bot">
-                        <div class="mini-actions">
-                          <button class="add-to-cart" type="button" data-add aria-label="Add MayaNut Powder to cart">
-                            <div class="add-main">ADD</div>
-                            <div class="add-sub">TO CART</div>
-                          </button>
-
-                          <div class="right-stack">
-                            <div class="mini-rect" aria-label="Weight">
-                              <span class="lbl">WEIGHT:</span>
-                              <span class="val" data-weight-val>1/4 LB</span>
-                            </div>
-
-                            <div class="qty-rect" aria-label="Quantity selector (max 9)">
-                              <div class="qty-seg" data-minus role="button" tabindex="0">−</div>
-                              <div class="qty-seg mid" data-qty>1</div>
-                              <div class="qty-seg" data-plus role="button" tabindex="0">+</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="mini-desc">
-                          Flavorful powder, great for acai bowls, granola, and much more!
-                        </div>
-                      </div>
-                    </article>
-
-                    <button class="checkout-under" type="button" id="checkout-under">
-                      CONTINUE TO CHECKOUT
-                    </button>
+                <article class="mini-card" data-title="MayaNut Powder">
+                  <div class="mini-titlebar">
+                    <div class="mini-title">MayaNut Powder</div>
+                    <div class="mini-price">$9.95</div>
                   </div>
-                </div>
+
+                  <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                       alt="Roasted MayaNut powder made from Brosimum alicastrum seed"
+                       loading="lazy" decoding="async" />
+
+                  <div class="mini-bot">
+                    <div class="mini-actions">
+                      <button class="add-to-cart" type="button" data-add aria-label="Add MayaNut Powder to cart">
+                        <div class="add-main">ADD</div>
+                        <div class="add-sub">TO CART</div>
+                      </button>
+
+                      <div class="right-stack">
+                        <div class="mini-rect" aria-label="Weight">
+                          <span class="lbl">WEIGHT:</span>
+                          <span class="val" data-weight-val>1/4 LB</span>
+                        </div>
+
+                        <div class="qty-rect" aria-label="Quantity selector (max 9)">
+                          <div class="qty-seg" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
+                          <div class="qty-seg mid" data-qty aria-label="Quantity">1</div>
+                          <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Browse All Products moved here with bigger text -->
+                    <a class="browse-big" href="store.html" aria-label="Browse all products">
+                      BROWSE ALL PRODUCTS
+                    </a>
+                  </div>
+                </article>
+
+                <button class="checkout-under" type="button" id="checkout-under" aria-label="Continue to checkout">
+                  CONTINUE TO CHECKOUT
+                </button>
 
               </div>
             </div>
@@ -725,14 +666,12 @@
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
       let count = 0;
-
       const badge = document.getElementById("mini-badge");
 
       function renderBadge(){
         if(badge) badge.textContent = String(count);
       }
 
-      // wire product controls
       const card = document.querySelector(".mini-card");
       if(card){
         const add = card.querySelector("[data-add]");
@@ -741,14 +680,8 @@
         const plus = card.querySelector("[data-plus]");
 
         let qtyVal = 1;
-
-        function renderQty(){
-          if(qtyEl) qtyEl.textContent = String(qtyVal);
-        }
-        function setQty(n){
-          qtyVal = clamp(parseInt(n,10) || 1);
-          renderQty();
-        }
+        function renderQty(){ if(qtyEl) qtyEl.textContent = String(qtyVal); }
+        function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); renderQty(); }
 
         plus?.addEventListener("click", ()=>{ if(qtyVal < MAX_QTY) setQty(qtyVal + 1); });
         minus?.addEventListener("click", ()=> setQty(qtyVal - 1));

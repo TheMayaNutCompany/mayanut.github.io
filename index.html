@@ -108,6 +108,8 @@
 
       --padX: 16px;
       --gap: 16px;
+
+      --btnH: 58px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -437,7 +439,7 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* MINI STORE header: prevent gradient line from overlapping cart */
+    /* MINI STORE header: cart pill at right, line below to avoid overlap */
     .store-head{
       display:flex;
       align-items:center;
@@ -467,15 +469,16 @@
       margin-top: -2px;
     }
 
+    /* View Cart: rounded textbox with attached circle on the left */
     .store-cart-btn{
-      height: 30px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.85);
+      height: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding: 0 12px 0 10px;
+      padding: 0 12px 0 6px;
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
@@ -488,15 +491,16 @@
     .store-cart-btn:active{ transform: translateY(0px); }
 
     .cart-ic{
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.95);
       display:flex;
       align-items:center;
       justify-content:center;
       position:relative;
-      background: rgba(0,0,0,0.08);
+      background: rgba(0,0,0,0.10);
       flex:0 0 auto;
+      margin-left: 2px;
     }
     .cart-ic svg{
       width: 14px; height: 14px;
@@ -529,6 +533,7 @@
       text-transform: uppercase;
       font-size: 11px;
       white-space: nowrap;
+      padding-right: 2px;
     }
 
     .mini-store-body{
@@ -600,9 +605,10 @@
       align-items:stretch;
     }
 
+    /* Match heights across Add / Continue / View buttons */
     .add-to-cart{
       width: 94px;
-      min-height: 58px;
+      height: var(--btnH);
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.55);
       background: var(--orange);
@@ -675,7 +681,7 @@
       flex:0 0 auto;
     }
 
-    /* Quantity selector: move dividers closer to number & give +/- more space */
+    /* Quantity: centered number; more room around +/-; no "glitch" */
     .qty-rect{
       height: 28px;
       border-radius: 14px;
@@ -694,13 +700,11 @@
       font-size: 14px;
       color:#0b1220;
       cursor:pointer;
-
-      /* wider +/- */
-      flex: 0 0 44px;
+      line-height: 1;
+      flex: 0 0 54px; /* more breathing room */
     }
     .qty-seg.mid{
-      /* narrower number to pull dividers closer to number */
-      flex: 0 0 40px;
+      flex: 0 0 42px; /* dividers closer to number */
       cursor:default;
       color:#000;
       letter-spacing:.04em;
@@ -721,20 +725,19 @@
       line-height: 1.35;
     }
 
-    .mini-title.powder-quarter::after{
-      content:" ¼";
-    }
+    .mini-title.powder-quarter::after{ content:" ¼"; }
 
+    /* Buttons under product */
     .store-ctas{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.35fr 0.65fr; /* longer checkout; smaller view button */
       gap: 10px;
       align-items: stretch;
       max-width: 340px;
     }
 
     .cta-btn{
-      height: 56px;
+      height: var(--btnH);
       border-radius: 14px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.95);
@@ -753,9 +756,30 @@
       padding: 0 10px;
       line-height: 1.05;
       font-size: 12px;
+      white-space: nowrap;
     }
     .cta-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-btn:active{ transform: translateY(0px); }
+
+    /* View Full Store: stacked text with smaller top line */
+    .cta-stack{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 2px;
+      line-height: 1.05;
+      width: 100%;
+    }
+    .cta-small{
+      font-size: 10px;
+      letter-spacing: .18em;
+      opacity: .95;
+    }
+    .cta-big{
+      font-size: 14px;
+      letter-spacing: .10em;
+    }
 
     .about-wrap{ margin-top: 14px; }
     .about-grid{
@@ -791,9 +815,7 @@
       color:#0b1220;
       letter-spacing:.02em;
     }
-    .about-card .para{
-      padding: 46px 12px 0;
-    }
+    .about-card .para{ padding: 46px 12px 0; }
     .about-card .para p{
       margin:0;
       background: var(--pale);
@@ -1155,8 +1177,16 @@
                 </article>
 
                 <div class="store-ctas" aria-label="Store actions">
-                  <button class="cta-btn" type="button" id="continue-checkout" aria-label="Checkout">CHECKOUT</button>
-                  <button class="cta-btn" type="button" id="browse-all" aria-label="View full store">VIEW FULL STORE</button>
+                  <button class="cta-btn" type="button" id="continue-checkout" aria-label="Continue to checkout">
+                    CONTINUE TO CHECKOUT
+                  </button>
+
+                  <button class="cta-btn" type="button" id="browse-all" aria-label="View full store">
+                    <span class="cta-stack" aria-hidden="false">
+                      <span class="cta-small">VIEW</span>
+                      <span class="cta-big">FULL STORE</span>
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1210,8 +1240,6 @@
         </section>
 
       </div>
-
-      <div class="top-banner" aria-hidden="true" style="border-top:1px solid rgba(255,255,255,0.18); border-bottom:none;"></div>
     </main>
 
     <footer class="footer" aria-label="Footer">
@@ -1287,24 +1315,6 @@
   <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
   <script>
-    (function(){
-      function setStickyOffset(){
-        const sticky = document.getElementById("sticky-top");
-        if(!sticky) return;
-        const h = Math.ceil(sticky.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--stickyOffset", h + "px");
-      }
-      function setScrollbarWidth(){
-        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        document.documentElement.style.setProperty("--sbw", sbw + "px");
-      }
-      function sync(){ setStickyOffset(); setScrollbarWidth(); }
-      window.addEventListener("load", sync, { once:true });
-      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
-      window.addEventListener("pageshow", sync);
-      document.addEventListener("DOMContentLoaded", sync);
-    })();
-
     (function(){
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));

@@ -54,30 +54,6 @@
     "logo":"https://mayanut.com/mayanut-the-mayanut-comapny-logo.png"
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"The MayaNut Company",
-    "url":"https://mayanut.com/"
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Product",
-    "name":"MayaNut Powder ¼",
-    "brand":{"@type":"Brand","name":"The MayaNut Company"},
-    "description":"Roasted MayaNut (Brosimum alicastrum) seed powder. Great in drinks, baking, granola, and everyday recipes.",
-    "image":"https://mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png",
-    "offers":{
-      "@type":"Offer",
-      "priceCurrency":"USD",
-      "price":"9.95",
-      "availability":"https://schema.org/PreOrder"
-    }
-  }
-  </script>
 
   <style>
     :root{
@@ -333,6 +309,7 @@
       height:100%;
     }
 
+    /* PANEL HEAD */
     .panel-head{
       background: var(--green);
       border-bottom: 1px solid rgba(255,255,255,0.18);
@@ -341,6 +318,7 @@
       align-items:center;
       gap:12px;
       flex:0 0 auto;
+      position:relative;
     }
     .panel-title{
       font-weight: 950;
@@ -438,16 +416,7 @@
     }
     .what-paragraph p + p{ margin-top: 10px; }
 
-    /* MINI STORE header: cart pill + gradient line below (no overlap) */
-    .store-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap: wrap;
-      row-gap: 10px;
-      column-gap: 12px;
-      position:relative;
-    }
+    /* MINI STORE head: single line => "MINI STORE" + thin gradient + view cart, all on one line */
     .store-head-left{
       display:flex;
       align-items:center;
@@ -460,38 +429,36 @@
       display:flex;
       align-items:center;
     }
-    .store-line{
-      width:100%;
+    .store-head-left .panel-title{ flex: 0 0 auto; }
+    .store-head-left .head-line{
+      flex: 1 1 auto;
+      min-width: 120px;
+      margin-left: 0;
       height: 5px;
-      background: linear-gradient(to right, var(--footer-g1) 0%, var(--footer-g2) 55%, var(--footer-g3) 100%);
-      opacity: .95;
-      border-radius: 0;
-      margin-top: -2px;
     }
 
-    /* View Cart: rounded textbox with attached circle on the left */
-    .store-cart-btn{
+    /* View Cart rebuild: big circle attached to rounded text box; badge on cart tip */
+    .viewcart-pill{
       height: 32px;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.95);
       display:inline-flex;
       align-items:center;
       gap:10px;
       padding: 0 12px 0 6px;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
       transition: transform .08s ease, background .08s ease;
-      position: relative;
-      z-index: 2;
     }
-    .store-cart-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .store-cart-btn:active{ transform: translateY(0px); }
+    .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .viewcart-pill:active{ transform: translateY(0px); }
 
-    .cart-ic{
-      width: 24px; height: 24px;
+    .vc-circle{
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.95);
       display:flex;
@@ -500,33 +467,15 @@
       position:relative;
       background: rgba(0,0,0,0.10);
       flex:0 0 auto;
-      margin-left: 2px;
     }
-    .cart-ic svg{
-      width: 14px; height: 14px;
+    .vc-circle svg{
+      width: 16px; height: 16px;
       stroke:#fff; fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    .cart-badge{
-      position:absolute;
-      top:-7px;
-      right:-7px;
-      width:16px;
-      height:16px;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:950;
-      font-size:10px;
-      color:#fff;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.9);
-      text-shadow: 0 1px 0 rgba(0,0,0,0.25);
-    }
-    .store-cart-label{
+    .vc-label{
       color:#fff;
       font-weight: 950;
       letter-spacing: .14em;
@@ -534,6 +483,25 @@
       font-size: 11px;
       white-space: nowrap;
       padding-right: 2px;
+    }
+    /* badge on cart tip (front of cart icon) */
+    .vc-badge{
+      position:absolute;
+      top: 2px;
+      right: -6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.95);
+      color:#fff;
+      font-weight: 950;
+      font-size: 9px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      line-height: 1;
+      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
     }
 
     .mini-store-body{
@@ -576,7 +544,7 @@
       flex:1 1 auto;
       min-width:0;
     }
-    .mini-title.powder-quarter::after{ content:" ¼"; }
+    .mini-title.powder-quarter::after{ content:" ¼ LB"; }
     .mini-price{
       font-weight:950;
       font-size: 12px;
@@ -606,7 +574,7 @@
       align-items:stretch;
     }
 
-    /* Add button height matches CTA height */
+    /* Add button */
     .add-to-cart{
       width: var(--addW);
       height: var(--btnH);
@@ -703,10 +671,10 @@
       color:#0b1220;
       cursor:pointer;
       line-height: 1;
-      flex: 0 0 64px; /* more room for +/- */
+      flex: 0 0 64px;
     }
     .qty-seg.mid{
-      flex: 0 0 44px; /* number centered */
+      flex: 0 0 44px;
       cursor:default;
       color:#000;
       letter-spacing:.02em;
@@ -727,7 +695,7 @@
       line-height: 1.35;
     }
 
-    /* CTA row: right button same width as ADD; checkout takes remaining */
+    /* CTAs: right button same width as ADD; checkout takes remaining */
     .store-ctas{
       display:grid;
       grid-template-columns: 1fr var(--addW);
@@ -780,12 +748,111 @@
       letter-spacing: .10em;
     }
 
+    /* A LITTLE ABOUT US (restored) */
+    .about-wrap{ margin-top: 14px; }
+    .about-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px;
+    }
+    .about-card{
+      border-radius:18px;
+      border: var(--softBorder);
+      background:#ffffff;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
+      transition: transform .10s ease, box-shadow .12s ease;
+      position:relative;
+    }
+    .about-card:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+    }
+    .about-subtitle{
+      position:absolute;
+      top: 16px;
+      left: 18px;
+      right: 18px;
+      z-index: 3;
+      pointer-events:none;
+      font-weight: 950;
+      font-size: 18px;
+      color:#0b1220;
+      letter-spacing:.02em;
+    }
+    .about-card .para{ padding: 46px 12px 0; }
+    .about-card .para p{
+      margin:0;
+      background: var(--pale);
+      border: 1px solid rgba(12,90,42,0.55);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(12,90,42,0.95);
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 6;
+      overflow: hidden;
+      min-height: calc(1.85em * 6 + 28px);
+    }
+    .about-media{
+      width: calc(100% - 24px);
+      margin: 12px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .about-media img{
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: center 50%;
+      border: var(--softBorder);
+      border-radius: 14px;
+      background:#fff;
+      filter: saturate(1.03) contrast(1.03);
+    }
+    .about-cta{
+      height: 44px;
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      color:#fff;
+      font-weight: 900;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 14px;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      user-select:none;
+      transition: transform .08s ease, background .08s ease;
+      -webkit-tap-highlight-color: transparent;
+      text-align:center;
+      line-height: 1.15;
+      cursor:pointer;
+    }
+    .about-cta:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .about-cta:active{ transform: translateY(0px); }
+
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .what-wrap{ grid-template-columns:1fr; }
+      .about-grid{ grid-template-columns:1fr; }
       .store-ctas{ max-width: 100%; grid-template-columns: 1fr; }
       .mini-card{ max-width: 100%; }
       .what-image img{ height: 240px; }
+      .store-head-left .head-line{ min-width: 60px; }
     }
 
     @media(max-width:780px){
@@ -893,33 +960,30 @@
           </div>
 
           <aside class="panel" aria-label="Mini store">
-            <div class="panel-head store-head">
+            <div class="panel-head">
               <div class="store-head-left">
-                <div class="panel-title">MayaNut MINI-STORE</div>
+                <div class="panel-title">MINI STORE</div>
                 <div class="head-line" aria-hidden="true"></div>
               </div>
-
               <div class="store-head-right">
-                <button class="store-cart-btn" type="button" id="view-cart" aria-label="View cart">
-                  <span class="cart-ic" aria-hidden="true">
+                <button class="viewcart-pill" type="button" id="view-cart" aria-label="View cart">
+                  <span class="vc-circle" aria-hidden="true">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
                       <path d="M6 7l-1-3H2.5"></path>
                       <circle cx="9" cy="19" r="1.6"></circle>
                       <circle cx="17" cy="19" r="1.6"></circle>
                     </svg>
-                    <span class="cart-badge" id="mini-badge">0</span>
+                    <span class="vc-badge" id="mini-badge">0</span>
                   </span>
-                  <span class="store-cart-label">VIEW CART</span>
+                  <span class="vc-label">VIEW CART</span>
                 </button>
               </div>
-
-              <div class="store-line" aria-hidden="true"></div>
             </div>
 
             <div class="section-body">
               <div class="mini-store-body">
-                <article class="mini-card" data-title="MayaNut Powder ¼" aria-label="MayaNut Powder ¼ product">
+                <article class="mini-card" data-title="MayaNut Powder ¼ LB" aria-label="MayaNut Powder ¼ LB product">
                   <div class="mini-titlebar">
                     <div class="mini-title powder-quarter">MayaNut Powder</div>
                     <div class="mini-price" data-price>$9.95</div>
@@ -974,6 +1038,52 @@
             </div>
           </aside>
 
+        </section>
+
+        <!-- A LITTLE ABOUT US (restored) -->
+        <section class="panel about-wrap" aria-label="A Little About Us">
+          <div class="panel-head">
+            <div class="panel-title">A Little About Us</div>
+            <div class="head-line" aria-hidden="true"></div>
+          </div>
+
+          <div class="section-body">
+            <div class="about-grid">
+              <div class="about-card" aria-label="About card 1">
+                <div class="about-subtitle" aria-hidden="true">How It All Started...</div>
+                <div class="para">
+                  <p>
+                    In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                  </p>
+                </div>
+
+                <div class="about-media">
+                  <img src="the-maya-nut-company-bubba-image.jpg"
+                       alt="Historic Florida farming legacy connected to Kennesaw Fruit Company and tropical crops"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
+                </div>
+              </div>
+
+              <div class="about-card" aria-label="About card 2">
+                <div class="about-subtitle" aria-hidden="true">Why We're Nuts for MayaNut</div>
+                <div class="para">
+                  <p>
+                    MayaNut is a productive, resilient tree overlooked by American agriculture. Since 2025, August Kokus and The MayaNut Company have been working to establish Florida's first MayaNut farm. It is our duty and privilege to bring something new and unique into the world; something that wasn't there before.
+                  </p>
+                </div>
+
+                <div class="about-media">
+                  <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                       alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
+                    EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
       </div>
@@ -1060,12 +1170,10 @@
           if(minus){
             const dis = qtyVal <= 1;
             minus.classList.toggle("disabled", dis);
-            minus.setAttribute("aria-disabled", dis ? "true" : "false");
           }
           if(plus){
             const dis = qtyVal >= MAX_QTY;
             plus.classList.toggle("disabled", dis);
-            plus.setAttribute("aria-disabled", dis ? "true" : "false");
           }
         }
         function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); render(); }
@@ -1128,6 +1236,9 @@
       document.querySelectorAll(".mini-card").forEach(wireCard);
 
       document.getElementById("browse-all")?.addEventListener("click", ()=>{ window.location.href = "store.html"; });
+
+      // Fix: minus should be grey at qty=1; plus should be grey at qty=9
+      // This is already handled by render() + .disabled style.
 
       renderBadge();
     })();

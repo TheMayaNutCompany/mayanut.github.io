@@ -126,7 +126,7 @@
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; border:0; background: transparent; }
 
-    .top-banner{ height: 18px; background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
+    .top-banner{ height: var(--bannerH); background: var(--green); border-bottom: 1px solid rgba(255,255,255,0.18); }
 
     .frame-wrap{
       position:relative;
@@ -159,7 +159,7 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      min-height: 152px;
+      min-height: var(--navH);
       overflow:hidden;
     }
     .site-header::after{
@@ -241,6 +241,7 @@
       transition: transform .08s ease, background .08s ease;
     }
     .pill-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .pill-btn:active{ transform: translateY(0px); }
 
     .menu-row{
       position:absolute;
@@ -290,7 +291,7 @@
       z-index: 1;
     }
     .content-wrapper{
-      padding: 18px 16px 12px;
+      padding: 18px var(--padX) 12px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -298,7 +299,7 @@
     .layout{
       display:grid;
       grid-template-columns: 1.50fr 0.50fr;
-      gap: 16px;
+      gap: var(--gap);
       align-items: stretch;
     }
 
@@ -349,7 +350,7 @@
       min-height:0;
     }
 
-    /* Mini store head line between MINI STORE and CART */
+    /* MINI STORE head: fixed green line between label and cart */
     .store-head-left{
       display:flex;
       align-items:center;
@@ -362,15 +363,15 @@
       display:flex;
       align-items:center;
     }
+    .store-head-left .panel-title{ flex: 0 0 auto; }
     .store-head-left .head-line{
       flex: 1 1 auto;
       min-width: 40px;
-      max-width: 150px; /* tightened */
+      max-width: 160px;
       margin-left: 6px;
       height: 5px;
     }
 
-    /* Cart pill + circle */
     .viewcart-pill{
       height: 32px;
       border-radius: 16px;
@@ -387,21 +388,23 @@
       transition: transform .08s ease, background .08s ease;
     }
     .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .viewcart-pill:active{ transform: translateY(0px); }
 
+    /* FIX: circle bigger + solid orange same as button */
     .vc-circle{
-      width: 44px;                 /* slightly bigger */
-      height: 44px;                /* slightly bigger */
+      width: 48px;
+      height: 48px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.95);
       display:flex;
       align-items:center;
       justify-content:center;
       position:relative;
-      background: var(--orange);   /* solid orange top/bottom */
+      background: var(--orange);
       flex:0 0 auto;
     }
     .vc-circle svg{
-      width: 20px; height: 20px;
+      width: 22px; height: 22px;
       stroke:#fff; fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -418,7 +421,7 @@
     }
     .vc-badge{
       position:absolute;
-      top: 6px;
+      top: 8px;
       right: -6px;
       width: 14px;
       height: 14px;
@@ -435,9 +438,7 @@
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
     }
 
-    /* ... (the rest of your page styles are unchanged from the previous working version) ... */
-
-    /* Footer social icons FIX: force correct sizing even if something overwrote it */
+    /* FOOTER social icons FIX: lock sizing (prevents “huge” glitch) */
     .footer .social-row{
       display:flex !important;
       gap: 10px !important;
@@ -475,6 +476,7 @@
       .footer-inner{ grid-template-columns:1fr; }
       .footer-right{ grid-template-columns:1fr; }
       .footer-logo{ width:220px; }
+      .store-head-left .head-line{ max-width: 120px; }
     }
   </style>
 
@@ -490,9 +492,6 @@
       function setScrollbarWidth(){
         const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
         document.documentElement.style.setProperty("--sbw", sbw + "px");
-        // apply right padding to fixed header container
-        const sticky = document.getElementById("sticky-top");
-        if(sticky) sticky.style.right = sbw + "px";
       }
       function sync(){ setStickyOffset(); setScrollbarWidth(); }
       window.addEventListener("load", sync, { once:true });
@@ -532,24 +531,210 @@
       </header>
     </div>
 
-    <!-- NOTE: The body content below should be your previous full working markup;
-         only changes requested were footer icon sizing + cart circle.
-         If you want, paste your current full markup and I’ll integrate these fixes exactly. -->
-    <main style="padding:24px; font-weight:900;">
-      Replace this placeholder with your existing page body markup from the last full file you’re using.
-      The CSS above already includes the footer icon fix and the cart circle fix.
+    <!-- FULL BODY (from your provided code snippet continuation) -->
+    <main id="main-content" tabindex="-1" aria-label="Home">
+      <div class="content-wrapper">
+
+        <section class="layout" aria-label="Top content">
+
+          <!-- WHAT IS MAYANUT (kept as in your prior working file) -->
+          <div class="panel" aria-label="What is MayaNut">
+            <div class="panel-head">
+              <div class="panel-title">What Is MayaNut?</div>
+              <div class="head-line" aria-hidden="true"></div>
+            </div>
+
+            <div class="section-body">
+              <div style="padding:14px 14px 10px;">
+                <div style="font-weight:950;font-size:30px;line-height:1.05;color:#0b1220;letter-spacing:.02em;padding:0 10px;">Aromatic &amp; Delicious</div>
+                <div style="margin-top:6px;font-weight:950;font-size:17px;line-height:1.1;width:fit-content;padding:0 10px;color:#0b1220;">
+                  <span style="color:var(--orange);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;">A Forgotten Superfood, Rediscovered</span>
+                </div>
+              </div>
+
+              <div class="what-wrap" aria-label="What is MayaNut content">
+                <div class="what-image">
+                  <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                       alt="MayaNut fruit and seeds from Brosimum alicastrum on a tropical tree"
+                       loading="eager" decoding="async" onerror="this.style.opacity='.35';" />
+                </div>
+
+                <div class="what-paragraph">
+                  <p>
+                    MayaNut is a nutritious, flavorful seed derived from the rainforest tree Brosimum alicastrum, a member of the jackfruit family, and has been used for thousands of years, especially by the Maya, for whom the tree is named after.
+                  </p>
+                  <p>
+                    Once harvested, the seeds are ground into a fine powder that can be used to make breads, tortillas, and a rich, chocolate-coffee-like beverage, as well as incorporated into baked goods, drinks, açaí bowls, granola, and into other foods as a versatile, warming ingredient.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MINI STORE (kept, only cart circle + line behavior fixed by CSS above) -->
+          <aside class="panel" aria-label="Mini store">
+            <div class="panel-head">
+              <div class="store-head-left">
+                <div class="panel-title">MINI STORE</div>
+                <div class="head-line" aria-hidden="true"></div>
+              </div>
+              <div class="store-head-right">
+                <button class="viewcart-pill" type="button" id="view-cart" aria-label="Cart">
+                  <span class="vc-circle" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                      <path d="M6 7l-1-3H2.5"></path>
+                      <circle cx="9" cy="19" r="1.6"></circle>
+                      <circle cx="17" cy="19" r="1.6"></circle>
+                    </svg>
+                    <span class="vc-badge" id="mini-badge">0</span>
+                  </span>
+                  <span class="vc-label">CART</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="section-body">
+              <div style="padding:14px; display:flex; flex-direction:column; gap:10px;">
+                <article class="mini-card" data-title="MayaNut Powder ¼ LB" aria-label="MayaNut Powder ¼ LB product">
+                  <div class="mini-titlebar">
+                    <div class="mini-title powder-quarter">MayaNut Powder</div>
+                    <div class="mini-price" data-price>$9.95</div>
+                  </div>
+
+                  <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                       alt="Roasted MayaNut powder made from Brosimum alicastrum seed"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+
+                  <div class="mini-bot">
+                    <div class="mini-actions" aria-label="Product actions">
+                      <button class="add-to-cart" type="button" data-add aria-label="Add MayaNut Powder to cart">
+                        <div class="add-main">ADD</div>
+                        <div class="add-sub">TO CART</div>
+                      </button>
+
+                      <div class="right-stack" aria-label="Options">
+                        <button class="mini-rect" type="button" data-weight aria-label="Select weight">
+                          <span class="lbl">WEIGHT:</span>
+                          <span class="val" data-weight-val>¼ LB</span>
+                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                        </button>
+
+                        <div class="qty-rect" aria-label="Quantity selector (max 9)">
+                          <div class="qty-seg disabled" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
+                          <div class="qty-seg mid" data-qty aria-label="Quantity">1</div>
+                          <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mini-desc">
+                      Flavorful, <strong>powder</strong>, great for acai bowls,<br />
+                      granola, baking, drinks, and more.
+                    </div>
+                  </div>
+                </article>
+
+                <div class="store-ctas" aria-label="Store actions" style="display:grid; grid-template-columns: 1fr var(--addW); gap:10px;">
+                  <button class="cta-btn" type="button" id="go-checkout" aria-label="Go to checkout">
+                    <span style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.05;width:100%;">
+                      <span style="font-size:9px;letter-spacing:.20em;opacity:.95;">GO TO</span>
+                      <span style="font-size:14px;letter-spacing:.10em;">CHECKOUT</span>
+                    </span>
+                  </button>
+
+                  <button class="cta-btn" type="button" id="browse-all" aria-label="View full store">
+                    <span style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.05;width:100%;">
+                      <span style="font-size:9px;letter-spacing:.20em;opacity:.95;">VIEW</span>
+                      <span style="font-size:13px;letter-spacing:.10em;">FULL STORE</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+        </section>
+
+        <!-- A LITTLE ABOUT US -->
+        <section class="panel" style="margin-top:14px;" aria-label="A Little About Us">
+          <div class="panel-head">
+            <div class="panel-title">A Little About Us</div>
+            <div class="head-line" aria-hidden="true"></div>
+          </div>
+
+          <div class="section-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;" class="about-grid">
+              <div class="about-card" aria-label="About card 1">
+                <div class="about-subtitle" aria-hidden="true">How It All Started...</div>
+                <div class="para">
+                  <p>
+                    In 1923, Herbert “Buba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, growing oranges, pineapples, watermelons, and more. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating MayaNut, following in his family's farming footsteps.
+                  </p>
+                </div>
+
+                <div class="about-media">
+                  <img src="the-maya-nut-company-bubba-image.jpg"
+                       alt="Historic Florida farming legacy connected to Kennesaw Fruit Company and tropical crops"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <a class="about-cta" href="about.html" aria-label="Learn more (About page)">LEARN MORE</a>
+                </div>
+              </div>
+
+              <div class="about-card" aria-label="About card 2">
+                <div class="about-subtitle" aria-hidden="true">Why We're Nuts for MayaNut</div>
+                <div class="para">
+                  <p>
+                    MayaNut is a productive, resilient tree overlooked by American agriculture. Since 2025, August Kokus and The MayaNut Company have been working to establish Florida's first MayaNut farm. It is our duty and privilege to bring something new and unique into the world; something that wasn't there before. MayaNut is our gift to the world.
+                  </p>
+                </div>
+
+                <div class="about-media">
+                  <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                       alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in Florida"
+                       loading="lazy" decoding="async" onerror="this.style.opacity='.35';" />
+                  <a class="about-cta" href="research.html" aria-label="Explore research, data, and field notes">
+                    EXPLORE RESEARCH, DATA, &amp; FIELD NOTES
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
     </main>
 
+    <!-- FOOTER -->
     <footer class="footer" aria-label="Footer">
       <div class="footer-inner">
         <div class="footer-left" aria-label="Brand">
-          <div class="footer-tagline"><span>Started in South Florida</span></div>
+          <div class="footer-tagline">
+            <span>Started in South Florida</span>
+            <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
+          </div>
           <a href="index.html" aria-label="The MayaNut Company home">
             <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
           </a>
         </div>
 
         <div class="footer-right" aria-label="Footer links">
+          <div class="footer-col">
+            <div class="footer-col-title">WHO WE ARE</div>
+            <a class="footer-link" href="social-responsibility.html">Social Responsibility</a>
+            <a class="footer-link" href="stories.html">Stories</a>
+            <a class="footer-link" href="contact.html">Contact Us</a>
+            <a class="footer-link" href="recipes.html">Recipes</a>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">SUPPORT</div>
+            <a class="footer-link" href="accessibility.html">Accessibility</a>
+            <a class="footer-link" href="terms.html">Terms</a>
+            <a class="footer-link" href="privacy.html">Privacy</a>
+            <a class="footer-link" href="sitemap.html">Sitemap</a>
+          </div>
+
           <div class="footer-col">
             <div class="footer-col-title">FOLLOW</div>
             <div class="social-row" aria-label="Social links">
@@ -572,8 +757,16 @@
                   <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
                 </svg>
               </a>
+
+              <a class="icon-pill" href="#" aria-label="YouTube" onclick="return false;">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>
+                  <path class="yt-play" d="M11.0 9.4v5.2l4.6-2.6-4.6-2.6Z"></path>
+                </svg>
+              </a>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -581,5 +774,137 @@
       <div class="footer-bottom"><div>© 2026 The MayaNut Company, Inc.</div></div>
     </footer>
   </div>
+
+  <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
+
+  <script>
+    (function(){
+      const MAX_QTY = 9;
+      const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
+      const cart = new Map();
+
+      const badge = document.getElementById("mini-badge");
+      let menu = null;
+      const root = document.getElementById("weight-menu-root");
+
+      const WEIGHTS = [
+        { key:"qtr", label:"¼ LB", price:9.95 },
+        { key:"half", label:"½ LB", price:18.95 },
+        { key:"one", label:"1 LB", price:35.95 }
+      ];
+
+      function closeMenu(){ if(menu){ menu.remove(); menu = null; } }
+
+      function openMenu(anchor, items, onPick){
+        closeMenu();
+        const r = anchor.getBoundingClientRect();
+        const m = document.createElement("div");
+        m.style.pointerEvents = "auto";
+        m.style.position = "fixed";
+        m.style.left = Math.min(window.innerWidth - 220, Math.max(10, Math.round(r.left))) + "px";
+        m.style.top  = Math.min(window.innerHeight - 10, Math.round(r.bottom + 6)) + "px";
+        m.style.zIndex = "2600";
+        m.style.minWidth = "190px";
+        m.style.padding = "6px";
+        m.style.borderRadius = "12px";
+        m.style.border = "1px solid rgba(12,90,42,0.55)";
+        m.style.background = "rgba(255,255,255,0.98)";
+        m.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
+
+        items.forEach(opt=>{
+          const row = document.createElement("div");
+          row.textContent = opt.label;
+          row.style.borderRadius = "10px";
+          row.style.padding = "8px 10px";
+          row.style.cursor = "pointer";
+          row.style.fontWeight = "900";
+          row.style.fontSize = "12px";
+          row.style.color = "#0b1220";
+          row.style.background = "rgba(233,255,214,0.95)";
+          row.style.border = "1px solid rgba(12,90,42,0.55)";
+          row.style.marginBottom = "6px";
+          row.addEventListener("click", ()=>{ onPick(opt); closeMenu(); });
+          m.appendChild(row);
+        });
+        if(m.lastChild) m.lastChild.style.marginBottom = "0";
+        root.appendChild(m);
+        menu = m;
+      }
+
+      document.addEventListener("click",(e)=>{
+        if(menu){
+          const within = menu.contains(e.target);
+          const anchor = e.target.closest?.("[data-weight]");
+          if(!within && !anchor) closeMenu();
+        }
+      });
+      document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+
+      function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
+      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
+
+      function wireQty(card){
+        const qtyEl = card.querySelector("[data-qty]");
+        const minus = card.querySelector("[data-minus]");
+        const plus  = card.querySelector("[data-plus]");
+        let qtyVal = 1;
+
+        function render(){
+          if(qtyEl) qtyEl.textContent = String(qtyVal);
+          if(minus) minus.classList.toggle("disabled", qtyVal <= 1);
+          if(plus)  plus.classList.toggle("disabled", qtyVal >= MAX_QTY);
+        }
+        function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); render(); }
+
+        plus?.addEventListener("click",(e)=>{ e.preventDefault(); if(qtyVal<MAX_QTY) setQty(qtyVal+1); });
+        minus?.addEventListener("click",(e)=>{ e.preventDefault(); if(qtyVal>1) setQty(qtyVal-1); });
+
+        render();
+        return ()=>qtyVal;
+      }
+
+      function brieflyAdded(btn){
+        const main = btn.querySelector(".add-main");
+        const sub  = btn.querySelector(".add-sub");
+        const oldMain = main?.textContent || "ADD";
+        const oldSub  = sub?.textContent || "TO CART";
+        if(main) main.textContent = "ADDED";
+        if(sub)  sub.textContent  = "✓";
+        setTimeout(()=>{
+          if(main) main.textContent = oldMain;
+          if(sub)  sub.textContent  = oldSub;
+        }, 650);
+      }
+
+      function wireCard(card){
+        const title = card.getAttribute("data-title") || "Item";
+        const add = card.querySelector("[data-add]");
+        const getQty = wireQty(card);
+
+        const weightBtn = card.querySelector("[data-weight]");
+        if(weightBtn){
+          weightBtn.addEventListener("click",(e)=>{
+            e.preventDefault(); e.stopPropagation();
+            openMenu(weightBtn, WEIGHTS, (opt)=>{
+              card.querySelector("[data-weight-val]")?.textContent = opt.label;
+              card.querySelector("[data-price]")?.textContent = "$" + opt.price.toFixed(2);
+            });
+          });
+        }
+
+        add?.addEventListener("click", ()=>{
+          const q = clamp(getQty());
+          cart.set(title, (cart.get(title)||0) + q);
+          renderBadge();
+          brieflyAdded(add);
+        });
+      }
+
+      document.querySelectorAll(".mini-card").forEach(wireCard);
+      document.getElementById("browse-all")?.addEventListener("click", ()=>{ window.location.href = "store.html"; });
+
+      renderBadge();
+    })();
+  </script>
 </body>
 </html>

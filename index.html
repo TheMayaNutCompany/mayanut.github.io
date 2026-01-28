@@ -66,7 +66,7 @@
   {
     "@context":"https://schema.org",
     "@type":"Product",
-    "name":"MayaNut Powder",
+    "name":"MayaNut Powder ¼",
     "brand":{"@type":"Brand","name":"The MayaNut Company"},
     "description":"Roasted MayaNut (Brosimum alicastrum) seed powder. Great in drinks, baking, granola, and everyday recipes.",
     "image":"https://mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png",
@@ -104,6 +104,7 @@
       --scrollThumb:#c8ccd2;
       --scrollThumbHover:#b8bcc3;
 
+      /* measured scrollbar width (desktop) */
       --sbw: 0px;
 
       --padX: 16px;
@@ -141,7 +142,7 @@
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
-    button,input,select{ font-family:inherit; border:0; }
+    button,input,select{ font-family:inherit; border:0; background: transparent; }
 
     :focus-visible{
       outline: 3px solid rgba(216,255,106,0.95);
@@ -159,6 +160,7 @@
       background:#fff;
     }
 
+    /* fixed header that does not overlap scrollbar */
     .sticky-top{
       position:fixed;
       top:0; left:0;
@@ -318,9 +320,10 @@
       margin: 0 auto;
     }
 
+    /* widen left panel so paragraph reaches under the H in RESEARCH (approx) */
     .layout{
       display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.34fr 0.66fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -364,7 +367,14 @@
       border-radius: 0;
     }
 
-    /* WHAT IS: restore Aromatic & Delicious + orange header, keep rounded straight blocks */
+    .section-body{
+      background:#fff;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+
     .headline{ padding: 14px 14px 10px; }
     .headline .big{
       font-weight: 950;
@@ -381,6 +391,7 @@
       line-height: 1.1;
       width: fit-content;
       padding: 0 10px;
+      color:#0b1220;
     }
     .uline{
       color: var(--orange);
@@ -391,7 +402,7 @@
 
     .what-wrap{
       display:grid;
-      grid-template-columns: 0.95fr 1.05fr;
+      grid-template-columns: 0.92fr 1.08fr; /* slightly wider paragraph */
       gap: 12px;
       padding: 0 14px 14px;
       align-items: stretch;
@@ -429,7 +440,7 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* MINI STORE header: ensure gradient line does not overlap View Cart */
+    /* MINI STORE header */
     .store-head{
       justify-content: space-between;
       gap: 12px;
@@ -452,6 +463,7 @@
       display:flex;
       align-items:center;
     }
+
     .store-cart-btn{
       height: 30px;
       border-radius: 14px;
@@ -488,22 +500,6 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    .cart-badge{
-      position:absolute;
-      top:-6px; right:-7px;
-      width: 16px; height: 16px;
-      border-radius: 999px;
-      background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95);
-      color:#fff;
-      font-weight:950;
-      font-size: 10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      line-height:1;
-      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
-    }
     .store-cart-label{
       color:#fff;
       font-weight: 950;
@@ -513,7 +509,6 @@
       white-space: nowrap;
     }
 
-    /* MINI STORE body */
     .mini-store-body{
       padding: 12px 14px 12px;
       display:flex;
@@ -695,13 +690,18 @@
       line-height: 1.35;
     }
 
-    /* CTA row directly under product: buttons next to each other, no wasted space */
+    /* Product title: MayaNut Powder ¼ */
+    .mini-title.powder-quarter::after{
+      content:" ¼";
+    }
+
+    /* CTA row directly under product */
     .store-ctas{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       align-items: stretch;
-      max-width: 340px; /* match product width */
+      max-width: 340px;
     }
 
     .cta-btn{
@@ -725,19 +725,108 @@
     }
     .cta-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-btn:active{ transform: translateY(0px); }
-
     .cta-btn span{ display:block; line-height: 1.05; }
     .cta-btn .l1{ font-size: 12px; }
     .cta-btn .l2{ font-size: 12px; margin-top: 4px; }
 
-    /* ABOUT: force same number of lines via clamp */
+    /* ABOUT evenness */
+    .about-wrap{ margin-top: 14px; }
+    .about-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px;
+    }
+    .about-card{
+      border-radius:18px;
+      border: var(--softBorder);
+      background:#ffffff;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
+      transition: transform .10s ease, box-shadow .12s ease;
+      position:relative;
+    }
+    .about-card:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+    }
+    .about-subtitle{
+      position:absolute;
+      top: 16px;
+      left: 18px;
+      right: 18px;
+      z-index: 3;
+      pointer-events:none;
+      font-weight: 950;
+      font-size: 18px;
+      color:#0b1220;
+      letter-spacing:.02em;
+    }
+    .about-card .para{
+      padding: 46px 12px 0;
+    }
     .about-card .para p{
+      margin:0;
+      background: var(--pale);
+      border: 1px solid rgba(12,90,42,0.55);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(12,90,42,0.95);
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 6; /* same lines both */
+      -webkit-line-clamp: 6;
       overflow: hidden;
       min-height: calc(1.85em * 6 + 28px);
     }
+    .about-media{
+      width: calc(100% - 24px);
+      margin: 12px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .about-media img{
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: center 50%;
+      border: var(--softBorder);
+      border-radius: 14px;
+      background:#fff;
+      filter: saturate(1.03) contrast(1.03);
+    }
+    .about-cta{
+      height: 44px;
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      color:#fff;
+      font-weight: 900;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 14px;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      user-select:none;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      -webkit-tap-highlight-color: transparent;
+      text-align:center;
+      line-height: 1.15;
+      cursor:pointer;
+    }
+    .about-cta:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .about-cta:active{ transform: translateY(0px); }
 
     /* footer */
     .footer{
@@ -904,7 +993,6 @@
         document.documentElement.style.setProperty("--sbw", sbw + "px");
       }
       function sync(){ setStickyOffset(); setScrollbarWidth(); }
-
       window.addEventListener("load", sync, { once:true });
       window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
       window.addEventListener("pageshow", sync);
@@ -947,7 +1035,6 @@
 
         <section class="layout" aria-label="Top content">
 
-          <!-- WHAT IS MAYANUT -->
           <div class="panel" aria-label="What is MayaNut">
             <div class="panel-head">
               <div class="panel-title">What Is MayaNut?</div>
@@ -955,7 +1042,7 @@
             </div>
 
             <div class="section-body">
-              <div class="headline" aria-label="What is header">
+              <div class="headline">
                 <div class="big">Aromatic &amp; Delicious</div>
                 <div class="sub"><span class="uline">A Forgotten Superfood, Rediscovered</span></div>
               </div>
@@ -976,7 +1063,6 @@
             </div>
           </div>
 
-          <!-- MINI STORE -->
           <aside class="panel" aria-label="Mini store">
             <div class="panel-head store-head">
               <div class="store-head-left">
@@ -1001,9 +1087,9 @@
 
             <div class="section-body">
               <div class="mini-store-body">
-                <article class="mini-card" data-title="MayaNut Powder" aria-label="MayaNut Powder product">
+                <article class="mini-card" data-title="MayaNut Powder ¼" aria-label="MayaNut Powder ¼ product">
                   <div class="mini-titlebar">
-                    <div class="mini-title">MayaNut Powder</div>
+                    <div class="mini-title powder-quarter">MayaNut Powder</div>
                     <div class="mini-price" data-price>$9.95</div>
                   </div>
 
@@ -1021,7 +1107,7 @@
                       <div class="right-stack" aria-label="Options">
                         <button class="mini-rect" type="button" data-weight aria-label="Select weight">
                           <span class="lbl">WEIGHT:</span>
-                          <span class="val" data-weight-val>1/4 LB</span>
+                          <span class="val" data-weight-val>¼ LB</span>
                           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
                         </button>
 
@@ -1057,7 +1143,6 @@
 
         </section>
 
-        <!-- A LITTLE ABOUT US -->
         <section class="panel about-wrap" aria-label="A Little About Us">
           <div class="panel-head">
             <div class="panel-title">A Little About Us</div>
@@ -1108,7 +1193,6 @@
       <div class="top-banner" aria-hidden="true" style="border-top:1px solid rgba(255,255,255,0.18); border-bottom:none;"></div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer" aria-label="Footer">
       <div class="footer-inner">
         <div class="footer-left" aria-label="Brand">
@@ -1175,17 +1259,31 @@
       </div>
 
       <div class="footer-divider" aria-hidden="true"></div>
-
-      <div class="footer-bottom">
-        <div>© 2026 The MayaNut Company, Inc.</div>
-      </div>
+      <div class="footer-bottom"><div>© 2026 The MayaNut Company, Inc.</div></div>
     </footer>
   </div>
 
-  <!-- Weight dropdown menu root -->
   <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
   <script>
+    (function(){
+      function setStickyOffset(){
+        const sticky = document.getElementById("sticky-top");
+        if(!sticky) return;
+        const h = Math.ceil(sticky.getBoundingClientRect().height);
+        document.documentElement.style.setProperty("--stickyOffset", h + "px");
+      }
+      function setScrollbarWidth(){
+        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+        document.documentElement.style.setProperty("--sbw", sbw + "px");
+      }
+      function sync(){ setStickyOffset(); setScrollbarWidth(); }
+      window.addEventListener("load", sync, { once:true });
+      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
+      window.addEventListener("pageshow", sync);
+      document.addEventListener("DOMContentLoaded", sync);
+    })();
+
     (function(){
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
@@ -1196,8 +1294,8 @@
       let menu = null;
 
       const WEIGHTS = [
-        { key:"qtr", label:"1/4 LB", price:9.95 },
-        { key:"half", label:"1/2 LB", price:18.95 },
+        { key:"qtr", label:"¼ LB", price:9.95 },
+        { key:"half", label:"½ LB", price:18.95 },
         { key:"one", label:"1 LB", price:35.95 }
       ];
 
@@ -1251,24 +1349,10 @@
       function cartCount(){ let t=0; cart.forEach(v=> t += Math.max(0, v|0)); return t; }
       function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
 
-      function brieflyAdded(btn){
-        const main = btn.querySelector(".add-main");
-        const sub  = btn.querySelector(".add-sub");
-        const oldMain = main?.textContent || "ADD";
-        const oldSub  = sub?.textContent || "TO CART";
-        if(main) main.textContent = "ADDED";
-        if(sub)  sub.textContent  = "✓";
-        setTimeout(()=>{
-          if(main) main.textContent = oldMain;
-          if(sub)  sub.textContent  = oldSub;
-        }, 650);
-      }
-
       function wireQty(card){
         const qtyEl = card.querySelector("[data-qty]");
         const minus = card.querySelector("[data-minus]");
         const plus  = card.querySelector("[data-plus]");
-
         let qtyVal = 1;
 
         function render(){
@@ -1283,6 +1367,19 @@
 
         render();
         return ()=>qtyVal;
+      }
+
+      function brieflyAdded(btn){
+        const main = btn.querySelector(".add-main");
+        const sub  = btn.querySelector(".add-sub");
+        const oldMain = main?.textContent || "ADD";
+        const oldSub  = sub?.textContent || "TO CART";
+        if(main) main.textContent = "ADDED";
+        if(sub)  sub.textContent  = "✓";
+        setTimeout(()=>{
+          if(main) main.textContent = oldMain;
+          if(sub)  sub.textContent  = oldSub;
+        }, 650);
       }
 
       function wireCard(card){

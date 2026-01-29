@@ -111,10 +111,6 @@
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
       overscroll-behavior-y:none;
-      padding-right: env(safe-area-inset-right, 0px);
-    }
-    @media(min-width: 980px){
-      body{ padding-right: 6px; }
     }
 
     ::-webkit-scrollbar{ width: 14px; }
@@ -141,11 +137,11 @@
       background:#fff;
     }
 
-    /* fixed header that does not overlap scrollbar */
+    /* fixed header: flush with scrollbar (no overlap) */
     .sticky-top{
       position:fixed;
       top:0; left:0;
-      right: calc(var(--sbw) + 6px);
+      right: var(--sbw);
       z-index:999;
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
@@ -225,11 +221,11 @@
     .nav-left{ left:30px; }
     .nav-right{ right:30px; }
 
-    /* ORANGE BUTTONS: add the same thin white outline */
+    /* all orange pills get the thin white outline */
     .pill-btn{
       height:34px;
       border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.95); /* outline added */
+      border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
       box-shadow:0 10px 22px rgba(15,23,42,0.12);
       display:inline-flex;
@@ -250,7 +246,6 @@
     .pill-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .pill-btn:active{ transform: translateY(0px); }
 
-    /* small email icon */
     .mail-ico{
       width:16px; height:16px;
       stroke:#fff; fill:none;
@@ -398,12 +393,12 @@
       text-decoration-thickness: 2px;
     }
 
-    /* Make bottoms of image + paragraph reach lower (closer to store button level) */
+    /* slightly taller so it lines up with mini-store button bottom */
     .what-wrap{
       display:grid;
       grid-template-columns: 0.92fr 1.08fr;
       gap: 12px;
-      padding: 0 14px 18px; /* more bottom padding */
+      padding: 0 14px 18px;
       align-items: stretch;
     }
     .what-image{
@@ -415,7 +410,7 @@
     }
     .what-image img{
       width:100%;
-      height: 356px; /* taller to extend bottom */
+      height: 356px;
       object-fit: cover;
       object-position: center 50%;
       filter: saturate(1.03) contrast(1.03);
@@ -425,7 +420,7 @@
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      padding: 14px 16px 18px; /* extra bottom padding */
+      padding: 14px 16px 18px;
       height: 100%;
       display:flex;
       flex-direction:column;
@@ -443,7 +438,7 @@
     }
     .what-paragraph p + p{ margin-top: 10px; }
 
-    /* MINI STORE head */
+    /* mini store head */
     .store-head-left{
       display:flex;
       align-items:center;
@@ -465,12 +460,12 @@
       height: 5px;
     }
 
-    /* Simple rounded cart text box (outline match) */
+    /* Cart button (outline already matches) */
     .viewcart-pill{
       height: 34px;
       border-radius: 16px;
       background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95); /* outline */
+      border: 1px solid rgba(255,255,255,0.95);
       display:inline-flex;
       align-items:center;
       gap:10px;
@@ -512,6 +507,8 @@
       font-size:11px;
       white-space:nowrap;
     }
+
+    /* ensure number never spills: tighter line-height + center */
     .cart-badge{
       position:absolute;
       top: -6px;
@@ -524,12 +521,13 @@
       color:#fff;
       font-weight:950;
       font-size:9px;
-      line-height:1;
+      line-height: 14px; /* prevents vertical spill */
       display:flex;
       align-items:center;
       justify-content:center;
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
       transition: background .10s ease;
+      overflow:hidden;
     }
     .viewcart-pill:hover .cart-badge{ background: var(--orangePress); }
 
@@ -541,6 +539,21 @@
       min-height:0;
       align-items: stretch;
     }
+
+    .mini-msg{
+      display:none;
+      border-radius:14px;
+      border: var(--softBorder);
+      padding: 10px 12px;
+      background: var(--pale);
+      color:#0b1220;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight:850;
+      line-height:1.45;
+      margin-bottom: 10px;
+    }
+    .mini-msg.show{ display:block; }
 
     .mini-card{
       border-radius:18px;
@@ -603,12 +616,12 @@
       align-items:stretch;
     }
 
-    /* Add outline to all orange action buttons */
+    /* outline on orange buttons */
     .add-to-cart{
       width: var(--addW);
       height: var(--btnH);
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.95); /* outline added */
+      border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
       color:#fff;
       display:flex;
@@ -728,12 +741,11 @@
       width: 100%;
     }
 
-    /* Outline added here too */
     .cta-btn{
       height: var(--btnH);
       border-radius: 14px;
       background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95); /* outline added */
+      border: 1px solid rgba(255,255,255,0.95);
       color:#fff;
       font-weight: 950;
       letter-spacing: .10em;
@@ -768,7 +780,108 @@
     .cta-big{ font-size: 13px; letter-spacing: .10em; }
     .checkout-big{ font-size: 14px; letter-spacing: .10em; }
 
-    /* Footer social icons fix (unchanged) */
+    /* A LITTLE ABOUT US - restored “as it was” layout */
+    .about-wrap{ margin-top: 14px; }
+    .about-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px;
+    }
+    .about-card{
+      border-radius:18px;
+      border: var(--softBorder);
+      background:#ffffff;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
+      position:relative;
+      transition: transform .10s ease, box-shadow .12s ease;
+    }
+    .about-card:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+    }
+    .about-subtitle{
+      position:absolute;
+      top: 16px;
+      left: 18px;
+      right: 18px;
+      z-index: 3;
+      pointer-events:none;
+      font-weight: 950;
+      font-size: 18px;
+      color:#0b1220;
+      letter-spacing:.02em;
+    }
+    .about-card .para{ padding: 46px 12px 0; }
+    .about-card .para p{
+      margin:0;
+      background: var(--pale);
+      border: 1px solid rgba(12,90,42,0.55);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(12,90,42,0.95);
+      text-shadow:0 1px 0 rgba(255,255,255,0.55);
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 6;
+      overflow: hidden;
+      min-height: calc(1.85em * 6 + 28px);
+    }
+    .about-media{
+      width: calc(100% - 24px);
+      margin: 12px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .about-media img{
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: center 50%;
+      border: var(--softBorder);
+      border-radius: 14px;
+      background:#fff;
+      filter: saturate(1.03) contrast(1.03);
+    }
+    .about-cta{
+      height: 44px;
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.95); /* outline */
+      background: var(--orange);
+      color:#fff;
+      font-weight: 900;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 14px;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      user-select:none;
+      cursor:pointer;
+      text-align:center;
+      line-height: 1.15;
+      transition: transform .08s ease, background .08s ease, box-shadow .12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .about-cta:hover{
+      background: var(--orangePress);
+      transform: translateY(-1px);
+      box-shadow: inset 0 0 0 999px rgba(0,0,0,0.10), 0 14px 30px rgba(15,23,42,0.10);
+    }
+    .about-cta:active{ transform: translateY(0px); }
+
+    /* Footer */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -802,6 +915,12 @@
       text-transform: uppercase;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       white-space:nowrap;
+    }
+    .footer-florida{
+      width: 26px;
+      height: 26px;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35));
+      margin-left: 2px;
     }
     .footer-logo{
       width: 240px; height: auto;
@@ -848,6 +967,7 @@
       text-align:left;
     }
 
+    /* FIX: SOCIAL ICON GLITCH */
     .social-row{
       display:flex;
       flex-wrap:wrap;
@@ -1025,6 +1145,7 @@
 
             <div class="section-body">
               <div class="mini-store-body">
+                <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
 
                 <article class="mini-card" data-title="MayaNut Powder ¼ LB" aria-label="MayaNut Powder ¼ LB product">
                   <div class="mini-titlebar">
@@ -1074,7 +1195,6 @@
                     </span>
                   </button>
 
-                  <!-- view all products 2 lines -->
                   <button class="cta-btn" type="button" id="browse-all" aria-label="View all products">
                     <span class="cta-stack">
                       <span class="cta-small">VIEW ALL</span>
@@ -1144,6 +1264,7 @@
         <div class="footer-left" aria-label="Brand">
           <div class="footer-tagline">
             <span>Started in South Florida</span>
+            <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
           </div>
           <a href="index.html" aria-label="The MayaNut Company home">
             <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
@@ -1210,6 +1331,7 @@
       const cart = new Map();
 
       const badge = document.getElementById("mini-badge");
+      const msgEl = document.getElementById("mini-msg");
       const root = document.getElementById("weight-menu-root");
       let menu = null;
 
@@ -1218,6 +1340,14 @@
         { key:"half", label:"½ LB", price:18.95 },
         { key:"one", label:"1 LB", price:35.95 }
       ];
+
+      function showMiniMessage(text){
+        if(!msgEl) return;
+        msgEl.textContent = text;
+        msgEl.classList.add("show");
+        clearTimeout(window.__miniMsgT);
+        window.__miniMsgT = setTimeout(()=>{ msgEl.classList.remove("show"); }, 2200);
+      }
 
       function closeMenu(){ if(menu){ menu.remove(); menu = null; } }
 
@@ -1280,10 +1410,24 @@
           if(minus) minus.classList.toggle("disabled", qtyVal <= 1);
           if(plus)  plus.classList.toggle("disabled", qtyVal >= MAX_QTY);
         }
-        function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); render(); }
+        function setQty(n){
+          qtyVal = clamp(parseInt(n,10) || 1);
+          render();
+        }
 
-        plus?.addEventListener("click",(e)=>{ e.preventDefault(); if(qtyVal < MAX_QTY) setQty(qtyVal + 1); });
-        minus?.addEventListener("click",(e)=>{ e.preventDefault(); if(qtyVal > 1) setQty(qtyVal - 1); });
+        plus?.addEventListener("click",(e)=>{
+          e.preventDefault();
+          if(qtyVal >= MAX_QTY){
+            showMiniMessage("Contact Us for Bulk Deliveries!");
+            return;
+          }
+          setQty(qtyVal + 1);
+        });
+        minus?.addEventListener("click",(e)=>{
+          e.preventDefault();
+          if(qtyVal <= 1) return;
+          setQty(qtyVal - 1);
+        });
 
         render();
         return ()=>qtyVal;
@@ -1320,7 +1464,15 @@
 
         add?.addEventListener("click", ()=>{
           const q = clamp(getQty());
-          cart.set(title, (cart.get(title)||0) + q);
+          const current = cart.get(title) || 0;
+          const newCount = cartCount() - current + (current + q);
+
+          if(newCount > MAX_QTY){
+            showMiniMessage("Contact Us for Bulk Deliveries!");
+            return;
+          }
+
+          cart.set(title, current + q);
           renderBadge();
           brieflyAdded(add);
         });
@@ -1329,7 +1481,7 @@
       document.querySelectorAll(".mini-card").forEach(wireCard);
 
       document.getElementById("browse-all")?.addEventListener("click", ()=>{ window.location.href = "store.html"; });
-      document.getElementById("go-checkout")?.addEventListener("click", ()=>{ /* placeholder */ });
+      document.getElementById("go-checkout")?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
 
       renderBadge();
     })();

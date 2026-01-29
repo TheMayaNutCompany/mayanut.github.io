@@ -102,6 +102,7 @@
       scroll-padding-top: calc(var(--stickyOffset) + 12px);
       scrollbar-color: var(--scrollThumb) var(--scrollTrack);
       scrollbar-width: auto;
+      scrollbar-gutter: stable; /* helps prevent layout shift + overlap */
     }
     body{
       font-family: var(--font-ui);
@@ -140,7 +141,7 @@
     .sticky-top{
       position:fixed;
       top:0; left:0;
-      right: var(--sbw);
+      right: var(--sbw); /* "cuts" header under scrollbar */
       z-index:999;
       background: var(--green);
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
@@ -255,8 +256,7 @@
       user-select:none;
       white-space:nowrap;
     }
-
-    /* More stand-out menu options (shadowed “plate” behind each) */
+    /* shadow "plates" behind each menu item */
     .menu-row a{
       position:relative;
       font-weight:900;
@@ -270,8 +270,9 @@
       background: rgba(0,0,0,0.20);
       backdrop-filter: blur(2px);
       box-shadow:
-        0 10px 26px rgba(0,0,0,0.22),
+        0 12px 28px rgba(0,0,0,0.22),
         inset 0 0 0 1px rgba(255,255,255,0.16);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.45);
     }
     .menu-row a::after{
       content:"";
@@ -448,95 +449,80 @@
       height: 5px;
     }
 
-    /* CART button as ONE fused shape:
-       - pill background is orange
-       - circle is transparent and uses an inner disc ::before
-       - disc can overlap cleanly without showing double edge
-    */
+    /* Fused cart button with outside white outline */
     .viewcart-pill{
-      height: 32px;
-      border-radius: 16px;
+      height: 40px;                 /* make shape tall enough to fuse cleanly */
+      border-radius: 999px;
       background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95);
+      border: none;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.95); /* OUTSIDE outline */
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding: 0 12px 0 10px;
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
+      padding: 0 14px 0 10px;
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .08s ease;
+      transition: background .10s ease, transform .08s ease;
       position: relative;
-      overflow: visible;
     }
     .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .viewcart-pill:hover .vc-circle::before{ background: var(--orangePress); }
     .viewcart-pill:active{ transform: translateY(0px); }
 
-    /* this is the "cutout" ring; background is transparent so no overlap seam */
-    .vc-circle{
-      width: 46px;
-      height: 46px;
+    .cart-icon-wrap{
+      width: 32px;
+      height: 32px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.95);
+      background: transparent; /* same as pill, looks fused */
       display:flex;
       align-items:center;
       justify-content:center;
-      position:relative;
-      background: transparent;
-      flex:0 0 auto;
-      margin-left: -14px; /* overlap left side of pill */
+      position: relative;
+      flex: 0 0 auto;
     }
-    /* inner disc is the actual orange fill matching pill */
-    .vc-circle::before{
-      content:"";
-      position:absolute;
-      inset: 2px;
-      border-radius: 999px;
-      background: var(--orange);
-      box-shadow: inset 0 0 0 999px currentColor;
-      color: transparent; /* makes box-shadow harmless */
-    }
-    .vc-circle svg{
-      width: 24px; height: 24px;
-      stroke:#fff; fill:none;
+    .viewcart-pill:hover .cart-icon-wrap{ background: transparent; }
+
+    .cart-icon-wrap svg{
+      width: 22px;
+      height: 22px;
+      stroke:#fff;
+      fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
-      position: relative;
-      z-index: 2;
+      display:block;
     }
 
-    .vc-label{
-      color:#fff;
-      font-weight: 950;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-size: 11px;
-      white-space: nowrap;
-      padding-right: 2px;
-    }
-
-    /* smaller + more left so it doesn't clip */
-    .vc-badge{
+    /* smaller + moved left so it won't clip; positioned toward cart tip */
+    .cart-badge{
       position:absolute;
-      top: 9px;
-      right: -6px;      /* pulled left */
-      width: 12px;      /* smaller */
-      height: 12px;     /* smaller */
+      top: -4px;
+      right: -4px; /* closer to cart tip */
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.95);
       color:#fff;
-      font-weight: 950;
-      font-size: 8px;
+      font-weight:950;
+      font-size:8px;
+      line-height:1;
       display:flex;
       align-items:center;
       justify-content:center;
-      line-height: 1;
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
-      z-index: 3;
+      transition: background .10s ease;
+    }
+    .viewcart-pill:hover .cart-badge{ background: var(--orangePress); }
+
+    .cart-text{
+      color:#fff;
+      font-weight:950;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:11px;
+      padding-right: 2px;
+      white-space:nowrap;
     }
 
     .mini-store-body{
@@ -682,7 +668,6 @@
       flex:0 0 auto;
     }
 
-    /* Quantity */
     .qty-rect{
       height: 28px;
       border-radius: 14px;
@@ -859,6 +844,7 @@
       cursor:pointer;
       text-align:center;
       line-height: 1.15;
+      transition: background .08s ease, transform .08s ease;
     }
     .about-cta:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .about-cta:active{ transform: translateY(0px); }
@@ -1099,16 +1085,16 @@
               </div>
               <div class="store-head-right">
                 <button class="viewcart-pill" type="button" id="view-cart" aria-label="Cart">
-                  <span class="vc-circle" aria-hidden="true">
+                  <span class="cart-icon-wrap" aria-hidden="true">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
                       <path d="M6 7l-1-3H2.5"></path>
                       <circle cx="9" cy="19" r="1.6"></circle>
                       <circle cx="17" cy="19" r="1.6"></circle>
                     </svg>
-                    <span class="vc-badge" id="mini-badge">0</span>
+                    <span class="cart-badge" id="mini-badge">0</span>
                   </span>
-                  <span class="vc-label">CART</span>
+                  <span class="cart-text">CART</span>
                 </button>
               </div>
             </div>

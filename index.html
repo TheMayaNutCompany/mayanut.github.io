@@ -255,6 +255,8 @@
       user-select:none;
       white-space:nowrap;
     }
+
+    /* More stand-out menu options (shadowed “plate” behind each) */
     .menu-row a{
       position:relative;
       font-weight:900;
@@ -262,19 +264,22 @@
       letter-spacing:.08em;
       text-transform:uppercase;
       color:#ffffff;
-      text-shadow:
-        0 2px 8px rgba(0,0,0,0.55),
-        0 0 2px rgba(0,0,0,0.35);
-      padding:2px 0;
+      padding:6px 10px;
       line-height:1;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.20);
+      backdrop-filter: blur(2px);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,0.22),
+        inset 0 0 0 1px rgba(255,255,255,0.16);
     }
     .menu-row a::after{
       content:"";
       position:absolute;
-      left:0;
-      bottom:-3px;
+      left:10px;
+      right:10px;
+      bottom:4px;
       height:2px;
-      width:100%;
       background:#ffffff;
       border-radius:999px;
       transform: scaleX(0);
@@ -443,7 +448,11 @@
       height: 5px;
     }
 
-    /* Cart pill */
+    /* CART button as ONE fused shape:
+       - pill background is orange
+       - circle is transparent and uses an inner disc ::before
+       - disc can overlap cleanly without showing double edge
+    */
     .viewcart-pill{
       height: 32px;
       border-radius: 16px;
@@ -462,8 +471,10 @@
       overflow: visible;
     }
     .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .viewcart-pill:hover .vc-circle::before{ background: var(--orangePress); }
     .viewcart-pill:active{ transform: translateY(0px); }
 
+    /* this is the "cutout" ring; background is transparent so no overlap seam */
     .vc-circle{
       width: 46px;
       height: 46px;
@@ -473,12 +484,19 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      background: var(--orange);
-      opacity: 1;
-      overflow: hidden;
+      background: transparent;
       flex:0 0 auto;
-      margin-left: -14px;
-      box-shadow: inset 0 0 0 999px var(--orange);
+      margin-left: -14px; /* overlap left side of pill */
+    }
+    /* inner disc is the actual orange fill matching pill */
+    .vc-circle::before{
+      content:"";
+      position:absolute;
+      inset: 2px;
+      border-radius: 999px;
+      background: var(--orange);
+      box-shadow: inset 0 0 0 999px currentColor;
+      color: transparent; /* makes box-shadow harmless */
     }
     .vc-circle svg{
       width: 24px; height: 24px;
@@ -486,7 +504,10 @@
       stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
+      position: relative;
+      z-index: 2;
     }
+
     .vc-label{
       color:#fff;
       font-weight: 950;
@@ -496,23 +517,26 @@
       white-space: nowrap;
       padding-right: 2px;
     }
+
+    /* smaller + more left so it doesn't clip */
     .vc-badge{
       position:absolute;
-      top: 7px;
-      right: -2px; /* moved left so it touches the cart tip */
-      width: 14px;
-      height: 14px;
+      top: 9px;
+      right: -6px;      /* pulled left */
+      width: 12px;      /* smaller */
+      height: 12px;     /* smaller */
       border-radius: 999px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.95);
       color:#fff;
       font-weight: 950;
-      font-size: 9px;
+      font-size: 8px;
       display:flex;
       align-items:center;
       justify-content:center;
       line-height: 1;
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
+      z-index: 3;
     }
 
     .mini-store-body{
@@ -658,7 +682,7 @@
       flex:0 0 auto;
     }
 
-    /* Quantity selector */
+    /* Quantity */
     .qty-rect{
       height: 28px;
       border-radius: 14px;
@@ -1250,8 +1274,6 @@
                   <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
                 </svg>
               </a>
-
-              <!-- YouTube (destination coming soon) -->
               <a class="icon-pill" href="#" aria-label="YouTube (coming soon)" onclick="return false;">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>

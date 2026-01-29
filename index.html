@@ -1,11 +1,11 @@
-please make those changes based on the code <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <title>The MayaNut Company | South Florida MayaNut (Brosimum alicastrum) Farm, Powder, Seeds & Seedlings</title>
+  <title>The MayaNut Company | South Florida MayaNut (Brosimum alicastrum) Farm, Powder, Seeds &amp; Seedlings</title>
 
   <!-- SEO -->
   <meta name="description" content="The MayaNut Company is establishing Florida’s first MayaNut farm in South Florida. Learn about MayaNut (maya nut), Brosimum alicastrum: roasted seed powder, seeds, seedlings, cultivation notes, research, recipes, and sustainable tropical agroforestry." />
@@ -436,7 +436,7 @@ please make those changes based on the code <!DOCTYPE html>
     .store-head-left .head-line{
       flex: 1 1 auto;
       min-width: 40px;
-      max-width: 160px; /* tighter so it never runs into the cart pill */
+      max-width: 160px;
       margin-left: 6px;
       height: 5px;
     }
@@ -460,20 +460,24 @@ please make those changes based on the code <!DOCTYPE html>
     .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .viewcart-pill:active{ transform: translateY(0px); }
 
+    /* FIXED: circle bigger + fully orange (no see-through) + exact same orange as pill */
     .vc-circle{
-      width: 40px;   /* bigger circle (requested) */
-      height: 40px;  /* bigger circle (requested) */
+      width: 46px;              /* a little bigger */
+      height: 46px;             /* a little bigger */
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.95);
       display:flex;
       align-items:center;
       justify-content:center;
       position:relative;
-      background: rgba(0,0,0,0.10);
+      background: var(--orange);       /* solid orange */
+      opacity: 1;                      /* ensure not faded */
+      overflow: hidden;                 /* prevents any inner bleed */
       flex:0 0 auto;
+      box-shadow: inset 0 0 0 999px var(--orange); /* forces solid fill top/bottom in odd render cases */
     }
     .vc-circle svg{
-      width: 20px; height: 20px;
+      width: 21px; height: 21px;
       stroke:#fff; fill:none;
       stroke-width:2.2;
       stroke-linecap:round;
@@ -490,7 +494,7 @@ please make those changes based on the code <!DOCTYPE html>
     }
     .vc-badge{
       position:absolute;
-      top: 6px;
+      top: 7px;
       right: -6px;
       width: 14px;
       height: 14px;
@@ -685,7 +689,6 @@ please make those changes based on the code <!DOCTYPE html>
       pointer-events:none;
     }
 
-    /* Product description requested */
     .mini-desc{
       margin-top: 2px;
       font-weight: 850;
@@ -696,7 +699,6 @@ please make those changes based on the code <!DOCTYPE html>
     }
     .mini-desc strong{ font-weight: 950; }
 
-    /* CTAs */
     .store-ctas{
       display:grid;
       grid-template-columns: 1fr var(--addW);
@@ -731,7 +733,7 @@ please make those changes based on the code <!DOCTYPE html>
     .cta-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-btn:active{ transform: translateY(0px); }
 
-    .cta-stack{
+    .cta-stack,.checkout-stack{
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -740,19 +742,8 @@ please make those changes based on the code <!DOCTYPE html>
       line-height: 1.05;
       width: 100%;
     }
-    .cta-small{ font-size: 9px; letter-spacing: .20em; opacity: .95; }
+    .cta-small,.checkout-small{ font-size: 9px; letter-spacing: .20em; opacity: .95; }
     .cta-big{ font-size: 13px; letter-spacing: .10em; }
-
-    .checkout-stack{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap: 2px;
-      line-height: 1.05;
-      width: 100%;
-    }
-    .checkout-small{ font-size: 9px; letter-spacing: .20em; opacity: .95; }
     .checkout-big{ font-size: 14px; letter-spacing: .10em; }
 
     /* Bottom sections kept stable */
@@ -924,6 +915,61 @@ please make those changes based on the code <!DOCTYPE html>
       text-align:left;
     }
 
+    /* =======================
+       FIX: SOCIAL ICON GLITCH
+       Forces a consistent box, blocks inherited font-size/line-height,
+       and makes SVGs behave predictably across browsers.
+       ======================= */
+    .social-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .social-row .icon-pill{
+      width:34px !important;
+      height:34px !important;
+      min-width:34px !important;
+      min-height:34px !important;
+      max-width:34px !important;
+      max-height:34px !important;
+
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+
+      border-radius:14px !important;
+      border: 1px solid rgba(255,255,255,0.55) !important;
+      background: var(--orange) !important;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.12) !important;
+
+      padding:0 !important;
+      margin:0 !important;
+      line-height:0 !important;
+      font-size:0 !important;
+      overflow:hidden !important;
+      flex: 0 0 auto !important;
+    }
+    .social-row .icon-pill svg{
+      width:18px !important;
+      height:18px !important;
+      display:block !important;
+      flex:0 0 auto !important;
+      max-width:18px !important;
+      max-height:18px !important;
+      overflow:visible !important;
+
+      stroke:#ffffff !important;
+      fill:none !important;
+      stroke-width:2 !important;
+      stroke-linecap:round !important;
+      stroke-linejoin:round !important;
+    }
+    .social-row .icon-pill .fill{
+      fill:#ffffff !important;
+      stroke:none !important;
+    }
+
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
       .what-wrap{ grid-template-columns:1fr; }
@@ -939,7 +985,6 @@ please make those changes based on the code <!DOCTYPE html>
 
   <script>
     (function(){
-      // Fix scrollbar overlap by reserving scrollbar width on fixed header
       function setStickyOffset(){
         const sticky = document.getElementById("sticky-top");
         if(!sticky) return;
@@ -1299,16 +1344,8 @@ please make those changes based on the code <!DOCTYPE html>
         }
         function setQty(n){ qtyVal = clamp(parseInt(n,10) || 1); render(); }
 
-        plus?.addEventListener("click",(e)=>{
-          e.preventDefault();
-          if(qtyVal >= MAX_QTY) return;
-          setQty(qtyVal + 1);
-        });
-        minus?.addEventListener("click",(e)=>{
-          e.preventDefault();
-          if(qtyVal <= 1) return;
-          setQty(qtyVal - 1);
-        });
+        plus?.addEventListener("click",(e)=>{ e.preventDefault(); if(qtyVal < MAX_QTY) setQty(qtyVal + 1); });
+        minus?.addEventListener("click",(e)=>{ e.preventDefault(); if(qtyVal > 1) setQty(qtyVal - 1); });
 
         render();
         return ()=>qtyVal;

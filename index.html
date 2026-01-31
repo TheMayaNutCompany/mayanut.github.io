@@ -268,8 +268,16 @@
       min-height:0;
     }
 
-    .hero-title{
+    /* Hero title + arrow row */
+    .hero-row{
       padding: 16px 14px 12px;
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width:0;
+      flex: 0 0 auto;
+    }
+    .hero-title{
       color:#0b1220;
       font-weight: 950;
       font-size: clamp(22px, 3.1vw, 36px);
@@ -278,7 +286,22 @@
       white-space: nowrap;
       overflow:hidden;
       text-overflow: ellipsis;
-      flex: 0 0 auto;
+      flex: 0 1 auto;
+      min-width:0;
+    }
+    .hero-arrow{
+      flex: 1 1 auto;
+      height: 18px;
+      min-width: 70px;
+      display:block;
+      margin-top: 2px;
+    }
+    .hero-arrow path{
+      fill: var(--orange);
+      stroke: #ffffff;
+      stroke-width: 3.2;
+      stroke-linejoin: round;
+      stroke-linecap: round;
     }
 
     .what-wrap{
@@ -332,7 +355,7 @@
     }
     .what-paragraph p + p{ margin-top: 10px; }
 
-    /* MINI STORE HEADER */
+    /* STORE header */
     .store-head-left{
       display:flex;
       align-items:center;
@@ -349,7 +372,7 @@
     .store-head-left .head-line{
       flex: 1 1 auto;
       min-width: 24px;
-      max-width: 108px; /* tighter line between STORE and cart */
+      max-width: 108px;
       margin-left: 10px;
       height: 5px;
     }
@@ -401,7 +424,6 @@
       white-space:nowrap;
     }
 
-    /* badge moved down 4px already */
     .cart-badge{
       position:absolute;
       top: 0px;
@@ -583,7 +605,6 @@
       flex:0 0 auto;
     }
 
-    /* Quantity controls */
     .qty-rect{ overflow:hidden; }
     .qty-seg{ flex: 0 0 34px; }
     .qty-seg.mid{ flex: 1 1 auto; }
@@ -639,17 +660,16 @@
       line-height: 1.35;
     }
 
+    /* Single full-width checkout button under product */
     .store-ctas{
-      display:grid;
-      grid-template-columns: 1fr var(--addW);
-      gap: 10px;
-      align-items: stretch;
+      display:block;
       width: 100%;
       margin-top: auto;
     }
 
     .cta-btn{
       height: var(--btnH);
+      width: 100%;
       border-radius: 14px;
       background: var(--orange);
       border: 1px solid rgba(255,255,255,0.95);
@@ -674,7 +694,7 @@
     .cta-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-btn:active{ transform: translateY(0px); }
 
-    .cta-stack,.checkout-stack{
+    .checkout-stack{
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -683,8 +703,7 @@
       line-height: 1.05;
       width: 100%;
     }
-    .cta-small,.checkout-small{ font-size: 9px; letter-spacing: .20em; opacity: .95; }
-    .cta-big{ font-size: 13px; letter-spacing: .10em; }
+    .checkout-small{ font-size: 9px; letter-spacing: .20em; opacity: .95; }
     .checkout-big{ font-size: 14px; letter-spacing: .10em; }
 
     /* CART DRAWER */
@@ -1091,7 +1110,6 @@
       .layout{ grid-template-columns:1fr; }
       .what-wrap{ grid-template-columns:1fr; }
       .about-grid{ grid-template-columns:1fr; }
-      .store-ctas{ grid-template-columns: 1fr; }
       .what-image img{ min-height: 280px; }
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
@@ -1144,7 +1162,7 @@
           <img class="brand-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="" />
           <div class="brand-text">The MayaNut Company</div>
         </div>
-        <!-- NAV REMOVED (per request) -->
+        <!-- NAV REMOVED -->
       </header>
     </div>
 
@@ -1160,7 +1178,20 @@
             </div>
 
             <div class="section-body">
-              <div class="hero-title">A Delicious, Roasted Seed Powder</div>
+              <!-- HERO TITLE + ARROW -->
+              <div class="hero-row" aria-label="Hero title">
+                <div class="hero-title">A Delicious, Roasted Seed Powder</div>
+                <svg class="hero-arrow" viewBox="0 0 1000 20" preserveAspectRatio="none" aria-hidden="true">
+                  <!-- long bar + right arrow head (orange fill, white outline) -->
+                  <path d="M0 10
+                           L930 10
+                           L930 2
+                           L1000 10
+                           L930 18
+                           L930 10
+                           L0 10 Z"></path>
+                </svg>
+              </div>
 
               <div class="what-wrap" aria-label="What is MayaNut content">
                 <div class="what-image">
@@ -1250,18 +1281,12 @@
                   </div>
                 </article>
 
-                <div class="store-ctas" aria-label="Store actions">
+                <!-- SINGLE CHECKOUT BUTTON ONLY -->
+                <div class="store-ctas" aria-label="Checkout action">
                   <button class="cta-btn js-flash" type="button" id="go-checkout" aria-label="Go to checkout">
                     <span class="checkout-stack">
                       <span class="checkout-small">GO TO</span>
                       <span class="checkout-big">CHECKOUT</span>
-                    </span>
-                  </button>
-
-                  <button class="cta-btn js-flash" type="button" id="browse-all" aria-label="View all products">
-                    <span class="cta-stack">
-                      <span class="cta-small">VIEW ALL</span>
-                      <span class="cta-big">PRODUCTS</span>
                     </span>
                   </button>
                 </div>
@@ -1430,7 +1455,6 @@
         { key:"one", label:"1 LB", title:"MayaNut Powder 1 LB", price:34.95 }
       ];
 
-      // cart state: variantKey -> qty (1..9)
       const cart = new Map();
 
       const badge = document.getElementById("mini-badge");
@@ -1541,7 +1565,6 @@
         renderCart();
       }
 
-      /* typing into quantity MUST work */
       qtyInput?.addEventListener("input", ()=>{
         const raw = String(qtyInput.value || "").replace(/[^\d]/g,"");
         qtyInput.value = raw;
@@ -1600,7 +1623,6 @@
         openMenu(e.currentTarget, WEIGHTS, (opt)=> applyVariant(opt));
       });
 
-      document.getElementById("browse-all")?.addEventListener("click", ()=>{ showMiniMessage("Only one product is currently listed."); });
       document.getElementById("go-checkout")?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
 
       function openCart(){
@@ -1682,7 +1704,6 @@
           setLocal(q + 1);
         });
 
-        /* typing into cart quantity MUST work */
         input.addEventListener("input", ()=>{
           const raw = String(input.value || "").replace(/[^\d]/g,"");
           input.value = raw;
@@ -1759,6 +1780,7 @@
           removeBtn.style.borderRadius = "14px";
           removeBtn.style.fontSize = "11px";
           removeBtn.style.padding = "0 12px";
+          removeBtn.style.width = "auto";
           removeBtn.textContent = "Remove";
           removeBtn.addEventListener("click", ()=>{
             cart.delete(key);

@@ -138,19 +138,31 @@
       background:#fff;
     }
 
+    /* FIX: make fixed wrapper transparent + stabilize GPU + seam cover */
     .sticky-top{
       position:fixed;
-      top:0; left:0;
-      right: var(--sbw);
+      top:0; left:0; right:0;
       z-index:999;
-      background: var(--green);
+      background: transparent;
       box-shadow:0 10px 28px rgba(15,23,42,0.12);
       border-bottom: 1px solid rgba(12,90,42,0.55);
       transform: translateZ(0);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    .sticky-top::after{
+      content:"";
+      position:absolute;
+      left:0; right:0;
+      bottom:-1px;
+      height:1px;
+      background: var(--green);
+      pointer-events:none;
     }
 
     .site-header{
       width:100%;
+      background-color: var(--green);
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-repeat:no-repeat;
       background-position:center center;
@@ -332,7 +344,7 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* STORE header */
+    /* STORE head */
     .store-head-left{
       display:flex;
       align-items:center;
@@ -399,7 +411,6 @@
       font-size:11px;
       white-space:nowrap;
     }
-
     .cart-badge{
       position:absolute;
       top: 0px;
@@ -785,6 +796,17 @@
       border-top: 2px solid rgba(6,97,0,0.65);
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       color:#ffffff;
+      position: relative;
+    }
+    /* Optional: cover any 1px seam above footer */
+    .footer::before{
+      content:"";
+      position:absolute;
+      top:-1px;
+      left:0; right:0;
+      height:1px;
+      background: var(--footer-g3);
+      pointer-events:none;
     }
     .footer *{ color:#ffffff; }
     .footer-inner{
@@ -1218,22 +1240,22 @@
 
   <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
 
-  <div class="cart-overlay" id="cart-overlay" aria-hidden="true" style="position:fixed; inset:0; z-index:4000; display:none;">
-    <div class="cart-backdrop" id="cart-backdrop" style="position:absolute; inset:0; background:rgba(0,0,0,0.48);"></div>
-    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-label="Cart drawer"
-      style="position:absolute; top:0; right:0; height:100%; width:360px; max-width:86vw; background:#fff; border-left:1px solid rgba(12,90,42,0.35); box-shadow:-18px 0 60px rgba(15,23,42,0.22); display:flex; flex-direction:column;">
-      <div class="cart-drawer-head" style="background:var(--green); color:#fff; padding:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:1px solid rgba(255,255,255,0.18);">
-        <div class="cart-drawer-title" style="font-weight:950; letter-spacing:.14em; text-transform:uppercase; font-size:13px;">Your Cart</div>
-        <button class="cart-close js-flash" type="button" id="cart-close" aria-label="Close cart"
+  <div id="cart-overlay" style="position:fixed; inset:0; z-index:4000; display:none;" aria-hidden="true">
+    <div id="cart-backdrop" style="position:absolute; inset:0; background:rgba(0,0,0,0.48);"></div>
+    <aside style="position:absolute; top:0; right:0; height:100%; width:360px; max-width:86vw; background:#fff; border-left:1px solid rgba(12,90,42,0.35); box-shadow:-18px 0 60px rgba(15,23,42,0.22); display:flex; flex-direction:column;"
+      role="dialog" aria-modal="true" aria-label="Cart drawer">
+      <div style="background:var(--green); color:#fff; padding:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:1px solid rgba(255,255,255,0.18);">
+        <div style="font-weight:950; letter-spacing:.14em; text-transform:uppercase; font-size:13px;">Your Cart</div>
+        <button id="cart-close" class="js-flash" type="button" aria-label="Close cart"
           style="width:34px; height:34px; border-radius:14px; border:1px solid rgba(255,255,255,0.65); background:rgba(0,0,0,0.18); display:flex; align-items:center; justify-content:center; cursor:pointer;">
           <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px; height:18px; stroke:#fff; stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round;">
             <path d="M6 6l12 12"></path><path d="M18 6L6 18"></path>
           </svg>
         </button>
       </div>
-      <div class="cart-body" id="cart-body" style="padding:14px; display:flex; flex-direction:column; gap:12px; overflow:auto; flex:1 1 auto;"></div>
-      <div class="cart-foot" style="padding:14px; border-top:1px solid rgba(12,90,42,0.18);">
-        <button class="cart-checkout js-flash" type="button" id="cart-checkout"
+      <div id="cart-body" style="padding:14px; display:flex; flex-direction:column; gap:12px; overflow:auto; flex:1 1 auto;"></div>
+      <div style="padding:14px; border-top:1px solid rgba(12,90,42,0.18);">
+        <button id="cart-checkout" class="js-flash" type="button"
           style="width:100%; height:52px; border-radius:16px; background:var(--orange); border:1px solid rgba(255,255,255,0.95); color:#fff; font-weight:950; letter-spacing:.10em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 14px 30px rgba(15,23,42,0.10);">
           Continue to Checkout
         </button>
@@ -1364,7 +1386,6 @@
         selected = opt;
         card?.setAttribute("data-variant", opt.key);
         card?.setAttribute("data-title", opt.title);
-        card?.setAttribute("aria-label", opt.title + " product");
         titleEl.textContent = opt.title;
         priceEl.textContent = "$" + opt.price.toFixed(2);
         if(weightValEl) weightValEl.textContent = opt.label;
@@ -1457,14 +1478,12 @@
       function makeQtyControl(currentQty, onChange){
         const wrap = document.createElement("div");
         wrap.className = "qty-rect cart-qty";
-        wrap.setAttribute("aria-label","Cart quantity selector (max 9)");
 
         const minus = document.createElement("div");
         minus.className = "qty-seg";
         minus.textContent = "−";
         minus.setAttribute("role","button");
         minus.setAttribute("tabindex","0");
-        minus.setAttribute("aria-label","Decrease quantity");
 
         const mid = document.createElement("div");
         mid.className = "qty-seg mid";
@@ -1474,7 +1493,6 @@
         input.setAttribute("inputmode","numeric");
         input.setAttribute("pattern","[0-9]*");
         input.value = String(currentQty);
-        input.setAttribute("aria-label","Quantity input");
 
         mid.appendChild(input);
 
@@ -1483,7 +1501,6 @@
         plus.textContent = "+";
         plus.setAttribute("role","button");
         plus.setAttribute("tabindex","0");
-        plus.setAttribute("aria-label","Increase quantity");
 
         function syncDisabled(q){
           minus.classList.toggle("disabled", q <= 1);
@@ -1543,8 +1560,16 @@
 
         if(items.length === 0){
           const empty = document.createElement("div");
-          empty.className = "cart-empty";
           empty.textContent = "Your cart is currently empty.";
+          empty.style.borderRadius = "16px";
+          empty.style.border = "var(--softBorder)";
+          empty.style.background = "var(--pale)";
+          empty.style.padding = "12px";
+          empty.style.fontFamily = "var(--font-pretty)";
+          empty.style.fontStyle = "italic";
+          empty.style.fontWeight = "850";
+          empty.style.color = "rgba(12,90,42,0.95)";
+          empty.style.lineHeight = "1.5";
           cartBody.appendChild(empty);
           return;
         }
@@ -1554,7 +1579,6 @@
           if(!opt) return;
 
           const item = document.createElement("div");
-          item.className = "cart-item";
           item.style.borderRadius = "16px";
           item.style.border = "var(--softBorder)";
           item.style.overflow = "hidden";
@@ -1562,7 +1586,6 @@
           item.style.boxShadow = "0 10px 22px rgba(15,23,42,0.05)";
 
           const top = document.createElement("div");
-          top.className = "cart-item-top";
           top.style.background = "var(--pale)";
           top.style.borderBottom = "var(--softBorder)";
           top.style.padding = "10px";
@@ -1572,7 +1595,6 @@
           top.style.gap = "10px";
 
           const t = document.createElement("div");
-          t.className = "cart-item-title";
           t.textContent = opt.title;
           t.style.fontWeight = "950";
           t.style.letterSpacing = ".06em";
@@ -1586,7 +1608,6 @@
           t.style.flex = "1 1 auto";
 
           const p = document.createElement("div");
-          p.className = "cart-item-price";
           p.textContent = "$" + opt.price.toFixed(2);
           p.style.fontWeight = "950";
           p.style.fontSize = "12px";
@@ -1597,7 +1618,6 @@
           top.appendChild(p);
 
           const mid = document.createElement("div");
-          mid.className = "cart-item-mid";
           mid.style.padding = "10px";
           mid.style.display = "flex";
           mid.style.alignItems = "center";
@@ -1611,14 +1631,20 @@
           });
 
           const removeBtn = document.createElement("button");
-          removeBtn.className = "cta-btn js-flash";
+          removeBtn.className = "js-flash";
           removeBtn.type = "button";
+          removeBtn.textContent = "Remove";
           removeBtn.style.height = "44px";
           removeBtn.style.borderRadius = "14px";
+          removeBtn.style.background = "var(--orange)";
+          removeBtn.style.border = "1px solid rgba(255,255,255,0.95)";
+          removeBtn.style.color = "#fff";
+          removeBtn.style.fontWeight = "950";
+          removeBtn.style.letterSpacing = ".10em";
+          removeBtn.style.textTransform = "uppercase";
           removeBtn.style.fontSize = "11px";
           removeBtn.style.padding = "0 12px";
-          removeBtn.style.width = "auto";
-          removeBtn.textContent = "Remove";
+          removeBtn.style.cursor = "pointer";
           removeBtn.addEventListener("click", ()=>{
             cart.delete(key);
             renderBadge();

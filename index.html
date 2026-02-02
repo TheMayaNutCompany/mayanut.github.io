@@ -128,16 +128,15 @@
       --padX: 16px;
       --gap: 14px;
 
-      /* Hero sizing */
-      --tile: 340px;   /* same height for image / copy / product */
-      --copyW: 440px;  /* paragraph rectangle */
-      --prodW: 290px;  /* product not wide */
+      --tile: 340px;
+      --copyW: 440px;
+      --prodW: 290px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
-    /* Keep your scrollbar styling (we can tune later) */
+    /* SCROLLBAR FIX (single scrollbar): html scrolls, body does not */
     html{
       background:#fff;
       overflow-x:hidden;
@@ -151,10 +150,12 @@
       font-family: var(--font-ui);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
-      overflow-x:hidden;
-      overflow-y: visible;
+      overflow: hidden;          /* <- prevents the second scrollbar */
       overscroll-behavior-y:none;
     }
+    /* ensure no inner container becomes a scrollbar */
+    main, .frame-wrap, .content-wrapper { overflow: visible; }
+
     ::-webkit-scrollbar{ width:14px; height:14px; }
     ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     ::-webkit-scrollbar-thumb{
@@ -281,7 +282,6 @@
       margin-left:auto;
     }
 
-    /* HERO: all same height, product feels taller by reallocating space */
     .intro-row{
       display:grid;
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
@@ -307,7 +307,7 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* Paragraph: same height as tiles, but text block centered + clamped */
+    /* paragraph aligned to TOP (room to add more text later) */
     .tile-copy{
       width: var(--copyW);
       height: var(--tile);
@@ -315,9 +315,7 @@
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      padding: 0 16px;
-      display:flex;
-      align-items:center; /* makes “unused space” feel intentional */
+      padding: 14px 16px;
       overflow:hidden;
     }
     .tile-copy p{
@@ -329,13 +327,13 @@
       color: rgba(12,90,42,0.95);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
 
+      /* keeps it neat but leaves room (increase if you add more) */
       display: -webkit-box;
-      -webkit-line-clamp: 6;
+      -webkit-line-clamp: 8;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    /* Product: same tile height; image taller; bottom compressed */
     .mini-card{
       width: var(--prodW);
       height: var(--tile);
@@ -373,7 +371,7 @@
     }
     .mini-price{
       font-weight:950;
-      font-size:14px; /* emphasize price */
+      font-size:14px;
       color:#0b1220;
       white-space:nowrap;
       flex: 0 0 auto;
@@ -381,7 +379,7 @@
 
     .mini-img{
       width:100%;
-      height: 220px; /* taller product image */
+      height: 220px;
       object-fit: cover;
       object-position:center 52%;
       border-bottom: var(--softBorder);
@@ -391,10 +389,10 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 8px;  /* compressed */
+      padding: 8px;
       display:flex;
       flex-direction:column;
-      gap: 8px;      /* compressed */
+      gap: 8px;
       flex: 1 1 auto;
       min-height:0;
     }
@@ -405,7 +403,6 @@
       align-items:stretch;
     }
 
-    /* BUY button */
     .buy-btn{
       width: 94px;
       height: 52px;
@@ -455,7 +452,6 @@
     .mini-rect .val{ font-weight:900; font-size:11px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; min-width:0; }
     .mini-rect svg{ width:14px; height:14px; stroke:#0b1220; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; opacity:.9; flex:0 0 auto; }
 
-    /* Qty: 3 equal columns */
     .qty-rect{
       height: 28px;
       border-radius:14px;
@@ -494,13 +490,8 @@
       color:#000;
     }
 
-    .mini-desc{
-      margin-top:0;
-      font-weight:850;
-      font-size:11px;  /* slightly tighter */
-      color: rgba(15,23,42,0.55);
-      line-height:1.3;
-    }
+    /* remove product description block entirely (per request) */
+    .mini-desc{ display:none; }
 
     /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
@@ -616,10 +607,11 @@
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
     @media(max-width:980px){
+      body{ overflow: visible; } /* mobile: allow normal scrolling */
       .intro-row{ grid-template-columns: 1fr; }
       .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; }
-      .tile-copy{ width:100%; height:auto; padding: 14px 16px; display:block; }
-      .tile-copy p{ display:block; }
+      .tile-copy{ width:100%; height:auto; padding: 14px 16px; }
+      .tile-copy p{ display:block; -webkit-line-clamp: unset; }
       .mini-card{ width:100%; max-width:420px; height:auto; }
       .about-grid{ grid-template-columns:1fr; }
       .footer-inner{ grid-template-columns: 1fr; }
@@ -715,10 +707,7 @@
                     </div>
                   </div>
 
-                  <div class="mini-desc">
-                    Warm, roasted flavor for smoothies, açaí bowls, baking, drinks, and everyday foods.
-                    <strong>Coming soon.</strong>
-                  </div>
+                  <!-- product description removed -->
                 </div>
               </article>
             </div>
@@ -886,7 +875,6 @@
         m.style.border = "1px solid rgba(12,90,42,0.55)";
         m.style.background = "rgba(255,255,255,0.98)";
         m.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
-
         items.forEach(opt=>{
           const row = document.createElement("div");
           row.textContent = opt.label;
@@ -949,7 +937,6 @@
       });
 
       buyBtn.addEventListener("click", ()=>{
-        // Placeholder behavior (swap to cart/checkout later)
         const old = buyBtn.textContent;
         buyBtn.textContent = "✓";
         setTimeout(()=>{ buyBtn.textContent = old; }, 650);

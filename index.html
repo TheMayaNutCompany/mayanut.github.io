@@ -128,16 +128,16 @@
       --padX: 16px;
       --gap: 14px;
 
-      /* Layout sizing */
-      --tile: 340px;     /* square image */
-      --copyW: 440px;    /* rectangle paragraph (wider) */
-      --prodW: 290px;    /* product a little closer and less wide */
+      /* Hero sizing */
+      --tile: 340px;   /* same height for image / copy / product */
+      --copyW: 440px;  /* paragraph rectangle */
+      --prodW: 290px;  /* product not wide */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
-    /* Keep your scrollbar styling (we'll tune later) */
+    /* Keep your scrollbar styling (we can tune later) */
     html{
       background:#fff;
       overflow-x:hidden;
@@ -281,7 +281,7 @@
       margin-left:auto;
     }
 
-    /* HERO ROW: image square + paragraph rectangle + product (no checkout) */
+    /* HERO: all same height, product feels taller by reallocating space */
     .intro-row{
       display:grid;
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
@@ -307,6 +307,7 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
+    /* Paragraph: same height as tiles, but text block centered + clamped */
     .tile-copy{
       width: var(--copyW);
       height: var(--tile);
@@ -314,7 +315,9 @@
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      padding: 44px 16px 14px; /* pushes content down */
+      padding: 0 16px;
+      display:flex;
+      align-items:center; /* makes “unused space” feel intentional */
       overflow:hidden;
     }
     .tile-copy p{
@@ -325,9 +328,14 @@
       line-height: 1.85;
       color: rgba(12,90,42,0.95);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
-    /* Product fills full tile height: no cutoff, no checkout box */
+    /* Product: same tile height; image taller; bottom compressed */
     .mini-card{
       width: var(--prodW);
       height: var(--tile);
@@ -344,7 +352,7 @@
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--softBorder);
-      padding: 9px 10px;
+      padding: 8px 10px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -365,14 +373,15 @@
     }
     .mini-price{
       font-weight:950;
-      font-size:14px; /* slight emphasis */
+      font-size:14px; /* emphasize price */
       color:#0b1220;
       white-space:nowrap;
+      flex: 0 0 auto;
     }
 
     .mini-img{
       width:100%;
-      height: 160px; /* a bit taller = more premium */
+      height: 220px; /* taller product image */
       object-fit: cover;
       object-position:center 52%;
       border-bottom: var(--softBorder);
@@ -382,10 +391,10 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 10px;
+      padding: 8px;  /* compressed */
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap: 8px;      /* compressed */
       flex: 1 1 auto;
       min-height:0;
     }
@@ -425,7 +434,7 @@
       flex:1 1 auto;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:8px;
       min-width:0;
     }
 
@@ -442,11 +451,11 @@
       cursor:pointer;
       user-select:none;
     }
-    .mini-rect .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color:#0b1220; }
-    .mini-rect .val{ font-weight:900; font-size:11px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; }
-    .mini-rect svg{ width:14px; height:14px; stroke:#0b1220; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; opacity:.9; }
+    .mini-rect .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color:#0b1220; flex:0 0 auto; }
+    .mini-rect .val{ font-weight:900; font-size:11px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; min-width:0; }
+    .mini-rect svg{ width:14px; height:14px; stroke:#0b1220; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; opacity:.9; flex:0 0 auto; }
 
-    /* Qty: 3 equal columns, roomy +/- */
+    /* Qty: 3 equal columns */
     .qty-rect{
       height: 28px;
       border-radius:14px;
@@ -463,7 +472,7 @@
       align-items:center;
       justify-content:center;
       font-weight: 950;
-      font-size: 16px; /* slightly bigger +/- */
+      font-size: 16px;
       color:#0b1220;
       cursor:pointer;
       line-height:1;
@@ -486,11 +495,11 @@
     }
 
     .mini-desc{
-      margin-top:2px;
+      margin-top:0;
       font-weight:850;
-      font-size:11.5px;
+      font-size:11px;  /* slightly tighter */
       color: rgba(15,23,42,0.55);
-      line-height:1.35;
+      line-height:1.3;
     }
 
     /* A LITTLE ABOUT US */
@@ -609,7 +618,8 @@
     @media(max-width:980px){
       .intro-row{ grid-template-columns: 1fr; }
       .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; }
-      .tile-copy{ width:100%; height:auto; padding-top: 14px; }
+      .tile-copy{ width:100%; height:auto; padding: 14px 16px; display:block; }
+      .tile-copy p{ display:block; }
       .mini-card{ width:100%; max-width:420px; height:auto; }
       .about-grid{ grid-template-columns:1fr; }
       .footer-inner{ grid-template-columns: 1fr; }
@@ -706,8 +716,8 @@
                   </div>
 
                   <div class="mini-desc">
-                    Warm, roasted flavor for smoothies, açaí bowls,<br />
-                    baking, drinks, and everyday foods. <strong>Coming soon.</strong>
+                    Warm, roasted flavor for smoothies, açaí bowls, baking, drinks, and everyday foods.
+                    <strong>Coming soon.</strong>
                   </div>
                 </div>
               </article>
@@ -876,6 +886,7 @@
         m.style.border = "1px solid rgba(12,90,42,0.55)";
         m.style.background = "rgba(255,255,255,0.98)";
         m.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
+
         items.forEach(opt=>{
           const row = document.createElement("div");
           row.textContent = opt.label;
@@ -922,8 +933,13 @@
         weightVal.textContent = opt.label;
       }
 
-      qtyInput.addEventListener("input", ()=> setQty(getQty()));
+      qtyInput.addEventListener("input", ()=>{
+        const raw = String(qtyInput.value || "").replace(/[^\d]/g,"");
+        qtyInput.value = raw;
+        setQty(parseInt(raw || "1", 10));
+      });
       qtyInput.addEventListener("blur", ()=> setQty(getQty()));
+
       plusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
       minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>1) setQty(q-1); });
 
@@ -933,12 +949,14 @@
       });
 
       buyBtn.addEventListener("click", ()=>{
+        // Placeholder behavior (swap to cart/checkout later)
         const old = buyBtn.textContent;
         buyBtn.textContent = "✓";
         setTimeout(()=>{ buyBtn.textContent = old; }, 650);
       });
 
       setQty(1);
+      applyVariant(WEIGHTS[0]);
     })();
   </script>
 </body>

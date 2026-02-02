@@ -97,7 +97,7 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
-    /* Scrollbar: stable + visible track/thumb (Windows + macOS + Firefox) */
+    /* Single, non-doubled page scrollbar: scroll on html only */
     html{
       background:#fff;
       overflow-x:hidden;
@@ -112,8 +112,10 @@
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
+      overflow-y: visible; /* prevents "double scrollbar" */
       overscroll-behavior-y:none;
     }
+
     ::-webkit-scrollbar{ width: 14px; height: 14px; }
     ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     ::-webkit-scrollbar-thumb{
@@ -226,9 +228,10 @@
       margin: 0 auto;
     }
 
+    /* More attention to product: widen right column */
     .layout{
       display:grid;
-      grid-template-columns: 1.50fr 0.50fr;
+      grid-template-columns: 1.18fr 0.82fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -346,18 +349,18 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* Try Now arrow inside paragraph box */
+    /* Try Now arrow: centered (slightly left), longer, wider arrowhead (not just a simple triangle) */
     .try-now{
       margin-top: 12px;
-      margin-left: auto; /* right-align */
-      width: min(320px, 92%);
-      height: 44px;
+      align-self: center;
+      width: min(460px, 96%);
+      height: 46px;
       display:flex;
       align-items:center;
       justify-content:center;
       color:#fff;
       font-weight: 950;
-      letter-spacing: .06em;
+      letter-spacing: .08em;
       text-transform: uppercase;
       font-size: 14px;
       background: var(--orange);
@@ -367,8 +370,17 @@
       cursor: pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      clip-path: polygon(0 0, 88% 0, 100% 50%, 88% 100%, 0 100%);
-      padding-right: 18px; /* gives space before arrow point */
+      transform: translateX(-10px); /* slight left shift */
+      clip-path: polygon(
+        0% 0%,
+        82% 0%,
+        90% 22%,
+        100% 50%,
+        90% 78%,
+        82% 100%,
+        0% 100%
+      );
+      padding-right: 18px;
     }
     .try-now:hover{ background: var(--orangePress); }
     @media (hover:none){ .try-now:hover{ background: var(--orange); } }
@@ -529,7 +541,7 @@
     }
     .mini-img{
       width:100%;
-      height: 160px;
+      height: 170px; /* slightly larger product visual */
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -932,13 +944,11 @@
       stroke-linecap:round !important;
       stroke-linejoin:round !important;
     }
-    .social-row .icon-pill .fill{
-      fill:#ffffff !important;
-      stroke:none !important;
-    }
+    .social-row .icon-pill .fill{ fill:#ffffff !important; stroke:none !important; }
     .yt-body{ fill:#ffffff !important; stroke:none !important; }
     .yt-play{ fill:#fd6c02 !important; stroke:none !important; }
 
+    /* tap flash */
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
     .pressed .cart-badge{ background: var(--orangePress) !important; }
 
@@ -952,6 +962,7 @@
       }
       .viewcart-pill:hover .cart-badge{ background: var(--orange) !important; }
       .add-to-cart:hover{ background: var(--orange) !important; }
+      .try-now:hover{ background: var(--orange) !important; }
     }
 
     @media(max-width:980px){
@@ -962,7 +973,7 @@
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
       .hero-title{ white-space: nowrap; }
-      .try-now{ width: 100%; margin-left: 0; }
+      .try-now{ width: 100%; transform: none; }
     }
 
     @media (max-width:980px) and (orientation:portrait){
@@ -971,7 +982,6 @@
       .brand-logo{ width:64px; height:64px; }
       .brand-text{ font-size:34px; -webkit-text-stroke: 0.85px rgba(11,59,23,0.95); }
     }
-
     @media (max-width:980px) and (orientation:landscape){
       .site-header{ background-size: 140% auto; background-position: center 52%; }
       .brand-logo{ width:70px; height:70px; }
@@ -1040,7 +1050,6 @@
                     MayaNut™ is a naturally gluten-free, nutritious seed flour made for everyday foods and drinks. Roasted and finely ground from the seeds of the rainforest tree Brosimum alicastrum, MayaNut™ has a smooth, warming flavor that works perfectly in smoothies, açaí bowls, baked goods, beverages, and cooking. Used for generations in Central America, MayaNut™ brings an ancient, sustainable ingredient into modern American cuisine.
                   </p>
 
-                  <!-- Arrow inside paragraph box -->
                   <button class="try-now js-flash" type="button" id="try-now" aria-label="Try MayaNut now">
                     TRY NOW!
                   </button>
@@ -1147,13 +1156,11 @@
                     In 1923, Herbert “Bubba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, cultivating oranges, pineapples, watermelons, and other crops. In 2025, Bubba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating Brosimum alicastrum for the production of MayaNut flour—continuing his family’s Florida farming legacy.
                   </p>
                 </div>
-
                 <div class="about-media">
                   <img src="the-maya-nut-company-bubba-image.jpg"
                        alt="Historic Florida farming legacy connected to Kennesaw Fruit Company"
                        loading="lazy" decoding="async"
                        onerror="this.style.opacity='.35';" />
-                  <!-- CTA REMOVED -->
                 </div>
               </div>
 
@@ -1164,13 +1171,11 @@
                     MayaNut™ tastes warm and roasted, makes foods richer and more filling, and turns light meals into something that actually satisfies—perfect for açaí bowls, smoothies, baked goods, and everyday foods.
                   </p>
                 </div>
-
                 <div class="about-media">
                   <img src="august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                        alt="August Kokus with young MayaNut trees (Brosimum alicastrum) in South Florida"
                        loading="lazy" decoding="async"
                        onerror="this.style.opacity='.35';" />
-                  <!-- CTA REMOVED -->
                 </div>
               </div>
             </div>
@@ -1393,7 +1398,6 @@
         selected = opt;
         card?.setAttribute("data-variant", opt.key);
         card?.setAttribute("data-title", opt.title);
-        card?.setAttribute("aria-label", opt.title + " product");
         titleEl.textContent = opt.title;
         priceEl.textContent = "$" + opt.price.toFixed(2);
         if(weightValEl) weightValEl.textContent = opt.label;
@@ -1458,14 +1462,6 @@
         openMenu(e.currentTarget, WEIGHTS, (opt)=> applyVariant(opt));
       });
 
-      // Try Now arrow button: open cart drawer (strong CTA toward product)
-      document.getElementById("try-now")?.addEventListener("click", (e)=>{
-        e.preventDefault();
-        openCart();
-      });
-
-      document.getElementById("go-checkout")?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
-
       function openCart(){
         overlay.style.display = "block";
         overlay.setAttribute("aria-hidden","false");
@@ -1478,16 +1474,15 @@
         document.body.style.overflow = "";
       }
 
-      viewCartBtn?.addEventListener("click", (e)=>{
-        e.preventDefault();
-        openCart();
-      });
+      viewCartBtn?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
       backdrop?.addEventListener("click", closeCart);
       closeBtn?.addEventListener("click", closeCart);
 
-      checkoutBtn?.addEventListener("click", ()=>{
-        showMiniMessage("This function is currently unavailable.");
-      });
+      // "Try Now!" arrow opens cart (strong CTA)
+      document.getElementById("try-now")?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
+
+      document.getElementById("go-checkout")?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
+      checkoutBtn?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
 
       function makeQtyControl(currentQty, onChange){
         const wrap = document.createElement("div");

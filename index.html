@@ -97,7 +97,7 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
-    /* Single, non-doubled page scrollbar: scroll on html only */
+    /* Single page scrollbar (no doubling): scroll on html only */
     html{
       background:#fff;
       overflow-x:hidden;
@@ -112,10 +112,9 @@
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
-      overflow-y: visible; /* prevents "double scrollbar" */
+      overflow-y: visible; /* prevents second scrollbar */
       overscroll-behavior-y:none;
     }
-
     ::-webkit-scrollbar{ width: 14px; height: 14px; }
     ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     ::-webkit-scrollbar-thumb{
@@ -222,16 +221,24 @@
       position: relative;
       z-index: 1;
     }
+
+    /* Move content slightly right so left panel extends under the “M” area visually */
     .content-wrapper{
       padding: 18px var(--padX) 12px;
       max-width: 1200px;
       margin: 0 auto;
     }
+    @media (min-width: 981px){
+      .content-wrapper{
+        padding-left: 28px;  /* nudges the whole layout right */
+        padding-right: 12px;
+      }
+    }
 
     /* More attention to product: widen right column */
     .layout{
       display:grid;
-      grid-template-columns: 1.18fr 0.82fr;
+      grid-template-columns: 1.14fr 0.86fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -349,11 +356,12 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* Try Now arrow: centered (slightly left), longer, wider arrowhead (not just a simple triangle) */
+    /* Try Now arrow: longer, slightly left, and “arrow head” is a widened block (not a simple point) */
     .try-now{
+      position: relative;
       margin-top: 12px;
       align-self: center;
-      width: min(460px, 96%);
+      width: min(520px, 96%);
       height: 46px;
       display:flex;
       align-items:center;
@@ -370,20 +378,44 @@
       cursor: pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      transform: translateX(-10px); /* slight left shift */
-      clip-path: polygon(
-        0% 0%,
-        82% 0%,
-        90% 22%,
-        100% 50%,
-        90% 78%,
-        82% 100%,
-        0% 100%
-      );
-      padding-right: 18px;
+      transform: translateX(-14px);
+      padding-right: 30px; /* room for head */
     }
+    /* white outline for the “head” */
+    .try-now::before{
+      content:"";
+      position:absolute;
+      top:-1px;
+      right:-38px;
+      width: 64px;
+      height: calc(100% + 2px);
+      background: #ffffff;
+      border-radius: 12px;
+      transform: skewX(22deg);
+      z-index: 0;
+      opacity: .95;
+    }
+    /* orange head (wider than bar, looks like a real arrow head) */
+    .try-now::after{
+      content:"";
+      position:absolute;
+      top:0;
+      right:-36px;
+      width: 60px;
+      height: 100%;
+      background: var(--orange);
+      border-radius: 12px;
+      transform: skewX(22deg);
+      z-index: 1;
+    }
+    .try-now span{ position: relative; z-index: 2; }
+
     .try-now:hover{ background: var(--orangePress); }
-    @media (hover:none){ .try-now:hover{ background: var(--orange); } }
+    .try-now:hover::after{ background: var(--orangePress); }
+    @media (hover:none){
+      .try-now:hover{ background: var(--orange); }
+      .try-now:hover::after{ background: var(--orange); }
+    }
 
     /* STORE head */
     .store-head-left{
@@ -401,11 +433,12 @@
     .store-head-left .head-line{
       flex: 1 1 auto;
       min-width: 24px;
-      max-width: 108px;
+      max-width: 120px;
       margin-left: 10px;
       height: 5px;
     }
 
+    /* Header button: remove icon; keep CART text + badge */
     .viewcart-pill{
       height: 34px;
       border-radius: 16px;
@@ -413,7 +446,7 @@
       border: 1px solid rgba(255,255,255,0.95);
       display:inline-flex;
       align-items:center;
-      gap:10px;
+      justify-content:center;
       padding: 0 14px;
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
       cursor:pointer;
@@ -421,29 +454,10 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, background .10s ease;
       position: relative;
+      min-width: 78px;
     }
     .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .viewcart-pill:active{ transform: translateY(0px); }
-
-    .cart-icon-wrap{
-      width: 26px;
-      height: 26px;
-      position: relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex:0 0 auto;
-    }
-    .cart-icon-wrap svg{
-      width: 22px;
-      height: 22px;
-      stroke:#fff;
-      fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      display:block;
-    }
     .cart-text{
       color:#fff;
       font-weight:950;
@@ -454,8 +468,8 @@
     }
     .cart-badge{
       position:absolute;
-      top: 0px;
-      right: -4px;
+      top: -2px;
+      right: -2px;
       width: 12px;
       height: 12px;
       border-radius: 999px;
@@ -541,7 +555,7 @@
     }
     .mini-img{
       width:100%;
-      height: 170px; /* slightly larger product visual */
+      height: 176px; /* slightly larger product visual */
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -694,6 +708,7 @@
       margin-top: 10px;
     }
 
+    /* Checkout button: icon + badge LEFT of "CHECKOUT" */
     .cta-btn{
       height: var(--btnH);
       width: 100%;
@@ -707,6 +722,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      gap: 10px;
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       cursor:pointer;
       user-select:none;
@@ -717,21 +733,58 @@
       line-height: 1.05;
       font-size: 12px;
       white-space: nowrap;
+      position: relative;
     }
     .cta-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-btn:active{ transform: translateY(0px); }
 
-    .checkout-stack{
+    .checkout-icon{
+      width: 26px;
+      height: 26px;
+      position: relative;
       display:flex;
-      flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap: 2px;
-      line-height: 1.05;
-      width: 100%;
+      flex:0 0 auto;
+      transform: translateY(-0.5px);
     }
-    .checkout-small{ font-size: 9px; letter-spacing: .20em; opacity: .95; }
-    .checkout-big{ font-size: 14px; letter-spacing: .10em; }
+    .checkout-icon svg{
+      width: 22px;
+      height: 22px;
+      stroke:#fff;
+      fill:none;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      display:block;
+    }
+    .checkout-badge{
+      position:absolute;
+      top:-4px;
+      right:-4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.95);
+      color:#fff;
+      font-weight:950;
+      font-size:7.5px;
+      line-height: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
+      overflow:hidden;
+      padding-top: 0.5px;
+    }
+    .cta-btn:hover .checkout-badge{ background: var(--orangePress); }
+
+    .checkout-word{
+      font-size: 14px;
+      letter-spacing: .10em;
+      font-weight: 950;
+    }
 
     /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
@@ -806,7 +859,7 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* Footer */
+    /* Footer (unchanged) */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -948,21 +1001,12 @@
     .yt-body{ fill:#ffffff !important; stroke:none !important; }
     .yt-play{ fill:#fd6c02 !important; stroke:none !important; }
 
-    /* tap flash */
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
     .pressed .cart-badge{ background: var(--orangePress) !important; }
 
     @media (hover:none){
-      .cta-btn:hover,
-      .add-to-cart:hover,
-      .viewcart-pill:hover,
-      .social-row .icon-pill:hover{
-        background: var(--orange) !important;
-        transform: none !important;
-      }
-      .viewcart-pill:hover .cart-badge{ background: var(--orange) !important; }
-      .add-to-cart:hover{ background: var(--orange) !important; }
       .try-now:hover{ background: var(--orange) !important; }
+      .try-now:hover::after{ background: var(--orange) !important; }
     }
 
     @media(max-width:980px){
@@ -974,18 +1018,8 @@
       .footer-logo{ width: 220px; }
       .hero-title{ white-space: nowrap; }
       .try-now{ width: 100%; transform: none; }
-    }
-
-    @media (max-width:980px) and (orientation:portrait){
-      .site-header{ background-size: 165% auto; background-position: center 44%; }
-      .brand-group{ top: 58%; max-width: calc(100% - 40px); gap:10px; }
-      .brand-logo{ width:64px; height:64px; }
-      .brand-text{ font-size:34px; -webkit-text-stroke: 0.85px rgba(11,59,23,0.95); }
-    }
-    @media (max-width:980px) and (orientation:landscape){
-      .site-header{ background-size: 140% auto; background-position: center 52%; }
-      .brand-logo{ width:70px; height:70px; }
-      .brand-text{ font-size:38px; }
+      .try-now::before, .try-now::after{ display:none; }
+      .content-wrapper{ padding-left: var(--padX); padding-right: var(--padX); }
     }
   </style>
 
@@ -1051,7 +1085,7 @@
                   </p>
 
                   <button class="try-now js-flash" type="button" id="try-now" aria-label="Try MayaNut now">
-                    TRY NOW!
+                    <span>TRY NOW!</span>
                   </button>
                 </div>
               </div>
@@ -1065,17 +1099,10 @@
                 <div class="head-line" aria-hidden="true"></div>
               </div>
               <div class="store-head-right">
+                <!-- no icon here per request -->
                 <button class="viewcart-pill js-flash" type="button" id="view-cart" aria-label="Cart">
-                  <span class="cart-icon-wrap" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
-                      <path d="M6 7l-1-3H2.5"></path>
-                      <circle cx="9" cy="19" r="1.6"></circle>
-                      <circle cx="17" cy="19" r="1.6"></circle>
-                    </svg>
-                    <span class="cart-badge" id="mini-badge">0</span>
-                  </span>
                   <span class="cart-text">CART</span>
+                  <span class="cart-badge" id="mini-badge">0</span>
                 </button>
               </div>
             </div>
@@ -1127,11 +1154,17 @@
                 </article>
 
                 <div class="store-ctas" aria-label="Checkout action">
-                  <button class="cta-btn js-flash" type="button" id="go-checkout" aria-label="Go to checkout">
-                    <span class="checkout-stack">
-                      <span class="checkout-small">GO TO</span>
-                      <span class="checkout-big">CHECKOUT</span>
+                  <button class="cta-btn js-flash" type="button" id="go-checkout" aria-label="Checkout">
+                    <span class="checkout-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 7h15l-1.5 8.5H7.2L6 7z"></path>
+                        <path d="M6 7l-1-3H2.5"></path>
+                        <circle cx="9" cy="19" r="1.6"></circle>
+                        <circle cx="17" cy="19" r="1.6"></circle>
+                      </svg>
+                      <span class="checkout-badge" id="checkout-badge">0</span>
                     </span>
+                    <span class="checkout-word">CHECKOUT</span>
                   </button>
                 </div>
 
@@ -1168,7 +1201,7 @@
                 <div class="about-subtitle" aria-hidden="true">Why We Love MayaNut &amp; So Should You</div>
                 <div class="para">
                   <p>
-                    MayaNut™ tastes warm and roasted, makes foods richer and more filling, and turns light meals into something that actually satisfies—perfect for açaí bowls, smoothies, baked goods, and everyday foods.
+                    MayaNut™ has a warm and roasted flavor, making foods richer and more filling, and turns light meals into something that actually satisfies—perfect for açaí bowls, smoothies, baked goods, and everyday foods. Whatever kind of food you like, MayaNut™ makes it better.
                   </p>
                 </div>
                 <div class="about-media">
@@ -1298,6 +1331,7 @@
       const cart = new Map();
 
       const badge = document.getElementById("mini-badge");
+      const checkoutBadge = document.getElementById("checkout-badge");
       const msgEl = document.getElementById("mini-msg");
       const root = document.getElementById("weight-menu-root");
       let menu = null;
@@ -1318,6 +1352,7 @@
       const closeBtn = document.getElementById("cart-close");
       const cartBody = document.getElementById("cart-body");
       const checkoutBtn = document.getElementById("cart-checkout");
+      const goCheckoutBtn = document.getElementById("go-checkout");
 
       let selected = WEIGHTS[0];
 
@@ -1381,7 +1416,11 @@
         cart.forEach(v=> t += Math.max(0, v|0));
         return t;
       }
-      function renderBadge(){ if(badge) badge.textContent = String(cartCount()); }
+      function renderBadges(){
+        const n = String(cartCount());
+        if(badge) badge.textContent = n;
+        if(checkoutBadge) checkoutBadge.textContent = n;
+      }
 
       function setQty(n){
         const nn = clamp(parseInt(n,10) || 1);
@@ -1452,7 +1491,7 @@
       addBtn?.addEventListener("click", ()=>{
         const q = getQty();
         cart.set(selected.key, q);
-        renderBadge();
+        renderBadges();
         renderCart();
         showAddedState();
       });
@@ -1474,14 +1513,12 @@
         document.body.style.overflow = "";
       }
 
+      document.getElementById("try-now")?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
       viewCartBtn?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
       backdrop?.addEventListener("click", closeCart);
       closeBtn?.addEventListener("click", closeCart);
 
-      // "Try Now!" arrow opens cart (strong CTA)
-      document.getElementById("try-now")?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
-
-      document.getElementById("go-checkout")?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
+      goCheckoutBtn?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
       checkoutBtn?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
 
       function makeQtyControl(currentQty, onChange){
@@ -1635,7 +1672,7 @@
 
           const qtyCtl = makeQtyControl(qty, (newQty)=>{
             cart.set(key, newQty);
-            renderBadge();
+            renderBadges();
             if(selected.key === key) setQty(newQty);
           });
 
@@ -1656,7 +1693,7 @@
           removeBtn.style.cursor = "pointer";
           removeBtn.addEventListener("click", ()=>{
             cart.delete(key);
-            renderBadge();
+            renderBadges();
             renderCart();
           });
 
@@ -1673,7 +1710,7 @@
       // init
       applyVariant(WEIGHTS[0]);
       setQty(1);
-      renderBadge();
+      renderBadges();
     })();
   </script>
 </body>

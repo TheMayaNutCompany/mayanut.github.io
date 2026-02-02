@@ -125,6 +125,10 @@
       --bannerH: 18px;
       --navH: 152px;
 
+      --footer-g1:#d8ff6a;
+      --footer-g2:#7ae78a;
+      --footer-g3:#066100;
+
       --scrollTrack:#3b3f45;
       --scrollThumb:#c8ccd2;
       --scrollThumbHover:#b8bcc3;
@@ -156,6 +160,7 @@
       scrollbar-color: var(--scrollThumb) var(--scrollTrack);
       scrollbar-width: auto;
     }
+
     body::-webkit-scrollbar{ width:14px; height:14px; }
     body::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     body::-webkit-scrollbar-thumb{
@@ -229,7 +234,9 @@
       position:absolute;
       left:50%; top:56%;
       transform: translate(-50%, -50%);
-      display:flex; align-items:center; gap:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
       z-index:2;
       pointer-events:none;
       white-space:nowrap;
@@ -239,6 +246,7 @@
       width:78px; height:78px;
       object-fit:contain;
       filter: drop-shadow(0 14px 30px rgba(15,23,42,0.22));
+      flex: 0 0 auto;
     }
     .brand-text{
       font-weight:900;
@@ -250,6 +258,8 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
+      flex: 0 1 auto;
+      min-width: 0;
     }
 
     main{ background:#fff; min-height: calc(100vh - var(--stickyOffset)); }
@@ -324,7 +334,6 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* shorter, more buyer-first copy, still room to grow */
     .tile-copy{
       width: var(--copyW);
       height: var(--tile);
@@ -335,22 +344,51 @@
       padding: 14px 16px;
       overflow:hidden;
     }
+
     .tile-copy .lead{
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 900;
       font-size: 14px;
-      line-height: 1.75;
+      line-height: 1.65;
       color: rgba(12,90,42,0.96);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
     }
-    .tile-copy .sub{
+
+    .bullets{
       margin-top: 10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .bullet{
+      display:flex;
+      align-items:center;
+      gap:10px;
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
       font-size: 13px;
-      line-height: 1.7;
+      color: rgba(12,90,42,0.92);
+      line-height: 1.35;
+    }
+    .dot{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background: var(--orange);
+      border: 1px solid rgba(255,255,255,0.95);
+      box-shadow: 0 8px 16px rgba(15,23,42,0.10);
+      flex:0 0 auto;
+    }
+
+    .tile-copy .sub{
+      margin-top: 12px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 13px;
+      line-height: 1.65;
       color: rgba(12,90,42,0.88);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
 
@@ -360,7 +398,6 @@
       overflow: hidden;
     }
 
-    /* subtle product spotlight */
     .prod-wrap{
       position: relative;
       width: var(--prodW);
@@ -399,7 +436,16 @@
       gap:10px;
       flex: 0 0 auto;
     }
-    .mini-title{
+
+    /* Badge fix: keep badge OUT of the clamped title text, and never let it clip */
+    .title-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+      flex: 1 1 auto;
+    }
+    .mini-title-text{
       color:#0b1220;
       font-weight:950;
       letter-spacing:.06em;
@@ -409,15 +455,15 @@
       overflow:hidden;
       text-overflow:ellipsis;
       min-width:0;
-      flex:1 1 auto;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      flex: 1 1 auto;
     }
+
     .badge{
+      flex: 0 0 auto;
       height: 18px;
+      line-height: 18px;
       padding: 0 8px;
-      border-radius: 999px;
+      border-radius: 10px; /* less glitchy than 999px in tight lines */
       background: rgba(253,108,2,0.14);
       border: 1px solid rgba(253,108,2,0.40);
       color: rgba(11,18,32,0.92);
@@ -425,15 +471,16 @@
       font-weight: 950;
       letter-spacing: .08em;
       text-transform: uppercase;
-      display:flex;
+      display:inline-flex;
       align-items:center;
       justify-content:center;
       white-space:nowrap;
-      flex: 0 0 auto;
+      transform: translateY(0px);
     }
+
     .mini-price{
       font-weight:950;
-      font-size:16px; /* more dominant */
+      font-size:16px;
       color:#0b1220;
       white-space:nowrap;
       flex: 0 0 auto;
@@ -455,7 +502,7 @@
       padding: 8px;
       display:flex;
       flex-direction:column;
-      gap: 8px; /* keep buy height math */
+      gap: 8px; /* buy height math */
       flex: 1 1 auto;
       min-height:0;
     }
@@ -466,9 +513,9 @@
       align-items:stretch;
     }
 
-    /* CTA: change BUY -> ADD (more trustworthy if not instant checkout) */
+    /* CTA spans weight + gap + qty: 28 + 8 + 28 = 64px */
     .buy-btn{
-      height: 64px; /* spans weight + gap + qty: 28 + 8 + 28 */
+      height: 64px;
       width: 94px;
       border-radius:16px;
       border: 1px solid rgba(255,255,255,0.95);
@@ -536,7 +583,6 @@
       text-align:right;
       min-width:0;
     }
-
     .caret{
       width:14px; height:14px;
       stroke:#0b1220; fill:none;
@@ -580,7 +626,6 @@
       pointer-events:none;
       background: transparent;
     }
-
     .qty-input{
       width: 100%;
       height: 26px;
@@ -594,7 +639,6 @@
       color:#000;
     }
 
-    /* Trust micro-line */
     .trust{
       font-size: 11px;
       font-weight: 900;
@@ -672,13 +716,13 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* FOOTER (simplified) */
+    /* FOOTER restored (full) */
     .footer{
       margin-top: 16px;
-      background: linear-gradient(to bottom, var(--lime) 0%, var(--footer-g2) 52%, var(--green) 100%);
+      background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
+      border-top: var(--frameLine); /* thin line matches top tab */
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       color:#ffffff;
-      border-top: var(--frameLine);
     }
     .footer *{ color:#ffffff; }
 
@@ -691,20 +735,104 @@
       gap: 22px;
       align-items: start;
     }
-    .footer-left{ display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
-    .footer-tagline{ display:flex; align-items:center; gap:8px; font-weight:950; letter-spacing:.06em; font-size:15px; text-transform:uppercase; white-space:nowrap; }
-    .footer-florida{ width:26px; height:26px; margin-left:2px; }
-    .footer-logo{ width:240px; height:auto; user-select:none; }
+    .footer-left{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .footer-tagline{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-weight: 950;
+      letter-spacing: .06em;
+      font-size: 15px;
+      text-transform: uppercase;
+      white-space:nowrap;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    }
+    .footer-florida{
+      width: 26px;
+      height: 26px;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35));
+      margin-left: 2px;
+    }
+    .footer-logo{
+      width: 240px; height: auto;
+      filter: drop-shadow(0 12px 22px rgba(15,23,42,0.22));
+      user-select:none;
+    }
 
     .footer-right{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:18px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
       align-items:start;
     }
-    .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
-    .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; }
+    .footer-col-title{
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      margin-bottom: 10px;
+    }
+    .footer-link{
+      display:block;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .02em;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      width: fit-content;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
 
+    .social-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .social-row .icon-pill{
+      width:34px !important;
+      height:34px !important;
+      min-width:34px !important;
+      min-height:34px !important;
+      max-width:34px !important;
+      max-height:34px !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      border-radius:14px !important;
+      border: 1px solid rgba(255,255,255,0.55) !important;
+      background: var(--orange) !important;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.12) !important;
+      padding:0 !important;
+      margin:0 !important;
+      line-height:0 !important;
+      font-size:0 !important;
+      overflow:hidden !important;
+      flex: 0 0 auto !important;
+      transition: background .10s ease !important;
+    }
+    .social-row .icon-pill:hover{ background: var(--orangePress) !important; }
+    .social-row .icon-pill svg{
+      width:18px !important;
+      height:18px !important;
+      display:block !important;
+      stroke:#ffffff !important;
+      fill:none !important;
+      stroke-width:2 !important;
+      stroke-linecap:round !important;
+      stroke-linejoin:round !important;
+    }
+    .social-row .icon-pill .fill{ fill:#ffffff !important; stroke:none !important; }
+    .yt-body{ fill:#ffffff !important; stroke:none !important; }
+    .yt-play{ fill:#fd6c02 !important; stroke:none !important; }
+
+    /* Thin line above copyright: match top tab exactly */
     .footer-divider{
       border-top: var(--frameLine);
       max-width: 1200px;
@@ -716,25 +844,12 @@
       margin: 0 auto;
       font-weight:900;
       font-size:14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
       text-align:left;
     }
 
-    .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-    .social-row .icon-pill{
-      width:34px; height:34px;
-      display:inline-flex; align-items:center; justify-content:center;
-      border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      overflow:hidden;
-      transition: background .10s ease;
-    }
-    .social-row .icon-pill:hover{ background: var(--orangePress); }
-    .social-row .icon-pill svg{ width:18px; height:18px; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .social-row .icon-pill .fill{ fill:#fff; stroke:none; }
-    .yt-body{ fill:#fff; stroke:none; }
-    .yt-play{ fill:#fd6c02; stroke:none; }
+    /* Weight menu */
+    #weight-menu-root{ position:fixed; inset:0; pointer-events:none; z-index:2500; }
 
     /* Cart drawer */
     #cart-overlay{ position:fixed; inset:0; z-index:4000; display:none; }
@@ -861,14 +976,41 @@
 
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
+    /* MOBILE: header one line + order: product, text, image, about, footer */
     @media(max-width:980px){
       .sticky-top{ right: 0; }
-      .intro-row{ grid-template-columns: 1fr; }
-      .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; }
-      .tile-copy{ width:100%; height:auto; }
-      .prod-wrap{ width:100%; height:auto; justify-self:start; }
+
+      /* header one-line centered */
+      .brand-group{
+        top:56%;
+        max-width: calc(100% - 20px);
+        gap:10px;
+      }
+      .brand-logo{ width:56px; height:56px; }
+      .brand-text{
+        font-size:28px;
+        -webkit-text-stroke: 0.75px rgba(11,59,23,0.95);
+      }
+
+      /* stack hero in requested order */
+      .intro-row{
+        display:flex;
+        flex-direction:column;
+        gap: 12px;
+      }
+      .prod-wrap{ order: 1; width:100%; height:auto; }
       .mini-card{ width:100%; max-width:420px; height:auto; }
-      .buy-btn{ height: 52px; font-size: 18px; border-radius:16px; }
+      .tile-copy{ order: 2; width:100%; height:auto; }
+      .tile-img{ order: 3; width:100%; height:auto; aspect-ratio: 1 / 1; }
+      .tile-img img{ height:100%; width:100%; }
+
+      /* button height feels better on mobile */
+      .buy-btn{ height: 52px; font-size: 18px; letter-spacing: .10em; }
+      .mini-bot{ gap: 10px; }
+      .right-stack{ gap: 10px; }
+      .qty-seg{ font-size: 18px; }
+
+      .about-grid{ grid-template-columns:1fr; }
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; }
       .footer-divider, .footer-bottom{ max-width: 100%; }
@@ -887,14 +1029,14 @@
         const sbw = Math.max(0, window.innerWidth - document.body.clientWidth);
         document.documentElement.style.setProperty("--sbw", sbw + "px");
       }
-      function sync(){
+      function syncFrame(){
         setStickyOffset();
         setScrollbarWidthVar();
       }
-      window.addEventListener("load", sync, { once:true });
-      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
-      window.addEventListener("pageshow", sync);
-      document.addEventListener("DOMContentLoaded", sync);
+      window.addEventListener("load", syncFrame, { once:true });
+      window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(syncFrame,80); });
+      window.addEventListener("pageshow", syncFrame);
+      document.addEventListener("DOMContentLoaded", syncFrame);
     })();
   </script>
 </head>
@@ -923,6 +1065,8 @@
 
           <div class="section-body">
             <div class="intro-row" aria-label="Intro image, paragraph, product">
+
+              <!-- Desktop order: image, copy, product (kept). Mobile order handled via CSS (product, text, image). -->
               <div class="tile-img" aria-label="MayaNut image">
                 <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                      alt="MayaNut fruit and seeds on the rainforest tree Brosimum alicastrum"
@@ -931,25 +1075,30 @@
               </div>
 
               <div class="tile-copy" aria-label="MayaNut description">
-                <div class="lead">
-                  Roasted seed flour that makes meals feel hearty.
+                <div class="lead">Roasted seed flour that makes meals feel hearty.</div>
+
+                <div class="bullets" aria-label="Key benefits">
+                  <div class="bullet"><span class="dot" aria-hidden="true"></span>Warm, roasted flavor</div>
+                  <div class="bullet"><span class="dot" aria-hidden="true"></span>Naturally gluten-free</div>
+                  <div class="bullet"><span class="dot" aria-hidden="true"></span>Makes meals more filling</div>
                 </div>
+
                 <div class="sub">
-                  MayaNut™ flour is made from the seeds of the rainforest tree <em>Brosimum alicastrum</em>. Naturally gluten-free and filling, it’s great in smoothies, açaí bowls, baked goods, and everyday cooking.
+                  MayaNut™ flour is made from the seeds of the rainforest tree <em>Brosimum alicastrum</em>. Great in smoothies, açaí bowls, baked goods, and everyday cooking.
                 </div>
               </div>
 
               <div class="prod-wrap" aria-label="Product">
                 <article class="mini-card" data-variant="qtr" aria-label="MayaNut flour product">
                   <div class="mini-titlebar">
-                    <div class="mini-title" id="mini-title">
-                      MayaNut™ Flour ¼ LB
+                    <div class="title-left">
+                      <div class="mini-title-text" id="mini-title-text">MayaNut™ Flour ¼ LB</div>
                       <span class="badge">Gluten-Free</span>
                     </div>
                     <div class="mini-price" id="mini-price">$9.99</div>
                   </div>
 
-                  <!-- Replace this image later with a bag/label product shot for even higher conversion -->
+                  <!-- Swap to a bag/label product shot later for a big conversion bump -->
                   <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
                        alt="MayaNut flour (roasted seed flour) from Brosimum alicastrum"
                        loading="lazy" decoding="async"
@@ -1045,17 +1194,19 @@
           <div class="footer-col">
             <div class="footer-col-title">WHO WE ARE</div>
             <a class="footer-link" href="about.html">About</a>
+            <a class="footer-link" href="recipes.html">Recipes</a>
+            <a class="footer-link" href="gallery.html">Gallery</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">SUPPORT</div>
+            <a class="footer-link" href="accessibility.html">Accessibility</a>
+            <a class="footer-link" href="terms.html">Terms</a>
+            <a class="footer-link" href="privacy.html">Privacy</a>
+            <a class="footer-link" href="sitemap.html">Sitemap</a>
             <a class="footer-link" href="contact.html">Contact</a>
             <a class="footer-link" href="index-es.html">Español</a>
           </div>
           <div class="footer-col">
-            <div class="footer-col-title">SUPPORT</div>
-            <a class="footer-link" href="terms.html">Terms</a>
-            <a class="footer-link" href="privacy.html">Privacy</a>
-            <a class="footer-link" href="accessibility.html">Accessibility</a>
-          </div>
-
-          <div class="footer-col" style="grid-column:1 / -1;">
             <div class="footer-col-title">FOLLOW US</div>
             <div class="social-row" aria-label="Social links">
               <a class="icon-pill js-flash" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1092,7 +1243,7 @@
   </div>
 
   <!-- Weight menu root -->
-  <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
+  <div id="weight-menu-root"></div>
 
   <!-- Cart drawer -->
   <div id="cart-overlay" aria-hidden="true">
@@ -1124,7 +1275,7 @@
         if(t) flashPress(t);
       }, true);
 
-      // sticky offset + scrollbar width var
+      // scrollbar-safe header + sticky offset
       function setStickyOffset(){
         const sticky = document.getElementById("sticky-top");
         if(!sticky) return;
@@ -1144,6 +1295,7 @@
       window.addEventListener("pageshow", syncFrame);
       document.addEventListener("DOMContentLoaded", syncFrame);
 
+      // store logic
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
 
@@ -1159,9 +1311,10 @@
       const weightBtn = document.querySelector("[data-weight]");
       const weightVal = document.querySelector("[data-weight-val]");
       const priceEl = document.getElementById("mini-price");
-      const titleEl = document.getElementById("mini-title");
-      const badgeEl = document.querySelector(".badge");
+      const titleTextEl = document.getElementById("mini-title-text");
+
       const root = document.getElementById("weight-menu-root");
+      let menu = null;
 
       // cart drawer
       const overlay = document.getElementById("cart-overlay");
@@ -1170,7 +1323,6 @@
       const cartBody = document.getElementById("cart-body");
       const checkoutBtn = document.getElementById("cart-checkout");
 
-      let menu = null;
       let selected = WEIGHTS[0];
       const cart = new Map(); // key -> qty
 
@@ -1183,17 +1335,18 @@
         overlay.style.display = "none";
         overlay.setAttribute("aria-hidden","true");
       }
-
       backdrop.addEventListener("click", closeCart);
       closeBtn.addEventListener("click", closeCart);
 
       checkoutBtn.addEventListener("click", ()=>{
-        // placeholder – wire to checkout later
         checkoutBtn.textContent = "Coming Soon";
         setTimeout(()=> checkoutBtn.textContent = "Checkout", 900);
       });
 
-      function closeMenu(){ if(menu){ menu.remove(); menu = null; weightBtn.classList.remove("is-open"); } }
+      function closeMenu(){
+        if(menu){ menu.remove(); menu = null; }
+        weightBtn.classList.remove("is-open");
+      }
 
       function openMenu(anchor, items, onPick){
         closeMenu();
@@ -1267,10 +1420,9 @@
 
       function applyVariant(opt){
         selected = opt;
-        titleEl.childNodes[0].nodeValue = opt.title + " ";
+        titleTextEl.textContent = opt.title;
         priceEl.textContent = "$" + opt.price.toFixed(2);
         weightVal.textContent = opt.label;
-        // small badge stays
       }
 
       weightBtn.addEventListener("click",(e)=>{

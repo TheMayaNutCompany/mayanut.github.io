@@ -97,7 +97,7 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
-    /* Single page scrollbar (no doubling): scroll on html only */
+    /* Single page scrollbar */
     html{
       background:#fff;
       overflow-x:hidden;
@@ -112,7 +112,7 @@
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
-      overflow-y: visible; /* prevents second scrollbar */
+      overflow-y: visible;
       overscroll-behavior-y:none;
     }
     ::-webkit-scrollbar{ width: 14px; height: 14px; }
@@ -139,7 +139,7 @@
       background:#fff;
     }
 
-    /* Seam + tab-switch line fix */
+    /* seam fix */
     .sticky-top{
       position:fixed;
       top:0; left:0; right:0;
@@ -222,7 +222,7 @@
       z-index: 1;
     }
 
-    /* Move content slightly right so left panel extends under the “M” area visually */
+    /* Push the whole layout slightly right so the right edge of the left panel lines up more under the “M” area */
     .content-wrapper{
       padding: 18px var(--padX) 12px;
       max-width: 1200px;
@@ -230,15 +230,15 @@
     }
     @media (min-width: 981px){
       .content-wrapper{
-        padding-left: 28px;  /* nudges the whole layout right */
+        padding-left: 52px; /* stronger right nudge */
         padding-right: 12px;
       }
     }
 
-    /* More attention to product: widen right column */
+    /* Give STORE more presence, but keep a small gap after left panel */
     .layout{
       display:grid;
-      grid-template-columns: 1.14fr 0.86fr;
+      grid-template-columns: 1.10fr 0.90fr;
       gap: var(--gap);
       align-items: stretch;
     }
@@ -262,7 +262,8 @@
       display:flex;
       align-items:center;
       gap:12px;
-      flex:0 0 auto;
+      flex:0 0 auto; /* same height everywhere */
+      min-height: 46px;
     }
     .panel-title{
       font-weight: 950;
@@ -278,7 +279,7 @@
       flex: 1 1 auto;
       background: linear-gradient(to right, var(--footer-g1) 0%, var(--footer-g2) 55%, var(--footer-g3) 100%);
       opacity: .95;
-      min-width: 120px;
+      min-width: 60px;
       margin-left:auto;
       border-radius: 0;
     }
@@ -329,7 +330,6 @@
       object-fit: cover;
       object-position: center 50%;
       filter: saturate(1.03) contrast(1.03);
-      display:block;
     }
 
     .what-paragraph{
@@ -343,7 +343,6 @@
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
-      position: relative;
     }
     .what-paragraph p{
       margin:0;
@@ -356,139 +355,7 @@
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* Try Now arrow: longer, slightly left, and “arrow head” is a widened block (not a simple point) */
-    .try-now{
-      position: relative;
-      margin-top: 12px;
-      align-self: center;
-      width: min(520px, 96%);
-      height: 46px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#fff;
-      font-weight: 950;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-size: 14px;
-      background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95);
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      border-radius: 12px;
-      cursor: pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      transform: translateX(-14px);
-      padding-right: 30px; /* room for head */
-    }
-    /* white outline for the “head” */
-    .try-now::before{
-      content:"";
-      position:absolute;
-      top:-1px;
-      right:-38px;
-      width: 64px;
-      height: calc(100% + 2px);
-      background: #ffffff;
-      border-radius: 12px;
-      transform: skewX(22deg);
-      z-index: 0;
-      opacity: .95;
-    }
-    /* orange head (wider than bar, looks like a real arrow head) */
-    .try-now::after{
-      content:"";
-      position:absolute;
-      top:0;
-      right:-36px;
-      width: 60px;
-      height: 100%;
-      background: var(--orange);
-      border-radius: 12px;
-      transform: skewX(22deg);
-      z-index: 1;
-    }
-    .try-now span{ position: relative; z-index: 2; }
-
-    .try-now:hover{ background: var(--orangePress); }
-    .try-now:hover::after{ background: var(--orangePress); }
-    @media (hover:none){
-      .try-now:hover{ background: var(--orange); }
-      .try-now:hover::after{ background: var(--orange); }
-    }
-
-    /* STORE head */
-    .store-head-left{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-      flex: 1 1 auto;
-    }
-    .store-head-right{
-      flex: 0 0 auto;
-      display:flex;
-      align-items:center;
-    }
-    .store-head-left .head-line{
-      flex: 1 1 auto;
-      min-width: 24px;
-      max-width: 120px;
-      margin-left: 10px;
-      height: 5px;
-    }
-
-    /* Header button: remove icon; keep CART text + badge */
-    .viewcart-pill{
-      height: 34px;
-      border-radius: 16px;
-      background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding: 0 14px;
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .10s ease;
-      position: relative;
-      min-width: 78px;
-    }
-    .viewcart-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .viewcart-pill:active{ transform: translateY(0px); }
-    .cart-text{
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:11px;
-      white-space:nowrap;
-    }
-    .cart-badge{
-      position:absolute;
-      top: -2px;
-      right: -2px;
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--orange);
-      border: 1px solid rgba(255,255,255,0.95);
-      color:#fff;
-      font-weight:950;
-      font-size:7.5px;
-      line-height: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
-      transition: background .10s ease;
-      overflow:hidden;
-      padding-top: 0.5px;
-    }
-    .viewcart-pill:hover .cart-badge{ background: var(--orangePress); }
-
+    /* STORE split: left 1/3 arrow, right 2/3 product */
     .mini-store-body{
       padding: 14px;
       padding-bottom: 14px;
@@ -496,8 +363,45 @@
       flex-direction:column;
       gap: 10px;
       min-height:0;
-      align-items: stretch;
       flex: 1 1 auto;
+    }
+
+    .store-split{
+      display:grid;
+      grid-template-columns: 1fr 2fr; /* left 1/3, right 2/3 */
+      gap: 10px;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .uturn-wrap{
+      border-radius:18px;
+      border: var(--softBorder);
+      background: var(--pale);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px;
+      min-height: 100%;
+    }
+
+    .uturn-arrow{
+      width: 100%;
+      max-width: 160px;
+      aspect-ratio: 1 / 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      background: transparent;
+    }
+    .uturn-arrow svg{
+      width: 100%;
+      height: 100%;
+      display:block;
     }
 
     .mini-msg{
@@ -515,6 +419,7 @@
     }
     .mini-msg.show{ display:block; }
 
+    /* Product smaller */
     .mini-card{
       border-radius:18px;
       background:#fff;
@@ -524,11 +429,12 @@
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
       width: 100%;
+      max-width: 100%;
     }
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--softBorder);
-      padding: 10px;
+      padding: 9px 10px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -539,7 +445,7 @@
       font-weight: 950;
       letter-spacing: .06em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 11.5px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -548,14 +454,14 @@
     }
     .mini-price{
       font-weight:950;
-      font-size: 12px;
+      font-size: 11.5px;
       color:#0b1220;
       white-space:nowrap;
       flex:0 0 auto;
     }
     .mini-img{
       width:100%;
-      height: 176px; /* slightly larger product visual */
+      height: 140px; /* smaller */
       object-fit: cover;
       object-position: center 52%;
       border-bottom: var(--softBorder);
@@ -577,7 +483,7 @@
 
     .add-to-cart{
       width: var(--addW);
-      height: var(--btnH);
+      height: 52px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
@@ -586,7 +492,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding: 10px 8px;
+      padding: 8px 8px;
       user-select:none;
       line-height: 1.05;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
@@ -597,9 +503,8 @@
     }
     .add-to-cart:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .add-to-cart:active{ transform: translateY(0px); }
-
-    .add-main{ font-size: 16px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-    .add-sub{ font-size: 10px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; color:#fff; }
+    .add-main{ font-size: 14px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .add-sub{ font-size: 9px; font-weight: 850; letter-spacing: .22em; text-transform: uppercase; margin-top: 3px; color:#fff; }
 
     .right-stack{
       flex: 1 1 auto;
@@ -651,7 +556,6 @@
     .qty-rect{ overflow:hidden; }
     .qty-seg{ flex: 0 0 34px; }
     .qty-seg.mid{ flex: 1 1 auto; }
-
     .qty-rect{
       height: 28px;
       border-radius: 14px;
@@ -679,7 +583,6 @@
       cursor: default;
       pointer-events:none;
     }
-
     .qty-input{
       width: 100%;
       max-width: 42px;
@@ -697,7 +600,7 @@
     .mini-desc{
       margin-top: 2px;
       font-weight: 850;
-      font-size: 12px;
+      font-size: 11.5px;
       letter-spacing: .01em;
       color: rgba(15,23,42,0.55);
       line-height: 1.35;
@@ -708,9 +611,8 @@
       margin-top: 10px;
     }
 
-    /* Checkout button: icon + badge LEFT of "CHECKOUT" */
     .cta-btn{
-      height: var(--btnH);
+      height: 56px;
       width: 100%;
       border-radius: 14px;
       background: var(--orange);
@@ -728,12 +630,8 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, background .10s ease;
-      text-align:center;
       padding: 0 10px;
-      line-height: 1.05;
-      font-size: 12px;
       white-space: nowrap;
-      position: relative;
     }
     .cta-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-btn:active{ transform: translateY(0px); }
@@ -779,14 +677,13 @@
       padding-top: 0.5px;
     }
     .cta-btn:hover .checkout-badge{ background: var(--orangePress); }
-
     .checkout-word{
       font-size: 14px;
       letter-spacing: .10em;
       font-weight: 950;
     }
 
-    /* A LITTLE ABOUT US */
+    /* ABOUT section styles (unchanged from your working version) */
     .about-wrap{ margin-top: 14px; }
     .about-grid{
       display:grid;
@@ -859,7 +756,7 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* Footer (unchanged) */
+    /* Footer */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -1001,13 +898,8 @@
     .yt-body{ fill:#ffffff !important; stroke:none !important; }
     .yt-play{ fill:#fd6c02 !important; stroke:none !important; }
 
+    /* tap flash */
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
-    .pressed .cart-badge{ background: var(--orangePress) !important; }
-
-    @media (hover:none){
-      .try-now:hover{ background: var(--orange) !important; }
-      .try-now:hover::after{ background: var(--orange) !important; }
-    }
 
     @media(max-width:980px){
       .layout{ grid-template-columns:1fr; }
@@ -1017,9 +909,9 @@
       .footer-right{ grid-template-columns: 1fr; }
       .footer-logo{ width: 220px; }
       .hero-title{ white-space: nowrap; }
-      .try-now{ width: 100%; transform: none; }
-      .try-now::before, .try-now::after{ display:none; }
       .content-wrapper{ padding-left: var(--padX); padding-right: var(--padX); }
+      .store-split{ grid-template-columns: 1fr; }
+      .uturn-wrap{ order: 2; }
     }
   </style>
 
@@ -1083,10 +975,6 @@
                   <p>
                     MayaNut™ is a naturally gluten-free, nutritious seed flour made for everyday foods and drinks. Roasted and finely ground from the seeds of the rainforest tree Brosimum alicastrum, MayaNut™ has a smooth, warming flavor that works perfectly in smoothies, açaí bowls, baked goods, beverages, and cooking. Used for generations in Central America, MayaNut™ brings an ancient, sustainable ingredient into modern American cuisine.
                   </p>
-
-                  <button class="try-now js-flash" type="button" id="try-now" aria-label="Try MayaNut now">
-                    <span>TRY NOW!</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -1094,64 +982,123 @@
 
           <aside class="panel" aria-label="Store">
             <div class="panel-head">
-              <div class="store-head-left">
-                <div class="panel-title">STORE</div>
-                <div class="head-line" aria-hidden="true"></div>
-              </div>
-              <div class="store-head-right">
-                <!-- no icon here per request -->
-                <button class="viewcart-pill js-flash" type="button" id="view-cart" aria-label="Cart">
-                  <span class="cart-text">CART</span>
-                  <span class="cart-badge" id="mini-badge">0</span>
-                </button>
-              </div>
+              <div class="panel-title">STORE</div>
+              <!-- extend gradient line all the way (no cart thing) -->
+              <div class="head-line" aria-hidden="true"></div>
             </div>
 
             <div class="section-body">
               <div class="mini-store-body">
                 <div class="mini-msg" id="mini-msg" aria-live="polite" aria-atomic="true"></div>
 
-                <article class="mini-card" data-variant="qtr" data-title="MayaNut™ Flour ¼ LB" aria-label="MayaNut flour ¼ lb product">
-                  <div class="mini-titlebar">
-                    <div class="mini-title" id="mini-title">MayaNut™ Flour ¼ LB</div>
-                    <div class="mini-price" id="mini-price">$9.99</div>
+                <div class="store-split" aria-label="Store layout">
+                  <!-- Left 1/3: orange u-turn arrow with white outline -->
+                  <div class="uturn-wrap" aria-label="Arrow pointing to product">
+                    <button class="uturn-arrow js-flash" type="button" id="arrow-to-product" aria-label="Open cart">
+                      <svg viewBox="0 0 120 120" aria-hidden="true">
+                        <!-- white outline -->
+                        <path d="M34 30
+                                 C34 18 44 10 56 10
+                                 H94
+                                 V28
+                                 L114 14
+                                 L94 0
+                                 V18
+                                 H56
+                                 C34 18 18 34 18 56
+                                 V70
+                                 H58
+                                 C66 70 72 76 72 84
+                                 C72 92 66 98 58 98
+                                 H18
+                                 V114
+                                 L0 96
+                                 L18 78
+                                 V92
+                                 H58
+                                 C76 92 90 78 90 60
+                                 C90 42 76 28 58 28
+                                 H34 Z"
+                              fill="none"
+                              stroke="#ffffff"
+                              stroke-width="10"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                        <!-- orange body -->
+                        <path d="M34 30
+                                 C34 18 44 10 56 10
+                                 H92
+                                 V28
+                                 L112 14
+                                 L92 0
+                                 V18
+                                 H56
+                                 C34 18 18 34 18 56
+                                 V68
+                                 H58
+                                 C67 68 74 75 74 84
+                                 C74 93 67 100 58 100
+                                 H18
+                                 V114
+                                 L0 96
+                                 L18 78
+                                 V92
+                                 H58
+                                 C76 92 90 78 90 60
+                                 C90 42 76 28 58 28
+                                 H34 Z"
+                              fill="none"
+                              stroke="var(--orange)"
+                              stroke-width="7.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                      </svg>
+                    </button>
                   </div>
 
-                  <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                       alt="Roasted MayaNut flour made from Brosimum alicastrum seed"
-                       loading="lazy" decoding="async"
-                       onerror="this.style.opacity='.35';" />
+                  <!-- Right 2/3: product -->
+                  <article class="mini-card" data-variant="qtr" data-title="MayaNut™ Flour ¼ LB" aria-label="MayaNut flour ¼ lb product">
+                    <div class="mini-titlebar">
+                      <div class="mini-title" id="mini-title">MayaNut™ Flour ¼ LB</div>
+                      <div class="mini-price" id="mini-price">$9.99</div>
+                    </div>
 
-                  <div class="mini-bot">
-                    <div class="mini-actions" aria-label="Product actions">
-                      <button class="add-to-cart js-flash" type="button" data-add aria-label="Add MayaNut flour to cart">
-                        <div class="add-main">ADD</div>
-                        <div class="add-sub">TO CART</div>
-                      </button>
+                    <img class="mini-img" src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                         alt="Roasted MayaNut flour made from Brosimum alicastrum seed"
+                         loading="lazy" decoding="async"
+                         onerror="this.style.opacity='.35';" />
 
-                      <div class="right-stack" aria-label="Options">
-                        <button class="mini-rect" type="button" data-weight aria-label="Select weight">
-                          <span class="lbl">WEIGHT:</span>
-                          <span class="val" data-weight-val>¼ LB</span>
-                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                    <div class="mini-bot">
+                      <div class="mini-actions" aria-label="Product actions">
+                        <button class="add-to-cart js-flash" type="button" data-add aria-label="Add MayaNut flour to cart">
+                          <div class="add-main">ADD</div>
+                          <div class="add-sub">TO CART</div>
                         </button>
 
-                        <div class="qty-rect" aria-label="Quantity selector (max 9)">
-                          <div class="qty-seg disabled" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
-                          <div class="qty-seg mid" aria-label="Quantity">
-                            <input class="qty-input" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="Quantity input" />
+                        <div class="right-stack" aria-label="Options">
+                          <button class="mini-rect" type="button" data-weight aria-label="Select weight">
+                            <span class="lbl">WEIGHT:</span>
+                            <span class="val" data-weight-val>¼ LB</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                          </button>
+
+                          <div class="qty-rect" aria-label="Quantity selector (max 9)">
+                            <div class="qty-seg disabled" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
+                            <div class="qty-seg mid" aria-label="Quantity">
+                              <input class="qty-input" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="Quantity input" />
+                            </div>
+                            <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
                           </div>
-                          <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="mini-desc">
-                      Warm, roasted flavor for smoothies, açaí bowls,<br />
-                      baking, drinks, and everyday foods. <strong>Coming soon.</strong>
+                      <div class="mini-desc">
+                        Warm, roasted flavor for smoothies, açaí bowls,<br />
+                        baking, drinks, and everyday foods. <strong>Coming soon.</strong>
+                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </div>
 
                 <div class="store-ctas" aria-label="Checkout action">
                   <button class="cta-btn js-flash" type="button" id="go-checkout" aria-label="Checkout">
@@ -1330,8 +1277,6 @@
 
       const cart = new Map();
 
-      const badge = document.getElementById("mini-badge");
-      const checkoutBadge = document.getElementById("checkout-badge");
       const msgEl = document.getElementById("mini-msg");
       const root = document.getElementById("weight-menu-root");
       let menu = null;
@@ -1346,13 +1291,13 @@
       const minusBtn = document.querySelector("[data-minus]");
       const addBtn = document.querySelector("[data-add]");
 
-      const viewCartBtn = document.getElementById("view-cart");
       const overlay = document.getElementById("cart-overlay");
       const backdrop = document.getElementById("cart-backdrop");
       const closeBtn = document.getElementById("cart-close");
       const cartBody = document.getElementById("cart-body");
       const checkoutBtn = document.getElementById("cart-checkout");
       const goCheckoutBtn = document.getElementById("go-checkout");
+      const checkoutBadge = document.getElementById("checkout-badge");
 
       let selected = WEIGHTS[0];
 
@@ -1418,7 +1363,6 @@
       }
       function renderBadges(){
         const n = String(cartCount());
-        if(badge) badge.textContent = n;
         if(checkoutBadge) checkoutBadge.textContent = n;
       }
 
@@ -1513,12 +1457,13 @@
         document.body.style.overflow = "";
       }
 
-      document.getElementById("try-now")?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
-      viewCartBtn?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
+      document.getElementById("arrow-to-product")?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
+
       backdrop?.addEventListener("click", closeCart);
       closeBtn?.addEventListener("click", closeCart);
 
-      goCheckoutBtn?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
+      goCheckoutBtn?.addEventListener("click", (e)=>{ e.preventDefault(); openCart(); });
+
       checkoutBtn?.addEventListener("click", ()=>{ showMiniMessage("This function is currently unavailable."); });
 
       function makeQtyControl(currentQty, onChange){

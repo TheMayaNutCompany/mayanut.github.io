@@ -135,35 +135,37 @@
       --padX: 16px;
       --gap: 14px;
 
-      --tile: 340px;       /* image + product baseline height */
-      --copyW: 460px;      /* paragraph rectangle width */
-      --prodW: 300px;      /* product width */
-      --hoverGrey: rgba(15,23,42,0.35); /* same tone as disabled */
+      --tile: 340px;
+      --copyW: 460px;
+      --prodW: 300px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
-    /* SCROLL: ensure scrolling works + avoid weird inset/overlap */
+    /* SCROLLBAR FIX (single bar + scroll works everywhere):
+       - only html scrolls
+       - body does NOT create its own scrolling context
+       - avoid anything that uses 100vw which can paint under the scrollbar
+    */
     html{
       background:#fff;
       overflow-x:hidden;
-      overflow-y:auto;             /* IMPORTANT: allow scroll */
-      scrollbar-gutter: stable;    /* keeps layout stable when scrollbar appears */
-      scroll-padding-top: calc(var(--stickyOffset) + 12px);
+      overflow-y: scroll;            /* always show one scrollbar */
       scrollbar-color: var(--scrollThumb) var(--scrollTrack);
       scrollbar-width: auto;
+      scroll-padding-top: calc(var(--stickyOffset) + 12px);
     }
     body{
       background:#fff;
       font-family: var(--font-ui);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
-      overflow-x:hidden;
+      overflow: visible;             /* critical: no second scroller */
       min-height: 100%;
+      width: 100%;
     }
 
-    /* One scrollbar only (WebKit). */
     ::-webkit-scrollbar{ width:14px; height:14px; }
     ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
     ::-webkit-scrollbar-thumb{
@@ -182,7 +184,6 @@
 
     .frame-wrap{ position:relative; width:100%; min-height:100vh; padding-top: var(--stickyOffset); background:#fff; }
 
-    /* Sticky container: make sure it DOES NOT draw under the scrollbar gutter */
     .sticky-top{
       position:fixed; top:0; left:0; right:0;
       z-index:999;
@@ -193,7 +194,6 @@
       backface-visibility:hidden;
       will-change: transform;
     }
-    /* Thin line (exact style reference for bottom section too) */
     .sticky-top::after{
       content:"";
       position:absolute;
@@ -203,8 +203,10 @@
       pointer-events:none;
     }
 
+    /* HEADER: ensure it never paints into scrollbar area */
     .site-header{
       width:100%;
+      max-width: 100%;
       background-color: var(--green);
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-repeat:no-repeat;
@@ -217,8 +219,10 @@
       position:relative;
       min-height: var(--navH);
       overflow:hidden;
-      /* prevent any rendering “bleed” into the scrollbar area */
+
+      /* prevents any GPU bleed / overlap into scrollbar */
       clip-path: inset(0);
+      contain: paint;
     }
     .site-header::after{
       content:""; position:absolute; inset:0;
@@ -297,7 +301,6 @@
       margin-left:auto;
     }
 
-    /* three blocks: image square, paragraph rectangle, product */
     .intro-row{
       display:grid;
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
@@ -333,7 +336,7 @@
       padding: 18px 18px 16px;
       display:flex;
       flex-direction:column;
-      gap: 14px;
+      gap: 12px;
       overflow:hidden;
     }
 
@@ -346,7 +349,6 @@
       color: rgba(12,90,42,0.98);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
     }
-
     .copy-body{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -357,26 +359,23 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* BIGGER bullets + bigger text, stretched wide */
+    /* Dots closer together (no big vertical gap) */
     .benefits{
       margin-top: 2px;
       list-style:none;
       padding:0;
       display:flex;
       flex-direction:column;
-      justify-content:space-between;  /* top/middle/bottom spacing */
-      flex: 1 1 auto;
-      min-height: 150px;             /* ensures spacing between rows */
+      gap: 10px;         /* closer together */
+      flex: 0 0 auto;    /* do NOT stretch and create extra space */
     }
-
     .benefit-row{
       width: 100%;
       display:flex;
       align-items:center;
       gap: 14px;
-      padding: 10px 0;
+      padding: 6px 0;    /* tighter */
     }
-
     .dot{
       width: 14px;
       height: 14px;
@@ -386,23 +385,19 @@
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
       flex: 0 0 auto;
     }
-
     .benefit-text{
       flex: 1 1 auto;
       font-weight: 950;
       letter-spacing: .14em;
       text-transform: uppercase;
-      font-size: 15px;              /* bigger */
+      font-size: 15px;
       line-height: 1.1;
       color: #0b1220;
-      /* This makes it feel like it spans ~80%+ width visually */
-      padding-right: 0;
       white-space: nowrap;
       overflow:hidden;
       text-overflow: ellipsis;
     }
 
-    /* product tile */
     .mini-card{
       width: var(--prodW);
       height: var(--tile);
@@ -430,7 +425,7 @@
       font-weight:950;
       letter-spacing:.06em;
       text-transform:uppercase;
-      font-size: 14px;     /* bigger */
+      font-size: 14px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -439,7 +434,7 @@
     }
     .mini-price{
       font-weight:950;
-      font-size: 14px;     /* bigger */
+      font-size: 14px;
       color:#0b1220;
       white-space:nowrap;
     }
@@ -471,7 +466,6 @@
       flex: 1 1 auto;
     }
 
-    /* BUY: tall, matches weight+qty combined */
     .buy-btn{
       width: 94px;
       border-radius:16px;
@@ -487,13 +481,11 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .08s ease, background .10s ease;
       flex: 0 0 auto;
-
-      /* tall */
-      height: 66px; /* will be overridden by JS-resize to match stack */
+      height: 74px;   /* tall */
       font-weight: 950;
       letter-spacing: .10em;
       text-transform: uppercase;
-      font-size: 22px; /* bigger */
+      font-size: 22px;
       line-height: 1;
     }
     .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
@@ -507,7 +499,6 @@
       min-width:0;
     }
 
-    /* white boxes w/ hover grey matching disabled tone */
     .mini-rect{
       height: 32px;
       border-radius:14px;
@@ -522,7 +513,7 @@
       user-select:none;
       transition: background .12s ease;
     }
-    .mini-rect:hover{ background: rgba(15,23,42,0.08); } /* subtle */
+    .mini-rect:hover{ background: rgba(15,23,42,0.08); }
     .mini-rect .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color:#0b1220; }
     .mini-rect .val{ font-weight:900; font-size:11px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; }
     .mini-rect svg{ width:14px; height:14px; stroke:#0b1220; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; opacity:.9; }
@@ -572,7 +563,6 @@
       color:#000;
     }
 
-    /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
     .about-grid{
       display:grid;
@@ -639,17 +629,14 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* Footer */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
-      /* Replace thick lines with the THIN outline style (same as top) */
       border-top: 1px solid rgba(12,90,42,0.55);
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       color:#ffffff;
     }
     .footer *{ color:#ffffff; }
-
     .footer-inner{
       max-width: 1200px;
       margin: 0 auto;
@@ -682,7 +669,6 @@
     .yt-body{ fill:#fff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
-    /* Thin line above copyright matches top outline */
     .footer-divider{
       border-top: 1px solid rgba(12,90,42,0.55);
       max-width:1200px;
@@ -699,9 +685,10 @@
 
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
-    /* Mobile order requirement:
-       product first, then text, then image, then about, then footer */
+    /* MOBILE: remove header shadow (requested) + keep order */
     @media(max-width:980px){
+      .sticky-top{ box-shadow:none; } /* removes shadow behind header on mobile */
+
       .intro-row{ grid-template-columns: 1fr; }
       .tile-img, .tile-copy, .mini-card{ width:100%; }
       .tile-img{ height:auto; aspect-ratio: 1 / 1; }
@@ -717,7 +704,6 @@
       .footer-right{ grid-template-columns: 1fr; }
     }
 
-    /* Header on mobile: keep logo + text centered and single-line feel */
     @media(max-width:540px){
       .brand-group{ max-width: calc(100% - 24px); gap:10px; }
       .brand-logo{ width:58px; height:58px; }
@@ -767,7 +753,6 @@
           <div class="section-body">
             <div class="intro-row" aria-label="Intro image, paragraph, product">
 
-              <!-- IMAGE (left) -->
               <div class="tile-img" aria-label="MayaNut image">
                 <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                      alt="MayaNut fruit and seeds on the Alicastrum tree in a tropical setting"
@@ -775,7 +760,6 @@
                      onerror="this.style.opacity='.35';" />
               </div>
 
-              <!-- COPY (middle) -->
               <div class="tile-copy" aria-label="MayaNut description">
                 <div class="copy-topline">A delicious seed powder that makes everyday meals hearty and satisfying.</div>
 
@@ -784,7 +768,6 @@
                   Great in smoothies, açaí bowls, baked goods, and everyday cooking.
                 </div>
 
-                <!-- Bigger bullets + bigger text; stretched wide -->
                 <ul class="benefits" aria-label="Key benefits">
                   <li class="benefit-row">
                     <span class="dot" aria-hidden="true"></span>
@@ -801,7 +784,6 @@
                 </ul>
               </div>
 
-              <!-- PRODUCT (right) -->
               <article class="mini-card" data-variant="qtr" aria-label="MayaNut flour ¼ lb product">
                 <div class="mini-titlebar">
                   <div class="mini-title" id="mini-title">MayaNut™ Flour ¼ LB</div>
@@ -853,7 +835,7 @@
                 <div class="about-subtitle" aria-hidden="true">How It All Started...</div>
                 <div class="para">
                   <p>
-                    In 1923, Herbert “Bubba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, cultivating oranges, pineapples, watermelons, and other crops. In 2025, Bubba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating Brosimum alicastrum for the production of MayaNut flour—continuing his family’s Florida farming legacy.
+                    In 1923, Herbert “Bubba” Humphreys, alongside his father Frank Humphreys, founded Kennesaw Fruit Company, cultivating oranges, pineapples, watermelons, and other crops. In 2025, Bubba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively on cultivating the Alicastrum tree (<em>Brosimum alicastrum</em>) for the production of MayaNut flour—continuing his family’s Florida farming legacy.
                   </p>
                 </div>
                 <div class="about-media">

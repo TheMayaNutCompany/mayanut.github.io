@@ -75,11 +75,15 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* ✅ Single scrollbar: BODY only (prevents duplication) */
-    html{ overflow:hidden; background:#fff; }
+    /* ✅ Scrollbar: single + stable (no duplication) */
+    html{
+      overflow-x:hidden;
+      overflow-y:scroll;                 /* reserve one gutter */
+      scrollbar-gutter: stable both-edges;
+      background:#fff;
+    }
     body{
-      height:100%;
-      overflow-y:auto;
+      min-height:100%;
       overflow-x:hidden;
       background:#fff;
       font-family: var(--font-ui);
@@ -248,7 +252,8 @@
       min-width:0;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; text-align:left; }
-    .diet-pill:nth-child(2){ justify-content:center; text-align:center; transform: translateX(-18px); }
+    /* ✅ move GLUTEN-FREE slightly left */
+    .diet-pill:nth-child(2){ justify-content:center; text-align:center; transform: translateX(-26px); }
     .diet-pill:nth-child(3){ justify-content:flex-end; text-align:right; }
 
     .diet-icon{
@@ -292,61 +297,17 @@
       margin-top: 2px;
     }
 
-    /* ✅ ARROW: single clean shape (no glitched triangles) */
+    /* ✅ Arrow: SVG (guaranteed clean) */
     .try-arrow-wrap{
       margin-top:auto;
       width:100%;
       display:flex;
       justify-content:center;
     }
-    .try-arrow-btn{
+    .try-arrow{
       width:100%;
-      height: 42px;
-      border-radius:16px;
-      background: var(--orange);
-      border: 2px solid #fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      position:relative;
-      overflow: visible;
-      user-select:none;
-    }
-    /* arrow point (solid) */
-    .try-arrow-btn::after{
-      content:"";
-      position:absolute;
-      right: -18px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 0; height: 0;
-      border-top: 21px solid transparent;
-      border-bottom: 21px solid transparent;
-      border-left: 18px solid var(--orange);
-      filter: drop-shadow(0 14px 30px rgba(15,23,42,0.10));
-    }
-    /* arrow point outline */
-    .try-arrow-btn::before{
-      content:"";
-      position:absolute;
-      right: -22px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 0; height: 0;
-      border-top: 23px solid transparent;
-      border-bottom: 23px solid transparent;
-      border-left: 22px solid #ffffff;
-      z-index:-1;
-    }
-    .try-arrow-btn span{
-      color:#fff;
-      font-weight: 950;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size: 14px;
-      line-height:1;
-      white-space:nowrap;
+      height: 44px;
+      display:block;
     }
 
     /* PRODUCT CARD */
@@ -363,12 +324,11 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
       position:relative;
     }
-    /* ✅ Fix outline: consistent inner outline on whole card */
     .mini-card::after{
       content:"";
       position:absolute;
       inset:0;
-      border: 1px solid rgba(12,90,42,0.55);
+      border: var(--strongBorder);
       border-radius:18px;
       pointer-events:none;
     }
@@ -416,7 +376,7 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 10px 12px 12px;
+      padding: 12px 12px 14px; /* ✅ more bottom padding */
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -424,14 +384,14 @@
       min-height:0;
     }
 
-    /* ✅ add breathing room so controls never touch card walls */
+    /* ✅ Add symmetric breathing room under controls */
     .mini-actions{
       display:grid;
       grid-template-columns: 112px 1fr;
       grid-template-rows: 34px 34px;
       gap:10px;
       align-items:stretch;
-      padding: 2px; /* tiny buffer */
+      padding: 2px 2px 8px; /* ✅ bottom space so nothing touches wall */
     }
 
     .buy-btn{
@@ -455,8 +415,6 @@
       text-transform: uppercase;
       font-size: 22px;
       line-height:1;
-      /* ✅ slightly smaller so it never kisses the bottom */
-      margin-bottom: 2px;
     }
     .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .buy-btn:active{ transform: translateY(0px); }
@@ -548,7 +506,7 @@
       color:#000;
     }
 
-    /* ABOUT US (unchanged, titles inside paragraph box) */
+    /* ABOUT */
     .about-wrap{ margin-top: 14px; }
     .about-grid{
       display:grid;
@@ -617,7 +575,7 @@
     /* FOOTER */
     .footer{
       margin-top: 16px;
-      background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
+      background: linear-gradient(to bottom, #066100 0%, #7ae78a 52%, #d8ff6a 100%);
       border-top: 2px solid rgba(6,97,0,0.65);
       box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
       color:#ffffff;
@@ -641,6 +599,28 @@
     .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
     .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; }
 
+    /* ✅ Social icons: force clean SVG rendering (no weird strokes/fills) */
+    .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .icon-pill{
+      width:34px; height:34px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius:14px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
+      overflow:hidden;
+    }
+    .icon-pill svg{
+      width:18px; height:18px;
+      display:block;
+    }
+    .icon-pill svg *{
+      vector-effect: non-scaling-stroke;
+      shape-rendering: geometricPrecision;
+    }
+    .icon-pill .stroke{ stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .icon-pill .fill{ fill:#fff; stroke:none; }
+
     .copyright-bar{
       width:100%;
       background: var(--green);
@@ -660,8 +640,6 @@
       text-align:left;
     }
 
-    .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
-
     /* MOBILE */
     @media(max-width:980px){
       .site-header{ box-shadow:none; }
@@ -676,12 +654,9 @@
 
       .diet-row{ gap: 6px; }
       .diet-pill{ font-size: 10.5px; letter-spacing:.05em; }
-      .diet-pill:nth-child(2){ transform: translateX(-10px); }
+      .diet-pill:nth-child(2){ transform: translateX(-14px); }
       .diet-icon{ width:19px; height:19px; }
       .diet-icon svg{ width:12.5px; height:12.5px; }
-
-      .try-arrow-btn{ height: 40px; }
-      .try-arrow-btn span{ font-size: 12px; }
 
       .about-grid{ grid-template-columns:1fr; }
       .footer-inner{ grid-template-columns: 1fr; }
@@ -753,8 +728,20 @@
                 smoothies, açaí bowls, baked goods, and everyday cooking.
               </p>
 
+              <!-- ✅ Perfect arrow via SVG -->
               <div class="try-arrow-wrap" aria-hidden="true">
-                <div class="try-arrow-btn"><span>TRY NOW</span></div>
+                <svg class="try-arrow" viewBox="0 0 1000 120" preserveAspectRatio="none" role="img" aria-label="Try Now arrow">
+                  <!-- white outline -->
+                  <path d="M20,20 H830 L980,60 L830,100 H20 Z" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="round"/>
+                  <!-- orange fill -->
+                  <path d="M20,20 H830 L980,60 L830,100 H20 Z" fill="#fd6c02" stroke="none"/>
+                  <text x="500" y="77" text-anchor="middle"
+                        font-family="Acme, Arial, sans-serif"
+                        font-weight="900"
+                        font-size="44"
+                        letter-spacing="10"
+                        fill="#ffffff">TRY NOW</text>
+                </svg>
               </div>
             </div>
 
@@ -889,19 +876,19 @@
           <div class="social-row" aria-label="Social links">
             <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                <circle cx="12" cy="12" r="4.2"></circle>
-                <circle cx="17.3" cy="6.7" r="0.9"></circle>
+                <rect class="stroke" x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                <circle class="stroke" cx="12" cy="12" r="4.2"></circle>
+                <circle class="fill" cx="17.3" cy="6.7" r="0.9"></circle>
               </svg>
             </a>
             <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+                <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"></path>
               </svg>
             </a>
             <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+                <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"></path>
               </svg>
             </a>
           </div>

@@ -111,9 +111,10 @@
   <style>
     :root{
       --green:#066100; /* make sure ALL green bars use this exact value */
-      --orange:#fd6c02;
-      --orangeTrans: rgba(253,108,2,0.78); /* ✅ translucent orange */
-      --orangePress:#c84b02;
+
+      /* ✅ NEW SOLID ORANGE (match logo) */
+      --orange:#F88C32;
+      --orangePress:#E67F2B;
 
       --lime:#d8ff6a;
       --pale:#e9ffd6;
@@ -140,9 +141,10 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
+    /* ✅ Scrollbar: SINGLE source of truth = html scrolls; body never creates a 2nd scroller */
     html{
       overflow-x:hidden;
-      overflow-y:scroll;
+      overflow-y:auto;
       scrollbar-gutter: stable;
       background:#fff;
     }
@@ -152,10 +154,10 @@
       font-family: var(--font-ui);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
-      overflow-x:hidden;
-      overflow-y:visible;
+      overflow:visible;             /* critical: do NOT set overflow-y here */
       position:relative;
     }
+    /* defensive: nothing inside becomes a scroll container */
     main, .content-wrapper, .panel, .section-body{ overflow: visible !important; }
 
     img{ max-width:100%; height:auto; display:block; }
@@ -334,22 +336,22 @@
       min-width:0;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; }
-    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-10px); }
+    /* ✅ Gluten-Free moved left a bit (less than before) */
+    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-14px); }
     .diet-pill:nth-child(3){ justify-content:flex-end; }
 
-    /* ✅ translucent orange circles */
+    /* ✅ SOLID ORANGE circles */
     .diet-icon{
       width:22px;
       height:22px;
       border-radius:999px;
-      background: var(--orangeTrans);
+      background: var(--orange);
       border: 2px solid rgba(255,255,255,0.95);
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
       display:inline-flex;
       align-items:center;
       justify-content:center;
       flex: 0 0 auto;
-      backdrop-filter: blur(0.5px);
     }
     .diet-icon svg{
       width:14px;
@@ -381,7 +383,7 @@
       margin-top: 2px;
     }
 
-    /* CTA arrow: translucent orange + thinner outline + broader triangle */
+    /* CTA arrow: SOLID ORANGE + thinner outline + broader triangle */
     .cta-row{
       margin-top: auto;
       padding-top: 6px;
@@ -394,9 +396,9 @@
       display:block;
     }
     .cta-arrow .arrow-shape{
-      fill: var(--orangeTrans); /* ✅ translucent */
+      fill: var(--orange); /* ✅ solid */
       stroke:#ffffff;
-      stroke-width:5;          /* ✅ thinner outline */
+      stroke-width:4;      /* ✅ slightly thinner outline */
       stroke-linejoin:round;
       stroke-linecap:round;
     }
@@ -413,7 +415,7 @@
       justify-self: end;
       border-radius:18px;
       background:#fff;
-      border: 1px solid rgba(12,90,42,0.45);
+      border: 1px solid rgba(12,90,42,0.45); /* ✅ ensure full outline */
       overflow:hidden;
       display:flex;
       flex-direction:column;
@@ -423,6 +425,7 @@
       .mini-card{ margin-right: 8px; }
     }
 
+    /* ✅ make titlebar visually "outlined like rest" (no weird inset seam) */
     .mini-titlebar{
       background: var(--pale);
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -432,7 +435,6 @@
       justify-content:space-between;
       gap:10px;
       flex: 0 0 auto;
-      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.45);
     }
     .mini-title{
       color:#0b1220;
@@ -464,9 +466,10 @@
       background:#fff;
     }
 
+    /* ✅ add breathing room at bottom so controls don't rest on border */
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 18px;
+      padding: 12px 12px 22px; /* more bottom padding */
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -484,12 +487,12 @@
 
     .buy-btn{
       grid-row: 1 / span 2;
-      height: calc(100% - 6px);
+      height: calc(100% - 6px); /* keep slight inset */
       width: 112px;
       margin: 3px 0;
       border-radius:16px;
       border: 1px solid rgba(255,255,255,0.95);
-      background: var(--orangeTrans); /* ✅ translucent */
+      background: var(--orange); /* ✅ solid */
       color:#fff;
       display:flex;
       align-items:center;
@@ -505,9 +508,9 @@
       font-size: 22px;
       line-height:1;
     }
-    .buy-btn:hover{ background: rgba(200,75,2,0.88); transform: translateY(-1px); }
+    .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .buy-btn:active{ transform: translateY(0px); }
-    .buy-btn.out{ background: rgba(200,75,2,0.88); }
+    .buy-btn.out{ background: var(--orangePress); }
 
     .mini-rect, .qty-rect{
       border-radius:14px;
@@ -679,7 +682,7 @@
       display:inline-flex; align-items:center; justify-content:center;
       border-radius:14px;
       border: 1px solid rgba(255,255,255,0.55);
-      background: var(--orangeTrans); /* ✅ translucent */
+      background: var(--orange); /* ✅ solid */
       box-shadow: 0 12px 24px rgba(15,23,42,0.12);
       overflow:hidden;
       flex: 0 0 auto;
@@ -688,7 +691,7 @@
     .icon-pill .stroke{ stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .icon-pill .fill{ fill:#fff; stroke:none; }
     .yt-body{ fill:#fff; stroke:none; }
-    .yt-play{ fill: rgba(253,108,2,0.92); stroke:none; }
+    .yt-play{ fill: var(--orange); stroke:none; }
 
     .copyright-bar{
       width:100%;
@@ -709,7 +712,7 @@
       text-align:left;
     }
 
-    .pressed{ background: rgba(200,75,2,0.88) !important; transform: translateY(0px) !important; }
+    .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
     @media(max-width:980px){
       .brand-logo{ width:62px; height:62px; }
@@ -723,7 +726,8 @@
 
       .diet-row{ gap: 6px; }
       .diet-pill{ font-size: 10px; letter-spacing:.06em; }
-      .diet-pill:nth-child(2){ transform: translateX(-6px); }
+      /* smaller shift on mobile */
+      .diet-pill:nth-child(2){ transform: translateX(-10px); }
       .diet-icon{ width:19px; height:19px; }
       .diet-icon svg{ width:12px; height:12px; }
 
@@ -801,14 +805,14 @@
 
               <div class="cta-row" aria-label="Try Now callout">
                 <svg class="cta-arrow" viewBox="0 0 1000 120" role="img" aria-label="Try Now">
-                  <!-- ✅ Broader triangle + tip vertically centered with BUY (visually midline) -->
+                  <!-- ✅ Broader triangle / less narrow tip -->
                   <path class="arrow-shape"
                         d="M35,26
-                           H680
-                           L680,8
+                           H640
+                           L640,8
                            L988,60
-                           L680,112
-                           L680,94
+                           L640,112
+                           L640,94
                            H35
                            C25,94 18,87 18,77
                            V43

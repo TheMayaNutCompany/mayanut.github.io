@@ -124,14 +124,10 @@
       --bannerH: 18px;
       --navH: 152px;
 
-      /* FLIPPED footer gradient: dark -> lime */
+      /* footer gradient: dark -> lime */
       --footer-top:#066100;
       --footer-mid:#7ae78a;
       --footer-bot:#d8ff6a;
-
-      --scrollTrack:#3b3f45;
-      --scrollThumb:#c8ccd2;
-      --scrollThumbHover:#b8bcc3;
 
       --padX: 16px;
       --gap: 14px;
@@ -143,45 +139,39 @@
 
       --hoverGrey: rgba(15,23,42,0.35);
       --hoverBg: rgba(15,23,42,0.10);
-
-      /* ✅ scrollbar-width compensation so header stops before overlay scrollbar (Mac/overlay) */
-      --sbw: 0px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body { height: 100%; }
 
-    /* ✅ single, working scroll root */
+    /* ✅ SCROLLBAR FIX: only BODY scrolls (prevents double/ghost scrollbars) */
     html{
-      overflow-y: auto;
+      overflow: hidden;
       overflow-x: hidden;
-      scrollbar-gutter: stable;
-      scrollbar-color: var(--scrollThumb) var(--scrollTrack);
-      scrollbar-width: auto;
-      scroll-padding-top: calc(var(--stickyOffset) + 12px);
       background:#fff;
     }
     body{
-      min-height: 100%;
+      height: 100%;
+      overflow-y: auto;
       overflow-x: hidden;
-      overflow-y: visible;
-      margin: 0;
       background:#fff;
       font-family: var(--font-ui);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overscroll-behavior-y:none;
+      scroll-padding-top: calc(var(--stickyOffset) + 12px);
     }
 
-    ::-webkit-scrollbar{ width:14px; height:14px; }
-    ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
-    ::-webkit-scrollbar-thumb{
-      background: var(--scrollThumb);
+    /* Optional styling (safe): applies to the single scrollbar on body */
+    body::-webkit-scrollbar{ width:14px; height:14px; }
+    body::-webkit-scrollbar-track{ background: #3b3f45; }
+    body::-webkit-scrollbar-thumb{
+      background: #c8ccd2;
       border-radius:999px;
-      border:3px solid var(--scrollTrack);
+      border:3px solid #3b3f45;
       background-clip: padding-box;
     }
-    ::-webkit-scrollbar-thumb:hover{ background: var(--scrollThumbHover); }
+    body::-webkit-scrollbar-thumb:hover{ background:#b8bcc3; }
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
@@ -191,11 +181,9 @@
 
     .frame-wrap{ position:relative; width:100%; min-height:100vh; padding-top: var(--stickyOffset); background:#fff; }
 
-    /* ✅ stop header background from visually sitting under overlay scrollbar */
     .sticky-top{
       position:fixed;
-      top:0; left:0;
-      right: var(--sbw);
+      top:0; left:0; right:0;
       z-index:999;
       background:transparent;
       border-bottom:1px solid rgba(12,90,42,0.55);
@@ -342,12 +330,8 @@
       gap: 12px;
     }
 
-    /* ✅ Orange circles + checkmarks restored */
-    .eligibility{
-      display:flex;
-      gap:10px;
-      width:100%;
-    }
+    /* ✅ checkmarks styled to match “Spanish version” look: thicker, round caps, cleaner path */
+    .eligibility{ display:flex; gap:10px; width:100%; }
     .elig-bar{
       flex:1 1 0;
       height: 32px;
@@ -366,6 +350,7 @@
       user-select:none;
       white-space:nowrap;
       padding: 0 10px;
+      min-width: 0;
     }
     .elig-dot{
       width: 18px;
@@ -380,11 +365,11 @@
       flex: 0 0 auto;
     }
     .elig-dot svg{
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       stroke: #fff;
       fill: none;
-      stroke-width: 3;
+      stroke-width: 3.6;
       stroke-linecap: round;
       stroke-linejoin: round;
       transform: translateY(-0.2px);
@@ -418,8 +403,6 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      /* ✅ keep same inner right padding feel as left image */
-      margin-right: 0;
     }
 
     .mini-titlebar{
@@ -444,19 +427,14 @@
       min-width:0;
       flex:1 1 auto;
     }
-    .mini-price{
-      font-weight:950;
-      font-size: 16px;
-      color:#0b1220;
-      white-space:nowrap;
-    }
+    .mini-price{ font-weight:950; font-size: 16px; color:#0b1220; white-space:nowrap; }
 
-    /* ✅ give space back for the one-line note by shaving a bit off image height */
+    /* ✅ product image: show a bit more TOP (was not centered) */
     .mini-img{
       width:100%;
       height: 198px;
       object-fit: cover;
-      object-position:center 56%;
+      object-position:center 40%;  /* more top visible */
       border-bottom: var(--softBorder);
       filter: saturate(1.03) contrast(1.03);
       flex: 0 0 auto;
@@ -474,11 +452,7 @@
       justify-content:flex-start;
     }
 
-    .mini-actions{
-      display:flex;
-      gap:10px;
-      align-items:stretch;
-    }
+    .mini-actions{ display:flex; gap:10px; align-items:stretch; }
 
     .buy-btn{
       width: 94px;
@@ -513,11 +487,7 @@
       min-width:0;
     }
 
-    .mini-rect,
-    .qty-rect{
-      background:#fff;
-      border:1px solid rgba(12,90,42,0.55);
-    }
+    .mini-rect, .qty-rect{ background:#fff; border:1px solid rgba(12,90,42,0.55); }
 
     .mini-rect{
       height: 28px;
@@ -532,7 +502,6 @@
       transition: background .12s ease;
     }
     .mini-rect:hover{ background: var(--hoverBg); }
-
     .mini-rect .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color:#0b1220; }
     .mini-rect .val{ font-weight:900; font-size:11px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; }
     .mini-rect svg{ width:14px; height:14px; stroke:#0b1220; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; opacity:.9; }
@@ -545,7 +514,6 @@
       overflow:hidden;
       user-select:none;
     }
-
     .qty-seg{
       flex: 1 1 0;
       display:flex;
@@ -562,11 +530,7 @@
     }
     .qty-seg:hover{ background: var(--hoverBg); }
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
-    .qty-seg.disabled{
-      color: var(--hoverGrey);
-      cursor: default;
-      pointer-events:none;
-    }
+    .qty-seg.disabled{ color: var(--hoverGrey); cursor: default; pointer-events:none; }
     .qty-seg.mid{ cursor:text; padding:0 2px; background:#fff; }
     .qty-seg.mid:hover{ background:#fff; }
 
@@ -582,7 +546,6 @@
       color:#000;
     }
 
-    /* ✅ one-line description restored under buttons */
     .mini-note{
       font-weight: 900;
       font-size: 11px;
@@ -592,7 +555,7 @@
       padding-left: 2px;
     }
 
-    /* A LITTLE ABOUT US */
+    /* A LITTLE ABOUT US (unchanged) */
     .about-wrap{ margin-top: 14px; }
     .about-grid{
       display:grid;
@@ -659,7 +622,6 @@
       filter: saturate(1.03) contrast(1.03);
     }
 
-    /* FOOTER */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-top) 0%, var(--footer-mid) 52%, var(--footer-bot) 100%);
@@ -684,6 +646,7 @@
     .footer-right{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px; }
     .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
     .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; }
+
     .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
     .social-row .icon-pill{
       width:34px; height:34px;
@@ -698,8 +661,10 @@
     .social-row .icon-pill .fill{ fill:#fff; stroke:none; }
     .yt-body{ fill:#fff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
+
     .footer-divider{ border-top: 1px solid rgba(12,90,42,0.55); max-width:1200px; margin:0 auto; }
     .footer-bottom{ border-top: 0; padding:10px 18px 12px; max-width:1200px; margin:0 auto; font-weight:900; font-size:14px; }
+
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
     @media(max-width:980px){
@@ -713,10 +678,16 @@
       .tile-copy{ width:100%; height:auto; }
       .mini-card{ width:100%; max-width:420px; height:auto; justify-self: start; }
 
-      /* Mobile: keep on one line */
-      .elig-bar{ font-size: 10px; letter-spacing:.08em; height: 30px; }
-      .elig-dot{ width:16px; height:16px; }
-      .elig-dot svg{ width:11px; height:11px; }
+      /* ✅ Mobile: keep all three on ONE line (no cutoff) */
+      .eligibility{ gap:8px; }
+      .elig-bar{
+        font-size: 9px;
+        letter-spacing:.06em;
+        height: 28px;
+        padding: 0 8px;
+      }
+      .elig-dot{ width:15px; height:15px; }
+      .elig-dot svg{ width:12px; height:12px; stroke-width:3.6; }
 
       .about-grid{ grid-template-columns:1fr; }
       .footer-inner{ grid-template-columns: 1fr; }
@@ -732,11 +703,7 @@
         const h = Math.ceil(sticky.getBoundingClientRect().height);
         document.documentElement.style.setProperty("--stickyOffset", h + "px");
       }
-      function setScrollbarWidthVar(){
-        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        document.documentElement.style.setProperty("--sbw", sbw + "px");
-      }
-      function sync(){ setStickyOffset(); setScrollbarWidthVar(); }
+      function sync(){ setStickyOffset(); }
       window.addEventListener("load", sync, { once:true });
       window.addEventListener("resize", ()=>{ clearTimeout(window.__st); window.__st=setTimeout(sync,80); });
       window.addEventListener("pageshow", sync);
@@ -781,19 +748,26 @@
                 <div class="eligibility" aria-label="Diet eligibility">
                   <div class="elig-bar">
                     <span class="elig-dot" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                      <!-- Better-looking checkmark -->
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5"></path>
+                      </svg>
                     </span>
                     Vegan
                   </div>
                   <div class="elig-bar">
                     <span class="elig-dot" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5"></path>
+                      </svg>
                     </span>
                     Gluten-Free
                   </div>
                   <div class="elig-bar">
                     <span class="elig-dot" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5"></path>
+                      </svg>
                     </span>
                     Paleo-Friendly
                   </div>
@@ -1070,7 +1044,6 @@
         openMenu(e.currentTarget, WEIGHTS, applyVariant);
       });
 
-      // BUY: show Out of Stock for 1 second, then restore
       buyBtn.addEventListener("click", ()=>{
         const old = buyBtn.textContent;
         const oldBg = buyBtn.style.backgroundColor;
@@ -1096,12 +1069,7 @@
         document.documentElement.style.setProperty("--stickyOffset", h + "px");
       }
 
-      function setScrollbarWidthVar(){
-        const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        document.documentElement.style.setProperty("--sbw", sbw + "px");
-      }
-
-      function syncAll(){ setStickyOffset(); setScrollbarWidthVar(); syncBuyHeight(); }
+      function syncAll(){ setStickyOffset(); syncBuyHeight(); }
 
       window.addEventListener("load", syncAll, { once:true });
       window.addEventListener("resize", ()=>{ clearTimeout(window.__bh); window.__bh=setTimeout(syncAll,80); });

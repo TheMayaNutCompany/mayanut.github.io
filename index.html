@@ -130,11 +130,13 @@
       --scrollThumb:#c8ccd2;
       --scrollThumbHover:#b8bcc3;
 
+      --hoverGrey:#e6e7ea;
+
       --padX: 16px;
       --gap: 16px;
 
       --tile: 360px;
-      --copyW: 460px;  /* centered middle block width */
+      --copyW: 460px;
       --prodW: 300px;
       --buyW: 96px;
 
@@ -144,30 +146,35 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
 
+    /* SCROLLBAR FIX: only BODY scrolls (prevents “double”/glitchy bars) */
     html{
       background:#fff;
+      overflow: hidden;     /* stop html from also scrolling */
       overflow-x:hidden;
-      overflow-y:scroll;
-      scrollbar-color: var(--scrollThumb) var(--scrollTrack);
-      scrollbar-width: auto;
     }
     body{
       font-family: var(--font-ui);
       background:#fff;
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
-      overflow-x:hidden;
+
+      height:100%;
+      overflow-y: scroll;   /* single scrollbar */
+      overflow-x: hidden;
+
+      scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+      scrollbar-width: auto;
     }
 
-    ::-webkit-scrollbar{ width:14px; height:14px; }
-    ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
-    ::-webkit-scrollbar-thumb{
+    body::-webkit-scrollbar{ width:14px; height:14px; }
+    body::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+    body::-webkit-scrollbar-thumb{
       background: var(--scrollThumb);
       border-radius:999px;
       border:3px solid var(--scrollTrack);
       background-clip: padding-box;
     }
-    ::-webkit-scrollbar-thumb:hover{ background: var(--scrollThumbHover); }
+    body::-webkit-scrollbar-thumb:hover{ background: var(--scrollThumbHover); }
 
     a{ color:inherit; text-decoration:none; }
     button,input{ font-family:inherit; border:0; background:transparent; }
@@ -303,7 +310,6 @@
       margin-left:auto;
     }
 
-    /* --- INTRO ROW: image LEFT, copy MIDDLE, product RIGHT --- */
     .intro-row{
       display:grid;
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
@@ -340,7 +346,7 @@
       padding: 18px 16px 14px;
       display:flex;
       flex-direction:column;
-      justify-content:center; /* centered vertically now */
+      justify-content:center;
       overflow:hidden;
     }
     .tile-copy p{
@@ -362,7 +368,6 @@
       margin-bottom: 10px;
     }
 
-    /* Bigger bullets + bigger text + more vertical spacing */
     .bullets{
       margin-top: 16px;
       display:flex;
@@ -407,19 +412,20 @@
     .mini-titlebar{
       background: var(--pale);
       border-bottom: var(--frame);
-      padding: 9px 10px;
+      padding: 10px 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       flex: 0 0 auto;
     }
+    /* BIGGER title + price (your request) */
     .mini-title{
       color:#0b1220;
       font-weight:950;
       letter-spacing:.06em;
       text-transform:uppercase;
-      font-size:12px;
+      font-size:14px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -428,7 +434,7 @@
     }
     .mini-price{
       font-weight:950;
-      font-size:12px;
+      font-size:15px;
       color:#0b1220;
       white-space:nowrap;
       flex:0 0 auto;
@@ -482,7 +488,7 @@
       text-transform: uppercase;
       font-size: 24px;
       line-height: 1;
-      height: 66px; /* matches stack */
+      height: 66px;
     }
     .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .buy-btn:active{ transform: translateY(0px); }
@@ -494,6 +500,7 @@
       gap:10px;
       min-width:0;
     }
+
     .mini-rect{
       height: 28px;
       border-radius: 14px;
@@ -506,7 +513,11 @@
       gap:8px;
       cursor:pointer;
       user-select:none;
+      transition: background .12s ease;
     }
+    /* Hover background = light grey (your request) */
+    .mini-rect:hover{ background: var(--hoverGrey); }
+
     .mini-rect .lbl{
       font-weight:900;
       letter-spacing:.12em;
@@ -554,14 +565,21 @@
       cursor:pointer;
       line-height:1;
       min-width: 0;
+      transition: background .12s ease;
     }
+    /* Hover on - / input / + uses same light grey */
+    .qty-seg:hover{ background: var(--hoverGrey); }
     .qty-seg.mid{ cursor:text; padding:0 2px; }
     .qty-seg + .qty-seg{ border-left: var(--frame); }
+
+    /* Disabled minus looks like the same “light grey” */
     .qty-seg.disabled{
       color: rgba(15,23,42,0.35);
       cursor: default;
       pointer-events:none;
+      background: var(--hoverGrey);
     }
+
     .qty-input{
       width: 100%;
       height: 26px;
@@ -819,7 +837,6 @@
           <div class="section-body">
             <div class="intro-row" aria-label="Image left, paragraph middle, product right">
 
-              <!-- IMAGE LEFT -->
               <div class="tile-img" aria-label="MayaNut image">
                 <img src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
                      alt="MayaNut fruit and seeds on the rainforest tree Brosimum alicastrum"
@@ -827,7 +844,6 @@
                      onerror="this.style.opacity='.35';">
               </div>
 
-              <!-- PARAGRAPH MIDDLE -->
               <div class="tile-copy" aria-label="MayaNut description">
                 <div class="lead">Roasted seed flour that makes meals feel hearty.</div>
                 <p>
@@ -851,7 +867,6 @@
                 </div>
               </div>
 
-              <!-- PRODUCT RIGHT -->
               <article class="mini-card" data-variant="qtr" aria-label="MayaNut flour product">
                 <div class="mini-titlebar">
                   <div class="mini-title" id="mini-title">MayaNut™ Flour ¼ LB</div>

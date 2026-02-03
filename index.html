@@ -16,8 +16,7 @@
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.mayanut.com/sitemap.xml">
 
-  <!-- SEO keywords (helps lightly; keep for legacy + long-tail matching) -->
-  <meta name="keywords" content="MayaNut, MayaNut™ flour, MayaNut flour, MayaNut™ powder, Maya nut flour, maya nut, seed flour, seed powder, roasted seed flour, roasted seed powder, gluten-free flour, gluten free flour, vegan flour, paleo-friendly flour, smoothies, acai bowls, açaí bowls, baked goods, everyday cooking, tropical plant, Florida farm, South Florida, Alicastrum tree, Brosimum alicastrum, rainforest tree, vegan, paleo-friendly, fiber rich flour">
+  <meta name="keywords" content="MayaNut, MayaNut™ flour, MayaNut flour, MayaNut™ powder, Maya nut flour, maya nut, seed flour, seed powder, roasted seed flour, roasted seed powder, gluten-free flour, gluten free flour, vegan flour, paleo-friendly flour, smoothies, acai bowls, açaí bowls, baked goods, everyday cooking, Florida farm, South Florida, Alicastrum tree, Brosimum alicastrum, rainforest tree, vegan, paleo-friendly, fiber rich flour">
 
   <!-- ✅ Favicons -->
   <link rel="icon" type="image/png" href="/mayanut-the-mayanut-comapny-logo.png">
@@ -123,7 +122,6 @@
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
 
-      /* Footer gradient (flipped): dark -> lime */
       --footer-g1:#066100;
       --footer-g2:#7ae78a;
       --footer-g3:#d8ff6a;
@@ -135,16 +133,16 @@
       --copyW: 440px;
       --prodW: 300px;
 
-      --hoverGrey:#cfd3d9; /* also used as disabled text color */
+      --hoverGrey:#cfd3d9;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* SCROLLBAR: single + stable gutter so header bg doesn't sit under scrollbar */
+    /* ✅ Scrollbar fix (single scrollbar, no duplicates) */
     html{
       overflow-x:hidden;
-      overflow-y:auto;
+      overflow-y:scroll;       /* always show/allocate */
       scrollbar-gutter: stable;
       background:#fff;
     }
@@ -155,7 +153,13 @@
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
-      overflow-y:visible; /* do NOT create a second scroll container */
+      overflow-y:visible;      /* IMPORTANT: do not create a second scrolling container */
+      position:relative;
+    }
+
+    /* Prevent any nested scroll containers */
+    main, .content-wrapper, .panel, .section-body{
+      overflow: visible !important;
     }
 
     img{ max-width:100%; height:auto; display:block; }
@@ -168,7 +172,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.18);
     }
 
-    /* Header image restored (no extra thin header removed besides top-banner) */
     .site-header{
       width:100%;
       background-color: var(--green);
@@ -267,7 +270,6 @@
       margin-left:auto;
     }
 
-    /* HERO GRID */
     .intro-row{
       display:grid;
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
@@ -307,7 +309,6 @@
       overflow:hidden;
     }
 
-    /* Checks row: left / slightly-left-of-center / right */
     .diet-row{
       display:flex;
       align-items:center;
@@ -331,10 +332,9 @@
       min-width:0;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; }
-    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-10px); } /* gluten-free slightly left */
+    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-10px); }
     .diet-pill:nth-child(3){ justify-content:flex-end; }
 
-    /* Spanish-version-like check: clean + sharp */
     .diet-icon{
       width:22px;
       height:22px;
@@ -377,9 +377,9 @@
       margin-top: 2px;
     }
 
-    /* TRY NOW ARROW (full width, proper shape, white outline only outside) */
+    /* Arrow: flat base, curved "tip" only */
     .cta-row{
-      margin-top: auto; /* pushes arrow down to be level with product controls */
+      margin-top: auto;
       padding-top: 6px;
     }
     .cta-arrow{
@@ -387,14 +387,7 @@
       height:52px;
       display:block;
     }
-    .cta-arrow text{
-      font-family: var(--font-ui);
-      font-weight:950;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-    }
 
-    /* PRODUCT CARD */
     .mini-card{
       width: var(--prodW);
       height: var(--tile);
@@ -406,16 +399,11 @@
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
-      margin-right: 0; /* kept */
     }
-    /* Match left image distance: add same inner padding feel by shifting product inward slightly */
-    .intro-row > .mini-card{ justify-self: end; margin-right: 0; }
     @media (min-width: 981px){
-      .intro-row{ padding-right: 16px; }
-      .mini-card{ margin-right: 8px; } /* pulls it off the inner right wall slightly */
+      .mini-card{ margin-right: 8px; }
     }
 
-    /* Titlebar outlined like the rest of the product */
     .mini-titlebar{
       background: var(--pale);
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -432,7 +420,7 @@
       font-weight:950;
       letter-spacing:.06em;
       text-transform:uppercase;
-      font-size:16px; /* slightly bigger */
+      font-size:16px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -441,14 +429,14 @@
     }
     .mini-price{
       font-weight:950;
-      font-size:22px; /* bigger */
+      font-size:22px;
       color:#0b1220;
       white-space:nowrap;
     }
 
     .mini-img{
       width:100%;
-      height: 188px; /* taller so top is more visible */
+      height: 188px;
       object-fit: cover;
       object-position:center 38%;
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -459,16 +447,14 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 16px; /* extra bottom padding so controls don't rest on outline */
+      padding: 12px 12px 18px; /* extra bottom space */
       display:flex;
       flex-direction:column;
       gap:12px;
       flex: 1 1 auto;
       min-height:0;
-      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.0);
     }
 
-    /* Controls: BUY tall on left; weight + qty stacked on right */
     .mini-actions{
       display:grid;
       grid-template-columns: 112px 1fr;
@@ -479,9 +465,9 @@
 
     .buy-btn{
       grid-row: 1 / span 2;
-      height: calc(100% - 4px); /* slightly smaller so it doesn't touch bottom area */
+      height: calc(100% - 6px);
       width: 112px;
-      margin: 2px 0; /* creates equal breathing space top/bottom */
+      margin: 3px 0;          /* equal breathing space top/bottom */
       border-radius:16px;
       border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
@@ -504,7 +490,6 @@
     .buy-btn:active{ transform: translateY(0px); }
     .buy-btn.out{ background: var(--orangePress); }
 
-    /* Hoverable white boxes (weight/qty) */
     .mini-rect, .qty-rect{
       border-radius:14px;
       border:1px solid rgba(12,90,42,0.55);
@@ -571,14 +556,13 @@
       border-left: 1px solid rgba(12,90,42,0.35);
     }
     .qty-seg.disabled{
-      color: var(--hoverGrey); /* minus/plus text grey at limits */
+      color: var(--hoverGrey);
       cursor:default;
       pointer-events:none;
     }
     .qty-seg:not(.disabled):hover{
       background: var(--hoverGrey);
     }
-
     .qty-seg.mid{ cursor:text; padding:0 2px; }
     .qty-input{
       width: 100%;
@@ -592,7 +576,6 @@
       color:#000;
     }
 
-    /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
     .about-grid{
       display:grid;
@@ -611,8 +594,6 @@
       padding: 12px;
       gap: 12px;
     }
-
-    /* Title INSIDE the same pale paragraph box (not a separate bar) */
     .about-box{
       background: var(--pale);
       border: 1px solid rgba(12,90,42,0.55);
@@ -638,7 +619,6 @@
       line-height: 1.85;
       margin:0;
     }
-
     .about-media img{
       width: 100%;
       height: 320px;
@@ -650,7 +630,6 @@
       background:#fff;
     }
 
-    /* FOOTER */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -677,7 +656,6 @@
     .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
     .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; }
 
-    /* Social icons: tighten so they don't "glitch" */
     .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
     .icon-pill{
       width:34px; height:34px;
@@ -695,7 +673,6 @@
     .yt-body{ fill:#fff; stroke:none; }
     .yt-play{ fill:#fd6c02; stroke:none; }
 
-    /* Copyright bar (green, like introducing bar) */
     .copyright-bar{
       width:100%;
       background: var(--green);
@@ -717,21 +694,18 @@
 
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
-    /* MOBILE */
     @media(max-width:980px){
-      /* Center header line (logo + text) */
       .brand-logo{ width:62px; height:62px; }
       .brand-text{ font-size:30px; }
 
       .intro-row{ grid-template-columns: 1fr; gap: 12px; }
 
-      /* order: product -> text -> image */
       .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
       .tile-copy{ width:100%; height:auto; order:2; }
       .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
 
       .diet-row{ gap: 6px; }
-      .diet-pill{ font-size: 10px; letter-spacing:.06em; } /* smaller so one line */
+      .diet-pill{ font-size: 10px; letter-spacing:.06em; }
       .diet-pill:nth-child(2){ transform: translateX(-6px); }
       .diet-icon{ width:19px; height:19px; }
       .diet-icon svg{ width:12px; height:12px; }
@@ -807,17 +781,17 @@
                 smoothies, açaí bowls, baked goods, and everyday cooking.
               </p>
 
-              <!-- Full-width arrow under paragraph, level with the product controls area -->
+              <!-- ✅ Flat base, curved tip only (the point) -->
               <div class="cta-row" aria-label="Try Now callout">
                 <svg class="cta-arrow" viewBox="0 0 1000 120" role="img" aria-label="Try Now">
-                  <!-- Rounded arrow: tip wider than body, slightly curved, outside stroke only -->
                   <path
                     d="M35,25
                        H740
-                       C770,25 790,18 820,10
-                       L965,60
-                       L820,110
-                       C790,102 770,95 740,95
+                       L740,25
+                       C765,25 785,18 810,10
+                       C845,0 900,18 965,60
+                       C900,102 845,120 810,110
+                       C785,102 765,95 740,95
                        H35
                        C25,95 18,88 18,78
                        V42
@@ -828,7 +802,7 @@
                     stroke-linejoin="round"
                     stroke-linecap="round"
                   />
-                  <text x="500" y="78" text-anchor="middle" font-size="34" fill="#ffffff">TRY NOW!</text>
+                  <text x="500" y="78" text-anchor="middle" font-size="34" fill="#ffffff" style="font-weight:950;letter-spacing:.18em;">TRY NOW!</text>
                 </svg>
               </div>
             </div>
@@ -872,7 +846,6 @@
         </div>
       </section>
 
-      <!-- A LITTLE ABOUT US -->
       <section class="panel about-wrap" aria-label="A Little About Us">
         <div class="panel-head">
           <div class="panel-title">A Little About Us</div>
@@ -931,7 +904,6 @@
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer" aria-label="Footer">
     <div class="footer-inner">
       <div class="footer-left" aria-label="Brand">
@@ -970,19 +942,16 @@
                 <circle class="fill" cx="17.3" cy="6.7" r="0.9"></circle>
               </svg>
             </a>
-
             <a class="icon-pill js-flash" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
               </svg>
             </a>
-
             <a class="icon-pill js-flash" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
               </svg>
             </a>
-
             <a class="icon-pill js-flash" href="#" aria-label="YouTube (coming soon)" onclick="return false;">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>
@@ -1032,7 +1001,6 @@
 
       const root = document.getElementById("weight-menu-root");
       let menu = null;
-      let selected = WEIGHTS[0];
 
       function closeMenu(){ if(menu){ menu.remove(); menu = null; } }
 
@@ -1092,7 +1060,6 @@
       }
 
       function applyVariant(opt){
-        selected = opt;
         titleEl.textContent = opt.title;
         priceEl.textContent = "$" + opt.price.toFixed(2);
         weightVal.textContent = opt.label;
@@ -1108,7 +1075,6 @@
         openMenu(e.currentTarget, WEIGHTS, applyVariant);
       });
 
-      // BUY: show X + "Out of Stock" for 1s, then restore BUY
       buyBtn.addEventListener("click", ()=>{
         const original = buyBtn.textContent;
         buyBtn.classList.add("out");

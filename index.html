@@ -160,6 +160,7 @@
     a{ color:inherit; text-decoration:none; }
     button,input{ font-family:inherit; border:0; background:transparent; }
 
+    /* ✅ slightly taller header */
     .site-header{
       width:100%;
       background-color: var(--green);
@@ -167,7 +168,7 @@
       background-repeat:no-repeat;
       background-position:center center;
       background-size:118% auto;
-      padding:22px 0;
+      padding:30px 0; /* was 22px -> taller */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -192,7 +193,7 @@
       display:flex; align-items:center; gap:12px;
       z-index:2;
       white-space:nowrap;
-      max-width: calc(100% - 48px);
+      max-width: calc(100% - 110px);
       padding: 0 16px;
     }
     .brand-logo{
@@ -324,11 +325,11 @@
     .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-8px); }
     .diet-pill:nth-child(3){ justify-content:flex-end; }
 
-    /* ✅ white check, orange circle, white outline (requested) */
+    /* ✅ back to the old check style (stroke-only path), still inside circles */
     .diet-icon{
       width:22px;
       height:22px;
-      border-radius:999px;
+      border-radius:999px;              /* or change to 8px for rounded square */
       background: var(--orange);
       border: 2px solid rgba(255,255,255,0.98);
       box-shadow: 0 10px 18px rgba(15,23,42,0.10);
@@ -424,13 +425,13 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 16px; /* ✅ keep some bottom breathing room */
+      padding: 12px 12px 16px;
       display:flex;
       flex-direction:column;
       gap:12px;
       flex: 1 1 auto;
       min-height:0;
-      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.45); /* ✅ outline matches */
+      box-shadow: inset 0 0 0 1px rgba(12,90,42,0.45);
     }
 
     .mini-actions{
@@ -441,12 +442,11 @@
       align-items:stretch;
     }
 
-    /* ✅ ADD button with TO CART + added state */
     .buy-btn{
       grid-row: 1 / span 2;
       height: calc(100% - 6px);
       width: 112px;
-      margin: 3px 0; /* keeps it off the walls */
+      margin: 3px 0;
       border-radius:16px;
       border: 2px solid rgba(255,255,255,0.98);
       background: var(--orange);
@@ -610,7 +610,7 @@
       background:#fff;
     }
 
-    /* FOOTER */
+    /* FOOTER (unchanged) */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, var(--footer-g1) 0%, var(--footer-g2) 52%, var(--footer-g3) 100%);
@@ -674,12 +674,15 @@
       text-align:left;
     }
 
-    /* CART ICON BUTTON */
-    .cart-btn{
+    /* CART BUTTON + BADGE */
+    .cart-wrap{
       position:absolute;
       right:14px;
       top:50%;
       transform: translateY(-50%);
+      z-index:3;
+    }
+    .cart-btn{
       width:46px;
       height:46px;
       border-radius:14px;
@@ -690,9 +693,35 @@
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      z-index:3;
+      -webkit-tap-highlight-color: transparent;
     }
-    .cart-btn svg{ width:22px; height:22px; fill:#fff; }
+    .cart-btn svg{
+      width:22px;
+      height:22px;
+      stroke:#fff;
+      fill:none;
+      stroke-width:2.4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .cart-badge{
+      position:absolute;
+      top:-6px;
+      right:-6px;
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      background: var(--green);
+      border: 2px solid rgba(255,255,255,0.98);
+      color:#fff;
+      font-weight:950;
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.18);
+      pointer-events:none;
+    }
 
     /* CART PANEL */
     .cart-overlay{
@@ -783,6 +812,7 @@
     @media(max-width:980px){
       .brand-logo{ width:62px; height:62px; }
       .brand-text{ font-size:30px; }
+      .brand-group{ max-width: calc(100% - 120px); }
 
       .intro-row{ grid-template-columns: 1fr; gap: 12px; }
 
@@ -808,13 +838,18 @@
       <div class="brand-text">The MayaNut Company</div>
     </div>
 
-    <!-- ✅ CART ICON (rounded orange square with white outline) -->
-    <button class="cart-btn" type="button" id="cart-open" aria-label="Open cart">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 6h14l-2 8H9L7 6Zm2 10h10a2 2 0 1 1-1.9 2.6H10.9A2 2 0 1 1 9 16Z"></path>
-        <path d="M3 4h2l2.2 10.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-      </svg>
-    </button>
+    <!-- ✅ fixed cart icon + badge -->
+    <div class="cart-wrap" aria-label="Cart button">
+      <button class="cart-btn" type="button" id="cart-open" aria-label="Open cart">
+        <!-- cleaner cart icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.5 5.5h2l1.7 10.2a2 2 0 0 0 2 1.7h8.7a2 2 0 0 0 2-1.5l1.6-6.7H7.2"></path>
+          <path d="M10 20.2a.9.9 0 1 0 0-1.8.9.9 0 0 0 0 1.8Z"></path>
+          <path d="M18 20.2a.9.9 0 1 0 0-1.8.9.9 0 0 0 0 1.8Z"></path>
+        </svg>
+      </button>
+      <div class="cart-badge" id="cart-badge" aria-label="Cart item count">0</div>
+    </div>
   </header>
 
   <main id="main-content" tabindex="-1" aria-label="Home">
@@ -886,7 +921,7 @@
 
               <div class="mini-bot">
                 <div class="mini-actions" aria-label="Product actions">
-                  <button class="buy-btn js-flash" type="button" id="add-btn" aria-label="Add MayaNut flour to cart">
+                  <button class="buy-btn" type="button" id="add-btn" aria-label="Add MayaNut flour to cart">
                     <div class="big" id="add-big">ADD</div>
                     <div class="small" id="add-small">TO CART</div>
                   </button>
@@ -969,70 +1004,6 @@
     </div>
   </main>
 
-  <footer class="footer" aria-label="Footer">
-    <div class="footer-inner">
-      <div class="footer-left" aria-label="Brand">
-        <div class="footer-tagline">
-          <span>Started in South Florida</span>
-          <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
-        </div>
-        <a href="index.html" aria-label="The MayaNut Company home">
-          <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
-        </a>
-      </div>
-
-      <div class="footer-right" aria-label="Footer links">
-        <div class="footer-col">
-          <div class="footer-col-title">WHO WE ARE</div>
-          <a class="footer-link" href="about.html">About</a>
-          <a class="footer-link" href="recipes.html">Recipes</a>
-          <a class="footer-link" href="gallery.html">Gallery</a>
-        </div>
-        <div class="footer-col">
-          <div class="footer-col-title">SUPPORT</div>
-          <a class="footer-link" href="accessibility.html">Accessibility</a>
-          <a class="footer-link" href="terms.html">Terms</a>
-          <a class="footer-link" href="privacy.html">Privacy</a>
-          <a class="footer-link" href="sitemap.html">Sitemap</a>
-          <a class="footer-link" href="contact.html">Contact</a>
-          <a class="footer-link" href="index-es.html">Español</a>
-        </div>
-        <div class="footer-col">
-          <div class="footer-col-title">FOLLOW US</div>
-          <div class="social-row" aria-label="Social links">
-            <a class="icon-pill js-flash" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect class="stroke" x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-                <circle class="stroke" cx="12" cy="12" r="4.2"></circle>
-                <circle class="fill" cx="17.3" cy="6.7" r="0.9"></circle>
-              </svg>
-            </a>
-            <a class="icon-pill js-flash" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
-              </svg>
-            </a>
-            <a class="icon-pill js-flash" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
-              </svg>
-            </a>
-            <a class="icon-pill js-flash" href="#" aria-label="YouTube (coming soon)" onclick="return false;">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>
-                <path class="yt-play" d="M11.0 9.4v5.2l4.6-2.6-4.6-2.6Z"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="copyright-bar" aria-label="Copyright">
-      <div class="copyright-inner">© 2026 The MayaNut Company, Inc.</div>
-    </div>
-  </footer>
-
   <!-- CART -->
   <div class="cart-overlay" id="cart-overlay" aria-hidden="true"></div>
   <aside class="cart-panel" id="cart-panel" aria-label="Cart">
@@ -1074,9 +1045,12 @@
       const cartOverlay = document.getElementById("cart-overlay");
       const cartClose = document.getElementById("cart-close");
       const cartQty = document.getElementById("cart-qty");
+      const cartBadge = document.getElementById("cart-badge");
 
       const root = document.getElementById("weight-menu-root");
       let menu = null;
+
+      let cartCount = 0;
 
       function closeMenu(){ if(menu){ menu.remove(); menu = null; } }
       function openMenu(anchor, items, onPick){
@@ -1169,12 +1143,23 @@
         setTimeout(()=> t.remove(), 1200);
       }
 
+      function setCartBadge(n){
+        cartBadge.textContent = String(n);
+        cartBadge.style.display = n > 0 ? "flex" : "none";
+      }
+
       addBtn.addEventListener("click", ()=>{
+        // count adds
+        cartCount = Math.min(99, cartCount + 1);
+        setCartBadge(cartCount);
+
+        // button feedback
         addBtn.classList.add("added");
         addBig.textContent = "ADDED";
-        addSmall.innerHTML = "&#10003;"; // check
+        addSmall.textContent = "✓"; // simple check for the small line
         showToast("Product is coming soon!");
         openCart();
+
         setTimeout(()=>{
           addBtn.classList.remove("added");
           addBig.textContent = "ADD";
@@ -1182,8 +1167,10 @@
         }, 1200);
       });
 
+      // init
       applyVariant(WEIGHTS[0]);
       setQty(1);
+      setCartBadge(0);
     })();
   </script>
 </body>

@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>The MayaNut Company | America's Premier MayaNut™ Farm</title>
-  <meta name="description" content="The MayaNut Company grows the Alicastrum tree (Brosimum alicastrum) in South Florida to produce MayaNut™ flour—a delicious, roasted seed flour (not a nut) that is naturally gluten-free, fiber-rich, and ideal for smoothies, açaí bowls, baked goods, and everyday cooking.">
+  <meta name="description" content="The MayaNut Company grows the Alicastrum tree (Brosimum alicastrum) in South Florida to produce MayaNut™ flour—a delicious roasted seed flour (not a nut), naturally gluten-free, fiber-rich, and ideal for smoothies, açaí bowls, baked goods, and everyday cooking.">
   <link rel="canonical" href="https://www.mayanut.com/">
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -124,10 +124,6 @@
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
 
-      --footer-g1:#066100;
-      --footer-g2:#7ae78a;
-      --footer-g3:#d8ff6a;
-
       --padX: 16px;
       --gap: 14px;
 
@@ -141,30 +137,37 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* ✅ scrollbar lock (prevents “glitchy” layout shifts) */
+    /* ✅ PERMANENT SCROLLBAR FIX:
+       - avoid both-edges (creates left gutter in many browsers)
+       - keep one scrollbar only (html scroll, body not scroll container)
+    */
     html{
       overflow-x:hidden;
       overflow-y:scroll;
-      scrollbar-gutter: stable both-edges;
+      scrollbar-gutter: stable;
       background:#fff;
     }
     body{
       min-height:100%;
+      margin:0;                  /* ✅ removes any “white barrier” chance */
       background:#fff;
       font-family: var(--font-ui);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
-      overflow-x:hidden;
-      overflow-y:visible;
+      overflow-x:hidden;         /* ✅ prevent horizontal spill */
+      overflow-y:visible;        /* ✅ html owns the scrollbar */
     }
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
     button,input{ font-family:inherit; border:0; background:transparent; }
 
-    /* HEADER (slightly taller) */
+    /* HEADER (full-bleed, no left gap) */
     .site-header{
-      width:100%;
+      width:100vw;               /* ✅ full-bleed */
+      left:50%;
+      transform:translateX(-50%);/* ✅ ensures true full width even inside any container */
+      position:relative;
       background-color: var(--green);
       background-image:url("menuart-the-maya-nut-company-art.jpeg");
       background-repeat:no-repeat;
@@ -174,7 +177,6 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      position:relative;
       overflow:hidden;
       border-bottom: 1px solid rgba(12,90,42,0.55);
     }
@@ -212,7 +214,7 @@
       white-space:nowrap;
     }
 
-    /* cart icon top-right */
+    /* cart icon */
     .cart-fab{
       position:absolute;
       top:50%;
@@ -369,8 +371,7 @@
       min-width:0;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; }
-    /* ✅ nudged left slightly per request */
-    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-14px); }
+    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-14px); } /* Gluten-Free nudge */
     .diet-pill:nth-child(3){ justify-content:flex-end; }
 
     .diet-icon{
@@ -411,7 +412,7 @@
       margin-top: 2px;
     }
 
-    /* ✅ “About MayaNut™” button: matches UI, boosts clicks, looks intentional */
+    /* About MayaNut CTA (left aligned, smaller than Add button) */
     .copy-actions{
       margin-top: auto;
       display:flex;
@@ -424,7 +425,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height: 44px;
+      height: 42px;
       padding: 0 14px;
       border-radius: 16px;
       background: var(--orange);
@@ -438,6 +439,7 @@
       transition: transform .08s ease, background .10s ease;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      white-space:nowrap;
     }
     .about-cta:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .about-cta:active{ transform: translateY(0px); }
@@ -488,7 +490,7 @@
       white-space:nowrap;
     }
 
-    /* ✅ product image clickable to product page */
+    /* product image clickable */
     .mini-img-link{
       display:block;
       cursor:pointer;
@@ -505,12 +507,13 @@
       background:#fff;
     }
 
+    /* ✅ balanced vertical spacing for actions (prevents “resting on bottom”) */
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 24px;
+      padding: 18px 12px;                /* symmetric top/bottom */
       display:flex;
       flex-direction:column;
-      gap:12px;
+      justify-content:center;            /* centers block vertically in remaining space */
       flex: 1 1 auto;
       min-height:0;
     }
@@ -523,12 +526,9 @@
       align-items:stretch;
     }
 
-    /* ✅ make ADD button evenly padded so it’s not “resting” on borders */
     .buy-btn{
       grid-row: 1 / span 2;
       width: 112px;
-      margin: 4px 0;                 /* symmetric outer margin */
-      padding: 4px 0;                /* symmetric inner breathing room */
       border-radius:16px;
       border: 1px solid rgba(255,255,255,0.95);
       background: var(--orange);
@@ -545,6 +545,7 @@
       text-transform: uppercase;
       line-height:1;
       height: 100%;
+      padding: 4px 0;                   /* inner breathing room */
     }
     .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .buy-btn:active{ transform: translateY(0px); }
@@ -802,8 +803,8 @@
       display:grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap:18px;
-      justify-items:end;      /* ✅ right-aligned columns */
-      text-align:right;       /* ✅ right-aligned text */
+      justify-items:end;
+      text-align:right;
     }
     .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
     .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; margin-left:auto; }
@@ -841,17 +842,16 @@
       font-weight:900;
       font-size:14px;
       color:#fff;
-      text-align:left; /* ✅ left aligned */
+      text-align:left;
     }
 
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
     @media(max-width:980px){
-      /* Mobile order: product, paragraph, image, about, footer */
       .brand-logo{ width:62px; height:62px; }
       .brand-text{ font-size:28px; }
 
-      /* ✅ cart stays left aligned on mobile, centered vertically */
+      /* cart left on mobile, centered vertically */
       .cart-fab{
         left:12px;
         right:auto;
@@ -862,14 +862,15 @@
       .cart-fab svg{ width:20px;height:20px; }
       .cart-badge{ min-width:20px;height:20px;font-size:11px; }
 
+      /* brand stays centered, no overlap */
       .brand-group{
-        max-width: calc(100% - 96px);
+        max-width: calc(100% - 108px);
         margin: 0 auto;
         justify-content:center;
       }
 
+      /* Mobile order: product, paragraph, image */
       .intro-row{ grid-template-columns: 1fr; gap: 12px; }
-
       .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
       .tile-copy{ width:100%; height:auto; order:2; }
       .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
@@ -882,7 +883,6 @@
 
       .about-grid{ grid-template-columns:1fr; }
 
-      /* footer: keep left block left; stack columns and right-align */
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; justify-items:end; text-align:right; }
       .social-row{ justify-content:flex-end; }
@@ -954,7 +954,6 @@
                 perfect for smoothies, açaí bowls, baked goods, and everyday cooking.
               </p>
 
-              <!-- ✅ best choice: orange rounded CTA (consistent + higher clickthrough) -->
               <div class="copy-actions" aria-label="Learn more links">
                 <a class="about-cta js-flash" href="about.html" aria-label="About MayaNut">About MayaNut™</a>
               </div>
@@ -966,7 +965,6 @@
                 <div class="mini-price" id="mini-price">$9.99</div>
               </div>
 
-              <!-- ✅ CLICK IMAGE TO PRODUCT PAGE -->
               <a class="mini-img-link" href="product.html" aria-label="View MayaNut powder product page">
                 <img
                   class="mini-img"
@@ -981,8 +979,8 @@
               <div class="mini-bot">
                 <div class="mini-actions" aria-label="Product actions">
                   <button class="buy-btn js-flash" type="button" data-buy aria-label="Add MayaNut flour to cart">
-                    <div class="buy-big">ADD</div>
-                    <div class="buy-small">TO CART</div>
+                    <div class="buy-big" data-buy-text>ADD</div>
+                    <div class="buy-small" data-buy-sub>TO CART</div>
                     <div class="buy-check" aria-hidden="true">
                       <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
                       ADDED
@@ -1145,7 +1143,7 @@
       <div class="cart-body">
         <div class="cart-empty" id="cartEmpty">
           Your cart is empty.
-          <div class="cart-note">Product is coming soon!</div>
+          <div class="cart-note" id="cartNote">Product is coming soon!</div>
         </div>
       </div>
     </div>
@@ -1171,6 +1169,7 @@
       const cartBackdrop = document.getElementById("cartBackdrop");
       const cartClose = document.getElementById("cartClose");
       const cartBadge = document.getElementById("cartBadge");
+      const cartNote = document.getElementById("cartNote");
 
       function openCart(){ cartDrawer.classList.add("open"); }
       function closeCart(){ cartDrawer.classList.remove("open"); }
@@ -1196,6 +1195,8 @@
       const weightVal = document.querySelector("[data-weight-val]");
       const priceEl   = document.getElementById("mini-price");
       const titleEl   = document.getElementById("mini-title");
+      const buyText   = document.querySelector("[data-buy-text]");
+      const buySub    = document.querySelector("[data-buy-sub]");
 
       const root = document.getElementById("weight-menu-root");
       let menu = null;
@@ -1273,26 +1274,25 @@
         openMenu(e.currentTarget, WEIGHTS, applyVariant);
       });
 
-      // Add to cart behavior (badge increments by quantity)
+      // Add to cart behavior (badge increments by quantity) + opens cart + “coming soon”
       let cartCount = 0;
       buyBtn.addEventListener("click", ()=>{
         const addQty = getQty();
 
         buyBtn.classList.add("added");
+        if(buyText) buyText.textContent = "ADDED";
+        if(buySub) buySub.style.display = "none";
 
         cartCount = Math.min(99, cartCount + addQty);
         cartBadge.textContent = String(cartCount);
 
+        if(cartNote) cartNote.textContent = "Product is coming soon!";
         openCart();
-
-        // “coming soon” behavior (kept)
-        const empty = document.getElementById("cartEmpty");
-        if(empty){
-          empty.firstChild && (empty.firstChild.textContent = "Your cart has items.");
-        }
 
         window.setTimeout(()=>{
           buyBtn.classList.remove("added");
+          if(buyText) buyText.textContent = "ADD";
+          if(buySub) buySub.style.display = "";
         }, 900);
       });
 

@@ -18,10 +18,6 @@
   <meta name="theme-color" content="#066100">
   <meta name="format-detection" content="telephone=no">
 
-  <link rel="alternate" hreflang="en" href="https://www.mayanut.com/">
-  <link rel="alternate" hreflang="es" href="https://www.mayanut.com/index-es.html">
-  <link rel="alternate" hreflang="x-default" href="https://www.mayanut.com/">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
@@ -47,22 +43,22 @@
 
       --hoverGrey:#cfd3d9;
 
-      /* ✅ single source of truth for page gutters (matches sections + footer) */
       --wrapMax: 1200px;
       --wrapPadL: 16px;
       --wrapPadR: 16px;
-      --wrapPadLDesktop: 52px;  /* matches your section alignment */
+      --wrapPadLDesktop: 52px;
       --wrapPadRDesktop: 12px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* ✅ FIX: prevent “double scrollbar” + left white gutter */
+    /* ✅ SCROLLBAR FIX (no gutter reservation, no left “barrier”) */
     html{
-      overflow-y: scroll;   /* always reserve one scrollbar */
+      overflow-y: auto;   /* do NOT force/lock; avoids duplicate gutters on some browsers */
       overflow-x: hidden;
       background:#fff;
+      scrollbar-gutter: auto; /* explicit reset */
     }
     body{
       min-height:100%;
@@ -175,7 +171,6 @@
 
     main{ padding-top: 18px; background:#fff; }
 
-    /* ✅ shared wrapper spacing (so footer lines up perfectly with sections) */
     .content-wrapper{
       max-width: var(--wrapMax);
       margin: 0 auto;
@@ -345,7 +340,6 @@
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
     }
-
     .mini-titlebar{
       background: var(--pale);
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -374,7 +368,6 @@
       white-space:nowrap;
     }
 
-    /* ✅ image + label */
     .mini-img-link{ display:block; -webkit-tap-highlight-color: transparent; }
     .mini-img-wrap{ position:relative; }
     .mini-img{
@@ -406,7 +399,7 @@
       line-height: 1;
       color: rgba(12,90,42,0.95);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
-      pointer-events:none; /* clicking still clicks the image link */
+      pointer-events:none;
       user-select:none;
     }
     .view-label svg{
@@ -419,21 +412,22 @@
       opacity:0.95;
     }
 
+    /* ✅ FIX: give the controls “breathing room” from the card outline */
     .mini-bot{
       background: var(--pale);
-      padding: 18px 12px;
+      padding: 20px 14px 22px;   /* more top/bottom padding */
       display:flex;
       flex-direction:column;
       justify-content:center;
       flex: 1 1 auto;
     }
-
     .mini-actions{
       display:grid;
       grid-template-columns: 112px 1fr;
       grid-template-rows: 34px 34px;
-      gap:10px;
+      gap:12px;                 /* more space between controls */
       align-items:stretch;
+      padding: 6px 0;           /* space above/below grid inside mini-bot */
     }
 
     .buy-btn{
@@ -455,7 +449,8 @@
       text-transform: uppercase;
       line-height:1;
       height: 100%;
-      padding: 4px 0;
+      padding: 6px 0;
+      margin: 2px 0;            /* prevents “resting” feel on borders */
     }
     .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .buy-btn:active{ transform: translateY(0px); }
@@ -467,6 +462,7 @@
       border:1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.98);
       transition: background .12s ease;
+      margin: 2px 0;            /* ✅ lifts controls off the outline */
     }
     .mini-rect:hover{ background: var(--hoverGrey); }
     .mini-rect{
@@ -576,8 +572,6 @@
       color:#ffffff;
     }
     .footer *{ color:#ffffff; }
-
-    /* ✅ EXACTLY match the section wrapper gutters so footer lines align with sections above */
     .footer-inner{
       max-width: var(--wrapMax);
       margin: 0 auto;
@@ -593,7 +587,6 @@
         padding-right: var(--wrapPadRDesktop);
       }
     }
-
     .footer-left{ display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
     .footer-tagline{ display:flex; align-items:center; gap:8px; font-weight:950; letter-spacing:.06em; font-size:15px; text-transform:uppercase; white-space:nowrap; }
     .footer-florida{ width:26px; height:26px; margin-left:2px; }
@@ -608,7 +601,6 @@
     }
     .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
     .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; margin-left:auto; }
-
     .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; }
     .icon-pill{
       width:34px; height:34px;
@@ -623,8 +615,6 @@
     .icon-pill svg{ width:18px; height:18px; display:block; }
     .icon-pill .stroke{ stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .icon-pill .fill{ fill:#fff; stroke:none; }
-    .yt-body{ fill:#fff; stroke:none; }
-    .yt-play{ fill: var(--orange); stroke:none; }
 
     .copyright-bar{
       width:100%;
@@ -635,7 +625,6 @@
       justify-content:center;
       border-top: 1px solid rgba(255,255,255,0.18);
     }
-    /* ✅ matches footer/sections left edge perfectly */
     .copyright-inner{
       width:100%;
       max-width: var(--wrapMax);
@@ -652,20 +641,11 @@
       }
     }
 
-    .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
-
-    /* MOBILE */
     @media(max-width:980px){
       .brand-logo{ width:62px; height:62px; }
       .brand-text{ font-size:28px; }
 
-      .cart-fab{
-        left:12px;
-        right:auto;
-        top:50%;
-        transform: translateY(-50%);
-        width:42px; height:42px;
-      }
+      .cart-fab{ left:12px; right:auto; top:50%; transform: translateY(-50%); width:42px; height:42px; }
       .cart-fab svg{ width:20px;height:20px; }
       .cart-badge{ min-width:20px;height:20px;font-size:11px; }
 
@@ -676,19 +656,8 @@
 
       .about-grid{ grid-template-columns:1fr; }
 
-      /* ✅ your requested footer mobile behavior:
-         left side: Started+logo left-aligned
-         right side: Who/Support/Follow right-aligned NEXT TO it */
-      .footer-inner{
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        align-items: start;
-      }
-      .footer-right{
-        grid-template-columns: 1fr;
-        justify-items:end;
-        text-align:right;
-      }
+      .footer-inner{ grid-template-columns: 1fr 1fr; gap: 14px; }
+      .footer-right{ grid-template-columns: 1fr; justify-items:end; text-align:right; }
       .footer-logo{ width: 200px; }
     }
   </style>
@@ -696,7 +665,7 @@
 
 <body>
   <header class="site-header" aria-label="Site header">
-    <button class="cart-fab js-flash" id="cartBtn" type="button" aria-label="Open cart">
+    <button class="cart-fab" id="cartBtn" type="button" aria-label="Open cart">
       <span class="cart-badge" id="cartBadge" aria-label="Cart item count">0</span>
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M6 6h15l-1.6 8.2a2 2 0 0 1-2 1.6H8.2a2 2 0 0 1-2-1.6L4 3H2"></path>
@@ -749,7 +718,7 @@
               </p>
 
               <div class="copy-actions" aria-label="Learn more links">
-                <a class="about-cta js-flash" href="about.html" aria-label="About MayaNut">About MayaNut™</a>
+                <a class="about-cta" href="about.html" aria-label="About MayaNut">About MayaNut™</a>
               </div>
             </div>
 
@@ -783,23 +752,23 @@
 
               <div class="mini-bot">
                 <div class="mini-actions" aria-label="Product actions">
-                  <button class="buy-btn js-flash" type="button" data-buy aria-label="Add MayaNut flour to cart">
+                  <button class="buy-btn" type="button" aria-label="Add MayaNut flour to cart">
                     <div class="buy-big">ADD</div>
                     <div class="buy-small">TO CART</div>
                   </button>
 
-                  <button class="mini-rect" type="button" data-weight aria-label="Select weight">
+                  <button class="mini-rect" type="button" aria-label="Select weight">
                     <span class="lbl">WEIGHT:</span>
-                    <span class="val" data-weight-val>¼ LB</span>
+                    <span class="val" id="weightVal">¼ LB</span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
                   </button>
 
                   <div class="qty-rect" aria-label="Quantity selector (max 9)">
-                    <div class="qty-seg disabled" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
+                    <div class="qty-seg disabled" id="minusBtn" aria-label="Decrease quantity" role="button" tabindex="0">−</div>
                     <div class="qty-seg mid" aria-label="Quantity">
-                      <input class="qty-input" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="Quantity input">
+                      <input class="qty-input" id="qtyInput" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="Quantity input">
                     </div>
-                    <div class="qty-seg" data-plus aria-label="Increase quantity" role="button" tabindex="0">+</div>
+                    <div class="qty-seg" id="plusBtn" aria-label="Increase quantity" role="button" tabindex="0">+</div>
                   </div>
                 </div>
               </div>
@@ -898,19 +867,19 @@
         <div class="footer-col">
           <div class="footer-col-title">FOLLOW US</div>
           <div class="social-row" aria-label="Social links">
-            <a class="icon-pill js-flash" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect class="stroke" x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
                 <circle class="stroke" cx="12" cy="12" r="4.2"></circle>
                 <circle class="fill" cx="17.3" cy="6.7" r="0.9"></circle>
               </svg>
             </a>
-            <a class="icon-pill js-flash" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
               </svg>
             </a>
-            <a class="icon-pill js-flash" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
               </svg>
@@ -929,18 +898,10 @@
     (function(){
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
-      const WEIGHTS = [
-        { key:"qtr", label:"¼ LB", title:"MayaNut™ Flour ¼ LB", price:9.99 },
-        { key:"one", label:"1 LB", title:"MayaNut™ Flour 1 LB", price:34.95 }
-      ];
 
-      const qtyInput  = document.querySelector(".qty-input");
-      const plusBtn   = document.querySelector("[data-plus]");
-      const minusBtn  = document.querySelector("[data-minus]");
-      const weightBtn = document.querySelector("[data-weight]");
-      const weightVal = document.querySelector("[data-weight-val]");
-      const priceEl   = document.getElementById("mini-price");
-      const titleEl   = document.getElementById("mini-title");
+      const qtyInput  = document.getElementById("qtyInput");
+      const plusBtn   = document.getElementById("plusBtn");
+      const minusBtn  = document.getElementById("minusBtn");
 
       function setQty(n){
         const nn = clamp(parseInt(n,10) || 1);
@@ -953,25 +914,12 @@
         const v = parseInt(raw, 10);
         return clamp(isNaN(v) ? 1 : v);
       }
-      function applyVariant(opt){
-        titleEl.textContent = opt.title;
-        priceEl.textContent = "$" + opt.price.toFixed(2);
-        weightVal.textContent = opt.label;
-      }
-
-      // simple weight toggle (no popup needed)
-      let w = 0;
-      weightBtn.addEventListener("click", ()=>{
-        w = (w + 1) % WEIGHTS.length;
-        applyVariant(WEIGHTS[w]);
-      });
 
       qtyInput.addEventListener("input", ()=> setQty(getQty()));
       qtyInput.addEventListener("blur", ()=> setQty(getQty()));
       plusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
       minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>1) setQty(q-1); });
 
-      applyVariant(WEIGHTS[0]);
       setQty(1);
     })();
   </script>

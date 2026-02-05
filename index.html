@@ -30,7 +30,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="The MayaNut Company">
   <meta property="og:title" content="The MayaNut Company | America's Premier MayaNut™ Farm">
-  <meta property="og:description" content="MayaNut™ flour is a delicious, roasted seed flour made from the seeds of the Alicastrum tree—naturally gluten-free, fiber-rich, and perfect for smoothies, açaí bowls, baked goods, and everyday cooking.">
+  <meta property="og:description" content="MayaNut™ flour is a delicious roasted seed flour made from the seeds of the Alicastrum tree—naturally gluten-free, fiber-rich, and perfect for smoothies, açaí bowls, baked goods, and everyday cooking.">
   <meta property="og:url" content="https://www.mayanut.com/">
   <meta property="og:image" content="https://www.mayanut.com/mayanut-the-mayanut-comapny-logo.png">
   <meta property="og:image:width" content="1200">
@@ -94,7 +94,7 @@
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "MayaNut™ Flour",
-    "description": "MayaNut™ flour is a delicious, roasted seed flour made from seeds of the Alicastrum tree (Brosimum alicastrum). Naturally gluten-free and versatile for smoothies, açaí bowls, baked goods, and everyday cooking.",
+    "description": "MayaNut™ flour is a delicious roasted seed flour made from seeds of the Alicastrum tree (Brosimum alicastrum). Naturally gluten-free and versatile for smoothies, açaí bowls, baked goods, and everyday cooking.",
     "brand": { "@type": "Brand", "name": "MayaNut" },
     "image": ["https://www.mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png"],
     "sku": "MN-FLOUR-001",
@@ -112,50 +112,35 @@
   <style>
     :root{
       --green:#066100;
-
       --orange:#fd6c02;
       --orangePress:#c84b02;
-
       --lime:#d8ff6a;
       --pale:#e9ffd6;
-
       --softBorder: 1px solid rgba(12,90,42,0.45);
-
       --font-ui: "Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --font-pretty: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-
       --padX: 16px;
       --gap: 14px;
-
       --tile: 340px;
       --copyW: 440px;
       --prodW: 300px;
-
       --hoverGrey:#cfd3d9;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* ✅ SCROLLBAR FIX (single scrollbar, no left gutter, no duplicate)
-       - html owns scroll
-       - body is NOT a scroll container
-       - remove scrollbar-gutter (it commonly creates the left “white rail” effect)
-    */
-    html{
-      overflow-y: scroll;
-      overflow-x: hidden;
-      background:#fff;
-    }
+    /* ✅ ONE scrollbar only (html owns scroll, body never scrolls) */
+    html{ overflow-y:scroll; overflow-x:hidden; background:#fff; }
     body{
       min-height:100%;
       margin:0;
+      overflow-x:hidden;
+      overflow-y:visible;
       background:#fff;
       font-family: var(--font-ui);
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
-      overflow-x:hidden;
-      overflow-y:visible;
     }
 
     img{ max-width:100%; height:auto; display:block; }
@@ -195,8 +180,10 @@
       display:flex; align-items:center; gap:12px;
       z-index:2;
       white-space:nowrap;
-      max-width: calc(100% - 80px);
+      max-width: calc(100% - 96px); /* leaves room for cart */
       padding: 0 16px;
+      justify-content:center;
+      margin: 0 auto;
     }
     .brand-logo{
       width:78px; height:78px; object-fit:contain;
@@ -212,7 +199,8 @@
       white-space:nowrap;
     }
 
-    /* cart icon */
+    /* ✅ Only cart button exists. If you still see “Contact” on mobile,
+       it is coming from an old cached HTML file. This file does NOT include it. */
     .cart-fab{
       position:absolute;
       top:50%;
@@ -236,7 +224,7 @@
       width:22px; height:22px;
       stroke:#fff; fill:none; stroke-width:2.4;
       stroke-linecap:round; stroke-linejoin:round;
-      shape-rendering: geometricPrecision;  /* ✅ helps avoid “glitchy” edges */
+      shape-rendering: geometricPrecision;
     }
     .cart-badge{
       position:absolute;
@@ -289,7 +277,6 @@
       border-top-left-radius:18px;
       border-top-right-radius:18px;
     }
-
     .panel-title{
       font-weight:950;
       letter-spacing:.12em;
@@ -414,7 +401,7 @@
       margin-top: auto;
       display:flex;
       align-items:center;
-      justify-content:flex-start; /* ✅ stays left aligned (doesn’t compete with Add) */
+      justify-content:flex-start;
       gap:12px;
       padding-top: 6px;
     }
@@ -422,7 +409,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height: 42px;                 /* ✅ slightly smaller than main CTA */
+      height: 42px;
       padding: 0 14px;
       border-radius: 16px;
       background: var(--orange);
@@ -487,12 +474,7 @@
       white-space:nowrap;
     }
 
-    /* product image clickable */
-    .mini-img-link{
-      display:block;
-      cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .mini-img-link{ display:block; cursor:pointer; -webkit-tap-highlight-color: transparent; }
     .mini-img{
       width:100%;
       height: 200px;
@@ -504,17 +486,16 @@
       background:#fff;
     }
 
-    /* ✅ balanced spacing around Add / Qty (voice request) */
+    /* ✅ balanced action spacing (centered vertically) */
     .mini-bot{
       background: var(--pale);
-      padding: 18px 12px;          /* symmetric top/bottom */
+      padding: 18px 12px;
       display:flex;
       flex-direction:column;
-      justify-content:center;      /* centers the action block vertically */
+      justify-content:center;
       flex: 1 1 auto;
       min-height:0;
     }
-
     .mini-actions{
       display:grid;
       grid-template-columns: 112px 1fr;
@@ -522,7 +503,6 @@
       gap:10px;
       align-items:stretch;
     }
-
     .buy-btn{
       grid-row: 1 / span 2;
       width: 112px;
@@ -549,33 +529,13 @@
 
     .buy-big{ font-weight: 950; letter-spacing: .10em; font-size: 18px; }
     .buy-small{ margin-top: 4px; font-weight: 900; letter-spacing: .14em; font-size: 10px; opacity: 0.95; }
-
-    .buy-check{
-      margin-top: 4px;
-      display:none;
-      align-items:center;
-      gap:6px;
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:.08em;
-    }
+    .buy-check{ margin-top: 4px; display:none; align-items:center; gap:6px; font-weight:950; font-size:11px; letter-spacing:.08em; }
     .buy-btn.added .buy-check{ display:flex; }
     .buy-btn.added .buy-small{ display:none; }
+    .buy-check svg{ width:14px;height:14px; stroke:#fff; fill:none; stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round; }
 
-    .buy-check svg{
-      width:14px;height:14px;
-      stroke:#fff; fill:none; stroke-width:3.2;
-      stroke-linecap:round; stroke-linejoin:round;
-    }
-
-    .mini-rect, .qty-rect{
-      border-radius:14px;
-      border:1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.98);
-      transition: background .12s ease;
-    }
+    .mini-rect, .qty-rect{ border-radius:14px; border:1px solid rgba(12,90,42,0.55); background: rgba(255,255,255,0.98); transition: background .12s ease; }
     .mini-rect:hover{ background: var(--hoverGrey); }
-
     .mini-rect{
       height: 34px;
       display:flex;
@@ -586,21 +546,8 @@
       cursor:pointer;
       user-select:none;
     }
-    .mini-rect .lbl{
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:10px;
-      color:#0b1220;
-    }
-    .mini-rect .val{
-      font-weight:900;
-      font-size:12px;
-      color:#0b1220;
-      white-space:nowrap;
-      flex:1 1 auto;
-      text-align:right;
-    }
+    .mini-rect .lbl{ font-weight:900; letter-spacing:.12em; text-transform:uppercase; font-size:10px; color:#0b1220; }
+    .mini-rect .val{ font-weight:900; font-size:12px; color:#0b1220; white-space:nowrap; flex:1 1 auto; text-align:right; }
     .mini-rect svg{
       width:14px; height:14px;
       stroke:#0b1220; fill:none; stroke-width:2.2;
@@ -610,13 +557,7 @@
       shape-rendering: geometricPrecision;
     }
 
-    .qty-rect{
-      height: 34px;
-      display:flex;
-      align-items:stretch;
-      overflow:hidden;
-      user-select:none;
-    }
+    .qty-rect{ height: 34px; display:flex; align-items:stretch; overflow:hidden; user-select:none; }
     .qty-seg{
       flex: 1 1 0;
       display:flex;
@@ -635,35 +576,14 @@
     .qty-seg.disabled{ color: var(--hoverGrey); cursor:default; pointer-events:none; }
     .qty-seg:not(.disabled):hover{ background: var(--hoverGrey); }
     .qty-seg.mid{ cursor:text; padding:0 2px; }
-    .qty-input{
-      width: 100%;
-      height: 32px;
-      border:none;
-      outline:none;
-      background:transparent;
-      text-align:center;
-      font-weight:950;
-      font-size:16px;
-      color:#000;
-    }
+    .qty-input{ width: 100%; height: 32px; border:none; outline:none; background:transparent; text-align:center; font-weight:950; font-size:16px; color:#000; }
 
     /* CART DRAWER */
-    .cart-drawer{
-      position:fixed;
-      inset:0;
-      display:none;
-      z-index: 6000;
-    }
+    .cart-drawer{ position:fixed; inset:0; display:none; z-index: 6000; }
     .cart-drawer.open{ display:block; }
-    .cart-backdrop{
-      position:absolute; inset:0;
-      background: rgba(15,23,42,0.35);
-      backdrop-filter: blur(2px);
-    }
+    .cart-backdrop{ position:absolute; inset:0; background: rgba(15,23,42,0.35); backdrop-filter: blur(2px); }
     .cart-panel{
-      position:absolute;
-      top:18px;
-      right:18px;
+      position:absolute; top:18px; right:18px;
       width: min(380px, calc(100% - 36px));
       border-radius:18px;
       border: 1px solid rgba(12,90,42,0.55);
@@ -680,13 +600,7 @@
       justify-content:space-between;
       gap:10px;
     }
-    .cart-title{
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:14px;
-      color:#0b1220;
-    }
+    .cart-title{ font-weight:950; letter-spacing:.10em; text-transform:uppercase; font-size:14px; color:#0b1220; }
     .cart-close{
       width:34px;height:34px;
       border-radius:12px;
@@ -698,35 +612,13 @@
       cursor:pointer;
     }
     .cart-close svg{ width:18px;height:18px; stroke:#fff; fill:none; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; shape-rendering: geometricPrecision; }
-
-    .cart-body{
-      padding: 12px 14px 14px;
-      color:#0b1220;
-      font-weight:900;
-      font-size:13px;
-      line-height:1.5;
-    }
-    .cart-empty{
-      background: #fff;
-      border: 1px solid rgba(12,90,42,0.45);
-      border-radius:14px;
-      padding: 12px;
-    }
-    .cart-note{
-      margin-top: 10px;
-      font-weight:900;
-      color: rgba(15,23,42,0.70);
-      font-size:12px;
-    }
+    .cart-body{ padding: 12px 14px 14px; color:#0b1220; font-weight:900; font-size:13px; line-height:1.5; }
+    .cart-empty{ background: #fff; border: 1px solid rgba(12,90,42,0.45); border-radius:14px; padding: 12px; }
+    .cart-note{ margin-top: 10px; font-weight:900; color: rgba(15,23,42,0.70); font-size:12px; }
 
     /* ABOUT */
     .about-wrap{ margin-top: 14px; }
-    .about-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 14px;
-    }
+    .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; }
     .about-card{
       border-radius:18px;
       border: var(--softBorder);
@@ -757,12 +649,7 @@
       color:#0b1220;
       margin-bottom: 8px;
     }
-    .about-box p{
-      font-weight: 850;
-      font-size: 14px;
-      line-height: 1.85;
-      margin:0;
-    }
+    .about-box p{ font-weight: 850; font-size: 14px; line-height: 1.85; margin:0; }
     .about-media img{
       width: 100%;
       height: 320px;
@@ -845,11 +732,12 @@
 
     .pressed{ background: var(--orangePress) !important; transform: translateY(0px) !important; }
 
+    /* ✅ MOBILE: enforce your requested order + footer alignment */
     @media(max-width:980px){
       .brand-logo{ width:62px; height:62px; }
       .brand-text{ font-size:28px; }
 
-      /* ✅ cart left aligned on mobile, centered vertically */
+      /* cart LEFT on mobile, centered vertically */
       .cart-fab{
         left:12px;
         right:auto;
@@ -860,19 +748,18 @@
       .cart-fab svg{ width:20px;height:20px; }
       .cart-badge{ min-width:20px;height:20px;font-size:11px; }
 
-      /* ✅ header centered, no overlap */
+      /* header centered, no overlap */
       .brand-group{
         max-width: calc(100% - 108px);
         margin: 0 auto;
         justify-content:center;
       }
 
+      /* Mobile order: product, paragraph, image, about */
       .intro-row{ grid-template-columns: 1fr; gap: 12px; }
       .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
       .tile-copy{ width:100%; height:auto; order:2; }
       .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
-
-      .copy-actions{ justify-content:flex-start; }
 
       .diet-row{ gap: 6px; }
       .diet-pill{ font-size: 10px; letter-spacing:.06em; }
@@ -880,8 +767,20 @@
 
       .about-grid{ grid-template-columns:1fr; }
 
-      .footer-inner{ grid-template-columns: 1fr; }
-      .footer-right{ grid-template-columns: 1fr; justify-items:end; text-align:right; }
+      /* ✅ footer: left block left, and the 3 sections stacked + right-aligned NEXT to it */
+      .footer-inner{
+        grid-template-columns: 1fr 1fr;     /* left + right side-by-side */
+        gap: 14px;
+        align-items: start;
+      }
+      .footer-left{ align-items:flex-start; }
+      .footer-logo{ width: 200px; }
+      .footer-right{
+        grid-template-columns: 1fr;         /* stack WHO/SUPPORT/FOLLOW */
+        justify-items:end;                  /* right aligned */
+        text-align:right;
+        align-content:start;
+      }
       .social-row{ justify-content:flex-end; }
       .copyright-inner{ text-align:left; }
     }
@@ -890,6 +789,7 @@
 
 <body>
   <header class="site-header" aria-label="Site header">
+    <!-- ✅ CART ONLY (no contact button exists in this file) -->
     <button class="cart-fab js-flash" id="cartBtn" type="button" aria-label="Open cart">
       <span class="cart-badge" id="cartBadge" aria-label="Cart item count">0</span>
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -929,18 +829,9 @@
 
             <div class="tile-copy" aria-label="MayaNut description">
               <div class="diet-row" aria-label="Diet checks">
-                <div class="diet-pill" title="Vegan">
-                  <span class="diet-icon" aria-hidden="true"></span>
-                  Vegan
-                </div>
-                <div class="diet-pill" title="Gluten-Free">
-                  <span class="diet-icon" aria-hidden="true"></span>
-                  Gluten-Free
-                </div>
-                <div class="diet-pill" title="Paleo-Friendly">
-                  <span class="diet-icon" aria-hidden="true"></span>
-                  Paleo-Friendly
-                </div>
+                <div class="diet-pill" title="Vegan"><span class="diet-icon" aria-hidden="true"></span>Vegan</div>
+                <div class="diet-pill" title="Gluten-Free"><span class="diet-icon" aria-hidden="true"></span>Gluten-Free</div>
+                <div class="diet-pill" title="Paleo-Friendly"><span class="diet-icon" aria-hidden="true"></span>Paleo-Friendly</div>
               </div>
 
               <div class="benefit">Fiber-Rich &amp; Filling</div>
@@ -1013,7 +904,6 @@
 
         <div class="section-body">
           <div class="about-grid">
-
             <div class="about-card" aria-label="How it all started">
               <div class="about-box">
                 <h3>How It All Started...</h3>
@@ -1054,7 +944,6 @@
                 >
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -1081,6 +970,7 @@
           <a class="footer-link" href="recipes.html">Recipes</a>
           <a class="footer-link" href="gallery.html">Gallery</a>
         </div>
+
         <div class="footer-col">
           <div class="footer-col-title">SUPPORT</div>
           <a class="footer-link" href="faq.html">FAQ</a>
@@ -1091,6 +981,7 @@
           <a class="footer-link" href="contact.html">Contact</a>
           <a class="footer-link" href="index-es.html">Español</a>
         </div>
+
         <div class="footer-col">
           <div class="footer-col-title">FOLLOW US</div>
           <div class="social-row" aria-label="Social links">
@@ -1271,11 +1162,10 @@
         openMenu(e.currentTarget, WEIGHTS, applyVariant);
       });
 
-      // Add to cart behavior (badge increments by quantity) + opens cart + “coming soon”
+      // Add to cart behavior
       let cartCount = 0;
       buyBtn.addEventListener("click", ()=>{
         const addQty = getQty();
-
         buyBtn.classList.add("added");
         if(buyText) buyText.textContent = "ADDED";
         if(buySub) buySub.style.display = "none";

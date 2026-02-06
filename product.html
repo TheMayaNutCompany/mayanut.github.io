@@ -219,12 +219,12 @@
       min-width:120px;
     }
 
-    /* HOME */
+    /* HOME (pinned left corner, aligned with panel head) */
     .home-btn{
       position:absolute;
       left:10px;
       top:12px;
-      z-index:50;
+      z-index:60;
       display:inline-flex;
       align-items:center;
       gap:10px;
@@ -514,7 +514,7 @@
     }
     .under-buy li:last-child{margin-bottom:0;}
 
-    /* CONTACT LINE */
+    /* CONTACT LINE OUTSIDE bullet box (still under it) */
     .contact-line{
       margin-top:10px;
       padding-top:10px;
@@ -668,7 +668,7 @@
       .controls{grid-template-columns:1fr;}
       .thumbs{height:82px;}
       :root{ --thumbH: 82px; }
-      .home-btn{top:10px;}
+      .home-btn{top:10px; left:10px;}
     }
   </style>
 </head>
@@ -686,6 +686,7 @@
 <main class="wrap" aria-label="Product page">
   <section class="panel" aria-label="MayaNut flour product">
 
+    <!-- HOME pinned in the left corner -->
     <a class="home-btn" href="index.html" aria-label="Home">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"></path></svg>
       <span>HOME</span>
@@ -750,17 +751,16 @@
           <div class="price" id="price">$9.99</div>
         </div>
 
-        <!-- EXACT PARAGRAPHS YOU REQUESTED -->
         <div class="desc" aria-label="Product description">
           <p>
             MayaNut™ is a roasted seed flour made from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>). It’s naturally gluten-free and has a warm, roasted, cocoa-like flavor that makes simple foods taste deeper and more satisfying. Think of it as a botanical food ingredient you can use like a flour—or sprinkle as a seasoning or flavoring—to add roasted richness to everyday meals.
           </p>
           <p>
-            Roasted and packed in South Florida from the Alicastrum tree. Product launch is coming soon.
+            Small-batch roasted and packed in South Florida for a clean, fresh flavor and consistent grind.
+            We’re finalizing inventory and packaging now—product launch is coming soon.
           </p>
         </div>
 
-        <!-- Controls -->
         <div class="controls" aria-label="Weight and quantity">
           <button class="mini-rect" id="weightBtn" type="button" aria-label="Select bag size">
             <span class="lbl">WEIGHT</span>
@@ -777,35 +777,35 @@
           </div>
         </div>
 
-        <!-- BUY button -->
-        <div class="buy-now" id="buyNowBtn" aria-label="Buy one bag now (coming soon)" role="button" aria-disabled="true" tabindex="0">
+        <!-- BUY button text now simply: BUY • NOW -->
+        <div class="buy-now" id="buyNowBtn" aria-label="Buy now (coming soon)" role="button" aria-disabled="true" tabindex="0">
           <span class="buy-text">
             <strong>BUY</strong>
             <span class="buy-dot" aria-hidden="true"></span>
-            <strong class="buy-qty" id="buyQtyText">ONE BAG</strong>
             <strong>NOW</strong>
           </span>
         </div>
 
-        <!-- Under-buy paragraph box: serving + 3 left-aligned bullets -->
+        <!-- Under-buy: serving + 3 bullets -->
         <div class="under-buy" aria-label="Serving size and quick uses">
           <p class="serving">
-            <strong>Suggested serving size:</strong> start with 1–2 tablespoons per smoothie, bowl or recipe. Adjust to taste.
+            <strong>Suggested serving size:</strong> start with 1–2 tablespoons per smoothie, bowl, or recipe. Adjust to taste.
+            For baking, start small and scale up once you find your favorite level of roast.
           </p>
           <ul aria-label="Quick use bullets">
             <li>Perfect in smoothies, açaí bowls, oatmeal, coffee, and baking</li>
             <li>Use as a flour ingredient, or sprinkle as seasoning/flavoring</li>
             <li>Great for plant-based, gluten-free, and paleo-friendly kitchens</li>
           </ul>
-
-          <div class="contact-line">
-            Questions? Contact us:
-            <a href="mailto:info@mayanut.com?subject=Question%20about%20MayaNut%E2%84%A2%20Flour&body=Hello%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">
-              info@mayanut.com
-            </a>
-          </div>
         </div>
 
+        <!-- Contact line is OUTSIDE the bullet box but still below it -->
+        <div class="contact-line">
+          Questions? Contact us:
+          <a href="mailto:info@mayanut.com?subject=Question%20about%20MayaNut%E2%84%A2%20Flour&body=Hello%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">
+            info@mayanut.com
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -924,11 +924,10 @@
     syncHeights();
   }
 
-  // ---------- QTY (min 1 always) + updates BUY label ----------
+  // ---------- QTY (min 1 always) ----------
   const qtyInput = document.getElementById("qtyInput");
   const plusBtn = document.getElementById("plusBtn");
   const minusBtn = document.getElementById("minusBtn");
-  const buyQtyText = document.getElementById("buyQtyText");
 
   const MIN_QTY = 1;
   const MAX_QTY = 9;
@@ -939,15 +938,11 @@
     const v = parseInt(raw, 10);
     return clamp(isNaN(v) ? MIN_QTY : v, MIN_QTY, MAX_QTY);
   }
-  function renderBuyQty(q){
-    buyQtyText.textContent = (q === 1) ? "ONE BAG" : (q + " BAGS");
-  }
   function setQty(n){
     const q = clamp(parseInt(n,10) || MIN_QTY, MIN_QTY, MAX_QTY);
     qtyInput.value = String(q);
     minusBtn.disabled = (q <= MIN_QTY);
     plusBtn.disabled  = (q >= MAX_QTY);
-    renderBuyQty(q);
     syncHeights();
   }
 

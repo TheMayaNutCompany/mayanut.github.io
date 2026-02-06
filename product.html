@@ -50,7 +50,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
 
-  <!-- Preloads -->
+  <!-- Preloads (match your existing filenames to avoid “glitched” images) -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg">
   <link rel="preload" as="image" href="mayanut-powder-maya-nut-brosimum-alicastrum.png">
   <link rel="preload" as="image" href="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg">
@@ -129,13 +129,7 @@
 
     *{margin:0;padding:0;box-sizing:border-box;}
     html{overflow-x:hidden;background:#fff;}
-    body{
-      font-family:var(--font-ui);
-      color:#0f172a;
-      background:#fff;
-      overflow-x:hidden;
-      -webkit-font-smoothing:antialiased;
-    }
+    body{font-family:var(--font-ui);color:#0f172a;background:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
     img{max-width:100%;display:block;height:auto;}
     a{text-decoration:none;color:inherit;}
     button,input{font-family:inherit;border:0;background:transparent;}
@@ -164,6 +158,7 @@
       pointer-events:none;
       opacity:.55;
     }
+
     .brand-group{
       display:flex;align-items:center;gap:12px;
       z-index:2;padding:0 16px;
@@ -219,11 +214,11 @@
       min-width:120px;
     }
 
-    /* HOME */
+    /* HOME button: same X, lowered to align with panel head (top bar) */
     .home-btn{
       position:absolute;
       left:10px;
-      top:12px;
+      top:12px; /* aligns with panel head */
       z-index:50;
       display:inline-flex;
       align-items:center;
@@ -252,8 +247,9 @@
       align-items:start;
     }
 
-    /* LEFT */
+    /* LEFT: image + thumbs */
     .left-col{display:flex;flex-direction:column;gap:10px;min-width:0;}
+
     .product-img{
       border-radius:18px;
       border:1px solid rgba(12,90,42,0.55);
@@ -265,6 +261,7 @@
     }
     .carousel-img{width:100%;height:100%;object-fit:cover;cursor:pointer;user-select:none;}
 
+    /* arrows must not “jump” */
     .car-arrow{
       position:absolute;top:50%;transform:translateY(-50%);
       width:42px;height:42px;border-radius:16px;
@@ -275,6 +272,7 @@
       cursor:pointer;user-select:none;
     }
     .car-arrow:hover{background:var(--hoverGrey);}
+    .car-arrow:active{filter:brightness(.98);}
     .car-arrow.left{left:10px;}
     .car-arrow.right{right:10px;}
     .car-arrow svg{width:18px;height:18px;stroke:#0b1220;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
@@ -289,6 +287,7 @@
       cursor:pointer;user-select:none;
     }
     .expand-btn:hover{background:var(--hoverGrey);}
+    .expand-btn:active{filter:brightness(.98);}
     .expand-btn svg{width:18px;height:18px;stroke:#0b1220;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
 
     .dots{
@@ -311,7 +310,7 @@
     .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
     .thumb[aria-current="true"]{outline:3px solid rgba(253,108,2,0.55);outline-offset:0px;}
 
-    /* RIGHT */
+    /* RIGHT: title/price + controls + short copy */
     .product-box{
       background:var(--pale);
       border-radius:18px;
@@ -344,24 +343,32 @@
       white-space:nowrap;
     }
 
-    /* LONGER DESCRIPTION (2 paragraphs; second shorter) */
-    .desc{
+    /* optional (kept subtle; toggle off easily) */
+    .title-line{
+      height:5px;
+      border-radius:999px;
+      background:linear-gradient(to right,#d8ff6a,#7ae78a,#066100);
+      opacity:.65;
+      margin-top:-2px;
+      display:none; /* set to block if you want it */
+    }
+
+    .subline{
       font-family:var(--font-pretty);
       font-style:italic;
       font-size:14px;
-      line-height:1.75;
+      line-height:1.6;
       color:rgba(12,90,42,0.95);
+      margin-top:2px;
     }
-    .desc p{margin:0 0 10px 0;}
-    .desc p:last-child{margin:0;}
 
-    /* Controls */
+    /* Controls moved ABOVE the bullets */
     .controls{
       display:grid;
       grid-template-columns: 1fr 220px;
       gap:12px;
       align-items:center;
-      margin-top:0px;
+      margin-top:6px;
     }
 
     .mini-rect, .qty-rect{
@@ -371,7 +378,6 @@
       transition: background .12s ease, filter .12s ease;
     }
     .mini-rect:hover{ background: var(--hoverGrey); }
-
     .mini-rect{
       height: 40px;
       display:flex;
@@ -454,7 +460,7 @@
     .qty-btn:hover{ background: var(--hoverGrey); }
     .qty-btn:active{ filter:brightness(.98); }
 
-    /* BUY BUTTON */
+    /* Single CTA (disabled for now) */
     .buy-now{
       height:54px;
       border-radius:16px;
@@ -467,80 +473,74 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      cursor:not-allowed;
+      cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color:transparent;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       margin-top:2px;
-      opacity:.70;
-      gap:10px;
-      padding:0 12px;
-      text-align:center;
-      line-height:1;
     }
-    .buy-dot{
-      width:8px;height:8px;border-radius:999px;background:#fff;display:inline-block;flex:0 0 auto;
+    .buy-now:hover{background:var(--orangePress);}
+    .buy-now:active{filter:brightness(.98);}
+    .buy-now[disabled]{
+      opacity:.65;
+      cursor:not-allowed;
     }
-    .buy-text{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}
-    .buy-qty{white-space:nowrap;}
+    .buy-now[disabled]:hover{background:var(--orange);}
 
-    /* ONE PARAGRAPH WITH 3 BULLETS (BUSIER) */
-    .use-paragraph{
+    /* BULLET SECTION: full width UNDER both columns */
+    .below{
+      grid-column: 1 / -1;
       margin-top:6px;
+      border-top:1px solid rgba(12,90,42,0.25);
+      padding-top:14px;
+    }
+    .bullets{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:10px;
+    }
+    .bullet{
       background:rgba(255,255,255,0.72);
       border:1px solid rgba(12,90,42,0.45);
       border-radius:16px;
-      padding:12px 12px 10px;
+      padding:12px;
     }
-    .use-paragraph .lead{
+    .bullet h3{
       font-weight:950;
-      letter-spacing:.08em;
+      letter-spacing:.10em;
       text-transform:uppercase;
       font-size:12px;
       color:#0b1220;
       margin-bottom:6px;
     }
-    .use-paragraph p{
+    .bullet p{
       font-family:var(--font-pretty);
       font-style:italic;
       font-size:14px;
       line-height:1.75;
       color:rgba(12,90,42,0.95);
-      margin:0;
-    }
-    .use-paragraph .bul{
-      font-style:normal; /* keeps bullets crisp while rest stays pretty */
-      font-family:var(--font-pretty);
-      font-size:14px;
-      line-height:1.75;
-      color:rgba(12,90,42,0.95);
-    }
-    .use-paragraph .bul strong{
-      font-weight:950;
-      font-style:normal;
-      color:#0b1220;
-    }
-    .use-paragraph .dot{
-      display:inline-block;
-      width:6px;height:6px;border-radius:999px;
-      background:rgba(12,90,42,0.75);
-      margin:0 10px 2px;
-      vertical-align:middle;
     }
 
-    /* CONTACT LINE (single thin line under bullets) */
-    .contact-line{
-      margin-top:10px;
-      padding-top:10px;
-      border-top:1px solid rgba(12,90,42,0.25);
+    .contact-row{
+      margin-top:12px;
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(12,90,42,0.45);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .contact-row .txt{
       font-family:var(--font-pretty);
       font-style:italic;
       font-size:14px;
       line-height:1.7;
       color:rgba(12,90,42,0.95);
-      text-align:center;
     }
-    .contact-line a{
+    .contact-row a{
       text-decoration:underline;
       text-underline-offset:3px;
       font-weight:950;
@@ -680,6 +680,7 @@
       .brand-text{font-size:28px;}
       .product-grid{grid-template-columns:1fr;}
       .controls{grid-template-columns:1fr;}
+      .bullets{grid-template-columns:1fr;}
       .thumbs{height:82px;}
       :root{ --thumbH: 82px; }
       .home-btn{top:10px;}
@@ -699,7 +700,7 @@
 
 <main class="wrap" aria-label="Product page">
   <section class="panel" aria-label="MayaNut flour product">
-
+    <!-- HOME aligned to top bar -->
     <a class="home-btn" href="index.html" aria-label="Home">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"></path></svg>
       <span>HOME</span>
@@ -710,9 +711,9 @@
       <div class="head-line" aria-hidden="true"></div>
     </div>
 
-    <div class="product-grid" id="productGrid">
+    <div class="product-grid">
       <!-- LEFT -->
-      <div class="left-col" id="leftCol" aria-label="Product media">
+      <div class="left-col" aria-label="Product media">
         <div class="product-img" aria-label="MayaNut image carousel">
           <img
             id="carImg"
@@ -758,25 +759,20 @@
       </div>
 
       <!-- RIGHT -->
-      <div class="product-box" id="productBox" aria-label="Product details and purchase">
+      <div class="product-box" aria-label="Product details and purchase">
         <div class="title-row" aria-label="Title and price">
           <h1>MayaNut™ Flour</h1>
           <div class="price" id="price">$9.99</div>
         </div>
 
-        <!-- Description -->
-        <div class="desc" aria-label="Product description">
-          <p>
-            MayaNut™ flour is a roasted seed flour made from the seeds of the Alicastrum tree
-            (<em>Brosimum alicastrum</em>). It has a smooth, warming, cocoa-like flavor that makes everyday
-            foods feel richer, heartier, and more satisfying.
-          </p>
-          <p>
-            Perfect in smoothies, açaí bowls, baking, beverages, and everyday cooking.
-          </p>
+        <!-- OPTIONAL line: hidden by default -->
+        <div class="title-line" id="titleLine" aria-hidden="true"></div>
+
+        <div class="subline">
+          Warm, roasted, cocoa-like flavor for smoothies, açaí bowls, baking, and everyday cooking.
         </div>
 
-        <!-- Controls -->
+        <!-- Controls ABOVE bullets -->
         <div class="controls" aria-label="Weight and quantity">
           <button class="mini-rect" id="weightBtn" type="button" aria-label="Select bag size">
             <span class="lbl">WEIGHT</span>
@@ -793,33 +789,37 @@
           </div>
         </div>
 
-        <!-- BUY button -->
-        <div class="buy-now" id="buyNowBtn" aria-label="Buy one bag now (coming soon)" role="button" aria-disabled="true" tabindex="0">
-          <span class="buy-text">
-            <strong>BUY</strong>
-            <span class="buy-dot" aria-hidden="true"></span>
-            <strong class="buy-qty" id="buyQtyText">ONE BAG</strong>
-            <strong>NOW</strong>
-          </span>
+        <button class="buy-now" id="buyNowBtn" type="button" aria-label="Buy now (coming soon)" disabled>
+          COMING SOON
+        </button>
+
+        <!-- Simplified copy -->
+        <div class="subline">
+          Made from seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>).
+          Naturally gluten-free. Not a nut—this is a roasted seed flour.
+        </div>
+      </div>
+
+      <!-- BELOW: bullets span full width under both columns -->
+      <div class="below" aria-label="Benefits and contact">
+        <div class="bullets" aria-label="Key points">
+          <div class="bullet">
+            <h3>Tastes Amazing</h3>
+            <p>Warm, roasted, cocoa-like flavor that makes foods feel richer and more satisfying.</p>
+          </div>
+          <div class="bullet">
+            <h3>Versatile</h3>
+            <p>Great in smoothies, açaí bowls, baking, drinks, and everyday meals.</p>
+          </div>
+          <div class="bullet">
+            <h3>Simple Ingredient</h3>
+            <p>Roasted seed flour from a tropical tree—an easy upgrade for your kitchen.</p>
+          </div>
         </div>
 
-        <!-- ONE paragraph, busier, with 3 bullets + usage + serving size -->
-        <div class="use-paragraph" aria-label="How to use and serving size">
-          <div class="lead">How to use it (quick ideas) + serving size</div>
-          <p class="bul">
-            <span class="dot" aria-hidden="true"></span><strong>Smoothies &amp; bowls:</strong> blend into smoothies or açaí bowls for a warm, cocoa-like roasted flavor and a more filling finish.
-            <span class="dot" aria-hidden="true"></span><strong>Baking &amp; breakfasts:</strong> stir into oatmeal, pancake batter, muffins, or banana bread for a cozy roasted note (pairs great with cinnamon and vanilla).
-            <span class="dot" aria-hidden="true"></span><strong>Everyday cooking:</strong> mix into drinks, sauces, or recipes as a simple “hearty boost” ingredient—easy to add without changing your routine.
-            <span class="dot" aria-hidden="true"></span><strong>Serving size:</strong> start with 1–2 tablespoons per serving and adjust to taste.
-          </p>
-
-          <!-- single thin line contact under bullets -->
-          <div class="contact-line">
-            Questions? Contact us:
-            <a href="mailto:info@mayanut.com?subject=Question%20about%20MayaNut%E2%84%A2%20Flour&body=Hello%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">
-              info@mayanut.com
-            </a>
-          </div>
+        <div class="contact-row" aria-label="Contact row">
+          <div class="txt">Have a question? <strong>Contact</strong> us:</div>
+          <a href="mailto:info@mayanut.com?subject=Hello%2C%20The%20MayaNut%20Company&body=Hello%2C%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">info@mayanut.com</a>
         </div>
       </div>
     </div>
@@ -917,10 +917,13 @@
 
 <script>
 (function(){
+  // If images "glitch" due to caching or load order, force refresh decode after src swaps.
   function safeSetImg(imgEl, src, alt){
     imgEl.alt = alt || "";
     imgEl.src = src;
-    if(imgEl.decode){ imgEl.decode().catch(()=>{}); }
+    if(imgEl.decode){
+      imgEl.decode().catch(()=>{});
+    }
   }
 
   // ---------- VARIANTS ----------
@@ -940,11 +943,10 @@
     priceEl.textContent = "$" + v.price.toFixed(2);
   }
 
-  // ---------- QTY (min 1 always) + updates BUY label ----------
+  // ---------- QTY (min 1 always) ----------
   const qtyInput = document.getElementById("qtyInput");
   const plusBtn = document.getElementById("plusBtn");
   const minusBtn = document.getElementById("minusBtn");
-  const buyQtyText = document.getElementById("buyQtyText");
 
   const MIN_QTY = 1;
   const MAX_QTY = 9;
@@ -955,22 +957,15 @@
     const v = parseInt(raw, 10);
     return clamp(isNaN(v) ? MIN_QTY : v, MIN_QTY, MAX_QTY);
   }
-  function renderBuyQty(q){
-    if(q === 1) buyQtyText.textContent = "ONE BAG";
-    else buyQtyText.textContent = q + " BAGS";
-  }
   function setQty(n){
     const q = clamp(parseInt(n,10) || MIN_QTY, MIN_QTY, MAX_QTY);
     qtyInput.value = String(q);
     minusBtn.disabled = (q <= MIN_QTY);
     plusBtn.disabled  = (q >= MAX_QTY);
-    renderBuyQty(q);
-    syncHeights();
   }
-
   qtyInput.addEventListener("input", ()=> setQty(getQty()));
-  qtyInput.addEventListener("blur",  ()=> setQty(getQty()));
-  plusBtn.addEventListener("click",  ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
+  qtyInput.addEventListener("blur", ()=> setQty(getQty()));
+  plusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
   minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>MIN_QTY) setQty(q-1); });
 
   // ---------- WEIGHT MENU ----------
@@ -1009,7 +1004,7 @@
       row.style.background = "rgba(233,255,214,0.95)";
       row.style.border = "1px solid rgba(12,90,42,0.55)";
       row.style.marginBottom = "6px";
-      row.addEventListener("click", ()=>{ onPick(opt); closeMenu(); syncHeights(); });
+      row.addEventListener("click", ()=>{ onPick(opt); closeMenu(); });
       m.appendChild(row);
     });
     if(m.lastChild) m.lastChild.style.marginBottom = "0";
@@ -1030,7 +1025,7 @@
     }
   });
 
-  // ---------- CAROUSEL + THUMBS ----------
+  // ---------- CAROUSEL + THUMBS (use your existing filenames) ----------
   const carImg = document.getElementById("carImg");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
@@ -1042,13 +1037,19 @@
   const thumb2 = document.getElementById("thumb2");
 
   const images = [
-    { src:"mayanut-powder-maya-nut-brosimum-alicastrum.png", alt:"MayaNut roasted seed flour powder made from the Alicastrum tree" },
-    { src:"maya-nut-mayanut-fruit-brosimum alicastrum.jpg".replace(" ","-"), alt:"Alicastrum tree fruit and seeds (Brosimum alicastrum)" },
-    { src:"mayanut-the-mayanut-comapny-logo.png", alt:"The MayaNut Company logo" }
+    {
+      src:"mayanut-powder-maya-nut-brosimum-alicastrum.png",
+      alt:"MayaNut roasted seed flour powder made from the Alicastrum tree"
+    },
+    {
+      src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
+      alt:"Alicastrum tree fruit and seeds (Brosimum alicastrum)"
+    },
+    {
+      src:"mayanut-the-mayanut-comapny-logo.png",
+      alt:"The MayaNut Company logo"
+    }
   ];
-  // NOTE: above line keeps your filename intact; if your file is exactly "maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
-  // it resolves to that same string.
-
   let idx = 0;
 
   const imgModal = document.getElementById("imgModal");
@@ -1070,7 +1071,6 @@
     if(imgModal.classList.contains("open")){
       safeSetImg(modalImg, images[idx].src, images[idx].alt);
     }
-    syncHeights();
   }
 
   prevBtn.addEventListener("click", ()=> setImage(idx - 1));
@@ -1100,29 +1100,10 @@
     }
   });
 
-  // ---------- HEIGHT SYNC ----------
-  const leftCol = document.getElementById("leftCol");
-  const productBox = document.getElementById("productBox");
-
-  function syncHeights(){
-    if(window.matchMedia("(max-width: 900px)").matches){
-      productBox.style.minHeight = "";
-      return;
-    }
-    window.requestAnimationFrame(()=>{
-      const leftH = leftCol.getBoundingClientRect().height;
-      productBox.style.minHeight = Math.ceil(leftH) + "px";
-    });
-  }
-
-  window.addEventListener("resize", syncHeights);
-  window.addEventListener("load", syncHeights);
-
   // INIT
   applyVariant("qtr");
   setQty(1);
   setImage(0);
-  syncHeights();
 })();
 </script>
 

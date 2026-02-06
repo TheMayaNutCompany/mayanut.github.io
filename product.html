@@ -214,11 +214,11 @@
       min-width:120px;
     }
 
-    /* HOME button: same X, lowered to align with panel head (top bar) */
+    /* HOME button */
     .home-btn{
       position:absolute;
       left:10px;
-      top:12px; /* aligns with panel head */
+      top:12px;
       z-index:50;
       display:inline-flex;
       align-items:center;
@@ -244,10 +244,10 @@
       padding:18px;
       background:#fff;
       border-top:1px solid rgba(12,90,42,0.25);
-      align-items:start;
+      align-items:stretch; /* make right column match left column height */
     }
 
-    /* LEFT: image + thumbs */
+    /* LEFT */
     .left-col{display:flex;flex-direction:column;gap:10px;min-width:0;}
 
     .product-img{
@@ -261,7 +261,6 @@
     }
     .carousel-img{width:100%;height:100%;object-fit:cover;cursor:pointer;user-select:none;}
 
-    /* arrows must not “jump” */
     .car-arrow{
       position:absolute;top:50%;transform:translateY(-50%);
       width:42px;height:42px;border-radius:16px;
@@ -310,7 +309,7 @@
     .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
     .thumb[aria-current="true"]{outline:3px solid rgba(253,108,2,0.55);outline-offset:0px;}
 
-    /* RIGHT: title/price + controls + short copy */
+    /* RIGHT */
     .product-box{
       background:var(--pale);
       border-radius:18px;
@@ -321,6 +320,7 @@
       gap:12px;
       box-shadow:0 10px 22px rgba(15,23,42,0.05);
       min-width:0;
+      height:100%; /* stretch to match left column */
     }
 
     .title-row{
@@ -343,32 +343,27 @@
       white-space:nowrap;
     }
 
-    /* optional (kept subtle; toggle off easily) */
-    .title-line{
-      height:5px;
-      border-radius:999px;
-      background:linear-gradient(to right,#d8ff6a,#7ae78a,#066100);
-      opacity:.65;
-      margin-top:-2px;
-      display:none; /* set to block if you want it */
+    .copy{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-top:2px;
     }
-
-    .subline{
+    .copy p{
       font-family:var(--font-pretty);
       font-style:italic;
       font-size:14px;
-      line-height:1.6;
+      line-height:1.75;
       color:rgba(12,90,42,0.95);
-      margin-top:2px;
+      margin:0;
     }
 
-    /* Controls moved ABOVE the bullets */
     .controls{
       display:grid;
       grid-template-columns: 1fr 220px;
       gap:12px;
       align-items:center;
-      margin-top:6px;
+      margin-top:2px;
     }
 
     .mini-rect, .qty-rect{
@@ -459,8 +454,10 @@
     }
     .qty-btn:hover{ background: var(--hoverGrey); }
     .qty-btn:active{ filter:brightness(.98); }
+    .qty-btn:disabled{opacity:.45;cursor:not-allowed;}
+    .qty-btn:disabled:hover{background:transparent;}
 
-    /* Single CTA (disabled for now) */
+    /* BUY BUTTON (BUY ○ ONE BAG NOW) */
     .buy-now{
       height:54px;
       border-radius:16px;
@@ -478,73 +475,71 @@
       -webkit-tap-highlight-color:transparent;
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       margin-top:2px;
+      gap:10px;
+      padding:0 14px;
     }
     .buy-now:hover{background:var(--orangePress);}
     .buy-now:active{filter:brightness(.98);}
-    .buy-now[disabled]{
-      opacity:.65;
-      cursor:not-allowed;
-    }
-    .buy-now[disabled]:hover{background:var(--orange);}
 
-    /* BULLET SECTION: full width UNDER both columns */
-    .below{
-      grid-column: 1 / -1;
-      margin-top:6px;
-      border-top:1px solid rgba(12,90,42,0.25);
-      padding-top:14px;
-    }
-    .bullets{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:10px;
-    }
-    .bullet{
-      background:rgba(255,255,255,0.72);
-      border:1px solid rgba(12,90,42,0.45);
-      border-radius:16px;
-      padding:12px;
-    }
-    .bullet h3{
+    .circle-text{
       font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      margin-bottom:6px;
-    }
-    .bullet p{
-      font-family:var(--font-pretty);
-      font-style:italic;
-      font-size:14px;
-      line-height:1.75;
-      color:rgba(12,90,42,0.95);
+      color:#fff;
+      display:inline-block;
+      transform: translateY(-1px);
     }
 
-    .contact-row{
-      margin-top:12px;
+    /* Bullet points under buy button (NOT boxes) */
+    .mini-bullets{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:6px;
+      padding:0;
+    }
+    .mini-bullets li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
       background:rgba(255,255,255,0.72);
       border:1px solid rgba(12,90,42,0.45);
-      border-radius:16px;
-      padding:12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+      border-radius:14px;
+      padding:10px 12px;
     }
-    .contact-row .txt{
+    .mini-bullets .dot{
+      width:10px;height:10px;border-radius:999px;
+      background:rgba(12,90,42,0.85);
+      margin-top:6px;
+      flex:0 0 auto;
+    }
+    .mini-bullets .txt{
       font-family:var(--font-pretty);
       font-style:italic;
       font-size:14px;
       line-height:1.7;
       color:rgba(12,90,42,0.95);
     }
-    .contact-row a{
-      text-decoration:underline;
-      text-underline-offset:3px;
+
+    /* Contact button under everything (inside right box) */
+    .contact-btn{
+      margin-top:auto; /* pushes to bottom to help match image/thumbnail height */
+      height:52px;
+      border-radius:16px;
+      border:2px solid rgba(12,90,42,0.55);
+      background:rgba(255,255,255,0.92);
+      color:#0b1220;
       font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 14px 30px rgba(15,23,42,0.06);
     }
+    .contact-btn:hover{background:var(--hoverGrey);}
+    .contact-btn:active{filter:brightness(.98);}
 
     /* IMAGE MODAL */
     .img-modal{position:fixed;inset:0;display:none;z-index:7000;}
@@ -680,10 +675,10 @@
       .brand-text{font-size:28px;}
       .product-grid{grid-template-columns:1fr;}
       .controls{grid-template-columns:1fr;}
-      .bullets{grid-template-columns:1fr;}
       .thumbs{height:82px;}
       :root{ --thumbH: 82px; }
       .home-btn{top:10px;}
+      .contact-btn{margin-top:12px;} /* don’t force push on mobile */
     }
   </style>
 </head>
@@ -700,7 +695,6 @@
 
 <main class="wrap" aria-label="Product page">
   <section class="panel" aria-label="MayaNut flour product">
-    <!-- HOME aligned to top bar -->
     <a class="home-btn" href="index.html" aria-label="Home">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"></path></svg>
       <span>HOME</span>
@@ -765,14 +759,16 @@
           <div class="price" id="price">$9.99</div>
         </div>
 
-        <!-- OPTIONAL line: hidden by default -->
-        <div class="title-line" id="titleLine" aria-hidden="true"></div>
-
-        <div class="subline">
-          Warm, roasted, cocoa-like flavor for smoothies, açaí bowls, baking, and everyday cooking.
+        <!-- Rebuilt: longer copy ABOVE weight, split into two paragraphs (second is ~two lines) -->
+        <div class="copy" aria-label="Product description">
+          <p>
+            Warm, roasted, cocoa-like flavor that makes smoothies, açaí bowls, baking, and everyday cooking feel richer and more satisfying—an easy, delicious upgrade you can use daily.
+          </p>
+          <p>
+            Made from seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>). Naturally gluten-free.
+          </p>
         </div>
 
-        <!-- Controls ABOVE bullets -->
         <div class="controls" aria-label="Weight and quantity">
           <button class="mini-rect" id="weightBtn" type="button" aria-label="Select bag size">
             <span class="lbl">WEIGHT</span>
@@ -789,38 +785,35 @@
           </div>
         </div>
 
-        <button class="buy-now" id="buyNowBtn" type="button" aria-label="Buy now (coming soon)" disabled>
-          COMING SOON
+        <!-- Updated CTA -->
+        <button class="buy-now" id="buyNowBtn" type="button" aria-label="Buy now">
+          <span id="buyLeft">BUY</span>
+          <span class="circle-text" aria-hidden="true">○</span>
+          <span id="buyRight">ONE BAG NOW</span>
         </button>
 
-        <!-- Simplified copy -->
-        <div class="subline">
-          Made from seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>).
-          Naturally gluten-free. Not a nut—this is a roasted seed flour.
-        </div>
-      </div>
+        <!-- Bullet points under the button (no dumb boxes underneath everything) -->
+        <ul class="mini-bullets" aria-label="Key points">
+          <li>
+            <span class="dot" aria-hidden="true"></span>
+            <span class="txt">Warm, roasted, cocoa-like flavor that makes foods feel richer and more satisfying.</span>
+          </li>
+          <li>
+            <span class="dot" aria-hidden="true"></span>
+            <span class="txt">Versatile: smoothies, açaí bowls, baking, drinks, and everyday meals.</span>
+          </li>
+          <li>
+            <span class="dot" aria-hidden="true"></span>
+            <span class="txt">Simple ingredient: roasted seed flour from a tropical tree—easy to use.</span>
+          </li>
+        </ul>
 
-      <!-- BELOW: bullets span full width under both columns -->
-      <div class="below" aria-label="Benefits and contact">
-        <div class="bullets" aria-label="Key points">
-          <div class="bullet">
-            <h3>Tastes Amazing</h3>
-            <p>Warm, roasted, cocoa-like flavor that makes foods feel richer and more satisfying.</p>
-          </div>
-          <div class="bullet">
-            <h3>Versatile</h3>
-            <p>Great in smoothies, açaí bowls, baking, drinks, and everyday meals.</p>
-          </div>
-          <div class="bullet">
-            <h3>Simple Ingredient</h3>
-            <p>Roasted seed flour from a tropical tree—an easy upgrade for your kitchen.</p>
-          </div>
-        </div>
-
-        <div class="contact-row" aria-label="Contact row">
-          <div class="txt">Have a question? <strong>Contact</strong> us:</div>
-          <a href="mailto:info@mayanut.com?subject=Hello%2C%20The%20MayaNut%20Company&body=Hello%2C%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">info@mayanut.com</a>
-        </div>
+        <!-- Contact button under everything -->
+        <a class="contact-btn"
+           href="mailto:info@mayanut.com?subject=Question%20about%20MayaNut%E2%84%A2%20Flour&body=Hello%20The%20MayaNut%20Company%2C%0A%0A"
+           aria-label="Questions? Contact us at info@mayanut.com">
+          QUESTIONS? CONTACT US
+        </a>
       </div>
     </div>
   </section>
@@ -917,7 +910,6 @@
 
 <script>
 (function(){
-  // If images "glitch" due to caching or load order, force refresh decode after src swaps.
   function safeSetImg(imgEl, src, alt){
     imgEl.alt = alt || "";
     imgEl.src = src;
@@ -943,6 +935,17 @@
     priceEl.textContent = "$" + v.price.toFixed(2);
   }
 
+  // ---------- BUY LABEL SYNC WITH QTY ----------
+  const buyRight = document.getElementById("buyRight");
+  function setBuyLabel(qty){
+    const q = Number(qty) || 1;
+    if(q === 1){
+      buyRight.textContent = "ONE BAG NOW";
+    }else{
+      buyRight.textContent = q + " BAGS NOW";
+    }
+  }
+
   // ---------- QTY (min 1 always) ----------
   const qtyInput = document.getElementById("qtyInput");
   const plusBtn = document.getElementById("plusBtn");
@@ -962,11 +965,19 @@
     qtyInput.value = String(q);
     minusBtn.disabled = (q <= MIN_QTY);
     plusBtn.disabled  = (q >= MAX_QTY);
+    setBuyLabel(q); // sync CTA with quantity
   }
   qtyInput.addEventListener("input", ()=> setQty(getQty()));
-  qtyInput.addEventListener("blur", ()=> setQty(getQty()));
-  plusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
+  qtyInput.addEventListener("blur",  ()=> setQty(getQty()));
+  plusBtn.addEventListener("click",  ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
   minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>MIN_QTY) setQty(q-1); });
+
+  // ---------- BUY CLICK (placeholder) ----------
+  const buyNowBtn = document.getElementById("buyNowBtn");
+  buyNowBtn.addEventListener("click", ()=>{
+    // Keep it harmless until checkout is wired
+    alert("Checkout is coming soon.");
+  });
 
   // ---------- WEIGHT MENU ----------
   const weightBtn = document.getElementById("weightBtn");
@@ -1025,7 +1036,7 @@
     }
   });
 
-  // ---------- CAROUSEL + THUMBS (use your existing filenames) ----------
+  // ---------- CAROUSEL + THUMBS ----------
   const carImg = document.getElementById("carImg");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
@@ -1037,18 +1048,9 @@
   const thumb2 = document.getElementById("thumb2");
 
   const images = [
-    {
-      src:"mayanut-powder-maya-nut-brosimum-alicastrum.png",
-      alt:"MayaNut roasted seed flour powder made from the Alicastrum tree"
-    },
-    {
-      src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
-      alt:"Alicastrum tree fruit and seeds (Brosimum alicastrum)"
-    },
-    {
-      src:"mayanut-the-mayanut-comapny-logo.png",
-      alt:"The MayaNut Company logo"
-    }
+    { src:"mayanut-powder-maya-nut-brosimum-alicastrum.png", alt:"MayaNut roasted seed flour powder made from the Alicastrum tree" },
+    { src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",   alt:"Alicastrum tree fruit and seeds (Brosimum alicastrum)" },
+    { src:"mayanut-the-mayanut-comapny-logo.png",            alt:"The MayaNut Company logo" }
   ];
   let idx = 0;
 

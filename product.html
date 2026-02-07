@@ -222,7 +222,7 @@
     /* HOME: white, far-left, aligned with panel head title */
     .home-btn{
       position:absolute;
-      left:12px;
+      left:8px;
       top:66px;
       z-index:80;
       display:inline-flex;
@@ -296,7 +296,13 @@
     .dot{width:8px;height:8px;border-radius:999px;background:rgba(12,90,42,0.30);}
     .dot.active{background:rgba(12,90,42,0.85);}
 
-    .thumbs{height:var(--thumbH);display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;}
+    /* thumbs + filler to remove the “blank” under the row */
+    .thumbs{
+      height:var(--thumbH);
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+    }
     .thumb{
       height:var(--thumbH);
       border-radius:16px;border:1px solid rgba(12,90,42,0.55);
@@ -306,6 +312,30 @@
     }
     .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
     .thumb[aria-current="true"]{outline:3px solid rgba(253,108,2,0.55);outline-offset:0px;}
+
+    /* NEW: quick filler card under thumbs so left column feels finished */
+    .thumb-fill{
+      border-radius:16px;
+      border:1px solid rgba(12,90,42,0.25);
+      background:rgba(233,255,214,0.55);
+      padding:10px 12px;
+      box-shadow:0 10px 22px rgba(15,23,42,0.03);
+      font-family:var(--font-pretty);
+      font-style:italic;
+      font-size:13px;
+      line-height:1.65;
+      color:rgba(12,90,42,0.95);
+    }
+    .thumb-fill strong{
+      font-family:var(--font-ui);
+      font-style:normal;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#0b1220;
+      display:block;
+      margin-bottom:6px;
+    }
 
     /* RIGHT */
     .product-box{
@@ -320,21 +350,26 @@
       min-width:0;
     }
 
-    /* --- NEW: ORANGE CHECK CIRCLES (refined) --- */
+    /* BADGES: evenly spaced (not left aligned) */
     .badge-row{
       display:flex;
       align-items:center;
-      gap:14px;
-      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:nowrap;
+      width:100%;
       margin-top:2px;
       margin-bottom:-2px;
     }
     .badge{
-      display:inline-flex;
+      flex:1 1 0;
+      display:flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       user-select:none;
       white-space:nowrap;
+      min-width:0;
     }
     .badge .circle{
       width:28px;height:28px;
@@ -361,6 +396,8 @@
       text-transform:uppercase;
       font-size:12px;
       color:#0b1220;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .title-row{
@@ -566,81 +603,6 @@
       font-weight:950;
     }
 
-    /* NEWSLETTER STRIP */
-    .newsletter{
-      max-width:1100px;
-      margin:16px auto 0;
-      padding:0 18px;
-    }
-    .newsletter-inner{
-      border-radius:18px;
-      border:1px solid rgba(12,90,42,0.45);
-      background:rgba(233,255,214,0.85);
-      box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      padding:14px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .newsletter-text{
-      min-width:220px;
-      font-family:var(--font-pretty);
-      font-style:italic;
-      font-size:14px;
-      line-height:1.7;
-      color:rgba(12,90,42,0.95);
-      flex:1 1 320px;
-    }
-    .newsletter-form{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex:1 1 380px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
-    .nl-input{
-      height:44px;
-      border-radius:14px;
-      border:1px solid rgba(12,90,42,0.45);
-      background:rgba(255,255,255,0.98);
-      padding:0 12px;
-      min-width:220px;
-      flex:1 1 240px;
-      outline:none;
-      font-weight:900;
-      letter-spacing:.02em;
-      color:#0b1220;
-    }
-    .nl-btn{
-      height:44px;
-      border-radius:14px;
-      border:2px solid rgba(255,255,255,0.95);
-      background:var(--orange);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      padding:0 16px;
-      cursor:pointer;
-      user-select:none;
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
-      -webkit-tap-highlight-color:transparent;
-      flex:0 0 auto;
-    }
-    .nl-btn:hover{background:var(--orangePress);}
-    .nl-note{
-      width:100%;
-      font-family:var(--font-pretty);
-      font-style:italic;
-      font-size:12px;
-      color:rgba(12,90,42,0.85);
-      margin-top:2px;
-      text-align:right;
-    }
-
     /* IMAGE MODAL */
     .img-modal{position:fixed;inset:0;display:none;z-index:7000;}
     .img-modal.open{display:block;}
@@ -737,6 +699,29 @@
       width:fit-content;
       margin-left:auto;
     }
+
+    /* Newsletter link style in footer list */
+    .footer-link.newsletter{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .footer-link.newsletter .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:22px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(253,108,2,0.95);
+      border:1px solid rgba(255,255,255,0.75);
+      font-size:10px;
+      font-weight:950;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      box-shadow:0 10px 22px rgba(15,23,42,0.10);
+    }
+
     .social-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end;}
     .icon-pill{
       width:34px;height:34px;
@@ -778,10 +763,18 @@
       .thumbs{height:82px;}
       :root{ --thumbH: 82px; }
 
-      .home-btn{top:58px; left:10px;}
+      .home-btn{top:58px; left:6px;}
       .under-buy .serving{white-space:normal;overflow:visible;text-overflow:clip;}
-      .nl-note{text-align:left;}
-      .badge-row{gap:10px;}
+
+      .badge-row{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:10px 12px;
+      }
+      .badge{
+        flex:0 0 auto;
+        justify-content:center;
+      }
       .badge .txt{font-size:11px;letter-spacing:.06em;}
     }
   </style>
@@ -856,12 +849,20 @@
             <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo thumbnail">
           </button>
         </div>
+
+        <!-- FIX FOR THE BLANK SPACE:
+             This small “fill” card visually completes the left column under the thumbs.
+             If you later add review stars or a short caption, this is where it belongs. -->
+        <div class="thumb-fill" aria-label="Left column fill">
+          <strong>Product preview</strong>
+          Images show the MayaNut™ flour powder, the Alicastrum fruit/seeds, and brand mark.
+          More photos and packaging previews will be added at launch.
+        </div>
       </div>
 
       <!-- RIGHT -->
       <div class="product-box" id="productBox" aria-label="Product details and purchase">
 
-        <!-- BADGES: best here (above title) for instant scanning -->
         <div class="badge-row" aria-label="Dietary badges">
           <div class="badge" aria-label="Vegan">
             <div class="circle" aria-hidden="true">
@@ -943,20 +944,6 @@
   </section>
 </main>
 
-<!-- NEWSLETTER STRIP (placeholder handler; wire destination later) -->
-<section class="newsletter" aria-label="Newsletter signup">
-  <div class="newsletter-inner">
-    <div class="newsletter-text">
-      <strong>Newsletter:</strong> Get launch updates, restocks, and early access notifications for MayaNut™ flour.
-    </div>
-    <form class="newsletter-form" id="newsletterForm" autocomplete="on">
-      <input class="nl-input" id="nlEmail" type="email" name="email" placeholder="Enter your email" aria-label="Email address">
-      <button class="nl-btn" type="submit" aria-label="Sign up for newsletter">SIGN UP</button>
-      <div class="nl-note" id="nlNote">No destination yet—this is a placeholder form.</div>
-    </form>
-  </div>
-</section>
-
 <footer class="footer" aria-label="Footer">
   <div class="footer-inner">
     <div class="footer-left" aria-label="Brand">
@@ -975,6 +962,9 @@
         <a class="footer-link" href="about.html">About</a>
         <a class="footer-link" href="recipes.html">Recipes</a>
         <a class="footer-link" href="gallery.html">Gallery</a>
+        <a class="footer-link newsletter" href="#" onclick="return false;" aria-label="Newsletter (coming soon)">
+          Newsletter <span class="pill">Soon</span>
+        </a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">SUPPORT</div>
@@ -983,6 +973,9 @@
         <a class="footer-link" href="privacy.html">Privacy</a>
         <a class="footer-link" href="sitemap.html">Sitemap</a>
         <a class="footer-link" href="contact.html">Contact</a>
+        <a class="footer-link newsletter" href="#" onclick="return false;" aria-label="Newsletter (coming soon)">
+          Newsletter <span class="pill">Soon</span>
+        </a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">FOLLOW US</div>
@@ -1095,22 +1088,6 @@
   qtyInput.addEventListener("blur",  ()=> setQty(getQty()));
   plusBtn.addEventListener("click",  ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
   minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>MIN_QTY) setQty(q-1); });
-
-  // NEWSLETTER placeholder
-  const newsletterForm = document.getElementById("newsletterForm");
-  const nlEmail = document.getElementById("nlEmail");
-  const nlNote = document.getElementById("nlNote");
-
-  newsletterForm.addEventListener("submit", (e)=>{
-    e.preventDefault();
-    const email = (nlEmail.value || "").trim();
-    if(!email){
-      nlNote.textContent = "Please enter an email (destination will be connected later).";
-      return;
-    }
-    nlNote.textContent = "Thanks! Destination will be connected later.";
-    nlEmail.value = "";
-  });
 
   // WEIGHT MENU
   const weightBtn = document.getElementById("weightBtn");
@@ -1236,7 +1213,7 @@
     }
   });
 
-  // HEIGHT SYNC
+  // HEIGHT SYNC (keeps right column visually aligned with left)
   const leftCol = document.getElementById("leftCol");
   const productBox = document.getElementById("productBox");
 

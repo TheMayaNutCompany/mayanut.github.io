@@ -219,16 +219,16 @@
       min-width:120px;
     }
 
-    /* HOME: white, far-left, aligned with panel head title */
+    /* HOME: upper-left on white, fully left-aligned, level with panel head */
     .home-btn{
       position:absolute;
-      left:8px;
-      top:66px;
-      z-index:80;
+      left:18px;           /* fully left-aligned to wrap padding */
+      top:20px;            /* aligns with top of panel head bar */
+      z-index:90;
       display:inline-flex;
       align-items:center;
       gap:8px;
-      height:28px;
+      height:30px;
       padding:0;
       cursor:pointer;
       -webkit-tap-highlight-color:transparent;
@@ -296,7 +296,6 @@
     .dot{width:8px;height:8px;border-radius:999px;background:rgba(12,90,42,0.30);}
     .dot.active{background:rgba(12,90,42,0.85);}
 
-    /* thumbs + filler to remove the “blank” under the row */
     .thumbs{
       height:var(--thumbH);
       display:grid;
@@ -313,28 +312,21 @@
     .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
     .thumb[aria-current="true"]{outline:3px solid rgba(253,108,2,0.55);outline-offset:0px;}
 
-    /* NEW: quick filler card under thumbs so left column feels finished */
-    .thumb-fill{
-      border-radius:16px;
-      border:1px solid rgba(12,90,42,0.25);
-      background:rgba(233,255,214,0.55);
-      padding:10px 12px;
-      box-shadow:0 10px 22px rgba(15,23,42,0.03);
+    /* LEFT contact line (used to equalize height without bulky filler) */
+    .left-contact{
+      margin-top:0px;
+      padding:10px 0 0 0;
+      border-top:1px solid rgba(12,90,42,0.25);
       font-family:var(--font-pretty);
       font-style:italic;
-      font-size:13px;
-      line-height:1.65;
+      font-size:14px;
+      line-height:1.7;
       color:rgba(12,90,42,0.95);
     }
-    .thumb-fill strong{
-      font-family:var(--font-ui);
-      font-style:normal;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:#0b1220;
-      display:block;
-      margin-bottom:6px;
+    .left-contact a{
+      text-decoration:underline;
+      text-underline-offset:3px;
+      font-weight:950;
     }
 
     /* RIGHT */
@@ -350,27 +342,28 @@
       min-width:0;
     }
 
-    /* BADGES: evenly spaced (not left aligned) */
+    /* BADGES: left / center / right */
     .badge-row{
-      display:flex;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
-      flex-wrap:nowrap;
       width:100%;
       margin-top:2px;
       margin-bottom:-2px;
     }
     .badge{
-      flex:1 1 0;
       display:flex;
       align-items:center;
-      justify-content:center;
       gap:8px;
       user-select:none;
       white-space:nowrap;
       min-width:0;
     }
+    .badge.left{justify-content:flex-start;}
+    .badge.center{justify-content:center;}
+    .badge.right{justify-content:flex-end;}
+
     .badge .circle{
       width:28px;height:28px;
       border-radius:999px;
@@ -420,7 +413,6 @@
       white-space:nowrap;
     }
 
-    /* DESCRIPTION */
     .desc{
       font-family:var(--font-pretty);
       font-style:italic;
@@ -448,7 +440,6 @@
       width:100%;
     }
     .mini-rect:hover{ background: var(--hoverGrey); }
-
     .mini-rect{
       height: 40px;
       display:flex;
@@ -532,7 +523,7 @@
     .qty-btn:hover{ background: var(--hoverGrey); }
     .qty-btn:active{ filter:brightness(.98); }
 
-    /* BUY button */
+    /* BUY button (coming soon look) */
     .buy-now{
       height:54px;
       border-radius:16px;
@@ -700,7 +691,7 @@
       margin-left:auto;
     }
 
-    /* Newsletter link style in footer list */
+    /* Newsletter button/link under WHO WE ARE / SUPPORT */
     .footer-link.newsletter{
       display:inline-flex;
       align-items:center;
@@ -760,21 +751,17 @@
       .brand-text{font-size:28px;}
       .product-grid{grid-template-columns:1fr;}
       .controls{grid-template-columns:1fr;}
-      .thumbs{height:82px;}
+      .home-btn{top:20px; left:18px;}
       :root{ --thumbH: 82px; }
 
-      .home-btn{top:58px; left:6px;}
       .under-buy .serving{white-space:normal;overflow:visible;text-overflow:clip;}
 
       .badge-row{
-        flex-wrap:wrap;
-        justify-content:center;
-        gap:10px 12px;
+        grid-template-columns:1fr;
+        justify-items:center;
+        gap:10px;
       }
-      .badge{
-        flex:0 0 auto;
-        justify-content:center;
-      }
+      .badge.left,.badge.center,.badge.right{justify-content:center;}
       .badge .txt{font-size:11px;letter-spacing:.06em;}
     }
   </style>
@@ -850,13 +837,12 @@
           </button>
         </div>
 
-        <!-- FIX FOR THE BLANK SPACE:
-             This small “fill” card visually completes the left column under the thumbs.
-             If you later add review stars or a short caption, this is where it belongs. -->
-        <div class="thumb-fill" aria-label="Left column fill">
-          <strong>Product preview</strong>
-          Images show the MayaNut™ flour powder, the Alicastrum fruit/seeds, and brand mark.
-          More photos and packaging previews will be added at launch.
+        <!-- Left-side contact line used to balance height -->
+        <div class="left-contact" id="leftContact">
+          Questions? Contact us:
+          <a href="mailto:info@mayanut.com?subject=Question%20about%20MayaNut%E2%84%A2%20Flour&body=Hello%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">
+            info@mayanut.com
+          </a>
         </div>
       </div>
 
@@ -864,21 +850,21 @@
       <div class="product-box" id="productBox" aria-label="Product details and purchase">
 
         <div class="badge-row" aria-label="Dietary badges">
-          <div class="badge" aria-label="Vegan">
+          <div class="badge left" aria-label="Vegan">
             <div class="circle" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg>
             </div>
             <div class="txt">Vegan</div>
           </div>
 
-          <div class="badge" aria-label="Gluten-free">
+          <div class="badge center" aria-label="Gluten-free">
             <div class="circle" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg>
             </div>
             <div class="txt">Gluten-free</div>
           </div>
 
-          <div class="badge" aria-label="Paleo-friendly">
+          <div class="badge right" aria-label="Paleo-friendly">
             <div class="circle" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg>
             </div>
@@ -887,7 +873,7 @@
         </div>
 
         <div class="title-row" aria-label="Title and price">
-          <h1>MayaNut™ Flour</h1>
+          <h1 id="productTitle">MayaNut™ Flour — ¼ lb</h1>
           <div class="price" id="price">$9.99</div>
         </div>
 
@@ -921,9 +907,9 @@
           BUY NOW
         </div>
 
-        <div class="under-buy" aria-label="Suggested usage and quick uses">
-          <p class="serving" title="Suggested usage: start with 1–2 tablespoons per smoothie, bowl, or recipe. Adjust to your liking.">
-            <strong>Suggested usage:</strong> start with 1–2 tablespoons per smoothie, bowl, or recipe. Adjust to your liking.
+        <div class="under-buy" aria-label="Recommendation and quick uses">
+          <p class="serving" title="Recommendation: add 1–2 tbsp. per smoothie, bowl, or recipe. Adjust to taste.">
+            <strong>Recommendation:</strong> add 1–2 tbsp. per smoothie, bowl, or recipe. Adjust to taste.
           </p>
           <ul aria-label="Quick use bullets">
             <li>Perfect in smoothies, açaí bowls, oatmeal, coffee, and baking</li>
@@ -932,7 +918,7 @@
           </ul>
         </div>
 
-        <div class="contact-line">
+        <div class="contact-line" id="rightContact">
           Questions? Contact us:
           <a href="mailto:info@mayanut.com?subject=Question%20about%20MayaNut%E2%84%A2%20Flour&body=Hello%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com">
             info@mayanut.com
@@ -1049,16 +1035,19 @@
 
   // VARIANTS
   const WEIGHTS = [
-    { key:"qtr", label:"Quarter-Pound Bag", price:9.99 },
-    { key:"one", label:"1 LB Bag", price:34.99 }
+    { key:"qtr", label:"Quarter-Pound Bag", price:9.99, titleSuffix:"¼ lb" },
+    { key:"one", label:"1 LB Bag",         price:34.99, titleSuffix:"1 lb" }
   ];
+
   const priceEl = document.getElementById("price");
   const weightVal = document.getElementById("weightVal");
+  const productTitle = document.getElementById("productTitle");
 
   function applyVariant(key){
     const v = WEIGHTS.find(x=>x.key===key) || WEIGHTS[0];
     weightVal.textContent = v.label;
     priceEl.textContent = "$" + v.price.toFixed(2);
+    productTitle.textContent = "MayaNut\u2122 Flour \u2014 " + v.titleSuffix;
     syncHeights();
   }
 
@@ -1213,7 +1202,7 @@
     }
   });
 
-  // HEIGHT SYNC (keeps right column visually aligned with left)
+  // HEIGHT SYNC (left + right equal height)
   const leftCol = document.getElementById("leftCol");
   const productBox = document.getElementById("productBox");
 

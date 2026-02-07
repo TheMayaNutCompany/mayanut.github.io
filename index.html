@@ -125,11 +125,11 @@
       --hoverGrey:#cfd3d9;
 
       --font-ui:"Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      /* match product-page paragraph font */
       --font-pretty:"Palatino Linotype", Palatino, Georgia, serif;
 
       --padX:16px;
       --gap:14px;
+
       --tile:340px;
       --copyW:440px;
       --prodW:300px;
@@ -189,7 +189,7 @@
       padding: 0 14px;
       width: 100%;
       max-width: 1100px;
-      white-space:nowrap; /* one line */
+      white-space:nowrap;
     }
     .brand-logo{
       width:78px; height:78px; object-fit:contain;
@@ -298,7 +298,6 @@
       overflow:hidden;
     }
 
-    /* checkmarks row */
     .diet-row{
       display:flex;
       align-items:center;
@@ -352,7 +351,6 @@
       margin-top: 2px;
     }
 
-    /* ✅ Pale-green paragraphs match product page font */
     .tile-copy p{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -364,36 +362,6 @@
       margin-top: 2px;
     }
 
-    .copy-actions{
-      margin-top: auto;
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:12px;
-      padding-top: 6px;
-    }
-    .about-cta{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height: 44px;
-      padding: 0 14px;
-      border-radius: 16px;
-      background: var(--orange);
-      border: 2px solid rgba(255,255,255,0.95);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size: 12px;
-      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
-      transition: transform .08s ease, background .10s ease;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .about-cta:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .about-cta:active{ transform: translateY(0px); }
-
     /* PRODUCT CARD */
     .mini-card{
       width: var(--prodW);
@@ -402,7 +370,7 @@
       border-radius:18px;
       background:#fff;
       border: 1px solid rgba(12,90,42,0.45);
-      overflow:hidden;
+      overflow: hidden; /* keep clean edges */
       display:flex;
       flex-direction:column;
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
@@ -445,6 +413,7 @@
       position:relative;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
+      flex: 0 0 auto;
     }
     .mini-img{
       width:100%;
@@ -453,14 +422,14 @@
       object-position:center 40%;
       border-bottom: 1px solid rgba(12,90,42,0.45);
       filter: saturate(1.03) contrast(1.03);
-      flex: 0 0 auto;
       background:#fff;
     }
 
+    /* ✅ lower-left label */
     .view-full{
       position:absolute;
       left:10px;
-      top:10px;
+      bottom:10px;
       display:inline-flex;
       align-items:center;
       gap:8px;
@@ -476,6 +445,7 @@
       color: rgba(12,90,42,0.95);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       user-select:none;
+      pointer-events:none; /* click still goes to link */
     }
     .view-full svg{
       width:14px;height:14px;
@@ -487,19 +457,19 @@
       flex:0 0 auto;
     }
 
+    /* ✅ FIX: allow bottom actions to fit (no cut off) */
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 16px;
+      padding: 10px 12px 12px;
       display:flex;
       flex-direction:column;
       flex: 1 1 auto;
       min-height:0;
     }
-
     .mini-actions{
       display:grid;
-      grid-template-columns: 112px 1fr;
-      grid-template-rows: 34px 34px;
+      grid-template-columns: 118px 1fr; /* tiny extra space */
+      grid-template-rows: 36px 36px;    /* slightly taller */
       gap:10px;
       align-items:stretch;
       padding: 10px;
@@ -508,10 +478,9 @@
       background: rgba(255,255,255,0.35);
     }
 
-    /* ✅ BUY NOW (two lines), no cart references anywhere */
     .buy-btn{
       grid-row: 1 / span 2;
-      width: 112px;
+      width: 118px;
       border-radius:16px;
       border: 2px solid rgba(255,255,255,0.95);
       background: var(--orange);
@@ -528,6 +497,7 @@
       text-transform: uppercase;
       line-height:1;
       text-decoration:none;
+      min-height: 82px; /* ensure fully visible */
     }
     .buy-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .buy-btn:active{ transform: translateY(0px); }
@@ -540,11 +510,12 @@
       border:1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.98);
       transition: background .12s ease;
+      height: 36px;
+      min-height: 36px;
     }
     .mini-rect:hover{ background: var(--hoverGrey); }
 
     .mini-rect{
-      height: 34px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -577,7 +548,6 @@
     }
 
     .qty-rect{
-      height: 34px;
       display:flex;
       align-items:stretch;
       overflow:hidden;
@@ -603,7 +573,7 @@
     .qty-seg.mid{ cursor:text; padding:0 2px; }
     .qty-input{
       width: 100%;
-      height: 32px;
+      height: 34px;
       border:none;
       outline:none;
       background:transparent;
@@ -668,6 +638,21 @@
       background:#fff;
     }
 
+    /* ✅ Pale-green inner, white outer for cards */
+    .card-shell{
+      border-radius:18px;
+      border: var(--softBorder);
+      background:#fff; /* outer stays white */
+      box-shadow:0 10px 22px rgba(15,23,42,0.05);
+      padding: 14px;
+    }
+    .card-inner{
+      border-radius:16px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: var(--pale); /* inner pale green */
+      padding: 14px;
+    }
+
     /* EXPLORE */
     .links-wrap{ margin-top:14px; }
     .links-grid{
@@ -676,21 +661,12 @@
       gap: 12px;
       padding: 14px;
     }
-    .link-card{
-      border-radius:18px;
-      border: var(--softBorder);
-      background:#fff;
-      box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      padding: 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
     .link-title{
       font-weight:950;
       font-size:18px;
       color:#0b1220;
       letter-spacing:.02em;
+      margin-bottom: 8px;
     }
     .link-desc{
       font-family: var(--font-pretty);
@@ -699,18 +675,15 @@
       line-height:1.8;
       font-weight: 850;
       font-size: 14px;
+      margin-bottom: 12px;
     }
 
-    /* ✅ Orange button on pale-green bar (outside stays white) */
-    .link-btn-bar{
-      margin-top:auto;
-      background: var(--pale);
-      border: 1px solid rgba(12,90,42,0.55);
-      border-radius: 16px;
-      padding: 10px;
+    .link-btn-row{
       display:flex;
       align-items:center;
       justify-content:flex-start;
+      gap:10px;
+      margin-top: 8px;
     }
     .link-btn-orange{
       display:inline-flex;
@@ -758,24 +731,6 @@
       line-height:1.8;
       font-size: 14px;
     }
-    .faq-more{
-      margin-top: 6px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:44px;
-      padding:0 14px;
-      border-radius:16px;
-      background: var(--orange);
-      border: 2px solid rgba(255,255,255,0.95);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
-    }
-    .faq-more:hover{ background: var(--orangePress); }
 
     /* FOOTER */
     .footer{
@@ -879,7 +834,6 @@
 
     /* MOBILE */
     @media(max-width:980px){
-      /* keep header on ONE line, logo left of text, no cut-off */
       .brand-group{
         max-width: 100%;
         padding: 0 10px;
@@ -979,10 +933,6 @@
                 With a warm, roasted, cocoa-like flavor, it’s delicious in smoothies, açaí bowls, baked goods,
                 everyday cooking, and more.
               </p>
-
-              <div class="copy-actions" aria-label="Learn more links">
-                <a class="about-cta" href="about.html" aria-label="About MayaNut">About MayaNut™</a>
-              </div>
             </div>
 
             <article class="mini-card" data-variant="qtr" aria-label="MayaNut flour ¼ lb product">
@@ -993,13 +943,13 @@
 
               <a class="mini-img-link" href="product.html" aria-label="View MayaNut flour product page">
                 <span class="view-full" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M9 3H3v6"></path>
                     <path d="M3 3l7 7"></path>
                     <path d="M15 21h6v-6"></path>
                     <path d="M21 21l-7-7"></path>
                   </svg>
-                  Click to View Full Product
+                  *Click to See Full Product
                 </span>
                 <img
                   class="mini-img"
@@ -1076,7 +1026,8 @@
                 <p>
                   We love MayaNut™ because it’s simply delicious. Its warm, roasted flavor makes foods taste richer, more satisfying,
                   and more filling—turning light meals into something you truly crave. Perfect in smoothies, açaí bowls, baked goods,
-                  and everyday cooking, MayaNut™ is an easy, nourishing ingredient you’ll want to use again and again.
+                  and everyday cooking, MayaNut™ is an easy, nourishing ingredient you’ll want to use again and again. It’s the kind of
+                  simple staple that upgrades your routine without changing how you cook—just add a little, and everything tastes deeper.
                 </p>
               </div>
               <div class="about-media">
@@ -1103,21 +1054,27 @@
 
         <div class="section-body">
           <div class="links-grid">
-            <div class="link-card" aria-label="Recipes">
-              <div class="link-title">Recipes</div>
-              <div class="link-desc">Easy ways to use MayaNut™ flour (powder) in smoothies, açaí bowls, baked goods, and everyday foods.</div>
-              <div class="link-btn-bar">
-                <a class="link-btn-orange" href="recipes.html" aria-label="Go to Recipes">View Recipes</a>
+
+            <div class="card-shell" aria-label="Recipes">
+              <div class="card-inner">
+                <div class="link-title">Recipes</div>
+                <div class="link-desc">Easy ways to use MayaNut™ flour (powder) in smoothies, açaí bowls, baked goods, and everyday foods.</div>
+                <div class="link-btn-row">
+                  <a class="link-btn-orange" href="recipes.html" aria-label="Go to Recipes">View Recipes</a>
+                </div>
               </div>
             </div>
 
-            <div class="link-card" aria-label="Gallery">
-              <div class="link-title">Gallery</div>
-              <div class="link-desc">Photos from our South Florida farm and our journey growing the Alicastrum tree (Brosimum alicastrum).</div>
-              <div class="link-btn-bar">
-                <a class="link-btn-orange" href="gallery.html" aria-label="Go to Gallery">View Gallery</a>
+            <div class="card-shell" aria-label="Gallery">
+              <div class="card-inner">
+                <div class="link-title">Gallery</div>
+                <div class="link-desc">Photos from our South Florida farm and our journey growing the Alicastrum tree (Brosimum alicastrum).</div>
+                <div class="link-btn-row">
+                  <a class="link-btn-orange" href="gallery.html" aria-label="Go to Gallery">View Gallery</a>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -1130,15 +1087,19 @@
         </div>
 
         <div class="faq-body">
-          <div class="faq-item">
-            <div class="faq-q">Is MayaNut™ flour gluten-free?</div>
-            <div class="faq-a">MayaNut™ flour is naturally gluten-free. Always check packaging and handling practices for your specific dietary needs.</div>
+          <div class="card-shell" aria-label="FAQ preview box">
+            <div class="card-inner">
+              <div class="faq-item">
+                <div class="faq-q">Is MayaNut™ flour gluten-free?</div>
+                <div class="faq-a">MayaNut™ flour is naturally gluten-free. Always check packaging and handling practices for your specific dietary needs.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-q">What does it taste like?</div>
+                <div class="faq-a">A warm, roasted, cocoa-like flavor—delicious in smoothies, açaí bowls, baked goods, and everyday cooking.</div>
+              </div>
+              <a class="link-btn-orange" href="faq.html" aria-label="View full FAQ">View Full FAQ</a>
+            </div>
           </div>
-          <div class="faq-item">
-            <div class="faq-q">What does it taste like?</div>
-            <div class="faq-a">A warm, roasted, cocoa-like flavor—delicious in smoothies, açaí bowls, baked goods, and everyday cooking.</div>
-          </div>
-          <a class="faq-more" href="faq.html" aria-label="View full FAQ">View Full FAQ</a>
         </div>
       </section>
 
@@ -1215,7 +1176,7 @@
 
   <script>
     (function(){
-      // Weight + Quantity (no cart logic)
+      // Weight + Quantity
       const MAX_QTY = 9;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
       const WEIGHTS = [
@@ -1242,10 +1203,10 @@
         const m = document.createElement("div");
         m.style.pointerEvents = "auto";
         m.style.position = "fixed";
-        m.style.left = Math.min(window.innerWidth - 220, Math.max(10, Math.round(r.left))) + "px";
+        m.style.left = Math.min(window.innerWidth - 240, Math.max(10, Math.round(r.left))) + "px";
         m.style.top  = Math.round(r.bottom + 6) + "px";
         m.style.zIndex = "2600";
-        m.style.minWidth = "190px";
+        m.style.minWidth = "210px";
         m.style.padding = "6px";
         m.style.borderRadius = "12px";
         m.style.border = "1px solid rgba(12,90,42,0.55)";

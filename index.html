@@ -16,7 +16,6 @@
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.mayanut.com/sitemap.xml">
 
-  <!-- ✅ Updated keyword set (as requested) -->
   <meta name="keywords" content="
   MayaNut flour, MayaNut™ flour, MayaNut powder, MayaNut™ powder,
   maya nut, mayanut, mayanut flour, mayanut powder,
@@ -108,31 +107,44 @@
       --tile:340px;
       --copyW:440px;
       --prodW:300px;
+
+      /* ✅ Scrollbar colors that FOLLOW the user's OS/browser color-scheme */
+      --scrollTrack:#e8edf2;      /* light mode track */
+      --scrollThumb:#9aa5b1;      /* light mode thumb */
+      --scrollThumbHover:#7b8794; /* light mode hover */
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --scrollTrack:#0b1220;      /* dark mode track */
+        --scrollThumb:#6b7280;      /* dark mode thumb */
+        --scrollThumbHover:#9aa5b1; /* dark mode hover */
+      }
+      html{ background:#0b1220; }
+      body{ background:#0b1220; }
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* =========================================================
-       ✅ SCROLLBAR BEHAVIOR:
-       - Track/background stays SYSTEM DEFAULT (light/dark per user setting)
-       - Thumb stays your chosen color
-       NOTE: We intentionally do NOT set scrollbar-color or any track styling.
-       ========================================================= */
-    ::-webkit-scrollbar{ width:12px; }
-    ::-webkit-scrollbar-thumb{
-      background:#9aa5b1;             /* keep your thumb color */
-      border-radius:999px;
-      border:3px solid transparent;    /* reveals the system track behind it */
-      background-clip: padding-box;
-    }
-    ::-webkit-scrollbar-thumb:hover{ background:#7b8794; }
-
+    /* ✅ Firefox */
     html{
+      scrollbar-color: var(--scrollThumb) var(--scrollTrack);
+      scrollbar-width: auto;
       overflow-x:hidden;
       overflow-y:auto;
       background:#fff;
     }
+
+    /* ✅ Chromium/WebKit (Chrome, Edge, Brave, Safari where supported) */
+    ::-webkit-scrollbar{ width:12px; }
+    ::-webkit-scrollbar-track{ background: var(--scrollTrack); }
+    ::-webkit-scrollbar-thumb{
+      background: var(--scrollThumb);
+      border-radius: 999px;
+      border: 3px solid var(--scrollTrack);
+    }
+    ::-webkit-scrollbar-thumb:hover{ background: var(--scrollThumbHover); }
 
     body{
       min-height:100%;
@@ -207,6 +219,10 @@
     }
 
     main{ padding-top: 18px; background:#fff; }
+    @media (prefers-color-scheme: dark){
+      main{ background:#0b1220; }
+    }
+
     .content-wrapper{
       padding: 18px var(--padX) 12px;
       max-width: 1200px;
@@ -225,6 +241,13 @@
       display:flex;
       flex-direction:column;
     }
+    @media (prefers-color-scheme: dark){
+      .panel{
+        background:#0f172a;
+        box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+      }
+    }
+
     .panel-head{
       background: var(--green);
       border-bottom: 1px solid rgba(255,255,255,0.18);
@@ -409,8 +432,6 @@
       -webkit-tap-highlight-color: transparent;
       flex: 0 0 auto;
     }
-
-    /* ✅ Slightly taller image (reclaimed from button padding) */
     .mini-img{
       width:100%;
       height: 188px;
@@ -421,7 +442,6 @@
       background:#fff;
     }
 
-    /* ✅ Lower-left label */
     .view-full{
       position:absolute;
       left:10px;
@@ -442,10 +462,9 @@
       pointer-events:none;
     }
 
-    /* ✅ Less vertical room above/below buttons; keeps product height equal to left tiles */
     .mini-bot{
       background: var(--pale);
-      padding: 10px 12px 10px; /* was taller */
+      padding: 10px 12px 10px;
       display:flex;
       flex-direction:column;
       flex: 1 1 auto;
@@ -457,9 +476,9 @@
       display:grid;
       grid-template-columns: 118px 1fr;
       grid-template-rows: 36px 36px;
-      gap:12px;           /* even spacing */
+      gap:12px;
       align-items:stretch;
-      margin-top: 8px;    /* slightly tighter */
+      margin-top: 8px;
     }
 
     .buy-btn{
@@ -803,7 +822,7 @@
       text-align:left;
     }
 
-    /* TABLET: keep 3-up row */
+    /* TABLET */
     @media (max-width: 1024px) and (min-width: 721px){
       :root{ --tile: 300px; --copyW: 360px; --prodW: 280px; }
       .intro-row{ grid-template-columns: var(--tile) var(--copyW) var(--prodW); }
@@ -811,8 +830,7 @@
       .tile-copy{ width: var(--copyW); height: var(--tile); }
       .mini-card{ width: var(--prodW); height: var(--tile); }
       .mini-img{ height: 172px; }
-      .mini-bot{ padding: 10px 12px 10px; }
-      .mini-actions{ gap:10px; margin-top:8px; }
+      .mini-actions{ gap:10px; }
     }
 
     /* MOBILE */
@@ -844,10 +862,7 @@
         align-items:start;
         padding: 18px 16px 14px;
       }
-      .footer-left{
-        padding-left: 0;
-        align-items:flex-start;
-      }
+      .footer-left{ padding-left: 0; align-items:flex-start; }
       .footer-right{
         grid-template-columns: 1fr;
         justify-items:end;
@@ -858,7 +873,6 @@
       }
       .footer-left a{ width:100%; }
       .footer-logo{ width: 220px; margin: 6px auto 0; }
-
       .copyright-inner{ padding-left: 16px; padding-right: 16px; text-align:left; }
     }
 
@@ -886,7 +900,8 @@
       <!-- INTRODUCING -->
       <section class="panel" aria-label="Introducing MayaNut">
         <div class="panel-head">
-          <div class="panel-title">Introducing MayaNut™</div>
+          <!-- ✅ Title updated -->
+          <div class="panel-title">Introducing MayaNut™ Flour</div>
           <div class="head-line" aria-hidden="true"></div>
         </div>
 
@@ -926,8 +941,10 @@
                 Naturally rich in fiber, MayaNut™ supports normal digestive function as part of a balanced diet.
               </p>
 
+              <!-- ✅ Paragraph updated exactly as requested -->
               <p>
-                With a warm, roasted, cocoa-like flavor, it’s delicious in smoothies, açaí bowls, baked goods, and everyday recipes you're sure to love.
+                A bold, roasted cocoa-like flavor, it’s delicious in smoothies, açaí bowls, baked goods, and everyday recipes you're sure to love.
+                We will have our product MayaNut(tm) available for sale soon, thank you for your patience.
               </p>
             </div>
 
@@ -992,7 +1009,7 @@
                 <h3>How It All Started...</h3>
                 <p>
                   In 1923, Herbert “Buba” Humphreys, alongside his father Harry Humphreys, founded Kennesaw Fruit Company, harvesting oranges,
-                  pineapples, watermelons, and other crops. In 2025, Bubba’s great-grandson, August Kokus, founded The MayaNut Company, focused
+                  pineapples, watermelons, and other crops. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused
                   exclusively on cultivating the Alicastrum tree (Brosimum alicastrum) for the production of MayaNut™ flour—continuing his family’s
                   Florida farming legacy.
                 </p>

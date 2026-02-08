@@ -95,10 +95,10 @@
       --copyW:440px;
       --prodW:300px;
 
-      /* ✅ Darker scrollbar to match product page */
+      /* ✅ scrollbar to match your product page style (grey track + darker thumb) */
       --scrollTrack:#e8edf2;
-      --scrollThumb:#4b5563;       /* darker */
-      --scrollThumbHover:#2f3945;  /* darker hover */
+      --scrollThumb:#7b8794;
+      --scrollThumbHover:#5f6b76;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -243,7 +243,7 @@
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
       gap: var(--gap);
       padding: 16px;
-      align-items: start;
+      align-items: stretch;
     }
 
     .tile-img{
@@ -330,6 +330,7 @@
       margin-top: 2px;
     }
 
+    /* ✅ visible blank line by splitting into two <p> */
     .tile-copy p{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -345,8 +346,7 @@
     /* PRODUCT CARD */
     .mini-card{
       width: var(--prodW);
-      min-height: var(--tile);
-      height: auto; /* ✅ allow content to fit cleanly (no clipping) */
+      height: var(--tile);
       justify-self: end;
       border-radius:18px;
       background:#fff;
@@ -396,10 +396,9 @@
       -webkit-tap-highlight-color: transparent;
       flex: 0 0 auto;
     }
-    /* ✅ reduce image height so controls never get clipped in a 340px tile */
     .mini-img{
       width:100%;
-      height: 186px;
+      height: 200px;
       object-fit: cover;
       object-position:center 40%;
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -440,22 +439,22 @@
 
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 16px; /* ✅ tightened so actions always fit */
+      padding: 16px 12px 22px; /* ✅ more bottom padding to lift buttons up */
       display:flex;
       flex-direction:column;
       flex: 1 1 auto;
       min-height:0;
     }
 
-    /* ✅ Fix: stable grid sizing (prevents “glitching” / overflow) */
+    /* ✅ Fix: buttons lifted away from bottom & not glued to outline */
     .mini-actions{
       display:grid;
       grid-template-columns: 118px 1fr;
       grid-template-rows: 36px 36px;
-      gap:10px;
+      gap:12px;
       align-items:stretch;
-      margin-top: 10px;
-      margin-bottom: 0;
+      margin-top: 12px;
+      margin-bottom: 10px; /* ✅ extra lift from bottom */
     }
 
     .buy-btn{
@@ -473,11 +472,10 @@
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       text-transform: uppercase;
       line-height:1;
-      min-height: 82px;
+      min-height: 84px;
       cursor:not-allowed;
       opacity: 0.82;
       pointer-events:none; /* unclickable */
-      flex: 0 0 auto;
     }
     .buy-big{ font-weight: 950; letter-spacing: .10em; font-size: 18px; }
     .buy-small{ margin-top: 4px; font-weight: 900; letter-spacing: .14em; font-size: 10px; opacity: 0.95; }
@@ -499,7 +497,6 @@
       gap:8px;
       cursor:pointer;
       user-select:none;
-      overflow:hidden;
     }
     .mini-rect .lbl{
       font-weight:900;
@@ -507,7 +504,6 @@
       text-transform:uppercase;
       font-size:10px;
       color:#0b1220;
-      flex: 0 0 auto;
     }
     .mini-rect .val{
       font-weight:900;
@@ -516,8 +512,6 @@
       white-space:nowrap;
       flex:1 1 auto;
       text-align:right;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
     .mini-rect svg{
       width:14px; height:14px;
@@ -527,12 +521,7 @@
       flex:0 0 auto;
     }
 
-    .qty-rect{
-      display:flex;
-      align-items:stretch;
-      overflow:hidden;
-      user-select:none;
-    }
+    .qty-rect{ display:flex; align-items:stretch; overflow:hidden; user-select:none; }
     .qty-seg{
       flex: 1 1 0;
       display:flex;
@@ -550,18 +539,10 @@
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
     .qty-seg.disabled{ color: var(--hoverGrey); cursor:default; pointer-events:none; }
     .qty-seg:not(.disabled):hover{ background: var(--hoverGrey); }
-
-    .qty-seg.mid{
-      cursor:text;
-      padding:0;
-      display:flex;
-      align-items:stretch;  /* ✅ ensures input fills height */
-      justify-content:center;
-    }
+    .qty-seg.mid{ cursor:text; padding:0 2px; }
     .qty-input{
       width: 100%;
-      height: 100%;
-      min-height: 36px;
+      height: 34px;
       border:none;
       outline:none;
       background:transparent;
@@ -569,11 +550,7 @@
       font-weight:950;
       font-size:16px;
       color:#000;
-      line-height: 36px; /* ✅ prevents vertical “jump” */
-      -moz-appearance: textfield;
     }
-    .qty-input::-webkit-outer-spin-button,
-    .qty-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
 
     /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
@@ -811,8 +788,9 @@
       .intro-row{ grid-template-columns: var(--tile) var(--copyW) var(--prodW); }
       .tile-img{ width: var(--tile); height: var(--tile); }
       .tile-copy{ width: var(--copyW); height: var(--tile); }
-      .mini-card{ width: var(--prodW); min-height: var(--tile); height:auto; }
-      .mini-img{ height: 168px; } /* scaled for 300px tile */
+      .mini-card{ width: var(--prodW); height: var(--tile); }
+      .mini-bot{ padding-bottom: 24px; } /* extra safety on tablet */
+      .mini-actions{ margin-bottom: 12px; }
     }
 
     /* MOBILE */
@@ -1023,7 +1001,7 @@
                 <p>
                   We love MayaNut™ because it’s simply delicious. Its warm, roasted flavor makes foods taste richer, more satisfying,
                   and more filling—turning light meals into something you truly crave. Perfect in smoothies, açaí bowls, baked goods,
-                  and everyday cooking, MayaNut™ is an easy pantry staple you’ll keep coming back to week after week, all year long.
+                  and everyday cooking, MayaNut™ is an easy pantry staple you’ll keep coming back to all year.
                 </p>
               </div>
               <div class="about-media">

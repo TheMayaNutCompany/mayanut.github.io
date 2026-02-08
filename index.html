@@ -95,10 +95,10 @@
       --copyW:440px;
       --prodW:300px;
 
-      /* ✅ Scrollbar: lighter thumb + darker track (background) */
-      --scrollTrack:#cfd6de;        /* darker background */
-      --scrollThumb:#aeb7c2;        /* lighter “usual” thumb */
-      --scrollThumbHover:#8e99a6;   /* slightly darker hover */
+      /* ✅ scrollbar to match your product page style (grey track + darker thumb) */
+      --scrollTrack:#e8edf2;
+      --scrollThumb:#7b8794;
+      --scrollThumbHover:#5f6b76;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -243,7 +243,7 @@
       grid-template-columns: var(--tile) var(--copyW) var(--prodW);
       gap: var(--gap);
       padding: 16px;
-      align-items: start;
+      align-items: stretch;
     }
 
     .tile-img{
@@ -330,6 +330,7 @@
       margin-top: 2px;
     }
 
+    /* ✅ visible blank line by splitting into two <p> */
     .tile-copy p{
       font-family: var(--font-pretty);
       font-style: italic;
@@ -345,8 +346,7 @@
     /* PRODUCT CARD */
     .mini-card{
       width: var(--prodW);
-      min-height: var(--tile);
-      height: auto;
+      height: var(--tile);
       justify-self: end;
       border-radius:18px;
       background:#fff;
@@ -398,7 +398,7 @@
     }
     .mini-img{
       width:100%;
-      height: 186px;
+      height: 200px;
       object-fit: cover;
       object-position:center 40%;
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -406,44 +406,55 @@
       background:#fff;
     }
 
-    /* ✅ Lower-left overlay text on product image */
     .view-full{
       position:absolute;
       left:10px;
       bottom:10px;
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       padding:6px 10px;
       border-radius:12px;
-      background: rgba(0,0,0,0.42);
-      border: 1px solid rgba(255,255,255,0.22);
-      box-shadow: 0 10px 22px rgba(15,23,42,0.12);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(12,90,42,0.35);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
       font-size: 12px;
-      color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.55);
+      color: rgba(12,90,42,0.95);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       user-select:none;
       pointer-events:none;
+    }
+    .view-full svg{
+      width:14px;height:14px;
+      stroke: rgba(12,90,42,0.95);
+      fill:none;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      flex:0 0 auto;
     }
 
     .mini-bot{
       background: var(--pale);
-      padding: 12px 12px 16px;
+      padding: 16px 12px 22px; /* ✅ more bottom padding to lift buttons up */
       display:flex;
       flex-direction:column;
       flex: 1 1 auto;
       min-height:0;
     }
 
+    /* ✅ Fix: buttons lifted away from bottom & not glued to outline */
     .mini-actions{
       display:grid;
       grid-template-columns: 118px 1fr;
       grid-template-rows: 36px 36px;
-      gap:10px;
+      gap:12px;
       align-items:stretch;
-      margin-top: 10px;
-      margin-bottom: 0;
+      margin-top: 12px;
+      margin-bottom: 10px; /* ✅ extra lift from bottom */
     }
 
     .buy-btn{
@@ -461,11 +472,10 @@
       box-shadow:0 14px 30px rgba(15,23,42,0.10);
       text-transform: uppercase;
       line-height:1;
-      min-height: 82px;
+      min-height: 84px;
       cursor:not-allowed;
       opacity: 0.82;
-      pointer-events:none;
-      flex: 0 0 auto;
+      pointer-events:none; /* unclickable */
     }
     .buy-big{ font-weight: 950; letter-spacing: .10em; font-size: 18px; }
     .buy-small{ margin-top: 4px; font-weight: 900; letter-spacing: .14em; font-size: 10px; opacity: 0.95; }
@@ -487,7 +497,6 @@
       gap:8px;
       cursor:pointer;
       user-select:none;
-      overflow:hidden;
     }
     .mini-rect .lbl{
       font-weight:900;
@@ -495,7 +504,6 @@
       text-transform:uppercase;
       font-size:10px;
       color:#0b1220;
-      flex: 0 0 auto;
     }
     .mini-rect .val{
       font-weight:900;
@@ -504,8 +512,6 @@
       white-space:nowrap;
       flex:1 1 auto;
       text-align:right;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
     .mini-rect svg{
       width:14px; height:14px;
@@ -515,12 +521,7 @@
       flex:0 0 auto;
     }
 
-    .qty-rect{
-      display:flex;
-      align-items:stretch;
-      overflow:hidden;
-      user-select:none;
-    }
+    .qty-rect{ display:flex; align-items:stretch; overflow:hidden; user-select:none; }
     .qty-seg{
       flex: 1 1 0;
       display:flex;
@@ -538,18 +539,10 @@
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
     .qty-seg.disabled{ color: var(--hoverGrey); cursor:default; pointer-events:none; }
     .qty-seg:not(.disabled):hover{ background: var(--hoverGrey); }
-
-    .qty-seg.mid{
-      cursor:text;
-      padding:0;
-      display:flex;
-      align-items:stretch;
-      justify-content:center;
-    }
+    .qty-seg.mid{ cursor:text; padding:0 2px; }
     .qty-input{
       width: 100%;
-      height: 100%;
-      min-height: 36px;
+      height: 34px;
       border:none;
       outline:none;
       background:transparent;
@@ -557,11 +550,7 @@
       font-weight:950;
       font-size:16px;
       color:#000;
-      line-height: 36px;
-      -moz-appearance: textfield;
     }
-    .qty-input::-webkit-outer-spin-button,
-    .qty-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
 
     /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
@@ -799,8 +788,9 @@
       .intro-row{ grid-template-columns: var(--tile) var(--copyW) var(--prodW); }
       .tile-img{ width: var(--tile); height: var(--tile); }
       .tile-copy{ width: var(--copyW); height: var(--tile); }
-      .mini-card{ width: var(--prodW); min-height: var(--tile); height:auto; }
-      .mini-img{ height: 168px; }
+      .mini-card{ width: var(--prodW); height: var(--tile); }
+      .mini-bot{ padding-bottom: 24px; } /* extra safety on tablet */
+      .mini-actions{ margin-bottom: 12px; }
     }
 
     /* MOBILE */
@@ -826,6 +816,7 @@
       .about-grid{ grid-template-columns:1fr; }
       .links-grid{ grid-template-columns:1fr; }
 
+      /* footer not glitched */
       .footer-inner{
         grid-template-columns: 1fr 1fr;
         gap: 14px;
@@ -926,7 +917,15 @@
               </div>
 
               <a class="mini-img-link" href="product.html" aria-label="View MayaNut flour product page">
-                <span class="view-full" aria-hidden="true">*Click to view full product</span>
+                <span class="view-full" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 3H3v6"></path>
+                    <path d="M3 3l7 7"></path>
+                    <path d="M15 21h6v-6"></path>
+                    <path d="M21 21l-7-7"></path>
+                  </svg>
+                  *Click to See Full Product
+                </span>
                 <img
                   class="mini-img"
                   src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
@@ -1000,10 +999,9 @@
               <div class="about-box">
                 <h3>We Love MayaNut™!</h3>
                 <p>
-                  Made from the seed of the rediscovered Alicastrum tree (Brosimum alicastrum), MayaNut™ seed-flour is genuinely delicious.
-                  Its warm, roasted flavor adds richness and depth, making foods more satisfying and naturally filling—turning light meals into
-                  something you truly crave. Perfect for smoothies, açaí bowls, baked goods, or everyday cooking, MayaNut™ is an easy pantry staple
-                  you’ll reach for week after week, all year long, in every season.
+                  We love MayaNut™ because it’s simply delicious. Its warm, roasted flavor makes foods taste richer, more satisfying,
+                  and more filling—turning light meals into something you truly crave. Perfect in smoothies, açaí bowls, baked goods,
+                  and everyday cooking, MayaNut™ is an easy pantry staple you’ll keep coming back to all year.
                 </p>
               </div>
               <div class="about-media">

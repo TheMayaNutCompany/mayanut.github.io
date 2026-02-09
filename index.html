@@ -105,11 +105,12 @@ botanical food, indigenous food">
       --padX:16px;
       --gap:14px;
 
+      /* Desktop widths tuned so product never clips */
       --tile:340px;
-      --copyW:440px;
+      --copyW:420px;  /* ✅ slightly narrower so product fits */
       --prodW:300px;
 
-      /* Scrollbar: adapt to user's browser theme (light/dark) */
+      /* Scrollbar: adapt to user's browser theme */
       --sbW: 12px;
       --sbTrackL: #e8edf2;
       --sbThumbL: #9aa5b1;
@@ -164,7 +165,7 @@ botanical food, indigenous food">
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* HEADER (true vertical centering + tabs lowered) */
+    /* ===== HEADER: true vertical centering + tabs tight under logo/text ===== */
     .site-header{
       width:100%;
       background-color: var(--green);
@@ -172,16 +173,15 @@ botanical food, indigenous food">
       background-repeat:no-repeat;
       background-position:center center;
       background-size:118% auto;
-      min-height: 184px;
-      padding: 20px 0 18px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap: 14px;
+      height: 190px;            /* ✅ fixed height = true centering */
+      padding: 0;               /* ✅ no padding to shift center */
       position:relative;
       overflow:hidden;
       border-bottom: 1px solid rgba(12,90,42,0.55);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
     .site-header::after{
       content:""; position:absolute; inset:0;
@@ -195,16 +195,27 @@ botanical food, indigenous food">
       opacity:.55;
     }
 
-    .brand-group{
+    /* Header stack is centered as a unit */
+    .header-stack{
       position:relative;
+      z-index:3;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;               /* ✅ tabs close under brand */
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 14px;
+      transform: translateY(0px); /* leave neutral; adjust if needed */
+    }
+
+    .brand-group{
       display:flex;
       align-items:center;
       justify-content:center;
       gap:8px;
-      z-index:2;
-      padding: 0 14px;
       width: 100%;
-      max-width: 1100px;
       white-space:nowrap;
     }
     .brand-logo{
@@ -226,33 +237,21 @@ botanical food, indigenous food">
       text-align:center;
     }
 
-    /* MENU */
-    .subnav-wrap{
-      position:relative;
-      z-index:3;
-      width:100%;
-      max-width: 1100px;
-      padding: 0 14px;
-      display:flex;
-      justify-content:center;
-      margin-top: 4px; /* ✅ lowered slightly */
-    }
     .subnav{
       width: 100%;
       max-width: 920px;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
-      background: transparent;
     }
     .subnav a{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height: 36px;
-      padding: 0 16px;
+      height: 34px;               /* ✅ slightly smaller */
+      padding: 0 14px;
       border-radius: 12px;
       font-weight: 950;
       letter-spacing: .10em;
@@ -326,11 +325,10 @@ botanical food, indigenous food">
     /* INTRO */
     .intro-row{
       display:grid;
-      grid-template-columns: var(--tile) var(--copyW) var(--prodW);
+      grid-template-columns: var(--tile) minmax(360px, var(--copyW)) var(--prodW);
       gap: var(--gap);
       padding: 16px;
       align-items: stretch;
-      justify-content: space-between;
     }
 
     .tile-img{
@@ -352,7 +350,7 @@ botanical food, indigenous food">
     }
 
     .tile-copy{
-      width: var(--copyW);
+      width: 100%;
       height: var(--tile);
       border-radius:16px;
       border: 1px solid rgba(12,90,42,0.55);
@@ -363,21 +361,21 @@ botanical food, indigenous food">
       flex-direction:column;
       gap: 10px;
       overflow:hidden;
-      justify-self:center;
     }
 
+    /* ✅ Fix checkmark overlap everywhere: use grid, no translate hacks */
     .diet-row{
-      display:flex;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
       align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      flex-wrap:nowrap;
       width:100%;
       padding-top: 2px;
     }
     .diet-pill{
       display:flex;
       align-items:center;
+      justify-content:center;
       gap: 8px;
       white-space:nowrap;
       font-weight:950;
@@ -385,11 +383,10 @@ botanical food, indigenous food">
       text-transform:uppercase;
       font-size:13px;
       color:#0b1220;
-      width: 33.333%;
       min-width:0;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; }
-    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-30px); }
+    .diet-pill:nth-child(2){ justify-content:center; }
     .diet-pill:nth-child(3){ justify-content:flex-end; }
 
     .diet-icon{
@@ -431,7 +428,7 @@ botanical food, indigenous food">
     }
     .tile-copy p + p{ margin-top: 14px; }
 
-    /* PRODUCT CARD (desktop + base) */
+    /* PRODUCT CARD */
     .mini-card{
       width: var(--prodW);
       height: var(--tile);
@@ -520,10 +517,9 @@ botanical food, indigenous food">
       justify-content:flex-end;
     }
 
-    /* ✅ product controls: hardened against tablet glitches */
     .mini-actions{
       display:grid;
-      grid-template-columns: minmax(108px, 118px) 1fr; /* ✅ prevents squeeze/overflow */
+      grid-template-columns: 108px 1fr; /* ✅ smaller base to avoid tablet bloat */
       grid-template-rows: 36px 36px;
       gap:12px;
       align-items:stretch;
@@ -532,7 +528,7 @@ botanical food, indigenous food">
 
     .buy-btn{
       grid-row: 1 / span 2;
-      width: 100%;
+      width: 108px;
       border-radius:16px;
       border: 2px solid rgba(255,255,255,0.95);
       background: var(--orange);
@@ -550,7 +546,7 @@ botanical food, indigenous food">
       opacity: 0.82;
       pointer-events:none;
     }
-    .buy-big{ font-weight: 950; letter-spacing: .10em; font-size: 18px; }
+    .buy-big{ font-weight: 950; letter-spacing: .10em; font-size: 17px; }
     .buy-small{ margin-top: 4px; font-weight: 900; letter-spacing: .14em; font-size: 10px; opacity: 0.95; }
 
     .mini-rect, .qty-rect{
@@ -559,11 +555,10 @@ botanical food, indigenous food">
       background: rgba(255,255,255,0.98);
       transition: background .12s ease;
       height: 36px;
-      min-height: 36px;
-      overflow:hidden; /* ✅ prevents inner elements from “spilling” */
+      min-height: 36px;         /* ✅ prevents cut-off */
+      overflow:hidden;
     }
 
-    /* ✅ official dropdown (no overlap / no negative margins) */
     .weight-wrap{
       display:flex;
       align-items:center;
@@ -595,9 +590,10 @@ botanical food, indigenous food">
       text-align-last: right;
       -webkit-appearance: none;
       appearance: none;
-      padding: 0 28px 0 8px; /* ✅ room for arrow */
+      padding: 0 28px 0 8px;
       cursor:pointer;
       min-width: 0;
+      line-height: 34px;        /* ✅ prevents top cut */
     }
     .weight-arrow{
       position:absolute;
@@ -658,15 +654,7 @@ botanical food, indigenous food">
       gap: 12px;
       padding: 16px;
     }
-    .about-card{
-      background: transparent;
-      border: 0;
-      box-shadow: none;
-      padding: 0;
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-    }
+    .about-card{ background: transparent; border: 0; box-shadow: none; padding: 0; display:flex; flex-direction:column; gap: 12px; }
     .about-box{
       background: var(--pale);
       border: 1px solid rgba(12,90,42,0.55);
@@ -678,21 +666,8 @@ botanical food, indigenous food">
       text-shadow:0 1px 0 rgba(255,255,255,0.55);
       box-shadow: 0 10px 22px rgba(15,23,42,0.05);
     }
-    .about-box h3{
-      font-family: var(--font-ui);
-      font-style: normal;
-      font-weight: 950;
-      font-size: 18px;
-      letter-spacing:.02em;
-      color:#0b1220;
-      margin-bottom: 8px;
-    }
-    .about-box p{
-      font-weight: 850;
-      font-size: 14px;
-      line-height: 1.85;
-      margin:0;
-    }
+    .about-box h3{ font-family: var(--font-ui); font-style: normal; font-weight: 950; font-size: 18px; letter-spacing:.02em; color:#0b1220; margin-bottom: 8px; }
+    .about-box p{ font-weight: 850; font-size: 14px; line-height: 1.85; margin:0; }
     .about-media img{
       width: 100%;
       height: 320px;
@@ -706,207 +681,96 @@ botanical food, indigenous food">
     }
 
     /* EXPLORE / FAQ */
-    .pale-box{
-      border-radius:18px;
-      border: var(--softBorder);
-      background: var(--pale);
-      box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      padding: 14px;
-    }
+    .pale-box{ border-radius:18px; border: var(--softBorder); background: var(--pale); box-shadow:0 10px 22px rgba(15,23,42,0.05); padding: 14px; }
     .links-wrap{ margin-top:14px; }
-    .links-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 16px;
-    }
-    .link-title{
-      font-weight:950;
-      font-size:18px;
-      color:#0b1220;
-      letter-spacing:.02em;
-      margin-bottom: 8px;
-    }
-    .link-desc{
-      font-family: var(--font-pretty);
-      font-style: italic;
-      color: rgba(12,90,42,0.95);
-      line-height:1.8;
-      font-weight: 850;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
+    .links-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+    .link-title{ font-weight:950; font-size:18px; color:#0b1220; letter-spacing:.02em; margin-bottom: 8px; }
+    .link-desc{ font-family: var(--font-pretty); font-style: italic; color: rgba(12,90,42,0.95); line-height:1.8; font-weight: 850; font-size: 14px; margin-bottom: 12px; }
     .link-btn-orange{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:44px;
-      padding:0 14px;
-      border-radius:16px;
-      background: var(--orange);
-      border: 2px solid rgba(255,255,255,0.95);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
-      transition: background .12s ease, transform .08s ease;
-      -webkit-tap-highlight-color: transparent;
-      user-select:none;
+      display:inline-flex; align-items:center; justify-content:center; height:44px; padding:0 14px;
+      border-radius:16px; background: var(--orange); border: 2px solid rgba(255,255,255,0.95);
+      color:#fff; font-weight:950; letter-spacing:.10em; text-transform:uppercase; font-size:12px;
+      box-shadow:0 14px 30px rgba(15,23,42,0.10); transition: background .12s ease, transform .08s ease;
+      -webkit-tap-highlight-color: transparent; user-select:none;
     }
     .link-btn-orange:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .link-btn-orange:active{ transform: translateY(0px); }
 
     .faq-wrap{ margin-top:14px; }
     .faq-body{ padding: 16px; }
-    .faq-item{
-      border-radius:14px;
-      border: 1px solid rgba(12,90,42,0.35);
-      background: rgba(255,255,255,0.75);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
+    .faq-item{ border-radius:14px; border: 1px solid rgba(12,90,42,0.35); background: rgba(255,255,255,0.75); padding: 12px 14px; margin-bottom: 10px; }
     .faq-q{ font-weight:950; color:#0b1220; letter-spacing:.02em; margin-bottom:6px; }
-    .faq-a{
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      color: rgba(12,90,42,0.95);
-      line-height:1.8;
-      font-size: 14px;
-    }
+    .faq-a{ font-family: var(--font-pretty); font-style: italic; font-weight: 850; color: rgba(12,90,42,0.95); line-height:1.8; font-size: 14px; }
 
-    /* FOOTER */
-    .footer{
-      margin-top: 16px;
-      background: linear-gradient(to bottom, #066100 0%, #7ae78a 52%, #d8ff6a 100%);
-      border-top: 2px solid rgba(6,97,0,0.65);
-      box-shadow: 0 -12px 40px rgba(15,23,42,0.10);
-      color:#ffffff;
-    }
+    /* FOOTER (unchanged) */
+    .footer{ margin-top: 16px; background: linear-gradient(to bottom, #066100 0%, #7ae78a 52%, #d8ff6a 100%); border-top: 2px solid rgba(6,97,0,0.65); box-shadow: 0 -12px 40px rgba(15,23,42,0.10); color:#ffffff; }
     .footer *{ color:#ffffff; }
-
-    .footer-inner{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 18px 18px 14px;
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
+    .footer-inner{ max-width: 1200px; margin: 0 auto; padding: 18px 18px 14px; display: grid; grid-template-columns: 360px 1fr; gap: 22px; align-items: start; }
     .footer-left{ display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
     .footer-tagline{ display:flex; align-items:center; gap:8px; font-weight:950; letter-spacing:.06em; font-size:15px; text-transform:uppercase; white-space:nowrap; }
     .footer-florida{ width:26px; height:26px; margin-left:2px; }
     .footer-logo{ width:240px; height:auto; user-select:none; display:block; }
-
-    .footer-right{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:18px;
-      justify-items:end;
-      text-align:right;
-      align-self:start;
-      margin-top:0;
-    }
+    .footer-right{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px; justify-items:end; text-align:right; align-self:start; margin-top:0; }
     .footer-col-title{ font-weight:950; letter-spacing:.12em; text-transform:uppercase; font-size:14px; margin-bottom:10px; }
     .footer-link{ display:block; font-weight:900; font-size:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.25); width:fit-content; margin-left:auto; }
-
     .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; }
-    .icon-pill{
-      width:34px; height:34px;
-      display:inline-flex; align-items:center; justify-content:center;
-      border-radius:14px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: var(--orange);
-      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
-      overflow:hidden;
-      flex: 0 0 auto;
-    }
+    .icon-pill{ width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; border-radius:14px; border: 1px solid rgba(255,255,255,0.55); background: var(--orange); box-shadow: 0 12px 24px rgba(15,23,42,0.12); overflow:hidden; flex: 0 0 auto; }
     .icon-pill svg{ width:18px; height:18px; display:block; }
     .icon-pill .stroke{ stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .icon-pill .fill{ fill:#fff; stroke:none; }
     .yt-body{ fill:#fff; stroke:none; }
     .yt-play{ fill: var(--orange); stroke:none; }
+    .copyright-bar{ width:100%; background: var(--green); min-height:46px; display:flex; align-items:center; justify-content:center; border-top: 1px solid rgba(255,255,255,0.18); }
+    .copyright-inner{ width:100%; max-width:1200px; padding: 0 18px; font-weight:900; font-size:14px; color:#fff; text-align:left; }
 
-    .copyright-bar{
-      width:100%;
-      background: var(--green);
-      min-height:46px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-top: 1px solid rgba(255,255,255,0.18);
-    }
-    .copyright-inner{
-      width:100%;
-      max-width:1200px;
-      padding: 0 18px;
-      font-weight:900;
-      font-size:14px;
-      color:#fff;
-      text-align:left;
-    }
+    /* ===== RESPONSIVE ===== */
 
-    /* ===== RESPONSIVE FIXES ===== */
-
-    /* Tablet: fix overlap + product button glitches */
+    /* Tablet: fix product controls + prevent cut off + smaller buy button */
     @media (max-width: 1024px) and (min-width: 721px){
-      :root{ --tile: 300px; --copyW: 360px; --prodW: 300px; } /* ✅ more room fixes control glitches */
-
-      .intro-row{
-        grid-template-columns: var(--tile) var(--copyW) var(--prodW);
-        justify-content: space-between;
-      }
+      :root{ --tile: 300px; --copyW: 360px; --prodW: 290px; }
 
       .diet-pill{ font-size: 11px; letter-spacing:.06em; }
-      .diet-pill:nth-child(2){ transform: none; }
       .diet-icon{ width:20px; height:20px; font-size:13px; }
 
-      .mini-img{ height: 184px; }
+      .mini-img{ height: 180px; }
 
       .mini-actions{
-        grid-template-columns: minmax(112px, 122px) 1fr; /* ✅ prevents squish */
+        grid-template-columns: 96px 1fr; /* ✅ smaller buy column */
         gap:10px;
       }
-      .buy-big{ font-size:17px; }
+      .buy-btn{ width:96px; min-height: 82px; }
+      .buy-big{ font-size:16px; }
       .qty-seg{ font-size:15px; }
-      .weight-select{ font-size:12px; }
+      .weight-select{ font-size:12px; height: 34px; line-height: 34px; }
+      .mini-rect, .qty-rect{ height: 36px; min-height: 36px; }
     }
 
-    /* Mobile + tiny devices */
+    /* Mobile: eliminate any check overlap + allow nav wrap */
     @media (max-width: 720px){
-      .site-header{ background-size:140% auto; padding: 16px 0 14px; min-height: 176px; gap: 12px; }
-      .brand-group{ gap:6px; padding:0 12px; }
-      .brand-logo{ width:56px; height:56px; }
-      .brand-text{
-        font-size: clamp(22px, 5.8vw, 34px);
-        max-width: calc(100vw - 96px);
-        text-align:center;
-        text-shadow: 0 10px 20px rgba(15,23,42,0.25);
-      }
+      .site-header{ height: 178px; background-size:140% auto; }
+      .header-stack{ gap: 6px; }
 
-      .subnav a{ height: 34px; padding: 0 14px; font-size: 11px; border-radius: 12px; }
+      .brand-logo{ width:56px; height:56px; }
+      .brand-text{ font-size: clamp(22px, 5.8vw, 34px); max-width: calc(100vw - 96px); }
+
+      .subnav{ gap: 6px; }
+      .subnav a{ height: 32px; padding: 0 12px; font-size: 11px; }
 
       .intro-row{ grid-template-columns: 1fr; gap: 12px; align-items:start; }
       .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; }
       .tile-copy{ width:100%; height:auto; order:2; }
       .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
 
-      .diet-pill{ font-size: 10px; letter-spacing:.06em; }
-      .diet-pill:nth-child(2){ transform: none; }
+      .diet-row{ grid-template-columns: 1fr; gap: 6px; }
+      .diet-pill{ justify-content:flex-start !important; font-size: 11px; }
       .diet-icon{ width:18px; height:18px; font-size:12px; }
 
-      .about-grid{ grid-template-columns:1fr; }
-      .links-grid{ grid-template-columns:1fr; }
+      .mini-actions{ grid-template-columns: 108px 1fr; gap: 10px; }
+    }
 
-      .footer-inner{ grid-template-columns: 1fr; gap: 14px; padding: 18px 16px 14px; }
-      .footer-right{ grid-template-columns: 1fr; justify-items:start; text-align:left; }
-      .footer-link{ margin-left:0; }
-      .social-row{ justify-content:flex-start; }
-      .footer-logo{ width: 220px; margin-left:auto; margin-right:auto; }
+    @media (max-width: 420px){
+      .mini-actions{ grid-template-columns: 96px 1fr; }
+      .buy-btn{ width:96px; }
     }
 
     @media (min-width: 1600px){
@@ -918,20 +782,20 @@ botanical food, indigenous food">
 
 <body>
   <header class="site-header" aria-label="Site header">
-    <div class="brand-group" aria-label="The MayaNut Company">
-      <img class="brand-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo">
-      <div class="brand-text">The MayaNut Company</div>
-    </div>
+    <div class="header-stack" aria-label="Header content">
+      <div class="brand-group" aria-label="The MayaNut Company">
+        <img class="brand-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo">
+        <div class="brand-text">The MayaNut Company</div>
+      </div>
 
-    <nav class="subnav-wrap" aria-label="Primary navigation">
-      <div class="subnav" role="navigation">
+      <nav class="subnav" aria-label="Primary navigation">
         <a class="active" href="index.html" aria-current="page">Home</a>
         <a href="product.html">Buy</a>
         <a href="about.html">About</a>
         <a href="faq.html">FAQ</a>
         <a href="recipes.html">Recipes</a>
-      </div>
-    </nav>
+      </nav>
+    </div>
   </header>
 
   <main id="main-content" tabindex="-1" aria-label="Home">

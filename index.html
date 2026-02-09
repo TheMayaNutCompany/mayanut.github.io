@@ -104,10 +104,6 @@ botanical food, indigenous food">
       --padX:16px;
       --gap:14px;
 
-      --tile:340px;
-      --copyW:440px;
-      --prodW:300px;
-
       /* Scrollbar: adapt to user's browser color scheme (light/dark) */
       --sbW: 12px;
       --sbTrackL: #e8edf2;
@@ -139,7 +135,7 @@ botanical food, indigenous food">
       overflow-x:hidden;
       overflow-y:auto;
       background:#fff;
-      color-scheme: light dark; /* let the UA choose native form/scrollbar behavior where supported */
+      color-scheme: light dark;
       scrollbar-color: var(--sbThumb) var(--sbTrack);
       scrollbar-width: auto;
     }
@@ -225,6 +221,63 @@ botanical food, indigenous food">
       text-align:center;
     }
 
+    /* =========================
+       NEW: 5-OPTION MENU UNDER HEADER
+       Desktop + Mobile both under header
+       Active page (Home) = orange, others white
+    ========================== */
+    .subnav-wrap{
+      width:100%;
+      background: var(--green);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      display:flex;
+      justify-content:center;
+    }
+    .subnav{
+      width:100%;
+      max-width: 1100px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:18px;
+      padding: 12px 14px 14px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:3;
+    }
+    .subnav a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.40);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 12px;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    .subnav a:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.55);
+    }
+    .subnav a[aria-current="page"]{
+      color: var(--orange);
+      border-color: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.14);
+    }
+    @media (max-width: 520px){
+      .subnav{ gap:10px; padding: 10px 12px 12px; }
+      .subnav a{ height: 36px; padding: 0 12px; font-size: 11px; border-radius: 14px; }
+    }
+
     main{ padding-top: 18px; background:#fff; }
     .content-wrapper{
       padding: 18px var(--padX) 12px;
@@ -270,18 +323,22 @@ botanical food, indigenous food">
       margin-left:auto;
     }
 
-    /* INTRO (Desktop + Tablet = 3-up row) */
+    /* =========================
+       INTRO ROW (FIXED TABLET ALIGNMENT)
+       Desktop: 3 columns that flex (no hard widths)
+       Tablet: 2 columns, product full width under
+       Mobile: single column
+    ========================== */
     .intro-row{
       display:grid;
-      grid-template-columns: var(--tile) var(--copyW) var(--prodW);
+      grid-template-columns: minmax(260px, 1fr) minmax(320px, 1.25fr) minmax(280px, 0.95fr);
       gap: var(--gap);
       padding: 16px;
       align-items: stretch;
     }
 
     .tile-img{
-      width: var(--tile);
-      height: var(--tile);
+      height: 340px;
       border-radius:16px;
       overflow:hidden;
       border: 1px solid rgba(12,90,42,0.55);
@@ -297,8 +354,7 @@ botanical food, indigenous food">
     }
 
     .tile-copy{
-      width: var(--copyW);
-      height: var(--tile);
+      height: 340px;
       border-radius:16px;
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
@@ -377,9 +433,8 @@ botanical food, indigenous food">
 
     /* PRODUCT CARD */
     .mini-card{
-      width: var(--prodW);
-      height: var(--tile);
-      justify-self: end;
+      height: 340px;
+      justify-self: stretch;
       border-radius:18px;
       background:#fff;
       border: 1px solid rgba(12,90,42,0.45);
@@ -430,7 +485,7 @@ botanical food, indigenous food">
     }
     .mini-img{
       width:100%;
-      height: 186px; /* slightly taller image */
+      height: 186px;
       object-fit: cover;
       object-position:center 40%;
       border-bottom: 1px solid rgba(12,90,42,0.45);
@@ -438,7 +493,7 @@ botanical food, indigenous food">
       background:#fff;
     }
 
-    /* lower-left label on product image */
+    /* lower-left label on product image (same font style as paragraphs) */
     .view-full{
       position:absolute;
       left:10px;
@@ -461,7 +516,7 @@ botanical food, indigenous food">
 
     .mini-bot{
       background: var(--pale);
-      padding: 10px 12px 10px; /* reduced vertical padding above/below buttons */
+      padding: 10px 12px 10px;
       display:flex;
       flex-direction:column;
       flex: 1 1 auto;
@@ -589,6 +644,42 @@ botanical food, indigenous food">
     .qty-input::-webkit-outer-spin-button,
     .qty-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
 
+    /* TABLET: force perfect alignment by stacking product under left+copy */
+    @media (max-width: 1024px) and (min-width: 721px){
+      .intro-row{
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "img copy"
+          "prod prod";
+        align-items: stretch;
+      }
+      .intro-row .tile-img{ grid-area: img; height: 320px; }
+      .intro-row .tile-copy{ grid-area: copy; height: 320px; }
+      .intro-row .mini-card{ grid-area: prod; height: auto; }
+      .mini-img{ height: 190px; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 720px){
+      .brand-group{ gap:6px; padding:0 12px; }
+      .brand-logo{ width:56px; height:56px; }
+      .brand-text{
+        font-size: clamp(24px, 5.6vw, 34px);
+        max-width: calc(100vw - 96px);
+        text-align:center;
+        text-shadow: 0 10px 20px rgba(15,23,42,0.25);
+      }
+
+      .intro-row{ grid-template-columns: 1fr; gap: 12px; align-items:start; }
+      .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
+      .tile-copy{ width:100%; height:auto; order:2; }
+      .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
+
+      .diet-row{ gap: 6px; }
+      .diet-pill{ font-size: 10px; letter-spacing:.06em; }
+      .diet-pill:nth-child(2){ transform: translateX(-22px); }
+    }
+
     /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
     .about-grid{
@@ -597,7 +688,6 @@ botanical food, indigenous food">
       gap: 12px;
       padding: 14px;
     }
-    /* remove the white "card" layer so it matches other sections */
     .about-card{
       border-radius: 0;
       border: 0;
@@ -822,66 +912,14 @@ botanical food, indigenous food">
       text-align:left;
     }
 
-    /* TABLET */
-    @media (max-width: 1024px) and (min-width: 721px){
-      :root{ --tile: 300px; --copyW: 360px; --prodW: 280px; }
-      .intro-row{ grid-template-columns: var(--tile) var(--copyW) var(--prodW); }
-      .tile-img{ width: var(--tile); height: var(--tile); }
-      .tile-copy{ width: var(--copyW); height: var(--tile); }
-      .mini-card{ width: var(--prodW); height: var(--tile); }
-      .mini-img{ height: 168px; }
-      .mini-actions{ gap:10px; }
-    }
-
-    /* MOBILE */
-    @media (max-width: 720px){
-      .brand-group{ gap:6px; padding:0 12px; }
-      .brand-logo{ width:56px; height:56px; }
-      .brand-text{
-        font-size: clamp(24px, 5.6vw, 34px);
-        max-width: calc(100vw - 96px);
-        text-align:center;
-        text-shadow: 0 10px 20px rgba(15,23,42,0.25);
-      }
-
-      .intro-row{ grid-template-columns: 1fr; gap: 12px; align-items:start; }
-      .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
-      .tile-copy{ width:100%; height:auto; order:2; }
-      .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
-
-      .diet-row{ gap: 6px; }
-      .diet-pill{ font-size: 10px; letter-spacing:.06em; }
-      .diet-pill:nth-child(2){ transform: translateX(-22px); }
-
-      .about-grid{ grid-template-columns:1fr; }
-      .links-grid{ grid-template-columns:1fr; }
-
-      .footer-inner{
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        align-items:start;
-        padding: 18px 16px 14px;
-      }
-      .footer-left{ padding-left: 0; align-items:flex-start; }
-      .footer-right{
-        grid-template-columns: 1fr;
-        justify-items:end;
-        text-align:right;
-        align-self:start;
-        margin-top: 0;
-        padding-top: 0;
-      }
-      .footer-left a{ width:100%; }
-      .footer-logo{ width: 220px; margin: 6px auto 0; }
-      .copyright-inner{ padding-left: 16px; padding-right: 16px; text-align:left; }
-    }
-
     @media(max-width:560px){
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; justify-items:start; text-align:left; }
       .footer-link{ margin-left:0; }
       .social-row{ justify-content:flex-start; }
       .footer-logo{ margin-left:auto; margin-right:auto; }
+      .copyright-inner{ padding-left: 16px; padding-right: 16px; }
+      .footer-left{ padding-left: 0; }
     }
   </style>
 </head>
@@ -893,6 +931,17 @@ botanical food, indigenous food">
       <div class="brand-text">The MayaNut Company</div>
     </div>
   </header>
+
+  <!-- NEW: menu under header -->
+  <div class="subnav-wrap" aria-label="Primary navigation">
+    <nav class="subnav">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="product.html">Buy</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="recipes.html">Recipes</a>
+    </nav>
+  </div>
 
   <main id="main-content" tabindex="-1" aria-label="Home">
     <div class="content-wrapper">

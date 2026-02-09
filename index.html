@@ -104,6 +104,11 @@ botanical food, indigenous food">
       --padX:16px;
       --gap:14px;
 
+      /* Desktop layout sizes */
+      --tile:340px;
+      --copyW:440px;
+      --prodW:300px;
+
       /* Scrollbar: adapt to user's browser color scheme (light/dark) */
       --sbW: 12px;
       --sbTrackL: #e8edf2;
@@ -130,7 +135,6 @@ botanical food, indigenous food">
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
 
-    /* Keep page white; only scrollbar adapts to user's theme */
     html{
       overflow-x:hidden;
       overflow-y:auto;
@@ -170,8 +174,9 @@ botanical food, indigenous food">
       background-repeat:no-repeat;
       background-position:center center;
       background-size:118% auto;
-      padding:30px 0;
+      padding:28px 0 18px;
       display:flex;
+      flex-direction:column;
       align-items:center;
       justify-content:center;
       position:relative;
@@ -221,61 +226,59 @@ botanical food, indigenous food">
       text-align:center;
     }
 
-    /* =========================
-       NEW: 5-OPTION MENU UNDER HEADER
-       Desktop + Mobile both under header
-       Active page (Home) = orange, others white
-    ========================== */
+    /* ===== MENU UNDER HEADER (on the header background image) ===== */
     .subnav-wrap{
+      position:relative;
+      z-index:3;
       width:100%;
-      background: var(--green);
-      border-bottom: 1px solid rgba(255,255,255,0.18);
+      max-width: 1100px;
+      padding: 12px 14px 0;
       display:flex;
       justify-content:center;
     }
     .subnav{
-      width:100%;
-      max-width: 1100px;
+      width: fit-content;
+      max-width: 100%;
       display:flex;
-      justify-content:center;
       align-items:center;
-      gap:18px;
-      padding: 12px 14px 14px;
-      flex-wrap:wrap;
-      position:relative;
-      z-index:3;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap; /* mobile/tablet: wraps into rows under header */
+      padding: 10px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.18); /* see header image through */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.18);
     }
     .subnav a{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height: 38px;
+      height: 34px;
       padding: 0 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.40);
-      background: rgba(255,255,255,0.06);
-      color: #fff;
+      border-radius: 999px;
       font-weight: 950;
-      letter-spacing: .08em;
+      letter-spacing: .10em;
       text-transform: uppercase;
       font-size: 12px;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.10);
+      transition: transform .10s ease, background .12s ease;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      white-space:nowrap;
     }
-    .subnav a:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.10);
-      border-color: rgba(255,255,255,0.55);
-    }
-    .subnav a[aria-current="page"]{
-      color: var(--orange);
-      border-color: rgba(255,255,255,0.95);
-      background: rgba(255,255,255,0.14);
-    }
-    @media (max-width: 520px){
-      .subnav{ gap:10px; padding: 10px 12px 12px; }
-      .subnav a{ height: 36px; padding: 0 12px; font-size: 11px; border-radius: 14px; }
+    .subnav a:hover{ transform: translateY(-1px); background: rgba(0,0,0,0.18); }
+    .subnav a:active{ transform: translateY(0px); }
+
+    .subnav a.active{
+      background: var(--orange);
+      border: 2px solid rgba(255,255,255,0.95);
+      color:#ffffff;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.18);
     }
 
     main{ padding-top: 18px; background:#fff; }
@@ -323,22 +326,19 @@ botanical food, indigenous food">
       margin-left:auto;
     }
 
-    /* =========================
-       INTRO ROW (FIXED TABLET ALIGNMENT)
-       Desktop: 3 columns that flex (no hard widths)
-       Tablet: 2 columns, product full width under
-       Mobile: single column
-    ========================== */
+    /* INTRO: desktop fixed-size row */
     .intro-row{
       display:grid;
-      grid-template-columns: minmax(260px, 1fr) minmax(320px, 1.25fr) minmax(280px, 0.95fr);
+      grid-template-columns: var(--tile) var(--copyW) var(--prodW);
       gap: var(--gap);
       padding: 16px;
       align-items: stretch;
+      justify-content: center; /* keep centered on wide screens */
     }
 
     .tile-img{
-      height: 340px;
+      width: var(--tile);
+      height: var(--tile);
       border-radius:16px;
       overflow:hidden;
       border: 1px solid rgba(12,90,42,0.55);
@@ -354,7 +354,8 @@ botanical food, indigenous food">
     }
 
     .tile-copy{
-      height: 340px;
+      width: var(--copyW);
+      height: var(--tile);
       border-radius:16px;
       border: 1px solid rgba(12,90,42,0.55);
       background: var(--pale);
@@ -433,8 +434,9 @@ botanical food, indigenous food">
 
     /* PRODUCT CARD */
     .mini-card{
-      height: 340px;
-      justify-self: stretch;
+      width: var(--prodW);
+      height: var(--tile);
+      justify-self: end;
       border-radius:18px;
       background:#fff;
       border: 1px solid rgba(12,90,42,0.45);
@@ -493,7 +495,7 @@ botanical food, indigenous food">
       background:#fff;
     }
 
-    /* lower-left label on product image (same font style as paragraphs) */
+    /* lower-left text over product image (same font as paragraphs) */
     .view-full{
       position:absolute;
       left:10px;
@@ -501,7 +503,7 @@ botanical food, indigenous food">
       display:inline-block;
       padding:6px 10px;
       border-radius:12px;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.90);
       border: 1px solid rgba(12,90,42,0.35);
       box-shadow: 0 10px 22px rgba(15,23,42,0.10);
       font-family: var(--font-pretty);
@@ -560,11 +562,10 @@ botanical food, indigenous food">
       border-radius:14px;
       border:1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.98);
-      transition: background .12s ease;
+      transition: background .12s ease, box-shadow .12s ease;
       height: 36px;
       min-height: 36px;
     }
-    .mini-rect:hover{ background: var(--hoverGrey); }
     .mini-rect{
       display:flex;
       align-items:center;
@@ -574,6 +575,12 @@ botanical food, indigenous food">
       cursor:pointer;
       user-select:none;
       overflow:hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+    }
+    .mini-rect:hover{ background: var(--hoverGrey); }
+    .mini-rect:focus-visible{
+      outline: 2px solid rgba(253,108,2,0.65);
+      outline-offset: 2px;
     }
     .mini-rect .lbl{
       font-weight:900;
@@ -619,6 +626,7 @@ botanical food, indigenous food">
     .qty-seg + .qty-seg{ border-left: 1px solid rgba(12,90,42,0.35); }
     .qty-seg.disabled{ color: var(--hoverGrey); cursor:default; pointer-events:none; }
     .qty-seg:not(.disabled):hover{ background: var(--hoverGrey); }
+    .qty-seg.flash{ background: var(--hoverGrey) !important; transition: none !important; }
 
     .qty-seg.mid{
       cursor:text;
@@ -643,42 +651,6 @@ botanical food, indigenous food">
     }
     .qty-input::-webkit-outer-spin-button,
     .qty-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
-
-    /* TABLET: force perfect alignment by stacking product under left+copy */
-    @media (max-width: 1024px) and (min-width: 721px){
-      .intro-row{
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-          "img copy"
-          "prod prod";
-        align-items: stretch;
-      }
-      .intro-row .tile-img{ grid-area: img; height: 320px; }
-      .intro-row .tile-copy{ grid-area: copy; height: 320px; }
-      .intro-row .mini-card{ grid-area: prod; height: auto; }
-      .mini-img{ height: 190px; }
-    }
-
-    /* MOBILE */
-    @media (max-width: 720px){
-      .brand-group{ gap:6px; padding:0 12px; }
-      .brand-logo{ width:56px; height:56px; }
-      .brand-text{
-        font-size: clamp(24px, 5.6vw, 34px);
-        max-width: calc(100vw - 96px);
-        text-align:center;
-        text-shadow: 0 10px 20px rgba(15,23,42,0.25);
-      }
-
-      .intro-row{ grid-template-columns: 1fr; gap: 12px; align-items:start; }
-      .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
-      .tile-copy{ width:100%; height:auto; order:2; }
-      .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
-
-      .diet-row{ gap: 6px; }
-      .diet-pill{ font-size: 10px; letter-spacing:.06em; }
-      .diet-pill:nth-child(2){ transform: translateX(-22px); }
-    }
 
     /* A LITTLE ABOUT US */
     .about-wrap{ margin-top: 14px; }
@@ -912,14 +884,75 @@ botanical food, indigenous food">
       text-align:left;
     }
 
+    /* ===== TABLET FIX: use fluid columns (prevents “misaligned” / overflow) ===== */
+    @media (max-width: 1024px) and (min-width: 721px){
+      .intro-row{
+        grid-template-columns: minmax(240px, 1fr) minmax(320px, 1.15fr) minmax(240px, 0.9fr);
+        gap: 12px;
+      }
+      .tile-img, .tile-copy, .mini-card{ width: 100%; }
+      .tile-img{ height: 300px; }
+      .tile-copy{ height: 300px; }
+      .mini-card{ height: 300px; justify-self: stretch; }
+      .mini-img{ height: 168px; }
+
+      /* header menu sizing */
+      .subnav a{ font-size: 11px; padding: 0 12px; height: 32px; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 720px){
+      .brand-group{ gap:6px; padding:0 12px; }
+      .brand-logo{ width:56px; height:56px; }
+      .brand-text{
+        font-size: clamp(24px, 5.6vw, 34px);
+        max-width: calc(100vw - 96px);
+        text-align:center;
+        text-shadow: 0 10px 20px rgba(15,23,42,0.25);
+      }
+
+      .subnav-wrap{ padding: 10px 12px 0; }
+      .subnav{ padding: 10px 10px; gap: 8px; border-radius: 16px; }
+      .subnav a{ font-size: 11px; height: 32px; padding: 0 12px; }
+
+      .intro-row{ grid-template-columns: 1fr; gap: 12px; align-items:start; }
+      .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; order:1; margin-right:0; }
+      .tile-copy{ width:100%; height:auto; order:2; }
+      .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; order:3; }
+
+      .diet-row{ gap: 6px; }
+      .diet-pill{ font-size: 10px; letter-spacing:.06em; }
+      .diet-pill:nth-child(2){ transform: translateX(-22px); }
+
+      .about-grid{ grid-template-columns:1fr; }
+      .links-grid{ grid-template-columns:1fr; }
+
+      .footer-inner{
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        align-items:start;
+        padding: 18px 16px 14px;
+      }
+      .footer-left{ padding-left: 0; align-items:flex-start; }
+      .footer-right{
+        grid-template-columns: 1fr;
+        justify-items:end;
+        text-align:right;
+        align-self:start;
+        margin-top: 0;
+        padding-top: 0;
+      }
+      .footer-left a{ width:100%; }
+      .footer-logo{ width: 220px; margin: 6px auto 0; }
+      .copyright-inner{ padding-left: 16px; padding-right: 16px; text-align:left; }
+    }
+
     @media(max-width:560px){
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ grid-template-columns: 1fr; justify-items:start; text-align:left; }
       .footer-link{ margin-left:0; }
       .social-row{ justify-content:flex-start; }
       .footer-logo{ margin-left:auto; margin-right:auto; }
-      .copyright-inner{ padding-left: 16px; padding-right: 16px; }
-      .footer-left{ padding-left: 0; }
     }
   </style>
 </head>
@@ -930,18 +963,18 @@ botanical food, indigenous food">
       <img class="brand-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo">
       <div class="brand-text">The MayaNut Company</div>
     </div>
-  </header>
 
-  <!-- NEW: menu under header -->
-  <div class="subnav-wrap" aria-label="Primary navigation">
-    <nav class="subnav">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="product.html">Buy</a>
-      <a href="about.html">About</a>
-      <a href="faq.html">FAQ</a>
-      <a href="recipes.html">Recipes</a>
-    </nav>
-  </div>
+    <!-- MENU OPTIONS UNDER HEADER (desktop/tablet/mobile) -->
+    <div class="subnav-wrap" aria-label="Primary navigation">
+      <nav class="subnav" aria-label="Menu">
+        <a class="active" href="index.html" aria-current="page">Home</a>
+        <a href="product.html">Buy</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <a href="recipes.html">Recipes</a>
+      </nav>
+    </div>
+  </header>
 
   <main id="main-content" tabindex="-1" aria-label="Home">
     <div class="content-wrapper">
@@ -1020,13 +1053,13 @@ botanical food, indigenous food">
                     <div class="buy-small">NOW</div>
                   </div>
 
-                  <button class="mini-rect" type="button" data-weight aria-label="Select weight">
+                  <button class="mini-rect" type="button" data-weight aria-label="Select weight" aria-haspopup="listbox" aria-expanded="false">
                     <span class="lbl">WEIGHT:</span>
                     <span class="val" data-weight-val>¼ LB</span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
                   </button>
 
-                  <div class="qty-rect" aria-label="Quantity selector (max 9)">
+                  <div class="qty-rect" aria-label="Quantity selector (max 25)">
                     <div class="qty-seg disabled" data-minus aria-label="Decrease quantity" role="button" tabindex="0">−</div>
                     <div class="qty-seg mid" aria-label="Quantity">
                       <input class="qty-input" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="Quantity input">
@@ -1078,7 +1111,7 @@ botanical food, indigenous food">
                 <p>
                   Made from the seed of the rediscovered Alicastrum tree (Brosimum alicastrum), MayaNut™ seed flour is truly unique.
                   Its warm, roasted flavor makes foods and drinks taste richer and more satisfying—turning simple meals into something you’ll really enjoy.
-                  Perfect for smoothies, açaí bowls, baking, or everyday recipes, MayaNut™ is an easy pantry staple you can enjoy week after week, any time of the year.
+                  Perfect for smoothies, açaí bowls, baking, or everyday recipes, MayaNut™ is an easy pantry staple you can enjoy week after week, any season, any time of the year.
                 </p>
               </div>
               <div class="about-media">
@@ -1211,11 +1244,15 @@ botanical food, indigenous food">
     </div>
   </footer>
 
-  <div id="weight-menu-root" style="position:fixed; inset:0; pointer-events:none; z-index:2500;"></div>
+  <!-- Native-looking dropdown (uses <select>, visually matching OS/browser style) -->
+  <select id="weight-native" aria-label="Weight dropdown" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
+    <option value="qtr">¼ LB</option>
+    <option value="one">1 LB</option>
+  </select>
 
   <script>
     (function(){
-      const MAX_QTY = 9;
+      const MAX_QTY = 25;
       const clamp = (n)=> Math.max(1, Math.min(MAX_QTY, n));
       const WEIGHTS = [
         { key:"qtr", label:"¼ LB", title:"MayaNut™ Flour ¼ LB", price:9.99 },
@@ -1229,56 +1266,12 @@ botanical food, indigenous food">
       const weightVal = document.querySelector("[data-weight-val]");
       const priceEl   = document.getElementById("mini-price");
       const titleEl   = document.getElementById("mini-title");
+      const nativeSelect = document.getElementById("weight-native");
 
-      const root = document.getElementById("weight-menu-root");
-      let menu = null;
-
-      function closeMenu(){ if(menu){ menu.remove(); menu = null; } }
-
-      function openMenu(anchor, items, onPick){
-        closeMenu();
-        const r = anchor.getBoundingClientRect();
-        const m = document.createElement("div");
-        m.style.pointerEvents = "auto";
-        m.style.position = "fixed";
-        m.style.left = Math.min(window.innerWidth - 240, Math.max(10, Math.round(r.left))) + "px";
-        m.style.top  = Math.round(r.bottom + 6) + "px";
-        m.style.zIndex = "2600";
-        m.style.minWidth = "210px";
-        m.style.padding = "6px";
-        m.style.borderRadius = "12px";
-        m.style.border = "1px solid rgba(12,90,42,0.55)";
-        m.style.background = "rgba(255,255,255,0.98)";
-        m.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
-        items.forEach(opt=>{
-          const row = document.createElement("button");
-          row.type = "button";
-          row.textContent = opt.label + "  •  $" + opt.price.toFixed(2);
-          row.style.width = "100%";
-          row.style.borderRadius = "10px";
-          row.style.padding = "8px 10px";
-          row.style.cursor = "pointer";
-          row.style.fontWeight = "900";
-          row.style.fontSize = "12px";
-          row.style.color = "#0b1220";
-          row.style.background = "rgba(233,255,214,0.95)";
-          row.style.border = "1px solid rgba(12,90,42,0.55)";
-          row.style.marginBottom = "6px";
-          row.addEventListener("click", ()=>{ onPick(opt); closeMenu(); });
-          m.appendChild(row);
-        });
-        if(m.lastChild) m.lastChild.style.marginBottom = "0";
-        root.appendChild(m);
-        menu = m;
+      function flashSeg(seg){
+        seg.classList.add("flash");
+        window.setTimeout(()=> seg.classList.remove("flash"), 90);
       }
-
-      document.addEventListener("click",(e)=>{
-        if(menu){
-          const within = menu.contains(e.target);
-          const anchor = e.target.closest?.("[data-weight]");
-          if(!within && !anchor) closeMenu();
-        }
-      });
 
       function setQty(n){
         const nn = clamp(parseInt(n,10) || 1);
@@ -1296,17 +1289,117 @@ botanical food, indigenous food">
         titleEl.textContent = opt.title;
         priceEl.textContent = "$" + opt.price.toFixed(2);
         weightVal.textContent = opt.label;
+        nativeSelect.value = opt.key;
       }
 
-      qtyInput.addEventListener("input", ()=> setQty(getQty()));
-      qtyInput.addEventListener("blur", ()=> setQty(getQty()));
+      function findOptByKey(key){
+        return WEIGHTS.find(w => w.key === key) || WEIGHTS[0];
+      }
+
+      function makeHoldRepeat(el, dir){
+        let t1 = null;
+        let t2 = null;
+
+        const step = ()=>{
+          const q = getQty();
+          const next = q + dir;
+          if(next === q) return;
+          setQty(next);
+        };
+
+        const start = (e)=>{
+          if(el.classList.contains("disabled")) return;
+          e.preventDefault();
+          step();
+          t1 = window.setTimeout(()=>{
+            t2 = window.setInterval(step, 75);
+          }, 320);
+        };
+
+        const stop = ()=>{
+          if(t1) window.clearTimeout(t1);
+          if(t2) window.clearInterval(t2);
+          t1 = null; t2 = null;
+        };
+
+        el.addEventListener("pointerdown", start);
+        window.addEventListener("pointerup", stop);
+        window.addEventListener("pointercancel", stop);
+        el.addEventListener("pointerleave", stop);
+        el.addEventListener("contextmenu", (e)=> e.preventDefault());
+      }
+
       plusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
       minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>1) setQty(q-1); });
 
-      weightBtn.addEventListener("click",(e)=>{
-        e.preventDefault(); e.stopPropagation();
-        openMenu(e.currentTarget, WEIGHTS, applyVariant);
+      makeHoldRepeat(plusBtn, +1);
+      makeHoldRepeat(minusBtn, -1);
+
+      qtyInput.addEventListener("input", ()=> setQty(getQty()));
+      qtyInput.addEventListener("blur", ()=> setQty(getQty()));
+
+      qtyInput.addEventListener("keydown", (e)=>{
+        const k = e.key;
+        const isPlus = (k === "+" || k === "=" || k === "Add" || k === "NumpadAdd");
+        const isMinus = (k === "-" || k === "_" || k === "Subtract" || k === "NumpadSubtract");
+
+        if(isPlus){
+          e.preventDefault();
+          const q=getQty();
+          if(q<MAX_QTY){
+            setQty(q+1);
+            flashSeg(plusBtn);
+          }
+        }else if(isMinus){
+          e.preventDefault();
+          const q=getQty();
+          if(q>1){
+            setQty(q-1);
+            flashSeg(minusBtn);
+          }
+        }
       });
+
+      function openNativeSelect(){
+        const r = weightBtn.getBoundingClientRect();
+        nativeSelect.style.position = "fixed";
+        nativeSelect.style.left = r.left + "px";
+        nativeSelect.style.top = r.top + "px";
+        nativeSelect.style.width = r.width + "px";
+        nativeSelect.style.height = r.height + "px";
+        nativeSelect.style.opacity = "0";
+        nativeSelect.style.zIndex = "9999";
+        nativeSelect.style.pointerEvents = "auto";
+
+        nativeSelect.focus({ preventScroll:true });
+        nativeSelect.click();
+
+        weightBtn.setAttribute("aria-expanded","true");
+      }
+
+      function hideNativeSelect(){
+        nativeSelect.style.position = "absolute";
+        nativeSelect.style.left = "-9999px";
+        nativeSelect.style.top = "auto";
+        nativeSelect.style.width = "1px";
+        nativeSelect.style.height = "1px";
+        nativeSelect.style.opacity = "1";
+        nativeSelect.style.pointerEvents = "none";
+        weightBtn.setAttribute("aria-expanded","false");
+      }
+
+      weightBtn.addEventListener("click",(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        openNativeSelect();
+      });
+
+      nativeSelect.addEventListener("change", ()=>{
+        applyVariant(findOptByKey(nativeSelect.value));
+        hideNativeSelect();
+      });
+
+      nativeSelect.addEventListener("blur", hideNativeSelect);
 
       applyVariant(WEIGHTS[0]);
       setQty(1);

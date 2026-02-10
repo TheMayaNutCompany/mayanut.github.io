@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>The MayaNut Company | Recipes with MayaNut™ Flour</title>
-  <meta name="description" content="Recipes using MayaNut™ flour (often searched as MayaNut powder) made from Alicastrum tree seeds (Brosimum alicastrum). Smoothies and açaí bowls plus muffins, cookies, roasted latte, and simple flatbreads/tortillas.">
+  <meta name="description" content="Browse recipes using MayaNut™ flour (often searched as MayaNut powder) made from Alicastrum tree seeds (Brosimum alicastrum). Smoothies and açaí bowls plus roasted latte, muffins, cookies, and simple flatbreads/tortillas.">
   <link rel="canonical" href="https://www.mayanut.com/recipes.html">
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -44,7 +44,7 @@ botanical food, indigenous food">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="The MayaNut Company">
   <meta property="og:title" content="Recipes with MayaNut™ Flour | The MayaNut Company">
-  <meta property="og:description" content="Recipes using MayaNut™ flour (often searched as MayaNut powder) from Alicastrum tree seeds (Brosimum alicastrum).">
+  <meta property="og:description" content="Browse recipes using MayaNut™ flour (often searched as MayaNut powder) from Alicastrum tree seeds (Brosimum alicastrum).">
   <meta property="og:url" content="https://www.mayanut.com/recipes.html">
   <meta property="og:image" content="https://www.mayanut.com/mayanut-the-mayanut-comapny-logo.png">
   <meta property="og:image:width" content="1200">
@@ -73,7 +73,7 @@ botanical food, indigenous food">
     "@type": "WebPage",
     "name": "Recipes with MayaNut Flour",
     "url": "https://www.mayanut.com/recipes.html",
-    "description": "Recipes using MayaNut™ flour (often searched as MayaNut powder) made from Alicastrum tree seeds (Brosimum alicastrum).",
+    "description": "Browse recipes using MayaNut™ flour (often searched as MayaNut powder) made from Alicastrum tree seeds (Brosimum alicastrum).",
     "isPartOf": { "@type": "WebSite", "name": "The MayaNut Company", "url": "https://www.mayanut.com/" }
   }
   </script>
@@ -97,12 +97,14 @@ botanical food, indigenous food">
       --controlH: 40px;
       --controlGap: 12px;
       --filterW: 118px;
+
+      /* ✅ Scrollbar: let OS/browser pick light/dark automatically */
+      color-scheme: light dark;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ height:100%; }
     html, body{ scrollbar-width:auto; }
-
     body{
       min-height:100%;
       background:#fff;
@@ -276,48 +278,15 @@ botanical food, indigenous food">
       margin-left:auto;
     }
 
-    /* ✅ TOP BAR: controls (exactly media width) + hero to the right */
+    /* ✅ TOP BAR: hero text (left) + search (right) */
     .recipes-top{
       padding: 14px 16px 0;
       display:grid;
-      grid-template-columns: var(--mediaW) 1fr;
+      grid-template-columns: 1fr var(--mediaW);
       gap: var(--controlGap);
       align-items:stretch;
     }
 
-    .recipes-controls{
-      width: var(--mediaW); /* ✅ matches left image column */
-      height: var(--controlH);
-      display:flex;
-      gap: 10px;
-      align-items:stretch;
-    }
-    .search{
-      height: var(--controlH);
-      flex: 1 1 auto;              /* ✅ fills left area */
-      min-width: 0;
-      border-radius: 14px;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.92);
-      padding: 0 12px;
-      font-weight: 900;
-      letter-spacing: .02em;
-      outline:none;
-    }
-    .filter{
-      height: var(--controlH);
-      width: var(--filterW);       /* ✅ fixed so right edge is consistent */
-      flex: 0 0 auto;
-      border-radius: 14px;
-      border: 1px solid rgba(12,90,42,0.55);
-      background: rgba(255,255,255,0.92);
-      padding: 0 10px;
-      font-weight: 900;
-      outline:none;
-      cursor:pointer;
-    }
-
-    /* ✅ ONE-LINE hero bar aligned to the right of controls, same height */
     .recipes-hero{
       height: var(--controlH);
       width: 100%;
@@ -336,10 +305,93 @@ botanical food, indigenous food">
       color: rgba(12,90,42,0.95);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
 
-      white-space: nowrap;         /* ✅ force one line */
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       line-height: 1;
+    }
+
+    .recipes-controls{
+      width: var(--mediaW);
+      height: var(--controlH);
+      display:flex;
+      gap: 10px;
+      align-items:stretch;
+      justify-content:flex-end;
+    }
+
+    /* Search with X on left + magnifier on right */
+    .search-wrap{
+      height: var(--controlH);
+      flex: 1 1 auto;
+      min-width: 0;
+      border-radius: 14px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(255,255,255,0.92);
+      display:flex;
+      align-items:center;
+      padding: 0 8px;
+      gap: 8px;
+      position:relative;
+    }
+    .search-clear{
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      opacity: .65;
+      transition: background .12s ease, opacity .12s ease;
+      flex: 0 0 auto;
+    }
+    .search-clear:hover{ opacity: .95; background: rgba(207,211,217,0.55); }
+    .search-clear svg{ width: 14px; height: 14px; }
+    .search-clear .stroke{ stroke:#0b1220; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    .search-input{
+      height: 100%;
+      flex: 1 1 auto;
+      min-width: 0;
+      outline:none;
+      font-weight: 900;
+      letter-spacing: .02em;
+      text-align:left;
+      color:#0b1220;
+    }
+    .search-input::placeholder{
+      color: rgba(15,23,42,0.45);
+      font-weight: 900;
+    }
+
+    .search-icon{
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      opacity: .75;
+      flex: 0 0 auto;
+      pointer-events:none;
+    }
+    .search-icon svg{ width: 16px; height: 16px; }
+    .search-icon .stroke{ stroke:#0b1220; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    .filter{
+      height: var(--controlH);
+      width: var(--filterW);
+      flex: 0 0 auto;
+      border-radius: 14px;
+      border: 1px solid rgba(12,90,42,0.55);
+      background: rgba(255,255,255,0.92);
+      padding: 0 10px;
+      font-weight: 900;
+      outline:none;
+      cursor:pointer;
     }
 
     /* RECIPES */
@@ -423,7 +475,6 @@ botanical food, indigenous food">
       margin-left:auto;
       align-items:center;
     }
-
     .pill{
       display:inline-flex;
       align-items:center;
@@ -555,17 +606,18 @@ botanical food, indigenous food">
         gap: 10px;
         padding: 12px 14px 0;
       }
-      .recipes-controls{
-        width: 100%;
-        height: auto;
-      }
-      .search{ width:100%; flex:1 1 auto; }
       .recipes-hero{
         height: auto;
         padding: 10px 12px;
         white-space: normal;
         line-height: 1.7;
       }
+      .recipes-controls{
+        width: 100%;
+        height: auto;
+        justify-content:stretch;
+      }
+      .search-wrap{ flex: 1 1 auto; }
 
       .recipes-wrap{ padding: 14px; }
       .recipe-card{ grid-template-columns: 1fr; }
@@ -647,12 +699,33 @@ botanical food, indigenous food">
           <div class="head-line" aria-hidden="true"></div>
         </div>
 
-        <!-- ✅ Controls exactly match image column width; hero bar sits to the right -->
+        <!-- ✅ Hero left, search+filter right -->
         <div class="recipes-top" aria-label="Recipes tools">
+          <div class="recipes-hero" aria-label="Recipes intro">
+            Browse our recipes and explore what you can make at home with MayaNut™.
+          </div>
+
           <div class="recipes-controls" aria-label="Search and filter recipes">
-            <input class="search" id="recipeSearch" type="search"
-                   placeholder="Search recipes (smoothie, açaí, cookies…)"
-                   aria-label="Search recipes">
+            <div class="search-wrap" role="search" aria-label="Search recipes">
+              <button class="search-clear" type="button" id="clearSearch" aria-label="Clear search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="stroke" d="M7 7l10 10"></path>
+                  <path class="stroke" d="M17 7L7 17"></path>
+                </svg>
+              </button>
+
+              <input class="search-input" id="recipeSearch" type="search"
+                     placeholder="Search products"
+                     aria-label="Search recipes">
+
+              <span class="search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle class="stroke" cx="11" cy="11" r="6"></circle>
+                  <path class="stroke" d="M20 20l-3.4-3.4"></path>
+                </svg>
+              </span>
+            </div>
+
             <select class="filter" id="recipeFilter" aria-label="Filter recipes">
               <option value="all">All</option>
               <option value="no-bake">No-Bake</option>
@@ -662,10 +735,6 @@ botanical food, indigenous food">
               <option value="vegan">Vegan</option>
               <option value="glutenfree">Gluten-Free</option>
             </select>
-          </div>
-
-          <div class="recipes-hero" aria-label="Recipes intro">
-            Explore what you can make at home with MayaNut™. Try these recipes, mix and match flavors, or create your own!
           </div>
         </div>
 
@@ -733,8 +802,308 @@ botanical food, indigenous food">
             </div>
           </article>
 
-          <!-- (rest of your recipe cards stay the same as your current file) -->
-          <!-- Keep recipe2..recipe6 unchanged below this line in your file -->
+          <!-- 2) Açaí bowl (10 min) -->
+          <article class="recipe-card" data-tags="no-bake vegan glutenfree" aria-label="Recipe: MayaNut açaí bowl boost">
+            <div class="recipe-media" aria-label="Recipe photo placeholder">
+              <img src="recipe-placeholder-2.jpg"
+                   alt="Finished açaí bowl made with fruit and topped with granola, with MayaNut™ flour stirred into the base"
+                   loading="lazy" decoding="async"
+                   onerror="this.style.opacity='.35';">
+              <div class="badge" aria-hidden="true">*Placeholder image</div>
+            </div>
+
+            <div class="recipe-body">
+              <div class="recipe-top">
+                <div class="recipe-name">MayaNut™ Açaí Bowl Boost</div>
+
+                <div class="recipe-meta" aria-label="Recipe tags and time">
+                  <span class="pill">Vegan</span>
+                  <span class="pill">Gluten-Free</span>
+                  <span class="pill">10 min</span>
+
+                  <button class="save-icon" type="button" data-save="recipe2"
+                          aria-label="Save this recipe" title="Save this recipe">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="stroke" d="M12 3v10"></path>
+                      <path class="stroke" d="M8.5 10.5 12 13.9l3.5-3.4"></path>
+                      <path class="stroke" d="M6 20h12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="recipe-desc">
+                Stir MayaNut™ flour into the bowl base for a richer, more satisfying flavor that pairs with fruit. This card is formatted exactly like a product-style block.
+              </div>
+
+              <div class="recipe-lists" aria-label="Ingredients and preparation">
+                <div class="mini-box">
+                  <div class="mini-title">Ingredients</div>
+                  <ul>
+                    <li>1 frozen açaí pack (or berry blend)</li>
+                    <li>1/2 banana</li>
+                    <li>1–2 tbsp MayaNut™ flour</li>
+                    <li>Splash of juice/milk to blend</li>
+                    <li>Toppings: fruit, granola, coconut</li>
+                  </ul>
+                </div>
+                <div class="mini-box">
+                  <div class="mini-title">Preparation</div>
+                  <ul>
+                    <li>Blend base until thick.</li>
+                    <li>Stir in MayaNut™ flour (or blend briefly).</li>
+                    <li>Top and serve immediately.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="recipe-actions" aria-label="Recipe actions">
+                <a class="btn-orange" href="recipe2.html" aria-label="View recipe 2">View Recipe</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 3) Roasted latte (12 min) -->
+          <article class="recipe-card" data-tags="drinks" aria-label="Recipe: MayaNut roasted latte">
+            <div class="recipe-media" aria-label="Recipe photo placeholder">
+              <img src="recipe-placeholder-4.jpg"
+                   alt="Warm roasted latte-style drink made with MayaNut™ flour whisked into hot milk"
+                   loading="lazy" decoding="async"
+                   onerror="this.style.opacity='.35';">
+              <div class="badge" aria-hidden="true">*Placeholder image</div>
+            </div>
+
+            <div class="recipe-body">
+              <div class="recipe-top">
+                <div class="recipe-name">MayaNut™ Roasted Latte</div>
+
+                <div class="recipe-meta" aria-label="Recipe tags and time">
+                  <span class="pill">Drink</span>
+                  <span class="pill">12 min</span>
+
+                  <button class="save-icon" type="button" data-save="recipe3"
+                          aria-label="Save this recipe" title="Save this recipe">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="stroke" d="M12 3v10"></path>
+                      <path class="stroke" d="M8.5 10.5 12 13.9l3.5-3.4"></path>
+                      <path class="stroke" d="M6 20h12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="recipe-desc">
+                A warm, roasted cocoa-like drink—simple, cozy, and surprisingly satisfying.
+              </div>
+
+              <div class="recipe-lists" aria-label="Ingredients and preparation">
+                <div class="mini-box">
+                  <div class="mini-title">Ingredients</div>
+                  <ul>
+                    <li>1 cup milk of choice</li>
+                    <li>1 tbsp MayaNut™ flour</li>
+                    <li>1–2 tsp cocoa (optional)</li>
+                    <li>Honey/maple to taste</li>
+                    <li>Pinch of salt + cinnamon (optional)</li>
+                  </ul>
+                </div>
+                <div class="mini-box">
+                  <div class="mini-title">Preparation</div>
+                  <ul>
+                    <li>Heat milk until steaming (do not boil).</li>
+                    <li>Whisk in MayaNut™ flour until smooth.</li>
+                    <li>Sweeten, season, and serve warm.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="recipe-actions" aria-label="Recipe actions">
+                <a class="btn-orange" href="recipe3.html" aria-label="View recipe 3">View Recipe</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 4) Flatbreads/tortillas (20 min) -->
+          <article class="recipe-card" data-tags="savory vegan glutenfree" aria-label="Recipe: MayaNut corn-style tortillas or flatbreads">
+            <div class="recipe-media" aria-label="Recipe photo placeholder">
+              <img src="recipe-placeholder-6.jpg"
+                   alt="Simple corn-style tortillas or flatbreads made with MayaNut™ flour and corn flour"
+                   loading="lazy" decoding="async"
+                   onerror="this.style.opacity='.35';">
+              <div class="badge" aria-hidden="true">*Placeholder image</div>
+            </div>
+
+            <div class="recipe-body">
+              <div class="recipe-top">
+                <div class="recipe-name">MayaNut™ + Corn Tortillas / Flatbreads</div>
+
+                <div class="recipe-meta" aria-label="Recipe tags and time">
+                  <span class="pill">Vegan</span>
+                  <span class="pill">Gluten-Free</span>
+                  <span class="pill">20 min</span>
+
+                  <button class="save-icon" type="button" data-save="recipe4"
+                          aria-label="Save this recipe" title="Save this recipe">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="stroke" d="M12 3v10"></path>
+                      <path class="stroke" d="M8.5 10.5 12 13.9l3.5-3.4"></path>
+                      <path class="stroke" d="M6 20h12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="recipe-desc">
+                A simple savory base—MayaNut™ adds roasted depth without overpowering your toppings or fillings.
+              </div>
+
+              <div class="recipe-lists" aria-label="Ingredients and preparation">
+                <div class="mini-box">
+                  <div class="mini-title">Ingredients</div>
+                  <ul>
+                    <li>1 cup masa harina (corn flour)</li>
+                    <li>2–3 tbsp MayaNut™ flour</li>
+                    <li>3/4 cup warm water (as needed)</li>
+                    <li>1/2 tsp salt</li>
+                  </ul>
+                </div>
+                <div class="mini-box">
+                  <div class="mini-title">Preparation</div>
+                  <ul>
+                    <li>Mix dry ingredients, add water to form dough.</li>
+                    <li>Press/roll into thin rounds.</li>
+                    <li>Cook on hot skillet 60–90 sec/side.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="recipe-actions" aria-label="Recipe actions">
+                <a class="btn-orange" href="recipe4.html" aria-label="View recipe 4">View Recipe</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 5) Muffins (25 min) -->
+          <article class="recipe-card" data-tags="baking" aria-label="Recipe: MayaNut breakfast muffins">
+            <div class="recipe-media" aria-label="Recipe photo placeholder">
+              <img src="recipe-placeholder-3.jpg"
+                   alt="Baked breakfast muffins made with MayaNut™ flour for a warm roasted cocoa-like flavor"
+                   loading="lazy" decoding="async"
+                   onerror="this.style.opacity='.35';">
+              <div class="badge" aria-hidden="true">*Placeholder image</div>
+            </div>
+
+            <div class="recipe-body">
+              <div class="recipe-top">
+                <div class="recipe-name">MayaNut™ Breakfast Muffins</div>
+
+                <div class="recipe-meta" aria-label="Recipe tags and time">
+                  <span class="pill">Baking</span>
+                  <span class="pill">25 min</span>
+
+                  <button class="save-icon" type="button" data-save="recipe5"
+                          aria-label="Save this recipe" title="Save this recipe">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="stroke" d="M12 3v10"></path>
+                      <path class="stroke" d="M8.5 10.5 12 13.9l3.5-3.4"></path>
+                      <path class="stroke" d="M6 20h12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="recipe-desc">
+                Soft, satisfying muffins where MayaNut™ flour adds a roasted depth that pairs well with cinnamon, vanilla, or chocolate chips.
+              </div>
+
+              <div class="recipe-lists" aria-label="Ingredients and preparation">
+                <div class="mini-box">
+                  <div class="mini-title">Ingredients</div>
+                  <ul>
+                    <li>1 1/2 cups all-purpose flour</li>
+                    <li>1/4 cup MayaNut™ flour</li>
+                    <li>2 tsp baking powder</li>
+                    <li>1/3 cup sugar</li>
+                    <li>1 egg, 1 cup milk, 3 tbsp oil</li>
+                    <li>Vanilla + pinch of salt</li>
+                  </ul>
+                </div>
+                <div class="mini-box">
+                  <div class="mini-title">Preparation</div>
+                  <ul>
+                    <li>Oven: 375°F. Bake 16–18 min.</li>
+                    <li>Mix dry + wet separately, then combine.</li>
+                    <li>Fill cups, bake, cool 5 min.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="recipe-actions" aria-label="Recipe actions">
+                <a class="btn-orange" href="recipe5.html" aria-label="View recipe 5">View Recipe</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 6) Cookies (30 min) -->
+          <article class="recipe-card" data-tags="baking" aria-label="Recipe: MayaNut cookies">
+            <div class="recipe-media" aria-label="Recipe photo placeholder">
+              <img src="recipe-placeholder-5.jpg"
+                   alt="Baked cookies made with MayaNut™ flour (roasted seed flour) for a warm roasted cocoa-like flavor"
+                   loading="lazy" decoding="async"
+                   onerror="this.style.opacity='.35';">
+              <div class="badge" aria-hidden="true">*Placeholder image</div>
+            </div>
+
+            <div class="recipe-body">
+              <div class="recipe-top">
+                <div class="recipe-name">MayaNut™ Roasted Cookies</div>
+
+                <div class="recipe-meta" aria-label="Recipe tags and time">
+                  <span class="pill">Baking</span>
+                  <span class="pill">30 min</span>
+
+                  <button class="save-icon" type="button" data-save="recipe6"
+                          aria-label="Save this recipe" title="Save this recipe">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="stroke" d="M12 3v10"></path>
+                      <path class="stroke" d="M8.5 10.5 12 13.9l3.5-3.4"></path>
+                      <path class="stroke" d="M6 20h12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="recipe-desc">
+                Classic cookies with an extra warm, roasted depth—MayaNut™ flour brings a subtle cocoa-like note.
+              </div>
+
+              <div class="recipe-lists" aria-label="Ingredients and preparation">
+                <div class="mini-box">
+                  <div class="mini-title">Ingredients</div>
+                  <ul>
+                    <li>1 cup flour + 1/3 cup MayaNut™ flour</li>
+                    <li>1/2 tsp baking soda + pinch of salt</li>
+                    <li>1/2 cup butter (softened)</li>
+                    <li>1/2 cup brown sugar + 1/4 cup sugar</li>
+                    <li>1 egg + 1 tsp vanilla</li>
+                    <li>1/2 cup chocolate chips (optional)</li>
+                  </ul>
+                </div>
+                <div class="mini-box">
+                  <div class="mini-title">Preparation</div>
+                  <ul>
+                    <li>Oven: 350°F. Bake 10–12 min.</li>
+                    <li>Cream butter+sugar, add egg+vanilla.</li>
+                    <li>Stir in dry, scoop, bake, cool.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="recipe-actions" aria-label="Recipe actions">
+                <a class="btn-orange" href="recipe6.html" aria-label="View recipe 6">View Recipe</a>
+              </div>
+            </div>
+          </article>
 
         </div>
       </section>
@@ -752,6 +1121,11 @@ botanical food, indigenous food">
     (function(){
       const $ = (s, r=document)=> r.querySelector(s);
       const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
+
+      const wrap = $("#recipesWrap");
+      const search = $("#recipeSearch");
+      const filter = $("#recipeFilter");
+      const clearBtn = $("#clearSearch");
 
       function setSaved(key, on){
         const k = "mayanut_saved_" + key;
@@ -779,10 +1153,6 @@ botanical food, indigenous food">
         });
       });
 
-      const wrap = $("#recipesWrap");
-      const search = $("#recipeSearch");
-      const filter = $("#recipeFilter");
-
       function matchesFilter(card){
         const q = (search.value || "").trim().toLowerCase();
         const f = filter.value;
@@ -800,8 +1170,19 @@ botanical food, indigenous food">
         });
       }
 
-      if(search) search.addEventListener("input", applyVisibility);
+      if(search){
+        search.addEventListener("input", applyVisibility);
+        search.addEventListener("focus", ()=>{ search.style.textAlign = "left"; });
+      }
       if(filter) filter.addEventListener("change", applyVisibility);
+
+      if(clearBtn && search){
+        clearBtn.addEventListener("click", ()=>{
+          search.value = "";
+          search.focus();
+          applyVisibility();
+        });
+      }
 
       syncSaveButtons();
       applyVisibility();

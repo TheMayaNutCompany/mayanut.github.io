@@ -92,13 +92,13 @@ botanical food, indigenous food">
 
       --padX:16px;
 
-      /* ✅ match recipe image column width */
+      /* match recipe image column width */
       --mediaW: 360px;
       --controlH: 40px;
       --controlGap: 12px;
-      --filterW: 118px;
+      --sortW: 152px;
 
-      /* ✅ Scrollbar: let OS/browser pick light/dark automatically */
+      /* scrollbar auto light/dark */
       color-scheme: light dark;
     }
 
@@ -118,7 +118,7 @@ botanical food, indigenous food">
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; border:0; background:transparent; }
 
-    /* HEADER (LOCKED) */
+    /* HEADER */
     .site-header{
       width:100%;
       background-color: var(--green);
@@ -278,7 +278,7 @@ botanical food, indigenous food">
       margin-left:auto;
     }
 
-    /* ✅ TOP BAR: hero text (left) + search (right) */
+    /* TOP BAR */
     .recipes-top{
       padding: 14px 16px 0;
       display:grid;
@@ -381,17 +381,55 @@ botanical food, indigenous food">
     .search-icon svg{ width: 16px; height: 16px; }
     .search-icon .stroke{ stroke:#0b1220; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
-    .filter{
+    /* Sort button (visible + label updates) */
+    .sort-wrap{
       height: var(--controlH);
-      width: var(--filterW);
+      width: var(--sortW);
       flex: 0 0 auto;
       border-radius: 14px;
       border: 1px solid rgba(12,90,42,0.55);
       background: rgba(255,255,255,0.92);
       padding: 0 10px;
-      font-weight: 900;
-      outline:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 8px;
       cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      position:relative;
+    }
+    .sort-label{
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color:#0b1220;
+      white-space:nowrap;
+    }
+    .sort-value{
+      font-weight: 950;
+      font-size: 12px;
+      color:#0b1220;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      margin-left:auto;
+    }
+    .sort-caret{
+      width: 14px; height: 14px; flex: 0 0 auto; opacity:.9;
+    }
+    .sort-caret path{ stroke:#0b1220; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* Hidden native select over the button for perfect cross-browser dropdown */
+    .sort-native{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      cursor:pointer;
+      width:100%;
+      height:100%;
+      appearance:auto;
     }
 
     /* RECIPES */
@@ -582,7 +620,7 @@ botanical food, indigenous food">
 
     /* TABLET */
     @media (max-width: 1024px) and (min-width: 721px){
-      :root{ --mediaW: 320px; --filterW: 112px; }
+      :root{ --mediaW: 320px; --sortW: 150px; }
       .recipe-media img{ min-height: 240px; }
       .recipe-name{ font-size:20px; }
       .recipe-lists{ grid-template-columns: 1fr; }
@@ -590,7 +628,7 @@ botanical food, indigenous food">
 
     /* MOBILE */
     @media (max-width: 720px){
-      :root{ --mediaW: 100%; --filterW: 128px; }
+      :root{ --mediaW: 100%; --sortW: 150px; }
 
       .site-header{ height: 204px; background-size:140% auto; }
       .header-stack{ gap: 12px; transform: translateY(30px); }
@@ -617,7 +655,6 @@ botanical food, indigenous food">
         height: auto;
         justify-content:stretch;
       }
-      .search-wrap{ flex: 1 1 auto; }
 
       .recipes-wrap{ padding: 14px; }
       .recipe-card{ grid-template-columns: 1fr; }
@@ -638,7 +675,7 @@ botanical food, indigenous food">
       }
     }
 
-    /* FOOTER (LOCKED) */
+    /* FOOTER (ENTIRE BOTTOM SECTION BACK) */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, #066100 0%, #7ae78a 52%, #d8ff6a 100%);
@@ -647,6 +684,78 @@ botanical food, indigenous food">
       color:#ffffff;
     }
     .footer *{ color:#ffffff; }
+
+    .footer-inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 18px 14px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .footer-left{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-start;
+      padding-left: 34px;
+    }
+    .footer-tagline{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:950;
+      letter-spacing:.06em;
+      font-size:15px;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .footer-florida{ width:26px; height:26px; margin-left:2px; }
+    .footer-logo{ width:240px; height:auto; user-select:none; display:block; }
+
+    .footer-right{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:18px;
+      justify-items:end;
+      text-align:right;
+      align-self:start;
+      margin-top:0;
+    }
+    .footer-col-title{
+      font-weight:950;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:10px;
+    }
+    .footer-link{
+      display:block;
+      font-weight:900;
+      font-size:12px;
+      padding:6px 0;
+      border-bottom:1px solid rgba(255,255,255,0.25);
+      width:fit-content;
+      margin-left:auto;
+    }
+
+    .social-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; }
+    .icon-pill{
+      width:34px; height:34px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius:14px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: var(--orange);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.12);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .icon-pill svg{ width:18px; height:18px; display:block; }
+    .icon-pill .stroke{ stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .icon-pill .fill{ fill:#fff; stroke:none; }
+    .yt-body{ fill:#fff; stroke:none; }
+    .yt-play{ fill: var(--orange); stroke:none; }
 
     .copyright-bar{
       width:100%;
@@ -666,8 +775,33 @@ botanical food, indigenous food">
       color:#fff;
       text-align:left;
     }
+
     @media (max-width: 720px){
-      .copyright-inner{ padding-left: 16px; padding-right: 16px; }
+      .footer-inner{
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        align-items:start;
+        padding: 18px 16px 14px;
+      }
+      .footer-left{ padding-left: 0; align-items:flex-start; }
+      .footer-right{
+        grid-template-columns: 1fr;
+        justify-items:end;
+        text-align:right;
+        align-self:start;
+        margin-top: 0;
+        padding-top: 0;
+      }
+      .footer-left a{ width:100%; }
+      .footer-logo{ width: 220px; margin: 6px auto 0; }
+      .copyright-inner{ padding-left: 16px; padding-right: 16px; text-align:left; }
+    }
+    @media(max-width:560px){
+      .footer-inner{ grid-template-columns: 1fr; }
+      .footer-right{ grid-template-columns: 1fr; justify-items:start; text-align:left; }
+      .footer-link{ margin-left:0; }
+      .social-row{ justify-content:flex-start; }
+      .footer-logo{ margin-left:auto; margin-right:auto; }
     }
   </style>
 </head>
@@ -699,13 +833,12 @@ botanical food, indigenous food">
           <div class="head-line" aria-hidden="true"></div>
         </div>
 
-        <!-- ✅ Hero left, search+filter right -->
         <div class="recipes-top" aria-label="Recipes tools">
           <div class="recipes-hero" aria-label="Recipes intro">
             Browse our recipes and explore what you can make at home with MayaNut™.
           </div>
 
-          <div class="recipes-controls" aria-label="Search and filter recipes">
+          <div class="recipes-controls" aria-label="Search and sort recipes">
             <div class="search-wrap" role="search" aria-label="Search recipes">
               <button class="search-clear" type="button" id="clearSearch" aria-label="Clear search">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -715,7 +848,7 @@ botanical food, indigenous food">
               </button>
 
               <input class="search-input" id="recipeSearch" type="search"
-                     placeholder="Search products"
+                     placeholder="Search recipes"
                      aria-label="Search recipes">
 
               <span class="search-icon" aria-hidden="true">
@@ -726,22 +859,30 @@ botanical food, indigenous food">
               </span>
             </div>
 
-            <select class="filter" id="recipeFilter" aria-label="Filter recipes">
-              <option value="all">All</option>
-              <option value="no-bake">No-Bake</option>
-              <option value="baking">Baking</option>
-              <option value="drinks">Drinks</option>
-              <option value="savory">Savory</option>
-              <option value="vegan">Vegan</option>
-              <option value="glutenfree">Gluten-Free</option>
-            </select>
+            <div class="sort-wrap" aria-label="Sort menu">
+              <span class="sort-label">Sort:</span>
+              <span class="sort-value" id="sortValue">All</span>
+              <svg class="sort-caret" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+
+              <select class="sort-native" id="recipeSort" aria-label="Sort recipes">
+                <option value="all" selected>All</option>
+                <option value="time">Preparation Time</option>
+                <option value="dessert">Desserts</option>
+                <option value="savory">Savory</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <div class="recipes-wrap" id="recipesWrap">
 
           <!-- 1) Smoothie (5 min) -->
-          <article class="recipe-card" data-tags="no-bake drinks vegan glutenfree" aria-label="Recipe: MayaNut cocoa-style smoothie">
+          <article class="recipe-card" data-tags="no-bake drinks vegan glutenfree easy" data-mins="5" aria-label="Recipe: MayaNut cocoa-style smoothie">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
               <img src="recipe-placeholder-1.jpg"
                    alt="Finished MayaNut™ cocoa-style smoothie made with roasted seed flour (MayaNut powder) and blended fruit"
@@ -782,15 +923,15 @@ botanical food, indigenous food">
                     <li>1 cup milk of choice (or water)</li>
                     <li>1–2 tbsp MayaNut™ flour</li>
                     <li>1 tbsp cocoa (optional)</li>
-                    <li>1 tbsp honey/maple (optional)</li>
+                    <li>Honey/maple to taste (optional)</li>
                     <li>Pinch of salt + ice as needed</li>
                   </ul>
                 </div>
                 <div class="mini-box">
                   <div class="mini-title">Preparation</div>
                   <ul>
-                    <li>Blend everything until smooth.</li>
-                    <li>Add more liquid to thin, ice to thicken.</li>
+                    <li>Blend until smooth.</li>
+                    <li>Add liquid to thin, ice to thicken.</li>
                     <li>Taste, then adjust sweetness/salt.</li>
                   </ul>
                 </div>
@@ -803,7 +944,7 @@ botanical food, indigenous food">
           </article>
 
           <!-- 2) Açaí bowl (10 min) -->
-          <article class="recipe-card" data-tags="no-bake vegan glutenfree" aria-label="Recipe: MayaNut açaí bowl boost">
+          <article class="recipe-card" data-tags="no-bake vegan glutenfree easy dessert" data-mins="10" aria-label="Recipe: MayaNut açaí bowl boost">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
               <img src="recipe-placeholder-2.jpg"
                    alt="Finished açaí bowl made with fruit and topped with granola, with MayaNut™ flour stirred into the base"
@@ -864,7 +1005,7 @@ botanical food, indigenous food">
           </article>
 
           <!-- 3) Roasted latte (12 min) -->
-          <article class="recipe-card" data-tags="drinks" aria-label="Recipe: MayaNut roasted latte">
+          <article class="recipe-card" data-tags="drinks easy" data-mins="12" aria-label="Recipe: MayaNut roasted latte">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
               <img src="recipe-placeholder-4.jpg"
                    alt="Warm roasted latte-style drink made with MayaNut™ flour whisked into hot milk"
@@ -893,7 +1034,7 @@ botanical food, indigenous food">
               </div>
 
               <div class="recipe-desc">
-                A warm, roasted cocoa-like drink—simple, cozy, and surprisingly satisfying.
+                A warm, roasted cocoa-like drink—simple, cozy, and satisfying.
               </div>
 
               <div class="recipe-lists" aria-label="Ingredients and preparation">
@@ -923,8 +1064,8 @@ botanical food, indigenous food">
             </div>
           </article>
 
-          <!-- 4) Flatbreads/tortillas (20 min) -->
-          <article class="recipe-card" data-tags="savory vegan glutenfree" aria-label="Recipe: MayaNut corn-style tortillas or flatbreads">
+          <!-- 4) Tortillas/flatbreads (20 min) -->
+          <article class="recipe-card" data-tags="savory vegan glutenfree medium" data-mins="20" aria-label="Recipe: MayaNut corn tortillas or flatbreads">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
               <img src="recipe-placeholder-6.jpg"
                    alt="Simple corn-style tortillas or flatbreads made with MayaNut™ flour and corn flour"
@@ -954,7 +1095,7 @@ botanical food, indigenous food">
               </div>
 
               <div class="recipe-desc">
-                A simple savory base—MayaNut™ adds roasted depth without overpowering your toppings or fillings.
+                A simple savory base—MayaNut™ adds roasted depth without overpowering toppings or fillings.
               </div>
 
               <div class="recipe-lists" aria-label="Ingredients and preparation">
@@ -970,8 +1111,8 @@ botanical food, indigenous food">
                 <div class="mini-box">
                   <div class="mini-title">Preparation</div>
                   <ul>
-                    <li>Mix dry ingredients, add water to form dough.</li>
-                    <li>Press/roll into thin rounds.</li>
+                    <li>Mix dry, add water to form dough.</li>
+                    <li>Press/roll rounds.</li>
                     <li>Cook on hot skillet 60–90 sec/side.</li>
                   </ul>
                 </div>
@@ -984,7 +1125,7 @@ botanical food, indigenous food">
           </article>
 
           <!-- 5) Muffins (25 min) -->
-          <article class="recipe-card" data-tags="baking" aria-label="Recipe: MayaNut breakfast muffins">
+          <article class="recipe-card" data-tags="baking medium dessert" data-mins="25" aria-label="Recipe: MayaNut breakfast muffins">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
               <img src="recipe-placeholder-3.jpg"
                    alt="Baked breakfast muffins made with MayaNut™ flour for a warm roasted cocoa-like flavor"
@@ -1013,7 +1154,7 @@ botanical food, indigenous food">
               </div>
 
               <div class="recipe-desc">
-                Soft, satisfying muffins where MayaNut™ flour adds a roasted depth that pairs well with cinnamon, vanilla, or chocolate chips.
+                Soft, satisfying muffins where MayaNut™ flour adds a roasted depth that pairs with cinnamon, vanilla, or chocolate chips.
               </div>
 
               <div class="recipe-lists" aria-label="Ingredients and preparation">
@@ -1045,7 +1186,7 @@ botanical food, indigenous food">
           </article>
 
           <!-- 6) Cookies (30 min) -->
-          <article class="recipe-card" data-tags="baking" aria-label="Recipe: MayaNut cookies">
+          <article class="recipe-card" data-tags="baking hard dessert" data-mins="30" aria-label="Recipe: MayaNut cookies">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
               <img src="recipe-placeholder-5.jpg"
                    alt="Baked cookies made with MayaNut™ flour (roasted seed flour) for a warm roasted cocoa-like flavor"
@@ -1112,6 +1253,66 @@ botanical food, indigenous food">
   </main>
 
   <footer class="footer" aria-label="Footer">
+    <div class="footer-inner">
+      <div class="footer-left" aria-label="Brand">
+        <div class="footer-tagline">
+          <span>Started in South Florida</span>
+          <img class="footer-florida" src="florida-image-the-maya-nut-company.png" alt="Florida icon" onerror="this.style.display='none';">
+        </div>
+        <a href="index.html" aria-label="The MayaNut Company home">
+          <img class="footer-logo" src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" decoding="async">
+        </a>
+      </div>
+
+      <div class="footer-right" aria-label="Footer links">
+        <div class="footer-col">
+          <div class="footer-col-title">WHO WE ARE</div>
+          <a class="footer-link" href="about.html">About</a>
+          <a class="footer-link" href="recipes.html">Recipes</a>
+          <a class="footer-link" href="gallery.html">Gallery</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">SUPPORT</div>
+          <a class="footer-link" href="faq.html">FAQ</a>
+          <a class="footer-link" href="#" onclick="return false;" aria-label="Newsletter (coming soon)">Newsletter</a>
+          <a class="footer-link" href="accessibility.html">Accessibility</a>
+          <a class="footer-link" href="terms.html">Terms</a>
+          <a class="footer-link" href="privacy.html">Privacy</a>
+          <a class="footer-link" href="sitemap.html">Sitemap</a>
+          <a class="footer-link" href="contact.html">Contact</a>
+          <a class="footer-link" href="recipes-es.html">Español</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">FOLLOW US</div>
+          <div class="social-row" aria-label="Social links">
+            <a class="icon-pill" href="https://www.instagram.com/themayanutcompany" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect class="stroke" x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+                <circle class="stroke" cx="12" cy="12" r="4.2"></circle>
+                <circle class="fill" cx="17.3" cy="6.7" r="0.9"></circle>
+              </svg>
+            </a>
+            <a class="icon-pill" href="https://x.com/mayanutcompany" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="fill" d="M18.9 3H21l-6.6 7.6L22 21h-6.2l-4.8-6.3L5.5 21H3.4l7.1-8.2L2 3h6.3l4.3 5.6L18.9 3zm-2.2 16h1.7L7.2 4.9H5.4L16.7 19z"/>
+              </svg>
+            </a>
+            <a class="icon-pill" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="fill" d="M6.94 6.5A2.2 2.2 0 1 1 6.94 2.1a2.2 2.2 0 0 1 0 4.4ZM3.9 21V8.3h6.1V21H3.9Zm7.8 0V8.3h5.8v1.8h.1c.8-1.4 2.3-2.3 4.2-2.3 4.5 0 5.3 2.9 5.3 6.6V21h-6.1v-5.6c0-1.3 0-3-2-3s-2.3 1.4-2.3 2.9V21h-5.0Z"/>
+              </svg>
+            </a>
+            <a class="icon-pill" href="#" aria-label="YouTube (coming soon)" onclick="return false;">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect class="yt-body" x="3.2" y="7.2" width="17.6" height="9.6" rx="3"></rect>
+                <path class="yt-play" d="M11.0 9.4v5.2l4.6-2.6-4.6-2.6Z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="copyright-bar" aria-label="Copyright">
       <div class="copyright-inner">© 2025–2026 The MayaNut Company, Inc. All rights reserved.</div>
     </div>
@@ -1124,8 +1325,9 @@ botanical food, indigenous food">
 
       const wrap = $("#recipesWrap");
       const search = $("#recipeSearch");
-      const filter = $("#recipeFilter");
       const clearBtn = $("#clearSearch");
+      const sortNative = $("#recipeSort");
+      const sortValue = $("#sortValue");
 
       function setSaved(key, on){
         const k = "mayanut_saved_" + key;
@@ -1153,39 +1355,108 @@ botanical food, indigenous food">
         });
       });
 
-      function matchesFilter(card){
+      function getSortMode(){
+        return (sortNative?.value || "all").toLowerCase();
+      }
+
+      function matches(card){
         const q = (search.value || "").trim().toLowerCase();
-        const f = filter.value;
         const tags = (card.getAttribute("data-tags") || "").toLowerCase();
         const text = card.innerText.toLowerCase();
-
-        const okQuery = !q || text.includes(q) || tags.includes(q);
-        const okFilter = (f === "all") || tags.includes(f);
-        return okQuery && okFilter;
+        return !q || text.includes(q) || tags.includes(q);
       }
 
       function applyVisibility(){
         $$(".recipe-card", wrap).forEach(card=>{
-          card.style.display = matchesFilter(card) ? "" : "none";
+          card.style.display = matches(card) ? "" : "none";
         });
       }
 
-      if(search){
-        search.addEventListener("input", applyVisibility);
-        search.addEventListener("focus", ()=>{ search.style.textAlign = "left"; });
-      }
-      if(filter) filter.addEventListener("change", applyVisibility);
+      function sortCards(){
+        const mode = getSortMode();
+        const cards = $$(".recipe-card", wrap);
 
+        // only sort visible ordering; keep filtering separate
+        const sorted = cards.slice().sort((a,b)=>{
+          const aTags = (a.getAttribute("data-tags")||"").toLowerCase();
+          const bTags = (b.getAttribute("data-tags")||"").toLowerCase();
+          const aM = parseInt(a.getAttribute("data-mins")||"999",10);
+          const bM = parseInt(b.getAttribute("data-mins")||"999",10);
+
+          const isDessertA = aTags.includes("dessert");
+          const isDessertB = bTags.includes("dessert");
+          const isSavoryA = aTags.includes("savory");
+          const isSavoryB = bTags.includes("savory");
+
+          const diffTime = aM - bM;
+
+          if(mode === "time") return diffTime;
+          if(mode === "dessert") return (isDessertB - isDessertA) || diffTime;
+          if(mode === "savory")  return (isSavoryB  - isSavoryA)  || diffTime;
+
+          // difficulty buckets
+          const rank = (t)=>{
+            if(t.includes("easy")) return 1;
+            if(t.includes("medium")) return 2;
+            if(t.includes("hard")) return 3;
+            return 99;
+          };
+          if(mode === "easy" || mode === "medium" || mode === "hard"){
+            const want = mode;
+            const aWant = aTags.includes(want) ? 0 : 1;
+            const bWant = bTags.includes(want) ? 0 : 1;
+            if(aWant !== bWant) return aWant - bWant; // show chosen difficulty first
+            return diffTime;
+          }
+
+          // default: keep simple -> complex (time)
+          return diffTime;
+        });
+
+        // re-append in new order
+        sorted.forEach(c => wrap.appendChild(c));
+      }
+
+      function applyAll(){
+        applyVisibility();
+        sortCards();
+      }
+
+      // Search
+      if(search){
+        search.addEventListener("input", applyAll);
+      }
       if(clearBtn && search){
         clearBtn.addEventListener("click", ()=>{
           search.value = "";
           search.focus();
-          applyVisibility();
+          applyAll();
+        });
+      }
+
+      // Sort label + behavior
+      function labelFor(v){
+        const m = (v||"all").toLowerCase();
+        if(m === "all") return "All";
+        if(m === "time") return "Preparation Time";
+        if(m === "dessert") return "Desserts";
+        if(m === "savory") return "Savory";
+        if(m === "easy") return "Easy";
+        if(m === "medium") return "Medium";
+        if(m === "hard") return "Hard";
+        return "All";
+      }
+
+      if(sortNative){
+        sortValue.textContent = labelFor(sortNative.value);
+        sortNative.addEventListener("change", ()=>{
+          sortValue.textContent = labelFor(sortNative.value);
+          applyAll();
         });
       }
 
       syncSaveButtons();
-      applyVisibility();
+      applyAll();
     })();
   </script>
 </body>

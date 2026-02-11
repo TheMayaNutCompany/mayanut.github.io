@@ -64,7 +64,7 @@ botanical food, indigenous food">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
 
-  <!-- Structured Data: WebPage + ItemList + Recipes + FAQ -->
+  <!-- Structured Data: WebPage + ItemList -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -98,23 +98,6 @@ botanical food, indigenous food">
   }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {"@type":"Question","name":"What is MayaNut™ flour?","acceptedAnswer":{"@type":"Answer","text":"MayaNut™ flour is roasted seed flour made from the seeds of the Alicastrum tree (Brosimum alicastrum)."}},
-      {"@type":"Question","name":"How do you use MayaNut™ flour?","acceptedAnswer":{"@type":"Answer","text":"Use it in smoothies, açaí bowls, baked goods, or everyday cooking to add warm, roasted depth and a more satisfying texture."}},
-      {"@type":"Question","name":"Is MayaNut™ flour gluten-free?","acceptedAnswer":{"@type":"Answer","text":"MayaNut™ flour is naturally gluten-free. Always confirm handling practices if you have dietary sensitivities."}},
-      {"@type":"Question","name":"What does MayaNut™ flour taste like?","acceptedAnswer":{"@type":"Answer","text":"It has a warm, roasted, cocoa-like flavor that pairs well with fruit, coffee-style drinks, and baking spices."}},
-      {"@type":"Question","name":"Can you bake with MayaNut™ flour?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use it as part of a blend in baked goods like muffins, cookies, and breads to add roasted flavor and richness."}},
-      {"@type":"Question","name":"How much MayaNut™ flour should I add to a smoothie?","acceptedAnswer":{"@type":"Answer","text":"Start with 1–2 tablespoons per smoothie and adjust to taste."}},
-      {"@type":"Question","name":"Does MayaNut™ flour taste like cocoa?","acceptedAnswer":{"@type":"Answer","text":"Many people describe it as cocoa-like because of its warm, roasted flavor, but it is caffeine-free and not chocolate."}},
-      {"@type":"Question","name":"Where can I buy MayaNut™ flour?","acceptedAnswer":{"@type":"Answer","text":"Visit the MayaNut™ flour product page for availability and updates."}}
-    ]
-  }
-  </script>
-
   <style>
     :root{
       --green:#066100;
@@ -123,25 +106,19 @@ botanical food, indigenous food">
       --lime:#d8ff6a;
       --pale:#e9ffd6;
       --softBorder: 1px solid rgba(12,90,42,0.45);
-      --hoverGrey:#cfd3d9;
 
       --font-ui:"Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       --font-pretty:"Palatino Linotype", Palatino, Georgia, serif;
 
       --padX:16px;
-      --gap:14px;
 
+      /* Keep this constant: divider sits exactly at this x-position */
       --mediaW:340px;
       --topBarH:56px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
-    html, body{ height:100%; }
-
-    /* Let browser choose default scrollbar colors (light/dark) */
-    html, body{ scrollbar-width:auto; }
-    body{ margin:0; }
-
+    html, body{ height:100%; scrollbar-width:auto; }
     body{
       min-height:100%;
       background:#fff;
@@ -149,13 +126,13 @@ botanical food, indigenous food">
       color:#0f172a;
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
+      margin:0;
     }
-
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
     button,input{ font-family:inherit; border:0; background:transparent; }
 
-    /* Prevent “green line / white bar” paint glitches on some GPUs */
+    /* Reduce paint glitches */
     .site-header, .panel, .footer{ transform: translateZ(0); }
 
     /* HEADER */
@@ -197,9 +174,8 @@ botanical food, indigenous food">
       flex-direction:column;
       align-items:center;
       gap: 14px;
-      transform: translateY(26px); /* header+tabs lowered overall */
+      transform: translateY(26px);
     }
-
     .brand-group{
       display:flex;
       align-items:center;
@@ -219,7 +195,6 @@ botanical food, indigenous food">
       font-size:48px;
       color: var(--lime);
       -webkit-text-stroke: 0.9px rgba(11,59,23,0.95);
-      text-shadow:none;
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
@@ -235,7 +210,7 @@ botanical food, indigenous food">
       justify-content:center;
       gap:9px;
       flex-wrap:wrap;
-      transform: translateY(-2px); /* tabs a little higher relative to header text */
+      transform: translateY(-2px);
     }
     .subnav a{
       display:inline-flex;
@@ -258,11 +233,9 @@ botanical food, indigenous food">
       white-space:nowrap;
     }
     .subnav a:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.20); }
-    .subnav a:active{ transform: translateY(0px); }
     .subnav a.active{
       background: var(--orange);
       border: 2px solid rgba(255,255,255,0.95);
-      color:#ffffff;
       box-shadow: 0 14px 30px rgba(15,23,42,0.18);
     }
 
@@ -311,7 +284,7 @@ botanical food, indigenous food">
       margin-left:auto;
     }
 
-    /* TOP CONTROLS: Sort left, Search mathematically centered, Text+CTA right */
+    /* TOP CONTROLS: centered EXACTLY on the recipe divider (between image/description) */
     .top-controls{
       position: relative;
       display: flex;
@@ -327,7 +300,6 @@ botanical food, indigenous food">
       overflow: visible;
     }
 
-    /* Left and right occupy equal space -> symmetry */
     .top-left{
       flex: 1;
       display: flex;
@@ -337,18 +309,24 @@ botanical food, indigenous food">
       min-width: 0;
     }
 
-    /* Centered exactly on midpoint */
+    /* FIX: center search over the recipe divider line:
+       divider x = left content padding inside panel (16px) + image width (var(--mediaW))
+       top-controls has inner padding-left 12px, and is within the same panel with margin-left 16px.
+       We align to left edge of top-controls content box, then add mediaW.
+    */
     .top-center{
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      left: calc(12px + var(--mediaW)); /* <-- exact divider location inside panel */
+      transform: translateX(-50%);      /* center search on that divider */
       display: flex;
       align-items: center;
       width: min(420px, 44vw);
       justify-content: center;
+      z-index: 70;
+      pointer-events: none; /* prevent overlapping text from capturing clicks */
     }
+    .top-center *{ pointer-events: auto; }
 
-    /* Right side: sentence then CTA */
     .top-right{
       flex: 1;
       display: flex;
@@ -369,10 +347,9 @@ botanical food, indigenous food">
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 520px;
+      max-width: 420px; /* prevent overlap into search */
     }
 
-    /* Orange pill CTA */
     .cta-pill{
       display:inline-flex;
       align-items:center;
@@ -397,7 +374,7 @@ botanical food, indigenous food">
     .cta-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-pill:active{ transform: translateY(0px); }
 
-    /* Sort: button + menu */
+    /* Sort */
     .sort-wrap{ position: relative; display:flex; align-items:center; }
     .sort-btn{
       height: 42px;
@@ -428,7 +405,6 @@ botanical food, indigenous food">
       opacity:.9;
       flex: 0 0 auto;
     }
-
     .sort-menu{
       position:absolute;
       top: calc(100% + 8px);
@@ -450,7 +426,7 @@ botanical food, indigenous food">
       padding: 10px 10px;
       border-radius: 12px;
       border: 1px solid rgba(12,90,42,0.35);
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.96);
       font-weight: 950;
       font-size: 12px;
       letter-spacing: .06em;
@@ -460,9 +436,9 @@ botanical food, indigenous food">
       margin-bottom: 8px;
     }
     .sort-item:last-child{ margin-bottom: 0; }
-    .sort-item:hover{ background: rgba(233,255,214,0.95); }
+    .sort-item:hover{ background: rgba(233,255,214,0.70); }
 
-    /* Search with left magnifier, right clear, and autocomplete dropdown */
+    /* Search (magnifier left, clear right) */
     .search-wrap{
       position: relative;
       width: 100%;
@@ -563,7 +539,7 @@ botanical food, indigenous food">
       text-overflow: ellipsis;
     }
 
-    /* Mobile fallback */
+    /* Mobile: stack */
     @media (max-width: 820px){
       .top-controls{
         position: static;
@@ -577,6 +553,8 @@ botanical food, indigenous food">
         order: 2;
         width: 100%;
         justify-content: center;
+        left: auto;
+        pointer-events: auto;
       }
       .top-left{
         order: 1;
@@ -604,8 +582,6 @@ botanical food, indigenous food">
       flex-direction:column;
       gap: 14px;
     }
-
-    /* Like product: image left, copy right */
     .recipe-card{
       border-radius:18px;
       border: 1px solid rgba(12,90,42,0.45);
@@ -617,19 +593,20 @@ botanical food, indigenous food">
       min-height: 280px;
     }
 
+    /* FIX: ensure divider line connects from top to bottom */
     .recipe-media{
       background:#fff;
       border-right: 1px solid rgba(12,90,42,0.45);
       position:relative;
       overflow:hidden;
       aspect-ratio: 1 / 1;
+      align-self: stretch;
     }
     .recipe-media img{
       width:100%;
       height:100%;
       object-fit:cover;
       object-position:center 55%;
-      filter: saturate(1.03) contrast(1.03);
       background:#fff;
     }
     .recipe-media .placeholder{
@@ -658,14 +635,10 @@ botanical food, indigenous food">
       flex-direction:column;
       gap: 10px;
       min-width: 0;
+      align-self: stretch;
     }
 
-    .recipe-top{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-
+    .recipe-top{ display:flex; flex-direction:column; gap: 10px; }
     .recipe-header-row{
       width:100%;
       display:flex;
@@ -674,14 +647,12 @@ botanical food, indigenous food">
       gap: 12px;
       flex-wrap:wrap;
     }
-
     .recipe-header{
       display:flex;
       align-items:center;
       gap: 12px;
       min-width: 0;
     }
-
     .recipe-number{
       width: 42px;
       height: 42px;
@@ -697,7 +668,6 @@ botanical food, indigenous food">
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       flex: 0 0 auto;
     }
-
     .recipe-name{
       font-weight:950;
       font-size:22px;
@@ -719,7 +689,7 @@ botanical food, indigenous food">
       margin-left:auto;
     }
 
-    /* Rounded rectangles = non-clickable tags */
+    /* Clean, non-glitch icons (replace vegan/GF) */
     .tag-rect{
       display:inline-flex;
       align-items:center;
@@ -744,7 +714,7 @@ botanical food, indigenous food">
       opacity:.92;
     }
 
-    /* Circle = quick clickable action (Download) */
+    /* Download (kept) */
     .download-wrap{ position: relative; display:flex; align-items:center; }
     .download-btn{
       width: 36px;
@@ -761,16 +731,15 @@ botanical food, indigenous food">
       user-select:none;
       flex: 0 0 auto;
       position: relative;
+      transition: transform .08s ease, background .12s ease;
     }
     .download-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .download-btn:active{ transform: translateY(0px); }
-
     .download-btn svg{
       width: 18px; height: 18px;
       stroke:#fff; fill:none; stroke-width:2.4;
       stroke-linecap:round; stroke-linejoin:round;
     }
-
     .tooltip{
       position:absolute;
       top: -36px;
@@ -791,10 +760,7 @@ botanical food, indigenous food">
       transform: translateY(6px);
       transition: opacity .12s ease, transform .12s ease;
     }
-    .download-wrap:hover .tooltip{
-      opacity: 1;
-      transform: translateY(0px);
-    }
+    .download-wrap:hover .tooltip{ opacity: 1; transform: translateY(0px); }
 
     .recipe-desc{
       font-family: var(--font-pretty);
@@ -807,7 +773,7 @@ botanical food, indigenous food">
       max-width: 820px;
     }
 
-    /* Ingredients + Instructions (two side-by-side white panels) */
+    /* Ingredients + Instructions */
     .prep-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -834,6 +800,7 @@ botanical food, indigenous food">
       gap: 8px;
       white-space:nowrap;
     }
+    /* FIX: Ingredients icon (simple list icon, not trash) */
     .prep-title svg{
       width: 16px; height: 16px;
       stroke:#0b1220; fill:none; stroke-width:2.2;
@@ -863,7 +830,6 @@ botanical food, indigenous food">
       justify-content:flex-start;
     }
 
-    /* Orange pill = main clickable CTA buttons */
     .btn-orange{
       display:inline-flex;
       align-items:center;
@@ -892,7 +858,9 @@ botanical food, indigenous food">
       :root{ --mediaW: 300px; }
       .recipe-name{ font-size:20px; max-width: 520px; }
       .tag-rect{ font-size: 10px; letter-spacing: .08em; }
-      .prep-grid{ grid-template-columns: 1fr; } /* tablets: stack to avoid cramped layout */
+      .prep-grid{ grid-template-columns: 1fr; }
+      .top-center{ left: calc(12px + var(--mediaW)); }
+      .top-text{ max-width: 340px; }
     }
 
     @media (max-width: 720px){
@@ -909,50 +877,17 @@ botanical food, indigenous food">
         border-bottom: 1px solid rgba(12,90,42,0.45);
         aspect-ratio: 1 / 1;
       }
-
       .recipe-name{
         white-space: normal;
         max-width: 100%;
         font-size: 20px;
       }
-
-      .recipe-header-row{ align-items:flex-start; }
       .meta-row{ justify-content:flex-start; margin-left:0; }
-
       .prep-grid{ grid-template-columns: 1fr; }
     }
 
-    /* SECTION: FAQ (simple block) */
-    .faq-wrap{ padding: 14px 16px 16px; }
-    .faq-box{
-      border-radius:18px;
-      border: var(--softBorder);
-      background: var(--pale);
-      box-shadow:0 10px 22px rgba(15,23,42,0.05);
-      padding: 14px;
-    }
-    .faq-item{
-      border-radius:14px;
-      border: 1px solid rgba(12,90,42,0.35);
-      background: rgba(255,255,255,0.75);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
-    .faq-q{ font-weight:950; color:#0b1220; letter-spacing:.02em; margin-bottom:6px; }
-    .faq-a{
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      color: rgba(12,90,42,0.95);
-      line-height:1.8;
-      font-size: 14px;
-    }
-
-    /* Bottom store module */
-    .store-module{
-      margin-top: 14px;
-      padding: 14px 16px 16px;
-    }
+    /* Bottom store module (improved copy + nicer layout) */
+    .store-module{ margin-top: 14px; padding: 14px 16px 16px; }
     .store-card{
       border-radius:18px;
       border: 1px solid rgba(12,90,42,0.45);
@@ -1002,7 +937,7 @@ botanical food, indigenous food">
       .store-card img{ border-right:none; border-bottom: 1px solid rgba(12,90,42,0.45); height: 260px; }
     }
 
-    /* FOOTER */
+    /* FOOTER (kept) */
     .footer{
       margin-top: 16px;
       background: linear-gradient(to bottom, #066100 0%, #7ae78a 52%, #d8ff6a 100%);
@@ -1109,18 +1044,14 @@ botanical food, indigenous food">
         align-items:start;
         padding: 18px 16px 14px;
       }
-      .footer-left{ padding-left: 0; align-items:flex-start; }
+      .footer-left{ padding-left: 0; }
       .footer-right{
         grid-template-columns: 1fr;
         justify-items:end;
         text-align:right;
-        align-self:start;
-        margin-top: 0;
-        padding-top: 0;
       }
-      .footer-left a{ width:100%; }
       .footer-logo{ width: 220px; margin: 6px auto 0; }
-      .copyright-inner{ padding-left: 16px; padding-right: 16px; text-align:left; }
+      .copyright-inner{ padding-left: 16px; padding-right: 16px; }
     }
     @media(max-width:560px){
       .footer-inner{ grid-template-columns: 1fr; }
@@ -1159,7 +1090,6 @@ botanical food, indigenous food">
           <div class="head-line" aria-hidden="true"></div>
         </div>
 
-        <!-- ONE TOP LINE: Sort (left), Search (centered), Text + CTA (right) -->
         <div class="top-controls" aria-label="Recipe tools">
           <div class="top-left" aria-label="Sort recipes">
             <div class="sort-wrap">
@@ -1219,16 +1149,10 @@ botanical food, indigenous food">
 
         <div class="recipes-wrap" id="recipesWrap">
 
-          <!-- RECIPE 1 (simplest / shortest time) -->
+          <!-- RECIPE 1 -->
           <article class="recipe-card" data-id="1" data-title="MayaNut Cocoa-Style Smoothie" data-tags="drink easy vegan gluten-free cocoa-like roasted smoothie" data-min="5" aria-label="Recipe 1: MayaNut cocoa-style smoothie">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
-              <img
-                src="recipe-placeholder-1.jpg"
-                alt="MayaNut™ flour cocoa-like smoothie with banana and a warm roasted flavor (placeholder image)"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              >
+              <img src="recipe-placeholder-1.jpg" alt="MayaNut™ flour cocoa-like smoothie with banana and warm roasted flavor (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
 
@@ -1246,21 +1170,19 @@ botanical food, indigenous food">
                       5 MIN
                     </span>
                     <span class="tag-rect" aria-label="Vegan">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c6-1 10-6 10-11 2 7-1 17-10 18-4 0-6-3-6-6 0-2 2-5 6-6z"></path></svg>
+                      <!-- clean leaf icon -->
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4c-8 1-13 6-14 14 8-1 13-6 14-14z"></path><path d="M6 18c4-4 8-6 14-8"></path></svg>
                       VEGAN
                     </span>
                     <span class="tag-rect" aria-label="Gluten-free">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M6 10c4 2 8 2 12 0"></path><path d="M5 5l14 14"></path></svg>
+                      <!-- clean crossed grain -->
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M12 12c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M5 5l14 14"></path></svg>
                       GLUTEN-FREE
                     </span>
 
                     <span class="download-wrap">
                       <a class="download-btn" href="recipe1.html" download aria-label="Download MayaNut™ Flour recipe PDF">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 3v10"></path>
-                          <path d="M8 9l4 4 4-4"></path>
-                          <path d="M5 20h14"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
                       </a>
                       <div class="tooltip" role="tooltip">Download this recipe</div>
                     </span>
@@ -1274,7 +1196,8 @@ botanical food, indigenous food">
                 <div class="prep-grid" aria-label="Ingredients and instructions preview">
                   <div class="prep-box" aria-label="Ingredients preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                      <!-- list icon (not trash) -->
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
                       Ingredients
                     </div>
                     <ul>
@@ -1287,7 +1210,8 @@ botanical food, indigenous food">
 
                   <div class="prep-box" aria-label="Instructions preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
+                      <!-- steps icon -->
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path><path d="M15 17l2 2 4-4"></path></svg>
                       Instructions
                     </div>
                     <ul>
@@ -1308,13 +1232,7 @@ botanical food, indigenous food">
           <!-- RECIPE 2 -->
           <article class="recipe-card" data-id="2" data-title="MayaNut Açaí Bowl Boost" data-tags="bowl easy vegan gluten-free acai açaí fruit roasted cocoa-like" data-min="10" aria-label="Recipe 2: MayaNut açaí bowl boost">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
-              <img
-                src="recipe-placeholder-2.jpg"
-                alt="MayaNut™ flour açaí bowl with fruit toppings and a warm roasted flavor (placeholder image)"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              >
+              <img src="recipe-placeholder-2.jpg" alt="MayaNut™ flour açaí bowl with fruit toppings and warm roasted flavor (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
 
@@ -1332,21 +1250,17 @@ botanical food, indigenous food">
                       10 MIN
                     </span>
                     <span class="tag-rect" aria-label="Vegan">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c6-1 10-6 10-11 2 7-1 17-10 18-4 0-6-3-6-6 0-2 2-5 6-6z"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4c-8 1-13 6-14 14 8-1 13-6 14-14z"></path><path d="M6 18c4-4 8-6 14-8"></path></svg>
                       VEGAN
                     </span>
                     <span class="tag-rect" aria-label="Gluten-free">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M6 10c4 2 8 2 12 0"></path><path d="M5 5l14 14"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M12 12c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M5 5l14 14"></path></svg>
                       GLUTEN-FREE
                     </span>
 
                     <span class="download-wrap">
                       <a class="download-btn" href="recipe2.html" download aria-label="Download MayaNut™ Flour recipe PDF">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 3v10"></path>
-                          <path d="M8 9l4 4 4-4"></path>
-                          <path d="M5 20h14"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
                       </a>
                       <div class="tooltip" role="tooltip">Download this recipe</div>
                     </span>
@@ -1360,7 +1274,7 @@ botanical food, indigenous food">
                 <div class="prep-grid" aria-label="Ingredients and instructions preview">
                   <div class="prep-box" aria-label="Ingredients preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
                       Ingredients
                     </div>
                     <ul>
@@ -1373,7 +1287,7 @@ botanical food, indigenous food">
 
                   <div class="prep-box" aria-label="Instructions preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path><path d="M15 17l2 2 4-4"></path></svg>
                       Instructions
                     </div>
                     <ul>
@@ -1394,13 +1308,7 @@ botanical food, indigenous food">
           <!-- RECIPE 3 -->
           <article class="recipe-card" data-id="3" data-title="MayaNut Roasted Latte" data-tags="drink easy gluten-free latte coffee-style roasted cocoa-like" data-min="12" aria-label="Recipe 3: MayaNut roasted latte">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
-              <img
-                src="recipe-placeholder-4.jpg"
-                alt="Warm roasted latte drink made with MayaNut™ flour for cocoa-like depth (placeholder image)"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              >
+              <img src="recipe-placeholder-4.jpg" alt="Warm roasted latte drink made with MayaNut™ flour for cocoa-like depth (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
 
@@ -1417,22 +1325,14 @@ botanical food, indigenous food">
                       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v5l3 2"></path></svg>
                       12 MIN
                     </span>
-                    <span class="tag-rect" aria-label="Vegan optional">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c6-1 10-6 10-11 2 7-1 17-10 18-4 0-6-3-6-6 0-2 2-5 6-6z"></path></svg>
-                      VEGAN*
-                    </span>
                     <span class="tag-rect" aria-label="Gluten-free">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M6 10c4 2 8 2 12 0"></path><path d="M5 5l14 14"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M12 12c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M5 5l14 14"></path></svg>
                       GLUTEN-FREE
                     </span>
 
                     <span class="download-wrap">
                       <a class="download-btn" href="recipe3.html" download aria-label="Download MayaNut™ Flour recipe PDF">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 3v10"></path>
-                          <path d="M8 9l4 4 4-4"></path>
-                          <path d="M5 20h14"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
                       </a>
                       <div class="tooltip" role="tooltip">Download this recipe</div>
                     </span>
@@ -1446,7 +1346,7 @@ botanical food, indigenous food">
                 <div class="prep-grid" aria-label="Ingredients and instructions preview">
                   <div class="prep-box" aria-label="Ingredients preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
                       Ingredients
                     </div>
                     <ul>
@@ -1459,7 +1359,7 @@ botanical food, indigenous food">
 
                   <div class="prep-box" aria-label="Instructions preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path><path d="M15 17l2 2 4-4"></path></svg>
                       Instructions
                     </div>
                     <ul>
@@ -1478,15 +1378,9 @@ botanical food, indigenous food">
           </article>
 
           <!-- RECIPE 4 -->
-          <article class="recipe-card" data-id="4" data-title="MayaNut Breakfast Muffins" data-tags="baking medium plant-based dessert breakfast roasted cocoa-like" data-min="25" aria-label="Recipe 4: MayaNut breakfast muffins">
+          <article class="recipe-card" data-id="4" data-title="MayaNut Breakfast Muffins" data-tags="baking medium dessert breakfast roasted cocoa-like" data-min="25" aria-label="Recipe 4: MayaNut breakfast muffins">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
-              <img
-                src="recipe-placeholder-3.jpg"
-                alt="Baked breakfast muffins made with MayaNut™ flour for a roasted cocoa-like flavor (placeholder image)"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              >
+              <img src="recipe-placeholder-3.jpg" alt="Baked breakfast muffins made with MayaNut™ flour for roasted cocoa-like flavor (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
 
@@ -1503,22 +1397,14 @@ botanical food, indigenous food">
                       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v5l3 2"></path></svg>
                       25 MIN
                     </span>
-                    <span class="tag-rect" aria-label="Vegan optional">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c6-1 10-6 10-11 2 7-1 17-10 18-4 0-6-3-6-6 0-2 2-5 6-6z"></path></svg>
-                      VEGAN*
-                    </span>
-                    <span class="tag-rect" aria-label="Gluten-free optional">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M6 10c4 2 8 2 12 0"></path><path d="M5 5l14 14"></path></svg>
-                      GF*
+                    <span class="tag-rect" aria-label="Dessert or baking">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"></path><path d="M6 12l1 9h10l1-9"></path><path d="M8 7c2 0 2-2 4-2s2 2 4 2"></path></svg>
+                      BAKING
                     </span>
 
                     <span class="download-wrap">
                       <a class="download-btn" href="recipe4.html" download aria-label="Download MayaNut™ Flour recipe PDF">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 3v10"></path>
-                          <path d="M8 9l4 4 4-4"></path>
-                          <path d="M5 20h14"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
                       </a>
                       <div class="tooltip" role="tooltip">Download this recipe</div>
                     </span>
@@ -1526,32 +1412,32 @@ botanical food, indigenous food">
                 </div>
 
                 <div class="recipe-desc">
-                  Soft, bakery-style muffins using MayaNut™ flour for roasted depth—great for breakfast, gluten-free blends, and plant-based baking ideas.
+                  Soft, bakery-style muffins using MayaNut™ flour for roasted depth—great for breakfast baking, simple blends, and everyday homemade treats.
                 </div>
 
                 <div class="prep-grid" aria-label="Ingredients and instructions preview">
                   <div class="prep-box" aria-label="Ingredients preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
                       Ingredients
                     </div>
                     <ul>
                       <li>½ cup MayaNut™ flour</li>
-                      <li>1 cup flour blend (or GF blend)</li>
-                      <li>2 eggs* (or flax eggs*)</li>
+                      <li>1 cup flour blend</li>
+                      <li>2 eggs (or flax eggs)</li>
                       <li>Banana + baking powder + cinnamon</li>
                     </ul>
                   </div>
 
                   <div class="prep-box" aria-label="Instructions preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path><path d="M15 17l2 2 4-4"></path></svg>
                       Instructions
                     </div>
                     <ul>
                       <li>Mix wet + dry separately, then combine.</li>
                       <li>Scoop into a lined muffin pan.</li>
-                      <li>Bake (see full recipe for temps).</li>
+                      <li>Bake (details in full recipe).</li>
                     </ul>
                   </div>
                 </div>
@@ -1566,13 +1452,7 @@ botanical food, indigenous food">
           <!-- RECIPE 5 -->
           <article class="recipe-card" data-id="5" data-title="MayaNut Cookies" data-tags="dessert baking medium cookies roasted cocoa-like" data-min="35" aria-label="Recipe 5: MayaNut cookies">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
-              <img
-                src="recipe-placeholder-5.jpg"
-                alt="Homemade cookies made with MayaNut™ flour for roasted cocoa-like flavor (placeholder image)"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              >
+              <img src="recipe-placeholder-5.jpg" alt="Homemade cookies made with MayaNut™ flour for roasted cocoa-like flavor (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
 
@@ -1590,21 +1470,13 @@ botanical food, indigenous food">
                       35 MIN
                     </span>
                     <span class="tag-rect" aria-label="Dessert">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8c0-3 8-3 8 0"></path><path d="M6 10h12"></path><path d="M7 10l1 11h8l1-11"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 13c2-2 8-2 10 0"></path><path d="M6 13c0 5 12 5 12 0"></path><path d="M9 10c1-2 5-2 6 0"></path></svg>
                       DESSERT
-                    </span>
-                    <span class="tag-rect" aria-label="Baking">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"></path><path d="M6 12l1 9h10l1-9"></path><path d="M8 7c2 0 2-2 4-2s2 2 4 2"></path></svg>
-                      BAKING
                     </span>
 
                     <span class="download-wrap">
                       <a class="download-btn" href="recipe5.html" download aria-label="Download MayaNut™ Flour recipe PDF">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 3v10"></path>
-                          <path d="M8 9l4 4 4-4"></path>
-                          <path d="M5 20h14"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
                       </a>
                       <div class="tooltip" role="tooltip">Download this recipe</div>
                     </span>
@@ -1612,26 +1484,26 @@ botanical food, indigenous food">
                 </div>
 
                 <div class="recipe-desc">
-                  Chewy cookies with MayaNut™ flour for roasted depth and cocoa-like notes—perfect for baked goods, warm spices, and everyday dessert cravings.
+                  Chewy cookies with MayaNut™ flour for roasted depth and cocoa-like notes—perfect for warm spices, baked goods, and dessert cravings at home.
                 </div>
 
                 <div class="prep-grid" aria-label="Ingredients and instructions preview">
                   <div class="prep-box" aria-label="Ingredients preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
                       Ingredients
                     </div>
                     <ul>
                       <li>⅓ cup MayaNut™ flour</li>
-                      <li>1 cup all-purpose flour (or blend)</li>
-                      <li>1 egg + 1 yolk* (or vegan alt*)</li>
-                      <li>Butter/oil + sugar + vanilla</li>
+                      <li>1 cup flour (or blend)</li>
+                      <li>1 egg + vanilla</li>
+                      <li>Butter/oil + sugar + pinch of salt</li>
                     </ul>
                   </div>
 
                   <div class="prep-box" aria-label="Instructions preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path><path d="M15 17l2 2 4-4"></path></svg>
                       Instructions
                     </div>
                     <ul>
@@ -1650,15 +1522,9 @@ botanical food, indigenous food">
           </article>
 
           <!-- RECIPE 6 -->
-          <article class="recipe-card" data-id="6" data-title="MayaNut Corn-Blend Tortillas / Flatbread" data-tags="savory hard tortillas flatbread bread corn flour gluten-free optional" data-min="45" aria-label="Recipe 6: MayaNut corn-blend tortillas or flatbread">
+          <article class="recipe-card" data-id="6" data-title="MayaNut Corn-Blend Tortillas / Flatbread" data-tags="savory hard tortillas flatbread bread corn flour" data-min="45" aria-label="Recipe 6: MayaNut corn-blend tortillas or flatbread">
             <div class="recipe-media" aria-label="Recipe photo placeholder">
-              <img
-                src="recipe-placeholder-6.jpg"
-                alt="Homemade tortillas or flatbread using MayaNut™ flour and corn flour blend (placeholder image)"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              >
+              <img src="recipe-placeholder-6.jpg" alt="Homemade tortillas or flatbread using MayaNut™ flour and corn flour blend (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
 
@@ -1679,18 +1545,10 @@ botanical food, indigenous food">
                       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"></path><path d="M7 12v8"></path><path d="M17 12v8"></path><path d="M7 6h10"></path></svg>
                       SAVORY
                     </span>
-                    <span class="tag-rect" aria-label="Gluten-free optional">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"></path><path d="M6 10c4 2 8 2 12 0"></path><path d="M5 5l14 14"></path></svg>
-                      GF*
-                    </span>
 
                     <span class="download-wrap">
                       <a class="download-btn" href="recipe6.html" download aria-label="Download MayaNut™ Flour recipe PDF">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 3v10"></path>
-                          <path d="M8 9l4 4 4-4"></path>
-                          <path d="M5 20h14"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
                       </a>
                       <div class="tooltip" role="tooltip">Download this recipe</div>
                     </span>
@@ -1698,18 +1556,18 @@ botanical food, indigenous food">
                 </div>
 
                 <div class="recipe-desc">
-                  A savory, homemade tortilla or flatbread using a MayaNut™ flour blend for roasted depth—great for everyday cooking, wraps, and simple meals.
+                  A savory tortilla or flatbread using a MayaNut™ flour blend for roasted depth—great for wraps, simple meals, and everyday cooking at home.
                 </div>
 
                 <div class="prep-grid" aria-label="Ingredients and instructions preview">
                   <div class="prep-box" aria-label="Ingredients preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
                       Ingredients
                     </div>
                     <ul>
                       <li>¼ cup MayaNut™ flour</li>
-                      <li>¾ cup corn flour/masa (or mix)</li>
+                      <li>¾ cup corn flour/masa</li>
                       <li>Salt + warm water</li>
                       <li>Oil (optional for softness)</li>
                     </ul>
@@ -1717,13 +1575,13 @@ botanical food, indigenous food">
 
                   <div class="prep-box" aria-label="Instructions preview">
                     <div class="prep-title">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h1"></path><path d="M3 12h1"></path><path d="M3 18h1"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path><path d="M15 17l2 2 4-4"></path></svg>
                       Instructions
                     </div>
                     <ul>
                       <li>Mix, then rest dough briefly.</li>
                       <li>Press/roll into rounds.</li>
-                      <li>Cook on hot skillet (details in full recipe).</li>
+                      <li>Cook on skillet (details in full recipe).</li>
                     </ul>
                   </div>
                 </div>
@@ -1737,33 +1595,7 @@ botanical food, indigenous food">
 
         </div>
 
-        <!-- FAQ for SEO -->
-        <div class="faq-wrap" aria-label="Recipes FAQ">
-          <div class="faq-box">
-            <div class="faq-item">
-              <div class="faq-q">What is MayaNut™ flour?</div>
-              <div class="faq-a">MayaNut™ flour is roasted seed flour made from the seeds of the Alicastrum tree (Brosimum alicastrum).</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q">How do you use MayaNut™ flour?</div>
-              <div class="faq-a">Add it to smoothies, bowls, baked goods, or everyday cooking for warm roasted depth and a more satisfying texture.</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q">Is MayaNut™ flour gluten-free?</div>
-              <div class="faq-a">MayaNut™ flour is naturally gluten-free. Always confirm handling practices if you have dietary sensitivities.</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q">How much MayaNut™ flour per smoothie?</div>
-              <div class="faq-a">Start with 1–2 tablespoons per smoothie and adjust to taste.</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q">Where can I buy MayaNut™ flour?</div>
-              <div class="faq-a">Visit the product page for availability and updates: <a href="product.html" style="text-decoration:underline;">MayaNut™ Flour</a>.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom store module for conversion -->
+        <!-- Bottom store module for conversion (FAQ removed as requested) -->
         <div class="store-module" aria-label="MayaNut flour product module">
           <div class="store-card">
             <img
@@ -1776,8 +1608,8 @@ botanical food, indigenous food">
             <div class="store-body">
               <div class="store-title">Try MayaNut™ Flour</div>
               <div class="store-desc">
-                MayaNut™ flour is a roasted seed flour with a warm, cocoa-like depth—delicious in smoothies, açaí bowls, baking, and everyday recipes.
-                Visit the product page for availability and updates.
+                Ready to cook with MayaNut™? Start with 1–2 tablespoons in smoothies or bowls, or blend it into baking recipes for a warm, roasted, cocoa-like depth.
+                Check the product page for availability and updates.
               </div>
               <div class="store-actions">
                 <a class="btn-orange" href="product.html" aria-label="View MayaNut flour product page">View MayaNut™ Flour</a>
@@ -1877,8 +1709,6 @@ botanical food, indigenous food">
         thumb: card.querySelector(".recipe-media img")?.getAttribute("src") || ""
       }));
 
-      let currentSort = "all";
-
       function closeSort(){
         sortMenu.classList.remove("open");
         sortBtn.setAttribute("aria-expanded", "false");
@@ -1926,14 +1756,12 @@ botanical food, indigenous food">
       function filterSuggestions(q){
         const qq = q.trim().toLowerCase();
         if(!qq) return [];
-        // autocomplete suggestions only (do not hide sections until click)
         return recipes
           .filter(r => (r.title.toLowerCase().includes(qq) || r.tags.toLowerCase().includes(qq)))
           .slice(0, 6);
       }
 
       function applySort(mode){
-        currentSort = mode;
         const labelMap = {
           all: "Sort: All",
           time: "Sort: Preparation Time",
@@ -1946,36 +1774,30 @@ botanical food, indigenous food">
         };
         sortLabel.textContent = labelMap[mode] || "Sort: All";
 
-        // Sort visually by reordering DOM nodes
         const sorted = recipes.slice().sort((a,b)=>{
+          const has = (r, t)=> r.tags.toLowerCase().includes(t);
           if(mode === "time") return a.minutes - b.minutes;
 
-          // tag-based buckets
-          const has = (r, t)=> r.tags.toLowerCase().includes(t);
-          const inBucket = (r)=>{
-            if(mode === "dessert") return has(r,"dessert") || has(r,"cookies") || has(r,"baking");
-            if(mode === "drink") return has(r,"drink") || has(r,"latte") || has(r,"smoothie");
-            if(mode === "savory") return has(r,"savory") || has(r,"tortilla") || has(r,"flatbread") || has(r,"bread");
-            if(mode === "easy") return has(r,"easy");
-            if(mode === "medium") return has(r,"medium");
-            if(mode === "hard") return has(r,"hard");
-            return true;
-          };
-
-          if(mode !== "all" && mode !== "time"){
-            const A = inBucket(a) ? 0 : 1;
-            const B = inBucket(b) ? 0 : 1;
+          if(mode !== "all"){
+            const bucket = (r)=>{
+              if(mode === "dessert") return has(r,"dessert") || has(r,"cookies") || has(r,"baking");
+              if(mode === "drink") return has(r,"drink") || has(r,"latte") || has(r,"smoothie");
+              if(mode === "savory") return has(r,"savory") || has(r,"tortilla") || has(r,"flatbread") || has(r,"bread");
+              if(mode === "easy") return has(r,"easy");
+              if(mode === "medium") return has(r,"medium");
+              if(mode === "hard") return has(r,"hard");
+              return true;
+            };
+            const A = bucket(a) ? 0 : 1;
+            const B = bucket(b) ? 0 : 1;
             if(A !== B) return A - B;
           }
-
-          // default: minutes ascending to keep simplest-to-hardest feel
           return a.minutes - b.minutes;
         });
 
         sorted.forEach(r => recipesWrap.appendChild(r.el));
       }
 
-      // Sort menu toggle
       sortBtn.addEventListener("click", (e)=>{
         e.preventDefault();
         e.stopPropagation();
@@ -1983,7 +1805,6 @@ botanical food, indigenous food">
         else openSort();
       });
 
-      // Sort menu selection
       sortMenu.addEventListener("click", (e)=>{
         const btn = e.target.closest(".sort-item");
         if(!btn) return;
@@ -1992,7 +1813,6 @@ botanical food, indigenous food">
         closeSort();
       });
 
-      // Close menus on outside click
       document.addEventListener("click", (e)=>{
         const withinSort = sortMenu.contains(e.target) || sortBtn.contains(e.target);
         if(!withinSort) closeSort();
@@ -2001,7 +1821,6 @@ botanical food, indigenous food">
         if(!withinSearch) closeAC();
       });
 
-      // Search interactions
       search.addEventListener("focus", ()=> closeSort());
       search.addEventListener("input", ()=>{
         closeSort();
@@ -2009,7 +1828,6 @@ botanical food, indigenous food">
         openAC(items);
       });
 
-      // Clear button
       clearBtn.addEventListener("click", (e)=>{
         e.preventDefault();
         clearSearch();
@@ -2023,7 +1841,6 @@ botanical food, indigenous food">
         }
       });
 
-      // Click autocomplete item -> go to recipe#.html
       acMenu.addEventListener("click", (e)=>{
         const row = e.target.closest(".ac-item");
         if(!row) return;
@@ -2038,12 +1855,9 @@ botanical food, indigenous food">
         if(href) window.location.href = href;
       });
 
-      // Initial ordering: simplest -> longest
+      /* default order: simplest to longest */
       applySort("time");
-      applySort("all"); // keep label "All" but preserve default simplest ordering by minutes in sorter
-
-      // Ensure All starts as All
-      currentSort = "all";
+      applySort("all");
       sortLabel.textContent = "Sort: All";
     })();
   </script>

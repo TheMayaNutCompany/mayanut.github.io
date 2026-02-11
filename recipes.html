@@ -74,10 +74,10 @@
 
       --padX:16px;
 
-      /* image width + divider x-position */
+      /* image width (desktop) */
       --mediaW:350px;
 
-      /* scale-up */
+      /* scale */
       --baseText:15px;
       --descText:15px;
       --titleText:24px;
@@ -168,6 +168,7 @@
       text-align:center;
     }
 
+    /* ✅ Move menu tabs UP closer to header text (without moving header) */
     .subnav{
       width: 100%;
       max-width: 980px;
@@ -176,7 +177,7 @@
       justify-content:center;
       gap:10px;
       flex-wrap:wrap;
-      transform: translateY(-2px);
+      transform: translateY(-10px);
     }
     .subnav a{
       display:inline-flex;
@@ -205,7 +206,7 @@
       box-shadow: 0 14px 30px rgba(15,23,42,0.16);
     }
 
-    main{ padding-top: 22px; background:#fff; }
+    main{ padding-top: 18px; background:#fff; }
     .content-wrapper{
       padding: 18px var(--padX) 20px;
       max-width: 1220px;
@@ -215,65 +216,32 @@
       .content-wrapper{ padding-left: 52px; padding-right: 12px; }
     }
 
-    /* ✅ Flatten + de-widget the section (no cap, no box) */
-    .panel{
-      border: none;
-      background: transparent;
-      box-shadow: none;
-      overflow: visible;
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-    }
-    .panel-head{
-      background: transparent;
-      border-bottom: none;
-      padding: 0 2px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 12px;
-      min-height: auto;
-    }
-    .panel-head h1{
-      margin:0;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size: 15px;
-      color: rgba(12,90,42,0.95);
-    }
-    .head-line{
-      height: 3px;
-      flex:1 1 auto;
-      background: linear-gradient(to right, rgba(216,255,106,0.90) 0%, rgba(122,231,138,0.75) 55%, rgba(6,97,0,0.65) 100%);
-      opacity:.9;
-      min-width:120px;
-      margin-left:auto;
-      border-radius: 999px;
-    }
+    /* ✅ Remove “MayaNut™ Flour Recipes” H1 + remove the green gradient line entirely */
+    .panel{ border:none; background:transparent; box-shadow:none; }
+    .panel-head{ display:none; }
 
     /* =========================
-       TOP BAR (premium, minimal borders, larger)
+       TOP BAR: fix overlap + keep search centered
+       Sort left, Search centered, CTA right
        ========================= */
     .top-controls{
       position: relative;
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap: 14px;
-      margin: 6px 0 10px;
+      margin: 0 0 12px;
       min-height: 60px;
       background: var(--pale);
-      border: none;
       border-radius: 16px;
       padding: 12px 14px;
       box-shadow: 0 10px 24px rgba(15,23,42,0.06);
       z-index: 30;
     }
-    .top-left{ flex: 1; display:flex; align-items:center; justify-content:flex-start; min-width:0; }
-    .top-right{ flex: 1; display:flex; align-items:center; justify-content:flex-end; min-width:0; }
+    .top-left{ flex: 0 0 auto; display:flex; align-items:center; justify-content:flex-start; min-width: 220px; }
+    .top-right{ flex: 0 0 auto; display:flex; align-items:center; justify-content:flex-end; min-width: 210px; }
 
-    /* Center SEARCH exactly on divider */
+    /* ✅ Center search on the image/description divider, but enforce a safe gap from Sort */
     .top-center{
       position:absolute;
       left: calc(14px + var(--mediaW));
@@ -283,13 +251,22 @@
       align-items:center;
       justify-content:center;
       z-index: 70;
+      pointer-events: none; /* only children receive clicks */
+    }
+    .top-center > *{ pointer-events: auto; }
+
+    /* ✅ Prevent sort + search overlap on smaller widths */
+    @media (max-width: 1100px){
+      .top-center{
+        left: 50%;
+      }
     }
 
     /* Sort */
     .sort-wrap{ position: relative; display:flex; align-items:center; }
     .sort-btn{
       height: 46px;
-      padding: 0 44px 0 14px; /* arrow far right */
+      padding: 0 44px 0 14px;
       border-radius: 14px;
       border: none;
       background: rgba(255,255,255,0.92);
@@ -301,6 +278,7 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
       position: relative;
+      white-space: nowrap;
     }
     .sort-btn .label{
       font-weight: 950;
@@ -308,8 +286,7 @@
       letter-spacing: .10em;
       text-transform: uppercase;
       color:#0b1220;
-      white-space:nowrap;
-      padding-right: 10px; /* keeps “All” close to “Sort:” */
+      padding-right: 10px;
     }
     .sort-btn .caret{
       position:absolute;
@@ -372,6 +349,7 @@
       box-shadow: 0 10px 22px rgba(15,23,42,0.08);
       height: 46px;
       padding: 0 42px 0 42px;
+      min-width: 260px;
     }
     .search-icon, .clear-btn{
       position:absolute;
@@ -446,7 +424,6 @@
       width: 42px;
       height: 42px;
       border-radius: 14px;
-      border: none;
       object-fit: cover;
       flex: 0 0 auto;
       background:#fff;
@@ -462,7 +439,7 @@
       text-overflow: ellipsis;
     }
 
-    /* CTA pill (no white outline) */
+    /* CTA pill */
     .cta-pill{
       display:inline-flex;
       align-items:center;
@@ -486,12 +463,13 @@
     .cta-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-pill:active{ transform: translateY(0px); }
 
-    /* Mobile: stack */
+    /* Mobile: stack top-controls */
     @media (max-width: 820px){
       .top-controls{
         position: static;
         flex-wrap: wrap;
         padding: 12px 12px;
+        gap: 12px;
       }
       .top-center{
         position: static;
@@ -499,30 +477,21 @@
         order: 2;
         width: 100%;
         left: auto;
+        pointer-events: auto;
       }
-      .top-left{ order: 1; flex: 1 1 100%; justify-content: center; }
-      .top-right{ order: 3; flex: 1 1 100%; justify-content: center; }
+      .top-left{ order: 1; min-width: 0; flex: 1 1 100%; justify-content: center; }
+      .top-right{ order: 3; min-width: 0; flex: 1 1 100%; justify-content: center; }
       .search-wrap{ width: min(560px, 92vw); }
     }
 
     /* =========================
-       RECIPES
-       More whitespace, softer outlines
+       RECIPES (fix image overlap + connected rounded-square)
        ========================= */
     .recipes-wrap{
       padding: 0;
       display:flex;
       flex-direction:column;
       gap: 18px;
-    }
-
-    .section-h2{
-      margin: 10px 2px -6px;
-      font-weight: 950;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-size: 13px;
-      color: rgba(12,90,42,0.92);
     }
 
     .recipe-card{
@@ -534,15 +503,17 @@
       display:grid;
       grid-template-columns: var(--mediaW) 1fr;
       min-height: 300px;
+      align-items: stretch;
     }
 
-    /* Divider line that always connects */
+    /* ✅ Image is rounded-square, connected, and cannot overlap text */
     .recipe-media{
       background:#fff;
-      border-right: 1px solid rgba(12,90,42,0.18);
       position:relative;
       overflow:hidden;
-      aspect-ratio: 1 / 1;
+      border-right: 1px solid rgba(12,90,42,0.18);
+      border-top-left-radius: 18px;
+      border-bottom-left-radius: 18px;
       align-self: stretch;
     }
     .recipe-media img{
@@ -552,7 +523,21 @@
       object-position:center 55%;
       background:#fff;
       display:block;
+      aspect-ratio: 1 / 1;        /* forces true square at the top */
+      max-height: 100%;
     }
+
+    /* Make the media column behave like a square card block */
+    .recipe-media::before{
+      content:"";
+      display:block;
+      padding-top: 100%; /* square */
+    }
+    .recipe-media img{
+      position:absolute;
+      inset:0;
+    }
+
     .recipe-media .placeholder{
       position:absolute;
       left:12px;
@@ -563,7 +548,6 @@
       font-size: 12px;
       color: rgba(12,90,42,0.95);
       background: rgba(255,255,255,0.90);
-      border: none;
       border-radius: 12px;
       padding: 6px 10px;
       pointer-events:none;
@@ -579,6 +563,8 @@
       gap: 12px;
       min-width: 0;
       align-self: stretch;
+      border-top-right-radius: 18px;
+      border-bottom-right-radius: 18px;
     }
 
     .recipe-header-row{
@@ -599,7 +585,6 @@
       width: 44px;
       height: 44px;
       background: rgba(255,255,255,0.94);
-      border: none;
       border-radius: 14px;
       display:flex;
       align-items:center;
@@ -638,7 +623,6 @@
       height: 32px;
       padding: 0 12px;
       border-radius: 12px;
-      border: none;
       background: rgba(255,255,255,0.80);
       font-weight: 950;
       font-size: 12px;
@@ -664,14 +648,12 @@
       shape-rendering: geometricPrecision;
     }
 
-    /* Download button: solid circle, no white outline */
     .download-wrap{ position: relative; display:flex; align-items:center; }
     .download-btn{
       width: 38px;
       height: 38px;
       border-radius: 999px;
       background: var(--orange);
-      border: none;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -679,7 +661,6 @@
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       user-select:none;
-      flex: 0 0 auto;
       transition: transform .08s ease, background .12s ease;
     }
     .download-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
@@ -689,14 +670,13 @@
       display:block;
       stroke:#fff; fill:none; stroke-width:2.6;
       stroke-linecap:round; stroke-linejoin:round;
-      vector-effect: non-scaling-stroke;
     }
+
     .tooltip{
       position:absolute;
       top: -38px;
       right: 0;
       background: rgba(255,255,255,0.98);
-      border: none;
       border-radius: 12px;
       padding: 7px 10px;
       font-weight: 950;
@@ -728,11 +708,9 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 2px;
     }
     .prep-box{
       background: rgba(255,255,255,0.94);
-      border: none;
       border-radius: 16px;
       padding: 12px 14px;
       box-shadow: 0 10px 22px rgba(15,23,42,0.06);
@@ -756,7 +734,6 @@
       display:block;
       stroke:#0b1220; fill:none; stroke-width:2.4;
       stroke-linecap:round; stroke-linejoin:round;
-      vector-effect: non-scaling-stroke;
     }
     .prep-box ul{
       margin: 0;
@@ -786,7 +763,6 @@
       padding:0 18px;
       border-radius:999px;
       background: var(--orange);
-      border: none;
       color:#fff;
       font-weight:950;
       letter-spacing:.10em;
@@ -806,64 +782,35 @@
     @media (max-width: 1024px) and (min-width: 721px){
       :root{ --mediaW: 310px; }
       .prep-grid{ grid-template-columns: 1fr; }
-      .top-center{ left: calc(14px + var(--mediaW)); }
-      .recipe-name{ max-width: 560px; }
     }
 
-    /* Mobile */
+    /* Mobile: recipe becomes stacked (image above, no overlap) */
     @media (max-width: 720px){
       .site-header{ height: 186px; background-size:140% auto; }
       .header-stack{ gap: 12px; transform: translateY(22px); }
       .brand-logo{ width:66px; height:66px; }
       .brand-text{ font-size: clamp(24px, 6vw, 38px); max-width: calc(100vw - 104px); }
+      .subnav{ transform: translateY(-8px); }
       .subnav a{ height: 34px; padding: 0 14px; font-size: 11px; }
 
       .recipe-card{ grid-template-columns: 1fr; }
       .recipe-media{
         border-right:none;
         border-bottom: 1px solid rgba(12,90,42,0.18);
-        aspect-ratio: 1 / 1;
+        border-top-right-radius: 18px;
+        border-bottom-left-radius: 0;
       }
-      .recipe-body{ padding: 16px 16px; }
+      .recipe-body{
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 18px;
+      }
       .recipe-name{ white-space: normal; max-width: 100%; font-size: 22px; }
       .meta-row{ justify-content:flex-start; margin-left:0; }
       .prep-grid{ grid-template-columns: 1fr; }
     }
 
-    /* Post-grid CTA (premium, no borders) */
-    .post-cta{
-      margin: 14px 0 0;
-      border-radius:18px;
-      background: rgba(233,255,214,0.95);
-      box-shadow: 0 12px 30px rgba(15,23,42,0.06);
-      padding: 16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 14px;
-      flex-wrap:wrap;
-    }
-    .post-cta h2{
-      margin:0;
-      font-weight: 950;
-      letter-spacing: .06em;
-      font-size: 18px;
-      color:#0b1220;
-    }
-    .post-cta p{
-      margin:0;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size: 15px;
-      line-height: 1.9;
-      color: rgba(12,90,42,0.95);
-      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
-      max-width: 820px;
-    }
-
-    /* Bottom store module (kept, editorial) */
-    .store-module{ margin-top: 12px; }
+    /* Bottom store module */
+    .store-module{ margin-top: 14px; }
     .store-card{
       border-radius:18px;
       border: none;
@@ -969,10 +916,6 @@
     <div class="content-wrapper">
 
       <section class="panel" aria-label="Recipes with MayaNut flour">
-        <div class="panel-head">
-          <h1>MayaNut™ Flour Recipes</h1>
-          <div class="head-line" aria-hidden="true"></div>
-        </div>
 
         <!-- TOP BAR -->
         <div class="top-controls" aria-label="Recipe tools">
@@ -1034,8 +977,8 @@
         </div>
 
         <div class="recipes-wrap" id="recipesWrap">
-          <h2 class="section-h2">Quick Drinks & Bowls</h2>
 
+          <!-- RECIPE 1 -->
           <article class="recipe-card" data-id="1" data-title="MayaNut Cocoa-Style Smoothie" data-tags="drink easy vegan gluten-free cocoa-like roasted smoothie" data-min="5">
             <div class="recipe-media">
               <img src="recipe-placeholder-1.jpg" alt="MayaNut™ flour cocoa-like smoothie with banana and warm roasted flavor (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
@@ -1090,7 +1033,6 @@
               <div class="prep-grid">
                 <div class="prep-box">
                   <div class="prep-title">
-                    <!-- Ingredients icon: list (NOT trash) -->
                     <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h12"></path></svg>
                     Ingredients
                   </div>
@@ -1104,7 +1046,6 @@
 
                 <div class="prep-box">
                   <div class="prep-title">
-                    <!-- Instructions icon: clipboard -->
                     <svg viewBox="0 0 24 24"><path d="M9 4h6"></path><path d="M9 4c0 2-1 2-2 2h10c-1 0-2 0-2-2"></path><path d="M7 6h10v14H7z"></path><path d="M9 10h6"></path><path d="M9 14h6"></path></svg>
                     Instructions
                   </div>
@@ -1122,6 +1063,7 @@
             </div>
           </article>
 
+          <!-- RECIPE 2 -->
           <article class="recipe-card" data-id="2" data-title="MayaNut Açaí Bowl Boost" data-tags="bowl easy vegan gluten-free acai açaí fruit roasted cocoa-like" data-min="10">
             <div class="recipe-media">
               <img src="recipe-placeholder-2.jpg" alt="MayaNut™ flour açaí bowl with fruit toppings and warm roasted flavor (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
@@ -1205,24 +1147,26 @@
             </div>
           </article>
 
-          <h2 class="section-h2">Baking & Savory</h2>
-
+          <!-- RECIPE 3 -->
           <article class="recipe-card" data-id="3" data-title="MayaNut Roasted Latte" data-tags="drink easy gluten-free latte roasted cocoa-like" data-min="12">
             <div class="recipe-media">
               <img src="recipe-placeholder-4.jpg" alt="Warm roasted latte drink made with MayaNut™ flour for cocoa-like depth (placeholder image)" loading="lazy" decoding="async" onerror="this.style.opacity='.35';">
               <div class="placeholder" aria-hidden="true">Placeholder image</div>
             </div>
+
             <div class="recipe-body">
               <div class="recipe-header-row">
                 <div class="recipe-header">
                   <div class="recipe-number" aria-label="Recipe number 3">3</div>
                   <h3 class="recipe-name">MayaNut™ Roasted Latte</h3>
                 </div>
+
                 <div class="meta-row">
                   <span class="tag-rect" aria-label="Preparation time 12 minutes">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v5l3 2"></path></svg>
                     12 MIN
                   </span>
+
                   <span class="tag-rect" aria-label="Gluten-free">
                     <svg viewBox="0 0 24 24">
                       <path d="M12 4c2.2 2.7 2.2 5.3 0 8-2.2-2.7-2.2-5.3 0-8z"></path>
@@ -1232,6 +1176,7 @@
                     </svg>
                     GLUTEN-FREE
                   </span>
+
                   <span class="download-wrap">
                     <a class="download-btn" href="recipe3.html" download title="Download this recipe" aria-label="Download MayaNut™ Roasted Latte recipe PDF">
                       <svg viewBox="0 0 24 24"><path d="M12 3v10"></path><path d="M8 9l4 4 4-4"></path><path d="M5 20h14"></path></svg>
@@ -1258,6 +1203,7 @@
                     <li>Cinnamon (optional)</li>
                   </ul>
                 </div>
+
                 <div class="prep-box">
                   <div class="prep-title">
                     <svg viewBox="0 0 24 24"><path d="M9 4h6"></path><path d="M9 4c0 2-1 2-2 2h10c-1 0-2 0-2-2"></path><path d="M7 6h10v14H7z"></path><path d="M9 10h6"></path><path d="M9 14h6"></path></svg>
@@ -1279,14 +1225,7 @@
 
         </div>
 
-        <div class="post-cta" aria-label="Join waitlist call to action">
-          <div>
-            <h2>Ready to try MayaNut™ Flour?</h2>
-            <p>Join the waitlist for availability updates, new recipes, and simple ways to use MayaNut™ in smoothies, bowls, baking, and everyday cooking.</p>
-          </div>
-          <a class="btn-orange" href="product.html" aria-label="Join waitlist for MayaNut flour updates">Join Waitlist</a>
-        </div>
-
+        <!-- Bottom store module -->
         <div class="store-module" aria-label="MayaNut flour product module">
           <div class="store-card">
             <img
@@ -1326,7 +1265,6 @@
       const search    = document.getElementById("searchInput");
       const clearBtn  = document.getElementById("clearSearch");
       const acMenu    = document.getElementById("acMenu");
-      const recipesWrap = document.getElementById("recipesWrap");
 
       const recipeEls = Array.from(document.querySelectorAll(".recipe-card"));
       const recipes = recipeEls.map(card => ({
@@ -1338,8 +1276,6 @@
         link: "recipe" + (card.getAttribute("data-id") || "1") + ".html",
         thumb: card.querySelector(".recipe-media img")?.getAttribute("src") || ""
       }));
-
-      const headings = Array.from(recipesWrap.querySelectorAll(".section-h2"));
 
       function closeSort(){
         sortMenu.classList.remove("open");
@@ -1393,60 +1329,6 @@
           .slice(0, 6);
       }
 
-      function applySort(mode){
-        const labelMap = {
-          all: "Sort: All",
-          time: "Sort: Preparation Time",
-          dessert: "Sort: Desserts",
-          drink: "Sort: Drinks",
-          savory: "Sort: Savory",
-          easy: "Sort: Easy",
-          medium: "Sort: Medium",
-          hard: "Sort: Hard"
-        };
-        sortLabel.textContent = labelMap[mode] || "Sort: All";
-
-        const has = (r, t)=> r.tags.toLowerCase().includes(t);
-
-        const quick = recipes.filter(r => has(r,"drink") || has(r,"bowl") || has(r,"smoothie") || has(r,"acai") || has(r,"açaí") || has(r,"latte"));
-        const other = recipes.filter(r => !quick.includes(r));
-
-        const sorter = (a,b)=>{
-          if(mode === "time") return a.minutes - b.minutes;
-
-          if(mode !== "all"){
-            const bucket = (r)=>{
-              if(mode === "dessert") return has(r,"dessert") || has(r,"cookies") || has(r,"baking");
-              if(mode === "drink") return has(r,"drink") || has(r,"latte") || has(r,"smoothie") || has(r,"bowl");
-              if(mode === "savory") return has(r,"savory") || has(r,"tortilla") || has(r,"flatbread") || has(r,"bread");
-              if(mode === "easy") return has(r,"easy");
-              if(mode === "medium") return has(r,"medium");
-              if(mode === "hard") return has(r,"hard");
-              return true;
-            };
-            const A = bucket(a) ? 0 : 1;
-            const B = bucket(b) ? 0 : 1;
-            if(A !== B) return A - B;
-          }
-          return a.minutes - b.minutes;
-        };
-
-        quick.sort(sorter);
-        other.sort(sorter);
-
-        recipeEls.forEach(el => el.remove());
-
-        let insertAfter = headings[0] || recipesWrap;
-        quick.forEach(r => { insertAfter.after(r.el); insertAfter = r.el; });
-
-        if(headings[1]){
-          insertAfter = headings[1];
-          other.forEach(r => { insertAfter.after(r.el); insertAfter = r.el; });
-        } else {
-          other.forEach(r => { insertAfter.after(r.el); insertAfter = r.el; });
-        }
-      }
-
       sortBtn.addEventListener("click", (e)=>{
         e.preventDefault();
         e.stopPropagation();
@@ -1458,7 +1340,17 @@
         const btn = e.target.closest(".sort-item");
         if(!btn) return;
         const mode = btn.getAttribute("data-sort") || "all";
-        applySort(mode);
+        const labelMap = {
+          all: "Sort: All",
+          time: "Sort: Preparation Time",
+          dessert: "Sort: Desserts",
+          drink: "Sort: Drinks",
+          savory: "Sort: Savory",
+          easy: "Sort: Easy",
+          medium: "Sort: Medium",
+          hard: "Sort: Hard"
+        };
+        sortLabel.textContent = labelMap[mode] || "Sort: All";
         closeSort();
       });
 

@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
 
-  <!-- Preloads (keep filenames EXACT to your folder) -->
+  <!-- Preloads -->
   <link rel="preload" as="image" href="menuart-the-maya-nut-company-art.jpeg" />
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" />
 
@@ -128,13 +128,13 @@
 
   <style>
     :root{
-      --green:#066100;                  /* header outline + brand green */
-      --deep:#0c5a2a;                   /* paragraph green (match header outline tone) */
+      --green:#066100;
+      --deep:#0c5a2a;
       --orange:#fd6c02;
       --orangePress:#c84b02;
       --lime:#d8ff6a;
-      --pale:#e9ffd6;                   /* all pale greens match */
-      --line: rgba(12,90,42,0.18);      /* subtle dividers */
+      --pale:#e9ffd6;
+      --line: rgba(12,90,42,0.18);
       --shadow: 0 10px 22px rgba(15,23,42,0.06);
 
       --font-ui:"Acme", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -195,7 +195,6 @@
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    /* SEO-visible H1 without changing layout */
     h1{
       font-size: clamp(22px, 2.1vw, 28px);
       font-weight:950;
@@ -204,7 +203,7 @@
       margin: 0 0 10px;
     }
 
-    /* ===== HEADER (match recipes: true center + tabs halfway) ===== */
+    /* ===== HEADER ===== */
     .site-header{
       width:100%;
       background-color: var(--green);
@@ -233,7 +232,6 @@
       opacity:.55;
     }
 
-    /* Two-row grid: brand row + nav row. Brand stays centered; nav sits halfway between bottom of brand and bottom of header */
     .header-stack{
       position:relative;
       z-index:3;
@@ -241,7 +239,7 @@
       max-width:1100px;
       padding: 0 14px;
       display:grid;
-      grid-template-rows: 1fr 1fr;     /* nav row naturally sits centered in its half */
+      grid-template-rows: 1fr 1fr;
       height: 100%;
       align-items:center;
     }
@@ -277,7 +275,7 @@
       justify-content:center;
       gap:8px;
       flex-wrap:wrap;
-      margin-top: 6px; /* slight drop to center between brand-bottom and header-bottom */
+      margin-top: 6px;
     }
     .subnav a{
       display:inline-flex;
@@ -300,7 +298,6 @@
       white-space:nowrap;
     }
     .subnav a:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.20); }
-    .subnav a:active{ transform: translateY(0px); }
     .subnav a.active{
       background: var(--orange);
       border: none;
@@ -317,11 +314,9 @@
       .content-wrapper{ padding-left: 52px; padding-right: 52px; }
     }
 
-    /* ===== Flat premium blocks ===== */
     .block{ margin-top: 18px; }
-    .soft-divider{ height:1px; background: var(--line); width:100%; margin-top: 12px; }
 
-    /* ===== HERO (image + what-is + product) ===== */
+    /* ===== HERO ===== */
     .hero{
       display:grid;
       grid-template-columns: 340px minmax(360px, 1fr) 320px;
@@ -395,7 +390,12 @@
       flex: 0 0 auto;
     }
     .diet-icon::before{ content:"✓"; transform: translateY(-0.2px); }
-    .diet-pill.glutenfree{ transform: translateX(-6px); }
+
+    /* move gluten-free left so it never overlaps paleo */
+    .diet-pill.glutenfree{
+      justify-content:flex-start !important;
+      padding-left: 14px;
+    }
 
     .hero-subtitle{
       font-weight: 950;
@@ -412,84 +412,21 @@
       font-weight: 850;
       font-size: 15px;
       line-height: 1.85;
-      color: var(--deep); /* matches header outline tone */
+      color: var(--deep);
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* MINI PRODUCT (pale background, CTA top-left, title+price bottom) */
-    .mini-card{
-      width:320px;
-      height:340px;
-      border-radius:18px;
-      background: var(--pale);                 /* requested pale green */
-      box-shadow: var(--shadow);
-      border: 1px solid var(--line);
-      overflow:hidden;
+    /* CTA moved into hero-copy (where paragraph #2 was) */
+    .hero-cta-row{
       display:flex;
-      flex-direction:column;
+      justify-content:center; /* centered by default */
+      align-items:center;
+      margin-top: 2px;
     }
-    .mini-cta-top{
-      padding: 12px 14px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;              /* left aligned */
-      border-bottom: 1px solid rgba(12,90,42,0.12);
-      background: var(--pale);
-    }
-    .mini-img-link{
-      position:relative;
-      display:block;
-      flex: 0 0 auto;
-      border-bottom: 1px solid rgba(12,90,42,0.12);
-      background:#fff;
-    }
-    .mini-img{
-      width:100%;
-      height: 190px;
-      object-fit: cover;
-      object-position:center 40%;
-      filter: saturate(1.03) contrast(1.03);
-      background:#fff;
-    }
-    .view-full{
-      position:absolute;
-      left:10px;
-      bottom:10px;
-      font-family: var(--font-pretty);
-      font-style: italic;
-      font-weight: 850;
-      font-size: 12px;
-      color: var(--deep);
-      background: rgba(255,255,255,0.90);
-      border: 1px solid rgba(12,90,42,0.18);
-      border-radius: 12px;
-      padding:6px 10px;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.10);
-      pointer-events:none;
-      user-select:none;
-    }
-    .mini-bottom{
-      padding: 12px 14px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      justify-content:flex-end;
-      flex:1 1 auto;
-      background: var(--pale);
-    }
-    .mini-title{
-      font-weight:950;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-size:16px;
-      color:#0b1220;
-      line-height:1.15;
-    }
-    .mini-price{
-      font-weight:950;
-      font-size:22px;
-      color:#0b1220;
-      line-height:1;
+    @media (min-width: 980px){
+      .hero-cta-row{
+        justify-content:flex-end; /* right align on desktop closer to product */
+      }
     }
 
     .cta-pill{
@@ -508,12 +445,124 @@
       box-shadow: 0 14px 30px rgba(15,23,42,0.10);
       transition: transform .08s ease, background .12s ease;
       -webkit-tap-highlight-color: transparent;
-      border:none; /* no outlines */
+      border:none;
     }
     .cta-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-pill:active{ transform: translateY(0px); }
 
-    /* ===== OXOX GRID ===== */
+    /* ===== MINI PRODUCT (no top bar, image top-rounded, pale bottom) ===== */
+    .mini-card{
+      width:320px;
+      height:340px;
+      border-radius:18px;
+      background: var(--pale);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* Entire product clickable: image + pale bottom */
+    .mini-link{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      width:100%;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mini-img-wrap{
+      position:relative;
+      background:#fff;
+      border-bottom: 1px solid rgba(12,90,42,0.12);
+    }
+    .mini-img{
+      width:100%;
+      height: 225px;
+      object-fit: cover;
+      object-position:center 40%;
+      filter: saturate(1.03) contrast(1.03);
+      background:#fff;
+      border-radius: 18px 18px 0 0; /* rounded top only */
+    }
+
+    /* plain text bottom-left, no box */
+    .view-full-text{
+      position:absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-pretty);
+      font-style: italic;
+      font-weight: 850;
+      font-size: 12px;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+      user-select:none;
+      pointer-events:none;
+    }
+
+    .mini-bottom{
+      background: var(--pale);
+      padding: 12px 14px;
+      display:grid;
+      grid-template-columns: 1fr 140px; /* title/price left, button right */
+      align-items:center;
+      gap: 12px;
+      flex: 1 1 auto;
+    }
+
+    .mini-meta{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      align-items:flex-start;   /* left aligned */
+      justify-content:center;
+      min-width:0;
+    }
+    .mini-title{
+      font-weight:950;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:16px;
+      color:#0b1220;
+      line-height:1.15;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      width:100%;
+    }
+    .mini-price{
+      font-weight:950;
+      font-size:22px;
+      color:#0b1220;
+      line-height:1;
+    }
+
+    /* Specialty orange button: rounded rectangle, height equals title+price stack area */
+    .mini-quick-btn{
+      height: 64px;              /* matches stacked title+price visual */
+      border-radius: 14px;
+      background: var(--orange);
+      color:#fff;
+      border:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.10);
+      transition: transform .08s ease, background .12s ease;
+      white-space:nowrap;
+      padding: 0 10px;
+    }
+    .mini-quick-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .mini-quick-btn:active{ transform: translateY(0px); }
+
+    /* ===== Rest of page (unchanged from prior version) ===== */
     .grid-2{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -594,11 +643,6 @@
     }
     .cta-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
-    /* Learn more as same style module (not a thin bar) */
-    .soft-card.learn h2{ margin-bottom: 6px; }
-    .soft-card.learn p{ margin-bottom: 12px; }
-
-    /* FAQ list */
     .faq-box{
       height:100%;
       background: var(--pale);
@@ -639,13 +683,11 @@
       font-size: 14px;
     }
 
-    /* make August image taller to match 5 FAQ items */
     .merge.august .merge-img{
       height: 450px;
       object-position: center 45%;
     }
 
-    /* FULL-WIDTH BUY STRIP */
     .buy-strip{
       display:grid;
       grid-template-columns: 360px 1fr;
@@ -692,7 +734,6 @@
       margin:0;
     }
 
-    /* ===== FOOTER (minimal white, black text; pale-green copyright) ===== */
     .footer{
       margin-top: 22px;
       background:#fff;
@@ -764,7 +805,7 @@
 
     .copyright-bar{
       width:100%;
-      background: var(--pale);  /* pale green */
+      background: var(--pale);
       min-height:46px;
       display:flex;
       align-items:center;
@@ -781,20 +822,20 @@
       text-align:left;
     }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px){
       .hero{ grid-template-columns: 300px 1fr 300px; }
       .hero-img{ width:300px; height:300px; }
       .hero-copy{ height:300px; }
       .mini-card{ width:300px; height:300px; }
-      .mini-img{ height: 170px; }
+      .mini-img{ height: 200px; }
+      .mini-bottom{ grid-template-columns: 1fr 130px; }
     }
     @media (max-width: 860px){
       .hero{ grid-template-columns: 1fr; }
       .hero-img{ width:100%; height:auto; aspect-ratio: 1/1; }
       .hero-copy{ height:auto; }
       .mini-card{ width:100%; height:auto; }
-      .mini-img{ height: 240px; }
+      .mini-img{ height: 260px; }
 
       .grid-2{ grid-template-columns: 1fr; }
 
@@ -819,7 +860,7 @@
 
       .diet-row{ grid-template-columns: 1fr; }
       .diet-pill{ justify-content:flex-start !important; }
-      .diet-pill.glutenfree{ transform:none; }
+      .diet-pill.glutenfree{ padding-left:0; }
     }
   </style>
 </head>
@@ -844,10 +885,8 @@
 
   <main id="main-content" tabindex="-1" aria-label="Home">
     <div class="content-wrapper">
-      <!-- SEO-visible headline with question -->
       <h1>What is MayaNut™ flour?</h1>
 
-      <!-- HERO: image + what-is + product -->
       <section class="block" aria-label="MayaNut overview">
         <div class="hero" aria-label="Intro layout">
           <div class="hero-img" aria-label="Alicastrum seeds photo">
@@ -883,37 +922,41 @@
               It’s naturally gluten-free and vegan, and it adds a warm, roasted depth to smoothies, açaí bowls, baking, and everyday cooking.
             </p>
 
-            <p>
-              Often searched as “MayaNut flour” or “MayaNut powder,” MayaNut™ is designed to make simple recipes taste richer and more satisfying.
-            </p>
+            <div class="hero-cta-row">
+              <a class="cta-pill" href="product.html" aria-label="Go to the Buy page for MayaNut flour">Try MayaNut™ Flour</a>
+            </div>
           </div>
 
           <article class="mini-card" aria-label="MayaNut flour product preview">
-            <div class="mini-cta-top">
-              <a class="cta-pill" href="product.html" aria-label="Go to the Buy page for MayaNut flour">Try MayaNut™ Flour</a>
-            </div>
+            <a class="mini-link" href="product.html" aria-label="Open the MayaNut flour product page">
+              <div class="mini-img-wrap" aria-hidden="true">
+                <img
+                  class="mini-img"
+                  src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                  alt="MayaNut™ flour (roasted seed flour), often searched as MayaNut powder, for smoothies, açaí bowls, baking, and everyday cooking"
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.style.opacity='.35';"
+                />
+                <div class="view-full-text">*Click to view full product</div>
+              </div>
 
-            <a class="mini-img-link" href="product.html" aria-label="View the MayaNut flour product page">
-              <span class="view-full" aria-hidden="true">*Click to view full product</span>
-              <img
-                class="mini-img"
-                src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                alt="MayaNut™ flour (roasted seed flour), often searched as MayaNut powder, for smoothies, açaí bowls, baking, and everyday cooking"
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.opacity='.35';"
-              />
+              <div class="mini-bottom" aria-label="Product title, price, and quick button">
+                <div class="mini-meta">
+                  <div class="mini-title">MayaNut™ Flour ¼ LB</div>
+                  <div class="mini-price">$9.99</div>
+                </div>
+
+                <button class="mini-quick-btn" type="button" aria-label="Go to the Buy page for MayaNut flour">
+                  TRY
+                </button>
+              </div>
             </a>
-
-            <div class="mini-bottom" aria-label="Product title and price">
-              <div class="mini-title">MayaNut™ Flour ¼ LB</div>
-              <div class="mini-price">$9.99</div>
-            </div>
           </article>
         </div>
       </section>
 
-      <!-- ROW 1: Buba story (left) + Recipes/Gallery/Learn stacked (right) -->
+      <!-- ROW 1 -->
       <section class="block" aria-label="Story and explore">
         <div class="grid-2" aria-label="Oxox row 1">
           <article class="merge" aria-label="How it all started">
@@ -970,7 +1013,7 @@
         </div>
       </section>
 
-      <!-- ROW 2: FAQ (left) + August/we-love card (right) -->
+      <!-- ROW 2 -->
       <section class="block" aria-label="FAQ and founder">
         <div class="grid-2" aria-label="Oxox row 2">
           <div class="faq-box" aria-label="FAQ preview">
@@ -1028,7 +1071,7 @@
         </div>
       </section>
 
-      <!-- ROW 3: Full-width buy strip -->
+      <!-- ROW 3 -->
       <section class="block" aria-label="Ready for MayaNut flour">
         <div class="buy-strip" aria-label="Buy module">
           <img
@@ -1042,7 +1085,7 @@
           <div class="copy">
             <h2>Ready for MayaNut™ flour?</h2>
             <p>
-              MayaNut™ flour is roasted seed flour from Alicastrum (Brosimum alicastrum), often searched as MayaNut flour or MayaNut powder.
+              MayaNut™ flour is roasted seed flour from Alicastrum (Brosimum alicastrum).
               Try it in smoothies, açaí bowls, baked goods, or simple everyday recipes for richer, cocoa-like depth.
             </p>
             <div class="cta-row">
@@ -1055,7 +1098,6 @@
     </div>
   </main>
 
-  <!-- FOOTER: white background + black text; pale-green copyright -->
   <footer class="footer" aria-label="Footer">
     <div class="footer-inner">
       <div class="footer-left" aria-label="Brand">
@@ -1129,6 +1171,16 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Ensure the mini "TRY" button doesn't block navigation but still feels clickable.
+    // It lives inside the product link; prevent double-focus issues on some browsers.
+    document.addEventListener("click", function(e){
+      const btn = e.target.closest(".mini-quick-btn");
+      if(btn){
+        // allow the anchor navigation to product.html naturally
+        // no-op; keep for future if needed
+      }
+    });
   </script>
 </body>
 </html>

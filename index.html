@@ -155,6 +155,11 @@
       --sbTrack: var(--sbTrackL);
       --sbThumb: var(--sbThumbL);
       --sbThumbHover: var(--sbThumbHoverL);
+
+      /* ✅ unify sizes: tabs == section headers */
+      --sectionH: 18px;
+      --tabText: var(--sectionH);
+      --tagText: 13px;
     }
     @media (prefers-color-scheme: dark){
       :root{
@@ -195,15 +200,7 @@
     a{ color:inherit; text-decoration:none; }
     button,input,select{ font-family:inherit; }
 
-    h1{
-      font-size: clamp(22px, 2.1vw, 28px);
-      font-weight:950;
-      letter-spacing:.02em;
-      color:#0b1220;
-      margin: 0 0 10px;
-    }
-
-    /* ===== HEADER (match recipes: centered, tabs lifted slightly) ===== */
+    /* ===== HEADER (match recipes) ===== */
     .site-header{
       width:100%;
       background-color: var(--green);
@@ -243,7 +240,6 @@
       align-items:center;
       justify-content:center;
       gap: 8px;
-      transform: translateY(0px);
     }
     .brand-group{
       display:flex;
@@ -277,19 +273,19 @@
       justify-content:center;
       gap:8px;
       flex-wrap:wrap;
-      transform: translateY(-6px); /* ✅ lift tabs closer to header text */
+      transform: translateY(-6px);
     }
     .subnav a{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height:36px;
+      height:38px;
       padding:0 16px;
       border-radius: 12px;
       font-weight:950;
       letter-spacing:.10em;
       text-transform: uppercase;
-      font-size:12px;
+      font-size: var(--tabText); /* ✅ match section headers */
       color:#fff;
       border: 1px solid rgba(255,255,255,0.35);
       background: rgba(255,255,255,0.14);
@@ -298,6 +294,7 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
       white-space:nowrap;
+      line-height:1;
     }
     .subnav a:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.20); }
     .subnav a.active{
@@ -370,10 +367,11 @@
       font-weight:950;
       letter-spacing:.08em;
       text-transform: uppercase;
-      font-size:13px;
+      font-size: var(--tagText);
       color:#0b1220;
       min-width:0;
       white-space:nowrap;
+      line-height:1;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; }
     .diet-pill:nth-child(2){ justify-content:center; }
@@ -394,19 +392,20 @@
     }
     .diet-icon::before{ content:"✓"; transform: translateY(-0.2px); }
 
-    /* ✅ move only gluten-free LEFT (toward the left), not right */
+    /* ✅ move only gluten-free further LEFT (toward vegan) */
     .diet-pill.glutenfree{
-      justify-content:center !important;  /* keep column center */
-      transform: translateX(-14px);       /* shift left so it never overlaps Paleo */
+      justify-content:center !important;
+      transform: translateX(-22px); /* ✅ more left than before */
     }
 
-    .hero-subtitle{
-      font-weight: 950;
-      font-size: 22px;
+    /* ✅ title now same size as section headers (not huge) */
+    .hero-title{
+      font-weight:950;
+      font-size: var(--sectionH);
       letter-spacing:.02em;
       color:#0b1220;
-      line-height:1.12;
-      margin-top: 4px;
+      line-height:1.15;
+      margin-top: 2px;
     }
 
     .hero-copy p{
@@ -419,7 +418,6 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
     }
 
-    /* ✅ CTA centered between the left story card and right stack (dead center of hero-copy) */
     .hero-cta-center{
       margin-top:auto;
       display:flex;
@@ -445,11 +443,12 @@
       transition: transform .08s ease, background .12s ease;
       -webkit-tap-highlight-color: transparent;
       border:none;
+      line-height:1;
     }
     .cta-pill:hover{ background: var(--orangePress); transform: translateY(-1px); }
     .cta-pill:active{ transform: translateY(0px); }
 
-    /* ===== MINI PRODUCT (remove try button; keep title uncut; whole card clickable) ===== */
+    /* ===== MINI PRODUCT ===== */
     .mini-card{
       width:320px;
       height:340px;
@@ -461,7 +460,6 @@
       display:flex;
       flex-direction:column;
     }
-
     .mini-link{
       display:flex;
       flex-direction:column;
@@ -470,7 +468,6 @@
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
     }
-
     .mini-img-wrap{
       position:relative;
       background:#fff;
@@ -484,8 +481,6 @@
       background:#fff;
       border-radius: 18px 18px 0 0;
     }
-
-    /* ✅ readable, same green as body text (no box) */
     .view-full-text{
       position:absolute;
       left: 12px;
@@ -499,7 +494,6 @@
       user-select:none;
       pointer-events:none;
     }
-
     .mini-bottom{
       background: var(--pale);
       padding: 12px 14px;
@@ -522,14 +516,17 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
+    /* ✅ price same size as vegan/gluten/paleo text */
     .mini-price{
       font-weight:950;
-      font-size:22px;
+      font-size: var(--tagText);
       color:#0b1220;
+      letter-spacing:.08em;
+      text-transform: uppercase;
       line-height:1;
     }
 
-    /* ===== OXOX GRID ===== */
+    /* ===== OXOX ===== */
     .grid-2{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -554,7 +551,7 @@
     .merge-top h2{
       font-family: var(--font-ui);
       font-weight:950;
-      font-size:18px;
+      font-size: var(--sectionH);
       letter-spacing:.02em;
       color:#0b1220;
       margin: 0 0 8px;
@@ -592,7 +589,7 @@
     }
     .soft-card h2{
       font-weight:950;
-      font-size:18px;
+      font-size: var(--sectionH);
       color:#0b1220;
       letter-spacing:.02em;
       margin-bottom: 8px;
@@ -623,7 +620,7 @@
     }
     .faq-box h2{
       font-weight:950;
-      font-size:18px;
+      font-size: var(--sectionH);
       color:#0b1220;
       letter-spacing:.02em;
       margin-bottom: 2px;
@@ -701,11 +698,11 @@
       margin:0;
     }
 
-    /* ===== FOOTER (white, black text; alignments) ===== */
+    /* ===== FOOTER ALIGNMENT (inward to match sections) ===== */
     .footer{
       margin-top: 22px;
       background:#fff;
-      border-top: none;          /* ✅ remove thin line if not needed */
+      border-top: none;
       box-shadow:none;
       color:#0b1220;
     }
@@ -719,7 +716,19 @@
       grid-template-columns: 360px 1fr;
       gap: 22px;
       align-items:start;
+      /* ✅ pull in from edges to align with page modules on desktop */
     }
+    @media (min-width: 981px){
+      .footer-inner{
+        padding-left: 52px;
+        padding-right: 52px;
+      }
+      .copyright-inner{
+        padding-left: 52px;
+        padding-right: 52px;
+      }
+    }
+
     .footer-left{ display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
     .footer-tagline{
       display:flex; align-items:center; gap:8px;
@@ -733,7 +742,7 @@
       display:grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap:18px;
-      justify-items:end;          /* rightmost aligned */
+      justify-items:end;      /* right edge alignment */
       text-align:right;
       align-self:start;
     }
@@ -759,7 +768,7 @@
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
-      justify-content:flex-end;   /* align with right edge of column */
+      justify-content:flex-end;
       width:100%;
     }
     .icon-pill{
@@ -772,7 +781,6 @@
       overflow:hidden;
       flex:0 0 auto;
     }
-    /* ✅ icons black (not green) */
     .icon-pill svg{ width:18px; height:18px; display:block; }
     .icon-pill .stroke{ stroke: #000; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .icon-pill .fill{ fill: #000; stroke:none; }
@@ -798,6 +806,7 @@
       text-align:left;
     }
 
+    /* ===== RESPONSIVE: prevent any overlap/glitches ===== */
     @media (max-width: 1024px){
       .hero{ grid-template-columns: 300px 1fr 300px; }
       .hero-img{ width:300px; height:300px; }
@@ -858,7 +867,6 @@
 
   <main id="main-content" tabindex="-1" aria-label="Home">
     <div class="content-wrapper">
-      <h1>What is MayaNut™ flour?</h1>
 
       <section class="block" aria-label="MayaNut overview">
         <div class="hero" aria-label="Intro layout">
@@ -872,7 +880,7 @@
             />
           </div>
 
-          <div class="hero-copy" aria-label="What is MayaNut flour section">
+          <div class="hero-copy" aria-label="What is MayaNut section">
             <div class="diet-row" aria-label="Dietary benefits">
               <div class="diet-pill" title="Vegan">
                 <span class="diet-icon" aria-hidden="true"></span>
@@ -888,11 +896,12 @@
               </div>
             </div>
 
-            <div class="hero-subtitle">Roasted seed flour with a cocoa-like depth.</div>
+            <div class="hero-title">What is MayaNut™?</div>
 
             <p>
               MayaNut™ flour is a roasted seed flour made from the seeds of the Alicastrum tree (Brosimum alicastrum).
-              It’s naturally gluten-free and vegan, and it adds a warm, roasted depth to smoothies, açaí bowls, baking, and everyday cooking.
+              It’s naturally gluten-free and vegan, and it adds a warm, roasted depth with a gentle cocoa-like flavor to smoothies,
+              açaí bowls, baking, and everyday cooking.
             </p>
 
             <div class="hero-cta-center">
@@ -993,7 +1002,7 @@
 
             <div class="faq-item">
               <div class="faq-q">What does MayaNut™ flour taste like?</div>
-              <div class="faq-a">Roasted and cocoa-like—rich, smooth, and satisfying in sweet or savory recipes.</div>
+              <div class="faq-a">Roasted with a gentle cocoa-like flavor—rich, smooth, and satisfying.</div>
             </div>
 
             <div class="faq-item">

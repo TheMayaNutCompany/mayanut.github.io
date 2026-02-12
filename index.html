@@ -136,6 +136,14 @@
           "@type":"Answer",
           "text":"A warm, roasted flavor with a gentle cocoa-like note—great in smoothies, açaí bowls, baked goods, and everyday cooking."
         }
+      },
+      {
+        "@type":"Question",
+        "name":"How do you use MayaNut\u2122 flour?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"Start with 1–2 tablespoons in smoothies or bowls, or mix into baking recipes to add roasted depth and richness."
+        }
       }
     ]
   }
@@ -155,7 +163,8 @@
       --padX:16px;
       --gap:14px;
 
-      --tile:340px;
+      --tile:360px; /* merged hero + product match */
+      --leftImgW:340px;
       --copyW:420px;
       --prodW:300px;
 
@@ -349,43 +358,45 @@
     /* HERO */
     .intro-row{
       display:grid;
-      grid-template-columns: var(--tile) minmax(360px, var(--copyW)) var(--prodW);
+      grid-template-columns: 1fr var(--prodW);
       gap: var(--gap);
-      padding: 0;
       align-items: start;
     }
 
-    /* Left image only left corners rounded */
-    .tile-img{
-      width: var(--tile);
+    /* Merged left image + copy as one object */
+    .hero-merged{
       height: var(--tile);
-      border-radius: 18px 0 0 18px;
+      border-radius:18px;
       overflow:hidden;
       border: 1px solid var(--border);
       background:#fff;
-      justify-self:start;
+      display:grid;
+      grid-template-columns: var(--leftImgW) 1fr;
+      min-width:0;
     }
-    .tile-img img{
+    .hero-merged .hero-media{
       width:100%;
       height:100%;
-      object-fit: cover;
+      overflow:hidden;
+      background:#fff;
+    }
+    .hero-merged .hero-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
       object-position:center 48%;
       display:block;
       filter: saturate(1.03) contrast(1.03);
     }
-
-    /* Center copy */
-    .tile-copy{
-      width: 100%;
-      min-height: var(--tile);
-      border-radius: 0 18px 18px 0;
-      border: 1px solid var(--border);
+    .hero-merged .hero-copy{
+      height:100%;
       background: var(--pale);
       padding: 16px 18px;
       display:flex;
       flex-direction:column;
       gap: 10px;
       overflow:hidden;
+      min-width:0;
     }
 
     .diet-row{
@@ -410,7 +421,7 @@
       min-width:0;
     }
     .diet-pill:nth-child(1){ justify-content:flex-start; }
-    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-22px); } /* gluten further left */
+    .diet-pill:nth-child(2){ justify-content:center; transform: translateX(-26px); }
     .diet-pill:nth-child(3){ justify-content:flex-end; }
 
     .diet-icon{
@@ -440,7 +451,7 @@
       margin-top: 2px;
     }
 
-    .tile-copy p{
+    .hero-copy p{
       font-family: var(--font-pretty);
       font-style: italic;
       font-weight: 850;
@@ -450,10 +461,11 @@
       text-shadow: 0 1px 0 rgba(255,255,255,0.55);
       margin-top: 2px;
     }
-    .tile-copy p + p{ margin-top: 14px; }
+    .hero-copy p + p{ margin-top: 14px; }
 
     /* Product card (entire clickable) */
     .mini-card{
+      height: var(--tile);
       width: var(--prodW);
       border-radius:18px;
       background:#fff;
@@ -462,13 +474,14 @@
       display:flex;
       flex-direction:column;
     }
-    .mini-click{ display:block; color:inherit; text-decoration:none; }
+    .mini-click{ display:flex; flex-direction:column; height:100%; color:inherit; text-decoration:none; }
     .mini-img-wrap{
       position:relative;
       width:100%;
       height: 220px;
       overflow:hidden;
       background:#fff;
+      flex: 0 0 auto;
     }
     .mini-img{
       width:100%;
@@ -498,6 +511,9 @@
       display:flex;
       flex-direction:column;
       gap: 8px;
+      flex: 1 1 auto;
+      justify-content:flex-end;
+      min-height:0;
     }
 
     /* Reviews count to the left of 5 outline stars */
@@ -543,6 +559,28 @@
       text-transform:uppercase;
       color: var(--ink);
     }
+
+    .link-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:44px;
+      padding:0 16px;
+      border-radius:999px;
+      background: var(--orange);
+      border:none;
+      color:#fff;
+      font-weight:950;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      box-shadow:0 14px 30px rgba(15,23,42,0.10);
+      transition: transform .10s ease, background .12s ease;
+      width:100%;
+      margin-top: 4px;
+    }
+    .link-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
+    .link-btn:active{ transform: translateY(0px); }
 
     /* About + modules */
     .grid-two{
@@ -605,25 +643,6 @@
       font-size: 14px;
       margin-bottom: 12px;
     }
-    .link-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:44px;
-      padding:0 16px;
-      border-radius:999px;
-      background: var(--orange);
-      border:none;
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      box-shadow:0 14px 30px rgba(15,23,42,0.10);
-      transition: transform .10s ease, background .12s ease;
-    }
-    .link-btn:hover{ background: var(--orangePress); transform: translateY(-1px); }
-    .link-btn:active{ transform: translateY(0px); }
 
     /* FAQ next to “We Love” */
     .faq-box{ border-radius:18px; border: 1px solid var(--border); overflow:hidden; background:#fff; }
@@ -647,23 +666,27 @@
     }
     .faq-q{ font-weight:950; color: var(--ink); letter-spacing:.02em; margin-bottom:6px; }
     .faq-a{ font-family: var(--font-pretty); font-style: italic; font-weight: 850; color: var(--forestText); line-height:1.8; font-size: 14px; }
-    .faq-link{ margin-top: 6px; display:inline-flex; }
+    .faq-link{ margin-top: 6px; display:inline-flex; width: fit-content; }
 
-    /* Wide “Ready for MayaNut” */
+    /* Wide “Ready for MayaNut” with square image */
     .wide-card{
       margin-top: 14px;
       display:grid;
-      grid-template-columns: 380px 1fr;
+      grid-template-columns: 320px 1fr;
       border-radius:18px;
       overflow:hidden;
       border: 1px solid var(--border);
       background:#fff;
     }
-    .wide-card .wide-media{ background:#fff; overflow:hidden; }
+    .wide-card .wide-media{
+      background:#fff;
+      overflow:hidden;
+      width: 320px;
+      height: 320px; /* square */
+    }
     .wide-card .wide-media img{
       width:100%;
       height:100%;
-      min-height: 260px;
       object-fit:cover;
       display:block;
       filter: saturate(1.03) contrast(1.03);
@@ -675,6 +698,7 @@
       flex-direction:column;
       gap:10px;
       justify-content:center;
+      min-height: 320px; /* match square */
     }
     .wide-copy h2{
       font-family: var(--font-ui);
@@ -768,11 +792,13 @@
 
     /* Responsive */
     @media (max-width: 1024px) and (min-width: 721px){
-      :root{ --tile: 300px; --copyW: 360px; --prodW: 290px; }
+      :root{ --tile: 340px; --leftImgW: 300px; --prodW: 290px; }
       .mini-img-wrap{ height: 210px; }
-      .stack-card .media{ height: 300px; }
-      .wide-card{ grid-template-columns: 320px 1fr; }
+      .wide-card{ grid-template-columns: 300px 1fr; }
+      .wide-card .wide-media{ width: 300px; height:300px; }
+      .wide-card .wide-copy{ min-height:300px; }
     }
+
     @media (max-width: 720px){
       .site-header{ height: 178px; background-size:140% auto; }
       .brand-logo{ width:56px; height:56px; }
@@ -780,17 +806,28 @@
       .subnav a{ height: 30px; padding: 0 12px; font-size: 11px; }
 
       .intro-row{ grid-template-columns: 1fr; gap: 12px; }
-      .tile-img{ width:100%; height:auto; aspect-ratio: 1 / 1; border-radius:18px; }
-      .tile-copy{ border-radius:18px; min-height:auto; }
-      .mini-card{ width:100%; max-width:420px; justify-self:center; }
+
+      .hero-merged{
+        grid-template-columns: 1fr;
+        height:auto;
+        border-radius:18px;
+      }
+      .hero-merged .hero-media{ height: auto; aspect-ratio: 1 / 1; }
+      .hero-merged .hero-copy{ height:auto; }
 
       .diet-row{ grid-template-columns: 1fr; gap: 6px; }
       .diet-pill{ justify-content:flex-start !important; font-size: 11px; transform:none !important; }
       .diet-icon{ width:18px; height:18px; font-size:12px; }
 
+      .mini-card{ width:100%; max-width:420px; height:auto; justify-self:center; }
+      .mini-click{ height:auto; }
+      .mini-bot{ justify-content:flex-start; }
+
       .grid-two{ grid-template-columns: 1fr; }
+
       .wide-card{ grid-template-columns: 1fr; }
-      .wide-card .wide-media img{ min-height: 260px; }
+      .wide-card .wide-media{ width: 100%; height:auto; aspect-ratio: 1 / 1; }
+      .wide-card .wide-copy{ min-height:auto; }
 
       .footer-inner{ grid-template-columns: 1fr; }
       .footer-right{ justify-items:start; text-align:left; }
@@ -828,47 +865,51 @@
 
       <!-- HERO ROW -->
       <section class="panel" aria-label="What is MayaNut">
-        <div class="intro-row" aria-label="Intro image, description, product">
+        <div class="intro-row" aria-label="Intro merged card and product">
 
-          <div class="tile-img" aria-label="Alicastrum tree image">
-            <img
-              src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-              alt="Alicastrum tree (Brosimum alicastrum) fruit and seeds used to make MayaNut™ roasted seed flour for smoothies, açaí bowls, baking, and everyday cooking"
-              loading="eager"
-              decoding="async"
-              onerror="this.style.opacity='.35';"
-            >
-          </div>
-
-          <div class="tile-copy" aria-label="MayaNut flour description">
-            <div class="diet-row" aria-label="Diet checks">
-              <div class="diet-pill" title="Vegan">
-                <span class="diet-icon" aria-hidden="true"></span>
-                Vegan
-              </div>
-              <div class="diet-pill" title="Gluten-Free">
-                <span class="diet-icon" aria-hidden="true"></span>
-                Gluten-Free
-              </div>
-              <div class="diet-pill" title="Paleo-Friendly">
-                <span class="diet-icon" aria-hidden="true"></span>
-                Paleo-Friendly
-              </div>
+          <!-- merged image + paragraph (same height as product) -->
+          <div class="hero-merged" aria-label="What is MayaNut and benefits">
+            <div class="hero-media" aria-label="Alicastrum tree image">
+              <img
+                src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+                alt="Alicastrum tree (Brosimum alicastrum) fruit and seeds used to make MayaNut™ roasted seed flour for smoothies, açaí bowls, baking, and everyday cooking"
+                loading="eager"
+                decoding="async"
+                onerror="this.style.opacity='.35';"
+              >
             </div>
 
-            <div class="benefit">What is MayaNut™?</div>
+            <div class="hero-copy" aria-label="MayaNut flour description">
+              <div class="diet-row" aria-label="Diet checks">
+                <div class="diet-pill" title="Vegan">
+                  <span class="diet-icon" aria-hidden="true"></span>
+                  Vegan
+                </div>
+                <div class="diet-pill" title="Gluten-Free">
+                  <span class="diet-icon" aria-hidden="true"></span>
+                  Gluten-Free
+                </div>
+                <div class="diet-pill" title="Paleo-Friendly">
+                  <span class="diet-icon" aria-hidden="true"></span>
+                  Paleo-Friendly
+                </div>
+              </div>
 
-            <p>
-              MayaNut™ flour is a roasted seed flour made from the seeds of the Alicastrum tree (Brosimum alicastrum).
-              It’s naturally gluten-free and vegan, and it adds a warm, roasted depth with a gentle cocoa-like note to smoothies,
-              açaí bowls, baking, and everyday cooking.
-            </p>
+              <div class="benefit">What is MayaNut™?</div>
 
-            <p>
-              We will have our product MayaNut™ available for sale soon, thank you for your patience.
-            </p>
+              <p>
+                MayaNut™ flour is a roasted seed flour made from the seeds of the Alicastrum tree (Brosimum alicastrum).
+                It’s naturally gluten-free and vegan, and it adds a warm, roasted depth with a gentle cocoa-like note to smoothies,
+                açaí bowls, baking, and everyday cooking.
+              </p>
+
+              <p>
+                Our product MayaNut™ will soon be available for sale. We are devoted to ensuring the highest quality and standards. Thank you for your patience.
+              </p>
+            </div>
           </div>
 
+          <!-- product (same height as merged card) -->
           <article class="mini-card" aria-label="MayaNut flour product preview">
             <a class="mini-click" href="product.html" aria-label="View MayaNut flour product page">
               <div class="mini-img-wrap">
@@ -898,7 +939,7 @@
                 <div class="mini-title">MayaNut™ Flour</div>
                 <div class="mini-price">$9.99</div>
 
-                <div class="link-btn" style="width:100%; text-align:center;">View Product</div>
+                <div class="link-btn">View Product</div>
               </div>
             </a>
           </article>
@@ -916,7 +957,6 @@
               In 1923, Herbert “Buba” Humphreys, standing alongside his father Harry Humphreys, founded Kennesaw Fruit Company, harvesting oranges,
               pineapples, watermelons, and other crops. In 2025, Buba’s great-grandson, August Kokus, founded The MayaNut Company, focused exclusively
               on cultivating the Alicastrum tree (Brosimum alicastrum) for the production of MayaNut™ flour—continuing his family’s Florida farming legacy.
-              Our mission is to inspire future generations to use MayaNut™ and reconnect with this remarkable ingredient.
             </div>
             <div class="media">
               <img
@@ -986,11 +1026,6 @@
                 <div class="faq-a">Start with 1–2 tablespoons in smoothies or bowls, or mix into baking recipes to add roasted depth and richness.</div>
               </div>
 
-              <div class="faq-item">
-                <div class="faq-q">What is the Alicastrum tree (Brosimum alicastrum)?</div>
-                <div class="faq-a">A tropical food tree whose seeds can be roasted and milled into a flour-like ingredient known as MayaNut™.</div>
-              </div>
-
               <a class="link-btn faq-link" href="faq.html">View Full FAQ</a>
             </div>
           </div>
@@ -1010,7 +1045,7 @@
               Made from the seed of the rediscovered Alicastrum tree (Brosimum alicastrum), MayaNut™ seed flour is truly a unique product.
               Its warm, roasted flavor makes foods and drinks taste richer and more satisfying—turning simple meals into something you’ll really enjoy.
               Perfect for smoothies, açaí bowls, baking, or everyday recipes, MayaNut™ is an easy pantry staple you can enjoy week after week,
-              any season, any time of the year.
+              any season, any time of the year. Our mission is to inspire future generations to use MayaNut™ and reconnect with this remarkable ingredient.
             </div>
           </article>
 
@@ -1023,7 +1058,7 @@
           <div class="wide-media">
             <img
               src="recipe-placeholder-1.jpg"
-              alt="Kitchen-style photo placeholder representing MayaNut™ flour used for smoothies and baking recipes"
+              alt="Kitchen-style photo placeholder representing MayaNut™ flour used for smoothies, baking recipes, and everyday cooking"
               loading="lazy"
               decoding="async"
               onerror="this.style.opacity='.35';"

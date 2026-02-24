@@ -285,7 +285,7 @@
       max-width: 100%;
     }
 
-    /* Desktop nav: plain black text + animated underline */
+    /* Desktop nav: hover underline black, active underline orange */
     .subnav{
       display:flex;
       align-items:center;
@@ -314,11 +314,11 @@
       bottom:-2px;
       height:2px;
       width:0%;
-      background:#0b1220;
+      background:#0b1220; /* black hover underline */
       transition: width .18s ease;
     }
     .subnav a:hover::after{ width:100%; }
-    .subnav a.active::after{ width:100%; }
+    .subnav a.active::after{ width:100%; background: var(--orange); } /* orange active */
 
     /* Page offset for fixed header */
     main{
@@ -361,7 +361,7 @@
       display:grid;
       grid-template-columns: var(--leftImgW) 1fr;
       min-width:0;
-      height:auto; /* no forced stretch */
+      height:auto;
     }
 
     .hero-media{
@@ -377,8 +377,6 @@
       object-position:center 48%;
       display:block;
     }
-
-    /* Desktop: force hero image area to square */
     @media (min-width: 981px){
       .hero-media{ aspect-ratio: 1 / 1; height:auto; }
       .hero-media img{ height:100%; }
@@ -786,6 +784,7 @@
       margin-bottom: 8px;
       font-weight: 900;
     }
+
     .footer-links{
       display:flex;
       flex-direction:column;
@@ -799,6 +798,29 @@
       letter-spacing: .02em;
     }
     .footer-links a:hover{ color: var(--orange); }
+
+    /* Icon row (FOLLOW US) */
+    .footer-links.footer-icons{
+      flex-direction: row;
+      justify-content:center;
+      gap: 14px;
+    }
+    .footer-icons a{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(11,18,32,0.15);
+      color:#0b1220;
+      transition:all .15s ease;
+    }
+    .footer-icons a:hover{
+      background: var(--orange);
+      border-color: var(--orange);
+      color:#fff;
+    }
 
     .footer-copy{
       margin-top: 12px;
@@ -861,9 +883,8 @@
     }
 
     @media (max-width: 720px){
-      :root{ --headerH: 68px; } /* slightly shorter fixed header on mobile */
+      :root{ --headerH: 68px; }
 
-      /* Ensure brand name doesn't look cut off */
       .brand-name{
         font-size: 16px;
         max-width: 72vw;
@@ -871,7 +892,6 @@
 
       .intro-row{ grid-template-columns: 1fr; }
 
-      /* mobile order */
       .mini-card{ order: 1; }
       .hero-left{ order: 2; }
 
@@ -885,7 +905,6 @@
 
       .grid-two{ grid-template-columns: 1fr; }
 
-      /* AUGUST above FAQ */
       .faq-box{ order: 2; }
       .stack-card.august{ order: 1; }
 
@@ -896,25 +915,17 @@
       }
       .wide-copy{ padding: 14px 14px 14px; }
 
-      /* Make mod buttons same width/feel on mobile (consistent dimensions) */
-      .mod .body .btn{
-        width: 100%;
-        align-self: stretch;
-      }
-      .faq-body .btn{
-        width: 100%;
-        align-self: stretch;
-      }
+      /* Force all action buttons to identical width on mobile */
+      .hero-actions .btn,
+      .mod .body .btn,
+      .faq-body .btn,
       .wide-copy .btn{
         width: 100%;
         align-self: stretch;
-      }
-      .hero-actions .btn{
-        width: 100%;
-        justify-content: center;
+        justify-content:center;
       }
 
-      /* Reduce empty white space before footer tagline on mobile */
+      /* Reduce empty white space above footer tagline on mobile */
       .panel{ margin-bottom: 14px; }
       .footer{
         margin-top: 10px;
@@ -962,6 +973,7 @@
       <nav class="subnav" aria-label="Primary navigation (desktop)">
         <a class="active" href="index.html" aria-current="page" aria-label="Home page">Home</a>
         <a href="product.html" aria-label="Buy MayaNut flour">Buy</a>
+        <a href="alicastrum-brosimum-alicastrum.html" aria-label="Learn about the Alicastrum tree (Brosimum alicastrum)">Learn</a>
         <a href="about.html" aria-label="About The MayaNut Company">About</a>
         <a href="faq.html" aria-label="Frequently asked questions">FAQ</a>
         <a href="recipes.html" aria-label="MayaNut recipes">Recipes</a>
@@ -998,9 +1010,10 @@
 
                 <h1 class="hero-h1">What is MayaNut™?</h1>
 
+                <!-- UPDATED paragraph (caffeine-free + nutrient-dense) -->
                 <p>
-                  MayaNut™ flour (often searched as <strong>MayaNut flour powder</strong>) is a roasted seed flour made from the seeds of
-                  Alicastrum (<strong>Brosimum alicastrum</strong>). It adds a warm, roasted depth with a gentle cocoa-like note to smoothies,
+                  MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>).
+                  Naturally caffeine-free and nutrient-dense, it adds warm roasted depth with a gentle cocoa-like note to smoothies,
                   açaí bowls, baking, and everyday cooking.
                 </p>
 
@@ -1010,7 +1023,8 @@
 
                 <div class="hero-actions" aria-label="Primary actions">
                   <a class="btn" href="product.html" aria-label="View MayaNut flour product page">View Product</a>
-                  <a class="btn secondary" href="faq.html" aria-label="Read FAQ about MayaNut flour and Brosimum alicastrum">Read FAQ</a>
+                  <!-- UPDATED: About Us button (secondary style) -->
+                  <a class="btn secondary" href="about.html" aria-label="About The MayaNut Company">About Us</a>
                 </div>
               </div>
             </div>
@@ -1091,8 +1105,9 @@
             <div class="mod" aria-label="Learn more module">
               <div class="body">
                 <div class="title">Learn More</div>
-                <p class="desc">Learn what MayaNut™ flour is, how it’s made, and how to use it.</p>
-                <a class="btn" href="about.html" aria-label="Read about MayaNut flour and Brosimum alicastrum">View Full About</a>
+                <p class="desc">Learn about the Alicastrum tree (Brosimum alicastrum) and how its roasted seeds become MayaNut™.</p>
+                <!-- UPDATED link + text -->
+                <a class="btn" href="alicastrum-brosimum-alicastrum.html" aria-label="Learn about the Alicastrum tree (Brosimum alicastrum)">Learn About the Alicastrum Tree</a>
               </div>
             </div>
 
@@ -1248,12 +1263,39 @@
           </div>
         </div>
 
+        <!-- UPDATED: icons + YouTube + email -->
         <div class="footer-col" aria-label="Follow us links">
           <h3>FOLLOW US</h3>
-          <div class="footer-links">
-            <a href="https://www.instagram.com/themayanutcompany" aria-label="Visit The MayaNut Company on Instagram">Instagram</a>
-            <a href="https://x.com/mayanutcompany" aria-label="Visit The MayaNut Company on X">X</a>
-            <a href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" aria-label="Visit The MayaNut Company on LinkedIn">LinkedIn</a>
+          <div class="footer-links footer-icons" aria-label="Social icons">
+            <a href="https://www.instagram.com/themayanutcompany" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5a5 5 0 110 10 5 5 0 010-10zm6.5-1.3a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
+              </svg>
+            </a>
+
+            <a href="https://x.com/mayanutcompany" aria-label="X">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M18 2h3l-7.5 8.6L22 22h-6l-4.8-6.2L6 22H3l8-9.2L2 2h6l4.3 5.6L18 2z"/>
+              </svg>
+            </a>
+
+            <a href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M6.94 6.5A2.44 2.44 0 114.5 4.06 2.44 2.44 0 016.94 6.5zM4.75 20.5h4.38V8.5H4.75v12zM13 8.5h4.2v1.64h.06c.59-1.11 2.02-2.28 4.16-2.28 4.45 0 5.28 2.93 5.28 6.74v5.9h-4.38v-5.23c0-1.25-.02-2.85-1.74-2.85-1.74 0-2.01 1.36-2.01 2.76v5.32H13v-12z"/>
+              </svg>
+            </a>
+
+            <a href="#" aria-label="YouTube (add your channel link)">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M23 12s0-3-1-4.5c-1-1-4.5-1-4.5-1H6.5S3 6.5 2 7.5C1 9 1 12 1 12s0 3 1 4.5c1 1 4.5 1 4.5 1h11s3.5 0 4.5-1c1-1.5 1-4.5 1-4.5zM9.5 15.5v-7l6 3.5-6 3.5z"/>
+              </svg>
+            </a>
+
+            <a href="mailto:info@mayanut.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M2 4h20v16H2V4zm10 7L2 6v12h20V6l-10 5z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>

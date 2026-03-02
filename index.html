@@ -158,9 +158,7 @@
           {"@type":"Question","name":"Is MayaNut\u2122 caffeine-free?","acceptedAnswer":{"@type":"Answer","text":"Yes. MayaNut\u2122 is naturally caffeine-free."}},
           {"@type":"Question","name":"Is MayaNut\u2122 gluten-free and vegan?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is naturally gluten-free and vegan. Always check packaging and handling practices for your needs."}},
           {"@type":"Question","name":"What does MayaNut\u2122 taste like?","acceptedAnswer":{"@type":"Answer","text":"Warm roasted flavor with gentle cocoa-like notes."}},
-          {"@type":"Question","name":"How do you use MayaNut\u2122?","acceptedAnswer":{"@type":"Answer","text":"Start with 1–2 tablespoons in smoothies or bowls, or mix into baking for roasted depth."}},
           {"@type":"Question","name":"Is MayaNut\u2122 a nut or a seed?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is made from the seeds of the Alicastrum tree (not tree nuts)."}},
-          {"@type":"Question","name":"What are other names for Alicastrum (Brosimum alicastrum)?","acceptedAnswer":{"@type":"Answer","text":"Alicastrum is also known regionally as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, and oox (and other local variants)."}},
           {"@type":"Question","name":"When will MayaNut\u2122 be available?","acceptedAnswer":{"@type":"Answer","text":"We’re finalizing packaging and inventory now and will share launch updates soon."}}
         ]
       }
@@ -197,6 +195,12 @@
       --sbTrack: #e8edf2;
       --sbThumb: #9aa5b1;
       --sbThumbHover: #7b8794;
+
+      /* Match August image height to the current Buba image height (edit this one number only) */
+      --bubaMediaH: 280px;
+
+      /* Make top hero image square and product image square */
+      --heroSquare: 360px; /* clamps hero left image square */
     }
 
     html{
@@ -288,6 +292,7 @@
       max-width: 100%;
     }
 
+    /* iPad/tablet: KEEP TOP NAV (desktop nav stays visible down to 640px) */
     .subnav{
       display:flex; align-items:center; gap: 18px; flex-wrap: wrap; justify-content:flex-end; flex: 0 0 auto;
     }
@@ -334,14 +339,14 @@
       display:grid;
       grid-template-columns: 1fr minmax(260px, var(--prodW));
       gap: var(--gap);
-      align-items: stretch;
+      align-items: start;
     }
 
     @media (max-width: 980px) and (min-width: 641px){
-      :root{ --prodW: 280px; --leftImgW: 320px; }
+      :root{ --prodW: 300px; --leftImgW: 340px; --heroSquare: 340px; }
     }
 
-    .hero-left{ display:flex; flex-direction:column; height:100%; min-width:0; }
+    .hero-left{ display:flex; flex-direction:column; min-width:0; }
 
     .hero-merged{
       border-radius: var(--radius);
@@ -353,13 +358,17 @@
       grid-template-columns: minmax(240px, var(--leftImgW)) 1fr;
       min-width:0;
       height:auto;
+      align-items: start;
     }
+
+    /* === TOP LEFT IMAGE: FORCE SQUARE (NO STRETCH) === */
     .hero-media{
       width:100%;
-      height:100%;
       overflow:hidden;
       background:#fff;
-      align-self:stretch;
+      align-self:start;
+      aspect-ratio: 1 / 1;
+      max-height: var(--heroSquare);
     }
     .hero-media img{
       width:100%;
@@ -368,6 +377,7 @@
       object-position:center 48%;
       display:block;
     }
+
     .hero-copy{
       background:#fff;
       padding: 16px 18px 12px;
@@ -442,13 +452,15 @@
       height: 100%;
     }
     .mini-click{ display:flex; flex-direction:column; height:100%; }
+
+    /* === TOP RIGHT PRODUCT IMAGE: FORCE SQUARE (NO STRETCH) === */
     .mini-img-wrap{
       position:relative;
       width:100%;
       overflow:hidden;
       background:#fff;
       flex: 0 0 auto;
-      aspect-ratio: 10 / 7;
+      aspect-ratio: 1 / 1;
     }
     .mini-img{
       width:100%; height:100%;
@@ -456,6 +468,7 @@
       object-position: center 50%;
       display:block;
     }
+
     .mini-bot{
       padding: 12px 14px 12px;
       display:flex;
@@ -563,33 +576,27 @@
       margin: 0 0 10px 0;
       line-height: 1.15;
     }
+
     .stack-card .media{
       overflow:hidden;
       background:#fff;
       width:100%;
-      flex: 1 1 auto;
-      min-height: 260px;
+      flex: 0 0 auto;
+      height: var(--bubaMediaH); /* Buba and August match exactly */
+      min-height: 0;
     }
     .stack-card .media img{
       width:100%;
       height:100%;
       object-fit:cover;
-      object-position:center;
       display:block;
     }
+    .stack-card.buba .media img{ object-position:center 50%; }
+    .stack-card.august .media img{ object-position:center 35%; }
+
     .stack-card.buba .media{ border-radius: 0 0 var(--radius) var(--radius); }
     .stack-card.august .media{ border-radius: var(--radius) var(--radius) 0 0; }
     .stack-card.august .copy{ padding-top: 14px; }
-
-    /* NEW: make August image section shorter to match Buba card height */
-    .stack-card.august .media{
-      flex: 0 0 auto;
-      min-height: 0;
-      height: 235px; /* tune this if needed by a few px */
-    }
-    .stack-card.august .media img{
-      object-position: center 35%;
-    }
 
     .mini-mods{ display:flex; flex-direction:column; gap: 12px; height:100%; }
     .mod .body{
@@ -618,6 +625,10 @@
     }
     .mod .body .btn{ margin-top: 6px; align-self:flex-start; }
 
+    /* FAQ: remove extra space + equalize with August card */
+    .panel[aria-label="FAQ and founder section"] .grid-two{ align-items: stretch; }
+    .panel[aria-label="FAQ and founder section"] .grid-two > *{ height: 100%; }
+
     .faq-body{
       padding: 16px 16px 14px;
       background:#fff;
@@ -625,12 +636,7 @@
       flex-direction:column;
       height:100%;
     }
-
-    /* NEW: remove “extra space” by tightening FAQ preview + letting list size the card */
-    .faq-list{
-      margin-top: 6px;
-      flex: 0 0 auto;
-    }
+    .faq-list{ margin-top: 6px; flex: 0 0 auto; } /* no flex growth => no dead space */
     .faq-item{
       border-radius: 14px;
       border: 1px solid rgba(11,18,32,0.10);
@@ -640,11 +646,7 @@
     }
     .faq-q{ font-weight: 900; color: var(--ink); margin-bottom: 6px; }
     .faq-a{ font-weight: 600; color: rgba(11,18,32,0.80); line-height:1.6; }
-
-    .faq-body .btn{
-      margin-top: 10px;
-      align-self:flex-start;
-    }
+    .faq-body .btn{ margin-top: 10px; align-self:flex-start; }
 
     .wide-card{
       display:grid;
@@ -705,19 +707,17 @@
       gap: 10px;
       white-space:nowrap;
     }
-
     /* Florida icon slightly smaller */
-    .footer-tagline .tagline-top img{
-      width: 38px;
-      height: 38px;
+    .footer-tagline .fl-icon{
+      width: 40px;
+      height: 40px;
       object-fit: contain;
       display:block;
     }
-
-    /* Logo bigger */
+    /* Bottom logo bigger */
     .footer-tagline .tagline-logo{
-      width: 112px;
-      height: 112px;
+      width: 132px;
+      height: 132px;
       object-fit: contain;
       display:block;
     }
@@ -731,12 +731,7 @@
       max-width: 1000px;
       margin: 0 auto;
     }
-    .footer-col{
-      border: 0;
-      background: transparent;
-      padding: 0;
-      box-shadow: none;
-    }
+    .footer-col{ border: 0; background: transparent; padding: 0; box-shadow: none; }
     .footer-col.left{ text-align:left; }
     .footer-col.center{ text-align:center; }
     .footer-col.right{ text-align:right; }
@@ -749,12 +744,7 @@
       margin-bottom: 10px;
       font-weight: 950;
     }
-
-    .footer-links{
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-    }
+    .footer-links{ display:flex; flex-direction:column; gap: 8px; }
     .footer-col.left .footer-links{ align-items:flex-start; }
     .footer-col.center .footer-links{ align-items:center; }
     .footer-col.right .footer-links{ align-items:flex-end; }
@@ -803,6 +793,7 @@
       font-size: 13px;
     }
 
+    /* MOBILE ONLY bottom tabs (NOT iPad/tablet) */
     .bottom-tabs{
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -844,26 +835,23 @@
       color: var(--ink);
     }
 
-    @media (max-width: 980px){
+    @media (max-width: 640px){
+      :root{ --headerH: 68px; --heroSquare: 9999px; } /* hero collapses to single column */
+
+      .brand-name{ font-size: 16px; max-width: 72vw; }
+
+      /* Mobile: use bottom tabs and hide top nav */
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
       main{ padding-bottom: calc(var(--bottomNavH) + 24px); }
       .footer{ padding-bottom: calc(var(--bottomNavH) + 14px); }
-    }
-
-    @media (max-width: 640px){
-      :root{ --headerH: 68px; }
-
-      .brand-name{ font-size: 16px; max-width: 72vw; }
 
       .intro-row{ grid-template-columns: 1fr; }
-
       .mini-card{ order: 1; }
       .hero-left{ order: 2; }
 
       .hero-merged{ grid-template-columns: 1fr; }
-      .hero-media{ aspect-ratio: 4 / 3; height:auto; }
-      .hero-media img{ height:100%; }
+      .hero-media{ aspect-ratio: 1 / 1; max-height: none; }
       .hero-copy{ padding: 16px 16px 12px; }
 
       .diet-row{ gap: 6px; margin-bottom: 12px; }
@@ -873,10 +861,7 @@
       .grid-two{ grid-template-columns: 1fr; }
 
       .wide-card{ grid-template-columns: 1fr; }
-      .wide-media{
-        width:100%;
-        border-radius: var(--radius) var(--radius) 0 0;
-      }
+      .wide-media{ width:100%; border-radius: var(--radius) var(--radius) 0 0; }
       .wide-copy{ padding: 14px 14px 14px; }
 
       .mod .body .btn,
@@ -888,8 +873,8 @@
       }
 
       .footer-tagline{ font-size: 14px; }
-      .footer-tagline .tagline-top img{ width: 34px; height: 34px; }
-      .footer-tagline .tagline-logo{ width: 104px; height: 104px; }
+      .footer-tagline .fl-icon{ width: 36px; height: 36px; }
+      .footer-tagline .tagline-logo{ width: 120px; height: 120px; }
 
       .footer-cols{ grid-template-columns: 1fr; max-width: 560px; }
       .footer-col.left, .footer-col.center, .footer-col.right{ text-align:center; }
@@ -898,11 +883,9 @@
       .social-ic{ width: 50px; height: 50px; }
       .social-ic svg{ width: 21px; height: 21px; }
 
+      /* keep stacked cards reasonable on mobile */
       .stack-card{ min-height: auto; }
-      .stack-card .media{ min-height: 220px; }
-
-      /* keep August image not too tall on mobile */
-      .stack-card.august .media{ height: 210px; }
+      .stack-card .media{ height: 240px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -929,7 +912,7 @@
         <div class="brand-name">The MayaNut Company</div>
       </div>
 
-      <nav class="subnav" aria-label="Primary navigation (desktop)">
+      <nav class="subnav" aria-label="Primary navigation (desktop/tablet)">
         <a class="active" href="index.html" aria-current="page" aria-label="Home page">Home</a>
         <a href="product.html" aria-label="Buy MayaNut powder">Buy</a>
         <a href="about.html" aria-label="About The MayaNut Company">About</a>
@@ -1068,7 +1051,6 @@
                 <a class="btn" href="contact.html" aria-label="Contact The MayaNut Company">Contact Us</a>
               </div>
             </div>
-
           </div>
 
         </div>
@@ -1103,8 +1085,8 @@
                 </div>
 
                 <div class="faq-item">
-                  <div class="faq-q">How do you use it?</div>
-                  <div class="faq-a">Start with 1–2 tablespoons in smoothies or bowls, or mix into baking.</div>
+                  <div class="faq-q">Is it a nut or a seed?</div>
+                  <div class="faq-a">It’s made from seeds of the Alicastrum tree (not tree nuts).</div>
                 </div>
               </div>
 
@@ -1126,7 +1108,7 @@
             </div>
             <div class="copy">
               <h2>We Love MayaNut™!</h2>
-              We are dedicated to delivering the best possible product to our customers. MayaNut™ is made from the seeds of Alicastrum (<em>Brosimum alicastrum</em>) and brings warm, roasted depth to everyday recipes. We focus on quality, consistency, and responsible sourcing as we grow—so more people can discover this ingredient and keep it in their kitchens for years to come.
+              We are dedicated to delivering the best possible product to our customers. MayaNut™ is made from the seeds of Alicastrum (<em>Brosimum alicastrum</em>) and brings warm, roasted depth to everyday recipes. We focus on quality, consistency, and responsible sourcing as we grow—so more people can discover this ingredient and use it often.
             </div>
           </article>
 
@@ -1167,10 +1149,11 @@
         <div class="tagline-top" aria-label="Founded in Florida with Florida icon">
           <span>Founded in Florida</span>
           <img
+            class="fl-icon"
             src="florida-image-the-maya-nut-company.png"
             alt="Florida silhouette icon"
-            width="38"
-            height="38"
+            width="40"
+            height="40"
             loading="lazy"
             decoding="async"
             onerror="this.onerror=null; this.src='florida-black.png';"
@@ -1181,8 +1164,8 @@
           class="tagline-logo"
           src="mayanut-the-mayanut-comapny-logo.png"
           alt="The MayaNut Company logo"
-          width="112"
-          height="112"
+          width="132"
+          height="132"
           loading="lazy"
           decoding="async"
         >
@@ -1236,6 +1219,7 @@
         <a class="social-ic" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" aria-label="LinkedIn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6v6.3h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg>
         </a>
+        <!-- Replace with your real Facebook page URL when ready -->
         <a class="social-ic" href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.6 1.6-1.6h1.6V4.8c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7.1v3h2.6v8h3.8Z"/></svg>
         </a>

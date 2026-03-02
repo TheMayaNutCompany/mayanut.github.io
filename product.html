@@ -46,7 +46,6 @@
   <link rel="alternate" hreflang="es" href="https://www.mayanut.com/product-es.html">
   <link rel="alternate" hreflang="x-default" href="https://www.mayanut.com/product.html">
 
-  <!-- Sitemap hint (optional; fine to keep) -->
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.mayanut.com/sitemap.xml">
 
   <!-- Performance: fonts -->
@@ -54,10 +53,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Performance: preload only the primary hero image -->
+  <!-- Preload only primary hero image -->
   <link rel="preload" as="image" href="mayanut-powder-maya-nut-brosimum-alicastrum.png" fetchpriority="high">
 
-  <!-- Schema graph -->
+  <!-- Schema -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -73,7 +72,8 @@
         "sameAs":[
           "https://www.instagram.com/themayanutcompany",
           "https://x.com/mayanutcompany",
-          "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/"
+          "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/",
+          "https://www.facebook.com/themayanutcompany"
         ]
       },
       {
@@ -196,18 +196,18 @@
       overflow-x:hidden;
       background: var(--bg);
       color-scheme: light;
-      scrollbar-gutter: stable; /* reserves scrollbar space so fixed header never "covers" it */
+      scrollbar-gutter: stable; /* reserves scrollbar space */
       scrollbar-color: var(--sbThumb) var(--sbTrack);
       scrollbar-width: auto;
     }
 
-    /* WebKit scrollbars (no inset border so thumb is fully right-aligned) */
+    /* WebKit scrollbars (flush-right) */
     ::-webkit-scrollbar{ width: var(--sbW); }
     ::-webkit-scrollbar-track{ background: var(--sbTrack); }
     ::-webkit-scrollbar-thumb{
       background: var(--sbThumb);
       border-radius: 999px;
-      border: 0; /* critical: no inset that makes it look not flush-right */
+      border: 0;
     }
     ::-webkit-scrollbar-thumb:hover{ background: var(--sbThumbHover); }
 
@@ -254,7 +254,7 @@
       border-radius:12px;
     }
 
-    /* Fixed header (uses width:100% and does NOT overlap scrollbar space due to scrollbar-gutter) */
+    /* Fixed header */
     .site-header{
       position: fixed;
       top: 0;
@@ -276,9 +276,7 @@
       justify-content:space-between;
       gap: 14px;
     }
-    .brand{
-      display:flex; align-items:center; gap: 10px; min-width: 0; flex: 1 1 auto;
-    }
+    .brand{ display:flex; align-items:center; gap: 10px; min-width: 0; flex: 1 1 auto; }
     .brand img{ width: 40px; height: 40px; object-fit: contain; flex: 0 0 auto; }
     .brand-name{
       font-weight: 900;
@@ -292,10 +290,9 @@
       max-width: 100%;
     }
 
-    /* Desktop nav rules:
-       - default: black, underline ONLY on hover (black)
-       - active page: orange text, NO underline
-       - active hover: underline appears and is orange
+    /* Nav rules:
+       - default: black hover underline (black)
+       - active: orange text, underline only on hover (orange)
     */
     .subnav{
       display:flex;
@@ -326,17 +323,13 @@
       transition: width .18s ease, background .18s ease;
     }
     .subnav a:hover::after{ width:100%; }
-    .subnav a.active{
-      color: var(--orange);
-    }
-    .subnav a.active::after{ width:0%; } /* no underline unless hover */
-    .subnav a.active:hover::after{
-      width:100%;
-      background: var(--orange);
-    }
+
+    .subnav a.active{ color: var(--orange); }
+    .subnav a.active::after{ width:0%; }
+    .subnav a.active:hover::after{ width:100%; background: var(--orange); }
 
     main{
-      padding-top: calc(var(--headerH) + 36px); /* ensures top badges never clip */
+      padding-top: calc(var(--headerH) + 36px);
       padding-bottom: 18px;
       background: var(--bg);
     }
@@ -350,7 +343,6 @@
       .wrap{ padding-left: 52px; padding-right: 52px; }
     }
 
-    /* Product grid */
     .product-grid{
       display:grid;
       grid-template-columns: var(--leftColW) 1fr;
@@ -395,6 +387,7 @@
       width:18px; height:18px;
       stroke:#0b1220; fill:none; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round;
     }
+
     .dots{
       position:absolute; left:50%; transform:translateX(-50%); bottom:10px;
       display:flex; gap:6px; padding:6px 10px; border-radius:999px;
@@ -434,10 +427,9 @@
       flex-direction:column;
       gap: 10px;
       min-width:0;
-      height: auto;
     }
 
-    /* Key features row (5 checks) */
+    /* Features (5 checks) */
     .features{
       display:flex;
       flex-wrap:wrap;
@@ -543,6 +535,7 @@
     .text-link:hover{
       color: var(--orange);
       text-decoration: underline;
+      text-decoration-color: var(--orange);
     }
 
     .microline{
@@ -552,6 +545,7 @@
       font-size: 13.5px;
       margin-top: -2px;
     }
+    .microline + .microline{ margin-top: -6px; }
 
     .controls{
       display:grid;
@@ -607,7 +601,7 @@
       flex:0 0 auto;
     }
 
-    /* QTY (even spacing, crisp edges) */
+    /* QTY */
     .qty-rect{
       border-radius:14px;
       border:1px solid var(--line);
@@ -615,11 +609,11 @@
       width:100%;
       height: 42px;
       display:flex;
-      overflow:hidden; /* keeps corners clean */
+      overflow:hidden;
       user-select:none;
     }
     .qty-btn{
-      flex: 0 0 64px;  /* even button widths */
+      flex: 0 0 64px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -662,7 +656,7 @@
     }
     .qty-btn[disabled]{ cursor:not-allowed; color:#9aa3af; background:transparent !important; opacity:1; }
 
-    /* Add to cart: orange + orange underline on hover */
+    /* Add to cart */
     .buy-now{
       height:54px;
       border-radius:16px;
@@ -685,9 +679,6 @@
       line-height:1;
       position: relative;
       margin-top: 2px;
-      margin-left: 0;
-      margin-right: 0;
-      margin-bottom: 0;
     }
     .buy-now span{
       text-decoration: none;
@@ -695,13 +686,11 @@
     }
     .buy-now:hover span{
       text-decoration: underline;
-      text-decoration-color: rgba(255,255,255,0.95); /* underline visible on orange */
+      text-decoration-color: rgba(255,255,255,0.95);
     }
-
-    /* Force button to sit at bottom of the right card (align with thumbnails) */
     .push-bottom{ margin-top:auto; }
 
-    /* Full-width Recommendation block under BOTH columns */
+    /* Full width recommendation */
     .under-buy-wide{
       margin-top: 14px;
       border-radius: var(--radius);
@@ -727,7 +716,7 @@
     }
     .under-buy-wide li:last-child{ margin-bottom: 0; }
 
-    /* Below content */
+    /* Below */
     .below-grid{
       margin-top: 14px;
       border-radius: var(--radius);
@@ -786,9 +775,10 @@
     }
     .subcard li:last-child{ margin-bottom: 0; }
 
+    /* CTAs: all orange (About, Recipes, FAQ) */
     .cta-row{
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr; /* left, center, right */
+      grid-template-columns: 1fr 1fr 1fr;
       gap:10px;
       align-items:center;
       margin-top: 10px;
@@ -812,29 +802,23 @@
       white-space: nowrap;
       transition: transform .10s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-    .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
-    .btn.secondary{
-      background: var(--bg);
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-    .btn.secondary:hover{
-      border-color: rgba(253,108,2,0.85);
-      box-shadow: 0 0 0 3px rgba(253,108,2,0.18);
+    .btn:hover{
+      background: var(--orangePress);
+      border-color: var(--orangePress);
       transform: translateY(-1px);
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,0.95);
+      text-underline-offset: 4px;
     }
 
-    /* Footer (Founded in Florida with logo+Florida icon, 3 columns, socials, copyright) */
+    /* Footer */
     .site-footer{
       margin-top: 16px;
       background: var(--bg);
       border-top: 1px solid rgba(11,18,32,0.06);
       padding: 16px 16px 16px;
     }
-    .footer-inner{
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-inner{ max-width: 1200px; margin: 0 auto; }
     .footer-topline{
       display:flex;
       align-items:center;
@@ -847,11 +831,7 @@
       color: var(--ink);
       white-space: nowrap;
     }
-    .footer-topline img{
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-    }
+    .footer-topline img{ width: 52px; height: 52px; object-fit: contain; }
 
     .footer-columns{
       display:grid;
@@ -862,9 +842,7 @@
       margin: 0 auto;
       padding: 6px 0 6px;
     }
-    .footer-column{
-      text-align:center;
-    }
+    .footer-column{ text-align:center; }
     .footer-column h4{
       font-size: 11px;
       letter-spacing: .14em;
@@ -911,9 +889,7 @@
       border-color: rgba(253,108,2,0.55);
       box-shadow: 0 0 0 3px rgba(253,108,2,0.14);
     }
-    .social-ic svg{
-      width: 20px; height: 20px; fill: rgba(11,18,32,0.86); display:block;
-    }
+    .social-ic svg{ width: 20px; height: 20px; fill: rgba(11,18,32,0.86); display:block; }
 
     .footer-copyright{
       margin-top: 12px;
@@ -923,7 +899,7 @@
       font-size: 13px;
     }
 
-    /* Mobile bottom tabs */
+    /* Bottom tabs */
     .bottom-tabs{
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -965,7 +941,6 @@
       color: var(--ink);
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
@@ -1012,7 +987,6 @@
 
   <main id="main-content" tabindex="-1" aria-label="MayaNut product page">
     <div class="wrap">
-
       <section aria-label="MayaNut™ Powder product section">
         <div class="product-grid" id="productGrid">
 
@@ -1058,7 +1032,6 @@
           <!-- RIGHT -->
           <div class="product-box" id="productBox" aria-label="Product details and purchase options">
 
-            <!-- 5 checks (kept) -->
             <div class="features" aria-label="Key features">
               <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Gluten-Free</div>
               <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Vegan</div>
@@ -1084,16 +1057,23 @@
               <span class="note">Reviews coming soon</span>
             </div>
 
-            <div class="desc" aria-label="Short product description">
+            <div class="desc" aria-label="Main product description">
               <p>
-                Roasted Alicastrum (<em>Brosimum alicastrum</em>) seed powder with a warm toasted flavor and gentle cocoa-like notes.
-                Naturally caffeine-free and gluten-free. Versatile and delicious—explore our
+                <strong>MayaNut™</strong> is a roasted seed powder made from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>),
+                a tropical species long valued as a traditional food in Mesoamerica. Carefully dried, gently roasted, and finely milled,
+                it brings a smooth texture and a warm roasted depth with gentle cocoa-like notes.
+                Naturally caffeine-free, gluten-free, and nutrient-dense, it blends easily into smoothies and açaí bowls,
+                adds richness to oatmeal and baking, and makes a comforting hot drink on its own or with cinnamon and vanilla.
+                Versatile and delicious—explore our
                 <a href="recipes.html" class="text-link" aria-label="View MayaNut recipes">recipes →</a>
               </p>
             </div>
 
             <div class="microline" aria-label="How to use microline">
               Great in smoothies, açaí bowls, baking, oatmeal, and hot drinks.
+            </div>
+            <div class="microline" aria-label="Storage microline">
+              Store in a cool, dry place away from direct sunlight.
             </div>
 
             <div class="controls" aria-label="Weight and quantity controls">
@@ -1112,21 +1092,20 @@
               </div>
             </div>
 
-            <!-- Pushes to bottom so it aligns with bottom of thumbnails -->
             <div class="push-bottom" aria-hidden="true"></div>
 
             <button class="buy-now" id="buyNowBtn" type="button" aria-label="Add to cart (coming soon)" disabled>
               <span>ADD TO CART (COMING SOON)</span>
             </button>
 
-            <!-- SEO-only: regional names (kept out of the visible top description) -->
+            <!-- SEO-only regional names (kept out of the top visible description) -->
             <p class="sr-only">
-              Also known regionally as ramón, ojoche, capomo, guaimaro, and oox. Historical name: Mayan breadnut.
+              Regional names: ramón, ojoche, capomo, guaimaro, oox. Historical name: Mayan breadnut. Also: Maya Nut, mayanut, MayaNut flour.
             </p>
           </div>
         </div>
 
-        <!-- Full-width block spanning under thumbnails and right column -->
+        <!-- Full-width block -->
         <section class="under-buy-wide" aria-label="Recommendation and quick uses">
           <p class="serving">
             <strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, or recipe. Adjust to taste.
@@ -1160,6 +1139,7 @@
                 <li>Warm roasted character</li>
                 <li>Gentle cocoa-like notes</li>
                 <li>Smooth, finely milled texture</li>
+                <li>Mellow finish (not bitter)</li>
               </ul>
             </div>
 
@@ -1192,19 +1172,18 @@
             </div>
           </div>
 
-          <!-- 3 options left/center/right (no add-to-cart here) -->
+          <!-- CTAs: all orange -->
           <div class="cta-row" aria-label="More options">
-            <a class="btn secondary" href="about.html" aria-label="Learn about The MayaNut Company">About</a>
+            <a class="btn" href="about.html" aria-label="Learn about The MayaNut Company">About</a>
             <a class="btn" href="recipes.html" aria-label="View recipes using MayaNut powder">Recipes</a>
-            <a class="btn secondary" href="faq.html" aria-label="Read FAQ about MayaNut powder">FAQ</a>
+            <a class="btn" href="faq.html" aria-label="Read FAQ about MayaNut powder">FAQ</a>
           </div>
         </section>
       </section>
-
     </div>
   </main>
 
-  <!-- Footer exactly as requested (with logo + Florida icon next to Founded in Florida) -->
+  <!-- Footer -->
   <footer class="site-footer" aria-label="Footer">
     <div class="footer-inner">
       <div class="footer-topline" aria-label="Founded in Florida">
@@ -1259,18 +1238,22 @@
         </div>
       </div>
 
+      <!-- Socials: popular order (Instagram, Facebook, X, LinkedIn, Email). Email left-most because it's different -->
       <div class="footer-socials" aria-label="Social links">
+        <a class="social-ic" href="mailto:info@mayanut.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"/></svg>
+        </a>
         <a class="social-ic" href="https://www.instagram.com/themayanutcompany" aria-label="Instagram" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9Zm4.5 4a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM17.8 6.6a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>
+        </a>
+        <a class="social-ic" href="https://www.facebook.com/themayanutcompany" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.2c0-.9.3-1.6 1.7-1.6h1.4V5c-.2 0-1.1-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.1H8v3h2.4v8h3.1Z"/></svg>
         </a>
         <a class="social-ic" href="https://x.com/mayanutcompany" aria-label="X" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.7L5.9 22H2l7.4-8.5L1 2h6.3l4.4 6.1L18.9 2Zm-1.1 18h1.7L6.2 4H4.4l13.4 16Z"/></svg>
         </a>
         <a class="social-ic" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" aria-label="LinkedIn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6v6.3h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg>
-        </a>
-        <a class="social-ic" href="mailto:info@mayanut.com" aria-label="Email">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"/></svg>
         </a>
       </div>
 
@@ -1317,7 +1300,6 @@
 
   <script>
   (function(){
-    // Always start at top
     try{
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
       window.addEventListener('pageshow', () => { window.scrollTo(0,0); }, { once:true });
@@ -1355,7 +1337,7 @@
     plusBtn.addEventListener("click",  ()=>{ const q=getQty(); if(q<MAX_QTY) setQty(q+1); });
     minusBtn.addEventListener("click", ()=>{ const q=getQty(); if(q>MIN_QTY) setQty(q-1); });
 
-    // WEIGHT MENU (display only)
+    // WEIGHT MENU
     const WEIGHTS = [
       { key:"qtr", label:"Quarter-Pound Bag", price:9.99 },
       { key:"one", label:"1 LB Bag",         price:34.99 }
@@ -1485,7 +1467,7 @@
       }
     });
 
-    // HEIGHT SYNC: right box matches left column so Add to Cart aligns with thumbnails bottom
+    // HEIGHT SYNC
     const leftCol = document.getElementById("leftCol");
     const productBox = document.getElementById("productBox");
     function syncHeights(){

@@ -107,60 +107,12 @@
         "inLanguage":"en",
         "description":"MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum). Naturally caffeine-free and nutrient-dense, it adds warm roasted depth with gentle cocoa-like notes to smoothies, açaí bowls, baking, and everyday cooking.",
         "isPartOf":{"@id":"https://www.mayanut.com/#website"},
-        "about":[
-          {"@type":"Thing","name":"MayaNut powder"},
-          {"@type":"Thing","name":"Alicastrum (Brosimum alicastrum)"},
-          {"@type":"Thing","name":"Roasted seed powder"}
-        ],
         "primaryImageOfPage":{
           "@type":"ImageObject",
           "url":"https://www.mayanut.com/maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
           "width":1200,
           "height":1200
         }
-      },
-      {
-        "@type":"Product",
-        "@id":"https://www.mayanut.com/product.html#product",
-        "name":"MayaNut\u2122 Powder",
-        "alternateName":[
-          "MayaNut powder","MayaNut flour","Maya Nut powder","Maya nut powder",
-          "Mayan nut powder","Mayan breadnut","breadnut","ojoche","ramon","ram\u00f3n",
-          "capomo","guaimaro","gu\u00e1imaro","oox"
-        ],
-        "description":"MayaNut\u2122 is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum). Naturally caffeine-free and nutrient-dense with warm roasted depth and gentle cocoa-like notes.",
-        "brand":{"@type":"Brand","name":"The MayaNut Company"},
-        "category":"Food, Beverages & Tobacco > Food Items > Flour",
-        "image":[
-          "https://www.mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-        ],
-        "keywords":[
-          "MayaNut powder","Maya Nut powder","MayaNut flour","Alicastrum","Brosimum alicastrum",
-          "ojoche","ramon","ram\u00f3n","capomo","guaimaro","gu\u00e1imaro","oox",
-          "Mayan breadnut","breadnut","roasted seed powder","roasted seed flour"
-        ],
-        "offers":{
-          "@type":"AggregateOffer",
-          "url":"https://www.mayanut.com/product.html",
-          "priceCurrency":"USD",
-          "lowPrice":"9.99",
-          "highPrice":"34.99",
-          "offerCount":"2",
-          "availability":"https://schema.org/OutOfStock",
-          "itemCondition":"https://schema.org/NewCondition"
-        }
-      },
-      {
-        "@type":"FAQPage",
-        "@id":"https://www.mayanut.com/#faq",
-        "mainEntity":[
-          {"@type":"Question","name":"What is MayaNut\u2122?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum)."}},
-          {"@type":"Question","name":"Is MayaNut\u2122 caffeine-free?","acceptedAnswer":{"@type":"Answer","text":"Yes. MayaNut\u2122 is naturally caffeine-free."}},
-          {"@type":"Question","name":"Is MayaNut\u2122 gluten-free and vegan?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is naturally gluten-free and vegan. Always check packaging and handling practices for your needs."}},
-          {"@type":"Question","name":"What does MayaNut\u2122 taste like?","acceptedAnswer":{"@type":"Answer","text":"Warm roasted flavor with gentle cocoa-like notes."}},
-          {"@type":"Question","name":"Is MayaNut\u2122 a nut or a seed?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is made from the seeds of the Alicastrum tree (not tree nuts)."}},
-          {"@type":"Question","name":"When will MayaNut\u2122 be available?","acceptedAnswer":{"@type":"Answer","text":"We’re finalizing packaging and inventory now and will share launch updates soon."}}
-        ]
       }
     ]
   }
@@ -196,11 +148,12 @@
       --sbThumb: #9aa5b1;
       --sbThumbHover: #7b8794;
 
-      /* Match August image height to the current Buba image height (edit this one number only) */
-      --bubaMediaH: 280px;
+      /* Hero/product image squares */
+      --heroSquare: 360px;
+      --prodSquare: 320px;
 
-      /* Make top hero image square and product image square */
-      --heroSquare: 360px; /* clamps hero left image square */
+      /* JS sets this to EXACT current Buba media height (Buba unchanged) */
+      --augMediaH: 260px;
     }
 
     html{
@@ -250,7 +203,7 @@
       border:1px solid rgba(11,18,32,0.18); border-radius:12px; box-shadow: var(--shadow);
     }
 
-    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+    a:focus-visible, button:focus-visible{
       outline:3px solid rgba(253,108,2,0.85);
       outline-offset:3px;
       border-radius:12px;
@@ -292,7 +245,7 @@
       max-width: 100%;
     }
 
-    /* iPad/tablet: KEEP TOP NAV (desktop nav stays visible down to 640px) */
+    /* Top nav stays for desktop + iPad/tablet */
     .subnav{
       display:flex; align-items:center; gap: 18px; flex-wrap: wrap; justify-content:flex-end; flex: 0 0 auto;
     }
@@ -335,19 +288,14 @@
 
     .panel{ background: transparent; border: 0; box-shadow: none; overflow: visible; margin-bottom: 18px; }
 
+    /* Fix desktop intro mismatch: make both columns stretch to same height */
     .intro-row{
       display:grid;
       grid-template-columns: 1fr minmax(260px, var(--prodW));
       gap: var(--gap);
-      align-items: start;
+      align-items: stretch;
     }
-
-    @media (max-width: 980px) and (min-width: 641px){
-      :root{ --prodW: 300px; --leftImgW: 340px; --heroSquare: 340px; }
-    }
-
-    .hero-left{ display:flex; flex-direction:column; min-width:0; }
-
+    .hero-left{ display:flex; flex-direction:column; min-width:0; height:100%; }
     .hero-merged{
       border-radius: var(--radius);
       overflow:hidden;
@@ -357,16 +305,20 @@
       display:grid;
       grid-template-columns: minmax(240px, var(--leftImgW)) 1fr;
       min-width:0;
-      height:auto;
-      align-items: start;
+      height:100%;
+      align-items: stretch;
     }
 
-    /* === TOP LEFT IMAGE: FORCE SQUARE (NO STRETCH) === */
+    @media (max-width: 980px) and (min-width: 641px){
+      :root{ --prodW: 300px; --leftImgW: 340px; --heroSquare: 340px; --prodSquare: 300px; }
+    }
+
+    /* Top left image square (no stretch) */
     .hero-media{
       width:100%;
       overflow:hidden;
       background:#fff;
-      align-self:start;
+      align-self:stretch;
       aspect-ratio: 1 / 1;
       max-height: var(--heroSquare);
     }
@@ -384,6 +336,7 @@
       display:flex;
       flex-direction:column;
       min-width:0;
+      height:100%;
     }
 
     .diet-row{
@@ -434,12 +387,6 @@
       max-width: 74ch;
       text-align:left;
     }
-    .hero-actions{
-      display:flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
 
     .mini-card{
       border-radius: var(--radius);
@@ -450,10 +397,12 @@
       display:flex;
       flex-direction:column;
       height: 100%;
+      align-self: stretch;
+      min-height: 0;
     }
-    .mini-click{ display:flex; flex-direction:column; height:100%; }
+    .mini-click{ display:flex; flex-direction:column; height:100%; min-height:0; }
 
-    /* === TOP RIGHT PRODUCT IMAGE: FORCE SQUARE (NO STRETCH) === */
+    /* Product image square, but prevent product from becoming taller than left column */
     .mini-img-wrap{
       position:relative;
       width:100%;
@@ -461,6 +410,7 @@
       background:#fff;
       flex: 0 0 auto;
       aspect-ratio: 1 / 1;
+      max-height: var(--prodSquare);
     }
     .mini-img{
       width:100%; height:100%;
@@ -475,7 +425,8 @@
       flex-direction:column;
       gap: 8px;
       background:#fff;
-      height: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .mini-topline{
       display:flex; align-items:center; justify-content:space-between; gap: 10px;
@@ -577,13 +528,13 @@
       line-height: 1.15;
     }
 
+    /* IMPORTANT: Buba media remains UNCHANGED behavior (fills available space) */
     .stack-card .media{
       overflow:hidden;
       background:#fff;
       width:100%;
-      flex: 0 0 auto;
-      height: var(--bubaMediaH); /* Buba and August match exactly */
-      min-height: 0;
+      flex: 1 1 auto;
+      min-height: 260px;
     }
     .stack-card .media img{
       width:100%;
@@ -592,6 +543,13 @@
       display:block;
     }
     .stack-card.buba .media img{ object-position:center 50%; }
+
+    /* August media is forced to EXACT Buba media height via JS (Buba not touched) */
+    .stack-card.august .media{
+      flex: 0 0 auto;
+      height: var(--augMediaH);
+      min-height: 0;
+    }
     .stack-card.august .media img{ object-position:center 35%; }
 
     .stack-card.buba .media{ border-radius: 0 0 var(--radius) var(--radius); }
@@ -636,7 +594,7 @@
       flex-direction:column;
       height:100%;
     }
-    .faq-list{ margin-top: 6px; flex: 0 0 auto; } /* no flex growth => no dead space */
+    .faq-list{ margin-top: 6px; flex: 0 0 auto; }
     .faq-item{
       border-radius: 14px;
       border: 1px solid rgba(11,18,32,0.10);
@@ -676,7 +634,12 @@
       font-size: 14.5px;
       max-width: 62ch;
     }
-    .wide-copy .btn{ align-self:flex-start; margin-top: 6px; }
+    .wide-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
 
     /* FOOTER */
     .footer{
@@ -692,12 +655,8 @@
       flex-direction:column;
       justify-content:center;
       align-items:center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 14px;
-      font-weight:950;
-      letter-spacing:.06em;
-      font-size:15px;
-      text-transform:uppercase;
       text-align:center;
     }
     .footer-tagline .tagline-top{
@@ -707,17 +666,27 @@
       gap: 10px;
       white-space:nowrap;
     }
-    /* Florida icon slightly smaller */
+    /* Founded in Florida text = same as Ready for MayaNut™? header (20px) */
+    .footer-tagline .tagline-top span{
+      font-size: 20px;
+      font-weight: 950;
+      font-style: italic;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--orange);
+      text-transform: none;
+    }
+    /* Florida slightly smaller */
     .footer-tagline .fl-icon{
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       object-fit: contain;
       display:block;
     }
-    /* Bottom logo bigger */
+    /* Logo bigger (slightly bigger than before) */
     .footer-tagline .tagline-logo{
-      width: 132px;
-      height: 132px;
+      width: 156px;
+      height: 156px;
       object-fit: contain;
       display:block;
     }
@@ -836,27 +805,19 @@
     }
 
     @media (max-width: 640px){
-      :root{ --headerH: 68px; --heroSquare: 9999px; } /* hero collapses to single column */
+      :root{ --headerH: 68px; --heroSquare: 9999px; --prodSquare: 9999px; }
 
       .brand-name{ font-size: 16px; max-width: 72vw; }
 
-      /* Mobile: use bottom tabs and hide top nav */
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
       main{ padding-bottom: calc(var(--bottomNavH) + 24px); }
       .footer{ padding-bottom: calc(var(--bottomNavH) + 14px); }
 
       .intro-row{ grid-template-columns: 1fr; }
-      .mini-card{ order: 1; }
-      .hero-left{ order: 2; }
-
-      .hero-merged{ grid-template-columns: 1fr; }
+      .hero-merged{ grid-template-columns: 1fr; height:auto; }
       .hero-media{ aspect-ratio: 1 / 1; max-height: none; }
-      .hero-copy{ padding: 16px 16px 12px; }
-
-      .diet-row{ gap: 6px; margin-bottom: 12px; }
-      .diet-item{ font-size: 10px; letter-spacing: .08em; gap: 6px; }
-      .diet-icon{ width: 18px; height: 18px; font-size: 11px; }
+      .mini-img-wrap{ aspect-ratio: 1 / 1; max-height: none; }
 
       .grid-two{ grid-template-columns: 1fr; }
 
@@ -864,28 +825,19 @@
       .wide-media{ width:100%; border-radius: var(--radius) var(--radius) 0 0; }
       .wide-copy{ padding: 14px 14px 14px; }
 
-      .mod .body .btn,
-      .faq-body .btn,
-      .wide-copy .btn,
-      .hero-actions .btn{
-        width: 100%;
-        align-self: stretch;
-      }
+      .wide-actions .btn{ width:100%; }
 
-      .footer-tagline{ font-size: 14px; }
-      .footer-tagline .fl-icon{ width: 36px; height: 36px; }
-      .footer-tagline .tagline-logo{ width: 120px; height: 120px; }
+      .footer-tagline .tagline-top span{ font-size: 18px; }
+      .footer-tagline .fl-icon{ width: 34px; height: 34px; }
+      .footer-tagline .tagline-logo{ width: 146px; height: 146px; }
 
       .footer-cols{ grid-template-columns: 1fr; max-width: 560px; }
       .footer-col.left, .footer-col.center, .footer-col.right{ text-align:center; }
       .footer-links{ align-items:center !important; }
 
-      .social-ic{ width: 50px; height: 50px; }
-      .social-ic svg{ width: 21px; height: 21px; }
-
-      /* keep stacked cards reasonable on mobile */
-      .stack-card{ min-height: auto; }
-      .stack-card .media{ height: 240px; }
+      /* keep Buba media reasonable on mobile */
+      .stack-card .media{ min-height: 220px; }
+      .stack-card.august .media{ height: 240px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -953,13 +905,9 @@
 
                 <p>
                   MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica. Naturally caffeine-free and nutrient-dense, it adds warm roasted depth with gentle cocoa-like notes to smoothies, açaí bowls, baking, and everyday cooking.
-                  <br>We’re finalizing packaging and inventory now and will share launch updates soon.
+                  <br><br>
+                  We’re finalizing packaging and inventory now and will share launch updates soon.
                 </p>
-
-                <div class="hero-actions" aria-label="Primary actions">
-                  <a class="btn" href="product.html" aria-label="Shop MayaNut powder">Shop Now</a>
-                  <a class="btn secondary" href="about.html" aria-label="About The MayaNut Company">About Us</a>
-                </div>
               </div>
             </div>
           </div>
@@ -1134,7 +1082,10 @@
             <p>
               Explore MayaNut™ as a roasted Alicastrum (<strong>Brosimum alicastrum</strong>) seed powder for smoothies, açaí bowls, baking, and everyday cooking—also known regionally as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, and oox (and referenced historically as Mayan breadnut/breadnut).
             </p>
-            <a class="btn" href="product.html" aria-label="View MayaNut product page">View MayaNut™</a>
+            <div class="wide-actions" aria-label="Product and recipes actions">
+              <a class="btn" href="product.html" aria-label="View MayaNut product page">View MayaNut™</a>
+              <a class="btn secondary" href="recipes.html" aria-label="Explore MayaNut recipes">Explore Recipes</a>
+            </div>
           </div>
         </div>
       </section>
@@ -1152,8 +1103,8 @@
             class="fl-icon"
             src="florida-image-the-maya-nut-company.png"
             alt="Florida silhouette icon"
-            width="40"
-            height="40"
+            width="38"
+            height="38"
             loading="lazy"
             decoding="async"
             onerror="this.onerror=null; this.src='florida-black.png';"
@@ -1164,8 +1115,8 @@
           class="tagline-logo"
           src="mayanut-the-mayanut-comapny-logo.png"
           alt="The MayaNut Company logo"
-          width="132"
-          height="132"
+          width="156"
+          height="156"
           loading="lazy"
           decoding="async"
         >
@@ -1219,7 +1170,6 @@
         <a class="social-ic" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" aria-label="LinkedIn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6v6.3h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg>
         </a>
-        <!-- Replace with your real Facebook page URL when ready -->
         <a class="social-ic" href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.6 1.6-1.6h1.6V4.8c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7.1v3h2.6v8h3.8Z"/></svg>
         </a>
@@ -1246,7 +1196,26 @@
   </div>
 
   <script>
+    // year
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Match August image height to CURRENT rendered Buba image height (without changing Buba)
+    (function(){
+      function syncAugToBuba(){
+        const bubaMedia = document.querySelector('.stack-card.buba .media');
+        if(!bubaMedia) return;
+        const rect = bubaMedia.getBoundingClientRect();
+        if(rect && rect.height){
+          document.documentElement.style.setProperty('--augMediaH', Math.round(rect.height) + 'px');
+        }
+      }
+      // run after images/layout settle
+      window.addEventListener('load', syncAugToBuba, { once:true });
+      window.addEventListener('resize', syncAugToBuba);
+      // quick second pass in case fonts/images shift after load
+      setTimeout(syncAugToBuba, 250);
+      setTimeout(syncAugToBuba, 900);
+    })();
   </script>
 </body>
 </html>

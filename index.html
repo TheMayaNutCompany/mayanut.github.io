@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
 <title>MayaNut™ Powder | Roasted Alicastrum (Brosimum alicastrum) Seed Powder</title>
-<meta name="description" content="MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum). Naturally caffeine-free and nutrient-dense with warm roasted depth and gentle cocoa-like notes." />
+<meta name="description" content="MayaNut™ is a powder made from the roasted seeds of the Alicastrum tree (Brosimum alicastrum). Naturally caffeine-free and nutrient-dense with warm roasted depth and gentle cocoa-like notes." />
 <link rel="canonical" href="https://www.mayanut.com/" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="theme-color" content="#ffffff" />
@@ -31,13 +31,13 @@
   --container:1200px;
   --padX:16px;
 
-  /* DESKTOP sizing */
+  /* MASTER geometry */
   --img: clamp(240px, 24vw, 340px);      /* square image side */
   --h: var(--img);                       /* FORCE: left image is always square */
-  --w: clamp(320px, 30vw, 450px);        /* product width */
+  --w: clamp(320px, 30vw, 450px);        /* product width (right column) */
 
-  /* Compact footer so product image is taller */
-  --productInfoH: 66px;
+  /* Minimal product footer for max image height */
+  --productInfoH: 54px;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -60,7 +60,7 @@ a:focus-visible{
   padding:24px var(--padX);
 }
 
-/* Outer: left merged (fluid), right product (fixed --w). */
+/* Outer: left merged (fluid), right product (fixed --w) */
 .row{
   display:grid;
   grid-template-columns: minmax(0, 1fr) var(--w);
@@ -81,7 +81,7 @@ a:focus-visible{
   min-width:0;
 }
 
-/* Image is a perfect square because: column width == merged height == --img */
+/* Image is perfect square: width == height == --img */
 .hero-image{ width:100%; height:100%; overflow:hidden; background:#fff; }
 .hero-image img{
   width:100%;
@@ -98,10 +98,9 @@ a:focus-visible{
   flex-direction:column;
   height:100%;
   min-width:0;
-  overflow:hidden;
 }
 
-/* Smaller highlight row so all 3 fit */
+/* Smaller highlight row so it never overlaps */
 .diet-row{
   display:flex;
   align-items:center;
@@ -146,24 +145,16 @@ a:focus-visible{
   margin-bottom: 9px;
 }
 
-/* IMPORTANT: allow paragraph to show fully on tablet/desktop (no cut off) */
+/* No truncation; text should wrap normally */
 .hero-text p{
   font-weight: 600;
   font-size: 14px;
   line-height: 1.65;
   color: var(--muted);
   margin: 0;
-  overflow: visible;  /* <-- prevents truncation */
 }
 
-.recipes-link{
-  color: var(--orange);
-  font-weight: 850;
-  text-decoration:none;
-}
-.recipes-link:hover{ text-decoration: underline; }
-
-/* PRODUCT: same height as square image, maximize image area */
+/* PRODUCT: same height as square image; maximize image area */
 .product{
   width: var(--w);
   height: var(--h);
@@ -182,7 +173,7 @@ a:focus-visible{
   flex-direction:column;
 }
 
-/* Taller image area */
+/* Image gets nearly full height */
 .product-img{
   height: calc(var(--h) - var(--productInfoH));
   overflow:hidden;
@@ -196,22 +187,15 @@ a:focus-visible{
   display:block;
 }
 
-/* Minimal bottom area: title left, button right (replaces stars block) */
+/* Ultra-minimal footer: title left + button right */
 .product-info{
   height: var(--productInfoH);
   padding: 10px 12px;
   border-top:1px solid rgba(11,18,32,.08);
   display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap: 6px;
-}
-
-.product-header{
-  display:flex;
+  align-items:center;
   justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
+  gap: 10px;
 }
 
 .product-title{
@@ -220,14 +204,16 @@ a:focus-visible{
   text-transform:uppercase;
   font-size:14px;
   line-height:1.15;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-/* Button moved to top-right (where stars/reviews were) */
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  height:38px;
+  height:34px;
   padding:0 14px;
   border-radius:999px;
   background:var(--orange);
@@ -239,24 +225,17 @@ a:focus-visible{
   font-size:11px;
   white-space:nowrap;
   transition: transform .10s ease, background .12s ease, border-color .12s ease;
+  flex: 0 0 auto;
 }
 .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
 
-.product-price{
-  font-weight:900;
-  font-size:12px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color: rgba(11,18,32,0.90);
-}
-
-/* TABLET: keep square image + reduce widths so nothing overflows */
+/* TABLET: keep square image; reduce widths so everything fits and paragraph doesn't orphan "cooking." */
 @media (max-width: 1024px){
   :root{
     --img: clamp(190px, 26vw, 240px);
     --h: var(--img);                 /* still square */
     --w: clamp(260px, 40vw, 340px);
-    --productInfoH: 64px;
+    --productInfoH: 52px;
   }
   .hero-text p{ font-size: 13.6px; }
   .diet-item{ font-size: 10px; letter-spacing: .08em; }
@@ -272,7 +251,7 @@ a:focus-visible{
 
   .hero-merged{ height:auto; grid-template-columns: 1fr; }
   .hero-image{ aspect-ratio: 1 / 1; height:auto; }
-  .hero-text{ height:auto; overflow: visible; }
+  .hero-text{ height:auto; }
 }
 </style>
 </head>
@@ -305,12 +284,10 @@ a:focus-visible{
         <h1>What is MayaNut™?</h1>
 
         <p>
-          MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree
-          (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica.
+          MayaNut™ is a powder made from the roasted seeds of the Alicastrum tree
+          (<strong>Brosimum alicastrum</strong>), a tropical species valued as a traditional food in Mesoamerica.
           Naturally caffeine-free and nutrient-dense, it adds warm roasted depth with gentle cocoa-like notes to smoothies,
           açaí bowls, baking, and everyday cooking.
-          <br><br>
-          <a class="recipes-link" href="recipes.html" aria-label="View MayaNut recipes">Recipes →</a>
         </p>
       </div>
     </div>
@@ -330,12 +307,9 @@ a:focus-visible{
           />
         </div>
 
-        <div class="product-info" aria-label="Product details">
-          <div class="product-header">
-            <div class="product-title">MayaNut™ Powder</div>
-            <span class="btn" aria-hidden="true">View Product</span>
-          </div>
-          <div class="product-price">$9.99–$34.99</div>
+        <div class="product-info" aria-label="Product footer">
+          <div class="product-title">MayaNut™ Powder</div>
+          <span class="btn" aria-hidden="true">View Product</span>
         </div>
       </a>
     </article>

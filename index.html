@@ -21,7 +21,6 @@
       --muted: rgba(11,18,32,0.78);
       --line: rgba(11,18,32,0.10);
       --bg:#ffffff;
-      --soft:#f6f7f9;
 
       --orange:#fd6c02;
       --orangePress:#c84b02;
@@ -34,15 +33,11 @@
       --padX:16px;
       --gap:16px;
 
-      /* DESKTOP/TABLET sizing */
       --containerW:1200px;
 
-      /* The core rule:
-         - Left image is a square of size --heroH
-         - Paragraph and product have the same height --heroH
-         - Paragraph width == product width == --cardW (slightly wider than square) */
-      --heroH: clamp(320px, 34vw, 470px);
-      --cardW: clamp(360px, 32vw, 540px);
+      /* NEW: smaller left square, paragraph+product share same height */
+      --heroH: clamp(260px, 28vw, 380px);   /* scaled down */
+      --cardW: clamp(360px, 34vw, 560px);  /* paragraph + product width */
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -68,22 +63,32 @@
       padding: 22px var(--padX) 28px;
     }
 
-    /* TOP 3 ELEMENTS ROW */
+    /* Layout requirement:
+       - left image is on the LEFT
+       - product is on the OPPOSITE side (RIGHT)
+       - image is CONNECTED to the paragraph (no gap between them)
+       - paragraph sits between image and product, with a normal gap to product */
     .intro-row{
       display:grid;
       grid-template-columns: var(--heroH) var(--cardW) var(--cardW);
-      gap: var(--gap);
+      column-gap: var(--gap);     /* gap between paragraph and product */
+      row-gap: var(--gap);
       align-items:start;
       justify-content:start;
     }
 
-    /* LEFT IMAGE: square, rounded-left, flat-right */
+    /* Remove gap between col 1 and col 2 only (image + text connected) */
+    .hero-media{ margin-right: calc(var(--gap) * -1); }
+    .hero-copy{ margin-left: calc(var(--gap) * -1); }
+
+    /* LEFT IMAGE: smaller square, rounded-left, flat-right */
     .hero-media{
       width: var(--heroH);
       height: var(--heroH);
       overflow:hidden;
       background:#fff;
       border: 1px solid var(--line);
+      border-right: 0; /* seamless connection */
       border-radius: var(--radius) 0 0 var(--radius);
       box-shadow: var(--shadow);
     }
@@ -99,6 +104,7 @@
       width: var(--cardW);
       height: var(--heroH);
       border: 1px solid var(--line);
+      border-left: 0; /* seamless connection */
       border-radius: 0 var(--radius) var(--radius) 0;
       background:#fff;
       box-shadow: var(--shadow);
@@ -162,7 +168,6 @@
       margin: 0;
       overflow:hidden;
     }
-
     .inline-recipes{
       color: var(--orange);
       font-weight: 850;
@@ -170,7 +175,7 @@
     }
     .inline-recipes:hover{ text-decoration: underline; }
 
-    /* PRODUCT: same height as image */
+    /* PRODUCT: same height as image; placed at far right */
     .mini-card{
       width: var(--cardW);
       height: var(--heroH);
@@ -255,23 +260,22 @@
     .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
     .mini-cta{ margin-top: 6px; align-self:flex-start; }
 
-    /* TABLET: shrink widths to avoid overlap, keep equal heights */
+    /* TABLET: prevent overlap; keep same visual logic */
     @media (max-width: 1100px){
       :root{
-        --heroH: clamp(260px, 30vw, 360px);
-        --cardW: clamp(300px, 34vw, 420px);
+        --heroH: clamp(230px, 30vw, 320px);
+        --cardW: clamp(280px, 34vw, 420px);
       }
       .diet-item{ font-size: 11px; letter-spacing: .08em; }
     }
 
-    /* MOBILE: stack as Product -> Text -> Image */
+    /* MOBILE: stack product -> text -> image */
     @media (max-width: 920px){
-      .intro-row{
-        grid-template-columns: 1fr;
-      }
-      .mini-card{ width: 100%; height: auto; order: 1; }
-      .hero-copy{ width: 100%; height: auto; border-radius: var(--radius); overflow: visible; order: 2; }
-      .hero-media{ width: 100%; height: auto; aspect-ratio: 1/1; border-radius: var(--radius); order: 3; }
+      .intro-row{ grid-template-columns: 1fr; }
+      .hero-media, .hero-copy{ margin: 0; border-right:1px solid var(--line); border-left:1px solid var(--line); }
+      .hero-media{ border-right:1px solid var(--line); border-radius: var(--radius); order: 3; aspect-ratio: 1/1; height:auto; width:100%; }
+      .hero-copy{ width:100%; height:auto; border-radius: var(--radius); overflow: visible; order: 2; }
+      .mini-card{ width:100%; height:auto; order: 1; }
       .hero-media img{ height:100%; }
     }
   </style>
@@ -279,9 +283,9 @@
 
 <body>
   <main class="wrap" aria-label="Top section only">
-    <section class="intro-row" aria-label="Top 3 elements: square image, description, product">
+    <section class="intro-row" aria-label="Top 3 elements: image, description, product">
 
-      <!-- LEFT IMAGE (square) -->
+      <!-- LEFT IMAGE (smaller square, CONNECTED to text) -->
       <div class="hero-media" aria-label="Alicastrum fruit image">
         <img
           src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
@@ -294,7 +298,7 @@
         />
       </div>
 
-      <!-- PARAGRAPH (same height as square; same width as product) -->
+      <!-- TEXT (connected to image; same height) -->
       <div class="hero-copy" aria-label="What is MayaNut description">
         <div class="diet-row" aria-label="Diet highlights">
           <div class="diet-item"><span class="diet-icon" aria-hidden="true"></span><span>Vegan</span></div>
@@ -311,7 +315,7 @@
         </p>
       </div>
 
-      <!-- PRODUCT (same height as square; not required square) -->
+      <!-- PRODUCT (opposite side of the left image, same height) -->
       <article class="mini-card" aria-label="MayaNut product preview">
         <a class="mini-click" href="product.html" aria-label="View MayaNut product page">
           <div class="mini-img-wrap" aria-label="MayaNut product image">

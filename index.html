@@ -226,7 +226,7 @@
 
     /* =========================================================
        TOP SECTION (EXACT TEST LAYOUT LOGIC, SCOPED TO .top-intro)
-       Tooltip removed per request
+       Tooltip removed; desktop paragraph square override added
        ========================================================= */
     .top-intro{
       --img: clamp(240px, 24vw, 340px);
@@ -386,30 +386,61 @@
       text-overflow:ellipsis;
     }
 
-    .top-intro .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:34px;
-      padding:0 14px;
-      border-radius:999px;
-      background:var(--orange);
-      border:1px solid var(--orange);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:11px;
-      white-space:nowrap;
-      flex:0 0 auto;
-      transition: transform .10s ease, background .12s ease, border-color .12s ease;
-      width:auto;
-      line-height:1;
-    }
-    .top-intro .btn:hover{
-      background:var(--orangePress);
-      border-color:var(--orangePress);
-      transform:translateY(-1px);
+    /* DESKTOP ONLY: square paragraph connected to image + slightly narrower product */
+    @media (min-width: 1025px){
+      .top-intro{
+        --img: 340px;
+        --h: var(--img);
+        --w: 340px;
+        --productInfoH: 54px;
+        --prodObjPosY: 46%;
+      }
+
+      .top-intro .row{
+        grid-template-columns: calc(var(--img) + var(--img)) var(--w);
+        justify-content: space-between;
+      }
+
+      .top-intro .hero-merged{
+        width: calc(var(--img) + var(--img));
+        grid-template-columns: var(--img) var(--img);
+      }
+
+      .top-intro .hero-text{
+        width: var(--img);
+        height: var(--h);
+        padding: 12px 14px 10px;
+      }
+
+      .top-intro .diet-row{
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap:6px;
+        margin-bottom:8px;
+      }
+      .top-intro .diet-item{
+        gap:5px;
+        font-size:9.5px;
+        letter-spacing:.07em;
+      }
+      .top-intro .diet-item:nth-child(2){ justify-content:center; }
+      .top-intro .diet-item:nth-child(3){ justify-content:flex-end; }
+
+      .top-intro .diet-icon{
+        width:16px;
+        height:16px;
+        font-size:10px;
+      }
+
+      .top-intro .hero-text h1{
+        font-size:22px;
+        margin-bottom:6px;
+      }
+
+      .top-intro .hero-text p{
+        font-size:12.8px;
+        line-height:1.45;
+      }
     }
 
     /* TABLET ONLY (exact behavior from test code) */
@@ -425,16 +456,12 @@
       .top-intro .hero-text p{ font-size:13.6px; }
       .top-intro .diet-item{ font-size:10px; letter-spacing:.08em; }
 
-      .top-intro .product-img img{
-        transform:none;
-      }
+      .top-intro .product-img img{ transform:none; }
     }
 
     /* MOBILE (exact behavior from test code) */
     @media (max-width: 720px){
-      .top-intro .row{
-        grid-template-columns: 1fr;
-      }
+      .top-intro .row{ grid-template-columns: 1fr; }
 
       .top-intro .product{
         order:1;
@@ -457,9 +484,7 @@
         transform:none;
       }
 
-      .top-intro .product-info{
-        height:auto;
-      }
+      .top-intro .product-info{ height:auto; }
 
       .top-intro .hero-merged{
         order:2;
@@ -478,9 +503,33 @@
         height:auto;
       }
 
-      .top-intro .hero-image img{
-        object-position:center center;
-      }
+      .top-intro .hero-image img{ object-position:center center; }
+    }
+
+    /* RESTORE GLOBAL ORANGE BUTTONS FOR ALL OTHER SECTIONS */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:44px;
+      padding:0 16px;
+      border-radius:999px;
+      background: var(--orange);
+      border:1px solid var(--orange);
+      color:#fff;
+      font-weight: 950;
+      letter-spacing:.10em;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: transform .10s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+      width: fit-content;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .btn:hover{
+      background: var(--orangePress);
+      border-color: var(--orangePress);
+      transform: translateY(-1px);
     }
 
     /* SECTIONS */
@@ -742,13 +791,12 @@
     }
 
     @media (max-width: 920px){
-      .grid-two{
-        grid-template-columns: 1fr;
-      }
+      .grid-two{ grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px){
       :root{ --headerH: 68px; --storyMediaH: 260px; }
+
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
       main{ padding-bottom: calc(var(--bottomNavH) + 24px); }
@@ -757,9 +805,31 @@
       .wide-card{ grid-template-columns: 1fr; }
       .wide-media{ width:100%; border-radius: var(--radius); }
 
-      .footer-cols{ grid-template-columns: 1fr; }
-      .footer-col.left, .footer-col.center, .footer-col.right{ text-align:center; justify-self:stretch; }
+      /* MOBILE ONLY: keep footer sections side-by-side (not stacked) */
+      .footer-cols{
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 8px;
+        align-items:start;
+      }
+      .footer-col.left, .footer-col.center, .footer-col.right{
+        text-align:center;
+        justify-self:stretch;
+      }
       .footer-col .footer-links{ align-items:center !important; }
+      .footer-col h3{
+        font-size: 9px;
+        letter-spacing: .08em;
+        margin-bottom: 6px;
+      }
+      .footer-links{
+        gap: 5px;
+      }
+      .footer-links a{
+        font-size: 10px;
+        white-space: normal;
+        line-height: 1.2;
+      }
+
       .founded-text{ white-space: normal; text-align:center; }
     }
   </style>
@@ -822,10 +892,10 @@
               <h1>What is MayaNut™?</h1>
 
               <p>
-                MayaNut™ is a powder made from the roasted seeds of the Alicastrum tree
-                (<strong>Brosimum alicastrum</strong>). Used for centuries as a traditional food in Mesoamerica,
-                MayaNut™ is naturally vegan, caffeine-free, and nutrient-dense, adding a bold cocoa-like flavor to smoothies,
-                açaí bowls, baking, and everyday cooking.
+                MayaNut™ is a delicious powder made from roasted seeds of the Alicastrum tree
+                (<strong>Brosimum alicastrum</strong>). Valued for centuries in Mesoamerica,
+                MayaNut™ is naturally caffeine-free and nutrient-dense, adding a bold cocoa-like
+                flavor to smoothies, açaí bowls, baking, everyday cooking, and more.
               </p>
             </div>
           </div>

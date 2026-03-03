@@ -39,8 +39,8 @@
   /* Product footer kept minimal to maximize image height */
   --productInfoH: 54px;
 
-  /* Product crop defaults (desktop slightly higher than center) */
-  --prodObjPosY: 46%;
+  /* Product crop defaults */
+  --prodObjPosY: 46%; /* desktop: slightly more top visible than center */
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -177,6 +177,7 @@ a:focus-visible{
   display:flex;
   flex-direction:column;
   justify-self:end;
+  position:relative;
 }
 
 .product a{
@@ -190,6 +191,7 @@ a:focus-visible{
   height: calc(var(--h) - var(--productInfoH));
   overflow:hidden;
   background:#fff;
+  position:relative;
 }
 
 .product-img img{
@@ -247,9 +249,6 @@ a:focus-visible{
 }
 
 /* Optional hover helper (desktop/tablet only). Remove if too much. */
-.product{
-  position:relative;
-}
 .product-tip{
   position:absolute;
   left:12px;
@@ -277,8 +276,7 @@ a:focus-visible{
 /* TABLET ONLY
    - same layout
    - keep left image square
-   - slightly less "up" than before
-   - zoom OUT product image to .96 so bottom isn't cut off */
+   - product image slightly higher, but no zoom */
 @media (max-width: 1024px){
   :root{
     --img: clamp(190px, 26vw, 240px);
@@ -286,16 +284,16 @@ a:focus-visible{
     --w: clamp(260px, 40vw, 340px);
     --productInfoH: 52px;
 
-    /* moved back down slightly vs previous too-high crop */
+    /* adjusted back down a bit vs earlier higher crop */
     --prodObjPosY: 40%;
   }
 
   .hero-text p{ font-size:13.6px; }
   .diet-item{ font-size:10px; letter-spacing:.08em; }
 
+  /* explicitly no zoom on tablet */
   .product-img img{
-    transform: scale(0.96);         /* requested tablet zoom-out */
-    transform-origin: center center;
+    transform:none;
   }
 }
 
@@ -303,7 +301,7 @@ a:focus-visible{
    - product first
    - text above image inside merged block
    - product image NOT square
-   - crop top and bottom ~1/4 (2:1 viewport) */
+   - crop top and bottom ~1/6 each (show ~2/3 height => 3:2 viewport) */
 @media (max-width: 720px){
   .row{
     grid-template-columns: 1fr;
@@ -321,14 +319,14 @@ a:focus-visible{
 
   .product-img{
     height:auto;
-    aspect-ratio: 2 / 1; /* half-height viewport */
+    aspect-ratio: 3 / 2; /* crops ~1/6 top + ~1/6 bottom */
     overflow:hidden;
   }
 
   .product-img img{
     width:100%;
     height:100%;
-    object-fit:cover;     /* crops top/bottom */
+    object-fit:cover;
     object-position:center 50%;
     transform:none;
   }

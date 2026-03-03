@@ -8,7 +8,7 @@
   <!-- Primary SEO (LOCKED) -->
   <title>The MayaNut Company | MayaNut™ Powder (Roasted Alicastrum Seed Powder)</title>
   <meta name="description" content="MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum). Naturally caffeine-free and nutrient-dense, with warm roasted depth and gentle cocoa-like notes for smoothies, açaí bowls, baking, and everyday cooking. We’re finalizing packaging and inventory now and will share launch updates soon.">
-  <meta name="keywords" content="MayaNut, MayaNut powder, MayaNut™ powder, MayaNut flour, MayaNut™ flour, Maya Nut, Maya Nut powder, Maya nut flour, Mayan nut, Mayan nut powder, Brosimum alicastrum, Alicastrum, Brosimum alicastrum powder, Brosimum alicastrum flour, roasted seed powder, roasted seed flour, ramon, ramón, ojoche, capomo, guaimaro, guáimaro, oox, ox, ujuxte, masica, árbol de ramón, arbol de ramon, semillas de ramón, harina de ramón, harina de ramon, MayaNut Company, The MayaNut Company, breadnut, breadnut flour, breadnut powder, Maya breadnut">
+  <meta name="keywords" content="MayaNut, MayaNut powder, MayaNut™ powder, MayaNut flour, MayaNut™ flour, Maya Nut, Maya Nut powder, Maya nut flour, Mayan nut, Mayan nut powder, Brosimum alicastrum, Alicastrum, Brosimum alicastrum powder, roasted seed powder, roasted seed flour, ramon, ramón, ojoche, capomo, guaimaro, guáimaro, oox, ox, ujuxte, masica, árbol de ramón, arbol de ramon, semillas de ramón, harina de ramón, harina de ramon, breadnut, breadnut flour, breadnut powder, Maya breadnut">
   <link rel="canonical" href="https://www.mayanut.com/">
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -77,14 +77,6 @@
           "https://www.instagram.com/themayanutcompany",
           "https://x.com/mayanutcompany",
           "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/"
-        ],
-        "contactPoint":[
-          {
-            "@type":"ContactPoint",
-            "contactType":"customer support",
-            "email":"info@mayanut.com",
-            "availableLanguage":["English","Spanish","Portuguese"]
-          }
         ]
       },
       {
@@ -93,12 +85,7 @@
         "name":"The MayaNut Company",
         "url":"https://www.mayanut.com/",
         "inLanguage":"en",
-        "publisher":{"@id":"https://www.mayanut.com/#organization"},
-        "potentialAction":{
-          "@type":"SearchAction",
-          "target":"https://www.mayanut.com/recipes.html?q={search_term_string}",
-          "query-input":"required name=search_term_string"
-        }
+        "publisher":{"@id":"https://www.mayanut.com/#organization"}
       },
       {
         "@type":"WebPage",
@@ -113,33 +100,6 @@
           "url":"https://www.mayanut.com/maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
           "width":1200,
           "height":1200
-        }
-      },
-      {
-        "@type":"Product",
-        "@id":"https://www.mayanut.com/product.html#product",
-        "name":"MayaNut\u2122 Powder",
-        "alternateName":[
-          "MayaNut powder","MayaNut flour","Maya Nut powder","Maya nut powder",
-          "Roasted Alicastrum seed powder","Alicastrum seed flour","Brosimum alicastrum powder",
-          "ramón","ramon","harina de ramón","harina de ramon","capomo","ojoche","guáimaro","guaimaro","oox","ox","ujuxte","masica",
-          "breadnut flour","breadnut powder","Maya breadnut"
-        ],
-        "description":"MayaNut\u2122 is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum), traditionally consumed in Mesoamerica.",
-        "brand":{"@type":"Brand","name":"The MayaNut Company"},
-        "category":"Food, Beverages & Tobacco > Food Items > Flour",
-        "image":[
-          "https://www.mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-        ],
-        "offers":{
-          "@type":"AggregateOffer",
-          "url":"https://www.mayanut.com/product.html",
-          "priceCurrency":"USD",
-          "lowPrice":"9.99",
-          "highPrice":"34.99",
-          "offerCount":"2",
-          "availability":"https://schema.org/OutOfStock",
-          "itemCondition":"https://schema.org/NewCondition"
         }
       }
     ]
@@ -168,9 +128,12 @@
       --containerW:1200px;
       --containerPadDesktop:52px;
 
-      /* TOP / INTRO sizing (robust; prevents “messed up” layouts) */
-      --introSquare: clamp(320px, 34vw, 460px); /* image + paragraph squares */
-      --prodW: clamp(360px, 30vw, 520px);       /* make product wider */
+      /* NEW TOP LOGIC (stable):
+         - left image is a SQUARE (width=height=--heroH)
+         - paragraph and product have SAME HEIGHT as left image
+         - paragraph width == product width (slightly wider than the square) */
+      --heroH: clamp(320px, 34vw, 470px);
+      --cardW: clamp(360px, 32vw, 540px);
 
       --storyMediaH: 320px;
 
@@ -248,11 +211,8 @@
     .subnav a.active{ color: var(--orange); }
     .subnav a::after{
       content:"";
-      position:absolute;
-      left:0;
-      bottom:-2px;
-      height:2px;
-      width:0%;
+      position:absolute; left:0; bottom:-2px;
+      height:2px; width:0%;
       background:#0b1220;
       transition: width .18s ease;
     }
@@ -270,52 +230,45 @@
     }
     .panel{ margin-bottom: 18px; }
 
-    /* INTRO row (stable geometry + correct spacing) */
+    /* INTRO ROW (NEW, FIXED) */
     .intro-row{
       display:grid;
-      grid-template-columns:
-        minmax(0, calc(var(--introSquare) * 2))
-        minmax(0, var(--prodW));
-      gap: var(--gap);              /* matches buba->modules spacing */
-      align-items:start;
+      grid-template-columns: var(--heroH) var(--cardW) var(--cardW);
+      gap: var(--gap);
+      align-items: start;
+      justify-content: start;
+      max-width: 100%;
     }
 
-    /* joined squares */
-    .hero-merged{
-      display:grid;
-      grid-template-columns: var(--introSquare) var(--introSquare);
-      gap: 0;
-      align-items:stretch;
-      width: 100%;
-      max-width: calc(var(--introSquare) * 2);
-    }
+    /* LEFT IMAGE SQUARE (rounded-left, flat-right) */
     .hero-media{
-      width: var(--introSquare);
-      height: var(--introSquare);
+      width: var(--heroH);
+      height: var(--heroH);
       overflow:hidden;
       background:#fff;
       border: 1px solid var(--line);
-      border-right: 0;
       border-radius: var(--radius) 0 0 var(--radius);
+      box-shadow: var(--shadow);
     }
     .hero-media img{
       width:100%;
       height:100%;
       object-fit:cover;
       object-position:center 48%;
-      display:block;
     }
+
+    /* PARAGRAPH BLOCK (same height as image; wider than square; flat-left, rounded-right) */
     .hero-copy{
-      width: var(--introSquare);
-      height: var(--introSquare);
-      background:#fff;
+      width: var(--cardW);
+      height: var(--heroH);
       border: 1px solid var(--line);
-      border-left: 0;
       border-radius: 0 var(--radius) var(--radius) 0;
+      background:#fff;
+      box-shadow: var(--shadow);
       padding: 16px 18px 14px;
       display:flex;
       flex-direction:column;
-      overflow:hidden;
+      overflow:hidden; /* keeps height exact */
     }
 
     .diet-row{
@@ -361,46 +314,32 @@
       line-height: 1.7;
       color: rgba(11,18,32,0.80);
       margin: 0;
+      overflow: hidden;
     }
     .inline-recipes{
       color: var(--orange);
-      font-weight: 700;
+      font-weight: 800;
       text-decoration:none;
       font-size: 14.5px;
       line-height: 1.7;
     }
     .inline-recipes:hover{ text-decoration: underline; }
 
-    /* PRODUCT (wider + stable; not square) */
+    /* PRODUCT (same height as image; width == paragraph) */
     .mini-card{
+      width: var(--cardW);
+      height: var(--heroH);
       border-radius: var(--radius);
       background:#fff;
       border: 1px solid var(--line);
       overflow:hidden;
       box-shadow: var(--shadow);
-
-      height: var(--introSquare);     /* matches hero block height */
-      width: 100%;
-      max-width: var(--prodW);
-      justify-self: start;
-      align-self: start;
       display:flex;
       flex-direction:column;
     }
     .mini-click{ height:100%; display:flex; flex-direction:column; }
-    .mini-img-wrap{
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow:hidden;
-      background:#fff;
-    }
-    .mini-img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      object-position:center 50%;
-      display:block;
-    }
+    .mini-img-wrap{ flex: 1 1 auto; min-height: 0; overflow:hidden; background:#fff; }
+    .mini-img{ width:100%; height:100%; object-fit:cover; object-position:center 50%; }
     .mini-bot{
       padding: 10px 12px 12px;
       display:flex;
@@ -455,17 +394,6 @@
       white-space: nowrap;
     }
     .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
-    .btn.secondary{
-      background: #fff;
-      color: var(--ink);
-      border: 1px solid rgba(11,18,32,0.14);
-    }
-    .btn.secondary:hover{
-      background:#fff;
-      border-color: rgba(253,108,2,0.85);
-      box-shadow: 0 0 0 3px rgba(253,108,2,0.18);
-      transform: translateY(-1px);
-    }
     .mini-cta{ margin-top: 6px; align-self:flex-start; }
 
     /* SECTIONS */
@@ -512,7 +440,7 @@
       background:#fff;
       width:100%;
     }
-    .stack-card .media img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+    .stack-card .media img{ width:100%; height:100%; object-fit:cover; object-position:center; }
     .stack-card.buba .media{ border-radius: 0 0 var(--radius) var(--radius); }
     .stack-card.august .media{ border-radius: var(--radius) var(--radius) 0 0; }
 
@@ -570,7 +498,7 @@
       aspect-ratio: 1 / 1;
       border-radius: var(--radius) 0 0 var(--radius);
     }
-    .wide-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .wide-media img{ width:100%; height:100%; object-fit:cover; }
     .wide-copy{
       padding: 16px 16px 14px;
       background:#fff;
@@ -586,7 +514,6 @@
       font-size: 14.5px;
       max-width: 62ch;
     }
-    .wide-actions{ display:flex; gap:10px; flex-wrap:wrap; }
 
     /* FOOTER */
     .footer{ margin-top: 14px; background:#fff; color:#000; padding: 18px var(--padX) 14px; }
@@ -602,12 +529,7 @@
       gap: 10px;
       margin-bottom: 14px;
     }
-    .footer-founded-top{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
-    }
+    .footer-founded-top{ display:flex; align-items:center; justify-content:center; gap: 10px; }
     .founded-text{
       font-weight: 950;
       font-size: clamp(22px, 2.4vw, 30px);
@@ -615,7 +537,7 @@
       color: #0b1220;
       line-height: 1.1;
       white-space: nowrap;
-      font-style: italic; /* SLANTED */
+      font-style: italic;
     }
     .florida-ic{ width: 52px; height: 52px; object-fit: contain; }
     .footer-logo-under{ width: 92px; height: 92px; object-fit: contain; }
@@ -685,7 +607,7 @@
       font-size: 13px;
     }
 
-    /* Mobile-only bottom tabs */
+    /* MOBILE-ONLY bottom tabs */
     .bottom-tabs{
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -727,67 +649,41 @@
       color: var(--ink);
     }
 
-    /* TABLET: keep layout stable + prevent text cut-off */
-    @media (max-width: 980px) and (min-width: 641px){
+    /* TABLET: prevent overlap by scaling down widths while keeping SAME HEIGHTS */
+    @media (max-width: 1100px){
       :root{
-        --introSquare: 270px;
-        --prodW: 320px;        /* still wider on tablet */
+        --heroH: clamp(260px, 30vw, 360px);
+        --cardW: clamp(300px, 34vw, 420px);
         --storyMediaH: 300px;
       }
-      .hero-copy{
-        height: auto;
-        min-height: var(--introSquare);
-        overflow: visible;
-      }
       .diet-item{ font-size: 11px; letter-spacing: .08em; }
-      .mini-card{ height: var(--introSquare); }
     }
 
-    /* MOBILE: order product -> text -> image */
+    /* STACK TOP on smaller tablets if needed (still keeps height equality within each row) */
+    @media (max-width: 920px){
+      .intro-row{
+        grid-template-columns: 1fr;
+        gap: var(--gap);
+      }
+      /* order: product -> paragraph -> image */
+      .mini-card{ width: 100%; height: auto; }
+      .hero-copy{ width: 100%; height: auto; border-radius: var(--radius); overflow: visible; }
+      .hero-media{ width: 100%; height: auto; aspect-ratio: 1/1; border-radius: var(--radius); }
+      .hero-media img{ height:100%; }
+    }
+
     @media (max-width: 640px){
       :root{ --headerH: 68px; --storyMediaH: 260px; }
-
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
-      main{ padding-bottom: calc(64px + 24px); }
-      .footer{ padding-bottom: calc(64px + 14px); }
-
-      .intro-row{ grid-template-columns: 1fr; gap: var(--gap); }
-
-      .hero-merged{ grid-template-columns: 1fr; max-width:none; }
-      .hero-copy{
-        width:100%;
-        height:auto;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        order: 2;
-        overflow: visible;
-      }
-      .hero-media{
-        width:100%;
-        height:auto;
-        aspect-ratio: 1 / 1;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        order: 3;
-      }
-      .mini-card{
-        order: 1;
-        width:100%;
-        max-width:none;
-        height: 420px;
-      }
+      main{ padding-bottom: calc(var(--bottomNavH) + 24px); }
+      .footer{ padding-bottom: calc(var(--bottomNavH) + 14px); }
 
       .grid-two{ grid-template-columns: 1fr; }
-
       .wide-card{ grid-template-columns: 1fr; }
       .wide-media{ width:100%; border-radius: var(--radius); }
-      .wide-copy{ padding: 14px 14px 14px; }
-
       .footer-cols{ grid-template-columns: 1fr; }
-      .footer-col.left, .footer-col.center, .footer-col.right{
-        text-align:center; justify-self:stretch;
-      }
+      .footer-col.left, .footer-col.center, .footer-col.right{ text-align:center; justify-self:stretch; }
       .footer-col .footer-links{ align-items:center !important; }
       .founded-text{ white-space: normal; text-align:center; }
     }
@@ -824,40 +720,39 @@
     <div class="content-wrapper">
 
       <section class="panel" aria-label="Intro">
-        <div class="intro-row" aria-label="What is MayaNut and product preview">
+        <div class="intro-row" aria-label="Intro row: image, description, product">
 
-          <div aria-label="What is MayaNut section">
-            <div class="hero-merged" aria-label="What is MayaNut hero">
-              <div class="hero-media" aria-label="Alicastrum fruit image">
-                <img
-                  src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                  alt="Alicastrum (Brosimum alicastrum) fruit and seeds used to make MayaNut™ roasted seed powder; also known as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, oox/ox, ujuxte, and masica"
-                  loading="eager"
-                  decoding="async"
-                  width="1200"
-                  height="1200"
-                  onerror="this.style.opacity='.35';"
-                >
-              </div>
-
-              <div class="hero-copy" aria-label="Hero description">
-                <div class="diet-row" aria-label="Diet highlights: vegan, gluten-free, paleo-friendly">
-                  <div class="diet-item"><span class="diet-icon" aria-hidden="true"></span><span>Vegan</span></div>
-                  <div class="diet-item center"><span class="diet-icon" aria-hidden="true"></span><span>Gluten-Free</span></div>
-                  <div class="diet-item right"><span class="diet-icon" aria-hidden="true"></span><span>Paleo-Friendly</span></div>
-                </div>
-
-                <h1 class="hero-h1">What is MayaNut™?</h1>
-
-                <p>
-                  MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica. Naturally caffeine-free and nutrient-dense, it adds warm roasted depth with gentle cocoa-like notes to smoothies, açaí bowls, baking, and everyday cooking.
-                  <br><br>
-                  <a class="inline-recipes" href="recipes.html" aria-label="View MayaNut recipes">Recipes →</a>
-                </p>
-              </div>
-            </div>
+          <!-- LEFT IMAGE (square) -->
+          <div class="hero-media" aria-label="Alicastrum fruit image">
+            <img
+              src="maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
+              alt="Alicastrum (Brosimum alicastrum) fruit and seeds used to make MayaNut™ roasted seed powder; also known as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, oox/ox, ujuxte, and masica"
+              loading="eager"
+              decoding="async"
+              width="1200"
+              height="1200"
+              onerror="this.style.opacity='.35';"
+            >
           </div>
 
+          <!-- PARAGRAPH (same height as square; same width as product) -->
+          <div class="hero-copy" aria-label="What is MayaNut description">
+            <div class="diet-row" aria-label="Diet highlights: vegan, gluten-free, paleo-friendly">
+              <div class="diet-item"><span class="diet-icon" aria-hidden="true"></span><span>Vegan</span></div>
+              <div class="diet-item center"><span class="diet-icon" aria-hidden="true"></span><span>Gluten-Free</span></div>
+              <div class="diet-item right"><span class="diet-icon" aria-hidden="true"></span><span>Paleo-Friendly</span></div>
+            </div>
+
+            <h1 class="hero-h1">What is MayaNut™?</h1>
+
+            <p>
+              MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica. Naturally caffeine-free and nutrient-dense, it adds warm roasted depth with gentle cocoa-like notes to smoothies, açaí bowls, baking, and everyday cooking.
+              <br><br>
+              <a class="inline-recipes" href="recipes.html" aria-label="View MayaNut recipes">Recipes →</a>
+            </p>
+          </div>
+
+          <!-- PRODUCT (same height as square; not required square) -->
           <article class="mini-card" aria-label="MayaNut product preview">
             <a class="mini-click" href="product.html" aria-label="View MayaNut product page">
               <div class="mini-img-wrap" aria-label="MayaNut product image">
@@ -873,7 +768,7 @@
                 >
               </div>
 
-              <div class="mini-bot" aria-label="Product title, price, and button">
+              <div class="mini-bot" aria-label="Product details">
                 <div class="mini-topline" aria-label="Product status">
                   <span>New</span>
                   <span>Reviews soon</span>
@@ -957,12 +852,12 @@
                   <div class="faq-a">Yes—MayaNut™ is naturally caffeine-free.</div>
                 </div>
                 <div class="faq-item">
-                  <div class="faq-q">Is MayaNut™ gluten-free and vegan?</div>
-                  <div class="faq-a">Naturally gluten-free and vegan. Check handling practices for your needs.</div>
-                </div>
-                <div class="faq-item">
                   <div class="faq-q">How do you use it?</div>
                   <div class="faq-a">Start with 1–2 tablespoons in smoothies or bowls, or mix into baking.</div>
+                </div>
+                <div class="faq-item">
+                  <div class="faq-q">Is it a nut or a seed?</div>
+                  <div class="faq-a">It’s made from seeds of the Alicastrum tree (not tree nuts).</div>
                 </div>
               </div>
 
@@ -1012,10 +907,7 @@
             <p>
               Explore MayaNut™ as a roasted Alicastrum (<strong>Brosimum alicastrum</strong>) seed powder for smoothies, açaí bowls, baking, and everyday cooking—also known regionally as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, and oox/ox.
             </p>
-            <div class="wide-actions" aria-label="Wide call-to-action buttons">
-              <a class="btn" href="product.html" aria-label="View MayaNut product page">View MayaNut™</a>
-              <a class="btn secondary" href="recipes.html" aria-label="Explore MayaNut recipes">Explore Recipes</a>
-            </div>
+            <a class="btn" href="product.html" aria-label="View MayaNut product page">View MayaNut™</a>
           </div>
         </div>
       </section>

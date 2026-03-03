@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
 <title>MayaNut™ Powder | Roasted Alicastrum (Brosimum alicastrum) Seed Powder</title>
-<meta name="description" content="MayaNut™ is a powder made from the roasted seeds of the Alicastrum tree (Brosimum alicastrum). Naturally vegan, caffeine-free, and nutrient-dense with a bold cocoa-like flavor." />
+<meta name="description" content="MayaNut™ is a powder made from the roasted seeds of the Alicastrum tree (Brosimum alicastrum). Used for centuries in Mesoamerica, MayaNut™ is naturally vegan, caffeine-free, and nutrient-dense with a bold cocoa-like flavor." />
 <link rel="canonical" href="https://www.mayanut.com/" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="theme-color" content="#ffffff" />
@@ -31,13 +31,16 @@
   --container:1200px;
   --padX:16px;
 
-  /* MASTER geometry */
+  /* MASTER geometry (desktop + tablet share layout rules) */
   --img: clamp(240px, 24vw, 340px);      /* square image side */
   --h: var(--img);                       /* FORCE: left image is always square */
   --w: clamp(320px, 30vw, 450px);        /* product width (right column) */
 
   /* Minimal product footer for max image height */
   --productInfoH: 54px;
+
+  /* Product crop defaults */
+  --prodObjPosY: 50%;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -144,8 +147,6 @@ a:focus-visible{
   line-height: 1.1;
   margin-bottom: 9px;
 }
-
-/* Wrap normally (no truncation) */
 .hero-text p{
   font-weight: 600;
   font-size: 14px;
@@ -183,7 +184,7 @@ a:focus-visible{
   width:100%;
   height:100%;
   object-fit:cover;
-  object-position:center 50%;
+  object-position: center var(--prodObjPosY);
   display:block;
 }
 
@@ -229,36 +230,63 @@ a:focus-visible{
 }
 .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
 
-/* TABLET: keep square image; reduce widths so everything fits */
+/* TABLET: keep square image + same compression.
+   Only adjustment requested: reveal more of the TOP of product image.
+   Do NOT change paragraph dimensions, container height, or desktop layout. */
 @media (max-width: 1024px){
   :root{
     --img: clamp(190px, 26vw, 240px);
     --h: var(--img);                 /* still square */
     --w: clamp(260px, 40vw, 340px);
     --productInfoH: 52px;
+
+    /* show more TOP of product image */
+    --prodObjPosY: 34%;
   }
   .hero-text p{ font-size: 13.6px; }
   .diet-item{ font-size: 10px; letter-spacing: .08em; }
 }
 
-/* MOBILE: stack */
+/* MOBILE: order = product -> text -> image (image below the paragraph)
+   and DO NOT force the product image into a square crop. */
 @media (max-width: 720px){
   .row{ grid-template-columns: 1fr; }
 
-  .product{ width:100%; height:auto; justify-self:stretch; }
-  .product-img{ height:auto; aspect-ratio: 1 / 1; }
+  /* Product first */
+  .product{ order: 1; width:100%; height:auto; justify-self:stretch; }
+  .product-img{
+    height: auto;
+    aspect-ratio: auto;            /* no square forcing */
+    max-height: 420px;             /* safety cap; adjust if desired */
+  }
+  .product-img img{
+    width:100%;
+    height:auto;                   /* natural ratio, not square crop */
+    object-fit: contain;           /* show full bag instead of cropping */
+    object-position: center top;
+    background:#fff;
+  }
   .product-info{ height:auto; }
 
-  .hero-merged{ height:auto; grid-template-columns: 1fr; }
-  .hero-image{ aspect-ratio: 1 / 1; height:auto; }
-  .hero-text{ height:auto; }
+  /* Left merged becomes stacked with text then image (image below paragraph) */
+  .hero-merged{
+    order: 2;
+    height:auto;
+    grid-template-columns: 1fr;
+  }
+  .hero-text{ order: 1; height:auto; }
+  .hero-image{
+    order: 2;
+    aspect-ratio: 1 / 1;
+    height:auto;
+  }
 }
 </style>
 </head>
 
 <body>
 <div class="wrap">
-  <section class="row" aria-label="Top section test">
+  <section class="row" aria-label="Top section">
 
     <!-- LEFT: CONNECTED IMAGE + TEXT -->
     <div class="hero-merged" aria-label="Connected image and What is MayaNut section">

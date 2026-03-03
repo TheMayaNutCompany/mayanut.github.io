@@ -31,16 +31,16 @@
   --container:1200px;
   --padX:16px;
 
-  /* MASTER geometry (desktop + tablet share layout rules) */
+  /* MASTER geometry */
   --img: clamp(240px, 24vw, 340px);      /* square image side */
-  --h: var(--img);                       /* FORCE: left image is always square */
+  --h: var(--img);                       /* left image always square */
   --w: clamp(320px, 30vw, 450px);        /* product width (right column) */
 
   /* Minimal product footer for max image height */
   --productInfoH: 54px;
 
   /* Product crop defaults */
-  --prodObjPosY: 50%;
+  --prodObjPosY: 46%; /* desktop: slightly more top visible (was 50%) */
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -63,7 +63,6 @@ a:focus-visible{
   padding:24px var(--padX);
 }
 
-/* Outer: left merged (fluid), right product (fixed --w) */
 .row{
   display:grid;
   grid-template-columns: minmax(0, 1fr) var(--w);
@@ -71,7 +70,7 @@ a:focus-visible{
   align-items:start;
 }
 
-/* LEFT merged card (image + text connected) */
+/* LEFT merged */
 .hero-merged{
   height: var(--h);
   border:1px solid var(--line);
@@ -83,8 +82,6 @@ a:focus-visible{
   grid-template-columns: var(--img) 1fr;
   min-width:0;
 }
-
-/* Image is perfect square: width == height == --img */
 .hero-image{ width:100%; height:100%; overflow:hidden; background:#fff; }
 .hero-image img{
   width:100%;
@@ -93,8 +90,6 @@ a:focus-visible{
   object-position:center 48%;
   display:block;
 }
-
-/* Text column */
 .hero-text{
   padding: 14px 16px 12px;
   display:flex;
@@ -103,7 +98,6 @@ a:focus-visible{
   min-width:0;
 }
 
-/* Smaller highlight row so it never overlaps */
 .diet-row{
   display:flex;
   align-items:center;
@@ -155,7 +149,7 @@ a:focus-visible{
   margin: 0;
 }
 
-/* PRODUCT: same height as square image; maximize image area */
+/* PRODUCT */
 .product{
   width: var(--w);
   height: var(--h);
@@ -174,11 +168,33 @@ a:focus-visible{
   flex-direction:column;
 }
 
-/* Image gets nearly full height */
+/* Tooltip (desktop hover only). If you feel it's "too much", set display:none below. */
+.product-tip{
+  position:absolute;
+  left:12px;
+  top:12px;
+  padding:8px 10px;
+  border-radius:999px;
+  background: rgba(255,255,255,0.92);
+  border:1px solid rgba(11,18,32,0.14);
+  box-shadow: 0 10px 22px rgba(15,23,42,0.10);
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:10px;
+  color: rgba(11,18,32,0.80);
+  opacity:0;
+  transform: translateY(2px);
+  transition: opacity .12s ease, transform .12s ease;
+  pointer-events:none;
+}
+.product:hover .product-tip{ opacity:1; transform: translateY(0); }
+
 .product-img{
   height: calc(var(--h) - var(--productInfoH));
   overflow:hidden;
   background:#fff;
+  position:relative;
 }
 .product-img img{
   width:100%;
@@ -188,7 +204,6 @@ a:focus-visible{
   display:block;
 }
 
-/* Ultra-minimal footer: title left + button right */
 .product-info{
   height: var(--productInfoH);
   padding: 10px 12px;
@@ -230,45 +245,41 @@ a:focus-visible{
 }
 .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
 
-/* TABLET: keep square image + same compression.
-   Only adjustment requested: reveal more of the TOP of product image.
-   Do NOT change paragraph dimensions, container height, or desktop layout. */
+/* TABLET: keep layout, reduce sizes; adjust product image up slightly but LESS than before */
 @media (max-width: 1024px){
   :root{
     --img: clamp(190px, 26vw, 240px);
-    --h: var(--img);                 /* still square */
+    --h: var(--img);
     --w: clamp(260px, 40vw, 340px);
     --productInfoH: 52px;
 
-    /* show more TOP of product image */
-    --prodObjPosY: 34%;
+    /* was too high at 34%; bring back down a bit */
+    --prodObjPosY: 38%;
   }
   .hero-text p{ font-size: 13.6px; }
   .diet-item{ font-size: 10px; letter-spacing: .08em; }
 }
 
-/* MOBILE: order = product -> text -> image (image below the paragraph)
-   and DO NOT force the product image into a square crop. */
+/* MOBILE: order = product -> text -> image.
+   Crop top/bottom ~25% by using cover + center position and a fixed viewport height. */
 @media (max-width: 720px){
   .row{ grid-template-columns: 1fr; }
 
-  /* Product first */
   .product{ order: 1; width:100%; height:auto; justify-self:stretch; }
+  .product-tip{ display:none; } /* no hover tooltip on mobile */
+
   .product-img{
-    height: auto;
-    aspect-ratio: auto;            /* no square forcing */
-    max-height: 420px;             /* safety cap; adjust if desired */
+    height: 58vh;            /* tall enough to show “middle band” of bag */
+    max-height: 520px;
+    min-height: 320px;
   }
   .product-img img{
-    width:100%;
-    height:auto;                   /* natural ratio, not square crop */
-    object-fit: contain;           /* show full bag instead of cropping */
-    object-position: center top;
-    background:#fff;
+    height:100%;
+    object-fit: cover;       /* crops top/bottom */
+    object-position: center 50%;
   }
   .product-info{ height:auto; }
 
-  /* Left merged becomes stacked with text then image (image below paragraph) */
   .hero-merged{
     order: 2;
     height:auto;
@@ -288,7 +299,6 @@ a:focus-visible{
 <div class="wrap">
   <section class="row" aria-label="Top section">
 
-    <!-- LEFT: CONNECTED IMAGE + TEXT -->
     <div class="hero-merged" aria-label="Connected image and What is MayaNut section">
       <div class="hero-image" aria-label="Alicastrum fruit image">
         <img
@@ -320,10 +330,10 @@ a:focus-visible{
       </div>
     </div>
 
-    <!-- RIGHT: PRODUCT -->
     <article class="product" aria-label="MayaNut product preview">
       <a href="product.html" aria-label="View MayaNut product page">
         <div class="product-img" aria-label="MayaNut product image">
+          <div class="product-tip" aria-hidden="true">Try MayaNut™ Powder</div>
           <img
             src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
             alt="MayaNut™ roasted Alicastrum (Brosimum alicastrum) seed powder product image"

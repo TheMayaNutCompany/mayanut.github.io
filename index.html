@@ -39,8 +39,8 @@
   /* Product footer kept minimal to maximize image height */
   --productInfoH: 54px;
 
-  /* Product crop defaults */
-  --prodObjPosY: 46%; /* desktop: slightly more top visible than center */
+  /* Product crop defaults (desktop slightly more top visible) */
+  --prodObjPosY: 46%;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -276,22 +276,19 @@ a:focus-visible{
 /* TABLET ONLY
    - same layout
    - keep left image square
-   - product image slightly higher, but no zoom */
+   - product image slightly higher, no zoom */
 @media (max-width: 1024px){
   :root{
     --img: clamp(190px, 26vw, 240px);
     --h: var(--img);                 /* square left image */
     --w: clamp(260px, 40vw, 340px);
     --productInfoH: 52px;
-
-    /* adjusted back down a bit vs earlier higher crop */
     --prodObjPosY: 40%;
   }
 
   .hero-text p{ font-size:13.6px; }
   .diet-item{ font-size:10px; letter-spacing:.08em; }
 
-  /* explicitly no zoom on tablet */
   .product-img img{
     transform:none;
   }
@@ -299,9 +296,9 @@ a:focus-visible{
 
 /* MOBILE
    - product first
-   - text above image inside merged block
-   - product image NOT square
-   - crop top and bottom ~1/6 each (show ~2/3 height => 3:2 viewport) */
+   - desktop-like product proportions (landscape)
+   - all images centered (no upward shift)
+   - text above image in merged block */
 @media (max-width: 720px){
   .row{
     grid-template-columns: 1fr;
@@ -317,17 +314,19 @@ a:focus-visible{
 
   .product-tip{ display:none; }
 
+  /* Desktop-like proportions on mobile */
   .product-img{
     height:auto;
-    aspect-ratio: 3 / 2; /* crops ~1/6 top + ~1/6 bottom */
+    aspect-ratio: 16 / 10;
     overflow:hidden;
   }
 
+  /* Centered image crop on mobile */
   .product-img img{
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center 50%;
+    object-position:center center;
     transform:none;
   }
 
@@ -351,6 +350,11 @@ a:focus-visible{
     order:2;
     aspect-ratio:1 / 1;
     height:auto;
+  }
+
+  /* Center left image on mobile too */
+  .hero-image img{
+    object-position:center center;
   }
 }
 </style>

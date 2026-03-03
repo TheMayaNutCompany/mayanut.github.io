@@ -16,16 +16,16 @@
   --shadow:0 12px 36px rgba(15,23,42,.10);
 
   --gap:16px;
+  --container:1200px;
+  --padX:16px;
 
-  /* Core geometry (desktop/tablet) */
-  --h: clamp(250px, 26vw, 360px);        /* shared height for left merged + product */
-  --img: clamp(220px, 22vw, 320px);      /* square image size inside merged block */
-  --w: clamp(320px, 30vw, 480px);        /* width used by text and product */
-
-  --container: 1200px;
-  --padX: 16px;
+  /* Master sizing (DESKTOP + TABLET use same structure) */
+  --h: clamp(250px, 26vw, 360px);        /* shared height for merged-left + product */
+  --img: clamp(220px, 22vw, 320px);      /* square image width inside merged-left */
+  --w: clamp(330px, 30vw, 460px);        /* SAME width for paragraph and product (guaranteed) */
 }
 
+/* Reset */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
@@ -40,16 +40,17 @@ a:focus-visible{
   border-radius:12px;
 }
 
+/* Wrapper */
 .wrap{
   max-width: var(--container);
-  margin: 0 auto;
-  padding: 24px var(--padX);
+  margin:0 auto;
+  padding:24px var(--padX);
 }
 
-/* 2-column outer layout:
-   - left = merged (image + text connected)
-   - right = product
-   Ensure NOTHING can go off-screen: minmax(0,1fr) + fixed product width. */
+/* 2 columns:
+   left = merged (image + text)
+   right = product (fixed width = --w)
+   This prevents the right side from ever going off-screen. */
 .row{
   display:grid;
   grid-template-columns: minmax(0, 1fr) var(--w);
@@ -57,7 +58,7 @@ a:focus-visible{
   align-items:start;
 }
 
-/* LEFT MERGED CARD (connected image + text) */
+/* LEFT merged card (connected image + text) */
 .hero-merged{
   height: var(--h);
   border:1px solid var(--line);
@@ -67,27 +68,17 @@ a:focus-visible{
   background:#fff;
   display:grid;
   grid-template-columns: var(--img) 1fr;
-  min-width:0; /* prevents overflow */
+  min-width:0;
 }
 
-/* SQUARE IMAGE (left) */
-.hero-image{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#fff;
-}
-.hero-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center 48%;
-  display:block;
-}
+/* Left image stays PERFECTLY SQUARE because its column width is --img and merged height is --h.
+   To guarantee square: force merged height to equal --img when desired on tablet below. */
+.hero-image{ width:100%; height:100%; overflow:hidden; background:#fff; }
+.hero-image img{ width:100%; height:100%; object-fit:cover; object-position:center 48%; display:block; }
 
-/* TEXT (right side of image; connected) */
+/* Text column */
 .hero-text{
-  padding: 16px 18px 14px;
+  padding: 14px 16px 12px;
   display:flex;
   flex-direction:column;
   height:100%;
@@ -95,30 +86,28 @@ a:focus-visible{
   overflow:hidden;
 }
 
+/* Smaller diet row so all 3 fit without overlap */
 .diet-row{
-  display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
+  display:flex;
   align-items:center;
-  margin-bottom: 12px;
+  justify-content:space-between;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 .diet-item{
   display:flex;
   align-items:center;
-  gap: 8px;
+  gap: 6px;
   font-weight: 900;
-  letter-spacing: .10em;
+  letter-spacing: .09em;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 10.5px;     /* smaller */
   color: rgba(11,18,32,0.82);
   white-space: nowrap;
   min-width:0;
 }
-.diet-item.center{ justify-content:center; }
-.diet-item.right{ justify-content:flex-end; }
-
 .diet-icon{
-  width:22px; height:22px;
+  width:18px; height:18px;             /* smaller */
   border-radius:999px;
   background: var(--orange);
   display:inline-flex;
@@ -126,7 +115,7 @@ a:focus-visible{
   justify-content:center;
   color:#fff;
   font-weight: 900;
-  font-size: 13px;
+  font-size: 11px;                      /* smaller */
   line-height: 1;
   flex: 0 0 auto;
 }
@@ -134,17 +123,17 @@ a:focus-visible{
 
 .hero-text h1{
   font-weight: 950;
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: clamp(21px, 2.2vw, 29px);
   letter-spacing: -0.02em;
   color: var(--orange);
   font-style: italic;
   line-height: 1.1;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
 }
 .hero-text p{
   font-weight: 600;
-  font-size: 14.5px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 1.65;
   color: var(--muted);
   margin: 0;
   overflow:hidden;
@@ -156,7 +145,7 @@ a:focus-visible{
 }
 .recipes-link:hover{ text-decoration: underline; }
 
-/* PRODUCT (right; same width as hero text via --w, same height via --h) */
+/* PRODUCT: SAME width as text (via --w), same height as merged (via --h) */
 .product{
   width: var(--w);
   height: var(--h);
@@ -167,21 +156,11 @@ a:focus-visible{
   background:#fff;
   display:flex;
   flex-direction:column;
-  justify-self:end; /* aligns right edge with container */
+  justify-self:end;
 }
-
-.product-img{
-  flex: 1 1 auto;
-  min-height:0;
-  overflow:hidden;
-}
-.product-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center 50%;
-  display:block;
-}
+.product a{ height:100%; display:flex; flex-direction:column; }
+.product-img{ flex:1 1 auto; min-height:0; overflow:hidden; }
+.product-img img{ width:100%; height:100%; object-fit:cover; object-position:center 50%; display:block; }
 
 .product-info{
   padding: 10px 12px 12px;
@@ -214,12 +193,11 @@ a:focus-visible{
   letter-spacing:.08em;
   text-transform:uppercase;
 }
-
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  height:44px;
+  height:42px;
   padding:0 16px;
   border-radius:999px;
   background:var(--orange);
@@ -236,21 +214,15 @@ a:focus-visible{
 .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
 .btn.cta{ margin-top: 6px; align-self:flex-start; }
 
-/* TABLET: keep same 2-col structure, just scale sizes down so it never overflows */
+/* TABLET: keep paragraph+product equal width, shrink both.
+   Also force the left image to be square by setting --h == --img at this breakpoint. */
 @media (max-width: 1024px){
   :root{
-    --h: clamp(220px, 30vw, 300px);
-    --img: clamp(180px, 22vw, 240px);
-    --w: clamp(280px, 36vw, 380px);
+    --img: clamp(190px, 24vw, 240px);
+    --h: var(--img);                 /* makes the left image perfectly square */
+    --w: clamp(260px, 40vw, 360px);  /* paragraph + product width, equal */
   }
-  .diet-item{ font-size: 11px; letter-spacing: .08em; }
-}
-
-/* SMALL TABLET: if needed, allow product to shrink a bit more (still right aligned) */
-@media (max-width: 860px){
-  :root{
-    --w: clamp(260px, 44vw, 360px);
-  }
+  .hero-text p{ font-size: 13.6px; }
 }
 
 /* MOBILE: stack (product -> merged) */
@@ -268,7 +240,7 @@ a:focus-visible{
 <div class="wrap">
   <section class="row" aria-label="Top section: connected image and What is MayaNut, with product on the right">
 
-    <!-- LEFT: CONNECTED IMAGE + WHAT IS MAYANUT -->
+    <!-- LEFT: CONNECTED IMAGE + TEXT -->
     <div class="hero-merged" aria-label="Connected image and What is MayaNut section">
       <div class="hero-image" aria-label="Alicastrum fruit image">
         <img
@@ -283,11 +255,10 @@ a:focus-visible{
       </div>
 
       <div class="hero-text" aria-label="What is MayaNut description">
-        <!-- 3 checkmarks ABOVE the H1 -->
         <div class="diet-row" aria-label="Diet highlights">
           <div class="diet-item"><span class="diet-icon" aria-hidden="true"></span><span>Vegan</span></div>
-          <div class="diet-item center"><span class="diet-icon" aria-hidden="true"></span><span>Gluten-Free</span></div>
-          <div class="diet-item right"><span class="diet-icon" aria-hidden="true"></span><span>Paleo-Friendly</span></div>
+          <div class="diet-item"><span class="diet-icon" aria-hidden="true"></span><span>Gluten-Free</span></div>
+          <div class="diet-item"><span class="diet-icon" aria-hidden="true"></span><span>Paleo-Friendly</span></div>
         </div>
 
         <h1>What is MayaNut™?</h1>
@@ -303,9 +274,9 @@ a:focus-visible{
       </div>
     </div>
 
-    <!-- RIGHT: PRODUCT (same width as text; right edge aligned; never off-screen) -->
+    <!-- RIGHT: PRODUCT (SAME WIDTH AS TEXT, NEVER OFF-SCREEN) -->
     <article class="product" aria-label="MayaNut product preview">
-      <a class="mini-click" href="product.html" aria-label="View MayaNut product page" style="height:100%; display:flex; flex-direction:column;">
+      <a href="product.html" aria-label="View MayaNut product page">
         <div class="product-img" aria-label="MayaNut product image">
           <img
             src="mayanut-powder-maya-nut-brosimum-alicastrum.png"

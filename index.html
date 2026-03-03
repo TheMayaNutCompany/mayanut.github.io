@@ -128,7 +128,6 @@
       --containerW:1200px;
       --containerPadDesktop:52px;
 
-      /* legacy vars used below sections */
       --storyMediaH: 320px;
 
       --bottomNavH:64px;
@@ -226,7 +225,7 @@
 
     /* =========================================================
        TOP SECTION (EXACT TEST LAYOUT LOGIC, SCOPED TO .top-intro)
-       Tooltip removed; desktop paragraph square override added
+       Tooltip removed; desktop paragraph square+width adjustments applied
        ========================================================= */
     .top-intro{
       --img: clamp(240px, 24vw, 340px);
@@ -386,28 +385,28 @@
       text-overflow:ellipsis;
     }
 
-    /* DESKTOP ONLY: square paragraph connected to image + slightly narrower product */
+    /* DESKTOP ONLY: square-ish connected text block, wider text/product, desktop text size match Buba */
     @media (min-width: 1025px){
       .top-intro{
         --img: 340px;
         --h: var(--img);
-        --w: 340px;
+        --w: 360px;               /* paragraph + product same width, slightly wider */
         --productInfoH: 54px;
         --prodObjPosY: 46%;
       }
 
       .top-intro .row{
-        grid-template-columns: calc(var(--img) + var(--img)) var(--w);
+        grid-template-columns: calc(var(--img) + var(--w)) var(--w);
         justify-content: space-between;
       }
 
       .top-intro .hero-merged{
-        width: calc(var(--img) + var(--img));
-        grid-template-columns: var(--img) var(--img);
+        width: calc(var(--img) + var(--w));
+        grid-template-columns: var(--img) var(--w);
       }
 
       .top-intro .hero-text{
-        width: var(--img);
+        width: var(--w);
         height: var(--h);
         padding: 12px 14px 10px;
       }
@@ -438,12 +437,12 @@
       }
 
       .top-intro .hero-text p{
-        font-size:12.8px;
-        line-height:1.45;
+        font-size:14.5px; /* match Buba text size */
+        line-height:1.7;
       }
     }
 
-    /* TABLET ONLY (exact behavior from test code) */
+    /* TABLET ONLY (exact behavior from test code + no ellipsis on product title) */
     @media (max-width: 1024px){
       .top-intro{
         --img: clamp(190px, 26vw, 240px);
@@ -455,8 +454,12 @@
 
       .top-intro .hero-text p{ font-size:13.6px; }
       .top-intro .diet-item{ font-size:10px; letter-spacing:.08em; }
-
       .top-intro .product-img img{ transform:none; }
+
+      .top-intro .product-title{
+        text-overflow: clip;   /* remove ... */
+        letter-spacing: .04em; /* slightly tighter */
+      }
     }
 
     /* MOBILE (exact behavior from test code) */
@@ -506,7 +509,7 @@
       .top-intro .hero-image img{ object-position:center center; }
     }
 
-    /* RESTORE GLOBAL ORANGE BUTTONS FOR ALL OTHER SECTIONS */
+    /* RESTORE GLOBAL ORANGE BUTTONS */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -821,9 +824,7 @@
         letter-spacing: .08em;
         margin-bottom: 6px;
       }
-      .footer-links{
-        gap: 5px;
-      }
+      .footer-links{ gap: 5px; }
       .footer-links a{
         font-size: 10px;
         white-space: normal;

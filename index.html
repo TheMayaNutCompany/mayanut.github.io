@@ -32,12 +32,12 @@
   --padX:16px;
 
   /* DESKTOP sizing */
-  --h: clamp(280px, 26vw, 380px);        /* shared height: left merged + product */
-  --img: clamp(230px, 22vw, 330px);      /* left image column width */
-  --w: clamp(320px, 30vw, 450px);        /* product width (and target text width feel) */
+  --img: clamp(240px, 24vw, 340px);      /* square image side */
+  --h: var(--img);                       /* FORCE: left image is always square */
+  --w: clamp(320px, 30vw, 450px);        /* product width */
 
-  /* Reserve fixed info height so product image never looks squashed */
-  --productInfoH: 92px;
+  /* Compact footer so product image is taller */
+  --productInfoH: 66px;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -60,7 +60,7 @@ a:focus-visible{
   padding:24px var(--padX);
 }
 
-/* Outer: left merged (fluid), right product (fixed --w). Never off-screen. */
+/* Outer: left merged (fluid), right product (fixed --w). */
 .row{
   display:grid;
   grid-template-columns: minmax(0, 1fr) var(--w);
@@ -81,7 +81,7 @@ a:focus-visible{
   min-width:0;
 }
 
-/* Image fills the merged height */
+/* Image is a perfect square because: column width == merged height == --img */
 .hero-image{ width:100%; height:100%; overflow:hidden; background:#fff; }
 .hero-image img{
   width:100%;
@@ -101,7 +101,7 @@ a:focus-visible{
   overflow:hidden;
 }
 
-/* Smaller highlight row so all 3 fit on one line */
+/* Smaller highlight row so all 3 fit */
 .diet-row{
   display:flex;
   align-items:center;
@@ -145,14 +145,17 @@ a:focus-visible{
   line-height: 1.1;
   margin-bottom: 9px;
 }
+
+/* IMPORTANT: allow paragraph to show fully on tablet/desktop (no cut off) */
 .hero-text p{
   font-weight: 600;
   font-size: 14px;
   line-height: 1.65;
   color: var(--muted);
   margin: 0;
-  overflow:hidden;
+  overflow: visible;  /* <-- prevents truncation */
 }
+
 .recipes-link{
   color: var(--orange);
   font-weight: 850;
@@ -160,7 +163,7 @@ a:focus-visible{
 }
 .recipes-link:hover{ text-decoration: underline; }
 
-/* PRODUCT: fixed width --w, same height --h */
+/* PRODUCT: same height as square image, maximize image area */
 .product{
   width: var(--w);
   height: var(--h);
@@ -179,7 +182,7 @@ a:focus-visible{
   flex-direction:column;
 }
 
-/* KEY FIX: product image area is explicitly (card height - fixed info height) */
+/* Taller image area */
 .product-img{
   height: calc(var(--h) - var(--productInfoH));
   overflow:hidden;
@@ -193,14 +196,14 @@ a:focus-visible{
   display:block;
 }
 
-/* Compact info area */
+/* Minimal bottom area: title left, button right (replaces stars block) */
 .product-info{
   height: var(--productInfoH);
   padding: 10px 12px;
   border-top:1px solid rgba(11,18,32,.08);
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  justify-content:center;
   gap: 6px;
 }
 
@@ -219,41 +222,13 @@ a:focus-visible{
   line-height:1.15;
 }
 
-.product-rating{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-}
-
-.stars{
-  font-size:14px;
-  letter-spacing:2px;
-  color:#c9cdd3;
-  line-height:1;
-}
-
-.rating-sub{
-  font-size:10px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:rgba(11,18,32,.65);
-  margin-top:3px;
-  white-space:nowrap;
-}
-
-.product-price{
-  font-weight:900;
-  font-size:12px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
+/* Button moved to top-right (where stars/reviews were) */
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  height:40px;
-  padding:0 16px;
+  height:38px;
+  padding:0 14px;
   border-radius:999px;
   background:var(--orange);
   border:1px solid var(--orange);
@@ -261,21 +236,27 @@ a:focus-visible{
   font-weight:950;
   letter-spacing:.10em;
   text-transform:uppercase;
-  font-size:12px;
-  width:fit-content;
+  font-size:11px;
   white-space:nowrap;
   transition: transform .10s ease, background .12s ease, border-color .12s ease;
 }
 .btn:hover{ background: var(--orangePress); border-color: var(--orangePress); transform: translateY(-1px); }
-.btn.cta{ align-self:flex-start; }
 
-/* TABLET: keep same 2-col structure; if you want square left image on tablet, set --h = --img */
+.product-price{
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color: rgba(11,18,32,0.90);
+}
+
+/* TABLET: keep square image + reduce widths so nothing overflows */
 @media (max-width: 1024px){
   :root{
-    --img: clamp(180px, 24vw, 240px);
-    --h: var(--img);                 /* square image on tablet */
-    --w: clamp(260px, 40vw, 360px);
-    --productInfoH: 88px;
+    --img: clamp(190px, 26vw, 240px);
+    --h: var(--img);                 /* still square */
+    --w: clamp(260px, 40vw, 340px);
+    --productInfoH: 64px;
   }
   .hero-text p{ font-size: 13.6px; }
   .diet-item{ font-size: 10px; letter-spacing: .08em; }
@@ -284,6 +265,7 @@ a:focus-visible{
 /* MOBILE: stack */
 @media (max-width: 720px){
   .row{ grid-template-columns: 1fr; }
+
   .product{ width:100%; height:auto; justify-self:stretch; }
   .product-img{ height:auto; aspect-ratio: 1 / 1; }
   .product-info{ height:auto; }
@@ -297,7 +279,7 @@ a:focus-visible{
 
 <body>
 <div class="wrap">
-  <section class="row" aria-label="Top section">
+  <section class="row" aria-label="Top section test">
 
     <!-- LEFT: CONNECTED IMAGE + TEXT -->
     <div class="hero-merged" aria-label="Connected image and What is MayaNut section">
@@ -351,16 +333,9 @@ a:focus-visible{
         <div class="product-info" aria-label="Product details">
           <div class="product-header">
             <div class="product-title">MayaNut™ Powder</div>
-
-            <div class="product-rating" aria-label="Rating placeholder">
-              <div class="stars" aria-hidden="true">☆☆☆☆☆</div>
-              <div class="rating-sub">Reviews Coming Soon</div>
-            </div>
+            <span class="btn" aria-hidden="true">View Product</span>
           </div>
-
           <div class="product-price">$9.99–$34.99</div>
-
-          <span class="btn cta" aria-hidden="true">View Product</span>
         </div>
       </a>
     </article>

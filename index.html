@@ -165,26 +165,16 @@
       --padX:16px;
       --gap:16px;
 
-      /* header + content alignment (same container + padding) */
       --containerW:1200px;
       --containerPadDesktop:52px;
 
-      /* Intro geometry: two squares joined -> width = 2*height (rounded rectangle) */
-      --introSquare: 360px;
-
-      /* Product column width adapts, always leaving a gap equal to --gap */
-      --prodW: 320px;
-
-      /* Story images: Buba is reference; August forced to match */
+      /* Intro geometry */
+      --introSquare: 420px;     /* desktop square size for image + paragraph */
+      --prodW: 380px;           /* product width (NOT forced square) */
       --storyMediaH: 320px;
 
       --bottomNavH:64px;
       --headerH:72px;
-
-      --sbW: 12px;
-      --sbTrack: #e8edf2;
-      --sbThumb: #9aa5b1;
-      --sbThumbHover: #7b8794;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -199,15 +189,14 @@
     }
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
-    button,input,select{ font-family:inherit; }
 
-    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+    a:focus-visible, button:focus-visible{
       outline:3px solid rgba(253,108,2,0.85);
       outline-offset:3px;
       border-radius:12px;
     }
 
-    /* HEADER (brand left edge aligned with content wrapper left edge) */
+    /* HEADER */
     .site-header{
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 99999;
@@ -229,7 +218,6 @@
     @media (min-width: 981px){
       .header-inner{ padding-left: var(--containerPadDesktop); padding-right: var(--containerPadDesktop); }
     }
-
     .brand{ display:flex; align-items:center; gap: 10px; min-width: 0; flex: 1 1 auto; }
     .brand img{ width: 40px; height: 40px; object-fit: contain; flex: 0 0 auto; }
     .brand-name{
@@ -243,7 +231,6 @@
       text-overflow: ellipsis;
       max-width: 100%;
     }
-
     .subnav{
       display:flex; align-items:center; gap: 18px; flex-wrap: wrap; justify-content:flex-end;
       flex: 0 0 auto;
@@ -284,24 +271,22 @@
 
     .panel{ margin-bottom: 18px; }
 
-    /* INTRO LAYOUT: left block (2 squares joined) + product with consistent gap */
+    /* INTRO: keep the SAME gap as other sections (continuity) */
     .intro-row{
       display:grid;
-      grid-template-columns: 1fr minmax(220px, var(--prodW));
-      gap: var(--gap);
+      grid-template-columns: 1fr minmax(260px, var(--prodW));
+      gap: var(--gap);                 /* same as grid-two gap */
       align-items:start;
     }
 
-    /* joined two-square rounded-rectangle */
+    /* joined two-square block */
     .hero-merged{
       display:grid;
       grid-template-columns: var(--introSquare) var(--introSquare);
       gap: 0;
       align-items:stretch;
-      min-width:0;
     }
 
-    /* square #1: image (rounded LEFT, flat RIGHT) */
     .hero-media{
       width: var(--introSquare);
       height: var(--introSquare);
@@ -319,7 +304,6 @@
       display:block;
     }
 
-    /* square #2: copy (flat LEFT, rounded RIGHT) */
     .hero-copy{
       width: var(--introSquare);
       height: var(--introSquare);
@@ -330,7 +314,6 @@
       padding: 16px 18px 14px;
       display:flex;
       flex-direction:column;
-      min-width:0;
       overflow:hidden;
     }
 
@@ -350,7 +333,6 @@
       text-transform: uppercase;
       font-size: 12px;
       color: rgba(11,18,32,0.82);
-      white-space: normal;
       min-width:0;
     }
     .diet-item.center{ justify-content:center; text-align:center; }
@@ -380,7 +362,6 @@
       color: rgba(11,18,32,0.80);
       margin: 0;
     }
-
     .inline-recipes{
       color: var(--orange);
       font-weight: 600;
@@ -390,7 +371,7 @@
     }
     .inline-recipes:hover{ text-decoration: underline; }
 
-    /* MINI PRODUCT: square, always fits its column, always separated by --gap */
+    /* PRODUCT: closer visually by LEFT-aligning within its grid column */
     .mini-card{
       border-radius: var(--radius);
       background:#fff;
@@ -398,19 +379,23 @@
       overflow:hidden;
       box-shadow: var(--shadow);
 
-      height: var(--introSquare);
+      height: var(--introSquare);      /* match hero block height */
       width: 100%;
       max-width: var(--prodW);
-      justify-self:end;
+      justify-self: start;             /* IMPORTANT: removes “pushed to the right” feel */
+      align-self: start;
+      display:flex;
+      flex-direction:column;
     }
     .mini-click{ height:100%; display:flex; flex-direction:column; }
-    .mini-square{
-      height:100%;
-      display:grid;
-      grid-template-rows: 1fr auto;
+
+    /* image area grows; product is NOT forced square */
+    .mini-img-wrap{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow:hidden;
       background:#fff;
     }
-    .mini-img-wrap{ overflow:hidden; background:#fff; min-height:0; }
     .mini-img{
       width:100%;
       height:100%;
@@ -425,6 +410,7 @@
       gap: 6px;
       background:#fff;
       border-top: 1px solid rgba(11,18,32,0.08);
+      flex: 0 0 auto;
     }
     .mini-topline{
       display:flex; align-items:center; justify-content:space-between; gap: 10px;
@@ -484,7 +470,7 @@
     }
     .mini-cta{ margin-top: 6px; align-self:flex-start; }
 
-    /* TWO-COLUMN SECTIONS */
+    /* SECTIONS */
     .grid-two{
       margin-top: 18px;
       display:grid;
@@ -525,7 +511,6 @@
       line-height: 1.15;
     }
 
-    /* Buba + August images must match */
     .stack-card .media{
       height: var(--storyMediaH);
       min-height: var(--storyMediaH);
@@ -571,7 +556,6 @@
     }
     .mod .body .btn{ margin-top: 6px; align-self:flex-start; }
 
-    /* FAQ (keep concise) */
     .faq-body{
       padding: 16px 16px 14px;
       background:#fff;
@@ -591,7 +575,6 @@
     .faq-a{ font-weight: 600; color: rgba(11,18,32,0.80); line-height:1.6; }
     .faq-body .btn{ margin-top: 6px; align-self:flex-start; }
 
-    /* WIDE CTA: left image square with rounded LEFT, flat RIGHT (desktop/tablet) */
     .wide-card{
       display:grid;
       grid-template-columns: 320px 1fr;
@@ -601,8 +584,8 @@
       background:#fff;
       overflow:hidden;
       width: 320px;
-      aspect-ratio: 1 / 1; /* square */
-      border-radius: var(--radius) 0 0 var(--radius); /* rounded left, flat right */
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius) 0 0 var(--radius);
     }
     .wide-media img{ width:100%; height:100%; object-fit:cover; display:block; }
     .wide-copy{
@@ -621,24 +604,19 @@
       max-width: 62ch;
     }
     .wide-actions{ display:flex; gap:10px; flex-wrap:wrap; }
-    .wide-copy .btn{ align-self:flex-start; margin-top: 6px; }
 
-    /* FOOTER: columns aligned left / center / right (no boxes) */
+    /* FOOTER */
     .footer{
       margin-top: 14px;
       background:#fff;
       color:#000;
       padding: 18px var(--padX) 14px;
     }
-    .footer-inner{
-      max-width: var(--containerW);
-      margin: 0 auto;
-    }
+    .footer-inner{ max-width: var(--containerW); margin: 0 auto; }
     @media (min-width: 981px){
       .footer-inner{ padding-left: var(--containerPadDesktop); padding-right: var(--containerPadDesktop); }
     }
 
-    /* Founded in Florida: TEXT as big as hero-h1, black; LOGO underneath */
     .footer-founded{
       display:flex;
       flex-direction:column;
@@ -654,7 +632,7 @@
     }
     .founded-text{
       font-weight: 950;
-      font-size: clamp(22px, 2.4vw, 30px); /* match hero-h1 sizing */
+      font-size: clamp(22px, 2.4vw, 30px);
       letter-spacing: -0.02em;
       color: #0b1220;
       line-height: 1.1;
@@ -703,10 +681,8 @@
 
     .footer-col.left{ text-align:left; justify-self:start; }
     .footer-col.left .footer-links{ align-items:flex-start; }
-
     .footer-col.center{ text-align:center; justify-self:center; }
     .footer-col.center .footer-links{ align-items:center; }
-
     .footer-col.right{ text-align:right; justify-self:end; }
     .footer-col.right .footer-links{ align-items:flex-end; }
 
@@ -733,9 +709,7 @@
       border-color: rgba(253,108,2,0.55);
       box-shadow: 0 0 0 3px rgba(253,108,2,0.14);
     }
-    .social-ic svg{
-      width: 22px; height: 22px; fill: rgba(11,18,32,0.86); display:block;
-    }
+    .social-ic svg{ width: 22px; height: 22px; fill: rgba(11,18,32,0.86); display:block; }
     .footer-copy{
       margin-top: 14px;
       text-align:center;
@@ -786,40 +760,52 @@
       color: var(--ink);
     }
 
-    /* TABLET: shrink both squares and product width so there is ALWAYS a gap (no overlap) */
+    /* DESKTOP safety: slightly smaller for narrower desktops */
+    @media (max-width: 1160px){
+      :root{
+        --introSquare: 380px;
+        --prodW: 320px;
+      }
+    }
+
+    /* TABLET: do NOT cut off hero paragraph */
     @media (max-width: 980px) and (min-width: 641px){
       :root{
-        --introSquare: 250px;
+        --introSquare: 270px;
         --prodW: 250px;
         --storyMediaH: 300px;
       }
+      .hero-copy{
+        height: auto;
+        min-height: var(--introSquare);
+        overflow: visible;
+      }
       .diet-item{ font-size: 11px; letter-spacing: .08em; }
+      .mini-card{
+        height: var(--introSquare);
+        max-width: var(--prodW);
+      }
     }
 
-    /* MOBILE: order must be product -> text -> image (image under the text) */
+    /* MOBILE: order product -> text -> image */
     @media (max-width: 640px){
       :root{ --headerH: 68px; --storyMediaH: 260px; }
 
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
-      main{ padding-bottom: calc(var(--bottomNavH) + 24px); }
-      .footer{ padding-bottom: calc(var(--bottomNavH) + 14px); }
+      main{ padding-bottom: calc(64px + 24px); }
+      .footer{ padding-bottom: calc(64px + 14px); }
 
-      .intro-row{
-        grid-template-columns: 1fr;
-        gap: var(--gap);
-      }
+      .intro-row{ grid-template-columns: 1fr; gap: var(--gap); }
 
-      /* Make hero-merged a 1-column stack with custom order */
-      .hero-merged{
-        grid-template-columns: 1fr;
-      }
+      .hero-merged{ grid-template-columns: 1fr; }
       .hero-copy{
         width:100%;
         height:auto;
         border: 1px solid var(--line);
         border-radius: var(--radius);
         order: 2;
+        overflow: visible;
       }
       .hero-media{
         width:100%;
@@ -827,27 +813,20 @@
         aspect-ratio: 1 / 1;
         border: 1px solid var(--line);
         border-radius: var(--radius);
-        order: 3; /* image goes BELOW the text */
+        order: 3;
       }
 
       .mini-card{
-        order: 1; /* product first */
+        order: 1;
         width:100%;
         max-width:none;
-        height:auto;
-      }
-      .mini-square{
-        aspect-ratio: 1 / 1;
-        height:auto;
+        height: 420px; /* tall product card on mobile */
       }
 
       .grid-two{ grid-template-columns: 1fr; }
 
       .wide-card{ grid-template-columns: 1fr; }
-      .wide-media{
-        width:100%;
-        border-radius: var(--radius);
-      }
+      .wide-media{ width:100%; border-radius: var(--radius); }
       .wide-copy{ padding: 14px 14px 14px; }
 
       .footer-cols{ grid-template-columns: 1fr; }
@@ -855,12 +834,7 @@
         text-align:center; justify-self:stretch;
       }
       .footer-col .footer-links{ align-items:center !important; }
-      .footer-founded-top{ flex-wrap:wrap; }
       .founded-text{ white-space: normal; text-align:center; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ scroll-behavior:auto !important; transition:none !important; }
     }
   </style>
 </head>
@@ -931,29 +905,27 @@
 
           <article class="mini-card" aria-label="MayaNut product preview">
             <a class="mini-click" href="product.html" aria-label="View MayaNut product page">
-              <div class="mini-square" aria-label="Mini product square (image + title + button)">
-                <div class="mini-img-wrap" aria-label="MayaNut product image">
-                  <img
-                    class="mini-img"
-                    src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                    alt="MayaNut™ roasted Alicastrum (Brosimum alicastrum) seed powder product image"
-                    loading="lazy"
-                    decoding="async"
-                    width="1200"
-                    height="1200"
-                    onerror="this.style.opacity='.35';"
-                  >
-                </div>
+              <div class="mini-img-wrap" aria-label="MayaNut product image">
+                <img
+                  class="mini-img"
+                  src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
+                  alt="MayaNut™ roasted Alicastrum (Brosimum alicastrum) seed powder product image"
+                  loading="lazy"
+                  decoding="async"
+                  width="1200"
+                  height="1200"
+                  onerror="this.style.opacity='.35';"
+                >
+              </div>
 
-                <div class="mini-bot" aria-label="Product title, price, and button">
-                  <div class="mini-topline" aria-label="Product status">
-                    <span>New</span>
-                    <span>Reviews soon</span>
-                  </div>
-                  <div class="mini-title">MayaNut™ Powder</div>
-                  <div class="mini-price">$9.99–$34.99</div>
-                  <span class="btn mini-cta" aria-hidden="true">View Product</span>
+              <div class="mini-bot" aria-label="Product title, price, and button">
+                <div class="mini-topline" aria-label="Product status">
+                  <span>New</span>
+                  <span>Reviews soon</span>
                 </div>
+                <div class="mini-title">MayaNut™ Powder</div>
+                <div class="mini-price">$9.99–$34.99</div>
+                <span class="btn mini-cta" aria-hidden="true">View Product</span>
               </div>
             </a>
           </article>

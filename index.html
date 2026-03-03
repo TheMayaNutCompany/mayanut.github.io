@@ -1,4 +1,4 @@
-why is the top section weve been working on for 5 hours not updated across desktop mobile and tablet <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -31,16 +31,13 @@ why is the top section weve been working on for 5 hours not updated across deskt
   --container:1200px;
   --padX:16px;
 
-  /* MASTER geometry */
-  --img: clamp(240px, 24vw, 340px);      /* left image side */
-  --h: var(--img);                       /* force left image square */
-  --w: clamp(320px, 30vw, 450px);        /* product width */
+  /* DESKTOP GEOMETRY */
+  --img: clamp(240px, 24vw, 340px);  /* left image side */
+  --h: var(--img);                   /* force left image square */
+  --w: clamp(320px, 30vw, 450px);    /* text width == product width */
 
-  /* Product footer kept minimal to maximize image height */
   --productInfoH: 54px;
-
-  /* Product crop defaults (desktop slightly more top visible) */
-  --prodObjPosY: 46%;
+  --prodObjPosY: 46%;                /* desktop: slightly more top visible */
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -66,16 +63,20 @@ a:focus-visible{
   padding:24px var(--padX);
 }
 
-/* Desktop + Tablet: same structure */
+/* DESKTOP + TABLET (same structure)
+   left column width = image square + text width
+   right column width = product width (same as text width) */
 .row{
   display:grid;
-  grid-template-columns: minmax(0, 1fr) var(--w);
+  grid-template-columns: calc(var(--img) + var(--w)) var(--w);
   gap: var(--gap);
   align-items:start;
+  justify-content:space-between;
 }
 
 /* LEFT MERGED BLOCK (image + text connected) */
 .hero-merged{
+  width: calc(var(--img) + var(--w));
   height: var(--h);
   border:1px solid var(--line);
   border-radius: var(--radius);
@@ -83,11 +84,10 @@ a:focus-visible{
   overflow:hidden;
   background:#fff;
   display:grid;
-  grid-template-columns: var(--img) 1fr;
-  min-width:0;
+  grid-template-columns: var(--img) var(--w);
 }
 
-/* Perfect square left image (width == height == --img because --h == --img) */
+/* Perfect square left image */
 .hero-image{
   width:100%;
   height:100%;
@@ -102,13 +102,16 @@ a:focus-visible{
   display:block;
 }
 
-/* Text column */
+/* Text column (same width as product, same height as image) */
 .hero-text{
+  width:var(--w);
+  height:var(--h);
   padding:14px 16px 12px;
   display:flex;
   flex-direction:column;
-  height:100%;
   min-width:0;
+  background:#fff;
+  overflow:hidden;
 }
 
 /* Diet row */
@@ -160,7 +163,7 @@ a:focus-visible{
 .hero-text p{
   font-weight:600;
   font-size:14px;
-  line-height:1.65;
+  line-height:1.58;
   color:var(--muted);
   margin:0;
 }
@@ -177,7 +180,6 @@ a:focus-visible{
   display:flex;
   flex-direction:column;
   justify-self:end;
-  position:relative;
 }
 
 .product a{
@@ -186,12 +188,10 @@ a:focus-visible{
   flex-direction:column;
 }
 
-/* Product image gets most of the height */
 .product-img{
   height: calc(var(--h) - var(--productInfoH));
   overflow:hidden;
   background:#fff;
-  position:relative;
 }
 
 .product-img img{
@@ -202,7 +202,7 @@ a:focus-visible{
   display:block;
 }
 
-/* Minimal product footer */
+/* Minimal product footer (title + button only) */
 .product-info{
   height: var(--productInfoH);
   padding:10px 12px;
@@ -248,46 +248,45 @@ a:focus-visible{
   transform:translateY(-1px);
 }
 
-/* Optional hover helper (desktop/tablet only). Remove if too much. */
-.product-tip{
-  position:absolute;
-  left:12px;
-  top:12px;
-  padding:7px 10px;
-  border-radius:999px;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(11,18,32,.12);
-  box-shadow:0 8px 18px rgba(15,23,42,.08);
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:rgba(11,18,32,.78);
-  opacity:0;
-  transform:translateY(2px);
-  transition:opacity .12s ease, transform .12s ease;
-  pointer-events:none;
-}
-.product:hover .product-tip{
-  opacity:1;
-  transform:translateY(0);
-}
-
 /* TABLET ONLY
-   - same layout
-   - keep left image square
-   - product image slightly higher, no zoom */
+   Same structure, smaller sizes, still:
+   - image square
+   - text width == product width
+   - no zoom on product image */
 @media (max-width: 1024px){
   :root{
-    --img: clamp(190px, 26vw, 240px);
-    --h: var(--img);                 /* square left image */
-    --w: clamp(260px, 40vw, 340px);
+    --img: clamp(190px, 24vw, 230px);
+    --h: var(--img);
+    --w: clamp(260px, 34vw, 320px);
     --productInfoH: 52px;
-    --prodObjPosY: 40%;
+    --prodObjPosY: 42%;
   }
 
-  .hero-text p{ font-size:13.6px; }
-  .diet-item{ font-size:10px; letter-spacing:.08em; }
+  .hero-text{
+    padding:12px 14px 10px;
+  }
+
+  .diet-row{ gap:6px; margin-bottom:8px; }
+  .diet-item{
+    gap:5px;
+    font-size:9.5px;
+    letter-spacing:.07em;
+  }
+  .diet-icon{
+    width:16px;
+    height:16px;
+    font-size:10px;
+  }
+
+  .hero-text h1{
+    font-size:clamp(18px, 2vw, 24px);
+    margin-bottom:6px;
+  }
+
+  .hero-text p{
+    font-size:12.2px;
+    line-height:1.45;
+  }
 
   .product-img img{
     transform:none;
@@ -297,11 +296,12 @@ a:focus-visible{
 /* MOBILE
    - product first
    - desktop-like product proportions (landscape)
-   - all images centered (no upward shift)
+   - centered images
    - text above image in merged block */
 @media (max-width: 720px){
   .row{
     grid-template-columns: 1fr;
+    gap:16px;
   }
 
   /* Product first */
@@ -312,16 +312,12 @@ a:focus-visible{
     justify-self:stretch;
   }
 
-  .product-tip{ display:none; }
-
-  /* Desktop-like proportions on mobile */
   .product-img{
     height:auto;
-    aspect-ratio: 16 / 10;
+    aspect-ratio:16 / 10; /* desktop-like landscape feel */
     overflow:hidden;
   }
 
-  /* Centered image crop on mobile */
   .product-img img{
     width:100%;
     height:100%;
@@ -337,13 +333,17 @@ a:focus-visible{
   /* Merged block second, text then image */
   .hero-merged{
     order:2;
+    width:100%;
     height:auto;
-    grid-template-columns: 1fr;
+    grid-template-columns:1fr;
   }
 
   .hero-text{
     order:1;
+    width:100%;
     height:auto;
+    overflow:visible;
+    padding:14px 14px 12px;
   }
 
   .hero-image{
@@ -352,9 +352,23 @@ a:focus-visible{
     height:auto;
   }
 
-  /* Center left image on mobile too */
   .hero-image img{
     object-position:center center;
+  }
+
+  .diet-item{
+    font-size:9.5px;
+    letter-spacing:.06em;
+  }
+  .diet-icon{
+    width:16px;
+    height:16px;
+    font-size:10px;
+  }
+
+  .hero-text p{
+    font-size:13px;
+    line-height:1.5;
   }
 }
 </style>
@@ -400,7 +414,6 @@ a:focus-visible{
     <article class="product" aria-label="MayaNut product preview">
       <a href="product.html" aria-label="View MayaNut product page">
         <div class="product-img" aria-label="MayaNut product image">
-          <div class="product-tip" aria-hidden="true">Try MayaNut™ Powder</div>
           <img
             src="mayanut-powder-maya-nut-brosimum-alicastrum.png"
             alt="MayaNut™ roasted Alicastrum (Brosimum alicastrum) seed powder product image"

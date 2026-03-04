@@ -235,11 +235,41 @@
 
       --bottomNavH:64px;
       --headerH:72px;
+
+      /* Scrollbar theme vars (restored) */
+      --sbW: 12px;
+      --sbTrack: #e8edf2;
+      --sbThumb: #9aa5b1;
+      --sbThumbHover: #7b8794;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
 
-    html{ scroll-behavior:smooth; }
+    html{
+      scroll-behavior:smooth;
+      height:100%;
+      overflow-x:hidden;
+      scrollbar-gutter: stable;
+      scrollbar-color: var(--sbThumb) var(--sbTrack);
+      scrollbar-width: auto;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --sbTrack: #0b1220;
+        --sbThumb: #7b8794;
+        --sbThumbHover: #9aa5b1;
+      }
+    }
+
+    ::-webkit-scrollbar{ width: var(--sbW); height: var(--sbW); }
+    ::-webkit-scrollbar-track{ background: var(--sbTrack); }
+    ::-webkit-scrollbar-thumb{
+      background: var(--sbThumb);
+      border-radius: 999px;
+      border: 3px solid var(--sbTrack);
+    }
+    ::-webkit-scrollbar-thumb:hover{ background: var(--sbThumbHover); }
 
     body{
       min-height:100%;
@@ -304,7 +334,14 @@
     @media (min-width: 981px){
       .header-inner{ padding-left: var(--containerPadDesktop); padding-right: var(--containerPadDesktop); }
     }
-    .brand{ display:flex; align-items:center; gap: 10px; min-width: 0; flex: 1 1 auto; }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
     .brand img{ width: 40px; height: 40px; object-fit: contain; flex: 0 0 auto; }
     .brand-name{
       font-weight: 900;
@@ -317,6 +354,16 @@
       text-overflow: ellipsis;
       max-width: 100%;
     }
+
+    .header-controls{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:12px;
+      flex: 0 0 auto;
+      min-width: 0;
+    }
+
     .subnav{
       display:flex; align-items:center; gap: 18px; flex-wrap: wrap; justify-content:flex-end;
       flex: 0 0 auto;
@@ -341,6 +388,111 @@
     }
     .subnav a:hover::after{ width:100%; }
     .subnav a.active:hover::after{ background: var(--orange); width:100%; }
+
+    /* Language dropdown (custom Google Translate trigger) */
+    .lang-menu{
+      position:relative;
+      flex: 0 0 auto;
+    }
+    .lang-btn{
+      appearance:none;
+      border:0;
+      background:transparent;
+      color:#0b1220;
+      font: inherit;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      padding: 6px 2px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap;
+      position:relative;
+    }
+    .lang-btn::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-2px;
+      height:2px;
+      width:0%;
+      background:#0b1220;
+      transition: width .18s ease;
+    }
+    .lang-btn:hover::after,
+    .lang-btn[aria-expanded="true"]::after{
+      width:100%;
+    }
+    .lang-caret{
+      font-size:11px;
+      line-height:1;
+      transform: translateY(-1px);
+    }
+
+    .lang-dropdown{
+      position:absolute;
+      right:0;
+      top: calc(100% + 10px);
+      width: min(300px, 78vw);
+      background:#fff;
+      border:1px solid rgba(11,18,32,0.12);
+      border-radius:14px;
+      box-shadow: 0 16px 34px rgba(15,23,42,0.14);
+      padding:8px;
+      display:none;
+      z-index:100000;
+      max-height: 62vh;
+      overflow:auto;
+    }
+    .lang-dropdown.open{ display:block; }
+
+    .lang-list{
+      display:grid;
+      gap:4px;
+    }
+
+    .lang-item{
+      appearance:none;
+      width:100%;
+      border:1px solid transparent;
+      background:#fff;
+      color:#0b1220;
+      text-align:left;
+      border-radius:10px;
+      padding:10px 12px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.2;
+      cursor:pointer;
+      transition: background .12s ease, border-color .12s ease, color .12s ease;
+    }
+    .lang-item:hover{
+      background:#f8fafc;
+      border-color: rgba(11,18,32,0.08);
+    }
+    .lang-item.active{
+      border-color: rgba(253,108,2,0.35);
+      background: rgba(253,108,2,0.06);
+      color:#9a3f00;
+    }
+
+    /* Hide default Google Translate UI container (we use custom dropdown) */
+    #google_translate_element{
+      position:absolute !important;
+      left:-9999px !important;
+      width:1px !important;
+      height:1px !important;
+      overflow:hidden !important;
+    }
+
+    /* Prevent Google widget from adding margins that shift layout */
+    body .goog-te-banner-frame.skiptranslate{ display:none !important; }
+    body{ top:0 !important; }
+    .goog-te-gadget{ font-size:0 !important; }
 
     main{
       padding-top: calc(var(--headerH) + 8px);
@@ -527,19 +679,19 @@
       text-overflow:ellipsis;
     }
 
-    /* DESKTOP ONLY: widen center sections + tighten middle gap for continuity */
+    /* DESKTOP ONLY */
     @media (min-width: 1025px){
       .top-intro{
         --img: 340px;
         --h: var(--img);
-        --w: 374px;               /* paragraph + product slightly wider */
+        --w: 374px;
         --productInfoH: 54px;
         --prodObjPosY: 46%;
       }
 
       .top-intro .row{
         grid-template-columns: calc(var(--img) + var(--w)) var(--w);
-        gap: 8px;                 /* tighter center gap */
+        gap: 8px;
         justify-content: space-between;
       }
 
@@ -577,7 +729,7 @@
       }
 
       .top-intro .hero-text p{
-        font-size:14.5px; /* match Buba text size */
+        font-size:14.5px;
         line-height:1.7;
       }
     }
@@ -593,12 +745,36 @@
       }
 
       .top-intro .hero-text p{ font-size:13.6px; }
-      .top-intro .diet-item{ font-size:10px; letter-spacing:.08em; gap:5px; }
-      .top-intro .diet-icon{ width:16px; height:16px; font-size:10px; }
+
+      /* FIX: Gluten-Free gets more room and is shifted left */
+      .top-intro .diet-row{
+        grid-template-columns: .92fr 1.18fr .90fr;
+        gap: 4px;
+      }
+
+      .top-intro .diet-item{
+        font-size:9.4px;
+        letter-spacing:.05em;
+        gap:4px;
+      }
+
+      .top-intro .diet-item:nth-child(1){ justify-content:flex-start; }
+      .top-intro .diet-item:nth-child(2){
+        justify-content:flex-start;
+        padding-left:2px;
+      }
+      .top-intro .diet-item:nth-child(3){ justify-content:flex-end; }
+
+      .top-intro .diet-icon{
+        width:15px;
+        height:15px;
+        font-size:9px;
+      }
+
       .top-intro .product-img img{ transform:none; }
 
       .top-intro .product-title{
-        text-overflow: clip;   /* show "Powder" without ... */
+        text-overflow: clip;
         letter-spacing: .04em;
       }
     }
@@ -817,7 +993,7 @@
       max-width: 62ch;
     }
 
-    /* FOOTER (tightened spacing above Founded in Florida) */
+    /* FOOTER */
     .footer{
       margin-top: 6px;
       background:#fff;
@@ -958,9 +1134,9 @@
       font-size: 10px;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--ink);
       background:#fff;
-      transition: background .12s ease, color .12s ease, transform .10s ease, box-shadow .12s ease;
+      transition: background .12s ease, color .12s ease, transform .10s ease, box-shadow .12s ease, border-color .12s ease;
     }
     .bottom-tabs a:hover,
     .bottom-tabs a:active{
@@ -970,8 +1146,8 @@
       transform: translateY(-1px);
     }
     .bottom-tabs a.active{
-      background: var(--orange);
-      color:#fff;
+      background:#fff;
+      color: var(--orange);
       border-color: var(--orange);
       box-shadow: 0 0 0 3px rgba(253,108,2,0.16);
     }
@@ -990,6 +1166,30 @@
 
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
+
+      .header-inner{
+        gap:10px;
+      }
+      .brand-name{
+        font-size:16px;
+        max-width: 46vw;
+      }
+      .header-controls{
+        gap:8px;
+      }
+      .lang-btn{
+        font-size:11px;
+        letter-spacing:.08em;
+      }
+      .lang-dropdown{
+        right:0;
+        width:min(260px, 88vw);
+      }
+      .lang-item{
+        font-size:13px;
+        padding:9px 10px;
+      }
+
       main{ padding-bottom: calc(var(--bottomNavH) + 24px); }
       .footer{
         padding-top: 8px;
@@ -1037,6 +1237,162 @@
       }
     }
 
+    /* Landscape stability (phones + compact tablets) */
+    @media (orientation: landscape) and (max-height: 560px){
+      :root{
+        --headerH: 62px;
+        --bottomNavH: 56px;
+      }
+
+      /* Force mobile nav for landscape phones even if width > 640 */
+      .subnav{ display:none; }
+      .bottom-tabs{ display:block; }
+
+      .header-inner{
+        min-height: var(--headerH);
+        padding-top:10px;
+        padding-bottom:10px;
+      }
+      .brand-name{
+        font-size:16px;
+        max-width: 38vw;
+      }
+      .lang-btn{
+        font-size:10px;
+        letter-spacing:.07em;
+      }
+      .lang-dropdown{
+        width:min(240px, 68vw);
+        max-height:48vh;
+      }
+
+      main{ padding-bottom: calc(var(--bottomNavH) + 18px); }
+      .footer{
+        padding-top: 8px;
+        padding-bottom: calc(var(--bottomNavH) + 10px);
+      }
+
+      /* Compact bottom tabs for short screens */
+      .bottom-tabs{
+        padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+      }
+      .bottom-tabs nav{
+        gap: 6px;
+      }
+      .bottom-tabs a{
+        padding: 7px 6px;
+        font-size: 9px;
+        letter-spacing: .08em;
+        border-radius: 12px;
+      }
+
+      /* Prevent top section glitching on phone landscape */
+      .top-intro{
+        --img: 170px;
+        --h: var(--img);
+        --w: 238px;
+        --productInfoH: 46px;
+        --prodObjPosY: 42%;
+      }
+
+      .top-intro .row{
+        grid-template-columns: minmax(0, 1fr) var(--w);
+        gap: 10px;
+        align-items:start;
+      }
+
+      .top-intro .hero-merged{
+        order:0;
+        height: var(--h);
+        grid-template-columns: var(--img) 1fr;
+      }
+
+      .top-intro .hero-text{
+        order:0;
+        height:100%;
+        padding:10px 12px 8px;
+      }
+
+      .top-intro .hero-image{
+        order:0;
+        height:100%;
+        aspect-ratio:auto;
+      }
+
+      .top-intro .product{
+        order:0;
+        width: var(--w);
+        height: var(--h);
+        justify-self:end;
+      }
+
+      .top-intro .product-img{
+        height: calc(var(--h) - var(--productInfoH));
+        aspect-ratio:auto;
+      }
+
+      .top-intro .product-info{
+        height: var(--productInfoH);
+        padding: 8px 10px;
+        gap: 8px;
+      }
+
+      .top-intro .product-title{
+        font-size: 12.5px;
+        letter-spacing: .03em;
+      }
+
+      .top-intro .product-info .btn{
+        height: 30px;
+        padding: 0 10px;
+        font-size: 10px;
+        letter-spacing: .08em;
+      }
+
+      .top-intro .diet-row{
+        grid-template-columns: .9fr 1.2fr .9fr;
+        gap: 3px;
+        margin-bottom: 6px;
+      }
+      .top-intro .diet-item{
+        font-size: 8.2px;
+        letter-spacing: .03em;
+        gap: 3px;
+      }
+      .top-intro .diet-icon{
+        width: 13px;
+        height: 13px;
+        font-size: 8px;
+      }
+      .top-intro .hero-text h1{
+        font-size: 17px;
+        margin-bottom: 4px;
+      }
+      .top-intro .hero-text p{
+        font-size: 11.2px;
+        line-height: 1.35;
+      }
+    }
+
+    /* Tablet landscape refinement */
+    @media (min-width: 721px) and (max-width: 1024px) and (orientation: landscape){
+      .top-intro{
+        --img: clamp(205px, 23vw, 240px);
+        --h: var(--img);
+        --w: clamp(285px, 36vw, 350px);
+        --productInfoH: 50px;
+      }
+
+      .top-intro .row{ gap: 12px; }
+
+      .top-intro .product-title{ letter-spacing:.03em; }
+
+      .top-intro .diet-row{
+        grid-template-columns: .92fr 1.18fr .90fr;
+        gap: 4px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce){
       *{
         scroll-behavior:auto !important;
@@ -1048,6 +1404,9 @@
 
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Hidden Google Translate mount point -->
+  <div id="google_translate_element" aria-hidden="true"></div>
 
   <header class="site-header" aria-label="Site header">
     <div class="header-inner">
@@ -1065,13 +1424,56 @@
         <div class="brand-name">The MayaNut Company</div>
       </div>
 
-      <nav class="subnav" aria-label="Primary navigation (desktop and tablet)">
-        <a class="active" href="index.html" aria-current="page" aria-label="Home page">Home</a>
-        <a href="product.html" aria-label="Buy MayaNut powder">Buy</a>
-        <a href="about.html" aria-label="About The MayaNut Company">About</a>
-        <a href="faq.html" aria-label="Frequently asked questions">FAQ</a>
-        <a href="recipes.html" aria-label="MayaNut recipes">Recipes</a>
-      </nav>
+      <div class="header-controls" aria-label="Header controls">
+        <nav class="subnav" aria-label="Primary navigation (desktop and tablet)">
+          <a class="active" href="index.html" aria-current="page" aria-label="Home page">Home</a>
+          <a href="product.html" aria-label="Buy MayaNut powder">Buy</a>
+          <a href="about.html" aria-label="About The MayaNut Company">About</a>
+          <a href="faq.html" aria-label="Frequently asked questions">FAQ</a>
+          <a href="recipes.html" aria-label="MayaNut recipes">Recipes</a>
+        </nav>
+
+        <!-- Language dropdown -->
+        <div class="lang-menu" id="langMenu">
+          <button
+            class="lang-btn"
+            id="langBtn"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="langDropdown"
+            aria-label="Choose language"
+          >
+            <span>Language</span>
+            <span class="lang-caret" aria-hidden="true">▾</span>
+          </button>
+
+          <div class="lang-dropdown" id="langDropdown" role="menu" aria-label="Language selector">
+            <div class="lang-list">
+              <button class="lang-item active" type="button" role="menuitem" data-lang="en">English</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="es">Español</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="pt">Português</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="fr">Français</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="de">Deutsch</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="ru">Русский</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="zh-CN">中文</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="ar">العربية</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="hi">हिन्दी</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="ja">日本語</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="ko">한국어</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="it">Italiano</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="tr">Türkçe</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="vi">Tiếng Việt</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="pl">Polski</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="nl">Nederlands</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="th">ไทย</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="id">Bahasa Indonesia</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="bn">বাংলা</button>
+              <button class="lang-item" type="button" role="menuitem" data-lang="pa">ਪੰਜਾਬੀ</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -1166,7 +1568,6 @@
 
           <div class="mini-mods" aria-label="Site modules">
 
-            <!-- 1. Recipes -->
             <div class="mod" aria-label="How to use it module">
               <div class="body">
                 <div class="title">How to Use It</div>
@@ -1175,7 +1576,6 @@
               </div>
             </div>
 
-            <!-- 2. Learn More -->
             <div class="mod" aria-label="Learn more module">
               <div class="body">
                 <div class="title">Learn More</div>
@@ -1184,7 +1584,6 @@
               </div>
             </div>
 
-            <!-- 3. Gallery -->
             <div class="mod" aria-label="Gallery module">
               <div class="body">
                 <div class="title">Gallery</div>
@@ -1385,6 +1784,155 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    /* ------------------------------
+       Google Translate (custom dropdown)
+       ------------------------------ */
+    const LANG_CODES = [
+      "en","es","pt","fr","de","ru","zh-CN","ar","hi","ja",
+      "ko","it","tr","vi","pl","nl","th","id","bn","pa"
+    ];
+
+    function setGoogTransCookie(value){
+      const host = location.hostname;
+      const cookie = "googtrans=" + value + "; path=/; max-age=31536000";
+      document.cookie = cookie;
+      document.cookie = cookie + "; domain=" + host;
+      if (host.split(".").length > 2) {
+        const root = host.split(".").slice(-2).join(".");
+        document.cookie = cookie + "; domain=." + root;
+      }
+    }
+
+    function getGoogTransCookie(){
+      const m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
+      return m ? decodeURIComponent(m[1]) : "";
+    }
+
+    function currentLangFromCookie(){
+      const v = getGoogTransCookie(); // format like /en/es
+      const parts = v.split("/");
+      return parts.length >= 3 && parts[2] ? parts[2] : "en";
+    }
+
+    function markActiveLanguage(lang){
+      document.querySelectorAll(".lang-item").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.lang === lang);
+      });
+    }
+
+    function closeLangMenu(){
+      const dropdown = document.getElementById("langDropdown");
+      const btn = document.getElementById("langBtn");
+      if (!dropdown || !btn) return;
+      dropdown.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+
+    function openLangMenu(){
+      const dropdown = document.getElementById("langDropdown");
+      const btn = document.getElementById("langBtn");
+      if (!dropdown || !btn) return;
+      dropdown.classList.add("open");
+      btn.setAttribute("aria-expanded", "true");
+    }
+
+    function toggleLangMenu(){
+      const dropdown = document.getElementById("langDropdown");
+      if (!dropdown) return;
+      dropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
+    }
+
+    function tryGoogleComboTranslate(lang){
+      const combo = document.querySelector(".goog-te-combo");
+      if (!combo) return false;
+
+      // English = reset (empty often works best)
+      combo.value = (lang === "en") ? "" : lang;
+
+      // Trigger change events
+      combo.dispatchEvent(new Event("change", { bubbles: true }));
+      combo.dispatchEvent(new Event("input", { bubbles: true }));
+      return true;
+    }
+
+    function translatePageTo(lang){
+      markActiveLanguage(lang);
+      closeLangMenu();
+
+      // Persist preference
+      if (lang === "en") {
+        setGoogTransCookie("/en/en");
+      } else {
+        setGoogTransCookie("/en/" + lang);
+      }
+
+      // Prefer in-page translation if widget is ready; fallback reload
+      const didCombo = tryGoogleComboTranslate(lang);
+
+      if (!didCombo) {
+        // Widget may not be ready yet -> reload and Google reads cookie
+        window.location.reload();
+      }
+    }
+
+    function googleTranslateElementInit(){
+      if (!window.google || !google.translate || !google.translate.TranslateElement) return;
+
+      new google.translate.TranslateElement({
+        pageLanguage: "en",
+        autoDisplay: false,
+        includedLanguages: LANG_CODES.filter(l => l !== "en").join(","),
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, "google_translate_element");
+
+      // If cookie already set, try apply without reload
+      const existing = currentLangFromCookie();
+      markActiveLanguage(existing);
+      if (existing && existing !== "en") {
+        // Wait a moment for combo insertion
+        let tries = 0;
+        const t = setInterval(() => {
+          tries++;
+          if (tryGoogleComboTranslate(existing) || tries > 20) clearInterval(t);
+        }, 300);
+      }
+    }
+
+    // Dropdown events
+    (function initLanguageDropdown(){
+      const menuWrap = document.getElementById("langMenu");
+      const btn = document.getElementById("langBtn");
+      const dropdown = document.getElementById("langDropdown");
+
+      if (!menuWrap || !btn || !dropdown) return;
+
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        toggleLangMenu();
+      });
+
+      dropdown.addEventListener("click", function(e){
+        const target = e.target.closest(".lang-item");
+        if (!target) return;
+        const lang = target.dataset.lang;
+        if (!lang) return;
+        translatePageTo(lang);
+      });
+
+      document.addEventListener("click", function(e){
+        if (!menuWrap.contains(e.target)) closeLangMenu();
+      });
+
+      document.addEventListener("keydown", function(e){
+        if (e.key === "Escape") closeLangMenu();
+      });
+
+      markActiveLanguage(currentLangFromCookie());
+    })();
   </script>
+
+  <!-- Google Translate embed script -->
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 </body>
 </html>

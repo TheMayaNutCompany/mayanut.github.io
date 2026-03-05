@@ -81,7 +81,8 @@
           "https://www.instagram.com/themayanutcompany",
           "https://x.com/mayanutcompany",
           "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/",
-          "https://www.facebook.com/themayanutcompany"
+          "https://www.facebook.com/themayanutcompany",
+          "https://www.youtube.com/@themayanutcompany"
         ]
       },
       {
@@ -171,12 +172,14 @@
 
       --orange:#fd6c02;
       --orangePress:#c84b02;
+      --green:#16803c;
+      --red:#c62828;
 
       --radius:18px;
       --shadow: 0 14px 40px rgba(15,23,42,0.08);
       --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      --leftColW: 390px;
+      --leftColW: 392px;
       --thumbH: 88px;
 
       --bottomNavH:64px;
@@ -204,10 +207,9 @@
 
     html{
       overflow-x:hidden;
-      overflow-y:scroll;
+      overflow-y:auto;
       background: var(--bg);
       color-scheme: light;
-      scrollbar-gutter: stable;
       scrollbar-color: var(--sbThumb) var(--sbTrack);
       scrollbar-width: auto;
     }
@@ -289,7 +291,6 @@
       top: var(--gtBannerH);
       left: 0;
       right: 0;
-      width: auto;
       z-index: 99999;
       background: rgba(255,255,255,0.94);
       backdrop-filter: blur(10px);
@@ -297,9 +298,6 @@
       border-bottom: 1px solid rgba(11,18,32,0.06);
       backface-visibility: hidden;
       transform: translateZ(0);
-    }
-    @media (min-width: 981px){
-      .site-header{ right: var(--sbW); }
     }
 
     .header-inner{
@@ -388,7 +386,7 @@
     .subnav a.active::after{ width:0%; }
     .subnav a.active:hover::after{ width:100%; background: var(--orange); }
 
-    .lang-menu{ position:relative; flex:0 0 auto; z-index:100002; margin-right:0; }
+    .lang-menu{ position:relative; flex:0 0 auto; z-index:100002; }
     .lang-btn{
       appearance:none;
       border:0;
@@ -447,13 +445,25 @@
       z-index:100000;
       max-height:62vh;
       overflow:auto;
+      scrollbar-width:thin;
+      scrollbar-color:#cbd5df #ffffff;
     }
+    .lang-dropdown::-webkit-scrollbar{ width:10px; }
+    .lang-dropdown::-webkit-scrollbar-track{ background:#ffffff; }
+    .lang-dropdown::-webkit-scrollbar-thumb{
+      background:#cbd5df;
+      border-radius:999px;
+      border:2px solid #ffffff;
+    }
+    .lang-dropdown::-webkit-scrollbar-thumb:hover{ background:#b5c0cc; }
+
     .lang-dropdown.open{ display:block; }
     .lang-list{ display:grid; gap:0; }
     .lang-item{
       appearance:none;
       width:100%;
-      border:1px solid transparent;
+      border:0;
+      border-bottom:1px solid rgba(11,18,32,0.08);
       background:#fff;
       color:#0b1220;
       text-align:left;
@@ -464,17 +474,14 @@
       font-size:13px;
       line-height:1.2;
       cursor:pointer;
-      transition: background .12s ease, border-color .12s ease, color .12s ease;
+      transition: background .12s ease, color .12s ease;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .lang-item:hover{
-      background:#f8fafc;
-      border-color: rgba(11,18,32,0.08);
-    }
+    .lang-item:last-child{ border-bottom:0; }
+    .lang-item:hover{ background:#fbfcfd; }
     .lang-item.active{
-      border-color: transparent;
       background: var(--soft);
       color: var(--orange);
     }
@@ -525,36 +532,44 @@
       cursor:pointer;
       user-select:none;
       background:#ffffff;
-      padding: 0;
+      padding:0;
     }
+
     .car-arrow{
       position:absolute;
       top:50%;
       transform:translateY(-50%);
-      width:44px; height:44px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.92);
-      border:1px solid rgba(11,18,32,0.18);
+      width:40px; height:40px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.94);
+      border:1px solid rgba(11,18,32,0.15);
       display:flex; align-items:center; justify-content:center;
-      box-shadow:0 12px 24px rgba(15,23,42,0.12);
+      box-shadow:0 10px 20px rgba(15,23,42,0.10);
       cursor:pointer; user-select:none;
     }
     .car-arrow:hover{ filter: brightness(0.98); }
     .car-arrow.left{ left:10px; }
     .car-arrow.right{ right:10px; }
     .car-arrow svg{
-      width:18px; height:18px;
-      stroke:#0b1220; fill:none; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round;
+      width:16px; height:16px;
+      stroke:#0b1220; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
     }
 
+    /* Dots without bubble (cleaner) */
     .dots{
       position:absolute; left:50%; transform:translateX(-50%); bottom:10px;
-      display:flex; gap:6px; padding:6px 10px; border-radius:999px;
-      background:rgba(255,255,255,0.86);
-      border:1px solid rgba(11,18,32,0.14);
+      display:flex; gap:7px;
+      background:transparent;
+      border:0;
+      padding:0;
     }
-    .dot{ width:8px; height:8px; border-radius:999px; background:rgba(11,18,32,0.25); }
-    .dot.active{ background:rgba(11,18,32,0.85); }
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background:rgba(11,18,32,0.28);
+      border:1px solid rgba(255,255,255,0.65);
+      box-shadow:0 2px 6px rgba(0,0,0,.08);
+    }
+    .dot.active{ background:rgba(11,18,32,0.9); }
 
     .thumbs{
       height: var(--thumbH);
@@ -593,6 +608,7 @@
       min-width:0;
     }
 
+    /* Desktop alignment logic for feature row */
     .features{
       display:grid;
       grid-template-columns: repeat(5, minmax(0,1fr));
@@ -630,12 +646,18 @@
       stroke-width:3; stroke-linecap:round; stroke-linejoin:round;
     }
     .feat-label{
-      display:block;
+      display:inline-block;
       white-space:normal;
-      overflow-wrap:normal;
+      line-height:1.02;
       word-break:normal;
+      overflow-wrap:normal;
     }
     .feat-label br{ display:none; }
+
+    @media (min-width: 901px){
+      .features .feat:first-child{ justify-content:flex-start; }
+      .features .feat:last-child{ justify-content:flex-end; }
+    }
 
     .title-row{
       display:flex;
@@ -652,6 +674,16 @@
       margin:0;
       min-width:0;
     }
+
+    .price-col{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      justify-content:flex-end;
+      gap:2px;
+      flex:0 0 auto;
+    }
+
     .price{
       display:flex;
       align-items:flex-start;
@@ -673,6 +705,18 @@
       opacity: .95;
       letter-spacing: .01em;
     }
+
+    .stock-state{
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      line-height:1.1;
+      text-align:right;
+      white-space:nowrap;
+    }
+    .stock-state.out{ color: var(--red); }
+    .stock-state.in{ color: var(--green); }
 
     .stars-row{
       display:flex;
@@ -742,6 +786,7 @@
       align-items:center;
       margin-top: 4px;
     }
+
     .selector-pill{
       height:44px;
       border-radius:14px;
@@ -765,14 +810,15 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .selector-pill:hover{
-      background:#fafafa;
-      border-color: rgba(11,18,32,0.16);
-    }
+    .selector-pill:hover{ background:#fcfcfd; }
     .selector-pill.active{
       border-color: rgba(253,108,2,0.55);
-      box-shadow: 0 0 0 3px rgba(253,108,2,0.16);
+      box-shadow: 0 0 0 3px rgba(253,108,2,0.12);
       color: var(--orange);
+      background: #fafbfc;
+    }
+    .selector-pill.active:hover{
+      background:#fdfefe;
     }
 
     .qty-select{
@@ -790,7 +836,7 @@
       transition: background .12s ease, border-color .12s ease;
       min-width:0;
     }
-    .qty-select:hover{ background:#fafafa; }
+    .qty-select:hover{ background:#fcfcfd; }
     .qty-left{
       display:flex;
       align-items:center;
@@ -808,7 +854,7 @@
     .qty-value{
       font-weight:950;
       font-size:14px;
-      color: var(--ink);
+      color: var(--orange);
       line-height:1;
       white-space:nowrap;
     }
@@ -854,7 +900,9 @@
       text-decoration: underline;
       text-decoration-color: rgba(255,255,255,0.95);
     }
-    .push-bottom{ margin-top:auto; }
+
+    /* Keep controls close to checkout even if translated text becomes shorter */
+    .push-bottom{ display:none !important; }
 
     .under-buy-wide{
       margin-top: 14px;
@@ -981,19 +1029,39 @@
       padding: 12px 16px 16px;
     }
     .footer-inner{ max-width: 1280px; margin: 0 auto; }
-    .footer-topline{
+
+    /* Founded in Florida + logo under it */
+    .footer-founded{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 8px 0 12px;
+    }
+    .footer-founded-top{
       display:flex;
       align-items:center;
       justify-content:center;
-      gap: 12px;
-      padding: 10px 0 14px;
+      gap:10px;
+      white-space:nowrap;
+    }
+    .footer-founded-text{
       font-weight: 950;
       font-size: 18px;
       letter-spacing: -0.01em;
       color: var(--ink);
-      white-space: nowrap;
+      line-height:1.1;
+      font-style: italic;
     }
-    .footer-topline img{ width: 52px; height: 52px; object-fit: contain; }
+    .footer-founded-florida{
+      width: 52px; height: 52px; object-fit: contain;
+      flex:0 0 auto;
+    }
+    .footer-founded-logo{
+      width: 96px; height: 96px; object-fit: contain;
+      flex:0 0 auto;
+    }
 
     .footer-columns{
       display:grid;
@@ -1137,6 +1205,49 @@
       z-index:6500;
     }
 
+    .floating-menu{
+      pointer-events:auto;
+      position:fixed;
+      z-index:6600;
+      min-width:140px;
+      background:#fff;
+      border:1px solid rgba(11,18,32,0.18);
+      border-radius:12px;
+      box-shadow:0 18px 55px rgba(15,23,42,0.18);
+      overflow:auto;
+      max-height:260px;
+      scrollbar-width:thin;
+      scrollbar-color:#cbd5df #ffffff;
+    }
+    .floating-menu::-webkit-scrollbar{ width:10px; }
+    .floating-menu::-webkit-scrollbar-track{ background:#ffffff; }
+    .floating-menu::-webkit-scrollbar-thumb{
+      background:#cbd5df;
+      border-radius:999px;
+      border:2px solid #ffffff;
+    }
+    .floating-menu::-webkit-scrollbar-thumb:hover{ background:#b5c0cc; }
+
+    .floating-option{
+      width:100%;
+      border:0;
+      border-bottom:1px solid rgba(11,18,32,0.08);
+      background:#fff;
+      color:#0b1220;
+      text-align:left;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:950;
+      font-size:12px;
+      line-height:1.1;
+    }
+    .floating-option:last-child{ border-bottom:0; }
+    .floating-option:hover{ background:#fbfcfd; }
+    .floating-option.active{
+      background: var(--soft);
+      color: var(--orange);
+    }
+
     @media (max-width: 980px){
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
@@ -1162,9 +1273,7 @@
       .qty-label{ font-size:10px; letter-spacing:.06em; }
       .qty-value{ font-size:13px; }
 
-      .features{
-        gap: 6px;
-      }
+      .features{ gap: 6px; }
       .feat{
         flex-direction:column;
         gap:4px;
@@ -1173,12 +1282,8 @@
         align-items:center;
         justify-content:flex-start;
       }
-      .feat .chk{
-        width:16px; height:16px;
-      }
-      .feat .chk svg{
-        width:10px; height:10px;
-      }
+      .feat .chk{ width:16px; height:16px; }
+      .feat .chk svg{ width:10px; height:10px; }
       .feat-label br{ display:block; }
 
       h1{ font-size: 26px; }
@@ -1206,9 +1311,7 @@
         white-space: nowrap;
         line-height: 1.1;
       }
-      .footer-column ul{
-        gap: 6px;
-      }
+      .footer-column ul{ gap: 6px; }
       .footer-column a{
         font-size: 10px;
         line-height:1.15;
@@ -1218,26 +1321,19 @@
         white-space: normal;
       }
 
-      .footer-topline{
-        gap: 8px;
+      .footer-founded-text{
         font-size: 16px;
-        padding: 8px 0 12px;
       }
-      .footer-topline img{
-        width: 44px; height: 44px;
+      .footer-founded-florida{
+        width:44px; height:44px;
+      }
+      .footer-founded-logo{
+        width:84px; height:84px;
       }
 
-      .footer-socials{
-        gap: 10px;
-      }
-      .social-ic{
-        width: 44px;
-        height: 44px;
-      }
-      .social-ic svg{
-        width: 18px;
-        height: 18px;
-      }
+      .footer-socials{ gap: 10px; }
+      .social-ic{ width: 44px; height: 44px; }
+      .social-ic svg{ width: 18px; height: 18px; }
 
       .bottom-tabs a{
         font-size: 9px;
@@ -1280,12 +1376,14 @@
       .qty-label{ font-size:9.5px; letter-spacing:.04em; }
       .qty-value{ font-size:12px; }
 
-      .footer-topline{
+      .footer-founded-text{
         font-size:15px;
-        gap:8px;
       }
-      .footer-topline img{
+      .footer-founded-florida{
         width:40px; height:40px;
+      }
+      .footer-founded-logo{
+        width:78px; height:78px;
       }
 
       .carousel-img{
@@ -1303,24 +1401,18 @@
         letter-spacing: .04em;
         margin-bottom: 6px;
       }
-      .footer-column ul{
-        gap: 5px;
-      }
+      .footer-column ul{ gap: 5px; }
       .footer-column a{
         font-size: 8.5px;
         line-height: 1.1;
       }
 
-      .footer-copyright{
-        font-size: 12px;
-      }
+      .footer-copyright{ font-size: 12px; }
 
       .bottom-tabs{
         padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
       }
-      .bottom-tabs nav{
-        gap: 6px;
-      }
+      .bottom-tabs nav{ gap: 6px; }
       .bottom-tabs a{
         font-size: 8px;
         letter-spacing: .06em;
@@ -1331,19 +1423,13 @@
     }
 
     @media (max-width: 380px){
-      .features{
-        gap: 4px;
-      }
+      .features{ gap: 4px; }
       .feat{
         font-size: 7.4px;
         gap: 3px;
       }
-      .feat .chk{
-        width:14px; height:14px;
-      }
-      .feat .chk svg{
-        width:9px; height:9px;
-      }
+      .feat .chk{ width:14px; height:14px; }
+      .feat .chk svg{ width:9px; height:9px; }
 
       .selector-row{
         grid-template-columns: 1fr 1fr 104px;
@@ -1354,20 +1440,14 @@
         letter-spacing:.04em;
         padding:0 6px;
       }
-      .qty-label{
-        display:none;
-      }
-      .qty-value{
-        font-size:12px;
-      }
+      .qty-label{ display:none; }
+      .qty-value{ font-size:12px; }
 
       .footer-column h4{
         font-size: 7px;
         letter-spacing: .03em;
       }
-      .footer-column a{
-        font-size: 8px;
-      }
+      .footer-column a{ font-size: 8px; }
 
       .bottom-tabs a{
         font-size: 7px;
@@ -1425,12 +1505,8 @@
       .selector-row{
         grid-template-columns: 1fr 1fr 112px;
       }
-      .features{
-        gap:6px;
-      }
-      .feat{
-        font-size:7.8px;
-      }
+      .features{ gap:6px; }
+      .feat{ font-size:7.8px; }
       .feat .chk{ width:14px; height:14px; }
       h1{ font-size:22px; }
       .price-major{ font-size:18px; }
@@ -1597,13 +1673,14 @@
           <div class="product-box" id="productBox" aria-label="Product details and purchase options">
 
             <div class="features" aria-label="Key features">
-              <div class="feat">
-                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
-                <span class="feat-label">Gluten-<br>Free</span>
-              </div>
+              <!-- Vegan left-most -->
               <div class="feat">
                 <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
                 <span class="feat-label">Vegan</span>
+              </div>
+              <div class="feat">
+                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
+                <span class="feat-label">Gluten-<br>Free</span>
               </div>
               <div class="feat">
                 <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
@@ -1621,8 +1698,11 @@
 
             <div class="title-row" aria-label="Product title and price">
               <h1 id="productTitle">MayaNut™ Powder</h1>
-              <div class="price" id="price" aria-label="Price">
-                <span class="price-major" id="priceMajor">$9</span><span class="price-cents" id="priceCents">.99</span>
+              <div class="price-col" aria-label="Price and stock status">
+                <div class="price" id="price" aria-label="Price">
+                  <span class="price-major" id="priceMajor">$9</span><span class="price-cents" id="priceCents">.99</span>
+                </div>
+                <div class="stock-state out" id="stockState" aria-label="Stock status">Out of Stock</div>
               </div>
             </div>
 
@@ -1761,17 +1841,30 @@
 
   <footer class="site-footer" aria-label="Footer">
     <div class="footer-inner">
-      <div class="footer-topline" aria-label="Founded in Florida">
-        <img src="mayanut-the-mayanut-comapny-logo.png" alt="The MayaNut Company logo" width="52" height="52" loading="lazy" decoding="async">
-        <span>Founded in Florida</span>
+
+      <div class="footer-founded" aria-label="Founded in Florida block">
+        <div class="footer-founded-top" aria-label="Founded in Florida title row">
+          <span class="footer-founded-text">Founded in Florida</span>
+          <img
+            class="footer-founded-florida"
+            src="florida-image-the-maya-nut-company.png"
+            alt="Florida silhouette icon"
+            width="52"
+            height="52"
+            loading="lazy"
+            decoding="async"
+            onerror="this.onerror=null; this.src='florida-black.png';"
+          >
+        </div>
+
         <img
-          src="florida-image-the-maya-nut-company.png"
-          alt="Florida silhouette icon"
-          width="52"
-          height="52"
+          class="footer-founded-logo"
+          src="mayanut-the-mayanut-comapny-logo.png"
+          alt="The MayaNut Company logo"
+          width="96"
+          height="96"
           loading="lazy"
           decoding="async"
-          onerror="this.onerror=null; this.src='florida-black.png';"
         >
       </div>
 
@@ -1823,6 +1916,9 @@
         <a class="social-ic" href="https://www.facebook.com/themayanutcompany" aria-label="Facebook" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.2c0-.9.3-1.6 1.7-1.6h1.4V5c-.2 0-1.1-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.1H8v3h2.4v8h3.1Z"/></svg>
         </a>
+        <a class="social-ic" href="https://www.youtube.com/@themayanutcompany" aria-label="YouTube" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-3.4-.4-5c-.2-.9-.9-1.6-1.8-1.8C19.2 5 12 5 12 5s-7.2 0-8.8.2c-.9.2-1.6.9-1.8 1.8C1 8.6 1 12 1 12s0 3.4.4 5c.2.9.9 1.6 1.8 1.8C4.8 19 12 19 12 19s7.2 0 8.8-.2c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-5 .4-5ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+        </a>
         <a class="social-ic" href="https://x.com/mayanutcompany" aria-label="X" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.7L5.9 22H2l7.4-8.5L1 2h6.3l4.4 6.1L18.9 2Zm-1.1 18h1.7L6.2 4H4.4l13.4 16Z"/></svg>
         </a>
@@ -1847,24 +1943,41 @@
     </nav>
   </div>
 
+  <!-- Fullscreen image viewer -->
   <div class="img-modal" id="imgModal" aria-label="Fullscreen image viewer" style="position:fixed; inset:0; display:none; z-index:7000;">
-    <div class="backdrop" id="imgBackdrop" aria-hidden="true" style="position:absolute; inset:0; background:rgba(15,23,42,0.70);"></div>
-    <div class="viewer-body" role="dialog" aria-modal="true" aria-label="Product image" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-      <button class="nav left" id="mPrev" type="button" aria-label="Previous image"
-        style="position:absolute; left:16px; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:18px; background:rgba(255,255,255,0.92); border:1px solid rgba(11,18,32,0.18); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 12px 24px rgba(15,23,42,0.18);">
-        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px; stroke:#0b1220; fill:none; stroke-width:2.8; stroke-linecap:round; stroke-linejoin:round;">
-          <path d="M14 6l-6 6 6 6"></path>
-        </svg>
-      </button>
+    <div class="backdrop" id="imgBackdrop" aria-hidden="true" style="position:absolute; inset:0; background:rgba(15,23,42,0.72);"></div>
 
-      <img id="modalImg" alt="Fullscreen product image — MayaNut roasted seed powder" style="max-width:min(96vw,1400px); max-height:92vh; object-fit:contain; user-select:none; background:#fff;">
+    <div class="viewer-body" role="dialog" aria-modal="true" aria-label="Product image" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:16px;">
+      <div class="modal-shell" style="position:relative; width:min(96vw,1400px); max-height:92vh; display:flex; flex-direction:column; gap:10px;">
+        <!-- Top connected white bar -->
+        <div class="modal-topbar" style="display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1fr) auto; align-items:stretch; gap:0; border-radius:14px; overflow:hidden; border:1px solid rgba(11,18,32,0.14); box-shadow:0 10px 24px rgba(15,23,42,0.12); background:#fff;">
+          <div style="padding:10px 12px; border-right:1px solid rgba(11,18,32,0.08); min-width:0;">
+            <div id="modalTitleText" style="font-weight:950; color:#0b1220; font-size:13px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">MayaNut™ Powder Packaging</div>
+          </div>
+          <div style="padding:10px 12px; background:#f6f7f9; min-width:0;">
+            <div id="modalDescText" style="font-weight:800; color:rgba(11,18,32,0.78); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Product image</div>
+          </div>
+          <button id="mClose" type="button" aria-label="Close image viewer" style="appearance:none; border:0; border-left:1px solid rgba(11,18,32,0.08); background:#fff; color:#0b1220; width:46px; min-width:46px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:22px; line-height:1;">×</button>
+        </div>
 
-      <button class="nav right" id="mNext" type="button" aria-label="Next image"
-        style="position:absolute; right:16px; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:18px; background:rgba(255,255,255,0.92); border:1px solid rgba(11,18,32,0.18); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 12px 24px rgba(15,23,42,0.18);">
-        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px; stroke:#0b1220; fill:none; stroke-width:2.8; stroke-linecap:round; stroke-linejoin:round;">
-          <path d="M10 6l6 6-6 6"></path>
-        </svg>
-      </button>
+        <div style="position:relative; display:flex; align-items:center; justify-content:center; min-height:0;">
+          <button class="nav left" id="mPrev" type="button" aria-label="Previous image"
+            style="position:absolute; left:10px; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:14px; background:rgba(255,255,255,0.94); border:1px solid rgba(11,18,32,0.14); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 10px 20px rgba(15,23,42,0.12);">
+            <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px; stroke:#0b1220; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;">
+              <path d="M14 6l-6 6 6 6"></path>
+            </svg>
+          </button>
+
+          <img id="modalImg" alt="Fullscreen product image — MayaNut roasted seed powder" style="max-width:min(96vw,1400px); max-height:calc(92vh - 62px); object-fit:contain; user-select:none; background:#fff; border-radius:12px;">
+
+          <button class="nav right" id="mNext" type="button" aria-label="Next image"
+            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:14px; background:rgba(255,255,255,0.94); border:1px solid rgba(11,18,32,0.14); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 10px 20px rgba(15,23,42,0.12);">
+            <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px; stroke:#0b1220; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;">
+              <path d="M10 6l6 6-6 6"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2140,40 +2253,23 @@
 
       const r = anchorBtn.getBoundingClientRect();
       const menu = document.createElement("div");
+      menu.className = "floating-menu";
       menu.setAttribute("data-floating-menu", "true");
-      menu.style.pointerEvents = "auto";
-      menu.style.position = "fixed";
-      menu.style.left = Math.min(window.innerWidth - 180, Math.max(10, Math.round(r.left))) + "px";
+      menu.style.left = Math.min(window.innerWidth - Math.max(150, Math.round(r.width)), Math.max(10, Math.round(r.left))) + "px";
       menu.style.top  = Math.round(r.bottom + 6) + "px";
-      menu.style.zIndex = "6600";
       menu.style.minWidth = Math.max(140, Math.round(r.width)) + "px";
-      menu.style.padding = "6px";
-      menu.style.borderRadius = "12px";
-      menu.style.border = "1px solid rgba(11,18,32,0.18)";
-      menu.style.background = "rgba(255,255,255,0.98)";
-      menu.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
 
       items.forEach(function(opt){
         const row = document.createElement("button");
         row.type = "button";
+        row.className = "floating-option" + ((String(opt.value) === String(selectedQty)) ? " active" : "");
         row.textContent = String(opt.label);
-        row.style.width = "100%";
-        row.style.borderRadius = "10px";
-        row.style.padding = "10px 10px";
-        row.style.cursor = "pointer";
-        row.style.fontWeight = "950";
-        row.style.fontSize = "12px";
-        row.style.color = "#0b1220";
-        row.style.background = (String(opt.value) === String(selectedQty)) ? "rgba(246,247,249,0.98)" : "#fff";
-        row.style.border = "1px solid rgba(11,18,32,0.14)";
-        row.style.marginBottom = "6px";
         row.addEventListener("click", function(){
           onPick(opt.value);
           closeFloatingMenu();
         });
         menu.appendChild(row);
       });
-      if (menu.lastChild) menu.lastChild.style.marginBottom = "0";
 
       floatingRoot.appendChild(menu);
       qtySelectBtn.setAttribute("aria-expanded", "true");
@@ -2218,17 +2314,41 @@
     const thumbs = [document.getElementById("thumb0"), document.getElementById("thumb1"), document.getElementById("thumb2")];
 
     const images = [
-      { src:"mayanut-powder-maya-nut-brosimum-alicastrum.png", alt:"MayaNut™ Powder packaging", fit:"contain", pos:"center" },
-      { src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",  alt:"Alicastrum fruit and seeds", fit:"cover",  pos:"center" },
-      { src:"mayanut-the-mayanut-comapny-logo.png",            alt:"The MayaNut Company logo",   fit:"contain", pos:"center" }
+      {
+        src:"mayanut-powder-maya-nut-brosimum-alicastrum.png",
+        alt:"MayaNut™ Powder packaging",
+        fit:"contain",
+        pos:"center",
+        modalTitle:"MayaNut™ Powder Packaging",
+        modalDesc:"Product image"
+      },
+      {
+        src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
+        alt:"Alicastrum fruit and seeds",
+        fit:"cover",
+        pos:"center",
+        modalTitle:"Alicastrum Fruit & Seeds",
+        modalDesc:"Source ingredient"
+      },
+      {
+        src:"mayanut-the-mayanut-comapny-logo.png",
+        alt:"The MayaNut Company logo",
+        fit:"contain",
+        pos:"center",
+        modalTitle:"The MayaNut Company Logo",
+        modalDesc:"Brand mark"
+      }
     ];
     let idx = 0;
 
     const imgModal = document.getElementById("imgModal");
     const imgBackdrop = document.getElementById("imgBackdrop");
     const modalImg = document.getElementById("modalImg");
+    const modalTitleText = document.getElementById("modalTitleText");
+    const modalDescText = document.getElementById("modalDescText");
     const mPrev = document.getElementById("mPrev");
     const mNext = document.getElementById("mNext");
+    const mClose = document.getElementById("mClose");
 
     function setDots(){ dots.forEach(function(d,i){ d.classList.toggle("active", i===idx); }); }
     function setThumbs(){ thumbs.forEach(function(t,i){ t.setAttribute("aria-current", (i===idx) ? "true" : "false"); }); }
@@ -2240,6 +2360,12 @@
       carImg.style.background = "#fff";
     }
 
+    function updateModalMeta(){
+      const data = images[idx];
+      modalTitleText.textContent = data.modalTitle || "Product Image";
+      modalDescText.textContent = data.modalDesc || "";
+    }
+
     function setImage(i){
       idx = (i + images.length) % images.length;
       const data = images[idx];
@@ -2249,6 +2375,7 @@
       setThumbs();
       if (imgModal.style.display === "block"){
         safeSetImg(modalImg, data.src, data.alt);
+        updateModalMeta();
       }
       syncHeights();
     }
@@ -2259,6 +2386,7 @@
 
     function openImgModal(){
       safeSetImg(modalImg, images[idx].src, images[idx].alt);
+      updateModalMeta();
       imgModal.style.display = "block";
     }
     function closeImgModal(){ imgModal.style.display = "none"; }
@@ -2267,6 +2395,7 @@
     imgBackdrop.addEventListener("click", closeImgModal);
     mPrev.addEventListener("click", function(){ setImage(idx - 1); });
     mNext.addEventListener("click", function(){ setImage(idx + 1); });
+    mClose.addEventListener("click", closeImgModal);
 
     document.addEventListener("keydown", function(e){
       if(e.key === "Escape") closeImgModal();

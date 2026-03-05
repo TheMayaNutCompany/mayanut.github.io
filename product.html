@@ -176,14 +176,13 @@
       --shadow: 0 14px 40px rgba(15,23,42,0.08);
       --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-      --leftColW: 360px;
-      --thumbH: 84px;
+      --leftColW: 390px;
+      --thumbH: 88px;
 
       --bottomNavH:64px;
       --headerH:72px;
       --gtBannerH:0px;
 
-      /* Scrollbar */
       --sbW: 12px;
       --sbTrack: #e8edf2;
       --sbThumb: #9aa5b1;
@@ -205,18 +204,20 @@
 
     html{
       overflow-x:hidden;
+      overflow-y:scroll;
       background: var(--bg);
       color-scheme: light;
       scrollbar-gutter: stable;
       scrollbar-color: var(--sbThumb) var(--sbTrack);
       scrollbar-width: auto;
     }
+
     ::-webkit-scrollbar{ width: var(--sbW); }
     ::-webkit-scrollbar-track{ background: var(--sbTrack); }
     ::-webkit-scrollbar-thumb{
       background: var(--sbThumb);
       border-radius: 999px;
-      border: 3px solid var(--sbTrack);
+      border: 0;
     }
     ::-webkit-scrollbar-thumb:hover{ background: var(--sbThumbHover); }
 
@@ -265,7 +266,6 @@
       border-radius:12px;
     }
 
-    /* Google Translate hidden mount */
     #google_translate_element{
       position:absolute !important;
       left:-9999px !important;
@@ -284,13 +284,12 @@
       top:0 !important;
     }
 
-    /* Header (from index logic) */
     .site-header{
       position: fixed;
       top: var(--gtBannerH);
       left: 0;
       right: 0;
-      width: 100%;
+      width: auto;
       z-index: 99999;
       background: rgba(255,255,255,0.94);
       backdrop-filter: blur(10px);
@@ -299,8 +298,12 @@
       backface-visibility: hidden;
       transform: translateZ(0);
     }
+    @media (min-width: 981px){
+      .site-header{ right: var(--sbW); }
+    }
+
     .header-inner{
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 14px 16px;
       min-height: var(--headerH);
@@ -309,11 +312,27 @@
       justify-content:space-between;
       gap: 14px;
     }
+
     .brand{
-      display:flex; align-items:center; gap: 10px;
-      min-width: 0; flex: 1 1 auto;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1 1 auto;
     }
-    .brand img{ width: 40px; height: 40px; object-fit: contain; flex: 0 0 auto; }
+    .brand a{
+      flex:0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .brand img{
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      display:block;
+      flex:0 0 auto;
+    }
     .brand-name{
       font-weight: 900;
       letter-spacing: -0.02em;
@@ -333,6 +352,7 @@
       gap:12px;
       flex:0 0 auto;
       min-width:0;
+      margin-left:auto;
     }
 
     .subnav{
@@ -368,8 +388,7 @@
     .subnav a.active::after{ width:0%; }
     .subnav a.active:hover::after{ width:100%; background: var(--orange); }
 
-    /* Language dropdown */
-    .lang-menu{ position:relative; flex:0 0 auto; z-index:100002; }
+    .lang-menu{ position:relative; flex:0 0 auto; z-index:100002; margin-right:0; }
     .lang-btn{
       appearance:none;
       border:0;
@@ -380,7 +399,7 @@
       font-size: 12px;
       letter-spacing: .10em;
       text-transform: uppercase;
-      padding: 6px 2px;
+      padding: 6px 0 6px 2px;
       cursor:pointer;
       display:inline-flex;
       align-items:center;
@@ -475,12 +494,9 @@
     }
 
     .wrap{
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 18px 16px 10px;
-    }
-    @media (min-width: 981px){
-      .wrap{ padding-left: 52px; padding-right: 52px; }
     }
 
     .product-grid{
@@ -490,12 +506,11 @@
       align-items: start;
     }
 
-    /* LEFT */
     .left-col{ display:flex; flex-direction:column; gap:10px; min-width:0; }
     .product-img{
       border-radius: var(--radius);
       overflow:hidden;
-      background: #fff;
+      background: #ffffff;
       position:relative;
       aspect-ratio: 1 / 1;
       border: 1px solid var(--line);
@@ -504,13 +519,13 @@
     .carousel-img{
       width:100%;
       height:100%;
-      object-fit: contain;      /* fixes mobile top image crop issue */
+      object-fit: contain;
       object-position:center;
       display:block;
       cursor:pointer;
       user-select:none;
-      background:#fff;
-      padding: 8px;
+      background:#ffffff;
+      padding: 0;
     }
     .car-arrow{
       position:absolute;
@@ -562,14 +577,14 @@
       height:100%;
       object-fit:cover;
       display:block;
+      background:#fff;
     }
     .thumb[aria-current="true"]{ outline:3px solid rgba(253,108,2,0.55); outline-offset:0px; }
 
-    /* RIGHT */
     .product-box{
       border-radius: var(--radius);
       border: 1px solid var(--line);
-      background: var(--bg);
+      background: #fff;
       box-shadow: var(--shadow);
       padding: 14px 14px 14px;
       display:flex;
@@ -578,34 +593,26 @@
       min-width:0;
     }
 
-    /* 5 checkmarks — force single line, scroll if needed on mobile/tablet */
     .features{
-      display:flex;
-      flex-wrap:nowrap;
-      gap: 10px 12px;
-      align-items:center;
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0,1fr));
+      gap: 8px;
+      align-items:start;
       margin: 0 0 2px 0;
-      overflow-x:auto;
-      overflow-y:hidden;
-      padding-bottom:2px;
-      scrollbar-width: thin;
-    }
-    .features::-webkit-scrollbar{ height:8px; width:auto; }
-    .features::-webkit-scrollbar-thumb{
-      border-radius:999px;
-      border:2px solid transparent;
     }
     .feat{
       display:flex;
       align-items:center;
+      justify-content:center;
       gap: 6px;
-      white-space:nowrap;
+      min-width:0;
+      text-align:center;
       font-weight: 950;
-      letter-spacing:.06em;
+      letter-spacing:.05em;
       text-transform: uppercase;
-      font-size: 10.5px;
+      font-size: 10px;
       color: var(--ink);
-      flex:0 0 auto;
+      line-height:1.05;
     }
     .feat .chk{
       width:18px; height:18px;
@@ -622,10 +629,17 @@
       stroke:#fff; fill:none;
       stroke-width:3; stroke-linecap:round; stroke-linejoin:round;
     }
+    .feat-label{
+      display:block;
+      white-space:normal;
+      overflow-wrap:normal;
+      word-break:normal;
+    }
+    .feat-label br{ display:none; }
 
     .title-row{
       display:flex;
-      align-items:baseline;
+      align-items:flex-end;
       justify-content:space-between;
       gap:12px;
       margin-top: 2px;
@@ -636,14 +650,28 @@
       color: var(--ink);
       line-height:1.1;
       margin:0;
+      min-width:0;
     }
     .price{
-      font-size: 22px;
-      font-weight: 950;
-      color: var(--ink);
+      display:flex;
+      align-items:flex-start;
+      gap:0;
       white-space:nowrap;
       text-align:right;
+      line-height:1;
+      color: var(--ink);
+      font-weight:950;
+    }
+    .price-major{
+      font-size: 22px;
       letter-spacing: .02em;
+    }
+    .price-cents{
+      font-size: 14px;
+      line-height: 1.2;
+      transform: translateY(1px);
+      opacity: .95;
+      letter-spacing: .01em;
     }
 
     .stars-row{
@@ -707,7 +735,6 @@
     }
     .microline + .microline{ margin-top: -6px; }
 
-    /* Amazon-like selectors */
     .selector-row{
       display:grid;
       grid-template-columns: minmax(0,1fr) minmax(0,1fr) 142px;
@@ -829,7 +856,6 @@
     }
     .push-bottom{ margin-top:auto; }
 
-    /* Full width recommendation */
     .under-buy-wide{
       margin-top: 14px;
       border-radius: var(--radius);
@@ -859,7 +885,7 @@
       margin-top: 14px;
       border-radius: var(--radius);
       border: 1px solid var(--line);
-      background: var(--bg);
+      background: #fff;
       box-shadow: var(--shadow);
       padding: 16px 16px 14px;
     }
@@ -915,7 +941,7 @@
 
     .cta-row{
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap:10px;
       align-items:center;
       margin-top: 10px;
@@ -948,14 +974,13 @@
       text-underline-offset: 4px;
     }
 
-    /* Footer */
     .site-footer{
       margin-top: 12px;
       background: var(--bg);
       border-top: 1px solid rgba(11,18,32,0.06);
       padding: 12px 16px 16px;
     }
-    .footer-inner{ max-width: 1200px; margin: 0 auto; }
+    .footer-inner{ max-width: 1280px; margin: 0 auto; }
     .footer-topline{
       display:flex;
       align-items:center;
@@ -973,13 +998,13 @@
     .footer-columns{
       display:grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
+      gap: 10px;
       align-items:start;
-      max-width: 920px;
+      width:100%;
       margin: 0 auto;
       padding: 6px 0 6px;
     }
-    .footer-column{ text-align:center; }
+    .footer-column{ text-align:center; min-width:0; }
     .footer-column h4{
       font-size: 11px;
       letter-spacing: .14em;
@@ -987,6 +1012,7 @@
       color: rgba(11,18,32,0.72);
       margin-bottom: 10px;
       font-weight: 900;
+      white-space: nowrap;
     }
     .footer-column ul{
       list-style:none;
@@ -1000,6 +1026,8 @@
       color: rgba(11,18,32,0.85);
       font-size: 13px;
       letter-spacing: .02em;
+      text-align:center;
+      line-height:1.2;
     }
     .footer-column a:hover{ color: var(--orange); }
 
@@ -1036,7 +1064,7 @@
       font-size: 13px;
     }
 
-    /* Bottom tabs (from index styling logic) */
+    /* Bottom tabs */
     .bottom-tabs{
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -1049,6 +1077,7 @@
       display:none;
       backface-visibility: hidden;
       transform: translateZ(0);
+      border-top: 1px solid rgba(11,18,32,0.06);
     }
     .bottom-tabs nav{
       display:grid;
@@ -1065,31 +1094,42 @@
       justify-content:center;
       gap: 4px;
       padding: 10px 8px;
+      min-height: 42px;
       border-radius: 14px;
-      border: 1px solid rgba(253,108,2,0.75);
+      border: 1px solid rgba(11,18,32,0.55);
+      color: rgba(11,18,32,0.92);
+      background:#fff;
       font-weight: 900;
       font-size: 10px;
       letter-spacing: .10em;
       text-transform: uppercase;
-      color: var(--ink);
-      background:#fff;
+      line-height: 1;
+      white-space: nowrap;
       transition: background .12s ease, color .12s ease, transform .10s ease, box-shadow .12s ease, border-color .12s ease;
     }
     .bottom-tabs a:hover,
     .bottom-tabs a:active{
-      background: var(--orange);
-      color:#fff;
-      border-color: var(--orange);
+      background:#f7f8fa;
+      color: rgba(11,18,32,0.95);
+      border-color: rgba(11,18,32,0.75);
       transform: translateY(-1px);
     }
-    .bottom-tabs a.active{
+    .bottom-tabs a.active,
+    .bottom-tabs a[aria-current="page"]{
       background:#fff;
       color: var(--orange);
       border-color: var(--orange);
       box-shadow: 0 0 0 3px rgba(253,108,2,0.16);
     }
+    .bottom-tabs a.active:hover,
+    .bottom-tabs a.active:active,
+    .bottom-tabs a[aria-current="page"]:hover,
+    .bottom-tabs a[aria-current="page"]:active{
+      background:#fff;
+      color: var(--orange);
+      border-color: var(--orange);
+    }
 
-    /* Floating menus */
     #floating-menu-root{
       position:fixed;
       inset:0;
@@ -1097,7 +1137,6 @@
       z-index:6500;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
@@ -1109,8 +1148,6 @@
       .product-grid{ grid-template-columns: 1fr; }
       :root{ --thumbH: 82px; --leftColW: 1fr; }
       .two-cols{ grid-template-columns: 1fr; }
-      .cta-row{ grid-template-columns: 1fr; }
-      .footer-columns{ grid-template-columns: 1fr; max-width: 520px; }
 
       .selector-row{
         grid-template-columns: 1fr 1fr 126px;
@@ -1121,21 +1158,20 @@
         letter-spacing:.06em;
         padding:0 8px;
       }
-      .qty-select{
-        padding:0 9px;
-      }
-      .qty-label{
-        font-size:10px;
-        letter-spacing:.06em;
-      }
-      .qty-value{
-        font-size:13px;
-      }
+      .qty-select{ padding:0 9px; }
+      .qty-label{ font-size:10px; letter-spacing:.06em; }
+      .qty-value{ font-size:13px; }
 
+      .features{
+        gap: 6px;
+      }
       .feat{
-        font-size: 9.5px;
-        letter-spacing:.04em;
-        gap:5px;
+        flex-direction:column;
+        gap:4px;
+        font-size:8.4px;
+        letter-spacing:.02em;
+        align-items:center;
+        justify-content:flex-start;
       }
       .feat .chk{
         width:16px; height:16px;
@@ -1143,9 +1179,72 @@
       .feat .chk svg{
         width:10px; height:10px;
       }
+      .feat-label br{ display:block; }
 
       h1{ font-size: 26px; }
-      .price{ font-size: 20px; }
+      .price-major{ font-size: 20px; }
+      .price-cents{ font-size: 12px; }
+
+      .cta-row{
+        grid-template-columns: 1fr 1fr;
+        gap:8px;
+      }
+
+      .footer-columns{
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        align-items:start;
+      }
+      .footer-column{
+        min-width:0;
+        padding: 0 2px;
+      }
+      .footer-column h4{
+        font-size: 9px;
+        letter-spacing: .06em;
+        margin-bottom: 8px;
+        white-space: nowrap;
+        line-height: 1.1;
+      }
+      .footer-column ul{
+        gap: 6px;
+      }
+      .footer-column a{
+        font-size: 10px;
+        line-height:1.15;
+        letter-spacing: 0;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        white-space: normal;
+      }
+
+      .footer-topline{
+        gap: 8px;
+        font-size: 16px;
+        padding: 8px 0 12px;
+      }
+      .footer-topline img{
+        width: 44px; height: 44px;
+      }
+
+      .footer-socials{
+        gap: 10px;
+      }
+      .social-ic{
+        width: 44px;
+        height: 44px;
+      }
+      .social-ic svg{
+        width: 18px;
+        height: 18px;
+      }
+
+      .bottom-tabs a{
+        font-size: 9px;
+        letter-spacing: .08em;
+        padding: 9px 6px;
+        min-height: 40px;
+      }
     }
 
     @media (max-width: 640px){
@@ -1182,24 +1281,101 @@
       .qty-value{ font-size:12px; }
 
       .footer-topline{
-        font-size:16px;
+        font-size:15px;
         gap:8px;
       }
       .footer-topline img{
-        width:44px; height:44px;
+        width:40px; height:40px;
       }
 
       .carousel-img{
-        padding: 10px; /* helps mobile top image visibility */
+        padding: 0;
+        object-fit: contain;
+        object-position: center;
       }
 
+      .footer-columns{
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+      }
+      .footer-column h4{
+        font-size: 8px;
+        letter-spacing: .04em;
+        margin-bottom: 6px;
+      }
+      .footer-column ul{
+        gap: 5px;
+      }
+      .footer-column a{
+        font-size: 8.5px;
+        line-height: 1.1;
+      }
+
+      .footer-copyright{
+        font-size: 12px;
+      }
+
+      .bottom-tabs{
+        padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+      }
+      .bottom-tabs nav{
+        gap: 6px;
+      }
       .bottom-tabs a{
-        font-size: 9px;
-        letter-spacing: .08em;
+        font-size: 8px;
+        letter-spacing: .06em;
+        padding: 8px 4px;
+        min-height: 38px;
+        border-radius: 12px;
       }
     }
 
-    /* Mobile landscape + compact landscape stability */
+    @media (max-width: 380px){
+      .features{
+        gap: 4px;
+      }
+      .feat{
+        font-size: 7.4px;
+        gap: 3px;
+      }
+      .feat .chk{
+        width:14px; height:14px;
+      }
+      .feat .chk svg{
+        width:9px; height:9px;
+      }
+
+      .selector-row{
+        grid-template-columns: 1fr 1fr 104px;
+        gap:6px;
+      }
+      .selector-pill{
+        font-size:9px;
+        letter-spacing:.04em;
+        padding:0 6px;
+      }
+      .qty-label{
+        display:none;
+      }
+      .qty-value{
+        font-size:12px;
+      }
+
+      .footer-column h4{
+        font-size: 7px;
+        letter-spacing: .03em;
+      }
+      .footer-column a{
+        font-size: 8px;
+      }
+
+      .bottom-tabs a{
+        font-size: 7px;
+        letter-spacing: .04em;
+        padding: 7px 3px;
+      }
+    }
+
     @media (orientation: landscape) and (max-height: 560px){
       :root{
         --headerH: 62px;
@@ -1250,13 +1426,24 @@
         grid-template-columns: 1fr 1fr 112px;
       }
       .features{
-        gap:8px;
+        gap:6px;
       }
-      .feat{ font-size:8.8px; }
-      .feat .chk{ width:15px; height:15px; }
+      .feat{
+        font-size:7.8px;
+      }
+      .feat .chk{ width:14px; height:14px; }
       h1{ font-size:22px; }
-      .price{ font-size:18px; }
+      .price-major{ font-size:18px; }
+      .price-cents{ font-size:11px; }
       .desc{ font-size:13px; line-height:1.55; }
+
+      .footer-column h4{
+        font-size:8px;
+        letter-spacing:.05em;
+      }
+      .footer-column a{
+        font-size:8.5px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -1268,7 +1455,6 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <!-- Hidden Google Translate mount -->
   <div id="google_translate_element" aria-hidden="true"></div>
 
   <header class="site-header" aria-label="Site header">
@@ -1370,7 +1556,6 @@
       <section aria-label="MayaNut™ Powder product section">
         <div class="product-grid" id="productGrid">
 
-          <!-- LEFT -->
           <div class="left-col" id="leftCol" aria-label="Product images">
             <div class="product-img" aria-label="MayaNut product image viewer">
               <img
@@ -1409,20 +1594,36 @@
             </div>
           </div>
 
-          <!-- RIGHT -->
           <div class="product-box" id="productBox" aria-label="Product details and purchase options">
 
             <div class="features" aria-label="Key features">
-              <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Gluten-Free</div>
-              <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Vegan</div>
-              <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Paleo-Friendly</div>
-              <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Caffeine-Free</div>
-              <div class="feat"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>Nutrient-Dense</div>
+              <div class="feat">
+                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
+                <span class="feat-label">Gluten-<br>Free</span>
+              </div>
+              <div class="feat">
+                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
+                <span class="feat-label">Vegan</span>
+              </div>
+              <div class="feat">
+                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
+                <span class="feat-label">Paleo-<br>Friendly</span>
+              </div>
+              <div class="feat">
+                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
+                <span class="feat-label">Caffeine-<br>Free</span>
+              </div>
+              <div class="feat">
+                <span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.9"></path></svg></span>
+                <span class="feat-label">Nutrient-<br>Dense</span>
+              </div>
             </div>
 
             <div class="title-row" aria-label="Product title and price">
               <h1 id="productTitle">MayaNut™ Powder</h1>
-              <div class="price" id="price">$9.99</div>
+              <div class="price" id="price" aria-label="Price">
+                <span class="price-major" id="priceMajor">$9</span><span class="price-cents" id="priceCents">.99</span>
+              </div>
             </div>
 
             <div class="stars-row" aria-label="Ratings preview">
@@ -1454,7 +1655,6 @@
               Store in a cool, dry place away from direct sunlight.
             </div>
 
-            <!-- Amazon-like weight tabs + qty dropdown -->
             <div class="selector-row" aria-label="Weight and quantity selectors">
               <button class="selector-pill active" id="weightTabQtr" type="button" aria-pressed="true" aria-label="Select quarter-pound bag">
                 1/4 LB
@@ -1478,7 +1678,6 @@
               <span>Checkout (Coming Soon)</span>
             </button>
 
-            <!-- SEO-only regional names (kept out of the top visible description) -->
             <p class="sr-only">
               Regional names: ramón, ramon, ojoche, capomo, guaimaro, guáimaro, oox, ox, ujuxte, masica. Historical name: Mayan breadnut or breadnut.
             </p>
@@ -1552,7 +1751,6 @@
           </div>
 
           <div class="cta-row" aria-label="More options">
-            <a class="btn" href="about.html" aria-label="Learn about The MayaNut Company">About</a>
             <a class="btn" href="recipes.html" aria-label="View recipes using MayaNut powder">Recipes</a>
             <a class="btn" href="faq.html" aria-label="Read FAQ about MayaNut powder">FAQ</a>
           </div>
@@ -1649,7 +1847,6 @@
     </nav>
   </div>
 
-  <!-- Fullscreen image viewer -->
   <div class="img-modal" id="imgModal" aria-label="Fullscreen image viewer" style="position:fixed; inset:0; display:none; z-index:7000;">
     <div class="backdrop" id="imgBackdrop" aria-hidden="true" style="position:absolute; inset:0; background:rgba(15,23,42,0.70);"></div>
     <div class="viewer-body" role="dialog" aria-modal="true" aria-label="Product image" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
@@ -1660,7 +1857,7 @@
         </svg>
       </button>
 
-      <img id="modalImg" alt="Fullscreen product image — MayaNut roasted seed powder" style="max-width:min(96vw,1400px); max-height:92vh; object-fit:contain; user-select:none;">
+      <img id="modalImg" alt="Fullscreen product image — MayaNut roasted seed powder" style="max-width:min(96vw,1400px); max-height:92vh; object-fit:contain; user-select:none; background:#fff;">
 
       <button class="nav right" id="mNext" type="button" aria-label="Next image"
         style="position:absolute; right:16px; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:18px; background:rgba(255,255,255,0.92); border:1px solid rgba(11,18,32,0.18); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 12px 24px rgba(15,23,42,0.18);">
@@ -1676,60 +1873,12 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    /* =========================
-       GOOGLE TRANSLATE (index logic)
-    ========================== */
     const LANG_UI_TO_GOOGLE = {
-      en: "en",
-      zh: "zh-CN",
-      hi: "hi",
-      es: "es",
-      fr: "fr",
-      ar: "ar",
-      bn: "bn",
-      pt: "pt",
-      ru: "ru",
-      ur: "ur",
-      id: "id",
-      de: "de",
-      ja: "ja",
-      pa: "pa",
-      jv: "jw",
-      wuu: "zh-CN",
-      te: "te",
-      tr: "tr",
-      ko: "ko",
-      vi: "vi",
-      ta: "ta",
-      mr: "mr",
-      yue: "zh-TW",
-      it: "it",
-      th: "th",
-      gu: "gu",
-      fa: "fa",
-      pl: "pl",
-      uk: "uk",
-      ml: "ml",
-      kn: "kn",
-      or: "or",
-      my: "my",
-      hak: "zh-CN",
-      hsn: "zh-CN",
-      su: "su",
-      ha: "ha",
-      nl: "nl",
-      ro: "ro",
-      el: "el",
-      cs: "cs",
-      hu: "hu",
-      sv: "sv",
-      iw: "iw",
-      am: "am",
-      zu: "zu",
-      so: "so",
-      ne: "ne",
-      si: "si",
-      sh: "sr"
+      en: "en", zh: "zh-CN", hi: "hi", es: "es", fr: "fr", ar: "ar", bn: "bn", pt: "pt", ru: "ru", ur: "ur",
+      id: "id", de: "de", ja: "ja", pa: "pa", jv: "jw", wuu: "zh-CN", te: "te", tr: "tr", ko: "ko", vi: "vi",
+      ta: "ta", mr: "mr", yue: "zh-TW", it: "it", th: "th", gu: "gu", fa: "fa", pl: "pl", uk: "uk", ml: "ml",
+      kn: "kn", or: "or", my: "my", hak: "zh-CN", hsn: "zh-CN", su: "su", ha: "ha", nl: "nl", ro: "ro", el: "el",
+      cs: "cs", hu: "hu", sv: "sv", iw: "iw", am: "am", zu: "zu", so: "so", ne: "ne", si: "si", sh: "sr"
     };
     const LANG_CODES = [...new Set(Object.values(LANG_UI_TO_GOOGLE))].filter(code => code !== "en");
 
@@ -1940,7 +2089,6 @@
       if(imgEl.decode){ imgEl.decode().catch(()=>{}); }
     }
 
-    /* ========= Product variants ========= */
     const VARIANTS = {
       qtr: { key:"qtr", label:"1/4 LB", full:"Quarter-Pound Bag", price:9.99 },
       one: { key:"one", label:"1 LB",   full:"1 LB Bag",          price:34.99 }
@@ -1948,14 +2096,21 @@
     let selectedVariant = "qtr";
     let selectedQty = 1;
 
-    const priceEl = document.getElementById("price");
+    const priceMajorEl = document.getElementById("priceMajor");
+    const priceCentsEl = document.getElementById("priceCents");
     const qtrTab = document.getElementById("weightTabQtr");
     const oneTab = document.getElementById("weightTabOne");
     const qtySelectBtn = document.getElementById("qtySelectBtn");
     const qtyValueText = document.getElementById("qtyValueText");
     const floatingRoot = document.getElementById("floating-menu-root");
 
-    function formatPrice(v){ return "$" + Number(v).toFixed(2); }
+    function formatPriceParts(v){
+      const n = Number(v).toFixed(2);
+      const parts = n.split(".");
+      const dollars = parts[0];
+      const cents = parts[1];
+      return { major: "$" + dollars, cents: "." + cents };
+    }
 
     function applyVariant(key){
       selectedVariant = (key === "one") ? "one" : "qtr";
@@ -1963,12 +2118,16 @@
       oneTab.classList.toggle("active", selectedVariant === "one");
       qtrTab.setAttribute("aria-pressed", selectedVariant === "qtr" ? "true" : "false");
       oneTab.setAttribute("aria-pressed", selectedVariant === "one" ? "true" : "false");
-      priceEl.textContent = formatPrice(VARIANTS[selectedVariant].price);
+
+      const p = formatPriceParts(VARIANTS[selectedVariant].price);
+      priceMajorEl.textContent = p.major;
+      priceCentsEl.textContent = p.cents;
+
       syncHeights();
     }
 
-    qtrTab.addEventListener("click", () => applyVariant("qtr"));
-    oneTab.addEventListener("click", () => applyVariant("one"));
+    qtrTab.addEventListener("click", function(){ applyVariant("qtr"); });
+    oneTab.addEventListener("click", function(){ applyVariant("one"); });
 
     function closeFloatingMenu(){
       const open = floatingRoot.querySelector("[data-floating-menu]");
@@ -1994,7 +2153,7 @@
       menu.style.background = "rgba(255,255,255,0.98)";
       menu.style.boxShadow = "0 18px 55px rgba(15,23,42,0.18)";
 
-      items.forEach(opt => {
+      items.forEach(function(opt){
         const row = document.createElement("button");
         row.type = "button";
         row.textContent = String(opt.label);
@@ -2005,12 +2164,10 @@
         row.style.fontWeight = "950";
         row.style.fontSize = "12px";
         row.style.color = "#0b1220";
-        row.style.background = (String(opt.value) === String(selectedQty))
-          ? "rgba(246,247,249,0.98)"
-          : "#fff";
+        row.style.background = (String(opt.value) === String(selectedQty)) ? "rgba(246,247,249,0.98)" : "#fff";
         row.style.border = "1px solid rgba(11,18,32,0.14)";
         row.style.marginBottom = "6px";
-        row.addEventListener("click", ()=>{
+        row.addEventListener("click", function(){
           onPick(opt.value);
           closeFloatingMenu();
         });
@@ -2029,7 +2186,7 @@
       syncHeights();
     }
 
-    qtySelectBtn.addEventListener("click", (e)=>{
+    qtySelectBtn.addEventListener("click", function(e){
       e.preventDefault();
       e.stopPropagation();
       const open = !!floatingRoot.querySelector("[data-floating-menu]");
@@ -2039,22 +2196,21 @@
       }
       openFloatingList(
         qtySelectBtn,
-        [1,2,3,4,5,6,7,8,9].map(n => ({ value:n, label:n })),
+        [1,2,3,4,5,6,7,8,9].map(function(n){ return { value:n, label:n }; }),
         setQty
       );
     });
 
-    document.addEventListener("click", (e)=>{
+    document.addEventListener("click", function(e){
       const menu = floatingRoot.querySelector("[data-floating-menu]");
       if (!menu) return;
       if (menu.contains(e.target) || qtySelectBtn.contains(e.target)) return;
       closeFloatingMenu();
     });
-    document.addEventListener("keydown", (e)=>{
+    document.addEventListener("keydown", function(e){
       if (e.key === "Escape") closeFloatingMenu();
     });
 
-    /* ========= Carousel ========= */
     const carImg = document.getElementById("carImg");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
@@ -2062,24 +2218,9 @@
     const thumbs = [document.getElementById("thumb0"), document.getElementById("thumb1"), document.getElementById("thumb2")];
 
     const images = [
-      {
-        src:"mayanut-powder-maya-nut-brosimum-alicastrum.png",
-        alt:"MayaNut™ Powder packaging",
-        fit:"contain",
-        pos:"center"
-      },
-      {
-        src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",
-        alt:"Alicastrum fruit and seeds",
-        fit:"cover",
-        pos:"center"
-      },
-      {
-        src:"mayanut-the-mayanut-comapny-logo.png",
-        alt:"The MayaNut Company logo",
-        fit:"contain",
-        pos:"center"
-      }
+      { src:"mayanut-powder-maya-nut-brosimum-alicastrum.png", alt:"MayaNut™ Powder packaging", fit:"contain", pos:"center" },
+      { src:"maya-nut-mayanut-fruit-brosimum-alicastrum.jpg",  alt:"Alicastrum fruit and seeds", fit:"cover",  pos:"center" },
+      { src:"mayanut-the-mayanut-comapny-logo.png",            alt:"The MayaNut Company logo",   fit:"contain", pos:"center" }
     ];
     let idx = 0;
 
@@ -2089,25 +2230,14 @@
     const mPrev = document.getElementById("mPrev");
     const mNext = document.getElementById("mNext");
 
-    function setDots(){
-      dots.forEach((d,i)=> d.classList.toggle("active", i===idx));
-    }
-    function setThumbs(){
-      thumbs.forEach((t,i)=> t.setAttribute("aria-current", (i===idx) ? "true" : "false"));
-    }
+    function setDots(){ dots.forEach(function(d,i){ d.classList.toggle("active", i===idx); }); }
+    function setThumbs(){ thumbs.forEach(function(t,i){ t.setAttribute("aria-current", (i===idx) ? "true" : "false"); }); }
 
     function applyImgFitForViewport(imageObj){
-      const mobileish = window.matchMedia("(max-width: 900px)").matches;
-      if (mobileish) {
-        // Keep top image nice on mobile; show full product/logo and avoid weird crop
-        carImg.style.objectFit = (imageObj.fit === "cover") ? "contain" : imageObj.fit;
-        carImg.style.objectPosition = "center";
-        carImg.style.padding = "10px";
-      } else {
-        carImg.style.objectFit = imageObj.fit || "contain";
-        carImg.style.objectPosition = imageObj.pos || "center";
-        carImg.style.padding = "8px";
-      }
+      carImg.style.objectFit = imageObj.fit || "contain";
+      carImg.style.objectPosition = imageObj.pos || "center";
+      carImg.style.padding = "0";
+      carImg.style.background = "#fff";
     }
 
     function setImage(i){
@@ -2123,9 +2253,9 @@
       syncHeights();
     }
 
-    prevBtn.addEventListener("click", ()=> setImage(idx - 1));
-    nextBtn.addEventListener("click", ()=> setImage(idx + 1));
-    thumbs.forEach((t,i)=> t.addEventListener("click", ()=> setImage(i)));
+    prevBtn.addEventListener("click", function(){ setImage(idx - 1); });
+    nextBtn.addEventListener("click", function(){ setImage(idx + 1); });
+    thumbs.forEach(function(t,i){ t.addEventListener("click", function(){ setImage(i); }); });
 
     function openImgModal(){
       safeSetImg(modalImg, images[idx].src, images[idx].alt);
@@ -2135,10 +2265,10 @@
 
     carImg.addEventListener("click", openImgModal);
     imgBackdrop.addEventListener("click", closeImgModal);
-    mPrev.addEventListener("click", ()=> setImage(idx - 1));
-    mNext.addEventListener("click", ()=> setImage(idx + 1));
+    mPrev.addEventListener("click", function(){ setImage(idx - 1); });
+    mNext.addEventListener("click", function(){ setImage(idx + 1); });
 
-    document.addEventListener("keydown",(e)=>{
+    document.addEventListener("keydown", function(e){
       if(e.key === "Escape") closeImgModal();
       if(imgModal.style.display === "block"){
         if(e.key === "ArrowLeft") setImage(idx - 1);
@@ -2146,26 +2276,23 @@
       }
     });
 
-    /* ========= Height sync ========= */
     const leftCol = document.getElementById("leftCol");
     const productBox = document.getElementById("productBox");
-
     function syncHeights(){
       if(window.matchMedia("(max-width: 900px)").matches){
         productBox.style.minHeight = "";
         return;
       }
-      window.requestAnimationFrame(()=>{
+      window.requestAnimationFrame(function(){
         const leftH = leftCol.getBoundingClientRect().height;
         productBox.style.minHeight = Math.ceil(leftH) + "px";
       });
     }
-    window.addEventListener("resize", ()=>{
+    window.addEventListener("resize", function(){
       syncHeights();
       applyImgFitForViewport(images[idx]);
     });
 
-    /* ========= Init ========= */
     setQty(1);
     applyVariant("qtr");
     setImage(0);

@@ -178,31 +178,11 @@
         "@type":"FAQPage",
         "@id":"https://www.mayanut.com/#faq",
         "mainEntity":[
-          {
-            "@type":"Question",
-            "name":"What is MayaNut\u2122?",
-            "acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum)."}
-          },
-          {
-            "@type":"Question",
-            "name":"Is MayaNut\u2122 caffeine-free?",
-            "acceptedAnswer":{"@type":"Answer","text":"Yes. MayaNut\u2122 is naturally caffeine-free."}
-          },
-          {
-            "@type":"Question",
-            "name":"What does MayaNut\u2122 taste like?",
-            "acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 has a bold cocoa-like flavor with warm roasted depth."}
-          },
-          {
-            "@type":"Question",
-            "name":"How do you use MayaNut\u2122 powder?",
-            "acceptedAnswer":{"@type":"Answer","text":"Use MayaNut\u2122 in smoothies, a\u00e7a\u00ed bowls, baking, and everyday cooking."}
-          },
-          {
-            "@type":"Question",
-            "name":"What is Alicastrum (Brosimum alicastrum) also called?",
-            "acceptedAnswer":{"@type":"Answer","text":"Regional names include ram\u00f3n/ramon, ojoche, capomo, gu\u00e1imaro/guaimaro, oox/ox, ujuxte, and masica."}
-          }
+          {"@type":"Question","name":"What is MayaNut\u2122?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum)."}},
+          {"@type":"Question","name":"Is MayaNut\u2122 caffeine-free?","acceptedAnswer":{"@type":"Answer","text":"Yes. MayaNut\u2122 is naturally caffeine-free."}},
+          {"@type":"Question","name":"What does MayaNut\u2122 taste like?","acceptedAnswer":{"@type":"Answer","text":"MayaNut\u2122 has a bold cocoa-like flavor with warm roasted depth."}},
+          {"@type":"Question","name":"How do you use MayaNut\u2122 powder?","acceptedAnswer":{"@type":"Answer","text":"Use MayaNut\u2122 in smoothies, a\u00e7a\u00ed bowls, baking, and everyday cooking."}},
+          {"@type":"Question","name":"What is Alicastrum (Brosimum alicastrum) also called?","acceptedAnswer":{"@type":"Answer","text":"Regional names include ram\u00f3n/ramon, ojoche, capomo, gu\u00e1imaro/guaimaro, oox/ox, ujuxte, and masica."}}
         ]
       }
     ]
@@ -235,6 +215,7 @@
 
       --bottomNavH:64px;
       --headerH:72px;
+      --gtBannerH:0px;
 
       /* Scrollbar theme vars (restored) */
       --sbW: 12px;
@@ -279,6 +260,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x:hidden;
       text-rendering: optimizeLegibility;
+      top:0 !important;
     }
 
     img{ max-width:100%; height:auto; display:block; }
@@ -312,9 +294,33 @@
       box-shadow: var(--shadow);
     }
 
+    /* Hide default Google Translate gadget UI (we use custom dropdown) */
+    #google_translate_element{
+      position:absolute !important;
+      left:-9999px !important;
+      width:1px !important;
+      height:1px !important;
+      overflow:hidden !important;
+    }
+    .goog-te-gadget,
+    .goog-te-gadget *{
+      font-size:0 !important;
+      line-height:0 !important;
+    }
+    .goog-logo-link{ display:none !important; }
+
+    /* Keep Google banner above header */
+    iframe.goog-te-banner-frame{
+      z-index:100001 !important;
+      top:0 !important;
+    }
+
     /* HEADER */
     .site-header{
-      position: fixed; top: 0; left: 0; right: 0;
+      position: fixed;
+      top: var(--gtBannerH);
+      left: 0;
+      right: 0;
       z-index: 99999;
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(10px);
@@ -363,9 +369,16 @@
       flex: 0 0 auto;
       min-width: 0;
     }
+    @media (min-width: 721px){
+      .header-controls{ gap:16px; }
+    }
 
     .subnav{
-      display:flex; align-items:center; gap: 18px; flex-wrap: wrap; justify-content:flex-end;
+      display:flex;
+      align-items:center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
       flex: 0 0 auto;
     }
     .subnav a{
@@ -389,10 +402,11 @@
     .subnav a:hover::after{ width:100%; }
     .subnav a.active:hover::after{ background: var(--orange); width:100%; }
 
-    /* Language dropdown (custom Google Translate trigger) */
+    /* Language dropdown */
     .lang-menu{
       position:relative;
-      flex: 0 0 auto;
+      flex:0 0 auto;
+      z-index:100002;
     }
     .lang-btn{
       appearance:none;
@@ -426,10 +440,17 @@
     .lang-btn[aria-expanded="true"]::after{
       width:100%;
     }
+    .lang-globe{
+      width:14px;
+      height:14px;
+      fill: currentColor;
+      flex:0 0 auto;
+      opacity:.92;
+    }
     .lang-caret{
       font-size:11px;
       line-height:1;
-      transform: translateY(-1px);
+      transform:translateY(-1px);
     }
 
     .lang-dropdown{
@@ -444,15 +465,12 @@
       padding:8px;
       display:none;
       z-index:100000;
-      max-height: 62vh;
+      max-height:62vh;
       overflow:auto;
     }
     .lang-dropdown.open{ display:block; }
 
-    .lang-list{
-      display:grid;
-      gap:4px;
-    }
+    .lang-list{ display:grid; gap:4px; }
 
     .lang-item{
       appearance:none;
@@ -464,9 +482,9 @@
       border-radius:10px;
       padding:10px 12px;
       font: inherit;
-      font-weight: 700;
-      font-size: 14px;
-      line-height: 1.2;
+      font-weight:700;
+      font-size:14px;
+      line-height:1.2;
       cursor:pointer;
       transition: background .12s ease, border-color .12s ease, color .12s ease;
     }
@@ -480,34 +498,21 @@
       color:#9a3f00;
     }
 
-    /* Hide default Google Translate UI container (we use custom dropdown) */
-    #google_translate_element{
-      position:absolute !important;
-      left:-9999px !important;
-      width:1px !important;
-      height:1px !important;
-      overflow:hidden !important;
-    }
-
-    /* Prevent Google widget from adding margins that shift layout */
-    body .goog-te-banner-frame.skiptranslate{ display:none !important; }
-    body{ top:0 !important; }
-    .goog-te-gadget{ font-size:0 !important; }
-
     main{
-      padding-top: calc(var(--headerH) + 8px);
+      padding-top: calc(var(--headerH) + var(--gap) + var(--gtBannerH));
       background:#fff;
     }
     .content-wrapper{
-      padding: 18px var(--padX) 18px;
+      padding: 0 var(--padX) 18px;
       max-width: var(--containerW);
       margin: 0 auto;
     }
     @media (min-width: 981px){
       .content-wrapper{ padding-left: var(--containerPadDesktop); padding-right: var(--containerPadDesktop); }
     }
+
     .panel{
-      margin-bottom: 18px;
+      margin-bottom: var(--gap);
       content-visibility:auto;
       contain-intrinsic-size: 1px 700px;
     }
@@ -568,7 +573,6 @@
       min-width:0;
     }
 
-    /* 3 checkmarks evenly spaced */
     .top-intro .diet-row{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -618,9 +622,10 @@
     .top-intro .hero-text p{
       font-weight:600;
       font-size:14px;
-      line-height:1.65;
+      line-height:1.62;
       color:rgba(11,18,32,.75);
       margin:0;
+      overflow-wrap:anywhere;
     }
 
     .top-intro .product{
@@ -684,14 +689,14 @@
       .top-intro{
         --img: 340px;
         --h: var(--img);
-        --w: 374px;
+        --w: 370px;
         --productInfoH: 54px;
         --prodObjPosY: 46%;
       }
 
       .top-intro .row{
         grid-template-columns: calc(var(--img) + var(--w)) var(--w);
-        gap: 8px;
+        gap: var(--gap);
         justify-content: space-between;
       }
 
@@ -707,15 +712,19 @@
       }
 
       .top-intro .diet-row{
-        gap: 8px;
-        margin-bottom: 8px;
+        gap:8px;
+        margin-bottom:8px;
+        grid-template-columns: repeat(3, minmax(0,1fr));
       }
+
       .top-intro .diet-item{
-        justify-content:center;
         gap:5px;
         font-size:9.5px;
         letter-spacing:.07em;
       }
+      .top-intro .diet-item:nth-child(1){ justify-content:flex-start; }
+      .top-intro .diet-item:nth-child(2){ justify-content:center; }
+      .top-intro .diet-item:nth-child(3){ justify-content:flex-end; }
 
       .top-intro .diet-icon{
         width:16px;
@@ -744,12 +753,15 @@
         --prodObjPosY: 40%;
       }
 
-      .top-intro .hero-text p{ font-size:13.6px; }
+      .top-intro .hero-text p{
+        font-size:13.3px;
+        line-height:1.52;
+      }
 
-      /* FIX: Gluten-Free gets more room and is shifted left */
+      /* Fix Gluten-Free room / spacing */
       .top-intro .diet-row{
         grid-template-columns: .92fr 1.18fr .90fr;
-        gap: 4px;
+        gap:4px;
       }
 
       .top-intro .diet-item{
@@ -757,7 +769,6 @@
         letter-spacing:.05em;
         gap:4px;
       }
-
       .top-intro .diet-item:nth-child(1){ justify-content:flex-start; }
       .top-intro .diet-item:nth-child(2){
         justify-content:flex-start;
@@ -792,7 +803,7 @@
 
       .top-intro .product-img{
         height:auto;
-        aspect-ratio: 16 / 10;
+        aspect-ratio:16 / 10;
         overflow:hidden;
       }
 
@@ -809,7 +820,7 @@
       .top-intro .hero-merged{
         order:2;
         height:auto;
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
       }
 
       .top-intro .hero-text{
@@ -831,7 +842,9 @@
         gap:4px;
       }
       .top-intro .diet-icon{
-        width:15px; height:15px; font-size:9px;
+        width:15px;
+        height:15px;
+        font-size:9px;
       }
     }
 
@@ -863,10 +876,10 @@
 
     /* MAIN SECTIONS */
     .grid-two{
-      margin-top: 18px;
+      margin-top: 0;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: var(--gap);
       align-items: stretch;
     }
     .stack-card, .mod, .faq-box, .wide-card{
@@ -1152,7 +1165,6 @@
       box-shadow: 0 0 0 3px rgba(253,108,2,0.16);
     }
 
-    /* General tablet below top section */
     @media (max-width: 1100px){
       :root{ --storyMediaH: 300px; }
     }
@@ -1167,19 +1179,20 @@
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
 
-      .header-inner{
-        gap:10px;
-      }
+      .header-inner{ gap:10px; }
       .brand-name{
         font-size:16px;
         max-width: 46vw;
       }
-      .header-controls{
-        gap:8px;
-      }
+      .header-controls{ gap:8px; }
+
       .lang-btn{
         font-size:11px;
         letter-spacing:.08em;
+      }
+      .lang-globe{
+        width:13px;
+        height:13px;
       }
       .lang-dropdown{
         right:0;
@@ -1244,7 +1257,6 @@
         --bottomNavH: 56px;
       }
 
-      /* Force mobile nav for landscape phones even if width > 640 */
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
 
@@ -1261,6 +1273,10 @@
         font-size:10px;
         letter-spacing:.07em;
       }
+      .lang-globe{
+        width:13px;
+        height:13px;
+      }
       .lang-dropdown{
         width:min(240px, 68vw);
         max-height:48vh;
@@ -1272,13 +1288,10 @@
         padding-bottom: calc(var(--bottomNavH) + 10px);
       }
 
-      /* Compact bottom tabs for short screens */
       .bottom-tabs{
         padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
       }
-      .bottom-tabs nav{
-        gap: 6px;
-      }
+      .bottom-tabs nav{ gap: 6px; }
       .bottom-tabs a{
         padding: 7px 6px;
         font-size: 9px;
@@ -1286,7 +1299,6 @@
         border-radius: 12px;
       }
 
-      /* Prevent top section glitching on phone landscape */
       .top-intro{
         --img: 170px;
         --h: var(--img);
@@ -1384,9 +1396,7 @@
       }
 
       .top-intro .row{ gap: 12px; }
-
       .top-intro .product-title{ letter-spacing:.03em; }
-
       .top-intro .diet-row{
         grid-template-columns: .92fr 1.18fr .90fr;
         gap: 4px;
@@ -1433,7 +1443,6 @@
           <a href="recipes.html" aria-label="MayaNut recipes">Recipes</a>
         </nav>
 
-        <!-- Language dropdown -->
         <div class="lang-menu" id="langMenu">
           <button
             class="lang-btn"
@@ -1444,6 +1453,9 @@
             aria-controls="langDropdown"
             aria-label="Choose language"
           >
+            <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.9 15.9 0 0 0-1.1-5A8.03 8.03 0 0 1 18.9 11ZM12 4.1c.8 1 1.8 3.1 2.2 6H9.8c.4-2.9 1.4-5 2.2-6ZM9.3 6A15.9 15.9 0 0 0 8.2 11H5.1A8.03 8.03 0 0 1 9.3 6ZM5.1 13h3.1c.2 1.8.6 3.5 1.1 5A8.03 8.03 0 0 1 5.1 13Zm6.9 6.9c-.8-1-1.8-3.1-2.2-6h4.4c-.4 2.9-1.4 5-2.2 6Zm2.7-1.9c.5-1.5.9-3.2 1.1-5h3.1A8.03 8.03 0 0 1 14.7 18Z"/>
+            </svg>
             <span>Language</span>
             <span class="lang-caret" aria-hidden="true">▾</span>
           </button>
@@ -1480,11 +1492,9 @@
   <main id="main-content" tabindex="-1" aria-label="Home page">
     <div class="content-wrapper">
 
-      <!-- TOP SECTION -->
       <section class="panel top-intro" aria-label="Intro">
         <div class="row" aria-label="Top section with Alicastrum image, MayaNut description, and product preview">
 
-          <!-- LEFT: CONNECTED IMAGE + TEXT -->
           <div class="hero-merged" aria-label="Connected Alicastrum image and What is MayaNut section">
             <div class="hero-image" aria-label="Alicastrum fruit and seed image">
               <img
@@ -1517,7 +1527,6 @@
             </div>
           </div>
 
-          <!-- RIGHT: PRODUCT -->
           <article class="product" aria-label="MayaNut product preview">
             <a href="product.html" aria-label="View MayaNut product page">
               <div class="product-img" aria-label="MayaNut product image">
@@ -1567,7 +1576,6 @@
           </article>
 
           <div class="mini-mods" aria-label="Site modules">
-
             <div class="mod" aria-label="How to use it module">
               <div class="body">
                 <div class="title">How to Use It</div>
@@ -1591,7 +1599,6 @@
                 <a class="btn" href="gallery.html" aria-label="View gallery">View Gallery</a>
               </div>
             </div>
-
           </div>
 
         </div>
@@ -1785,9 +1792,6 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    /* ------------------------------
-       Google Translate (custom dropdown)
-       ------------------------------ */
     const LANG_CODES = [
       "en","es","pt","fr","de","ru","zh-CN","ar","hi","ja",
       "ko","it","tr","vi","pl","nl","th","id","bn","pa"
@@ -1810,7 +1814,7 @@
     }
 
     function currentLangFromCookie(){
-      const v = getGoogTransCookie(); // format like /en/es
+      const v = getGoogTransCookie();
       const parts = v.split("/");
       return parts.length >= 3 && parts[2] ? parts[2] : "en";
     }
@@ -1846,34 +1850,39 @@
     function tryGoogleComboTranslate(lang){
       const combo = document.querySelector(".goog-te-combo");
       if (!combo) return false;
-
-      // English = reset (empty often works best)
       combo.value = (lang === "en") ? "" : lang;
-
-      // Trigger change events
       combo.dispatchEvent(new Event("change", { bubbles: true }));
       combo.dispatchEvent(new Event("input", { bubbles: true }));
       return true;
+    }
+
+    function syncGoogleBannerOffset(){
+      const banner = document.querySelector("iframe.goog-te-banner-frame");
+      let h = 0;
+      if (banner) {
+        const style = window.getComputedStyle(banner);
+        const hidden = style.display === "none" || style.visibility === "hidden";
+        h = hidden ? 0 : (banner.offsetHeight || 39);
+      }
+      document.documentElement.style.setProperty("--gtBannerH", h + "px");
     }
 
     function translatePageTo(lang){
       markActiveLanguage(lang);
       closeLangMenu();
 
-      // Persist preference
       if (lang === "en") {
         setGoogTransCookie("/en/en");
       } else {
         setGoogTransCookie("/en/" + lang);
       }
 
-      // Prefer in-page translation if widget is ready; fallback reload
-      const didCombo = tryGoogleComboTranslate(lang);
+      setTimeout(syncGoogleBannerOffset, 300);
+      setTimeout(syncGoogleBannerOffset, 1000);
+      setTimeout(syncGoogleBannerOffset, 2000);
 
-      if (!didCombo) {
-        // Widget may not be ready yet -> reload and Google reads cookie
-        window.location.reload();
-      }
+      const didCombo = tryGoogleComboTranslate(lang);
+      if (!didCombo) window.location.reload();
     }
 
     function googleTranslateElementInit(){
@@ -1886,11 +1895,17 @@
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, "google_translate_element");
 
-      // If cookie already set, try apply without reload
+      syncGoogleBannerOffset();
+      let bannerTries = 0;
+      const bannerTimer = setInterval(() => {
+        syncGoogleBannerOffset();
+        bannerTries++;
+        if (bannerTries > 60) clearInterval(bannerTimer);
+      }, 500);
+
       const existing = currentLangFromCookie();
       markActiveLanguage(existing);
       if (existing && existing !== "en") {
-        // Wait a moment for combo insertion
         let tries = 0;
         const t = setInterval(() => {
           tries++;
@@ -1899,7 +1914,6 @@
       }
     }
 
-    // Dropdown events
     (function initLanguageDropdown(){
       const menuWrap = document.getElementById("langMenu");
       const btn = document.getElementById("langBtn");
@@ -1929,10 +1943,14 @@
       });
 
       markActiveLanguage(currentLangFromCookie());
+      syncGoogleBannerOffset();
+      window.addEventListener("resize", syncGoogleBannerOffset);
+      window.addEventListener("orientationchange", () => {
+        setTimeout(syncGoogleBannerOffset, 250);
+      });
     })();
   </script>
 
-  <!-- Google Translate embed script -->
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 </body>
 </html>

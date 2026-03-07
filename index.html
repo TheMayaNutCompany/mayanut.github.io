@@ -59,7 +59,7 @@
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Preload only true above-the-fold assets -->
+  <!-- Above-the-fold preload -->
   <link rel="preload" as="image" href="mayanut-the-mayanut-comapny-logo.png" fetchpriority="high">
   <link rel="preload" as="image" href="mayanut-powder-maya-nut-brosimum-alicastrum.png" fetchpriority="high">
 
@@ -200,7 +200,6 @@
       --headerH:72px;
       --gtBannerH:0px;
 
-      --heroProductW:clamp(300px, 28vw, 390px);
       --storyMediaH:320px;
 
       --sbW:12px;
@@ -286,7 +285,7 @@
       box-shadow:var(--shadow);
     }
 
-    /* Hide Google's default UI */
+    /* Hide Google default UI */
     #google_translate_element{
       position:absolute !important;
       left:-9999px !important;
@@ -442,6 +441,9 @@
       background:#0b1220;
       transition:width .18s ease, background .12s ease;
     }
+    .lang-btn.is-translated{
+      color:var(--orange);
+    }
     .lang-btn[aria-expanded="true"]{
       color:var(--orange);
     }
@@ -455,7 +457,6 @@
     @media (hover:none){
       .lang-btn:hover::after{ width:0%; }
     }
-
     .lang-globe{
       width:14px;
       height:14px;
@@ -467,6 +468,7 @@
       font-size:11px;
       line-height:1;
       transform:translateY(-1px);
+      color:currentColor;
     }
 
     .lang-dropdown{
@@ -485,7 +487,6 @@
       overflow:auto;
     }
     .lang-dropdown.open{ display:block; }
-
     .lang-list{ display:grid; gap:4px; }
     .lang-item{
       appearance:none;
@@ -542,13 +543,16 @@
       content-visibility:visible;
       contain-intrinsic-size:auto;
     }
+    .panel.try-panel{
+      margin-top:0;
+    }
 
-    /* HERO: text + product only */
+    /* HERO */
     .hero-row{
       display:grid;
       grid-template-columns:minmax(0, 1.55fr) minmax(280px, .95fr);
       gap:var(--gap);
-      align-items:start;
+      align-items:stretch;
     }
 
     .hero-copy-card,
@@ -624,6 +628,12 @@
       margin:0;
       max-width:72ch;
     }
+    .hero-copy-card p + p{
+      margin-top:14px;
+    }
+    .hero-note{
+      color:rgba(11,18,32,0.76);
+    }
 
     .hero-product-card{
       display:flex;
@@ -693,7 +703,7 @@
       transform:translateY(-1px);
     }
 
-    /* main grids */
+    /* MAIN GRIDS */
     .grid-two{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -705,6 +715,7 @@
       display:flex;
       flex-direction:column;
       min-height:420px;
+      height:100%;
     }
     .story-card .media{
       height:var(--storyMediaH);
@@ -729,6 +740,7 @@
       font-size:14.5px;
       flex:1 1 auto;
     }
+
     .story-card .copy h2,
     .faq-body h2,
     .wide-copy h2{
@@ -744,8 +756,15 @@
     .mini-mods{
       display:flex;
       flex-direction:column;
+      justify-content:space-between;
       gap:12px;
       height:100%;
+      min-height:100%;
+    }
+    .mod{
+      display:flex;
+      flex:1 1 0;
+      min-height:0;
     }
     .mod .body{
       padding:14px 14px 12px;
@@ -754,6 +773,7 @@
       flex-direction:column;
       gap:8px;
       height:100%;
+      width:100%;
     }
     .mod .title{
       font-weight:950;
@@ -772,7 +792,7 @@
       flex:1 1 auto;
     }
     .mod .body .btn{
-      margin-top:6px;
+      margin-top:auto;
       align-self:flex-start;
     }
 
@@ -786,13 +806,18 @@
     .faq-list{
       margin-top:6px;
       flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:10px;
+      min-height:0;
     }
     .faq-item{
       border-radius:14px;
       border:1px solid rgba(11,18,32,0.10);
       background:var(--soft);
       padding:12px 12px;
-      margin-bottom:10px;
+      margin-bottom:0;
     }
     .faq-q{
       font-weight:900;
@@ -805,7 +830,7 @@
       line-height:1.6;
     }
     .faq-body .btn{
-      margin-top:6px;
+      margin-top:12px;
       align-self:flex-start;
     }
 
@@ -843,6 +868,7 @@
       max-width:62ch;
     }
 
+    /* FOOTER */
     .footer{
       margin-top:6px;
       background:#fff;
@@ -968,6 +994,7 @@
       font-size:13px;
     }
 
+    /* MOBILE BOTTOM TABS */
     .bottom-tabs{
       position:fixed;
       left:0;
@@ -1026,15 +1053,10 @@
       box-shadow:0 0 0 3px rgba(253,108,2,0.16);
     }
 
-    /* large tablet */
     @media (max-width:1100px){
-      :root{
-        --heroProductW:clamp(280px, 30vw, 360px);
-        --storyMediaH:300px;
-      }
+      :root{ --storyMediaH:300px; }
     }
 
-    /* tablet portrait */
     @media (max-width:920px){
       .grid-two{ grid-template-columns:1fr; }
       .wide-card{ grid-template-columns:1fr; }
@@ -1044,17 +1066,12 @@
       }
     }
 
-    /* hero stack only on narrower screens */
     @media (max-width:760px){
       .hero-row{
         grid-template-columns:1fr;
       }
-      .hero-product-card{
-        order:1;
-      }
-      .hero-copy-card{
-        order:2;
-      }
+      .hero-product-card{ order:1; }
+      .hero-copy-card{ order:2; }
     }
 
     @media (max-width:640px){
@@ -1095,6 +1112,13 @@
         padding-bottom:calc(var(--bottomNavH) + 14px);
       }
 
+      .panel{
+        margin-bottom:12px;
+      }
+      .panel.try-panel{
+        margin-top:-2px;
+      }
+
       .hero-copy-card{
         padding:14px 14px 14px;
       }
@@ -1115,6 +1139,7 @@
         font-size:14px;
         line-height:1.62;
       }
+
       .hero-product-bottom{
         padding:10px 10px 12px;
       }
@@ -1170,12 +1195,10 @@
       }
     }
 
-    /* landscape phone / compact tablet optimization */
     @media (orientation:landscape) and (max-height:560px){
       :root{
         --headerH:62px;
         --bottomNavH:56px;
-        --heroProductW:290px;
       }
 
       .subnav{ display:none; }
@@ -1317,7 +1340,7 @@
             <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.9 15.9 0 0 0-1.1-5A8.03 8.03 0 0 1 18.9 11ZM12 4.1c.8 1 1.8 3.1 2.2 6H9.8c.4-2.9 1.4-5 2.2-6ZM9.3 6A15.9 15.9 0 0 0 8.2 11H5.1A8.03 8.03 0 0 1 9.3 6ZM5.1 13h3.1c.2 1.8.6 3.5 1.1 5A8.03 8.03 0 0 1 5.1 13Zm6.9 6.9c-.8-1-1.8-3.1-2.2-6h4.4c-.4 2.9-1.4 5-2.2 6Zm2.7-1.9c.5-1.5.9-3.2 1.1-5h3.1A8.03 8.03 0 0 1 14.7 18Z"/>
             </svg>
-            <span>Language</span>
+            <span id="langLabelText">Language</span>
             <span class="lang-caret" aria-hidden="true">▾</span>
           </button>
 
@@ -1400,6 +1423,12 @@
               (<strong>Brosimum alicastrum</strong>). Valued for centuries in Mesoamerica,
               MayaNut™ is naturally caffeine-free and nutrient-dense, adding a bold cocoa-like
               flavor to smoothies, açaí bowls, baking, everyday cooking, and more.
+            </p>
+
+            <p class="hero-note">
+              We are currently developing and finalizing our product, packaging, and launch details.
+              Thank you for your patience as we continue building MayaNut™ as a polished, consistent,
+              and enduring ingredient for modern kitchens.
             </p>
           </div>
 
@@ -1536,7 +1565,7 @@
         </div>
       </section>
 
-      <section class="panel" aria-label="Try MayaNut">
+      <section class="panel try-panel" aria-label="Try MayaNut">
         <div class="wide-card">
           <a class="wide-media" href="product.html" aria-label="View MayaNut product page">
             <img
@@ -1763,27 +1792,40 @@
       try { localStorage.setItem("mayanut_ui_lang", uiKey); } catch(e){}
     }
 
+    const langBtn = document.getElementById("langBtn");
+    const langLabelText = document.getElementById("langLabelText");
+
     function markActiveLanguage(uiKey){
+      let activeBtn = null;
+
       document.querySelectorAll(".lang-item").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.lang === uiKey);
+        const isActive = btn.dataset.lang === uiKey;
+        btn.classList.toggle("active", isActive);
+        if (isActive) activeBtn = btn;
       });
+
+      if (uiKey && uiKey !== "en") {
+        langLabelText.textContent = activeBtn ? activeBtn.textContent.trim() : "Language";
+        langBtn.classList.add("is-translated");
+      } else {
+        langLabelText.textContent = "Language";
+        langBtn.classList.remove("is-translated");
+      }
     }
 
     function closeLangMenu(){
       const dropdown = document.getElementById("langDropdown");
-      const btn = document.getElementById("langBtn");
-      if (!dropdown || !btn) return;
+      if (!dropdown || !langBtn) return;
       dropdown.classList.remove("open");
-      btn.setAttribute("aria-expanded", "false");
-      btn.blur();
+      langBtn.setAttribute("aria-expanded", "false");
+      langBtn.blur();
     }
 
     function openLangMenu(){
       const dropdown = document.getElementById("langDropdown");
-      const btn = document.getElementById("langBtn");
-      if (!dropdown || !btn) return;
+      if (!dropdown || !langBtn) return;
       dropdown.classList.add("open");
-      btn.setAttribute("aria-expanded", "true");
+      langBtn.setAttribute("aria-expanded", "true");
     }
 
     function toggleLangMenu(){
@@ -1803,7 +1845,6 @@
 
     function syncGoogleBannerOffset(){
       const banner = document.querySelector("iframe.goog-te-banner-frame");
-      const cookieLang = currentTargetLangFromCookie();
       const bodyTopInline = parseFloat((document.body.style.top || "0").replace("px","")) || 0;
 
       let h = 0;
@@ -1816,12 +1857,14 @@
 
         if (!hidden) {
           h = Math.max(rectH, offsetH, bodyTopInline);
-          if (cookieLang && cookieLang !== "en" && h < 39) h = 40;
+          if (h < 39) h = 40;
+        } else {
+          h = 0;
+          if (bodyTopInline > 0) document.body.style.top = "0px";
         }
       } else {
-        if (cookieLang && cookieLang !== "en") {
-          h = Math.max(bodyTopInline, 40);
-        }
+        h = 0;
+        if (bodyTopInline > 0) document.body.style.top = "0px";
       }
 
       document.documentElement.style.setProperty("--gtBannerH", h + "px");
@@ -1830,6 +1873,7 @@
     function watchGoogleBannerOffset(){
       const observer = new MutationObserver(() => {
         syncGoogleBannerOffset();
+        markActiveLanguage(getSavedUiLang());
       });
 
       observer.observe(document.documentElement, {
@@ -1860,10 +1904,10 @@
         setGoogTransCookie("/en/" + targetLang);
       }
 
-      setTimeout(syncGoogleBannerOffset, 300);
-      setTimeout(syncGoogleBannerOffset, 1000);
-      setTimeout(syncGoogleBannerOffset, 2000);
-      setTimeout(syncGoogleBannerOffset, 3500);
+      setTimeout(syncGoogleBannerOffset, 200);
+      setTimeout(syncGoogleBannerOffset, 700);
+      setTimeout(syncGoogleBannerOffset, 1500);
+      setTimeout(syncGoogleBannerOffset, 3000);
 
       const didCombo = tryGoogleComboTranslate(targetLang);
       if (!didCombo) window.location.reload();
@@ -1884,6 +1928,7 @@
       let bannerTries = 0;
       const bannerTimer = setInterval(() => {
         syncGoogleBannerOffset();
+        markActiveLanguage(getSavedUiLang());
         bannerTries++;
         if (bannerTries > 60) clearInterval(bannerTimer);
       }, 500);
@@ -1905,12 +1950,11 @@
 
     (function initLanguageDropdown(){
       const menuWrap = document.getElementById("langMenu");
-      const btn = document.getElementById("langBtn");
       const dropdown = document.getElementById("langDropdown");
 
-      if (!menuWrap || !btn || !dropdown) return;
+      if (!menuWrap || !langBtn || !dropdown) return;
 
-      btn.addEventListener("click", function(e){
+      langBtn.addEventListener("click", function(e){
         e.stopPropagation();
         toggleLangMenu();
       });

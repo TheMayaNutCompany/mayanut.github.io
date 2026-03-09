@@ -78,7 +78,8 @@
         "sameAs":[
           "https://www.instagram.com/themayanutcompany",
           "https://x.com/mayanutcompany",
-          "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/"
+          "https://www.linkedin.com/in/the-mayanut-company-9186b13a3/",
+          "https://www.facebook.com/profile.php?id=61586367136747"
         ],
         "contactPoint":[
           {
@@ -574,7 +575,6 @@
       min-height:100%;
     }
 
-    /* 3 clean hero badges */
     .hero-badges{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
@@ -1489,8 +1489,7 @@
             <div class="copy">
               <h2>Who We Are</h2>
               The MayaNut Company was founded to introduce MayaNut™ as a consistent, modern pantry ingredient rooted in the Alicastrum tree
-              (<em>Brosimum alicastrum</em>). We focus on quality, clarity, and long-term responsible sourcing so more people can discover MayaNut™,
-              enjoy it often, and keep it in their kitchens for years to come.
+              (<em>Brosimum alicastrum</em>). We focus on quality, clarity, and long-term responsible sourcing so more people can discover MayaNut™, enjoy it often, and keep it in their kitchens for years to come.
             </div>
           </article>
 
@@ -1682,7 +1681,7 @@
         <a class="social-ic" href="https://www.linkedin.com/in/the-mayanut-company-9186b13a3/" aria-label="LinkedIn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6v6.3h-4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg>
         </a>
-        <a class="social-ic" href="https://www.facebook.com/" aria-label="Facebook (coming soon)" target="_blank" rel="noopener nofollow">
+        <a class="social-ic" href="https://www.facebook.com/profile.php?id=61586367136747" aria-label="Facebook" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.5 1.6-1.5h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.4v2.2H8v3.2h2.7V22h2.8Z"/></svg>
         </a>
         <a class="social-ic" href="https://www.youtube.com/" aria-label="YouTube (coming soon)" target="_blank" rel="noopener nofollow">
@@ -1767,7 +1766,15 @@
 
     const LANG_CODES = [...new Set(Object.values(LANG_UI_TO_GOOGLE))].filter(code => code !== "en");
 
-    function setGoogTransCookie(value){
+    const langBtn = document.getElementById("langBtn");
+    const langLabelText = document.getElementById("langLabelText");
+    const langMenu = document.getElementById("langMenu");
+    const langDropdown = document.getElementById("langDropdown");
+
+    let gtScriptPromise = null;
+    let gtBannerInterval = null;
+
+    function setGoogTransCookie(value) {
       const host = location.hostname;
       const cookie = "googtrans=" + value + "; path=/; max-age=31536000";
       document.cookie = cookie;
@@ -1778,36 +1785,35 @@
       }
     }
 
-    function getGoogTransCookie(){
-      const m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
+    function getGoogTransCookie() {
+      const m = document.cookie.match(/(?:^|;\\s*)googtrans=([^;]+)/);
       return m ? decodeURIComponent(m[1]) : "";
     }
 
-    function currentTargetLangFromCookie(){
+    function currentTargetLangFromCookie() {
       const v = getGoogTransCookie();
       const parts = v.split("/");
       return parts.length >= 3 && parts[2] ? parts[2] : "en";
     }
 
-    function getSavedUiLang(){
+    function saveUiLang(uiKey) {
+      try { localStorage.setItem("mayanut_ui_lang", uiKey); } catch (e) {}
+    }
+
+    function getSavedUiLang() {
       try {
         const v = localStorage.getItem("mayanut_ui_lang");
         if (v && LANG_UI_TO_GOOGLE[v]) return v;
-      } catch(e){}
+      } catch (e) {}
+
       const target = currentTargetLangFromCookie();
       if (!target || target === "en") return "en";
+
       const firstMatch = Object.keys(LANG_UI_TO_GOOGLE).find(k => LANG_UI_TO_GOOGLE[k] === target);
       return firstMatch || "en";
     }
 
-    function saveUiLang(uiKey){
-      try { localStorage.setItem("mayanut_ui_lang", uiKey); } catch(e){}
-    }
-
-    const langBtn = document.getElementById("langBtn");
-    const langLabelText = document.getElementById("langLabelText");
-
-    function markActiveLanguage(uiKey){
+    function markActiveLanguage(uiKey) {
       let activeBtn = null;
 
       document.querySelectorAll(".lang-item").forEach(btn => {
@@ -1825,40 +1831,24 @@
       }
     }
 
-    function closeLangMenu(){
-      const dropdown = document.getElementById("langDropdown");
-      if (!dropdown || !langBtn) return;
-      dropdown.classList.remove("open");
+    function closeLangMenu() {
+      langDropdown.classList.remove("open");
       langBtn.setAttribute("aria-expanded", "false");
       langBtn.blur();
     }
 
-    function openLangMenu(){
-      const dropdown = document.getElementById("langDropdown");
-      if (!dropdown || !langBtn) return;
-      dropdown.classList.add("open");
+    function openLangMenu() {
+      langDropdown.classList.add("open");
       langBtn.setAttribute("aria-expanded", "true");
     }
 
-    function toggleLangMenu(){
-      const dropdown = document.getElementById("langDropdown");
-      if (!dropdown) return;
-      dropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
+    function toggleLangMenu() {
+      langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
     }
 
-    function tryGoogleComboTranslate(targetLang){
-      const combo = document.querySelector(".goog-te-combo");
-      if (!combo) return false;
-      combo.value = (targetLang === "en") ? "" : targetLang;
-      combo.dispatchEvent(new Event("change", { bubbles: true }));
-      combo.dispatchEvent(new Event("input", { bubbles: true }));
-      return true;
-    }
-
-    function syncGoogleBannerOffset(){
+    function syncGoogleBannerOffset() {
       const banner = document.querySelector("iframe.goog-te-banner-frame");
-      const bodyTopInline = parseFloat((document.body.style.top || "0").replace("px","")) || 0;
-
+      const bodyTopInline = parseFloat((document.body.style.top || "0").replace("px", "")) || 0;
       let h = 0;
 
       if (banner) {
@@ -1870,40 +1860,93 @@
         if (!hidden) {
           h = Math.max(rectH, offsetH, bodyTopInline);
           if (h < 39) h = 40;
-        } else {
-          h = 0;
-          if (bodyTopInline > 0) document.body.style.top = "0px";
         }
-      } else {
-        h = 0;
-        if (bodyTopInline > 0) document.body.style.top = "0px";
+      }
+
+      if (!h && bodyTopInline > 0) {
+        document.body.style.top = "0px";
       }
 
       document.documentElement.style.setProperty("--gtBannerH", h + "px");
     }
 
-    function watchGoogleBannerOffset(){
-      const observer = new MutationObserver(() => {
+    function runBannerSyncWindow(durationMs = 5000) {
+      if (gtBannerInterval) {
+        clearInterval(gtBannerInterval);
+        gtBannerInterval = null;
+      }
+
+      const start = Date.now();
+      syncGoogleBannerOffset();
+
+      gtBannerInterval = setInterval(() => {
         syncGoogleBannerOffset();
-        markActiveLanguage(getSavedUiLang());
-      });
 
-      observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["style", "class"]
-      });
-
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ["style", "class"]
-      });
-
-      return observer;
+        if (Date.now() - start > durationMs) {
+          clearInterval(gtBannerInterval);
+          gtBannerInterval = null;
+        }
+      }, 200);
     }
 
-    function translatePageTo(uiKey){
+    function loadGoogleTranslateScript() {
+      if (gtScriptPromise) return gtScriptPromise;
+
+      gtScriptPromise = new Promise((resolve, reject) => {
+        window.googleTranslateElementInit = function () {
+          try {
+            new google.translate.TranslateElement({
+              pageLanguage: "en",
+              autoDisplay: false,
+              includedLanguages: LANG_CODES.join(","),
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, "google_translate_element");
+
+            runBannerSyncWindow(6000);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        };
+
+        const s = document.createElement("script");
+        s.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        s.async = true;
+        s.defer = true;
+        s.onerror = reject;
+        document.body.appendChild(s);
+      });
+
+      return gtScriptPromise;
+    }
+
+    function applyGoogleLanguage(targetLang) {
+      return new Promise((resolve, reject) => {
+        let tries = 0;
+
+        const timer = setInterval(() => {
+          const combo = document.querySelector(".goog-te-combo");
+
+          if (combo) {
+            combo.value = targetLang === "en" ? "" : targetLang;
+            combo.dispatchEvent(new Event("change", { bubbles: true }));
+            combo.dispatchEvent(new Event("input", { bubbles: true }));
+            clearInterval(timer);
+            runBannerSyncWindow(7000);
+            resolve();
+            return;
+          }
+
+          tries++;
+          if (tries > 30) {
+            clearInterval(timer);
+            reject(new Error("Google Translate combo not ready"));
+          }
+        }, 250);
+      });
+    }
+
+    async function translatePageTo(uiKey) {
       const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
 
       markActiveLanguage(uiKey);
@@ -1912,92 +1955,49 @@
 
       if (targetLang === "en") {
         setGoogTransCookie("/en/en");
-      } else {
-        setGoogTransCookie("/en/" + targetLang);
-      }
-
-      setTimeout(syncGoogleBannerOffset, 200);
-      setTimeout(syncGoogleBannerOffset, 700);
-      setTimeout(syncGoogleBannerOffset, 1500);
-      setTimeout(syncGoogleBannerOffset, 3000);
-
-      const didCombo = tryGoogleComboTranslate(targetLang);
-      if (!didCombo) window.location.reload();
-    }
-
-    function googleTranslateElementInit(){
-      if (!window.google || !google.translate || !google.translate.TranslateElement) return;
-
-      new google.translate.TranslateElement({
-        pageLanguage: "en",
-        autoDisplay: false,
-        includedLanguages: LANG_CODES.join(","),
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, "google_translate_element");
-
-      syncGoogleBannerOffset();
-
-      let bannerTries = 0;
-      const bannerTimer = setInterval(() => {
         syncGoogleBannerOffset();
-        markActiveLanguage(getSavedUiLang());
-        bannerTries++;
-        if (bannerTries > 60) clearInterval(bannerTimer);
-      }, 500);
+        window.location.reload();
+        return;
+      }
 
-      watchGoogleBannerOffset();
+      setGoogTransCookie("/en/" + targetLang);
 
-      const savedUi = getSavedUiLang();
-      markActiveLanguage(savedUi);
-
-      const cookieTarget = currentTargetLangFromCookie();
-      if (cookieTarget && cookieTarget !== "en") {
-        let tries = 0;
-        const t = setInterval(() => {
-          tries++;
-          if (tryGoogleComboTranslate(cookieTarget) || tries > 20) clearInterval(t);
-        }, 300);
+      try {
+        await loadGoogleTranslateScript();
+        await applyGoogleLanguage(targetLang);
+      } catch (err) {
+        window.location.reload();
       }
     }
 
-    (function initLanguageDropdown(){
-      const menuWrap = document.getElementById("langMenu");
-      const dropdown = document.getElementById("langDropdown");
+    langBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleLangMenu();
+    });
 
-      if (!menuWrap || !langBtn || !dropdown) return;
+    langDropdown.addEventListener("click", function (e) {
+      const target = e.target.closest(".lang-item");
+      if (!target) return;
+      translatePageTo(target.dataset.lang);
+    });
 
-      langBtn.addEventListener("click", function(e){
-        e.stopPropagation();
-        toggleLangMenu();
-      });
+    document.addEventListener("click", function (e) {
+      if (!langMenu.contains(e.target)) closeLangMenu();
+    });
 
-      dropdown.addEventListener("click", function(e){
-        const target = e.target.closest(".lang-item");
-        if (!target) return;
-        const uiKey = target.dataset.lang;
-        if (!uiKey) return;
-        translatePageTo(uiKey);
-      });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeLangMenu();
+    });
 
-      document.addEventListener("click", function(e){
-        if (!menuWrap.contains(e.target)) closeLangMenu();
-      });
+    window.addEventListener("resize", syncGoogleBannerOffset);
+    window.addEventListener("orientationchange", () => {
+      setTimeout(syncGoogleBannerOffset, 250);
+    });
 
-      document.addEventListener("keydown", function(e){
-        if (e.key === "Escape") closeLangMenu();
-      });
+    setInterval(syncGoogleBannerOffset, 1200);
 
-      markActiveLanguage(getSavedUiLang());
-      syncGoogleBannerOffset();
-      window.addEventListener("resize", syncGoogleBannerOffset);
-      window.addEventListener("orientationchange", () => {
-        setTimeout(syncGoogleBannerOffset, 250);
-      });
-    })();
-
-    window.googleTranslateElementInit = googleTranslateElementInit;
+    markActiveLanguage(getSavedUiLang());
+    syncGoogleBannerOffset();
   </script>
-
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 </body>
 </html>

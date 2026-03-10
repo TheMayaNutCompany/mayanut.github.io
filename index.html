@@ -7,15 +7,16 @@
 
   <!-- Primary SEO -->
   <title>MayaNut.com | The MayaNut Company | MayaNut™ Powder | Brosimum alicastrum</title>
-  <meta name="description" content="MayaNut™ is a delicious powder made from roasted seeds of the Alicastrum tree (Brosimum alicastrum). Valued for centuries in Mesoamerica, MayaNut™ is naturally caffeine-free and nutrient-dense with a bold cocoa-like flavor for smoothies, açaí bowls, baking, everyday cooking, and more.">
-  <meta name="keywords" content="MayaNut, MayaNut powder, MayaNut™ powder, MayaNut flour, MayaNut™ flour, Maya Nut, Maya Nut powder, Maya nut flour, roasted Alicastrum seed powder, Alicastrum seed flour, Brosimum alicastrum powder, Brosimum alicastrum flour, caffeine-free coffee alternative, gluten-free seed flour alternative, sustainable tropical tree flour, ramon, ramón, harina de ramón, harina de ramon, ojoche, capomo, guaimaro, guáimaro, oox, ox, ujuxte, masica, árbol de ramón, arbol de ramon, semillas de ramón, breadnut, breadnut flour, breadnut powder, Maya breadnut">
+  <meta name="description" content="MayaNut™ is a roasted Alicastrum (Brosimum alicastrum) seed powder with a bold cocoa-like flavor for smoothies, açaí bowls, baking, and everyday cooking. Naturally caffeine-free and rooted in long-standing Mesoamerican use.">
+  <meta name="keywords" content="MayaNut, MayaNut powder, MayaNut™ powder, MayaNut flour, MayaNut™ flour, Maya Nut, Maya Nut powder, Maya nut flour, roasted Alicastrum seed powder, Alicastrum seed flour, Brosimum alicastrum powder, Brosimum alicastrum flour, caffeine-free coffee alternative, gluten-free seed flour alternative, sustainable tropical tree flour, ramon, ramón, harina de ramón, harina de ramon, ojoche, capomo, guaimaro, guáimaro, oox, ox, ujuxte, masica, árbol de ramón, arbol de ramon, semillas de ramón, breadnut, breadnut flour, breadnut powder">
   <link rel="canonical" href="https://www.mayanut.com/">
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1220">
   <meta name="format-detection" content="telephone=no">
   <meta name="application-name" content="The MayaNut Company">
   <meta name="apple-mobile-web-app-title" content="MayaNut">
@@ -33,7 +34,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="The MayaNut Company">
   <meta property="og:title" content="MayaNut.com | The MayaNut Company | MayaNut™ Powder">
-  <meta property="og:description" content="Roasted Alicastrum (Brosimum alicastrum) seed powder with bold cocoa-like flavor. Naturally caffeine-free and nutrient-dense.">
+  <meta property="og:description" content="Roasted Alicastrum (Brosimum alicastrum) seed powder with bold cocoa-like flavor. Naturally caffeine-free and rooted in long-standing Mesoamerican use.">
   <meta property="og:url" content="https://www.mayanut.com/">
   <meta property="og:image" content="https://www.mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png">
   <meta property="og:image:secure_url" content="https://www.mayanut.com/mayanut-powder-maya-nut-brosimum-alicastrum.png">
@@ -114,7 +115,7 @@
         "url":"https://www.mayanut.com/",
         "name":"MayaNut.com | The MayaNut Company | MayaNut™ Powder",
         "inLanguage":"en",
-        "description":"MayaNut™ is a delicious powder made from roasted seeds of the Alicastrum tree (Brosimum alicastrum). Valued for centuries in Mesoamerica, MayaNut™ is naturally caffeine-free and nutrient-dense with a bold cocoa-like flavor.",
+        "description":"MayaNut™ is a roasted seed powder made from the Alicastrum tree (Brosimum alicastrum), naturally caffeine-free and suited for smoothies, açaí bowls, baking, and everyday cooking.",
         "isPartOf":{"@id":"https://www.mayanut.com/#website"},
         "about":[
           {"@type":"Thing","name":"MayaNut™ powder"},
@@ -148,7 +149,7 @@
           "Ujuxte seed flour",
           "Breadnut flour"
         ],
-        "description":"MayaNut™ is a delicious powder made from roasted seeds of the Alicastrum tree (Brosimum alicastrum). Valued for centuries in Mesoamerica, it is naturally caffeine-free and nutrient-dense with a bold cocoa-like flavor.",
+        "description":"MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree (Brosimum alicastrum). It is naturally caffeine-free with a bold cocoa-like flavor.",
         "brand":{"@type":"Brand","name":"MayaNut™"},
         "manufacturer":{"@id":"https://www.mayanut.com/#organization"},
         "category":"Food, Beverages & Tobacco > Food Items > Flour",
@@ -1962,9 +1963,9 @@
     const langDropdown = document.getElementById("langDropdown");
 
     let gtScriptPromise = null;
-    let stickyTranslateTimer = null;
     let bannerWatchTimer = null;
-    let activeUiLang = "en";
+    let keepAliveTimer = null;
+    let currentUiLang = "en";
 
     function syncHeaderHeight() {
       if (!siteHeader) return;
@@ -1976,7 +1977,7 @@
 
     function setGoogTransCookie(value) {
       const host = location.hostname;
-      const cookie = "googtrans=" + value + "; path=/; max-age=31536000";
+      const cookie = "googtrans=" + value + "; path=/; max-age=31536000; SameSite=Lax";
       document.cookie = cookie;
       document.cookie = cookie + "; domain=" + host;
 
@@ -1986,19 +1987,15 @@
       }
     }
 
-    function getGoogTransCookie() {
-      const m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
-      return m ? decodeURIComponent(m[1]) : "";
-    }
-
-    function clearTranslateCookie() {
+    function clearGoogTransCookie() {
       const host = location.hostname;
-      const expire = "expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-      document.cookie = "googtrans=; " + expire;
-      document.cookie = "googtrans=; " + expire + "; domain=" + host;
+      const expired = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = expired;
+      document.cookie = expired + "; domain=" + host;
+
       if (host.split(".").length > 2) {
         const root = host.split(".").slice(-2).join(".");
-        document.cookie = "googtrans=; " + expire + "; domain=." + root;
+        document.cookie = expired + "; domain=." + root;
       }
     }
 
@@ -2012,19 +2009,15 @@
       });
 
       const activeName = activeBtn ? activeBtn.textContent.trim() : "English";
-      const statusText = LANG_SHORT[uiKey] || (uiKey || "en").toUpperCase();
-
       langLabelText.textContent = "Language";
-      langStatus.textContent = statusText;
+      langStatus.textContent = LANG_SHORT[uiKey] || "EN";
       langBtn.setAttribute("aria-label", "Choose language. Current language: " + activeName);
 
-      if (uiKey && uiKey !== "en") {
+      if (uiKey !== "en") {
         langBtn.classList.add("is-translated");
       } else {
         langBtn.classList.remove("is-translated");
       }
-
-      syncHeaderHeight();
     }
 
     function closeLangMenu() {
@@ -2038,28 +2031,26 @@
     }
 
     function toggleLangMenu() {
-      langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
+      if (langDropdown.classList.contains("open")) {
+        closeLangMenu();
+      } else {
+        openLangMenu();
+      }
     }
 
     function syncGoogleBannerOffset() {
       const banner = document.querySelector("iframe.goog-te-banner-frame");
-      const bodyTopInline = parseFloat((document.body.style.top || "0").replace("px", "")) || 0;
       let h = 0;
 
       if (banner) {
-        const style = window.getComputedStyle(banner);
+        const style = getComputedStyle(banner);
         const hidden = style.display === "none" || style.visibility === "hidden";
         const rectH = Math.round(banner.getBoundingClientRect().height || 0);
-        const offsetH = banner.offsetHeight || 0;
+        const offsetH = Math.round(banner.offsetHeight || 0);
 
         if (!hidden) {
-          h = Math.max(rectH, offsetH, bodyTopInline);
-          if (h < 39) h = 40;
+          h = Math.max(rectH, offsetH, 40);
         }
-      }
-
-      if (!h && bodyTopInline > 0) {
-        h = bodyTopInline;
       }
 
       document.documentElement.style.setProperty("--gtBannerH", h + "px");
@@ -2067,14 +2058,41 @@
     }
 
     function startBannerWatch() {
-      if (bannerWatchTimer) clearInterval(bannerWatchTimer);
-      bannerWatchTimer = setInterval(syncGoogleBannerOffset, 200);
+      stopBannerWatch();
+      bannerWatchTimer = setInterval(syncGoogleBannerOffset, 150);
     }
 
     function stopBannerWatch() {
       if (bannerWatchTimer) {
         clearInterval(bannerWatchTimer);
         bannerWatchTimer = null;
+      }
+    }
+
+    function startTranslationKeepAlive(uiKey) {
+      stopTranslationKeepAlive();
+
+      const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
+      if (targetLang === "en") return;
+
+      keepAliveTimer = setInterval(() => {
+        setGoogTransCookie("/en/" + targetLang);
+
+        const combo = document.querySelector(".goog-te-combo");
+        if (combo && combo.value !== targetLang) {
+          combo.value = targetLang;
+          combo.dispatchEvent(new Event("change", { bubbles: true }));
+          combo.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        syncGoogleBannerOffset();
+      }, 500);
+    }
+
+    function stopTranslationKeepAlive() {
+      if (keepAliveTimer) {
+        clearInterval(keepAliveTimer);
+        keepAliveTimer = null;
       }
     }
 
@@ -2090,8 +2108,6 @@
               includedLanguages: LANG_CODES.join(","),
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, "google_translate_element");
-
-            syncGoogleBannerOffset();
             resolve();
           } catch (err) {
             reject(err);
@@ -2125,52 +2141,24 @@
             return;
           }
 
-          tries++;
-          if (tries > 40) {
+          tries += 1;
+          if (tries > 50) {
             clearInterval(timer);
             reject(new Error("Google Translate combo not ready"));
           }
-        }, 250);
+        }, 200);
       });
     }
 
-    function startStickyTranslation(uiKey) {
-      const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
-
-      if (stickyTranslateTimer) {
-        clearInterval(stickyTranslateTimer);
-        stickyTranslateTimer = null;
-      }
-
-      if (targetLang === "en") return;
-
-      stickyTranslateTimer = setInterval(() => {
-        setGoogTransCookie("/en/" + targetLang);
-
-        const combo = document.querySelector(".goog-te-combo");
-        if (combo && combo.value !== targetLang) {
-          combo.value = targetLang;
-          combo.dispatchEvent(new Event("change", { bubbles: true }));
-          combo.dispatchEvent(new Event("input", { bubbles: true }));
-        }
-
-        syncGoogleBannerOffset();
-      }, 800);
-    }
-
     async function translatePageTo(uiKey) {
-      activeUiLang = uiKey;
+      currentUiLang = uiKey;
       markActiveLanguage(uiKey);
       closeLangMenu();
 
       if (uiKey === "en") {
-        if (stickyTranslateTimer) {
-          clearInterval(stickyTranslateTimer);
-          stickyTranslateTimer = null;
-        }
+        stopTranslationKeepAlive();
         stopBannerWatch();
-        clearTranslateCookie();
-        setGoogTransCookie("/en/en");
+        clearGoogTransCookie();
         document.documentElement.style.setProperty("--gtBannerH", "0px");
         document.body.style.top = "0px";
         window.location.reload();
@@ -2184,10 +2172,10 @@
         await loadGoogleTranslateScript();
         await applyGoogleLanguage(targetLang);
         startBannerWatch();
-        startStickyTranslation(uiKey);
+        startTranslationKeepAlive(uiKey);
         syncGoogleBannerOffset();
       } catch (err) {
-        window.location.reload();
+        console.error(err);
       }
     }
 
@@ -2229,18 +2217,7 @@
       headerResizeObserver.observe(siteHeader);
     }
 
-    const domObserver = new MutationObserver(function () {
-      syncGoogleBannerOffset();
-    });
-
-    domObserver.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["style", "class"]
-    });
-
-    markActiveLanguage(activeUiLang);
+    markActiveLanguage("en");
     syncHeaderHeight();
     syncGoogleBannerOffset();
 

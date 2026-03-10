@@ -252,7 +252,7 @@
 
     body{
       min-height:100%;
-      margin:0;
+      margin:0 !important;
       background:#fff;
       font-family:var(--font-ui);
       color:var(--ink);
@@ -261,6 +261,8 @@
       text-rendering:optimizeLegibility;
       position:static !important;
       top:0 !important;
+      margin-top:0 !important;
+      transform:none !important;
     }
 
     main,
@@ -331,7 +333,9 @@
       position:fixed !important;
       top:var(--safeTop) !important;
       left:0 !important;
+      right:0 !important;
       width:100% !important;
+      max-width:100% !important;
     }
 
     .site-header{
@@ -1990,6 +1994,7 @@
     let gtScriptPromise = null;
     let bannerWatchTimer = null;
     let keepAliveTimer = null;
+    let englishResetTimer = null;
     let selectedUiLang = "en";
 
     function syncHeaderHeight() {
@@ -2001,30 +2006,34 @@
     }
 
     function getMinBannerHeight() {
-      return window.matchMedia("(max-width: 980px)").matches ? 54 : 40;
+      return window.matchMedia("(max-width: 980px)").matches ? 56 : 40;
     }
 
     function setGoogTransCookie(value) {
       const host = location.hostname;
-      const cookie = "googtrans=" + value + "; path=/; max-age=31536000; SameSite=Lax";
-      document.cookie = cookie;
-      document.cookie = cookie + "; domain=" + host;
+      const base = "googtrans=" + encodeURIComponent(value) + "; path=/; max-age=31536000; SameSite=Lax";
+      document.cookie = base;
+      document.cookie = base + "; domain=" + host;
 
       if (host.split(".").length > 2) {
         const root = host.split(".").slice(-2).join(".");
-        document.cookie = cookie + "; domain=." + root;
+        document.cookie = base + "; domain=." + root;
       }
+    }
+
+    function expireCookieForDomain(domain) {
+      document.cookie = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax" + (domain ? "; domain=" + domain : "");
     }
 
     function clearGoogTransCookie() {
       const host = location.hostname;
-      const expired = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      document.cookie = expired;
-      document.cookie = expired + "; domain=" + host;
+      expireCookieForDomain("");
+      expireCookieForDomain(host);
 
-      if (host.split(".").length > 2) {
+      if (host.split(".").length > 1) {
         const root = host.split(".").slice(-2).join(".");
-        document.cookie = expired + "; domain=." + root;
+        expireCookieForDomain("." + root);
+        expireCookieForDomain(root);
       }
     }
 
@@ -2063,40 +2072,67 @@
       langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
     }
 
-    function normalizeGoogleBody() {
-      document.body.style.top = "0px";
-      document.body.style.position = "static";
-      document.body.style.marginTop = "0px";
+    function getBannerFrames() {
+      return Array.from(document.querySelectorAll("iframe.goog-te-banner-frame, iframe.goog-te-banner-frame.skiptranslate"));
+    }
+
+    function hideBannerFrames() {
+      getBannerFrames().forEach(frame => {
+        frame.style.display = "none";
+        frame.style.visibility = "hidden";
+        frame.setAttribute("aria-hidden", "true");
+      });
+    }
+
+    function showBannerFrames() {
+      getBannerFrames().forEach(frame => {
+        frame.style.display = "";
+        frame.style.visibility = "";
+        frame.removeAttribute("aria-hidden");
+      });
     }
 
     function getBannerHeight() {
-      const frame = document.querySelector("iframe.goog-te-banner-frame, iframe.goog-te-banner-frame.skiptranslate");
-      if (!frame) return 0;
+      const minH = getMinBannerHeight();
+      const frames = getBannerFrames();
+      if (!frames.length) return 0;
 
-      const style = getComputedStyle(frame);
-      if (style.display === "none" || style.visibility === "hidden") return 0;
+      let h = 0;
+      frames.forEach(frame => {
+        const style = getComputedStyle(frame);
+        if (style.display === "none" || style.visibility === "hidden") return;
+        h = Math.max(
+          h,
+          Math.round(frame.getBoundingClientRect().height || 0),
+          Math.round(frame.offsetHeight || 0)
+        );
+      });
 
-      return Math.max(
-        Math.round(frame.getBoundingClientRect().height || 0),
-        Math.round(frame.offsetHeight || 0),
-        getMinBannerHeight()
-      );
+      return h > 0 ? Math.max(h, minH) : 0;
     }
 
     function setTranslateOffset(px) {
-      document.documentElement.style.setProperty("--gtBannerH", px + "px");
+      document.documentElement.style.setProperty("--gtBannerH", Math.max(0, px) + "px");
+      syncHeaderHeight();
+    }
+
+    function forceEnglishLayout() {
+      hideBannerFrames();
+      clearGoogTransCookie();
+      document.documentElement.lang = "en";
+      setTranslateOffset(0);
       syncHeaderHeight();
     }
 
     function updateTranslateLayout() {
-      normalizeGoogleBody();
-
       if (selectedUiLang === "en") {
-        setTranslateOffset(0);
+        forceEnglishLayout();
         return;
       }
 
-      setTranslateOffset(getBannerHeight());
+      showBannerFrames();
+      const measured = getBannerHeight();
+      setTranslateOffset(measured || getMinBannerHeight());
     }
 
     function stopBannerWatch() {
@@ -2116,6 +2152,13 @@
       if (keepAliveTimer) {
         clearInterval(keepAliveTimer);
         keepAliveTimer = null;
+      }
+    }
+
+    function stopEnglishResetLoop() {
+      if (englishResetTimer) {
+        clearInterval(englishResetTimer);
+        englishResetTimer = null;
       }
     }
 
@@ -2166,6 +2209,29 @@
       }, 1200);
     }
 
+    function startEnglishResetLoop() {
+      stopEnglishResetLoop();
+
+      let ticks = 0;
+      englishResetTimer = setInterval(() => {
+        clearGoogTransCookie();
+
+        const combo = document.querySelector(".goog-te-combo");
+        if (combo) {
+          combo.value = "";
+          combo.dispatchEvent(new Event("change", { bubbles: true }));
+          combo.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        forceEnglishLayout();
+        ticks += 1;
+
+        if (ticks >= 16) {
+          stopEnglishResetLoop();
+        }
+      }, 120);
+    }
+
     function loadGoogleTranslateScript() {
       if (gtScriptPromise) return gtScriptPromise;
 
@@ -2198,6 +2264,7 @@
     async function activateTranslation(uiKey) {
       const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
 
+      stopEnglishResetLoop();
       setTranslateOffset(getMinBannerHeight());
       setGoogTransCookie("/en/" + targetLang);
 
@@ -2214,18 +2281,35 @@
       setTimeout(updateTranslateLayout, 1600);
     }
 
+    async function switchToEnglish() {
+      selectedUiLang = "en";
+      markActiveLanguage("en");
+      closeLangMenu();
+
+      stopTranslationKeepAlive();
+      stopBannerWatch();
+
+      try {
+        await loadGoogleTranslateScript();
+        const combo = await waitForTranslateCombo(20, 100);
+        combo.value = "";
+        combo.dispatchEvent(new Event("change", { bubbles: true }));
+        combo.dispatchEvent(new Event("input", { bubbles: true }));
+      } catch (err) {
+        console.error(err);
+      }
+
+      forceEnglishLayout();
+      startEnglishResetLoop();
+    }
+
     async function translatePageTo(uiKey) {
       selectedUiLang = uiKey;
       markActiveLanguage(uiKey);
       closeLangMenu();
 
       if (uiKey === "en") {
-        stopTranslationKeepAlive();
-        stopBannerWatch();
-        clearGoogTransCookie();
-        setTranslateOffset(0);
-        document.documentElement.style.setProperty("--headerH", "76px");
-        window.location.reload();
+        switchToEnglish();
         return;
       }
 
@@ -2289,11 +2373,11 @@
 
     markActiveLanguage("en");
     syncHeaderHeight();
-    setTranslateOffset(0);
+    forceEnglishLayout();
 
     window.addEventListener("load", function () {
       syncHeaderHeight();
-      setTranslateOffset(0);
+      forceEnglishLayout();
       loadGoogleTranslateScript().catch(() => {});
     });
   </script>

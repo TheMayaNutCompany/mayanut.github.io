@@ -26,8 +26,10 @@
 
   <!-- Favicons -->
   <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico">
   <link rel="icon" type="image/png" href="/favicon-16.png" sizes="16x16">
   <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/mayanut-the-mayanut-comapny-logo.png" sizes="512x512">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 
   <!-- Social -->
@@ -323,7 +325,7 @@
       z-index:100001;
       display:none;
       background:#fff;
-      border-bottom:1px solid rgba(11,18,32,0.08);
+      border-bottom:1px solid rgba(11,18,32,0.06);
     }
 
     .translate-shell.active{
@@ -2158,6 +2160,8 @@
     const langDropdown = document.getElementById("langDropdown");
 
     let gtScriptPromise = null;
+    let gtReady = false;
+    let pendingUiLang = null;
     let selectedUiLang = "en";
 
     function syncHeaderHeight() {
@@ -2168,9 +2172,10 @@
     }
 
     function syncTranslateBarHeight() {
-      const h = translateShell.classList.contains("active")
+      const raw = translateShell.classList.contains("active")
         ? Math.ceil(translateShell.getBoundingClientRect().height || 0)
         : 0;
+      const h = raw > 0 ? Math.max(0, raw - 1) : 0;
       document.documentElement.style.setProperty("--translateBarH", h + "px");
       syncHeaderHeight();
     }
@@ -2296,16 +2301,38 @@
       });
     }
 
-    function setComboLanguage(targetLang) {
+    function dispatchComboChange(combo) {
+      combo.dispatchEvent(new Event("change", { bubbles: true }));
+      combo.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+
+    function forceSetCombo(targetLang) {
       const combo = document.querySelector(".goog-te-combo");
       if (!combo) return false;
 
       const desired = targetLang === "en" ? "" : targetLang;
-      if (combo.value !== desired) {
-        combo.value = desired;
-        combo.dispatchEvent(new Event("change", { bubbles: true }));
-        combo.dispatchEvent(new Event("input", { bubbles: true }));
+
+      if (desired === "") {
+        combo.value = "";
+        dispatchComboChange(combo);
+        return true;
       }
+
+      combo.value = "";
+      dispatchComboChange(combo);
+
+      setTimeout(() => {
+        combo.value = desired;
+        dispatchComboChange(combo);
+      }, 40);
+
+      setTimeout(() => {
+        if (combo.value !== desired) {
+          combo.value = desired;
+          dispatchComboChange(combo);
+        }
+      }, 220);
+
       return true;
     }
 
@@ -2363,9 +2390,17 @@
             }, "google_translate_element");
 
             waitForTranslateCombo().then(() => {
+              gtReady = true;
               bindNativeCombo();
               neutralizeGoogleInjectedLayout();
               syncTranslateBarHeight();
+
+              if (pendingUiLang && pendingUiLang !== "en") {
+                const target = LANG_UI_TO_GOOGLE[pendingUiLang] || "en";
+                forceSetCombo(target);
+                pendingUiLang = null;
+              }
+
               resolve();
             }).catch(reject);
           } catch (err) {
@@ -2391,15 +2426,14 @@
       closeLangMenu();
 
       if (uiKey === "en") {
+        pendingUiLang = null;
         clearGoogTransCookie();
         hideTranslateShell();
         neutralizeGoogleInjectedLayout();
 
         const combo = document.querySelector(".goog-te-combo");
         if (combo) {
-          combo.value = "";
-          combo.dispatchEvent(new Event("change", { bubbles: true }));
-          combo.dispatchEvent(new Event("input", { bubbles: true }));
+          forceSetCombo("en");
         }
 
         if (reloadEnglish) {
@@ -2410,17 +2444,19 @@
 
       showTranslateShell();
 
-      try {
-        await loadGoogleTranslateScript();
-        const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
-        setGoogTransCookie("/en/" + targetLang);
-        setComboLanguage(targetLang);
-        bindNativeCombo();
-        neutralizeGoogleInjectedLayout();
-        syncTranslateBarHeight();
-      } catch (err) {
-        console.error(err);
+      const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
+      setGoogTransCookie("/en/" + targetLang);
+      pendingUiLang = uiKey;
+
+      if (!gtReady) {
+        loadGoogleTranslateScript().catch(console.error);
+        return;
       }
+
+      forceSetCombo(targetLang);
+      pendingUiLang = null;
+      neutralizeGoogleInjectedLayout();
+      syncTranslateBarHeight();
     }
 
     langBtn.addEventListener("click", function (e) {
@@ -2476,17 +2512,20 @@
     hideTranslateShell();
     syncHeaderHeight();
 
-    window.addEventListener("load", async function () {
+    window.addEventListener("load", function () {
       syncHeaderHeight();
       neutralizeGoogleInjectedLayout();
 
-      const initialUiLang = getSavedUiLang();
-
-      if (initialUiLang && initialUiLang !== "en") {
-        await applyLanguage(initialUiLang, { reloadEnglish: false });
-      } else {
+      loadGoogleTranslateScript().then(async () => {
+        const initialUiLang = getSavedUiLang();
+        if (initialUiLang && initialUiLang !== "en") {
+          await applyLanguage(initialUiLang, { reloadEnglish: false });
+        } else {
+          hideTranslateShell();
+        }
+      }).catch(() => {
         hideTranslateShell();
-      }
+      });
     });
 
     setInterval(function () {

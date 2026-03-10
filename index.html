@@ -20,7 +20,7 @@
   <meta name="application-name" content="The MayaNut Company">
   <meta name="apple-mobile-web-app-title" content="MayaNut">
   <meta name="author" content="The MayaNut Company, Inc.">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.mayanut.com/sitemap.xml">
 
   <!-- Favicons -->
@@ -208,9 +208,17 @@
       --storyMediaH:320px;
 
       --sbW:12px;
-      --sbTrack:#ffffff;
+      --sbTrack:#e8edf2;
       --sbThumb:#9aa5b1;
       --sbThumbHover:#7b8794;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --sbTrack:#0b1220;
+        --sbThumb:#7b8794;
+        --sbThumbHover:#aeb8c2;
+      }
     }
 
     *, *::before, *::after{ box-sizing:border-box; }
@@ -224,6 +232,7 @@
       scrollbar-width:auto;
       scroll-behavior:smooth;
       background:#fff;
+      color-scheme:light dark;
     }
 
     ::-webkit-scrollbar{ width:var(--sbW); height:var(--sbW); }
@@ -1446,7 +1455,7 @@
   <header class="site-header" aria-label="Site header">
     <div class="header-inner">
       <div class="header-row">
-        <div class="brand" aria-label="MayaNut.com The MayaNut Company">
+        <div class="brand" aria-label="The MayaNut Company">
           <a href="index.html" aria-label="Go to home page">
             <img
               src="mayanut-the-mayanut-comapny-logo.png"
@@ -1457,7 +1466,7 @@
               fetchpriority="high"
             >
           </a>
-          <div class="brand-name" translate="no">MayaNut.com · The MayaNut Company</div>
+          <div class="brand-name" translate="no">The MayaNut Company</div>
         </div>
 
         <nav class="subnav" aria-label="Primary navigation (desktop)">
@@ -1722,7 +1731,7 @@
             <p>
               Explore MayaNut™ as a roasted Alicastrum <span class="botanical-name" translate="no">(<strong>Brosimum alicastrum</strong>)</span> seed powder for smoothies, açaí bowls, baking, and everyday cooking—also known regionally as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, and oox/ox.
             </p>
-            <a class="btn" href="product.html" aria-label="View MayaNut product page">View MayaNut™</a>
+            <a class="btn" href="product.html" aria-label="View MayaNut product page">Try MayaNut</a>
           </div>
         </div>
       </section>
@@ -1953,7 +1962,9 @@
     const langDropdown = document.getElementById("langDropdown");
 
     let gtScriptPromise = null;
-    let gtBannerInterval = null;
+    let stickyTranslateTimer = null;
+    let bannerWatchTimer = null;
+    let activeUiLang = "en";
 
     function syncHeaderHeight() {
       if (!siteHeader) return;
@@ -1980,27 +1991,15 @@
       return m ? decodeURIComponent(m[1]) : "";
     }
 
-    function currentTargetLangFromCookie() {
-      const v = getGoogTransCookie();
-      const parts = v.split("/");
-      return parts.length >= 3 && parts[2] ? parts[2] : "en";
-    }
-
-    function saveUiLang(uiKey) {
-      try { localStorage.setItem("mayanut_ui_lang", uiKey); } catch (e) {}
-    }
-
-    function getSavedUiLang() {
-      try {
-        const v = localStorage.getItem("mayanut_ui_lang");
-        if (v && LANG_UI_TO_GOOGLE[v]) return v;
-      } catch (e) {}
-
-      const target = currentTargetLangFromCookie();
-      if (!target || target === "en") return "en";
-
-      const firstMatch = Object.keys(LANG_UI_TO_GOOGLE).find(k => LANG_UI_TO_GOOGLE[k] === target);
-      return firstMatch || "en";
+    function clearTranslateCookie() {
+      const host = location.hostname;
+      const expire = "expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+      document.cookie = "googtrans=; " + expire;
+      document.cookie = "googtrans=; " + expire + "; domain=" + host;
+      if (host.split(".").length > 2) {
+        const root = host.split(".").slice(-2).join(".");
+        document.cookie = "googtrans=; " + expire + "; domain=." + root;
+      }
     }
 
     function markActiveLanguage(uiKey) {
@@ -2060,30 +2059,23 @@
       }
 
       if (!h && bodyTopInline > 0) {
-        document.body.style.top = "0px";
+        h = bodyTopInline;
       }
 
       document.documentElement.style.setProperty("--gtBannerH", h + "px");
       syncHeaderHeight();
     }
 
-    function runBannerSyncWindow(durationMs = 5000) {
-      if (gtBannerInterval) {
-        clearInterval(gtBannerInterval);
-        gtBannerInterval = null;
+    function startBannerWatch() {
+      if (bannerWatchTimer) clearInterval(bannerWatchTimer);
+      bannerWatchTimer = setInterval(syncGoogleBannerOffset, 200);
+    }
+
+    function stopBannerWatch() {
+      if (bannerWatchTimer) {
+        clearInterval(bannerWatchTimer);
+        bannerWatchTimer = null;
       }
-
-      const start = Date.now();
-      syncGoogleBannerOffset();
-
-      gtBannerInterval = setInterval(() => {
-        syncGoogleBannerOffset();
-
-        if (Date.now() - start > durationMs) {
-          clearInterval(gtBannerInterval);
-          gtBannerInterval = null;
-        }
-      }, 200);
     }
 
     function loadGoogleTranslateScript() {
@@ -2094,12 +2086,12 @@
           try {
             new google.translate.TranslateElement({
               pageLanguage: "en",
-              autoDisplay: false,
+              autoDisplay: true,
               includedLanguages: LANG_CODES.join(","),
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, "google_translate_element");
 
-            runBannerSyncWindow(6000);
+            syncGoogleBannerOffset();
             resolve();
           } catch (err) {
             reject(err);
@@ -2129,13 +2121,12 @@
             combo.dispatchEvent(new Event("change", { bubbles: true }));
             combo.dispatchEvent(new Event("input", { bubbles: true }));
             clearInterval(timer);
-            runBannerSyncWindow(7000);
             resolve();
             return;
           }
 
           tries++;
-          if (tries > 30) {
+          if (tries > 40) {
             clearInterval(timer);
             reject(new Error("Google Translate combo not ready"));
           }
@@ -2143,25 +2134,58 @@
       });
     }
 
-    async function translatePageTo(uiKey) {
+    function startStickyTranslation(uiKey) {
       const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
 
+      if (stickyTranslateTimer) {
+        clearInterval(stickyTranslateTimer);
+        stickyTranslateTimer = null;
+      }
+
+      if (targetLang === "en") return;
+
+      stickyTranslateTimer = setInterval(() => {
+        setGoogTransCookie("/en/" + targetLang);
+
+        const combo = document.querySelector(".goog-te-combo");
+        if (combo && combo.value !== targetLang) {
+          combo.value = targetLang;
+          combo.dispatchEvent(new Event("change", { bubbles: true }));
+          combo.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        syncGoogleBannerOffset();
+      }, 800);
+    }
+
+    async function translatePageTo(uiKey) {
+      activeUiLang = uiKey;
       markActiveLanguage(uiKey);
-      saveUiLang(uiKey);
       closeLangMenu();
 
-      if (targetLang === "en") {
+      if (uiKey === "en") {
+        if (stickyTranslateTimer) {
+          clearInterval(stickyTranslateTimer);
+          stickyTranslateTimer = null;
+        }
+        stopBannerWatch();
+        clearTranslateCookie();
         setGoogTransCookie("/en/en");
-        syncGoogleBannerOffset();
+        document.documentElement.style.setProperty("--gtBannerH", "0px");
+        document.body.style.top = "0px";
         window.location.reload();
         return;
       }
 
+      const targetLang = LANG_UI_TO_GOOGLE[uiKey] || "en";
       setGoogTransCookie("/en/" + targetLang);
 
       try {
         await loadGoogleTranslateScript();
         await applyGoogleLanguage(targetLang);
+        startBannerWatch();
+        startStickyTranslation(uiKey);
+        syncGoogleBannerOffset();
       } catch (err) {
         window.location.reload();
       }
@@ -2205,9 +2229,18 @@
       headerResizeObserver.observe(siteHeader);
     }
 
-    setInterval(syncGoogleBannerOffset, 1200);
+    const domObserver = new MutationObserver(function () {
+      syncGoogleBannerOffset();
+    });
 
-    markActiveLanguage(getSavedUiLang());
+    domObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class"]
+    });
+
+    markActiveLanguage(activeUiLang);
     syncHeaderHeight();
     syncGoogleBannerOffset();
 

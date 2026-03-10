@@ -197,7 +197,7 @@
       --containerPadDesktop:52px;
 
       --bottomNavH:64px;
-      --headerH:72px;
+      --headerH:108px;
       --gtBannerH:0px;
 
       --storyMediaH:320px;
@@ -251,8 +251,9 @@
 
     img{ max-width:100%; height:auto; display:block; }
     a{ color:inherit; text-decoration:none; }
+
     p, h1, h2, h3, a, button, li, span{
-      overflow-wrap:anywhere;
+      overflow-wrap:break-word;
       word-break:normal;
       hyphens:auto;
     }
@@ -314,16 +315,15 @@
       -webkit-backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(11,18,32,0.06);
     }
+
     .header-inner{
       max-width:var(--containerW);
       margin:0 auto;
-      padding:14px var(--padX);
-      min-height:var(--headerH);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
+      padding:12px var(--padX);
+      display:grid;
+      gap:10px;
     }
+
     @media (min-width:981px){
       .header-inner{
         padding-left:var(--containerPadDesktop);
@@ -331,44 +331,54 @@
       }
     }
 
+    .header-utility-row{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .header-brand-row{
+      display:flex;
+      align-items:center;
+      min-width:0;
+    }
+
     .brand{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
       min-width:0;
-      flex:1 1 auto;
+      width:100%;
     }
+
     .brand a{
       flex:0 0 auto;
       display:inline-flex;
       align-items:center;
       justify-content:center;
     }
+
     .brand img{
-      width:40px;
-      height:40px;
+      width:42px;
+      height:42px;
       object-fit:contain;
       flex:0 0 auto;
     }
-    .brand-name{
-      font-weight:900;
-      letter-spacing:-0.02em;
-      font-size:18px;
-      line-height:1.05;
-      color:var(--ink);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width:100%;
-    }
 
-    .header-controls{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:12px;
-      flex:0 0 auto;
-      min-width:0;
+    .brand-name{
+      font-weight:950;
+      letter-spacing:-0.02em;
+      font-size:clamp(18px, 2.1vw, 24px);
+      line-height:1.02;
+      color:var(--ink);
+      white-space:normal;
+      overflow:hidden;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      max-width:100%;
     }
 
     .subnav{
@@ -377,8 +387,9 @@
       gap:18px;
       flex-wrap:wrap;
       justify-content:flex-end;
-      flex:0 0 auto;
+      min-width:0;
     }
+
     .subnav a{
       position:relative;
       font-weight:900;
@@ -389,7 +400,9 @@
       color:var(--ink);
       white-space:nowrap;
     }
+
     .subnav a.active{ color:var(--orange); }
+
     .subnav a::after{
       content:"";
       position:absolute;
@@ -400,7 +413,9 @@
       background:#0b1220;
       transition:width .18s ease;
     }
+
     .subnav a:hover::after{ width:100%; }
+
     .subnav a.active:hover::after{
       background:var(--orange);
       width:100%;
@@ -408,9 +423,11 @@
 
     .lang-menu{
       position:relative;
+      justify-self:end;
       flex:0 0 auto;
       z-index:100002;
     }
+
     .lang-btn{
       appearance:none;
       border:0;
@@ -425,11 +442,12 @@
       cursor:pointer;
       display:inline-flex;
       align-items:center;
-      gap:6px;
+      gap:8px;
       white-space:nowrap;
       position:relative;
       transition:color .12s ease;
     }
+
     .lang-btn::after{
       content:"";
       position:absolute;
@@ -440,19 +458,24 @@
       background:#0b1220;
       transition:width .18s ease, background .12s ease;
     }
+
     .lang-btn.is-translated{
       color:var(--orange);
     }
+
     .lang-btn[aria-expanded="true"]{
       color:var(--orange);
     }
+
     .lang-btn[aria-expanded="true"]::after{
       width:100%;
       background:var(--orange);
     }
+
     @media (hover:hover) and (pointer:fine){
       .lang-btn:hover::after{ width:100%; }
     }
+
     @media (hover:none){
       .lang-btn:hover::after{ width:0%; }
     }
@@ -464,11 +487,31 @@
       flex:0 0 auto;
       opacity:.92;
     }
+
+    .lang-label{
+      flex:0 0 auto;
+    }
+
+    .lang-status{
+      min-width:3.2em;
+      padding:.24rem .42rem;
+      border-radius:999px;
+      border:1px solid rgba(11,18,32,0.14);
+      background:#fff;
+      font-size:10px;
+      letter-spacing:.12em;
+      line-height:1;
+      text-align:center;
+      color:currentColor;
+      flex:0 0 auto;
+    }
+
     .lang-caret{
       font-size:11px;
       line-height:1;
       transform:translateY(-1px);
       color:currentColor;
+      flex:0 0 auto;
     }
 
     .lang-dropdown{
@@ -486,8 +529,11 @@
       max-height:62vh;
       overflow:auto;
     }
+
     .lang-dropdown.open{ display:block; }
+
     .lang-list{ display:grid; gap:4px; }
+
     .lang-item{
       appearance:none;
       width:100%;
@@ -507,14 +553,20 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
+
     .lang-item:hover{
       background:#f8fafc;
       border-color:rgba(11,18,32,0.08);
     }
+
     .lang-item.active{
       border-color:rgba(11,18,32,0.10);
       background:var(--soft);
       color:var(--orange);
+    }
+
+    .botanical-name{
+      display:inline;
     }
 
     main{
@@ -527,6 +579,7 @@
       margin:0 auto;
       padding:0 var(--padX) 18px;
     }
+
     @media (min-width:981px){
       .content-wrapper{
         padding-left:var(--containerPadDesktop);
@@ -539,10 +592,12 @@
       content-visibility:auto;
       contain-intrinsic-size:1px 700px;
     }
+
     .panel.hero-panel{
       content-visibility:visible;
       contain-intrinsic-size:auto;
     }
+
     .panel.try-panel{
       margin-top:0;
     }
@@ -583,6 +638,7 @@
       margin-bottom:12px;
       width:100%;
     }
+
     .hero-badge{
       display:inline-flex;
       align-items:center;
@@ -595,6 +651,7 @@
       color:rgba(11,18,32,0.84);
       white-space:normal;
     }
+
     .hero-badge:nth-child(1){ justify-content:flex-start; }
     .hero-badge:nth-child(2){ justify-content:center; }
     .hero-badge:nth-child(3){ justify-content:flex-end; }
@@ -613,6 +670,7 @@
       line-height:1;
       flex:0 0 auto;
     }
+
     .hero-badge-icon::before{ content:"✓"; }
 
     .hero-title{
@@ -624,6 +682,7 @@
       line-height:1.08;
       margin-bottom:10px;
     }
+
     .hero-copy-card p{
       font-weight:600;
       font-size:15px;
@@ -632,9 +691,11 @@
       margin:0;
       max-width:72ch;
     }
+
     .hero-copy-card p + p{
       margin-top:14px;
     }
+
     .hero-note{
       color:rgba(11,18,32,0.76);
     }
@@ -645,22 +706,26 @@
       min-width:0;
       min-height:100%;
     }
+
     .hero-product-link{
       height:100%;
       display:flex;
       flex-direction:column;
     }
+
     .hero-product-media{
       aspect-ratio:1 / 1;
       overflow:hidden;
       background:#fff;
     }
+
     .hero-product-media img{
       width:100%;
       height:100%;
       object-fit:cover;
       object-position:center 48%;
     }
+
     .hero-product-bottom{
       padding:10px 12px 12px;
       display:flex;
@@ -670,6 +735,7 @@
       background:#fff;
       border-top:1px solid rgba(11,18,32,0.08);
     }
+
     .hero-product-title{
       font-weight:950;
       letter-spacing:.05em;
@@ -701,6 +767,7 @@
       white-space:nowrap;
       flex:0 0 auto;
     }
+
     .btn:hover{
       background:var(--orangePress);
       border-color:var(--orangePress);
@@ -720,6 +787,7 @@
       min-height:420px;
       height:100%;
     }
+
     .story-card .media{
       height:var(--storyMediaH);
       min-height:var(--storyMediaH);
@@ -728,12 +796,14 @@
       background:#fff;
       width:100%;
     }
+
     .story-card .media img{
       width:100%;
       height:100%;
       object-fit:cover;
       object-position:center;
     }
+
     .story-card .copy{
       padding:16px 16px 14px;
       background:#fff;
@@ -767,11 +837,13 @@
       height:100%;
       min-height:100%;
     }
+
     .mod{
       display:flex;
       flex:1 1 0;
       min-height:0;
     }
+
     .mod .body{
       padding:14px 14px 12px;
       background:#fff;
@@ -782,6 +854,7 @@
       width:100%;
       justify-content:space-between;
     }
+
     .mod .title{
       font-weight:950;
       font-size:16px;
@@ -790,6 +863,7 @@
       font-style:italic;
       margin:0;
     }
+
     .mod .desc{
       font-weight:600;
       color:rgba(11,18,32,0.80);
@@ -798,6 +872,7 @@
       margin:0;
       flex:1 1 auto;
     }
+
     .mod .body .btn{
       margin-top:12px;
       align-self:flex-start;
@@ -811,6 +886,7 @@
       height:100%;
       justify-content:space-between;
     }
+
     .faq-list{
       margin-top:6px;
       flex:1 1 auto;
@@ -820,6 +896,7 @@
       gap:10px;
       min-height:0;
     }
+
     .faq-item{
       border-radius:14px;
       border:1px solid rgba(11,18,32,0.10);
@@ -827,16 +904,19 @@
       padding:12px 12px;
       margin-bottom:0;
     }
+
     .faq-q{
       font-weight:900;
       color:var(--ink);
       margin-bottom:6px;
     }
+
     .faq-a{
       font-weight:600;
       color:rgba(11,18,32,0.80);
       line-height:1.6;
     }
+
     .faq-body .btn{
       margin-top:12px;
       align-self:flex-start;
@@ -847,6 +927,7 @@
       grid-template-columns:320px 1fr;
       align-items:stretch;
     }
+
     .wide-media{
       background:#fff;
       overflow:hidden;
@@ -854,12 +935,14 @@
       aspect-ratio:1 / 1;
       border-radius:var(--radius) 0 0 var(--radius);
     }
+
     .wide-media img{
       width:100%;
       height:100%;
       object-fit:cover;
       object-position:center;
     }
+
     .wide-copy{
       padding:16px 16px 14px;
       background:#fff;
@@ -868,12 +951,14 @@
       justify-content:center;
       gap:10px;
     }
+
     .wide-copy p{
       font-weight:600;
       color:rgba(11,18,32,0.80);
       line-height:1.7;
       font-size:14.5px;
       max-width:62ch;
+      margin:0;
     }
 
     .footer{
@@ -882,10 +967,12 @@
       color:#000;
       padding:10px var(--padX) 14px;
     }
+
     .footer-inner{
       max-width:var(--containerW);
       margin:0 auto;
     }
+
     @media (min-width:981px){
       .footer-inner{
         padding-left:var(--containerPadDesktop);
@@ -900,12 +987,14 @@
       gap:10px;
       margin-bottom:14px;
     }
+
     .footer-founded-top{
       display:flex;
       align-items:center;
       justify-content:center;
       gap:10px;
     }
+
     .founded-text{
       font-weight:950;
       font-size:clamp(22px, 2.4vw, 30px);
@@ -915,11 +1004,13 @@
       white-space:nowrap;
       font-style:italic;
     }
+
     .florida-ic{
       width:52px;
       height:52px;
       object-fit:contain;
     }
+
     .footer-logo-under{
       width:92px;
       height:92px;
@@ -934,6 +1025,7 @@
       width:100%;
       margin:0 auto;
     }
+
     .footer-col h3{
       font-size:11px;
       letter-spacing:.14em;
@@ -942,11 +1034,13 @@
       margin-bottom:10px;
       font-weight:950;
     }
+
     .footer-links{
       display:flex;
       flex-direction:column;
       gap:8px;
     }
+
     .footer-links a{
       font-weight:850;
       color:rgba(11,18,32,0.86);
@@ -954,6 +1048,7 @@
       letter-spacing:.02em;
       white-space:nowrap;
     }
+
     .footer-links a:hover{ color:var(--orange); }
 
     .footer-col.left{ text-align:left; justify-self:start; }
@@ -970,6 +1065,7 @@
       gap:14px;
       flex-wrap:wrap;
     }
+
     .social-ic{
       width:52px;
       height:52px;
@@ -981,18 +1077,21 @@
       justify-content:center;
       transition:transform .10s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
     }
+
     .social-ic:hover{
       transform:translateY(-1px);
       border-color:rgba(253,108,2,0.55);
       box-shadow:0 0 0 3px rgba(253,108,2,0.14);
       background:#fff;
     }
+
     .social-ic svg{
       width:22px;
       height:22px;
       fill:rgba(11,18,32,0.86);
       display:block;
     }
+
     .footer-copy{
       margin-top:14px;
       text-align:center;
@@ -1015,6 +1114,7 @@
       display:none;
       border-top:1px solid rgba(11,18,32,0.06);
     }
+
     .bottom-tabs nav{
       display:grid;
       grid-template-columns:repeat(5, 1fr);
@@ -1023,6 +1123,7 @@
       max-width:900px;
       margin:0 auto;
     }
+
     .bottom-tabs a{
       display:flex;
       flex-direction:column;
@@ -1045,6 +1146,7 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
+
     .bottom-tabs a:hover,
     .bottom-tabs a:active{
       background:#f7f8fa;
@@ -1052,6 +1154,7 @@
       border-color:rgba(11,18,32,0.75);
       transform:translateY(-1px);
     }
+
     .bottom-tabs a.active{
       background:#fff;
       color:var(--orange);
@@ -1061,6 +1164,17 @@
 
     @media (max-width:1100px){
       :root{ --storyMediaH:300px; }
+    }
+
+    @media (max-width:980px){
+      .subnav{
+        gap:14px;
+      }
+
+      .subnav a{
+        font-size:11px;
+        letter-spacing:.10em;
+      }
     }
 
     @media (max-width:920px){
@@ -1076,6 +1190,7 @@
       .hero-row{
         grid-template-columns:1fr;
       }
+
       .hero-product-card{ order:1; }
       .hero-copy-card{ order:2; }
 
@@ -1084,6 +1199,7 @@
         flex-wrap:wrap;
         gap:8px 10px;
       }
+
       .hero-badge{
         justify-content:flex-start !important;
       }
@@ -1091,37 +1207,59 @@
 
     @media (max-width:640px){
       :root{
-        --headerH:68px;
         --storyMediaH:260px;
       }
 
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
 
-      .header-inner{ gap:10px; }
-      .brand-name{
-        font-size:16px;
-        max-width:46vw;
+      .header-inner{
+        padding-top:10px;
+        padding-bottom:10px;
+        gap:8px;
       }
-      .header-controls{ gap:8px; }
+
+      .header-utility-row{
+        grid-template-columns:1fr;
+        justify-items:end;
+        gap:8px;
+      }
+
+      .brand img{
+        width:36px;
+        height:36px;
+      }
+
+      .brand-name{
+        font-size:15px;
+      }
 
       .lang-btn{
         font-size:11px;
         letter-spacing:.08em;
       }
+
       .lang-globe{
         width:13px;
         height:13px;
       }
+
+      .lang-status{
+        min-width:3em;
+        font-size:9px;
+      }
+
       .lang-dropdown{
         width:min(300px, 92vw);
       }
+
       .lang-item{
         font-size:13px;
         padding:9px 10px;
       }
 
       main{ padding-bottom:calc(var(--bottomNavH) + 24px); }
+
       .footer{
         padding-top:8px;
         padding-bottom:calc(var(--bottomNavH) + 14px);
@@ -1130,6 +1268,7 @@
       .panel{
         margin-bottom:12px;
       }
+
       .panel.try-panel{
         margin-top:-2px;
       }
@@ -1137,16 +1276,19 @@
       .hero-copy-card{
         padding:14px 14px 14px;
       }
+
       .hero-badge{
         font-size:10px;
         letter-spacing:.06em;
         gap:6px;
       }
+
       .hero-badge-icon{
         width:18px;
         height:18px;
         font-size:10px;
       }
+
       .hero-copy-card p{
         font-size:14px;
         line-height:1.62;
@@ -1155,6 +1297,7 @@
       .hero-product-bottom{
         padding:10px 10px 12px;
       }
+
       .hero-product-title{
         font-size:13px;
         letter-spacing:.04em;
@@ -1165,19 +1308,24 @@
         gap:8px;
         align-items:start;
       }
+
       .footer-col.left,
       .footer-col.center,
       .footer-col.right{
         text-align:center;
         justify-self:stretch;
       }
+
       .footer-col .footer-links{ align-items:center !important; }
+
       .footer-col h3{
         font-size:9px;
         letter-spacing:.08em;
         margin-bottom:6px;
       }
+
       .footer-links{ gap:5px; }
+
       .footer-links a{
         font-size:10px;
         white-space:normal;
@@ -1193,12 +1341,14 @@
         width:48px;
         height:48px;
       }
+
       .social-ic svg{
         width:20px;
         height:20px;
       }
 
       .bottom-tabs nav{ gap:6px; }
+
       .bottom-tabs a{
         font-size:8px;
         letter-spacing:.06em;
@@ -1209,7 +1359,6 @@
 
     @media (orientation:landscape) and (max-height:560px){
       :root{
-        --headerH:62px;
         --bottomNavH:56px;
       }
 
@@ -1217,28 +1366,37 @@
       .bottom-tabs{ display:block; }
 
       .header-inner{
-        min-height:var(--headerH);
-        padding-top:10px;
-        padding-bottom:10px;
+        padding-top:8px;
+        padding-bottom:8px;
       }
+
+      .header-utility-row{
+        grid-template-columns:1fr;
+        justify-items:end;
+        gap:6px;
+      }
+
       .brand-name{
-        font-size:16px;
-        max-width:40vw;
+        font-size:15px;
       }
+
       .lang-btn{
         font-size:10px;
         letter-spacing:.07em;
       }
+
       .lang-globe{
         width:13px;
         height:13px;
       }
+
       .lang-dropdown{
         width:min(280px, 78vw);
         max-height:48vh;
       }
 
       main{ padding-bottom:calc(var(--bottomNavH) + 18px); }
+
       .footer{
         padding-top:8px;
         padding-bottom:calc(var(--bottomNavH) + 10px);
@@ -1247,7 +1405,9 @@
       .bottom-tabs{
         padding:6px 8px calc(6px + env(safe-area-inset-bottom));
       }
+
       .bottom-tabs nav{ gap:6px; }
+
       .bottom-tabs a{
         padding:7px 6px;
         font-size:9px;
@@ -1259,39 +1419,48 @@
         grid-template-columns:minmax(0, 1.45fr) minmax(240px, .92fr);
         gap:12px;
       }
+
       .hero-copy-card{
         padding:12px 12px 12px;
       }
+
       .hero-badges{
         gap:8px;
         margin-bottom:8px;
       }
+
       .hero-badge{
         font-size:8.8px;
         letter-spacing:.04em;
         gap:5px;
       }
+
       .hero-badge-icon{
         width:15px;
         height:15px;
         font-size:9px;
       }
+
       .hero-title{
         font-size:20px;
         margin-bottom:6px;
       }
+
       .hero-copy-card p{
         font-size:12px;
         line-height:1.45;
       }
+
       .hero-product-bottom{
         padding:8px 10px 10px;
         gap:8px;
       }
+
       .hero-product-title{
         font-size:12px;
         letter-spacing:.03em;
       }
+
       .hero-product-bottom .btn{
         height:32px;
         padding:0 10px;
@@ -1316,21 +1485,7 @@
 
   <header class="site-header" aria-label="Site header">
     <div class="header-inner">
-      <div class="brand" aria-label="The MayaNut Company">
-        <a href="index.html" aria-label="Go to home page">
-          <img
-            src="mayanut-the-mayanut-comapny-logo.png"
-            alt="The MayaNut Company logo"
-            width="40"
-            height="40"
-            decoding="async"
-            fetchpriority="high"
-          >
-        </a>
-        <div class="brand-name">The MayaNut Company</div>
-      </div>
-
-      <div class="header-controls" aria-label="Header controls">
+      <div class="header-utility-row">
         <nav class="subnav" aria-label="Primary navigation (desktop and tablet)">
           <a class="active" href="index.html" aria-current="page" aria-label="Home page">Home</a>
           <a href="product.html" aria-label="Buy MayaNut powder">Buy</a>
@@ -1347,12 +1502,13 @@
             aria-haspopup="menu"
             aria-expanded="false"
             aria-controls="langDropdown"
-            aria-label="Choose language"
+            aria-label="Choose language. Current language: English"
           >
             <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.9 15.9 0 0 0-1.1-5A8.03 8.03 0 0 1 18.9 11ZM12 4.1c.8 1 1.8 3.1 2.2 6H9.8c.4-2.9 1.4-5 2.2-6ZM9.3 6A15.9 15.9 0 0 0 8.2 11H5.1A8.03 8.03 0 0 1 9.3 6ZM5.1 13h3.1c.2 1.8.6 3.5 1.1 5A8.03 8.03 0 0 1 5.1 13Zm6.9 6.9c-.8-1-1.8-3.1-2.2-6h4.4c-.4 2.9-1.4 5-2.2 6Zm2.7-1.9c.5-1.5.9-3.2 1.1-5h3.1A8.03 8.03 0 0 1 14.7 18Z"/>
             </svg>
-            <span id="langLabelText">Language</span>
+            <span class="lang-label" id="langLabelText">Language</span>
+            <span class="lang-status" id="langStatus" aria-hidden="true">EN</span>
             <span class="lang-caret" aria-hidden="true">▾</span>
           </button>
 
@@ -1412,6 +1568,22 @@
           </div>
         </div>
       </div>
+
+      <div class="header-brand-row">
+        <div class="brand" aria-label="The MayaNut Company">
+          <a href="index.html" aria-label="Go to home page">
+            <img
+              src="mayanut-the-mayanut-comapny-logo.png"
+              alt="The MayaNut Company logo"
+              width="42"
+              height="42"
+              decoding="async"
+              fetchpriority="high"
+            >
+          </a>
+          <div class="brand-name" translate="no">The MayaNut Company</div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -1432,7 +1604,7 @@
 
             <p>
               MayaNut™ is a delicious powder made from roasted seeds of the Alicastrum tree
-              (<strong>Brosimum alicastrum</strong>). Valued for centuries in Mesoamerica,
+              <span class="botanical-name">(<strong>Brosimum alicastrum</strong>)</span>. Valued for centuries in Mesoamerica,
               MayaNut™ is naturally caffeine-free and nutrient-dense, adding a bold cocoa-like
               flavor to smoothies, açaí bowls, baking, everyday cooking, and more.
             </p>
@@ -1461,7 +1633,7 @@
               </div>
 
               <div class="hero-product-bottom" aria-label="Product preview footer">
-                <div class="hero-product-title">MayaNut™ Powder</div>
+                <div class="hero-product-title" translate="no">MayaNut™ Powder</div>
                 <span class="btn" aria-hidden="true">View Product</span>
               </div>
             </a>
@@ -1488,8 +1660,7 @@
             </div>
             <div class="copy">
               <h2>Who We Are</h2>
-              The MayaNut Company was founded to introduce MayaNut™ as a consistent, modern pantry ingredient rooted in the Alicastrum tree
-              (<em>Brosimum alicastrum</em>). We focus on quality, clarity, and long-term responsible sourcing so more people can discover MayaNut™, enjoy it often, and keep it in their kitchens for years to come.
+              The MayaNut Company was founded to introduce MayaNut™ as a consistent, modern pantry ingredient rooted in the Alicastrum tree <span class="botanical-name">(<em>Brosimum alicastrum</em>)</span>. We focus on quality, clarity, and long-term responsible sourcing so more people can discover MayaNut™, enjoy it often, and keep it in their kitchens for years to come.
             </div>
           </article>
 
@@ -1513,7 +1684,7 @@
             <div class="mod" aria-label="Gallery module">
               <div class="body">
                 <div class="title">Gallery</div>
-                <p class="desc">Photos from growing Alicastrum (<em>Brosimum alicastrum</em>) and developing MayaNut™.</p>
+                <p class="desc">Photos from growing Alicastrum <span class="botanical-name">(<em>Brosimum alicastrum</em>)</span> and developing MayaNut™.</p>
                 <a class="btn" href="gallery.html" aria-label="View gallery">View Gallery</a>
               </div>
             </div>
@@ -1532,7 +1703,7 @@
               <div class="faq-list" aria-label="Frequently asked questions preview">
                 <div class="faq-item">
                   <div class="faq-q">What is MayaNut™?</div>
-                  <div class="faq-a">A roasted seed powder made from the seeds of Alicastrum (<em>Brosimum alicastrum</em>).</div>
+                  <div class="faq-a">A roasted seed powder made from the seeds of Alicastrum <span class="botanical-name">(<em>Brosimum alicastrum</em>)</span>.</div>
                 </div>
                 <div class="faq-item">
                   <div class="faq-q">Is MayaNut™ caffeine-free?</div>
@@ -1544,7 +1715,7 @@
                 </div>
                 <div class="faq-item">
                   <div class="faq-q">Is it a nut or a seed?</div>
-                  <div class="faq-a">It’s made from seeds of the Alicastrum tree (not tree nuts).</div>
+                  <div class="faq-a">It’s made from seeds of the Alicastrum tree, not tree nuts.</div>
                 </div>
               </div>
 
@@ -1567,7 +1738,7 @@
             </div>
             <div class="copy">
               <h2>The Alicastrum Tree</h2>
-              MayaNut™ comes from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>), a tropical species with deep historical use in Mesoamerica.
+              MayaNut™ comes from the seeds of the Alicastrum tree <span class="botanical-name">(<em>Brosimum alicastrum</em>)</span>, a tropical species with deep historical use in Mesoamerica.
               Regional names include ramón/ramon, ojoche, capomo, guáimaro/guaimaro, oox/ox, ujuxte, and masica. MayaNut™ presents this traditional ingredient
               in a simple roasted powder format designed for modern everyday use.
             </div>
@@ -1594,7 +1765,7 @@
           <div class="wide-copy">
             <h2>Ready for MayaNut™?</h2>
             <p>
-              Explore MayaNut™ as a roasted Alicastrum (<strong>Brosimum alicastrum</strong>) seed powder for smoothies, açaí bowls, baking, and everyday cooking—also known regionally as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, and oox/ox.
+              Explore MayaNut™ as a roasted Alicastrum <span class="botanical-name">(<strong>Brosimum alicastrum</strong>)</span> seed powder for smoothies, açaí bowls, baking, and everyday cooking—also known regionally as ramón/ramon, ojoche, capomo, guáimaro/guaimaro, and oox/ox.
             </p>
             <a class="btn" href="product.html" aria-label="View MayaNut product page">View MayaNut™</a>
           </div>
@@ -1766,13 +1937,23 @@
 
     const LANG_CODES = [...new Set(Object.values(LANG_UI_TO_GOOGLE))].filter(code => code !== "en");
 
+    const siteHeader = document.querySelector(".site-header");
     const langBtn = document.getElementById("langBtn");
     const langLabelText = document.getElementById("langLabelText");
+    const langStatus = document.getElementById("langStatus");
     const langMenu = document.getElementById("langMenu");
     const langDropdown = document.getElementById("langDropdown");
 
     let gtScriptPromise = null;
     let gtBannerInterval = null;
+
+    function syncHeaderHeight() {
+      if (!siteHeader) return;
+      const h = Math.ceil(siteHeader.getBoundingClientRect().height || 0);
+      if (h > 0) {
+        document.documentElement.style.setProperty("--headerH", h + "px");
+      }
+    }
 
     function setGoogTransCookie(value) {
       const host = location.hostname;
@@ -1786,7 +1967,7 @@
     }
 
     function getGoogTransCookie() {
-      const m = document.cookie.match(/(?:^|;\\s*)googtrans=([^;]+)/);
+      const m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
       return m ? decodeURIComponent(m[1]) : "";
     }
 
@@ -1822,19 +2003,25 @@
         if (isActive) activeBtn = btn;
       });
 
+      const activeName = activeBtn ? activeBtn.textContent.trim() : "English";
+      const statusText = (uiKey || "en").toUpperCase();
+
+      langLabelText.textContent = "Language";
+      langStatus.textContent = statusText;
+      langBtn.setAttribute("aria-label", "Choose language. Current language: " + activeName);
+
       if (uiKey && uiKey !== "en") {
-        langLabelText.textContent = activeBtn ? activeBtn.textContent.trim() : "Language";
         langBtn.classList.add("is-translated");
       } else {
-        langLabelText.textContent = "Language";
         langBtn.classList.remove("is-translated");
       }
+
+      syncHeaderHeight();
     }
 
     function closeLangMenu() {
       langDropdown.classList.remove("open");
       langBtn.setAttribute("aria-expanded", "false");
-      langBtn.blur();
     }
 
     function openLangMenu() {
@@ -1868,6 +2055,7 @@
       }
 
       document.documentElement.style.setProperty("--gtBannerH", h + "px");
+      syncHeaderHeight();
     }
 
     function runBannerSyncWindow(durationMs = 5000) {
@@ -1989,15 +2177,35 @@
       if (e.key === "Escape") closeLangMenu();
     });
 
-    window.addEventListener("resize", syncGoogleBannerOffset);
-    window.addEventListener("orientationchange", () => {
-      setTimeout(syncGoogleBannerOffset, 250);
+    window.addEventListener("resize", function () {
+      syncHeaderHeight();
+      syncGoogleBannerOffset();
     });
+
+    window.addEventListener("orientationchange", function () {
+      setTimeout(function () {
+        syncHeaderHeight();
+        syncGoogleBannerOffset();
+      }, 250);
+    });
+
+    if ("ResizeObserver" in window && siteHeader) {
+      const headerResizeObserver = new ResizeObserver(function () {
+        syncHeaderHeight();
+      });
+      headerResizeObserver.observe(siteHeader);
+    }
 
     setInterval(syncGoogleBannerOffset, 1200);
 
     markActiveLanguage(getSavedUiLang());
+    syncHeaderHeight();
     syncGoogleBannerOffset();
+
+    window.addEventListener("load", function () {
+      syncHeaderHeight();
+      syncGoogleBannerOffset();
+    });
   </script>
 </body>
 </html>

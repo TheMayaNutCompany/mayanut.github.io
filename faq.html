@@ -9,7 +9,7 @@
 
   <!-- Meta -->
   <meta name="description" content="Official MayaNut™ FAQ from The MayaNut Company: what MayaNut is, ingredients, names, taste, how to use it in smoothies and baking, gluten-free and vegan details, storage, ordering updates, and more.">
-  <meta name="keywords" content="MayaNut FAQ, MayaNut questions, MayaNut powder FAQ, MayaNut flour FAQ, Alicastrum FAQ, Brosimum alicastrum FAQ, roasted seed powder FAQ, gluten-free, vegan, paleo-friendly, caffeine-free, smoothies, açaí bowls, acai bowls, baking, storage, shipping, MayaNut, ramón, ojoche, capomo, guáimaro">
+  <meta name="keywords" content="MayaNut FAQ, MayaNut questions, MayaNut powder FAQ, MayaNut flour FAQ, Alicastrum FAQ, Brosimum alicastrum FAQ, roasted seed powder FAQ, gluten-free, vegan, paleo-friendly, caffeine-free, smoothies, açaí bowls, acai bowls, baking, storage, shipping, MayaNut, ramón, ojoche, capomo, guáimaro, ujuxte, masica">
   <meta name="author" content="The MayaNut Company, Inc.">
   <meta name="application-name" content="The MayaNut Company">
   <meta name="apple-mobile-web-app-title" content="MayaNut">
@@ -134,6 +134,7 @@
         "description":"Official MayaNut™ FAQ from The MayaNut Company: what MayaNut is, ingredients, names, taste, how to use it in smoothies and baking, dietary info, storage, ordering updates, and more.",
         "inLanguage":"en",
         "isPartOf":{"@id":"https://www.mayanut.com/#website"},
+        "mainEntity":{"@id":"https://www.mayanut.com/faq.html#faq"},
         "about":[
           {"@type":"Thing","name":"MayaNut™ powder"},
           {"@type":"Thing","name":"Alicastrum tree"},
@@ -164,6 +165,11 @@
             "@type":"Question",
             "name":"What is MayaNut™?",
             "acceptedAnswer":{"@type":"Answer","text":"MayaNut™ is a roasted seed powder made from the seeds of the Alicastrum tree, Brosimum alicastrum. It adds warm roasted depth with gentle cocoa-like notes to smoothies, açaí bowls, baking, and everyday cooking."}
+          },
+          {
+            "@type":"Question",
+            "name":"What is the Alicastrum tree?",
+            "acceptedAnswer":{"@type":"Answer","text":"Alicastrum is the food tree Brosimum alicastrum. Its seeds can be roasted and milled into a fine powder used in drinks, baking, and other recipes."}
           },
           {
             "@type":"Question",
@@ -248,7 +254,6 @@
 
       --bottomNavH:64px;
       --headerH:78px;
-      --faqStickyDesktopTop:calc(var(--headerH) + var(--gap));
 
       --sbW:12px;
       --sbTrack:#e8edf2;
@@ -708,17 +713,18 @@
       grid-template-columns:300px minmax(0, 1fr);
       gap:var(--gap);
       align-items:start;
-    }
-
-    .faq-aside{
-      padding:16px;
+      margin-bottom:var(--gap);
     }
 
     @media (min-width:1021px){
       .faq-aside{
         position:sticky;
-        top:var(--faqStickyDesktopTop);
+        top:calc(var(--headerH) + var(--gap));
       }
+    }
+
+    .faq-aside{
+      padding:16px;
     }
 
     .faq-aside h2,
@@ -926,7 +932,7 @@
 
     .cta-card{
       padding:16px;
-      margin-top:var(--gap);
+      margin-top:0;
     }
 
     .cta-card p{
@@ -1427,7 +1433,7 @@
         <span aria-current="page">FAQ</span>
       </nav>
 
-      <section class="hero-card" id="faqHero" aria-label="FAQ introduction">
+      <section class="hero-card" aria-label="FAQ introduction">
         <h1>MayaNut™ FAQ</h1>
         <p>
           Answers to common questions about <span class="notranslate" translate="no">MayaNut™</span>, the Alicastrum tree <span class="botanical-name notranslate" translate="no">(<em>Brosimum alicastrum</em>)</span>, ingredients, names, taste, smoothies, baking, storage, and ordering updates.
@@ -1437,8 +1443,8 @@
         </p>
       </section>
 
-      <div class="faq-layout" id="faqLayout" aria-label="FAQ layout">
-        <aside class="faq-aside" id="faqAside" aria-label="FAQ navigation">
+      <div class="faq-layout" aria-label="FAQ layout">
+        <aside class="faq-aside" aria-label="FAQ navigation">
           <h2>Jump To</h2>
           <nav class="faq-nav" aria-label="FAQ section links">
             <a href="#about" aria-label="Jump to About MayaNut">About MayaNut™</a>
@@ -1948,29 +1954,10 @@
     const langMenu = document.getElementById("langMenu");
     const langDropdown = document.getElementById("langDropdown");
     const siteHeader = document.querySelector(".site-header");
-    const faqLayout = document.getElementById("faqLayout");
 
     function syncHeaderHeight() {
       const h = Math.ceil(siteHeader.getBoundingClientRect().height || 0);
       if (h > 0) document.documentElement.style.setProperty("--headerH", h + "px");
-      syncFaqStickyTop();
-    }
-
-    function syncFaqStickyTop(){
-      const desktop = window.matchMedia("(min-width: 1021px)").matches;
-      const headerHeight = Math.ceil(siteHeader.getBoundingClientRect().height || 0);
-
-      if (!desktop || !faqLayout) {
-        document.documentElement.style.setProperty("--faqStickyDesktopTop", (headerHeight + 16) + "px");
-        return;
-      }
-
-      const layoutDocTop = Math.round(faqLayout.getBoundingClientRect().top + window.scrollY);
-      const minTop = headerHeight + 16;
-      const maxTop = Math.max(minTop, window.innerHeight - 260);
-      const stickyTop = Math.min(Math.max(layoutDocTop, minTop), maxTop);
-
-      document.documentElement.style.setProperty("--faqStickyDesktopTop", stickyTop + "px");
     }
 
     function closeLangMenu() {
@@ -2004,19 +1991,13 @@
       new ResizeObserver(syncHeaderHeight).observe(siteHeader);
     }
 
-    window.addEventListener("resize", () => {
-      syncHeaderHeight();
-      syncFaqStickyTop();
-    });
-
+    window.addEventListener("resize", syncHeaderHeight);
     window.addEventListener("orientationchange", function () {
       setTimeout(syncHeaderHeight, 250);
-      setTimeout(syncFaqStickyTop, 250);
     });
 
     window.addEventListener("load", function () {
       syncHeaderHeight();
-      syncFaqStickyTop();
       updateScrollbarWidthVar();
     });
   </script>

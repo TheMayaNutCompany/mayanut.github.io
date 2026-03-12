@@ -714,17 +714,20 @@
       gap:var(--gap);
       align-items:start;
       margin-bottom:var(--gap);
+      position:relative;
     }
 
     @media (min-width:1021px){
       .faq-aside{
-        position:sticky;
-        top:calc(var(--headerH) + var(--gap));
+        position:relative;
+        top:auto;
+        will-change:transform;
       }
     }
 
     .faq-aside{
       padding:16px;
+      transform:translateY(0);
     }
 
     .faq-aside h2,
@@ -1203,6 +1206,8 @@
 
       .faq-aside{
         position:static;
+        transform:none !important;
+        will-change:auto;
       }
     }
 
@@ -1443,8 +1448,8 @@
         </p>
       </section>
 
-      <div class="faq-layout" aria-label="FAQ layout">
-        <aside class="faq-aside" aria-label="FAQ navigation">
+      <div class="faq-layout" id="faqLayout" aria-label="FAQ layout">
+        <aside class="faq-aside" id="faqAside" aria-label="FAQ navigation">
           <h2>Jump To</h2>
           <nav class="faq-nav" aria-label="FAQ section links">
             <a href="#about" aria-label="Jump to About MayaNut">About MayaNut™</a>
@@ -1820,7 +1825,7 @@
         </div>
       </div>
 
-      <section class="cta-card" aria-label="Still have questions">
+      <section class="cta-card" id="ctaCard" aria-label="Still have questions">
         <h2>Still Have Questions?</h2>
         <p>
           For support, partnerships, sourcing questions, or future updates, contact us directly at <a href="mailto:info@mayanut.com" aria-label="Email info@mayanut.com">info@mayanut.com</a>.
@@ -1954,6 +1959,9 @@
     const langMenu = document.getElementById("langMenu");
     const langDropdown = document.getElementById("langDropdown");
     const siteHeader = document.querySelector(".site-header");
+    const faqAside = document.getElementById("faqAside");
+    const faqLayout = document.getElementById("faqLayout");
+    const ctaCard = document.getElementById("ctaCard");
 
     function syncHeaderHeight() {
       const h = Math.ceil(siteHeader.getBoundingClientRect().height || 0);
@@ -1996,10 +2004,67 @@
       setTimeout(syncHeaderHeight, 250);
     });
 
+    let faqAsideTicking = false;
+
+    function getGapPx() {
+      const gap = getComputedStyle(document.documentElement).getPropertyValue("--gap").trim();
+      const parsed = parseFloat(gap);
+      return Number.isFinite(parsed) ? parsed : 16;
+    }
+
+    function syncFaqAsideDesktop() {
+      if (!faqAside || !faqLayout || !ctaCard || !siteHeader) return;
+
+      const desktop = window.matchMedia("(min-width: 1021px)").matches;
+
+      if (!desktop) {
+        faqAside.style.transform = "";
+        return;
+      }
+
+      const headerH = Math.ceil(siteHeader.getBoundingClientRect().height || 0);
+      const gap = getGapPx();
+
+      const naturalTopDoc = faqLayout.getBoundingClientRect().top + window.scrollY;
+      const ctaTopDoc = ctaCard.getBoundingClientRect().top + window.scrollY;
+      const asideH = faqAside.offsetHeight;
+
+      const targetTopDoc = window.scrollY + headerH + gap;
+      const minTopDoc = naturalTopDoc;
+      const maxTopDoc = Math.max(minTopDoc, ctaTopDoc - gap - asideH);
+
+      const appliedTopDoc = Math.min(Math.max(targetTopDoc, minTopDoc), maxTopDoc);
+      const translateY = Math.max(0, appliedTopDoc - naturalTopDoc);
+
+      faqAside.style.transform = "translateY(" + translateY + "px)";
+    }
+
+    function requestFaqAsideSync() {
+      if (faqAsideTicking) return;
+      faqAsideTicking = true;
+      window.requestAnimationFrame(() => {
+        syncFaqAsideDesktop();
+        faqAsideTicking = false;
+      });
+    }
+
+    window.addEventListener("scroll", requestFaqAsideSync, { passive: true });
+    window.addEventListener("resize", requestFaqAsideSync);
+    window.addEventListener("orientationchange", function () {
+      setTimeout(requestFaqAsideSync, 250);
+    });
     window.addEventListener("load", function () {
       syncHeaderHeight();
       updateScrollbarWidthVar();
+      requestFaqAsideSync();
     });
+
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(requestFaqAsideSync).observe(faqAside);
+      new ResizeObserver(requestFaqAsideSync).observe(faqLayout);
+      new ResizeObserver(requestFaqAsideSync).observe(ctaCard);
+      new ResizeObserver(requestFaqAsideSync).observe(siteHeader);
+    }
   </script>
 </body>
 </html>

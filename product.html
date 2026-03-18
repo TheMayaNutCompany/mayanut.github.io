@@ -188,15 +188,14 @@
           {"@type":"PropertyValue","name":"Caffeine-Free","value":"Yes"},
           {"@type":"PropertyValue","name":"Gluten-Free","value":"Yes"},
           {"@type":"PropertyValue","name":"Vegan","value":"Yes"},
-          {"@type":"PropertyValue","name":"Paleo-Friendly","value":"Yes"}
+          {"@type":"PropertyValue","name":"Paleo-Friendly","value":"Yes"},
+          {"@type":"PropertyValue","name":"Roast Options","value":"Light Roast, Dark Roast"}
         ],
         "offers":{
-          "@type":"AggregateOffer",
+          "@type":"Offer",
           "url":"https://www.mayanut.com/product.html",
           "priceCurrency":"USD",
-          "lowPrice":"9.99",
-          "highPrice":"34.99",
-          "offerCount":"2",
+          "price":"9.99",
           "availability":"https://schema.org/OutOfStock",
           "itemCondition":"https://schema.org/NewCondition",
           "seller":{"@id":"https://www.mayanut.com/#organization"}
@@ -267,7 +266,6 @@
 
       --orange:#ff7000;
       --orangePress:#d95e00;
-      --green:#16803c;
       --red:#c62828;
 
       --radius:18px;
@@ -285,8 +283,8 @@
 
       --bottomNavH:64px;
       --headerH:78px;
-
       --header-edge-pad:16px;
+
       --sbW:12px;
       --sbTrack:#e8edf2;
       --sbThumb:#9aa5b1;
@@ -877,13 +875,10 @@
     }
 
     .title-row{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      align-items:start;
       gap:12px;
-      flex-wrap:wrap;
-      padding-bottom:0;
-      border-bottom:0;
     }
 
     h1{
@@ -893,8 +888,6 @@
       line-height:1.06;
       margin:0;
       min-width:0;
-      flex:1 1 320px;
-      white-space:normal;
       letter-spacing:-.02em;
     }
 
@@ -902,15 +895,17 @@
       display:flex;
       flex-direction:column;
       align-items:flex-end;
+      justify-self:end;
       gap:3px;
       flex:0 0 auto;
+      text-align:right;
     }
 
     .price{
       display:flex;
       align-items:flex-start;
+      justify-content:flex-end;
       white-space:nowrap;
-      text-align:right;
       line-height:1;
       color:var(--ink);
       font-weight:950;
@@ -925,7 +920,7 @@
     .price-cents{
       font-size:14px;
       line-height:1;
-      transform:translateY(-2px);
+      transform:translateY(-1px);
       margin-left:1px;
       opacity:.95;
       letter-spacing:.01em;
@@ -989,10 +984,8 @@
       line-height:1.1;
       white-space:nowrap;
       margin-left:auto;
+      color:var(--red);
     }
-
-    .stock-state.out{ color:var(--red); }
-    .stock-state.in{ color:var(--green); }
 
     .desc{
       font-weight:650;
@@ -1036,10 +1029,15 @@
 
     .selector-row{
       display:flex;
-      flex-wrap:wrap;
-      gap:10px;
       align-items:center;
+      gap:10px;
       width:100%;
+    }
+
+    .selector-row--roast{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
 
     .selector-pill{
@@ -1069,10 +1067,18 @@
     .selector-pill:hover{ background:#f8f9fb; }
 
     .selector-pill.active{
-      border-color:rgba(255,112,0,0.55);
-      box-shadow:0 0 0 3px rgba(255,112,0,0.12);
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(255,112,0,0.16);
       color:var(--orange);
-      background:#fafbfc;
+      background:#fff;
+    }
+
+    .selector-pill.static{
+      cursor:default;
+      border-color:rgba(255,112,0,0.35);
+      background:#fffaf5;
+      color:var(--ink);
+      box-shadow:none;
     }
 
     .qty-select{
@@ -1720,6 +1726,14 @@
     @media (max-width:920px){
       .product-grid{ grid-template-columns:1fr; }
       .two-cols{ grid-template-columns:1fr; }
+      .title-row{
+        grid-template-columns:minmax(0,1fr) auto;
+        align-items:start;
+      }
+      .price-wrap{
+        justify-self:end;
+        align-items:flex-end;
+      }
     }
 
     @media (max-width:760px){
@@ -1780,7 +1794,7 @@
       .price-major{ font-size:30px; }
       .price-cents{
         font-size:13px;
-        transform:translateY(-1px);
+        transform:translateY(0);
       }
       .price-note{ font-size:11px; }
 
@@ -1818,6 +1832,10 @@
       }
 
       .qty-value{ font-size:13px; }
+
+      .checkout-stack{
+        margin-top:14px;
+      }
 
       .details-head,
       .faq-head{
@@ -1919,7 +1937,7 @@
       .price-major{ font-size:24px; }
       .price-cents{
         font-size:12px;
-        transform:translateY(-1px);
+        transform:translateY(0);
       }
 
       .desc{
@@ -2109,12 +2127,12 @@
                   <svg viewBox="0 0 24 24"><path d="M12 17.3l-6.2 3.7 1.7-7.1L2 9.2l7.3-.6L12 2l2.7 6.6 7.3.6-5.5 4.7 1.7 7.1z"/></svg>
                 </div>
               </div>
-              <div class="stock-state out" id="stockState" aria-label="Stock status" aria-live="polite">Out of Stock</div>
+              <div class="stock-state" id="stockState" aria-label="Stock status" aria-live="polite">Out of Stock</div>
             </div>
 
             <div class="desc" aria-label="Main product description">
               <p>
-                <strong>MayaNut™</strong> is a roasted seed powder made from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>), a tropical species long valued as a traditional food in Mesoamerica. Carefully dried, gently roasted, and finely milled, it delivers a smooth texture and warm roasted depth with a bold cocoa-like flavor, adding richness to smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking. Explore our <a href="/recipes.html" class="text-link" aria-label="View MayaNut recipes">recipes →</a>
+                <strong>MayaNut™</strong> is a roasted seed powder made from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>), a tropical species long valued as a traditional food in Mesoamerica. Carefully dried, gently roasted, and finely milled, it delivers a smooth texture and warm roasted depth with a bold cocoa-like flavor, adding richness to smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking. Light roast stays smoother and more mellow, while dark roast is roasted longer for a deeper, bolder flavor. Explore our <a href="/recipes.html" class="text-link" aria-label="View MayaNut recipes">recipes →</a>
               </p>
             </div>
 
@@ -2123,13 +2141,19 @@
             </div>
 
             <div class="checkout-stack" aria-label="Checkout controls">
-              <div class="selector-row" aria-label="Weight and quantity selectors">
-                <button class="selector-pill active" id="weightTabQtr" type="button" aria-pressed="true" aria-label="Select quarter-pound bag">
+              <div class="selector-row selector-row--roast" aria-label="Roast selectors">
+                <button class="selector-pill active" id="roastLight" type="button" aria-pressed="true" aria-label="Select light roast">
+                  Light Roast
+                </button>
+                <button class="selector-pill" id="roastDark" type="button" aria-pressed="false" aria-label="Select dark roast">
+                  Dark Roast
+                </button>
+              </div>
+
+              <div class="selector-row" aria-label="Package size and quantity selectors">
+                <div class="selector-pill static" aria-label="Quarter-pound bag" aria-disabled="true">
                   1/4 LB
-                </button>
-                <button class="selector-pill" id="weightTabOne" type="button" aria-pressed="false" aria-label="Select one-pound bag">
-                  1 LB
-                </button>
+                </div>
 
                 <button class="qty-select" id="qtySelectBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Quantity 1">
                   <span class="qty-left">
@@ -2208,7 +2232,7 @@
                 <li>Naturally caffeine-free</li>
                 <li>Gluten-free and vegan</li>
                 <li>Paleo-friendly pantry ingredient</li>
-                <li>Roasted and finely milled for versatility</li>
+                <li>Available in light roast and dark roast</li>
               </ul>
             </div>
 
@@ -2415,13 +2439,9 @@
         langBtn.setAttribute("aria-expanded", "true");
       }
 
-      function toggleLangMenu(){
-        langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
-      }
-
       langBtn.addEventListener("click", function(e){
         e.stopPropagation();
-        toggleLangMenu();
+        langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
       });
 
       document.addEventListener("click", function(e){
@@ -2436,38 +2456,22 @@
 
   <script>
     (function(){
-      const VARIANTS = {
-        qtr: { key: "qtr", price: 9.99 },
-        one: { key: "one", price: 34.99 }
-      };
-
       const images = [
-        {
-          src: "/the-mayanut-company-product-pouch.png",
-          alt: "MayaNut™ product pouch"
-        },
-        {
-          src: "/mayanut-powder-maya-nut-brosimum-alicastrum.png",
-          alt: "MayaNut™ powder image"
-        },
-        {
-          src: "/the-mayanut-company-logo-tm.png",
-          alt: "The MayaNut Company logo"
-        }
+        { src: "/the-mayanut-company-product-pouch.png", alt: "MayaNut™ product pouch" },
+        { src: "/mayanut-powder-maya-nut-brosimum-alicastrum.png", alt: "MayaNut™ powder image" },
+        { src: "/the-mayanut-company-logo-tm.png", alt: "The MayaNut Company logo" }
       ];
 
-      let selectedVariant = "qtr";
       let selectedQty = 1;
       let idx = 0;
       let lastFocusedElement = null;
 
-      const priceMajorEl = document.getElementById("priceMajor");
-      const priceCentsEl = document.getElementById("priceCents");
-      const qtrTab = document.getElementById("weightTabQtr");
-      const oneTab = document.getElementById("weightTabOne");
       const qtySelectBtn = document.getElementById("qtySelectBtn");
       const qtyValueText = document.getElementById("qtyValueText");
       const floatingRoot = document.getElementById("floating-menu-root");
+
+      const roastLight = document.getElementById("roastLight");
+      const roastDark = document.getElementById("roastDark");
 
       const carImg = document.getElementById("carImg");
       const prevBtn = document.getElementById("prevBtn");
@@ -2500,27 +2504,6 @@
 
       function getScrollbarWidth(){
         return Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-      }
-
-      function formatPriceParts(value){
-        const n = Number(value).toFixed(2).split(".");
-        return { major: "$" + n[0], cents: n[1] };
-      }
-
-      function applyVariant(key){
-        selectedVariant = key === "one" ? "one" : "qtr";
-
-        qtrTab.classList.toggle("active", selectedVariant === "qtr");
-        oneTab.classList.toggle("active", selectedVariant === "one");
-
-        qtrTab.setAttribute("aria-pressed", selectedVariant === "qtr" ? "true" : "false");
-        oneTab.setAttribute("aria-pressed", selectedVariant === "one" ? "true" : "false");
-
-        const priceParts = formatPriceParts(VARIANTS[selectedVariant].price);
-        priceMajorEl.textContent = priceParts.major;
-        priceCentsEl.textContent = priceParts.cents;
-
-        syncHeights();
       }
 
       function closeFloatingMenu(){
@@ -2573,6 +2556,14 @@
         qtyValueText.textContent = String(selectedQty);
         qtySelectBtn.setAttribute("aria-label", "Quantity " + selectedQty);
         syncHeights();
+      }
+
+      function setRoast(type){
+        const isLight = type === "light";
+        roastLight.classList.toggle("active", isLight);
+        roastDark.classList.toggle("active", !isLight);
+        roastLight.setAttribute("aria-pressed", isLight ? "true" : "false");
+        roastDark.setAttribute("aria-pressed", !isLight ? "true" : "false");
       }
 
       function setDots(){
@@ -2629,8 +2620,8 @@
         });
       }
 
-      qtrTab.addEventListener("click", function(){ applyVariant("qtr"); });
-      oneTab.addEventListener("click", function(){ applyVariant("one"); });
+      roastLight.addEventListener("click", function(){ setRoast("light"); });
+      roastDark.addEventListener("click", function(){ setRoast("dark"); });
 
       qtySelectBtn.addEventListener("click", function(e){
         e.preventDefault();
@@ -2680,7 +2671,7 @@
         setTimeout(syncHeights, 500);
       });
 
-      applyVariant("qtr");
+      setRoast("light");
       setQty(1);
       setImage(0);
       syncHeights();

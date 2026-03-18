@@ -251,7 +251,7 @@
       --font-ui:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
       --step--2:10px;
-      --step--1:13px;
+      --step--1:12px;
       --step-0:16px;
       --step-1:20px;
       --step-2:25px;
@@ -284,6 +284,10 @@
 
       --bottomNavH:64px;
       --headerH:78px;
+
+      --header-edge-pad:16px;
+      --header-edge-pad-desktop:16px;
+      --header-edge-pad-mobile:16px;
 
       --sbW:12px;
       --sbTrack:#e8edf2;
@@ -360,7 +364,11 @@
       touch-action:none;
     }
 
-    a{ color:inherit; text-decoration:none; }
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
     button, input{ font-family:inherit; }
 
     .sr-only{
@@ -426,7 +434,8 @@
     .header-inner{
       width:100%;
       max-width:none;
-      padding:12px 16px;
+      padding-block:12px;
+      padding-inline:var(--header-edge-pad);
       background:#fff;
     }
 
@@ -453,6 +462,8 @@
       align-items:center;
       justify-content:center;
       height:46px;
+      padding:0;
+      margin:0;
     }
 
     .brand img{
@@ -541,6 +552,7 @@
       height:46px;
       display:flex;
       align-items:center;
+      justify-content:flex-end;
     }
 
     .lang-btn{
@@ -554,13 +566,15 @@
       letter-spacing:.03em;
       line-height:1;
       height:46px;
-      padding:0 2px;
+      padding:0;
       cursor:pointer;
       display:inline-flex;
       align-items:center;
+      justify-content:flex-end;
       gap:8px;
       white-space:nowrap;
       position:relative;
+      min-width:0;
     }
 
     .lang-btn::after{
@@ -574,9 +588,7 @@
       transition:width .18s ease, background .12s ease;
     }
 
-    .lang-btn[aria-expanded="true"]{
-      color:var(--orange);
-    }
+    .lang-btn[aria-expanded="true"]{ color:var(--orange); }
 
     .lang-btn[aria-expanded="true"]::after{
       width:100%;
@@ -599,19 +611,20 @@
       display:inline-flex;
       align-items:center;
       line-height:1;
+      font-size:var(--step-0);
     }
 
     .lang-status{
-      min-width:3.25em;
-      padding:.24rem .42rem;
+      min-width:2.55em;
+      padding:.22rem .34rem;
       border-radius:999px;
       border:1px solid rgba(11,18,32,0.14);
       background:#fff;
       font-family:var(--font-ui);
       font-size:var(--step--1);
       font-weight:600;
-      letter-spacing:.03em;
-      line-height:1.2;
+      letter-spacing:.04em;
+      line-height:1.1;
       text-align:center;
       color:currentColor;
       flex:0 0 auto;
@@ -1310,6 +1323,21 @@
       margin:0 0 6px 0;
     }
 
+    .subcard a{
+      color:inherit;
+      transition:color .12s ease;
+    }
+
+    .subcard a:hover{
+      color:var(--orange);
+      text-decoration:underline;
+      text-decoration-color:var(--orange);
+    }
+
+    .subcard a.mailto-active{
+      color:var(--orange);
+    }
+
     .btn,
     button.btn,
     a.btn{
@@ -1727,28 +1755,18 @@
     }
 
     @media (max-width:760px){
-      .image-modal{ padding:18px; }
-      .image-modal-card{ width:min(90vw, 680px); }
-    }
-
-    @media (max-width:640px){
       :root{
         --headerH:72px;
-        --thumbH:80px;
+        --header-edge-pad:var(--header-edge-pad-mobile);
         --footer-mark-size:48px;
       }
 
       .header-inner{
-        padding-top:12px;
-        padding-bottom:12px;
+        padding-block:12px;
+        padding-inline:var(--header-edge-pad);
       }
 
       .header-row{ gap:10px; }
-
-      .brand img{
-        width:42px;
-        height:42px;
-      }
 
       .brand a,
       .brand,
@@ -1760,13 +1778,18 @@
         height:42px;
       }
 
+      .brand img{
+        width:42px;
+        height:42px;
+      }
+
       .brand-name{
         font-size:clamp(18px, 4.5vw, 22px);
       }
 
       .lang-btn{
-        font-size:14px;
         gap:6px;
+        font-size:var(--step--1);
       }
 
       .lang-label{
@@ -1779,12 +1802,18 @@
       }
 
       .lang-status{
-        min-width:2.8em;
-        font-size:12px;
-        padding:.22rem .38rem;
+        min-width:2.35em;
+        font-size:var(--step--1);
+        padding:.18rem .28rem;
       }
 
-      .lang-dropdown{ width:min(300px, 92vw); }
+      .lang-caret{
+        font-size:11px;
+      }
+
+      .lang-dropdown{
+        width:min(280px, calc(100vw - (var(--header-edge-pad) * 2)));
+      }
 
       .lang-item{
         font-size:15px;
@@ -1902,6 +1931,12 @@
       }
     }
 
+    @media (min-width:761px){
+      :root{
+        --header-edge-pad:var(--header-edge-pad-desktop);
+      }
+    }
+
     @media (orientation:landscape) and (max-height:560px){
       :root{
         --bottomNavH:56px;
@@ -2001,19 +2036,19 @@
                 <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.9 15.9 0 0 0-1.1-5A8.03 8.03 0 0 1 18.9 11ZM12 4.1c.8 1 1.8 3.1 2.2 6H9.8c.4-2.9 1.4-5 2.2-6ZM9.3 6A15.9 15.9 0 0 0 8.2 11H5.1A8.03 8.03 0 0 1 9.3 6ZM5.1 13h3.1c.2 1.8.6 3.5 1.1 5A8.03 8.03 0 0 1 5.1 13Zm6.9 6.9c-.8-1-1.8-3.1-2.2-6h4.4c-.4 2.9-1.4 5-2.2 6Zm2.7-1.9c.5-1.5.9-3.2 1.1-5h3.1A8.03 8.03 0 0 1 14.7 18Z"/>
               </svg>
               <span class="lang-label" id="langLabelText">Language</span>
-              <span class="lang-status" aria-hidden="true">EN</span>
+              <span class="lang-status" id="langStatus" aria-hidden="true">EN</span>
               <span class="lang-caret" aria-hidden="true">▾</span>
             </button>
 
             <div class="lang-dropdown" id="langDropdown" role="menu" aria-label="Language selector">
               <div class="lang-list">
-                <a class="lang-item active" href="/product.html" role="menuitem" data-lang="en">English</a>
-                <a class="lang-item" href="/es/product.html" role="menuitem" data-lang="es">Español</a>
-                <a class="lang-item" href="/fr/product.html" role="menuitem" data-lang="fr">Français</a>
-                <a class="lang-item" href="/pt/product.html" role="menuitem" data-lang="pt">Português</a>
-                <a class="lang-item" href="/ru/product.html" role="menuitem" data-lang="ru">Русский</a>
-                <a class="lang-item" href="/zh-hans/product.html" role="menuitem" data-lang="zh-hans">简体中文</a>
-                <a class="lang-item" href="/hi/product.html" role="menuitem" data-lang="hi">हिन्दी</a>
+                <a class="lang-item active" href="/product.html" role="menuitem" data-lang="en" data-short="EN">English</a>
+                <a class="lang-item" href="/es/product.html" role="menuitem" data-lang="es" data-short="ES">Español</a>
+                <a class="lang-item" href="/fr/product.html" role="menuitem" data-lang="fr" data-short="FR">Français</a>
+                <a class="lang-item" href="/pt/product.html" role="menuitem" data-lang="pt" data-short="PT">Português</a>
+                <a class="lang-item" href="/ru/product.html" role="menuitem" data-lang="ru" data-short="RU">Русский</a>
+                <a class="lang-item" href="/zh-hans/product.html" role="menuitem" data-lang="zh-hans" data-short="ZH">简体中文</a>
+                <a class="lang-item" href="/hi/product.html" role="menuitem" data-lang="hi" data-short="HI">हिन्दी</a>
               </div>
             </div>
           </div>
@@ -2220,7 +2255,7 @@
             <div class="subcard" aria-label="Questions">
               <h3>Questions</h3>
               <ul>
-                <li><strong>Email:</strong> <a href="mailto:info@mayanut.com?subject=MayaNut%20Inquiry&body=Dear%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com about MayaNut powder">info@mayanut.com</a></li>
+                <li><strong>Email:</strong> <a class="mailto-link" href="mailto:info@mayanut.com?subject=MayaNut%20Inquiry&body=Dear%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Email info@mayanut.com about MayaNut powder">info@mayanut.com</a></li>
                 <li><strong>Reviews:</strong> Coming soon</li>
               </ul>
             </div>
@@ -2387,7 +2422,14 @@
       const langBtn = document.getElementById("langBtn");
       const langMenu = document.getElementById("langMenu");
       const langDropdown = document.getElementById("langDropdown");
-      if (!langBtn || !langMenu || !langDropdown) return;
+      const langStatus = document.getElementById("langStatus");
+      const langItems = Array.from(document.querySelectorAll(".lang-item"));
+      if (!langBtn || !langMenu || !langDropdown || !langStatus) return;
+
+      const activeItem = langItems.find(item => item.classList.contains("active"));
+      if (activeItem && activeItem.dataset.short) {
+        langStatus.textContent = activeItem.dataset.short;
+      }
 
       function closeLangMenu(){
         langDropdown.classList.remove("open");
@@ -2400,11 +2442,7 @@
       }
 
       function toggleLangMenu(){
-        if (langDropdown.classList.contains("open")) {
-          closeLangMenu();
-        } else {
-          openLangMenu();
-        }
+        langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
       }
 
       langBtn.addEventListener("click", function(e){
@@ -2679,6 +2717,63 @@
       setQty(1);
       setImage(0);
       syncHeights();
+    })();
+  </script>
+
+  <script>
+    (function initMailtoHighlight(){
+      const mailLinks = Array.from(document.querySelectorAll(".mailto-link"));
+      if (!mailLinks.length) return;
+
+      let activeMailto = null;
+      let mailtoPending = false;
+      let resetTimer = null;
+
+      function clearMailtoState(){
+        if (resetTimer) {
+          clearTimeout(resetTimer);
+          resetTimer = null;
+        }
+
+        if (activeMailto) {
+          activeMailto.classList.remove("mailto-active");
+        }
+
+        activeMailto = null;
+        mailtoPending = false;
+      }
+
+      function scheduleReset(){
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(clearMailtoState, 120);
+      }
+
+      mailLinks.forEach(function(link){
+        link.addEventListener("click", function(){
+          clearMailtoState();
+          activeMailto = link;
+          mailtoPending = true;
+          link.classList.add("mailto-active");
+
+          resetTimer = setTimeout(function(){
+            if (mailtoPending && document.hasFocus()) {
+              clearMailtoState();
+            }
+          }, 900);
+        });
+      });
+
+      window.addEventListener("focus", function(){
+        if (mailtoPending) scheduleReset();
+      });
+
+      document.addEventListener("visibilitychange", function(){
+        if (!document.hidden && mailtoPending) scheduleReset();
+      });
+
+      window.addEventListener("pageshow", function(){
+        if (mailtoPending) scheduleReset();
+      });
     })();
   </script>
 </body>

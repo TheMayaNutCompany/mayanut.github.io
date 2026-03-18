@@ -643,35 +643,10 @@
       color:var(--orange);
     }
 
-    main{
-      padding-top:calc(var(--headerH) + var(--gap));
-      background:#fff;
-      position:relative;
-      z-index:1;
-    }
-
-    .content-wrapper{
-      max-width:var(--containerW);
-      margin:0 auto;
-      padding:0 var(--padX) 24px;
-      background:#fff;
-    }
-
-    @media (min-width:981px){
-      .content-wrapper{
-        padding-left:var(--containerPadDesktop);
-        padding-right:var(--containerPadDesktop);
-      }
-    }
-
-    .top-actions{
-      display:flex;
-      justify-content:flex-end;
-      margin:0 0 10px 0;
-    }
-
     .cart-launch{
-      position:relative;
+      position:fixed;
+      top:calc(var(--headerH) + var(--header-edge-pad));
+      right:calc(var(--header-edge-pad) + var(--scrollbarW));
       width:52px;
       height:52px;
       border-radius:16px;
@@ -684,6 +659,7 @@
       box-shadow:0 12px 24px rgba(255,112,0,0.24);
       cursor:pointer;
       transition:transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+      z-index:9000;
     }
 
     .cart-launch:hover{
@@ -720,6 +696,27 @@
       font-weight:900;
       line-height:1;
       box-shadow:0 8px 18px rgba(15,23,42,0.10);
+    }
+
+    main{
+      padding-top:calc(var(--headerH) + var(--gap));
+      background:#fff;
+      position:relative;
+      z-index:1;
+    }
+
+    .content-wrapper{
+      max-width:var(--containerW);
+      margin:0 auto;
+      padding:0 var(--padX) 24px;
+      background:#fff;
+    }
+
+    @media (min-width:981px){
+      .content-wrapper{
+        padding-left:var(--containerPadDesktop);
+        padding-right:var(--containerPadDesktop);
+      }
     }
 
     .breadcrumb{
@@ -1775,7 +1772,7 @@
 
     .cart-panel{
       position:relative;
-      width:min(28vw, 430px);
+      width:min(25vw, 430px);
       min-width:360px;
       height:100%;
       background:#fff;
@@ -1830,8 +1827,16 @@
       display:flex;
       flex-direction:column;
       gap:16px;
+      flex:1;
       min-height:0;
       overflow:auto;
+    }
+
+    .cart-empty{
+      font-size:14px;
+      line-height:1.7;
+      color:rgba(11,18,32,0.60);
+      font-weight:600;
     }
 
     .cart-item{
@@ -1894,6 +1899,13 @@
       height:1px;
       background:rgba(11,18,32,0.10);
       width:100%;
+    }
+
+    .cart-panel-footer{
+      margin-top:auto;
+      padding:16px 18px 18px;
+      border-top:1px solid rgba(11,18,32,0.10);
+      background:#fff;
     }
 
     .cart-checkout{
@@ -1995,11 +2007,9 @@
         padding:9px 10px;
       }
 
-      .top-actions{
-        margin-bottom:8px;
-      }
-
       .cart-launch{
+        top:calc(var(--headerH) + 12px);
+        right:calc(var(--header-edge-pad) + var(--scrollbarW));
         width:48px;
         height:48px;
         border-radius:14px;
@@ -2160,6 +2170,10 @@
         padding:16px;
       }
 
+      .cart-panel-footer{
+        padding:14px 16px 16px;
+      }
+
       .cart-item{
         grid-template-columns:78px 1fr;
         gap:12px;
@@ -2306,19 +2320,17 @@
     </div>
   </header>
 
+  <button class="cart-launch" id="cartLaunch" type="button" aria-label="Open cart">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="9" cy="20" r="1.5"></circle>
+      <circle cx="18" cy="20" r="1.5"></circle>
+      <path d="M3 4h2.1l2.2 10.2a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 7H7.1"></path>
+    </svg>
+    <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
+  </button>
+
   <main id="main-content" tabindex="-1" aria-label="MayaNut product page">
     <div class="content-wrapper">
-
-      <div class="top-actions" aria-label="Cart access">
-        <button class="cart-launch" id="cartLaunch" type="button" aria-label="Open cart">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="9" cy="20" r="1.5"></circle>
-            <circle cx="18" cy="20" r="1.5"></circle>
-            <path d="M3 4h2.1l2.2 10.2a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 7H7.1"></path>
-          </svg>
-          <span class="cart-badge" id="cartBadge" aria-hidden="true">1</span>
-        </button>
-      </div>
 
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/" aria-label="Go to Home">Home</a>
@@ -2715,6 +2727,7 @@
 
   <div class="cart-overlay" id="cartOverlay" aria-hidden="true">
     <div class="cart-backdrop" id="cartBackdrop"></div>
+
     <aside class="cart-panel" role="dialog" aria-modal="true" aria-label="Shopping cart">
       <div class="cart-panel-header">
         <h2 class="cart-panel-title">Cart</h2>
@@ -2722,6 +2735,8 @@
       </div>
 
       <div class="cart-panel-body">
+        <div class="cart-empty" id="cartEmpty">0 items in cart.</div>
+
         <div class="cart-item" aria-label="Cart item">
           <img
             class="cart-item-img"
@@ -2753,9 +2768,9 @@
             <span>Out of Stock</span>
           </div>
         </div>
+      </div>
 
-        <div class="cart-divider"></div>
-
+      <div class="cart-panel-footer">
         <button class="cart-checkout" type="button" disabled aria-label="Checkout coming soon">Checkout (Coming Soon)</button>
       </div>
     </aside>
@@ -2823,6 +2838,11 @@
       let selectedRoast = "light";
       let idx = 0;
       let lastFocusedElement = null;
+      let cartCount = 0;
+
+      let holdTimeout = null;
+      let holdInterval = null;
+      let suppressClickFor = null;
 
       const roastLight = document.getElementById("roastLight");
       const roastDark = document.getElementById("roastDark");
@@ -2838,6 +2858,7 @@
       const cartClose = document.getElementById("cartClose");
       const cartItemRoast = document.getElementById("cartItemRoast");
       const cartQty = document.getElementById("cartQty");
+      const cartEmpty = document.getElementById("cartEmpty");
 
       const carImg = document.getElementById("carImg");
       const prevBtn = document.getElementById("prevBtn");
@@ -2882,10 +2903,14 @@
         return Math.max(1, Math.min(10, parsed));
       }
 
+      function updateCartCount(){
+        cartBadge.textContent = String(cartCount);
+      }
+
       function updateCartUI(){
-        cartBadge.textContent = String(selectedQty);
         cartQty.textContent = String(selectedQty);
         cartItemRoast.textContent = selectedRoast === "light" ? "Light Roast" : "Dark Roast";
+        cartEmpty.textContent = cartCount === 0 ? "0 items in cart." : cartCount + (cartCount === 1 ? " item in cart." : " items in cart.");
       }
 
       function updateQtyControls(){
@@ -2936,7 +2961,7 @@
       }
 
       function openImageModal(){
-        closeCart();
+        closeCart(false);
         lastFocusedElement = document.activeElement;
         safeSetImg(imageModalImg, images[idx].src, images[idx].alt);
         imageModal.classList.add("open");
@@ -2945,28 +2970,32 @@
         imageModalClose.focus();
       }
 
-      function closeImageModal(){
+      function closeImageModal(restoreFocus = true){
         imageModal.classList.remove("open");
         imageModal.setAttribute("aria-hidden", "true");
         updateBodyOverlayState();
-        if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+        if (restoreFocus && lastFocusedElement && typeof lastFocusedElement.focus === "function") {
           lastFocusedElement.focus();
         }
       }
 
       function openCart(){
-        closeImageModal();
+        closeImageModal(false);
         lastFocusedElement = document.activeElement;
         cartOverlay.classList.add("open");
         cartOverlay.setAttribute("aria-hidden", "false");
         updateBodyOverlayState();
+        updateCartUI();
         cartClose.focus();
       }
 
-      function closeCart(){
+      function closeCart(restoreFocus = true){
         cartOverlay.classList.remove("open");
         cartOverlay.setAttribute("aria-hidden", "true");
         updateBodyOverlayState();
+        if (restoreFocus && lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+          lastFocusedElement.focus();
+        }
       }
 
       function syncHeights(){
@@ -2984,17 +3013,66 @@
         });
       }
 
-      roastLight.addEventListener("click", function(){ setRoast("light"); });
-      roastDark.addEventListener("click", function(){ setRoast("dark"); });
+      function stopQtyRepeat(){
+        if (holdTimeout){
+          clearTimeout(holdTimeout);
+          holdTimeout = null;
+        }
+        if (holdInterval){
+          clearInterval(holdInterval);
+          holdInterval = null;
+        }
+      }
 
-      qtyMinus.addEventListener("click", function(){
-        if (selectedQty <= 1) return;
-        setQty(selectedQty - 1);
+      function applyQtyDelta(delta){
+        const next = clampQty(selectedQty + delta);
+        if (next === selectedQty) return false;
+        setQty(next);
+        return true;
+      }
+
+      function startQtyRepeat(button, delta){
+        if (button.disabled) return;
+        suppressClickFor = button;
+        applyQtyDelta(delta);
+
+        holdTimeout = setTimeout(function(){
+          holdInterval = setInterval(function(){
+            if (!applyQtyDelta(delta)) {
+              stopQtyRepeat();
+            }
+          }, 170);
+        }, 360);
+      }
+
+      function bindQtyButton(button, delta){
+        button.addEventListener("pointerdown", function(e){
+          if (button.disabled) return;
+          e.preventDefault();
+          startQtyRepeat(button, delta);
+        });
+
+        button.addEventListener("click", function(){
+          if (suppressClickFor === button) {
+            suppressClickFor = null;
+            return;
+          }
+          if (button.disabled) return;
+          applyQtyDelta(delta);
+        });
+      }
+
+      bindQtyButton(qtyMinus, -1);
+      bindQtyButton(qtyPlus, 1);
+
+      document.addEventListener("pointerup", function(){
+        stopQtyRepeat();
+        suppressClickFor = null;
       });
 
-      qtyPlus.addEventListener("click", function(){
-        if (selectedQty >= 10) return;
-        setQty(selectedQty + 1);
+      document.addEventListener("pointercancel", function(){
+        stopQtyRepeat();
+        suppressClickFor = null;
       });
 
       qtyInput.addEventListener("input", function(){
@@ -3013,24 +3091,19 @@
         }
       });
 
+      roastLight.addEventListener("click", function(){ setRoast("light"); });
+      roastDark.addEventListener("click", function(){ setRoast("dark"); });
+
       cartLaunch.addEventListener("click", openCart);
-      cartClose.addEventListener("click", function(){
-        closeCart();
-        if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
-          lastFocusedElement.focus();
-        }
-      });
-      cartBackdrop.addEventListener("click", function(){
-        closeCart();
-        if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
-          lastFocusedElement.focus();
-        }
-      });
+      cartClose.addEventListener("click", function(){ closeCart(true); });
+      cartBackdrop.addEventListener("click", function(){ closeCart(true); });
 
       document.addEventListener("keydown", function(e){
         if (e.key === "Escape") {
-          closeImageModal();
-          closeCart();
+          closeImageModal(false);
+          closeCart(false);
+          stopQtyRepeat();
+          suppressClickFor = null;
         }
       });
 
@@ -3041,8 +3114,8 @@
       });
 
       carImg.addEventListener("click", openImageModal);
-      imageModalClose.addEventListener("click", closeImageModal);
-      imageModal.addEventListener("click", closeImageModal);
+      imageModalClose.addEventListener("click", function(){ closeImageModal(true); });
+      imageModal.addEventListener("click", function(){ closeImageModal(true); });
       imageModalCard.addEventListener("click", function(e){
         e.stopPropagation();
       });
@@ -3056,6 +3129,7 @@
       setRoast("light");
       setQty(1);
       setImage(0);
+      updateCartCount();
       updateCartUI();
       syncHeights();
     })();

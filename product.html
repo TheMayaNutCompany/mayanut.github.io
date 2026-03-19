@@ -231,6 +231,7 @@
     :root{
       --font-display:"Marcellus", Georgia, "Times New Roman", serif;
       --font-ui:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
       --step--2:10px;
       --step--1:12px;
       --step-0:16px;
@@ -240,6 +241,7 @@
       --step-4:39px;
       --step-5:49px;
       --step-6:61px;
+
       --ink:#0b1220;
       --muted:rgba(11,18,32,0.78);
       --line:rgba(11,18,32,0.10);
@@ -249,25 +251,34 @@
       --orangePress:#d95e00;
       --gold:#c79200;
       --red:#c62828;
+
       --radius:18px;
       --radius-lg:22px;
       --shadow:0 14px 40px rgba(15,23,42,0.08);
       --shadow-soft:0 10px 28px rgba(15,23,42,0.06);
+
       --containerW:1200px;
       --containerPadDesktop:52px;
       --padX:16px;
       --gap:16px;
       --section-stack-gap:12px;
+
       --leftColW:430px;
-      --thumbHintH:34px;
-      --bottomNavH:64px;
-      --headerH:78px;
+      --thumbHintH:40px;
+
+      --headerTopH:78px;
+      --headerSubH:38px;
+      --headerH:calc(var(--headerTopH) + var(--headerSubH));
       --header-edge-pad:16px;
+
+      --bottomNavH:64px;
+
       --sbW:12px;
       --sbTrack:#e8edf2;
       --sbThumb:#9aa5b1;
       --sbThumbHover:#7b8794;
       --scrollbarW:0px;
+
       --footer-mark-size:52px;
       --footer-logo-ratio:2.42;
     }
@@ -299,7 +310,7 @@
       scrollbar-gutter:stable;
       scrollbar-color:var(--sbThumb) var(--sbTrack);
       scrollbar-width:auto;
-      scroll-padding-top:calc(var(--headerH) + 26px);
+      scroll-padding-top:calc(var(--headerH) + 22px);
     }
 
     ::-webkit-scrollbar{ width:var(--sbW); height:var(--sbW); }
@@ -382,26 +393,53 @@
       left:0;
       right:var(--scrollbarW);
       z-index:99999;
+      background:transparent;
+    }
+
+    .header-top,
+    .header-bottom{
+      width:100%;
       background:rgba(255,255,255,0.96);
       backdrop-filter:blur(12px);
       -webkit-backdrop-filter:blur(12px);
+    }
+
+    .header-bottom{
+      border-top:1px solid rgba(11,18,32,0.10);
       border-bottom:1px solid rgba(11,18,32,0.06);
     }
 
-    .header-inner{
+    .header-top-inner,
+    .header-bottom-inner{
       width:100%;
-      max-width:none;
-      padding:12px var(--header-edge-pad);
-      background:#fff;
+      max-width:var(--containerW);
+      margin:0 auto;
+      padding-left:var(--padX);
+      padding-right:var(--padX);
     }
 
-    .header-row{
+    @media (min-width:981px){
+      .header-top-inner,
+      .header-bottom-inner{
+        padding-left:var(--containerPadDesktop);
+        padding-right:var(--containerPadDesktop);
+      }
+    }
+
+    .header-top-row{
+      min-height:var(--headerTopH);
       display:grid;
       grid-template-columns:minmax(0,1fr) auto;
       align-items:center;
       gap:18px;
-      min-width:0;
-      min-height:46px;
+    }
+
+    .header-bottom-row{
+      min-height:var(--headerSubH);
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:12px;
     }
 
     .brand{
@@ -444,14 +482,12 @@
       color:var(--ink);
     }
 
-    .header-right{
+    .header-main-actions{
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap:18px;
+      gap:16px;
       min-width:0;
-      min-height:46px;
-      flex:0 0 auto;
     }
 
     .subnav{
@@ -461,14 +497,14 @@
       flex-wrap:nowrap;
       justify-content:flex-end;
       min-width:0;
-      height:46px;
+      min-height:46px;
     }
 
     .subnav a{
       position:relative;
       display:inline-flex;
       align-items:center;
-      height:46px;
+      min-height:46px;
       font-size:var(--step-0);
       font-weight:500;
       letter-spacing:.03em;
@@ -484,7 +520,7 @@
       content:"";
       position:absolute;
       left:0;
-      bottom:6px;
+      bottom:10px;
       height:2px;
       width:0%;
       background:var(--ink);
@@ -498,14 +534,67 @@
       background:var(--orange);
     }
 
+    .header-cart{
+      position:relative;
+      width:48px;
+      height:48px;
+      border-radius:15px;
+      border:1px solid var(--orange);
+      background:var(--orange);
+      color:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 24px rgba(255,112,0,0.24);
+      cursor:pointer;
+      transition:transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+      flex:0 0 auto;
+    }
+
+    .header-cart:hover{
+      background:var(--orangePress);
+      border-color:var(--orangePress);
+      transform:translateY(-1px);
+    }
+
+    .header-cart svg{
+      width:22px;
+      height:22px;
+      fill:none;
+      stroke:#fff;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .cart-badge{
+      position:absolute;
+      top:-5px;
+      right:-5px;
+      min-width:20px;
+      height:20px;
+      padding:0 5px;
+      border-radius:999px;
+      background:var(--orange);
+      color:#fff;
+      border:1px solid #fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      font-weight:900;
+      line-height:1;
+      box-shadow:0 6px 14px rgba(15,23,42,0.12);
+    }
+
+    .cart-badge.is-hidden{
+      display:none;
+    }
+
     .lang-menu{
       position:relative;
       flex:0 0 auto;
       z-index:100000;
-      height:46px;
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
     }
 
     .lang-btn{
@@ -513,27 +602,25 @@
       border:0;
       background:transparent;
       color:var(--ink);
-      font-size:var(--step-0);
-      font-weight:500;
-      letter-spacing:.03em;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.02em;
       line-height:1;
-      height:46px;
+      min-height:32px;
       padding:0;
       cursor:pointer;
       display:inline-flex;
       align-items:center;
-      justify-content:flex-end;
       gap:8px;
       white-space:nowrap;
       position:relative;
-      min-width:0;
     }
 
     .lang-btn::after{
       content:"";
       position:absolute;
       left:0;
-      bottom:6px;
+      bottom:-6px;
       height:2px;
       width:0%;
       background:var(--ink);
@@ -559,23 +646,8 @@
       opacity:.92;
     }
 
-    .lang-status{
-      min-width:2.55em;
-      padding:.22rem .34rem;
-      border-radius:999px;
-      border:1px solid rgba(11,18,32,0.14);
-      background:#fff;
-      font-size:var(--step--1);
-      font-weight:600;
-      letter-spacing:.04em;
-      line-height:1.1;
-      text-align:center;
-      color:currentColor;
-      flex:0 0 auto;
-    }
-
     .lang-caret{
-      font-size:var(--step--1);
+      font-size:11px;
       line-height:1;
       transform:translateY(-1px);
       color:currentColor;
@@ -585,7 +657,7 @@
     .lang-dropdown{
       position:absolute;
       right:0;
-      top:calc(100% + 10px);
+      top:calc(100% + 12px);
       width:min(320px, 90vw);
       background:#fff;
       border:1px solid rgba(11,18,32,0.12);
@@ -627,61 +699,6 @@
       border-color:rgba(11,18,32,0.10);
       background:var(--soft);
       color:var(--orange);
-    }
-
-    .cart-launch{
-      position:fixed;
-      top:calc(var(--headerH) + var(--header-edge-pad));
-      right:calc(var(--header-edge-pad) + var(--scrollbarW));
-      width:52px;
-      height:52px;
-      border-radius:16px;
-      border:1px solid var(--orange);
-      background:var(--orange);
-      color:#fff;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 12px 24px rgba(255,112,0,0.24);
-      cursor:pointer;
-      transition:transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
-      z-index:9000;
-    }
-
-    .cart-launch:hover{
-      background:var(--orangePress);
-      border-color:var(--orangePress);
-      transform:translateY(-1px);
-    }
-
-    .cart-launch svg{
-      width:23px;
-      height:23px;
-      fill:none;
-      stroke:#fff;
-      stroke-width:2.2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-    .cart-badge{
-      position:absolute;
-      top:-6px;
-      right:-6px;
-      min-width:22px;
-      height:22px;
-      padding:0 6px;
-      border-radius:999px;
-      background:#fff;
-      color:var(--orange);
-      border:1px solid rgba(11,18,32,0.10);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:11px;
-      font-weight:900;
-      line-height:1;
-      box-shadow:0 8px 18px rgba(15,23,42,0.10);
     }
 
     main{
@@ -731,7 +748,7 @@
     .left-col{
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:0;
       min-width:0;
     }
 
@@ -1646,6 +1663,7 @@
       padding:10px 10px calc(10px + env(safe-area-inset-bottom));
       display:none;
       isolation:isolate;
+      border-top:1px solid rgba(11,18,32,0.08);
     }
 
     .bottom-tabs nav{
@@ -1941,10 +1959,18 @@
     }
 
     @media (max-width:1100px){
-      :root{ --leftColW:380px; }
+      :root{
+        --leftColW:380px;
+        --thumbHintH:56px;
+      }
+
       h1{ font-size:30px; }
       .price-major{ font-size:30px; }
       .brand-name{ font-size:clamp(var(--step-1), 3vw, var(--step-3)); }
+    }
+
+    @media (max-width:980px){
+      .breadcrumb{ display:none; }
     }
 
     @media (max-width:920px){
@@ -1959,13 +1985,14 @@
 
     @media (max-width:760px){
       :root{
-        --headerH:72px;
+        --headerTopH:72px;
+        --headerSubH:34px;
+        --headerH:calc(var(--headerTopH) + var(--headerSubH));
         --footer-mark-size:48px;
-        --thumbHintH:28px;
+        --thumbHintH:46px;
       }
 
-      .header-inner{ padding:12px var(--header-edge-pad); }
-      .header-row{ gap:10px; }
+      .header-top-row{ gap:10px; }
 
       .brand-link img{
         width:42px;
@@ -1974,29 +2001,32 @@
 
       .brand,
       .brand-link,
-      .brand-name,
-      .header-right,
-      .lang-menu,
-      .lang-btn{
+      .brand-name{
         min-height:42px;
-        height:42px;
       }
 
       .brand-name{
         font-size:clamp(18px, 4.5vw, 22px);
       }
 
-      .lang-btn{ gap:6px; }
+      .header-main-actions{
+        gap:10px;
+      }
+
+      .header-cart{
+        width:44px;
+        height:44px;
+        border-radius:14px;
+      }
+
+      .lang-btn{
+        font-size:12px;
+        gap:6px;
+      }
 
       .lang-globe{
         width:13px;
         height:13px;
-      }
-
-      .lang-status{
-        min-width:2.35em;
-        font-size:var(--step--1);
-        padding:.18rem .28rem;
       }
 
       .lang-caret{
@@ -2004,20 +2034,12 @@
       }
 
       .lang-dropdown{
-        width:min(280px, calc(100vw - (var(--header-edge-pad) * 2)));
+        width:min(280px, calc(100vw - (var(--padX) * 2)));
       }
 
       .lang-item{
         font-size:15px;
         padding:9px 10px;
-      }
-
-      .cart-launch{
-        top:calc(var(--headerH) + 12px);
-        right:calc(var(--header-edge-pad) + var(--scrollbarW));
-        width:48px;
-        height:48px;
-        border-radius:14px;
       }
 
       h1{
@@ -2026,10 +2048,7 @@
       }
 
       .price-major{ font-size:30px; }
-      .price-cents{
-        font-size:13px;
-        transform:translateY(0);
-      }
+      .price-cents{ font-size:13px; }
       .price-note{ font-size:11px; }
 
       .features{ gap:6px; }
@@ -2062,9 +2081,7 @@
         grid-template-columns:44px minmax(66px, 1fr) 44px;
       }
 
-      .qty-input{
-        font-size:13px;
-      }
+      .qty-input{ font-size:13px; }
 
       .thumb-hint{
         font-size:11px;
@@ -2203,11 +2220,7 @@
       :root{
         --bottomNavH:56px;
         --leftColW:320px;
-        --thumbHintH:24px;
-      }
-
-      .thumb-hint{
-        font-size:11px;
+        --thumbHintH:34px;
       }
 
       .bottom-tabs{
@@ -2229,10 +2242,7 @@
 
       h1{ font-size:22px; }
       .price-major{ font-size:24px; }
-      .price-cents{
-        font-size:12px;
-        transform:translateY(0);
-      }
+      .price-cents{ font-size:12px; }
 
       .desc{
         font-size:13px;
@@ -2265,32 +2275,49 @@
   </nav>
 
   <header class="site-header" aria-label="Site header">
-    <div class="header-inner">
-      <div class="header-row">
-        <div class="brand notranslate" translate="no" aria-label="The MayaNut Company">
-          <a href="/" aria-label="Go to home page" class="brand-link">
-            <img
-              src="/the-mayanut-company-logo-tm.svg"
-              alt="The MayaNut Company logo"
-              width="46"
-              height="46"
-              decoding="async"
-              fetchpriority="high"
-              onerror="this.onerror=null;this.src='/the-mayanut-company-logo-tm.png';"
-            >
-            <span class="brand-name">The MayaNut Company</span>
-          </a>
+    <div class="header-top">
+      <div class="header-top-inner">
+        <div class="header-top-row">
+          <div class="brand notranslate" translate="no" aria-label="The MayaNut Company">
+            <a href="/" aria-label="Go to home page" class="brand-link">
+              <img
+                src="/the-mayanut-company-logo-tm.svg"
+                alt="The MayaNut Company logo"
+                width="46"
+                height="46"
+                decoding="async"
+                fetchpriority="high"
+                onerror="this.onerror=null;this.src='/the-mayanut-company-logo-tm.png';"
+              >
+              <span class="brand-name">The MayaNut Company</span>
+            </a>
+          </div>
+
+          <div class="header-main-actions">
+            <nav class="subnav notranslate" translate="no" aria-label="Primary navigation">
+              <a href="/" aria-label="Home page">Home</a>
+              <a class="active" href="/product.html" aria-current="page" aria-label="Buy MayaNut flour">Buy</a>
+              <a href="/about.html" aria-label="About The MayaNut Company">About</a>
+              <a href="/faq.html" aria-label="Frequently asked questions">FAQ</a>
+              <a href="/recipes.html" aria-label="MayaNut recipes">Recipes</a>
+            </nav>
+
+            <button class="header-cart" id="cartLaunch" type="button" aria-label="Open cart">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="9" cy="20" r="1.5"></circle>
+                <circle cx="18" cy="20" r="1.5"></circle>
+                <path d="M3 4h2l2.2 10h10.9l1.8-7H6.2"></path>
+              </svg>
+              <span class="cart-badge is-hidden" id="cartBadge" aria-hidden="true">0</span>
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="header-right">
-          <nav class="subnav notranslate" translate="no" aria-label="Primary navigation">
-            <a href="/" aria-label="Home page">Home</a>
-            <a class="active" href="/product.html" aria-current="page" aria-label="Buy MayaNut flour">Buy</a>
-            <a href="/about.html" aria-label="About The MayaNut Company">About</a>
-            <a href="/faq.html" aria-label="Frequently asked questions">FAQ</a>
-            <a href="/recipes.html" aria-label="MayaNut recipes">Recipes</a>
-          </nav>
-
+    <div class="header-bottom">
+      <div class="header-bottom-inner">
+        <div class="header-bottom-row">
           <div class="lang-menu notranslate" translate="no" id="langMenu">
             <button
               class="lang-btn"
@@ -2304,19 +2331,19 @@
               <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.9 15.9 0 0 0-1.1-5A8.03 8.03 0 0 1 18.9 11ZM12 4.1c.8 1 1.8 3.1 2.2 6H9.8c.4-2.9 1.4-5 2.2-6ZM9.3 6A15.9 15.9 0 0 0 8.2 11H5.1A8.03 8.03 0 0 1 9.3 6ZM5.1 13h3.1c.2 1.8.6 3.5 1.1 5A8.03 8.03 0 0 1 5.1 13Zm6.9 6.9c-.8-1-1.8-3.1-2.2-6h4.4c-.4 2.9-1.4 5-2.2 6Zm2.7-1.9c.5-1.5.9-3.2 1.1-5h3.1A8.03 8.03 0 0 1 14.7 18Z"/>
               </svg>
-              <span class="lang-status" id="langStatus" aria-hidden="true">EN</span>
+              <span id="langBtnLabel">Language: English</span>
               <span class="lang-caret" aria-hidden="true">▾</span>
             </button>
 
             <div class="lang-dropdown" id="langDropdown" role="menu" aria-label="Language selector">
               <div class="lang-list">
-                <a class="lang-item active" href="/product.html" role="menuitem" data-lang="en" data-short="EN">English</a>
-                <a class="lang-item" href="/es/product.html" role="menuitem" data-lang="es" data-short="ES">Español</a>
-                <a class="lang-item" href="/fr/product.html" role="menuitem" data-lang="fr" data-short="FR">Français</a>
-                <a class="lang-item" href="/pt/product.html" role="menuitem" data-lang="pt" data-short="PT">Português</a>
-                <a class="lang-item" href="/ru/product.html" role="menuitem" data-lang="ru" data-short="RU">Русский</a>
-                <a class="lang-item" href="/zh-hans/product.html" role="menuitem" data-lang="zh-hans" data-short="ZH">简体中文</a>
-                <a class="lang-item" href="/hi/product.html" role="menuitem" data-lang="hi" data-short="HI">हिन्दी</a>
+                <a class="lang-item active" href="/product.html" role="menuitem" data-lang-name="English">English</a>
+                <a class="lang-item" href="/es/product.html" role="menuitem" data-lang-name="Español">Español</a>
+                <a class="lang-item" href="/fr/product.html" role="menuitem" data-lang-name="Français">Français</a>
+                <a class="lang-item" href="/pt/product.html" role="menuitem" data-lang-name="Português">Português</a>
+                <a class="lang-item" href="/ru/product.html" role="menuitem" data-lang-name="Русский">Русский</a>
+                <a class="lang-item" href="/zh-hans/product.html" role="menuitem" data-lang-name="简体中文">简体中文</a>
+                <a class="lang-item" href="/hi/product.html" role="menuitem" data-lang-name="हिन्दी">हिन्दी</a>
               </div>
             </div>
           </div>
@@ -2324,15 +2351,6 @@
       </div>
     </div>
   </header>
-
-  <button class="cart-launch" id="cartLaunch" type="button" aria-label="Open cart">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="9" cy="20" r="1.5"></circle>
-      <circle cx="18" cy="20" r="1.5"></circle>
-      <path d="M3 4h2l2.2 10h10.9l1.8-7H6.2"></path>
-    </svg>
-    <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
-  </button>
 
   <main id="main-content" tabindex="-1" aria-label="MayaNut flour product page">
     <div class="content-wrapper">
@@ -2445,7 +2463,7 @@
             </div>
 
             <div class="microline" aria-label="Storage microline">
-              Store in a cool, dry place away from direct sunlight.
+              *Store in a cool, dry place away from direct sunlight.
             </div>
 
             <div class="checkout-stack" aria-label="Checkout controls">
@@ -2789,13 +2807,13 @@
       const langBtn = document.getElementById("langBtn");
       const langMenu = document.getElementById("langMenu");
       const langDropdown = document.getElementById("langDropdown");
-      const langStatus = document.getElementById("langStatus");
+      const langBtnLabel = document.getElementById("langBtnLabel");
       const langItems = Array.from(document.querySelectorAll(".lang-item"));
-      if (!langBtn || !langMenu || !langDropdown || !langStatus) return;
+      if (!langBtn || !langMenu || !langDropdown || !langBtnLabel) return;
 
       const activeItem = langItems.find(item => item.classList.contains("active"));
-      if (activeItem && activeItem.dataset.short) {
-        langStatus.textContent = activeItem.dataset.short;
+      if (activeItem && activeItem.dataset.langName) {
+        langBtnLabel.textContent = "Language: " + activeItem.dataset.langName;
       }
 
       function closeLangMenu(){
@@ -2841,7 +2859,6 @@
       let holdInterval = null;
       let activeQtyPress = null;
 
-      const siteHeader = document.querySelector(".site-header");
       const roastLight = document.getElementById("roastLight");
       const roastDark = document.getElementById("roastDark");
 
@@ -2880,10 +2897,8 @@
       const imageModalImg = document.getElementById("imageModalImg");
       const imageModalCard = document.getElementById("imageModalCard");
 
-      const productGrid = document.getElementById("productGrid");
       const leftCol = document.getElementById("leftCol");
       const productBox = document.getElementById("productBox");
-      const productImageWrap = document.querySelector(".product-img");
 
       function safeSetImg(imgEl, src, alt){
         if (!imgEl) return;
@@ -2908,6 +2923,7 @@
 
       function updateCartCount(){
         cartBadge.textContent = String(cartCount);
+        cartBadge.classList.toggle("is-hidden", cartCount === 0);
       }
 
       function updateCartUI(){
@@ -3006,42 +3022,18 @@
         }
       }
 
-      function syncMobileCartClearance(){
-        if (!siteHeader || !cartLaunch || !productGrid || !productImageWrap) return;
-
-        const isMobile = window.matchMedia("(max-width: 760px)").matches;
-        productGrid.style.marginTop = "";
-
-        if (!isMobile) return;
-
-        const headerRect = siteHeader.getBoundingClientRect();
-        const cartRect = cartLaunch.getBoundingClientRect();
-        const imageRect = productImageWrap.getBoundingClientRect();
-
-        const topGap = Math.max(0, Math.round(cartRect.top - headerRect.bottom));
-        const rightGap = Math.max(0, Math.round(window.innerWidth - cartRect.right));
-        const desiredGap = Math.max(topGap, rightGap);
-        const currentGap = Math.round(imageRect.top - cartRect.bottom);
-
-        if (currentGap < desiredGap) {
-          productGrid.style.marginTop = (desiredGap - currentGap) + "px";
-        }
-      }
-
       function syncHeights(){
         const mobileStack = window.matchMedia("(max-width: 920px)").matches &&
           !window.matchMedia("(orientation: landscape) and (max-height:560px)").matches;
 
         if (mobileStack){
           productBox.style.minHeight = "";
-          window.requestAnimationFrame(syncMobileCartClearance);
           return;
         }
 
         window.requestAnimationFrame(function(){
           const leftH = leftCol.getBoundingClientRect().height;
           productBox.style.minHeight = Math.ceil(leftH) + "px";
-          syncMobileCartClearance();
         });
       }
 

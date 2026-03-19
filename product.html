@@ -1766,12 +1766,12 @@
     .cart-backdrop{
       position:absolute;
       inset:0;
-      cursor:pointer;
+      cursor:default;
     }
 
     .cart-panel{
       position:relative;
-      width:min(25vw, 430px);
+      width:30vw;
       min-width:360px;
       height:100%;
       background:#fff;
@@ -2841,6 +2841,7 @@
       let holdInterval = null;
       let activeQtyPress = null;
 
+      const siteHeader = document.querySelector(".site-header");
       const roastLight = document.getElementById("roastLight");
       const roastDark = document.getElementById("roastDark");
 
@@ -2879,8 +2880,10 @@
       const imageModalImg = document.getElementById("imageModalImg");
       const imageModalCard = document.getElementById("imageModalCard");
 
+      const productGrid = document.getElementById("productGrid");
       const leftCol = document.getElementById("leftCol");
       const productBox = document.getElementById("productBox");
+      const productImageWrap = document.querySelector(".product-img");
 
       function safeSetImg(imgEl, src, alt){
         if (!imgEl) return;
@@ -3003,18 +3006,42 @@
         }
       }
 
+      function syncMobileCartClearance(){
+        if (!siteHeader || !cartLaunch || !productGrid || !productImageWrap) return;
+
+        const isMobile = window.matchMedia("(max-width: 760px)").matches;
+        productGrid.style.marginTop = "";
+
+        if (!isMobile) return;
+
+        const headerRect = siteHeader.getBoundingClientRect();
+        const cartRect = cartLaunch.getBoundingClientRect();
+        const imageRect = productImageWrap.getBoundingClientRect();
+
+        const topGap = Math.max(0, Math.round(cartRect.top - headerRect.bottom));
+        const rightGap = Math.max(0, Math.round(window.innerWidth - cartRect.right));
+        const desiredGap = Math.max(topGap, rightGap);
+        const currentGap = Math.round(imageRect.top - cartRect.bottom);
+
+        if (currentGap < desiredGap) {
+          productGrid.style.marginTop = (desiredGap - currentGap) + "px";
+        }
+      }
+
       function syncHeights(){
         const mobileStack = window.matchMedia("(max-width: 920px)").matches &&
           !window.matchMedia("(orientation: landscape) and (max-height:560px)").matches;
 
         if (mobileStack){
           productBox.style.minHeight = "";
+          window.requestAnimationFrame(syncMobileCartClearance);
           return;
         }
 
         window.requestAnimationFrame(function(){
           const leftH = leftCol.getBoundingClientRect().height;
           productBox.style.minHeight = Math.ceil(leftH) + "px";
+          syncMobileCartClearance();
         });
       }
 

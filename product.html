@@ -276,6 +276,8 @@
       --scrollbarW:0px;
       --desktopFrameW:0px;
       --desktopDropdownW:min(320px, 90vw);
+      --desktopLangFrameGap:14px;
+      --desktopLangFallbackW:220px;
 
       --footer-mark-size:52px;
       --footer-logo-ratio:2.42;
@@ -692,12 +694,8 @@
       box-shadow:0 12px 28px rgba(15,23,42,0.10);
       padding:8px;
       display:none;
-    }
-
-    @media (min-width:1200px){
-      .lang-dropdown{
-        max-width:none;
-      }
+      z-index:100001;
+      transform-origin:top right;
     }
 
     .lang-dropdown.open{ display:block; }
@@ -715,7 +713,7 @@
       text-align:left;
       border-radius:10px;
       padding:10px 12px;
-      font-size:var(--step-0);
+      font-size:14px;
       font-weight:500;
       line-height:1.2;
       white-space:nowrap;
@@ -732,6 +730,17 @@
       border-color:rgba(11,18,32,0.10);
       background:var(--soft);
       color:var(--orange);
+    }
+
+    @media (min-width:981px){
+      .lang-dropdown.frame-mode{
+        border-radius:16px;
+      }
+
+      .lang-item{
+        padding:9px 10px;
+        font-size:13px;
+      }
     }
 
     main{
@@ -2853,12 +2862,6 @@
 
       document.documentElement.style.setProperty("--scrollbarW", sw + "px");
       document.documentElement.style.setProperty("--desktopFrameW", desktopFrame + "px");
-
-      if (viewportW >= 1200 && desktopFrame > 240) {
-        document.documentElement.style.setProperty("--desktopDropdownW", (desktopFrame - 32) + "px");
-      } else {
-        document.documentElement.style.setProperty("--desktopDropdownW", "min(320px, 90vw)");
-      }
     }
 
     updateLayoutVars();
@@ -2873,6 +2876,8 @@
       const langDropdown = document.getElementById("langDropdown");
       const langBtnLabel = document.getElementById("langBtnLabel");
       const langItems = Array.from(document.querySelectorAll(".lang-item"));
+      const contentWrapper = document.querySelector(".content-wrapper");
+
       if (!langBtn || !langMenu || !langDropdown || !langBtnLabel) return;
 
       const activeItem = langItems.find(item => item.classList.contains("active"));
@@ -2880,19 +2885,78 @@
         langBtnLabel.textContent = "Language: " + activeItem.dataset.langName;
       }
 
+      function clearDropdownGeometry(){
+        langDropdown.classList.remove("frame-mode");
+        langDropdown.style.position = "";
+        langDropdown.style.top = "";
+        langDropdown.style.left = "";
+        langDropdown.style.right = "";
+        langDropdown.style.width = "";
+        langDropdown.style.maxWidth = "";
+      }
+
+      function placeDropdown(){
+        clearDropdownGeometry();
+
+        const isDesktop = window.matchMedia("(min-width: 981px)").matches;
+        if (!isDesktop || !contentWrapper) return;
+
+        const sw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+        const viewportW = window.innerWidth - sw;
+        const wrapperRect = contentWrapper.getBoundingClientRect();
+        const btnRect = langBtn.getBoundingClientRect();
+
+        const frameLeft = Math.round(wrapperRect.right);
+        const frameRight = Math.round(viewportW);
+        const frameW = Math.max(0, frameRight - frameLeft);
+
+        const frameGap = Math.max(10, Math.min(18, Math.round(frameW * 0.12)));
+        const frameInnerW = Math.max(0, frameW - (frameGap * 2));
+        const top = Math.round(btnRect.bottom + 12);
+
+        langDropdown.style.position = "fixed";
+        langDropdown.style.top = top + "px";
+        langDropdown.style.right = "auto";
+
+        if (frameInnerW >= 120) {
+          langDropdown.classList.add("frame-mode");
+          langDropdown.style.left = (frameLeft + frameGap) + "px";
+          langDropdown.style.width = frameInnerW + "px";
+          langDropdown.style.maxWidth = frameInnerW + "px";
+        } else {
+          const fallbackW = Math.min(
+            Math.max(176, parseInt(getComputedStyle(document.documentElement).getPropertyValue("--desktopLangFallbackW"), 10) || 220),
+            viewportW - 24
+          );
+
+          let left = Math.round(btnRect.right - fallbackW);
+          left = Math.max(12, Math.min(left, viewportW - fallbackW - 12));
+
+          langDropdown.style.left = left + "px";
+          langDropdown.style.width = fallbackW + "px";
+          langDropdown.style.maxWidth = fallbackW + "px";
+        }
+      }
+
       function closeLangMenu(){
         langDropdown.classList.remove("open");
         langBtn.setAttribute("aria-expanded", "false");
+        clearDropdownGeometry();
       }
 
       function openLangMenu(){
+        placeDropdown();
         langDropdown.classList.add("open");
         langBtn.setAttribute("aria-expanded", "true");
       }
 
       langBtn.addEventListener("click", function(e){
         e.stopPropagation();
-        langDropdown.classList.contains("open") ? closeLangMenu() : openLangMenu();
+        if (langDropdown.classList.contains("open")) {
+          closeLangMenu();
+        } else {
+          openLangMenu();
+        }
       });
 
       document.addEventListener("click", function(e){
@@ -2901,6 +2965,16 @@
 
       document.addEventListener("keydown", function(e){
         if (e.key === "Escape") closeLangMenu();
+      });
+
+      window.addEventListener("resize", function(){
+        if (langDropdown.classList.contains("open")) placeDropdown();
+      });
+
+      window.addEventListener("orientationchange", function(){
+        if (langDropdown.classList.contains("open")) {
+          setTimeout(placeDropdown, 150);
+        }
       });
     })();
   </script>

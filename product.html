@@ -49,6 +49,8 @@
   <meta property="og:image:height" content="1200">
   <meta property="og:image:alt" content="MayaNut flour product pouch by The MayaNut Company">
   <meta property="og:locale" content="en_US">
+  <meta property="product:price:currency" content="USD">
+  <meta property="product:price:amount" content="9.99">
   <meta property="product:availability" content="out of stock">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -121,7 +123,7 @@
         "@id":"https://www.mayanut.com/product.html#webpage",
         "url":"https://www.mayanut.com/product.html",
         "name":"MayaNut™ Flour | Roasted Alicastrum Seed Flour | The MayaNut Company",
-        "description":"MayaNut™ Flour by The MayaNut Company is a roasted, finely milled powder made from the seeds of the Alicastrum tree (Brosimum alicastrum). This Guatemalan-sourced flour delivers a smooth texture, warm roasted depth, and a bold, cocoa-like flavor.",
+        "description":"MayaNut™ flour is a roasted, finely milled powder made from the seeds of the Alicastrum tree (Brosimum alicastrum), a tropical species long valued as a traditional food in Mesoamerica. Carefully dried and gently roasted, this Guatemalan-sourced flour delivers a smooth texture, warm roasted depth, and a bold, cocoa-like flavor. It brings richness to smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking. Light roast offers a smoother, more mellow profile, while dark roast is roasted longer for a deeper, bolder flavor.",
         "inLanguage":"en",
         "isPartOf":{"@id":"https://www.mayanut.com/#website"},
         "about":{"@id":"https://www.mayanut.com/product.html#product"},
@@ -1157,6 +1159,7 @@
       cursor:pointer;
       transition:background .12s ease, color .12s ease;
       user-select:none;
+      -webkit-tap-highlight-color:transparent;
     }
 
     .qty-step:hover:not(:disabled){
@@ -1178,6 +1181,11 @@
       min-width:0;
     }
 
+    .qty-input-wrap:focus-within{
+      background:#fff;
+      box-shadow:none;
+    }
+
     .qty-input{
       width:100%;
       height:100%;
@@ -1190,6 +1198,17 @@
       outline:none;
       padding:0 8px;
       letter-spacing:.04em;
+      caret-color:var(--ink);
+      -webkit-tap-highlight-color:transparent;
+      box-shadow:none !important;
+    }
+
+    .qty-input:focus,
+    .qty-input:focus-visible{
+      outline:none !important;
+      box-shadow:none !important;
+      border:none !important;
+      border-radius:0 !important;
     }
 
     .qty-input::-webkit-outer-spin-button,
@@ -2310,7 +2329,7 @@
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="9" cy="20" r="1.5"></circle>
       <circle cx="18" cy="20" r="1.5"></circle>
-      <path d="M3 4h2.1l2.2 10.2a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 7H7.1"></path>
+      <path d="M3 4h2l2.2 10h10.9l1.8-7H6.2"></path>
     </svg>
     <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
   </button>
@@ -2494,16 +2513,9 @@
             </div>
           </div>
 
-          <p>
-            MayaNut™ flour is a roasted, finely milled powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica.
-          </p>
-          <p>
-            Carefully dried and gently roasted, this Guatemalan-sourced flour delivers a smooth texture, warm roasted depth, and a bold, cocoa-like flavor.
-          </p>
-          <p>
-            <strong>Ingredients:</strong> 100% roasted, finely milled Alicastrum seed flour (<em>Brosimum alicastrum</em>).<br>
-            <strong>Storage:</strong> Store in a cool, dry place away from direct sunlight.
-          </p>
+          <p>MayaNut™ flour is a roasted, finely milled powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica.</p>
+          <p>Carefully dried and gently roasted, this Guatemalan-sourced flour delivers a smooth texture, warm roasted depth, and a bold, cocoa-like flavor.</p>
+          <p><strong>Ingredients:</strong> 100% roasted, finely milled Alicastrum seed flour (<em>Brosimum alicastrum</em>).<br><strong>Storage:</strong> Store in a cool, dry place away from direct sunlight.</p>
 
           <div class="two-cols" aria-label="Details grid">
             <div class="subcard" aria-label="Flavor profile">
@@ -2827,7 +2839,7 @@
 
       let holdTimeout = null;
       let holdInterval = null;
-      let suppressClickFor = null;
+      let activeQtyPress = null;
 
       const roastLight = document.getElementById("roastLight");
       const roastDark = document.getElementById("roastDark");
@@ -3006,7 +3018,7 @@
         });
       }
 
-      function stopQtyRepeat(){
+      function clearQtyTimers(){
         if (holdTimeout){
           clearTimeout(holdTimeout);
           holdTimeout = null;
@@ -3024,49 +3036,71 @@
         return true;
       }
 
-      function startQtyRepeat(button, delta){
+      function startQtyPress(button, delta){
         if (button.disabled) return;
-        suppressClickFor = button;
-        applyQtyDelta(delta);
+        clearQtyTimers();
+        activeQtyPress = { button: button, delta: delta, repeated: false };
 
         holdTimeout = setTimeout(function(){
+          if (!activeQtyPress || activeQtyPress.button !== button) return;
+          activeQtyPress.repeated = true;
+          if (!applyQtyDelta(delta)) return;
+
           holdInterval = setInterval(function(){
             if (!applyQtyDelta(delta)) {
-              stopQtyRepeat();
+              clearQtyTimers();
             }
           }, 170);
         }, 360);
+      }
+
+      function endQtyPress(button){
+        if (!activeQtyPress || activeQtyPress.button !== button) return;
+
+        const press = activeQtyPress;
+        activeQtyPress = null;
+        clearQtyTimers();
+
+        if (!press.repeated) {
+          applyQtyDelta(press.delta);
+        }
       }
 
       function bindQtyButton(button, delta){
         button.addEventListener("pointerdown", function(e){
           if (button.disabled) return;
           e.preventDefault();
-          startQtyRepeat(button, delta);
+          if (button.setPointerCapture) {
+            try { button.setPointerCapture(e.pointerId); } catch (err) {}
+          }
+          startQtyPress(button, delta);
         });
 
-        button.addEventListener("click", function(){
-          if (suppressClickFor === button) {
-            suppressClickFor = null;
-            return;
+        button.addEventListener("pointerup", function(e){
+          if (button.releasePointerCapture) {
+            try { button.releasePointerCapture(e.pointerId); } catch (err) {}
           }
-          if (button.disabled) return;
-          applyQtyDelta(delta);
+          endQtyPress(button);
+        });
+
+        button.addEventListener("pointercancel", function(){
+          endQtyPress(button);
+        });
+
+        button.addEventListener("lostpointercapture", function(){
+          endQtyPress(button);
+        });
+
+        button.addEventListener("keydown", function(e){
+          if ((e.key === "Enter" || e.key === " ") && !button.disabled) {
+            e.preventDefault();
+            applyQtyDelta(delta);
+          }
         });
       }
 
       bindQtyButton(qtyMinus, -1);
       bindQtyButton(qtyPlus, 1);
-
-      document.addEventListener("pointerup", function(){
-        stopQtyRepeat();
-        suppressClickFor = null;
-      });
-
-      document.addEventListener("pointercancel", function(){
-        stopQtyRepeat();
-        suppressClickFor = null;
-      });
 
       qtyInput.addEventListener("input", function(){
         const cleaned = qtyInput.value.replace(/[^\d]/g, "");
@@ -3095,8 +3129,8 @@
         if (e.key === "Escape") {
           closeImageModal(false);
           closeCart(false);
-          stopQtyRepeat();
-          suppressClickFor = null;
+          clearQtyTimers();
+          activeQtyPress = null;
         }
       });
 

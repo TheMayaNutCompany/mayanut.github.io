@@ -274,6 +274,8 @@
       --sbThumb:#9aa5b1;
       --sbThumbHover:#7b8794;
       --scrollbarW:0px;
+      --desktopFrameW:0px;
+      --desktopDropdownW:min(320px, 90vw);
 
       --footer-mark-size:52px;
       --footer-logo-ratio:2.42;
@@ -682,13 +684,20 @@
       position:absolute;
       right:0;
       top:calc(100% + 12px);
-      width:min(320px, 90vw);
+      width:var(--desktopDropdownW);
+      max-width:90vw;
       background:#fff;
       border:1px solid rgba(11,18,32,0.12);
       border-radius:14px;
       box-shadow:0 12px 28px rgba(15,23,42,0.10);
       padding:8px;
       display:none;
+    }
+
+    @media (min-width:1200px){
+      .lang-dropdown{
+        max-width:none;
+      }
     }
 
     .lang-dropdown.open{ display:block; }
@@ -765,7 +774,7 @@
     .product-grid{
       display:grid;
       grid-template-columns:var(--leftColW) 1fr;
-      gap:18px;
+      gap:var(--section-stack-gap);
       align-items:stretch;
     }
 
@@ -2070,6 +2079,7 @@
 
       .lang-dropdown{
         width:min(280px, calc(100vw - (var(--padX) * 2)));
+        max-width:90vw;
       }
 
       .lang-item{
@@ -2258,7 +2268,7 @@
         --thumbHintH:34px;
       }
 
-      .bottom-tabs{
+      .bottomTabs{
         padding:6px 8px calc(6px + env(safe-area-inset-bottom));
       }
 
@@ -2398,7 +2408,6 @@
 
   <main id="main-content" tabindex="-1" aria-label="MayaNut flour product page">
     <div class="content-wrapper">
-
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/" aria-label="Go to Home">Home</a>
         <span class="breadcrumb-sep" aria-hidden="true">/</span>
@@ -2407,7 +2416,6 @@
 
       <section aria-label="MayaNut flour product section">
         <div class="product-grid" id="productGrid">
-
           <div class="left-col" id="leftCol" aria-label="Product images">
             <div class="product-img" aria-label="MayaNut flour image viewer">
               <img
@@ -2436,7 +2444,7 @@
             </div>
 
             <div class="thumb-meta" aria-hidden="true">
-              <span class="thumb-hint">Click the large image to view full image</span>
+              <span class="thumb-hint">*Click to view full image</span>
             </div>
 
             <div class="thumbs" aria-label="Product image thumbnails">
@@ -2838,15 +2846,27 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    function updateScrollbarWidthVar(){
+    function updateLayoutVars(){
       const sw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+      const viewportW = window.innerWidth - sw;
+      const desktopFrame = Math.max(0, (viewportW - 1200) / 2);
+
       document.documentElement.style.setProperty("--scrollbarW", sw + "px");
+      document.documentElement.style.setProperty("--desktopFrameW", desktopFrame + "px");
+
+      if (viewportW >= 1200 && desktopFrame > 240) {
+        document.documentElement.style.setProperty("--desktopDropdownW", (desktopFrame - 32) + "px");
+      } else {
+        document.documentElement.style.setProperty("--desktopDropdownW", "min(320px, 90vw)");
+      }
     }
 
-    updateScrollbarWidthVar();
-    window.addEventListener("resize", updateScrollbarWidthVar);
-    window.addEventListener("orientationchange", () => setTimeout(updateScrollbarWidthVar, 150));
+    updateLayoutVars();
+    window.addEventListener("resize", updateLayoutVars);
+    window.addEventListener("orientationchange", () => setTimeout(updateLayoutVars, 150));
+  </script>
 
+  <script>
     (function initLanguageDropdown(){
       const langBtn = document.getElementById("langBtn");
       const langMenu = document.getElementById("langMenu");

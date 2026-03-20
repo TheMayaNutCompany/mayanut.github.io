@@ -246,7 +246,8 @@
       --soft:#f6f7f9;
       --soft-2:#fbfcfd;
       --orange:#ff7000;
-      --orangePress:#d95e00;
+      --orange-press:#d95e00;
+      --panel-outline:rgba(11,18,32,0.14);
       --gold:#c79200;
       --red:#c62828;
 
@@ -285,8 +286,22 @@
     }
 
     *, *::before, *::after{ box-sizing:border-box; }
-    html, body{ max-width:100%; overflow-x:hidden; background:#fff; }
-    img, svg{ max-width:100%; height:auto; display:block; }
+
+    html, body{
+      margin:0;
+      padding:0;
+      max-width:100%;
+      overflow-x:hidden;
+      background:#fff;
+      color:var(--ink);
+      font-family:var(--font-ui);
+    }
+
+    img, svg{
+      display:block;
+      max-width:100%;
+      height:auto;
+    }
 
     p, h1, h2, h3, h4, a, button, li, span{
       overflow-wrap:anywhere;
@@ -317,10 +332,6 @@
 
     body{
       min-height:100%;
-      margin:0;
-      background:#fff;
-      font-family:var(--font-ui);
-      color:var(--ink);
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
       overflow-x:hidden;
@@ -331,8 +342,14 @@
       touch-action:none;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    button, input{ font-family:inherit; }
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    button, input{
+      font:inherit;
+    }
 
     .sr-only{
       position:absolute !important;
@@ -369,10 +386,12 @@
       box-shadow:var(--shadow);
     }
 
-    a:focus-visible, button:focus-visible, input:focus-visible{
-      outline:3px solid rgba(255,112,0,0.85);
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible{
+      outline:3px solid rgba(255,112,0,0.9);
       outline-offset:3px;
-      border-radius:12px;
+      border-radius:10px;
     }
 
     .notranslate,
@@ -386,22 +405,14 @@
       left:0;
       right:var(--scrollbarW);
       z-index:99999;
-      background:transparent;
+      background:#fff;
       overflow:visible;
     }
 
     .header-top,
     .header-bottom{
       width:100%;
-      background:rgba(255,255,255,0.96);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-    }
-
-    .header-bottom{
-      border-top:1px solid rgba(11,18,32,0.10);
-      border-bottom:0;
-      overflow:visible;
+      background:#fff;
     }
 
     .header-top-inner,
@@ -409,7 +420,6 @@
       width:100%;
       padding-left:var(--padX);
       padding-right:var(--padX);
-      max-width:none;
       margin:0;
     }
 
@@ -422,12 +432,19 @@
       overflow:visible;
     }
 
+    .header-bottom{
+      border-top:1px solid rgba(11,18,32,0.14);
+      border-bottom:0;
+      overflow:visible;
+    }
+
     .header-bottom-row{
       min-height:var(--headerSubH);
       display:grid;
       grid-template-columns:auto 1fr auto;
       align-items:center;
-      gap:16px;
+      gap:12px;
+      padding-top:2px;
       overflow:visible;
     }
 
@@ -465,7 +482,7 @@
       text-overflow:ellipsis;
       white-space:nowrap;
       font-family:var(--font-display);
-      font-size:clamp(var(--step-2), 2.2vw, var(--step-4));
+      font-size:clamp(25px, 2.2vw, 39px);
       font-weight:400;
       letter-spacing:.01em;
       line-height:1;
@@ -496,7 +513,7 @@
       display:inline-flex;
       align-items:center;
       min-height:46px;
-      font-size:var(--step-0);
+      font-size:16px;
       font-weight:500;
       letter-spacing:.03em;
       line-height:1;
@@ -505,7 +522,9 @@
       white-space:nowrap;
     }
 
-    .subnav a.active{ color:var(--orange); }
+    .subnav a.active{
+      color:var(--orange);
+    }
 
     .subnav a::after{
       content:"";
@@ -513,12 +532,14 @@
       left:0;
       bottom:10px;
       height:2px;
-      width:0%;
+      width:0;
       background:var(--ink);
       transition:width .18s ease, background .12s ease;
     }
 
-    .subnav a:hover::after{ width:100%; }
+    .subnav a:hover::after{
+      width:100%;
+    }
 
     .subnav a.active::after{
       width:100%;
@@ -538,16 +559,14 @@
       justify-content:center;
       cursor:pointer;
       transition:transform .12s ease, background .12s ease, border-color .12s ease;
-      flex:0 0 auto;
-      box-shadow:none;
       overflow:visible;
-      z-index:2;
+      flex:0 0 auto;
     }
 
     .header-cart:hover{
-      background:var(--orangePress);
-      border-color:var(--orangePress);
       transform:translateY(-1px);
+      background:var(--orange-press);
+      border-color:var(--orange-press);
     }
 
     .header-cart svg{
@@ -577,14 +596,20 @@
       font-size:11px;
       font-weight:900;
       line-height:1;
-      box-shadow:0 3px 10px rgba(15,23,42,0.12);
       z-index:3;
       pointer-events:none;
     }
 
-    .cart-badge.is-hidden{ display:none; }
+    .cart-badge.is-hidden{
+      display:none;
+    }
+
+    .header-bottom-spacer{
+      min-width:0;
+    }
 
     .header-utility-link{
+      position:relative;
       justify-self:start;
       display:inline-flex;
       align-items:center;
@@ -593,9 +618,7 @@
       font-size:13px;
       font-weight:500;
       line-height:1;
-      letter-spacing:.01em;
       color:var(--ink);
-      border-radius:8px;
       transition:color .12s ease;
     }
 
@@ -606,19 +629,36 @@
       flex:0 0 auto;
     }
 
-    .header-utility-link:hover,
-    .header-utility-link:focus-visible,
-    .header-utility-link:active{
+    .header-utility-link::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-3px;
+      height:2px;
+      background:transparent;
+      transition:background .12s ease;
+    }
+
+    .header-utility-link:hover::after{
+      background:var(--ink);
+    }
+
+    .header-utility-link.is-active{
       color:var(--orange);
     }
 
-    .header-bottom-spacer{ min-width:0; }
+    .header-utility-link.is-active::after{
+      background:var(--orange);
+    }
 
     .lang-menu{
       position:relative;
-      flex:0 0 auto;
-      z-index:100000;
       justify-self:end;
+      align-self:center;
+      z-index:1002;
+      width:auto;
+      transform:translateY(-4px);
     }
 
     .lang-btn{
@@ -628,47 +668,71 @@
       color:var(--ink);
       font-size:13px;
       font-weight:500;
-      letter-spacing:.01em;
       line-height:1;
-      min-height:32px;
+      min-height:28px;
       padding:0;
-      cursor:pointer;
       display:inline-flex;
       align-items:center;
-      gap:8px;
+      gap:7px;
+      cursor:pointer;
       white-space:nowrap;
       position:relative;
-      border-radius:8px;
+      text-align:left;
+    }
+
+    .lang-btn:hover,
+    .lang-btn:focus-visible{
+      outline:none;
     }
 
     .lang-btn::after{
       content:"";
       position:absolute;
       left:0;
-      bottom:1px;
+      right:0;
+      bottom:-3px;
       height:2px;
-      width:0%;
-      background:var(--ink);
-      transition:width .18s ease, background .12s ease;
+      background:transparent;
+      transition:background .12s ease;
     }
 
-    .lang-btn[aria-expanded="true"]{ color:var(--orange); }
+    .lang-btn:hover::after{
+      background:var(--ink);
+    }
+
+    .lang-btn[aria-expanded="true"]{
+      color:var(--orange);
+    }
 
     .lang-btn[aria-expanded="true"]::after{
-      width:100%;
       background:var(--orange);
     }
 
-    @media (hover:hover) and (pointer:fine){
-      .lang-btn:hover::after{ width:100%; }
-    }
-
     .lang-globe{
-      width:14px;
-      height:14px;
+      width:13px;
+      height:13px;
       fill:currentColor;
       flex:0 0 auto;
-      opacity:.92;
+    }
+
+    .lang-prefix{
+      color:inherit;
+      font-size:13px;
+      font-weight:500;
+      letter-spacing:.01em;
+      white-space:nowrap;
+    }
+
+    .lang-current{
+      color:var(--orange);
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.01em;
+      white-space:nowrap;
+    }
+
+    .lang-btn[aria-expanded="true"] .lang-current{
+      color:currentColor;
     }
 
     .lang-caret{
@@ -679,57 +743,76 @@
       flex:0 0 auto;
     }
 
-    .lang-dropdown{
-      position:absolute;
-      right:0;
-      top:calc(100% + 8px);
-      width:min(300px, calc(100vw - (var(--padX) * 2)));
-      max-width:90vw;
+    .lang-panel{
+      position:fixed;
+      top:calc(var(--headerH) + 20px);
+      left:50%;
+      transform:translateX(-50%);
+      width:min(560px, calc(100vw - 32px));
       background:#fff;
-      border:1px solid rgba(11,18,32,0.10);
-      border-radius:16px;
-      box-shadow:0 14px 34px rgba(15,23,42,0.10);
-      padding:8px;
+      border:1px solid var(--panel-outline);
+      border-radius:14px;
+      padding:18px 18px 16px;
       display:none;
-      z-index:100001;
-      transform-origin:top right;
+      z-index:1003;
+      box-shadow:0 18px 44px rgba(0,0,0,0.10);
     }
 
-    .lang-dropdown.open{ display:block; }
-
-    .lang-list{
-      display:grid;
-      gap:4px;
-    }
-
-    .lang-item{
-      position:relative;
-      width:100%;
-      border:1px solid transparent;
-      background:#fff;
-      color:#0b1220;
-      text-align:left;
-      border-radius:10px;
-      padding:10px 12px 10px 16px;
-      font-size:14px;
-      font-weight:500;
-      line-height:1.2;
-      white-space:nowrap;
-      cursor:pointer;
+    .lang-panel.open{
       display:block;
     }
 
-    .lang-item:hover{
-      background:#f8fafc;
-      border-color:rgba(11,18,32,0.08);
+    .lang-panel-title{
+      margin:0 0 16px 0;
+      text-align:center;
+      font-size:15px;
+      line-height:1.2;
+      font-weight:700;
+      letter-spacing:.02em;
+      color:var(--ink);
     }
 
-    .lang-item.active{
+    .lang-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .lang-col{
+      display:grid;
+      gap:8px;
+    }
+
+    .lang-option{
+      position:relative;
+      min-height:40px;
+      padding:0 12px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      border:0;
+      border-radius:0;
+      background:#fff;
+      color:var(--ink);
+      font-size:13px;
+      font-weight:600;
+      line-height:1;
+      cursor:pointer;
+      text-align:left;
+      transition:background .12s ease, color .12s ease;
+    }
+
+    .lang-option:hover{
+      background:rgba(0,0,0,0.03);
+    }
+
+    .lang-option.active{
+      background:#eceff3;
       color:var(--orange);
-      background:var(--soft);
     }
 
-    .lang-item.active::before{
+    .lang-option.active::before{
       content:"";
       position:absolute;
       left:0;
@@ -737,83 +820,6 @@
       bottom:0;
       width:3px;
       background:var(--orange);
-      border-radius:0;
-    }
-
-    @media (min-width:981px){
-      .lang-menu.desktop-lang{
-        position:fixed;
-        z-index:100002;
-      }
-
-      .lang-menu.desktop-lang .lang-btn{
-        width:100%;
-        min-height:42px;
-        padding:0 14px 0 18px;
-        justify-content:space-between;
-        background:#edf0f4;
-        border:1.5px solid transparent;
-        border-radius:15px;
-        gap:10px;
-      }
-
-      .lang-menu.desktop-lang .lang-btn::after{
-        display:none;
-      }
-
-      .lang-menu.desktop-lang .lang-btn::before{
-        content:"";
-        position:absolute;
-        left:0;
-        top:0;
-        bottom:0;
-        width:3px;
-        background:var(--orange);
-        border-radius:15px 0 0 15px;
-      }
-
-      .lang-menu.desktop-lang #langBtnLabel{
-        color:var(--orange);
-      }
-
-      .lang-menu.desktop-lang .lang-btn:hover{
-        border-color:var(--ink);
-      }
-
-      .lang-menu.desktop-lang .lang-btn[aria-expanded="true"]{
-        border-color:var(--orange);
-        border-bottom-left-radius:0;
-        border-bottom-right-radius:0;
-        background:#edf0f4;
-      }
-
-      .lang-menu.desktop-lang .lang-dropdown{
-        left:0;
-        right:auto;
-        top:calc(100% - 1.5px);
-        width:100%;
-        max-width:none;
-        padding:8px;
-        border:1.5px solid var(--orange);
-        border-top:0;
-        border-radius:0 0 15px 15px;
-        box-shadow:none;
-      }
-
-      .lang-menu.desktop-lang .lang-list{
-        gap:2px;
-      }
-
-      .lang-menu.desktop-lang .lang-item{
-        padding:11px 14px 11px 18px;
-        font-size:13.5px;
-        border-radius:10px;
-      }
-
-      .lang-menu.desktop-lang .lang-item:hover{
-        border-color:transparent;
-        background:#f7f8fa;
-      }
     }
 
     main{
@@ -1448,8 +1454,8 @@
     }
 
     .add-cart-btn:hover{
-      background:var(--orangePress);
-      border-color:var(--orangePress);
+      background:var(--orange-press);
+      border-color:var(--orange-press);
       transform:translateY(-1px);
     }
 
@@ -1637,8 +1643,8 @@
     }
 
     .btn:hover{
-      background:var(--orangePress);
-      border-color:var(--orangePress);
+      background:var(--orange-press);
+      border-color:var(--orange-press);
       transform:translateY(-1px);
       text-decoration:underline;
       text-decoration-color:rgba(255,255,255,0.95);
@@ -1676,7 +1682,7 @@
     .footer{
       margin-top:var(--section-stack-gap);
       background:#fff;
-      color:#000;
+      color:var(--ink);
       padding:var(--section-stack-gap) var(--padX) 16px;
       position:relative;
       z-index:2;
@@ -1718,7 +1724,7 @@
       font-weight:400;
       letter-spacing:.01em;
       line-height:1.12;
-      color:#0b1220;
+      color:var(--ink);
       white-space:nowrap;
       font-style:italic;
     }
@@ -2196,29 +2202,18 @@
         --footer-mark-size:48px;
       }
 
-      .header-top-row{ gap:10px; }
-
-      .header-bottom-row{
-        grid-template-columns:auto 1fr auto;
-        gap:10px;
-      }
-
       .brand-link img{
         width:42px;
         height:42px;
-      }
-
-      .brand,
-      .brand-link,
-      .brand-name{
-        min-height:42px;
       }
 
       .brand-name{
         font-size:clamp(18px, 4.5vw, 22px);
       }
 
-      .header-main-actions{ gap:10px; }
+      .header-main-actions{
+        gap:10px;
+      }
 
       .header-cart{
         width:44px;
@@ -2226,27 +2221,29 @@
         border-radius:14px;
       }
 
-      .header-utility-link{
-        font-size:12px;
-        gap:6px;
+      .header-bottom-row{
+        gap:10px;
       }
 
-      .header-utility-link svg{
-        width:12px;
-        height:12px;
-      }
-
+      .header-utility-link,
+      .lang-prefix,
+      .lang-current,
       .lang-btn{
         font-size:12px;
-        gap:6px;
       }
 
-      .lang-globe{
-        width:13px;
-        height:13px;
+      .lang-menu{
+        transform:none;
       }
 
-      .lang-caret{ font-size:11px; }
+      .lang-panel{
+        width:min(520px, calc(100vw - 20px));
+        padding:16px 14px 14px;
+      }
+
+      .lang-grid{
+        gap:12px;
+      }
 
       h1{
         font-size:25px;
@@ -2437,6 +2434,12 @@
       }
     }
 
+    @media (max-width:560px){
+      .lang-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
     @media (orientation:landscape) and (max-height:560px){
       :root{
         --bottomNavH:56px;
@@ -2494,7 +2497,7 @@
       <div class="header-top-inner">
         <div class="header-top-row">
           <div class="brand notranslate" translate="no" aria-label="The MayaNut Company">
-            <a href="/" aria-label="Go to home page" class="brand-link">
+            <a href="/" class="brand-link" aria-label="Go to home page">
               <img
                 src="/the-mayanut-company-logo-tm.svg"
                 alt="The MayaNut Company logo"
@@ -2510,11 +2513,11 @@
 
           <div class="header-main-actions">
             <nav class="subnav notranslate" translate="no" aria-label="Primary navigation">
-              <a href="/" aria-label="Home page">Home</a>
-              <a class="active" href="/product.html" aria-current="page" aria-label="Buy MayaNut flour">Buy</a>
-              <a href="/about.html" aria-label="About The MayaNut Company">About</a>
-              <a href="/faq.html" aria-label="Frequently asked questions">FAQ</a>
-              <a href="/recipes.html" aria-label="MayaNut recipes">Recipes</a>
+              <a href="/">Home</a>
+              <a class="active" href="/product.html" aria-current="page">Buy</a>
+              <a href="/about.html">About</a>
+              <a href="/faq.html">FAQ</a>
+              <a href="/recipes.html">Recipes</a>
             </nav>
 
             <button class="header-cart" id="cartLaunch" type="button" aria-label="Open cart">
@@ -2533,7 +2536,12 @@
     <div class="header-bottom">
       <div class="header-bottom-inner">
         <div class="header-bottom-row">
-          <a class="header-utility-link" href="mailto:info@mayanut.com?subject=MayaNut%20Inquiry&body=Dear%20The%20MayaNut%20Company%2C%0A%0A" aria-label="Contact The MayaNut Company by email">
+          <a
+            class="header-utility-link"
+            id="contactLink"
+            href="mailto:info@mayanut.com?subject=MayaNut%20Inquiry&body=Dear%20The%20MayaNut%20Company%2C%0A%0A"
+            aria-label="Contact The MayaNut Company by email"
+          >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"></path>
             </svg>
@@ -2547,34 +2555,45 @@
               class="lang-btn"
               id="langBtn"
               type="button"
-              aria-haspopup="menu"
+              aria-haspopup="dialog"
               aria-expanded="false"
-              aria-controls="langDropdown"
+              aria-controls="langPanel"
               aria-label="Choose language. Current language: English"
             >
               <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.9 15.9 0 0 0-1.1-5A8.03 8.03 0 0 1 18.9 11ZM12 4.1c.8 1 1.8 3.1 2.2 6H9.8c.4-2.9 1.4-5 2.2-6ZM9.3 6A15.9 15.9 0 0 0 8.2 11H5.1A8.03 8.03 0 0 1 9.3 6ZM5.1 13h3.1c.2 1.8.6 3.5 1.1 5A8.03 8.03 0 0 1 5.1 13Zm6.9 6.9c-.8-1-1.8-3.1-2.2-6h4.4c-.4 2.9-1.4 5-2.2 6Zm2.7-1.9c.5-1.5.9-3.2 1.1-5h3.1A8.03 8.03 0 0 1 14.7 18Z"/>
               </svg>
-              <span id="langBtnLabel">Language: English</span>
+              <span class="lang-prefix">Language:</span>
+              <span class="lang-current" id="langCurrent">English</span>
               <span class="lang-caret" aria-hidden="true">▾</span>
             </button>
-
-            <div class="lang-dropdown" id="langDropdown" role="menu" aria-label="Language selector">
-              <div class="lang-list">
-                <a class="lang-item active" href="/product.html" role="menuitem" data-lang-name="English">English</a>
-                <a class="lang-item" href="/es/product.html" role="menuitem" data-lang-name="Español">Español</a>
-                <a class="lang-item" href="/fr/product.html" role="menuitem" data-lang-name="Français">Français</a>
-                <a class="lang-item" href="/pt/product.html" role="menuitem" data-lang-name="Português">Português</a>
-                <a class="lang-item" href="/ru/product.html" role="menuitem" data-lang-name="Русский">Русский</a>
-                <a class="lang-item" href="/zh-hans/product.html" role="menuitem" data-lang-name="简体中文">简体中文</a>
-                <a class="lang-item" href="/hi/product.html" role="menuitem" data-lang-name="हिन्दी">हिन्दी</a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </header>
+
+  <div class="lang-panel notranslate" translate="no" id="langPanel" role="dialog" aria-modal="false" aria-label="Choose Language">
+    <h2 class="lang-panel-title">Choose Language</h2>
+
+    <div class="lang-grid">
+      <div class="lang-col">
+        <a class="lang-option active" href="/product.html" data-language="English">English</a>
+        <a class="lang-option" href="/es/product.html" data-language="Español">Español</a>
+        <a class="lang-option" href="/fr/product.html" data-language="Français">Français</a>
+      </div>
+
+      <div class="lang-col">
+        <a class="lang-option" href="/pt/product.html" data-language="Português">Português</a>
+        <a class="lang-option" href="/ru/product.html" data-language="Русский">Русский</a>
+      </div>
+
+      <div class="lang-col">
+        <a class="lang-option" href="/zh-hans/product.html" data-language="中文">中文</a>
+        <a class="lang-option" href="/hi/product.html" data-language="हिन्दी">हिन्दी</a>
+      </div>
+    </div>
+  </div>
 
   <main id="main-content" tabindex="-1" aria-label="MayaNut flour product page">
     <div class="content-wrapper">
@@ -3049,93 +3068,77 @@
   </script>
 
   <script>
-    (function initLanguageDropdown(){
+    (function initTopMenu(){
+      const contactLink = document.getElementById("contactLink");
       const langBtn = document.getElementById("langBtn");
-      const langMenu = document.getElementById("langMenu");
-      const langDropdown = document.getElementById("langDropdown");
-      const langBtnLabel = document.getElementById("langBtnLabel");
-      const langItems = Array.from(document.querySelectorAll(".lang-item"));
-      const contentWrapper = document.querySelector(".content-wrapper");
-      const headerBottom = document.querySelector(".header-bottom");
+      const langPanel = document.getElementById("langPanel");
+      const langCurrent = document.getElementById("langCurrent");
+      const langOptions = Array.from(document.querySelectorAll(".lang-option"));
 
-      if (!langBtn || !langMenu || !langDropdown || !langBtnLabel || !headerBottom) return;
-
-      const activeItem = langItems.find(item => item.classList.contains("active"));
-      if (activeItem && activeItem.dataset.langName) {
-        langBtnLabel.textContent = "Language: " + activeItem.dataset.langName;
-      }
-
-      function clearDesktopLangLayout(){
-        langMenu.classList.remove("desktop-lang");
-        langMenu.style.position = "";
-        langMenu.style.left = "";
-        langMenu.style.top = "";
-        langMenu.style.width = "";
-        langMenu.style.right = "";
-      }
-
-      function applyDesktopLangLayout(){
-        clearDesktopLangLayout();
-
-        const isDesktop = window.matchMedia("(min-width: 981px)").matches;
-        if (!isDesktop || !contentWrapper) return;
-
-        const viewportW = window.innerWidth - Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        const wrapperRect = contentWrapper.getBoundingClientRect();
-        const bottomRect = headerBottom.getBoundingClientRect();
-
-        const frameLeft = Math.round(wrapperRect.right);
-        const frameRight = Math.round(viewportW);
-        const frameW = Math.max(0, frameRight - frameLeft);
-        const frameGap = Math.max(16, Math.min(24, Math.round(frameW * 0.09)));
-        const innerW = Math.max(220, frameW - (frameGap * 2));
-        const top = Math.round(bottomRect.top - 4);
-
-        langMenu.classList.add("desktop-lang");
-        langMenu.style.position = "fixed";
-        langMenu.style.left = (frameLeft + frameGap) + "px";
-        langMenu.style.top = top + "px";
-        langMenu.style.width = innerW + "px";
-        langMenu.style.right = "auto";
-      }
-
-      function closeLangMenu(){
-        langDropdown.classList.remove("open");
-        langBtn.setAttribute("aria-expanded", "false");
-      }
-
-      function openLangMenu(){
-        applyDesktopLangLayout();
-        langDropdown.classList.add("open");
+      function openLanguagePanel(){
+        langPanel.classList.add("open");
         langBtn.setAttribute("aria-expanded", "true");
       }
 
+      function closeLanguagePanel(){
+        langPanel.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+
+      function setActiveLanguage(el){
+        langOptions.forEach(function(option){
+          option.classList.remove("active");
+        });
+        el.classList.add("active");
+        langCurrent.textContent = el.dataset.language || el.textContent.trim();
+      }
+
+      contactLink.addEventListener("click", function(){
+        contactLink.classList.add("is-active");
+        setTimeout(function(){
+          contactLink.classList.remove("is-active");
+        }, 900);
+      });
+
       langBtn.addEventListener("click", function(e){
         e.stopPropagation();
-        if (langDropdown.classList.contains("open")) {
-          closeLangMenu();
+        contactLink.classList.remove("is-active");
+        if (langPanel.classList.contains("open")) {
+          closeLanguagePanel();
         } else {
-          openLangMenu();
+          openLanguagePanel();
         }
       });
 
+      langOptions.forEach(function(option){
+        option.addEventListener("click", function(e){
+          setActiveLanguage(option);
+
+          const optionUrl = new URL(option.href, window.location.origin);
+          const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+          const optionPath = optionUrl.pathname.replace(/\/+$/, "") || "/";
+
+          if (optionPath === currentPath) {
+            e.preventDefault();
+            closeLanguagePanel();
+          }
+        });
+      });
+
       document.addEventListener("click", function(e){
-        if (!langMenu.contains(e.target)) closeLangMenu();
+        const insideButton = langBtn.contains(e.target);
+        const insidePanel = langPanel.contains(e.target);
+        if (!insideButton && !insidePanel) {
+          closeLanguagePanel();
+        }
       });
 
       document.addEventListener("keydown", function(e){
-        if (e.key === "Escape") closeLangMenu();
+        if (e.key === "Escape") {
+          closeLanguagePanel();
+          contactLink.classList.remove("is-active");
+        }
       });
-
-      window.addEventListener("resize", function(){
-        applyDesktopLangLayout();
-      });
-
-      window.addEventListener("orientationchange", function(){
-        setTimeout(applyDesktopLangLayout, 150);
-      });
-
-      applyDesktopLangLayout();
     })();
   </script>
 

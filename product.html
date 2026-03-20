@@ -1261,7 +1261,8 @@
 
     .purchase-spacer{
       flex:1 1 auto;
-      min-height:84px;
+      min-height:0;
+      height:0;
     }
 
     .checkout-stack{
@@ -1562,6 +1563,7 @@
       letter-spacing:.01em;
       margin:0;
       line-height:1.08;
+      white-space:nowrap;
     }
 
     .details-head,
@@ -1700,7 +1702,7 @@
       display:grid;
       gap:0;
       margin-top:0;
-      border-top:1px solid rgba(11,18,32,0.10);
+      border-top:0;
     }
 
     .faq-item{
@@ -2374,6 +2376,7 @@
       }
       .purchase-spacer{
         display:none;
+        height:0;
       }
       .checkout-stack{
         margin-top:0;
@@ -2658,6 +2661,11 @@
 
       .desc-recipes-link{
         margin-left:0;
+      }
+
+      .below-grid h2,
+      .faq-block h2{
+        white-space:normal;
       }
     }
 
@@ -3019,9 +3027,6 @@
         <section class="below-grid" aria-label="Full product details">
           <div class="details-head">
             <h2>What is MayaNut™ Flour?</h2>
-            <div class="details-head-action">
-              <a class="btn" href="/recipes.html" aria-label="Recipes with MayaNut">Recipes with MayaNut</a>
-            </div>
           </div>
 
           <p>MayaNut™ flour is a roasted, finely milled powder made from the seeds of the Alicastrum tree (<strong>Brosimum alicastrum</strong>), a tropical species long valued as a traditional food in Mesoamerica.</p>
@@ -3361,10 +3366,7 @@
         }
 
         if (langBtn) {
-          langBtn.setAttribute(
-            "aria-label",
-            "Choose language. Current language: " + currentLanguage
-          );
+          langBtn.setAttribute("aria-label", "Choose language. Current language: " + currentLanguage);
         }
 
         langOptions.forEach(function(option){
@@ -3546,6 +3548,9 @@
 
       const leftCol = document.getElementById("leftCol");
       const productBox = document.getElementById("productBox");
+      const thumbsWrap = document.querySelector(".thumbs");
+      const purchaseSpacer = document.querySelector(".purchase-spacer");
+      const optionActionRow = document.querySelector(".option-action-row");
 
       function parseNonNegativeInt(value){
         const parsed = parseInt(value, 10);
@@ -3795,11 +3800,25 @@
 
         if (forceNatural){
           productBox.style.minHeight = "";
+          if (purchaseSpacer) purchaseSpacer.style.height = "0px";
           return;
         }
 
-        const leftH = leftCol.getBoundingClientRect().height;
-        productBox.style.minHeight = Math.ceil(leftH) + "px";
+        if (!leftCol || !productBox || !thumbsWrap || !optionActionRow || !purchaseSpacer) return;
+
+        productBox.style.minHeight = Math.ceil(leftCol.getBoundingClientRect().height) + "px";
+        purchaseSpacer.style.height = "0px";
+
+        const targetBottom = thumbsWrap.getBoundingClientRect().bottom;
+        const rowBottom = optionActionRow.getBoundingClientRect().bottom;
+        const opticalOffset = 1;
+        const delta = targetBottom - rowBottom - opticalOffset;
+
+        if (delta > 0) {
+          purchaseSpacer.style.height = Math.round(delta) + "px";
+        } else {
+          purchaseSpacer.style.height = "0px";
+        }
       }
 
       function clearQtyTimers(){
@@ -4033,19 +4052,19 @@
       });
 
       if ("ResizeObserver" in window) {
-        const leftColObserver = new ResizeObserver(function(){
+        const alignmentObserver = new ResizeObserver(function(){
           scheduleSyncHeights();
         });
 
-        leftColObserver.observe(leftCol);
+        alignmentObserver.observe(leftCol);
 
         const productImgWrap = document.querySelector(".product-img");
-        const thumbsWrap = document.querySelector(".thumbs");
         const galleryRow = document.querySelector(".gallery-control-row");
 
-        if (productImgWrap) leftColObserver.observe(productImgWrap);
-        if (thumbsWrap) leftColObserver.observe(thumbsWrap);
-        if (galleryRow) leftColObserver.observe(galleryRow);
+        if (productImgWrap) alignmentObserver.observe(productImgWrap);
+        if (galleryRow) alignmentObserver.observe(galleryRow);
+        if (thumbsWrap) alignmentObserver.observe(thumbsWrap);
+        if (optionActionRow) alignmentObserver.observe(optionActionRow);
       }
 
       window.addEventListener("storage", function(){

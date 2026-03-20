@@ -762,14 +762,43 @@
       display:block;
     }
 
+    .lang-panel-head{
+      position:relative;
+      padding-right:34px;
+      margin-bottom:16px;
+    }
+
     .lang-panel-title{
-      margin:0 0 16px 0;
+      margin:0;
       text-align:center;
       font-size:15px;
       line-height:1.2;
       font-weight:700;
       letter-spacing:.02em;
       color:var(--ink);
+    }
+
+    .lang-panel-close{
+      position:absolute;
+      top:-4px;
+      right:-2px;
+      width:30px;
+      height:30px;
+      border:0;
+      background:transparent;
+      color:rgba(11,18,32,0.72);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      border-radius:10px;
+      font-size:21px;
+      line-height:1;
+      padding:0;
+    }
+
+    .lang-panel-close:hover{
+      color:var(--orange);
     }
 
     .lang-grid{
@@ -1265,7 +1294,7 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
+      gap:10px;
       width:100%;
     }
 
@@ -1291,6 +1320,8 @@
       text-transform:uppercase;
       cursor:pointer;
       white-space:nowrap;
+      min-width:124px;
+      justify-content:space-between;
     }
 
     .weight-btn:hover{
@@ -1338,15 +1369,6 @@
       border-color:rgba(11,18,32,0.08);
     }
 
-    .purchase-cluster{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-      margin-left:auto;
-      min-width:0;
-    }
-
     .qty-stepper{
       display:grid;
       grid-template-columns:48px minmax(72px, 1fr) 48px;
@@ -1358,6 +1380,7 @@
       background:#fff;
       min-width:188px;
       max-width:220px;
+      margin-left:auto;
     }
 
     .qty-step{
@@ -1451,6 +1474,7 @@
       box-shadow:none;
       transition:transform .10s ease, background .12s ease, border-color .12s ease;
       white-space:nowrap;
+      margin-left:0;
     }
 
     .add-cart-btn:hover{
@@ -1518,7 +1542,7 @@
     .details-head,
     .faq-head{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:12px;
       margin-bottom:12px;
@@ -1533,7 +1557,7 @@
     }
 
     .section-mobile-action{
-      display:none;
+      display:none !important;
     }
 
     .below-grid p{
@@ -1653,30 +1677,76 @@
 
     .faq-list{
       display:grid;
-      gap:10px;
+      gap:0;
       margin-top:0;
+      border-top:1px solid rgba(11,18,32,0.10);
     }
 
     .faq-item{
+      border-bottom:1px solid rgba(11,18,32,0.10);
+      background:transparent;
+      padding:0;
+    }
+
+    .faq-toggle{
+      width:100%;
+      appearance:none;
       border:0;
-      border-radius:16px;
-      background:var(--soft-2);
-      padding:14px;
+      background:transparent;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:16px 0;
+      cursor:pointer;
+      text-align:left;
     }
 
     .faq-q{
       font-weight:900;
       font-size:15px;
-      line-height:1.25;
+      line-height:1.3;
       color:var(--ink);
-      margin-bottom:6px;
+      margin:0;
+      flex:1 1 auto;
     }
 
-    .faq-a{
+    .faq-caret{
+      width:16px;
+      height:16px;
+      flex:0 0 auto;
+      transform:rotate(0deg);
+      transition:transform .18s ease;
+      color:rgba(11,18,32,0.72);
+    }
+
+    .faq-caret svg{
+      width:100%;
+      height:100%;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .faq-item.open .faq-caret{
+      transform:rotate(90deg);
+      color:var(--orange);
+    }
+
+    .faq-answer{
+      display:none;
+      padding:0 0 16px 0;
       font-weight:600;
       font-size:14px;
       line-height:1.72;
       color:var(--muted);
+    }
+
+    .faq-item.open .faq-answer{
+      display:block;
     }
 
     .footer{
@@ -2033,6 +2103,24 @@
     }
 
     .cart-empty{
+      display:grid;
+      gap:6px;
+    }
+
+    .cart-empty.is-hidden{
+      display:none;
+    }
+
+    .cart-empty-title{
+      font-family:var(--font-display);
+      font-size:30px;
+      line-height:1.05;
+      color:var(--orange);
+      margin:0;
+      font-weight:400;
+    }
+
+    .cart-empty-copy{
       font-size:14px;
       line-height:1.7;
       color:rgba(11,18,32,0.60);
@@ -2048,7 +2136,9 @@
 
     .cart-item.is-hidden,
     .cart-divider.is-hidden,
-    .cart-meta.is-hidden{
+    .cart-meta.is-hidden,
+    .cart-summary-line.is-hidden,
+    .cart-total-row.is-hidden{
       display:none;
     }
 
@@ -2088,7 +2178,7 @@
 
     .cart-meta{
       display:grid;
-      gap:10px;
+      gap:12px;
     }
 
     .cart-meta-row{
@@ -2102,10 +2192,70 @@
       font-weight:700;
     }
 
+    .cart-meta-row-value{
+      text-align:right;
+      font-weight:700;
+    }
+
+    .cart-qty-controls{
+      display:grid;
+      grid-template-columns:34px minmax(42px, 58px) 34px;
+      height:36px;
+      border:1px solid rgba(11,18,32,0.10);
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+      margin-left:auto;
+    }
+
+    .cart-qty-btn{
+      appearance:none;
+      border:0;
+      background:#fff;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      padding:0;
+    }
+
+    .cart-qty-btn:hover:not(:disabled){
+      background:#f8f9fb;
+    }
+
+    .cart-qty-btn:disabled{
+      color:rgba(11,18,32,0.28);
+      cursor:not-allowed;
+    }
+
+    .cart-qty-display{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-left:1px solid rgba(11,18,32,0.10);
+      border-right:1px solid rgba(11,18,32,0.10);
+      font-size:13px;
+      font-weight:900;
+      color:var(--orange);
+      letter-spacing:.04em;
+    }
+
     .cart-divider{
       height:1px;
       background:rgba(11,18,32,0.10);
       width:100%;
+    }
+
+    .cart-summary-line{
+      padding-top:12px;
+      border-top:1px solid rgba(11,18,32,0.10);
+      font-size:13px;
+      line-height:1.4;
+      font-weight:800;
+      color:rgba(11,18,32,0.72);
     }
 
     .cart-panel-footer{
@@ -2113,6 +2263,23 @@
       padding:16px 18px 18px;
       border-top:1px solid rgba(11,18,32,0.10);
       background:#fff;
+      display:grid;
+      gap:12px;
+    }
+
+    .cart-total-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-size:15px;
+      line-height:1.3;
+      font-weight:900;
+      color:var(--ink);
+    }
+
+    .cart-total-price{
+      color:var(--orange);
     }
 
     .cart-checkout{
@@ -2171,27 +2338,6 @@
         margin-top:0;
         padding-bottom:0;
       }
-
-      .option-action-row{
-        top:0;
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .purchase-cluster{
-        width:100%;
-        justify-content:space-between;
-        margin-left:0;
-      }
-
-      .weight-wrap{
-        width:100%;
-      }
-
-      .weight-btn{
-        width:100%;
-        justify-content:space-between;
-      }
     }
 
     @media (max-width:760px){
@@ -2245,6 +2391,11 @@
         gap:12px;
       }
 
+      .lang-panel-close{
+        top:-2px;
+        right:-2px;
+      }
+
       h1{
         font-size:25px;
         white-space:normal;
@@ -2279,12 +2430,34 @@
         padding:0 10px;
       }
 
-      .qty-stepper{
-        min-width:166px;
-        grid-template-columns:44px minmax(62px, 1fr) 44px;
+      .option-action-row{
+        top:0;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
       }
 
-      .qty-input{ font-size:13px; }
+      .weight-wrap{
+        width:100%;
+      }
+
+      .weight-btn{
+        width:100%;
+        min-width:0;
+      }
+
+      .qty-stepper{
+        width:100%;
+        max-width:none;
+        min-width:0;
+        margin-left:0;
+      }
+
+      .add-cart-btn{
+        width:100%;
+        min-width:0;
+        grid-column:1 / -1;
+      }
 
       .gallery-control-row{
         grid-template-columns:minmax(72px, 1fr) auto minmax(72px, 1fr);
@@ -2305,18 +2478,18 @@
 
       .details-head,
       .faq-head{
-        display:block;
+        gap:10px;
       }
 
       .details-head-action,
       .faq-head-action{
-        display:none;
+        display:flex;
       }
 
-      .section-mobile-action{
-        display:flex;
-        justify-content:flex-start;
-        margin-top:14px;
+      .btn{
+        height:40px;
+        font-size:11px;
+        padding:0 14px;
       }
 
       .footer-cols{
@@ -2418,25 +2591,24 @@
         height:40px;
       }
 
-      .purchase-cluster{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .add-cart-btn{
-        width:100%;
-        min-width:0;
-      }
-
-      .qty-stepper{
-        width:100%;
-        max-width:none;
+      .cart-empty-title{
+        font-size:27px;
       }
     }
 
     @media (max-width:560px){
       .lang-grid{
         grid-template-columns:1fr;
+      }
+
+      .details-head,
+      .faq-head{
+        align-items:flex-start;
+      }
+
+      .details-head-action .btn,
+      .faq-head-action .btn{
+        max-width:100%;
       }
     }
 
@@ -2574,7 +2746,10 @@
   </header>
 
   <div class="lang-panel notranslate" translate="no" id="langPanel" role="dialog" aria-modal="false" aria-label="Choose Language">
-    <h2 class="lang-panel-title">Choose Language</h2>
+    <div class="lang-panel-head">
+      <h2 class="lang-panel-title">Choose Language</h2>
+      <button class="lang-panel-close" id="langPanelClose" type="button" aria-label="Close language selector">×</button>
+    </div>
 
     <div class="lang-grid">
       <div class="lang-col">
@@ -2739,29 +2914,27 @@
                   </div>
                 </div>
 
-                <div class="purchase-cluster">
-                  <div class="qty-stepper" aria-label="Quantity selector">
-                    <button class="qty-step" id="qtyMinus" type="button" aria-label="Decrease quantity">−</button>
-                    <div class="qty-input-wrap">
-                      <input
-                        class="qty-input"
-                        id="qtyInput"
-                        type="number"
-                        inputmode="numeric"
-                        min="1"
-                        max="10"
-                        step="1"
-                        value="1"
-                        aria-label="Quantity"
-                      >
-                    </div>
-                    <button class="qty-step" id="qtyPlus" type="button" aria-label="Increase quantity">+</button>
+                <div class="qty-stepper" aria-label="Quantity selector">
+                  <button class="qty-step" id="qtyMinus" type="button" aria-label="Decrease quantity">−</button>
+                  <div class="qty-input-wrap">
+                    <input
+                      class="qty-input"
+                      id="qtyInput"
+                      type="number"
+                      inputmode="numeric"
+                      min="1"
+                      max="10"
+                      step="1"
+                      value="1"
+                      aria-label="Quantity"
+                    >
                   </div>
-
-                  <button class="add-cart-btn" id="addToCartBtn" type="button" aria-label="Add MayaNut flour to cart">
-                    Add to Cart
-                  </button>
+                  <button class="qty-step" id="qtyPlus" type="button" aria-label="Increase quantity">+</button>
                 </div>
+
+                <button class="add-cart-btn" id="addToCartBtn" type="button" aria-label="Add MayaNut flour to cart">
+                  Add to Cart
+                </button>
               </div>
 
               <div class="product-feedback" id="productFeedback" aria-live="polite"></div>
@@ -2848,10 +3021,6 @@
               </ul>
             </div>
           </div>
-
-          <div class="section-mobile-action">
-            <a class="btn" href="/recipes.html" aria-label="Recipes with MayaNut">Recipes with MayaNut</a>
-          </div>
         </section>
 
         <section class="faq-block" aria-label="Product FAQ">
@@ -2864,25 +3033,44 @@
 
           <div class="faq-list" aria-label="Frequently asked questions">
             <div class="faq-item">
-              <div class="faq-q">What is MayaNut™ Flour?</div>
-              <div class="faq-a">MayaNut™ Flour is a roasted, finely milled powder made from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>).</div>
+              <button class="faq-toggle" type="button" aria-expanded="false">
+                <span class="faq-q">What is MayaNut™ Flour?</span>
+                <span class="faq-caret" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+                </span>
+              </button>
+              <div class="faq-answer">MayaNut™ Flour is a roasted, finely milled powder made from the seeds of the Alicastrum tree (<em>Brosimum alicastrum</em>).</div>
             </div>
-            <div class="faq-item">
-              <div class="faq-q">Is MayaNut™ naturally caffeine-free?</div>
-              <div class="faq-a">Yes. MayaNut™ is naturally caffeine-free.</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q">How do you use MayaNut™ Flour?</div>
-              <div class="faq-a">Use it in smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking.</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q">What else is Alicastrum called?</div>
-              <div class="faq-a">Regional names include ramón or ramon, ojoche, capomo, guáimaro or guaimaro, oox or ox, ujuxte, and masica.</div>
-            </div>
-          </div>
 
-          <div class="section-mobile-action">
-            <a class="btn" href="/faq.html" aria-label="View full FAQ about MayaNut flour">View FAQ</a>
+            <div class="faq-item">
+              <button class="faq-toggle" type="button" aria-expanded="false">
+                <span class="faq-q">Is MayaNut™ naturally caffeine-free?</span>
+                <span class="faq-caret" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+                </span>
+              </button>
+              <div class="faq-answer">Yes. MayaNut™ is naturally caffeine-free.</div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-toggle" type="button" aria-expanded="false">
+                <span class="faq-q">How do you use MayaNut™ Flour?</span>
+                <span class="faq-caret" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+                </span>
+              </button>
+              <div class="faq-answer">Use it in smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking.</div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-toggle" type="button" aria-expanded="false">
+                <span class="faq-q">What else is Alicastrum called?</span>
+                <span class="faq-caret" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+                </span>
+              </button>
+              <div class="faq-answer">Regional names include ramón or ramon, ojoche, capomo, guáimaro or guaimaro, oox or ox, ujuxte, and masica.</div>
+            </div>
           </div>
         </section>
       </section>
@@ -3013,7 +3201,10 @@
       </div>
 
       <div class="cart-panel-body">
-        <div class="cart-empty" id="cartEmpty">0 items in cart.</div>
+        <div class="cart-empty" id="cartEmpty">
+          <div class="cart-empty-title">Cart Empty</div>
+          <div class="cart-empty-copy">Your cart is currently empty.</div>
+        </div>
 
         <div class="cart-item is-hidden" id="cartItemBlock" aria-label="Cart item">
           <img
@@ -3035,20 +3226,33 @@
         <div class="cart-meta is-hidden" id="cartMetaBlock" aria-label="Cart details">
           <div class="cart-meta-row">
             <span>Weight</span>
-            <span id="cartWeight">1/4 LB</span>
+            <span class="cart-meta-row-value" id="cartWeight">1/4 LB</span>
           </div>
+
           <div class="cart-meta-row">
             <span>Quantity</span>
-            <span id="cartQty">0</span>
+            <div class="cart-qty-controls" aria-label="Cart quantity controls">
+              <button class="cart-qty-btn" id="cartQtyMinus" type="button" aria-label="Decrease cart quantity">−</button>
+              <div class="cart-qty-display" id="cartQty">0</div>
+              <button class="cart-qty-btn" id="cartQtyPlus" type="button" aria-label="Increase cart quantity">+</button>
+            </div>
           </div>
+
           <div class="cart-meta-row">
             <span>Status</span>
-            <span>Out of Stock</span>
+            <span class="cart-meta-row-value">Out of Stock</span>
           </div>
         </div>
+
+        <div class="cart-summary-line is-hidden" id="cartSummaryLine">MayaNut™ Flour · 1/4 LB × 0</div>
       </div>
 
       <div class="cart-panel-footer">
+        <div class="cart-total-row is-hidden" id="cartTotalRow">
+          <span>Total</span>
+          <span class="cart-total-price" id="cartTotalPrice">$0.00</span>
+        </div>
+
         <button class="cart-checkout" type="button" disabled aria-label="Checkout coming soon">Checkout (Coming Soon)</button>
       </div>
     </aside>
@@ -3074,10 +3278,12 @@
       const langPanel = document.getElementById("langPanel");
       const langCurrent = document.getElementById("langCurrent");
       const langOptions = Array.from(document.querySelectorAll(".lang-option"));
+      const langPanelClose = document.getElementById("langPanelClose");
 
       function openLanguagePanel(){
         langPanel.classList.add("open");
         langBtn.setAttribute("aria-expanded", "true");
+        if (langPanelClose) langPanelClose.focus();
       }
 
       function closeLanguagePanel(){
@@ -3110,6 +3316,13 @@
         }
       });
 
+      if (langPanelClose){
+        langPanelClose.addEventListener("click", function(){
+          closeLanguagePanel();
+          langBtn.focus();
+        });
+      }
+
       langOptions.forEach(function(option){
         option.addEventListener("click", function(e){
           setActiveLanguage(option);
@@ -3121,6 +3334,7 @@
           if (optionPath === currentPath) {
             e.preventDefault();
             closeLanguagePanel();
+            langBtn.focus();
           }
         });
       });
@@ -3143,11 +3357,29 @@
   </script>
 
   <script>
+    (function initFaqAccordion(){
+      const faqItems = Array.from(document.querySelectorAll(".faq-item"));
+
+      faqItems.forEach(function(item){
+        const toggle = item.querySelector(".faq-toggle");
+        if (!toggle) return;
+
+        toggle.addEventListener("click", function(){
+          const isOpen = item.classList.contains("open");
+          item.classList.toggle("open", !isOpen);
+          toggle.setAttribute("aria-expanded", isOpen ? "false" : "true");
+        });
+      });
+    })();
+  </script>
+
+  <script>
     (function(){
       const STORAGE_KEY = "mayanutSiteCart";
       const FALLBACK_QTY_KEY = "mayanutSelectedQty";
       const FALLBACK_ROAST_KEY = "mayanutSelectedRoast";
       const FALLBACK_COUNT_KEY = "mayanutCartCount";
+      const UNIT_PRICE = 9.99;
 
       const images = [
         { src: "/the-mayanut-company-product-pouch.png", alt: "MayaNut flour product pouch" },
@@ -3195,6 +3427,11 @@
       const cartDividerTop = document.getElementById("cartDividerTop");
       const cartMetaBlock = document.getElementById("cartMetaBlock");
       const cartItemImg = document.getElementById("cartItemImg");
+      const cartQtyMinus = document.getElementById("cartQtyMinus");
+      const cartQtyPlus = document.getElementById("cartQtyPlus");
+      const cartSummaryLine = document.getElementById("cartSummaryLine");
+      const cartTotalRow = document.getElementById("cartTotalRow");
+      const cartTotalPrice = document.getElementById("cartTotalPrice");
 
       const carImg = document.getElementById("carImg");
       const prevBtn = document.getElementById("prevBtn");
@@ -3223,6 +3460,16 @@
         const parsed = parseInt(value, 10);
         if (Number.isNaN(parsed)) return 1;
         return Math.max(1, Math.min(10, parsed));
+      }
+
+      function clampCartQty(value){
+        const parsed = parseInt(value, 10);
+        if (Number.isNaN(parsed)) return 0;
+        return Math.max(0, Math.min(10, parsed));
+      }
+
+      function formatMoney(value){
+        return "$" + value.toFixed(2);
       }
 
       function ensureCartDefaults(){
@@ -3298,14 +3545,13 @@
           productId: "mayanut-flour",
           title: "MayaNut™ Flour",
           weight: selectedWeight,
-          qty: selectedQty,
+          qty: cartCount,
           roast: selectedRoast,
           count: cartCount,
           image: images[0].src
         };
 
         cartState = payload;
-
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
         localStorage.setItem(FALLBACK_COUNT_KEY, String(cartCount));
       }
@@ -3329,12 +3575,19 @@
         cartItemRoast.textContent = activeState.roast === "dark" ? "Dark Roast" : "Light Roast";
         safeSetImg(cartItemImg, activeState.image || images[0].src, "MayaNut flour product pouch");
 
-        cartEmpty.textContent = cartCount === 0 ? "0 items in cart." : cartCount + (cartCount === 1 ? " item in cart." : " items in cart.");
-
         const hasItems = cartCount > 0;
+        cartEmpty.classList.toggle("is-hidden", hasItems);
         cartItemBlock.classList.toggle("is-hidden", !hasItems);
         cartDividerTop.classList.toggle("is-hidden", !hasItems);
         cartMetaBlock.classList.toggle("is-hidden", !hasItems);
+        cartSummaryLine.classList.toggle("is-hidden", !hasItems);
+        cartTotalRow.classList.toggle("is-hidden", !hasItems);
+
+        cartQtyMinus.disabled = cartCount <= 0;
+        cartQtyPlus.disabled = cartCount >= 10;
+
+        cartSummaryLine.textContent = "MayaNut™ Flour · " + (activeState.weight || "1/4 LB") + " × " + (activeState.qty || 0);
+        cartTotalPrice.textContent = formatMoney((activeState.qty || 0) * UNIT_PRICE);
       }
 
       function updateQtyControls(){
@@ -3466,6 +3719,20 @@
         return true;
       }
 
+      function updateCartQuantity(nextValue){
+        cartCount = clampCartQty(nextValue);
+        if (!cartState) {
+          cartState = readStoredCart();
+        }
+        cartState.qty = cartCount;
+        cartState.count = cartCount;
+        cartState.weight = selectedWeight || cartState.weight || "1/4 LB";
+        cartState.roast = selectedRoast || cartState.roast || "light";
+        saveCartState();
+        updateCartCount();
+        updateCartUI();
+      }
+
       function startQtyPress(button, delta){
         if (button.disabled) return;
         clearQtyTimers();
@@ -3541,6 +3808,15 @@
 
       function addCurrentSelectionToCart(){
         cartCount = selectedQty;
+        cartState = {
+          productId: "mayanut-flour",
+          title: "MayaNut™ Flour",
+          weight: selectedWeight,
+          qty: cartCount,
+          roast: selectedRoast,
+          count: cartCount,
+          image: images[0].src
+        };
         saveCartState();
         updateCartCount();
         updateCartUI();
@@ -3585,6 +3861,14 @@
       });
 
       addToCartBtn.addEventListener("click", addCurrentSelectionToCart);
+
+      cartQtyMinus.addEventListener("click", function(){
+        updateCartQuantity(cartCount - 1);
+      });
+
+      cartQtyPlus.addEventListener("click", function(){
+        updateCartQuantity(cartCount + 1);
+      });
 
       cartLaunch.addEventListener("click", openCart);
       cartClose.addEventListener("click", function(){ closeCart(true); });

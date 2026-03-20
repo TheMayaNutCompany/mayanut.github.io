@@ -243,7 +243,6 @@
 
       --ink:#0b1220;
       --muted:rgba(11,18,32,0.78);
-      --line:rgba(11,18,32,0.10);
       --soft:#f6f7f9;
       --soft-2:#fbfcfd;
       --orange:#ff7000;
@@ -272,9 +271,6 @@
       --sbThumb:#9aa5b1;
       --sbThumbHover:#7b8794;
       --scrollbarW:0px;
-      --desktopFrameW:0px;
-      --desktopDropdownW:min(360px, 90vw);
-      --desktopLangFallbackW:260px;
 
       --footer-mark-size:52px;
       --footer-logo-ratio:2.42;
@@ -405,6 +401,7 @@
     .header-bottom{
       border-top:1px solid rgba(11,18,32,0.10);
       border-bottom:0;
+      overflow:visible;
     }
 
     .header-top-inner,
@@ -543,7 +540,6 @@
       transition:transform .12s ease, background .12s ease, border-color .12s ease;
       flex:0 0 auto;
       box-shadow:none;
-      margin-right:0;
       overflow:visible;
       z-index:2;
     }
@@ -687,7 +683,7 @@
       position:absolute;
       right:0;
       top:calc(100% + 8px);
-      width:var(--desktopDropdownW);
+      width:min(300px, calc(100vw - (var(--padX) * 2)));
       max-width:90vw;
       background:#fff;
       border:1px solid rgba(11,18,32,0.10);
@@ -707,13 +703,14 @@
     }
 
     .lang-item{
+      position:relative;
       width:100%;
       border:1px solid transparent;
       background:#fff;
       color:#0b1220;
       text-align:left;
       border-radius:10px;
-      padding:10px 12px;
+      padding:10px 12px 10px 16px;
       font-size:14px;
       font-weight:500;
       line-height:1.2;
@@ -728,9 +725,95 @@
     }
 
     .lang-item.active{
-      border-color:rgba(11,18,32,0.10);
-      background:var(--soft);
       color:var(--orange);
+      background:var(--soft);
+    }
+
+    .lang-item.active::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:3px;
+      background:var(--orange);
+      border-radius:0;
+    }
+
+    @media (min-width:981px){
+      .lang-menu.desktop-lang{
+        position:fixed;
+        z-index:100002;
+      }
+
+      .lang-menu.desktop-lang .lang-btn{
+        width:100%;
+        min-height:42px;
+        padding:0 14px 0 18px;
+        justify-content:space-between;
+        background:#edf0f4;
+        border:1.5px solid transparent;
+        border-radius:15px;
+        gap:10px;
+      }
+
+      .lang-menu.desktop-lang .lang-btn::after{
+        display:none;
+      }
+
+      .lang-menu.desktop-lang .lang-btn::before{
+        content:"";
+        position:absolute;
+        left:0;
+        top:0;
+        bottom:0;
+        width:3px;
+        background:var(--orange);
+        border-radius:15px 0 0 15px;
+      }
+
+      .lang-menu.desktop-lang #langBtnLabel{
+        color:var(--orange);
+      }
+
+      .lang-menu.desktop-lang .lang-btn:hover{
+        border-color:var(--ink);
+      }
+
+      .lang-menu.desktop-lang .lang-btn[aria-expanded="true"]{
+        border-color:var(--orange);
+        border-bottom-left-radius:0;
+        border-bottom-right-radius:0;
+        background:#edf0f4;
+      }
+
+      .lang-menu.desktop-lang .lang-dropdown{
+        left:0;
+        right:auto;
+        top:calc(100% - 1.5px);
+        width:100%;
+        max-width:none;
+        padding:8px;
+        border:1.5px solid var(--orange);
+        border-top:0;
+        border-radius:0 0 15px 15px;
+        box-shadow:none;
+      }
+
+      .lang-menu.desktop-lang .lang-list{
+        gap:2px;
+      }
+
+      .lang-menu.desktop-lang .lang-item{
+        padding:11px 14px 11px 18px;
+        font-size:13.5px;
+        border-radius:10px;
+      }
+
+      .lang-menu.desktop-lang .lang-item:hover{
+        border-color:transparent;
+        background:#f7f8fa;
+      }
     }
 
     main{
@@ -790,7 +873,6 @@
       background:#fff;
       position:relative;
       aspect-ratio:1 / 1;
-      border:1px solid rgba(11,18,32,0.06);
       box-shadow:var(--shadow);
       height:auto;
     }
@@ -809,11 +891,12 @@
 
     .gallery-control-row{
       width:100%;
-      min-height:36px;
+      min-height:54px;
       display:grid;
-      grid-template-columns:32px 1fr 32px;
-      align-items:center;
-      gap:8px;
+      grid-template-columns:minmax(96px, 1fr) auto minmax(96px, 1fr);
+      align-items:stretch;
+      gap:10px;
+      padding:6px 0 10px;
       color:var(--ink);
       user-select:none;
     }
@@ -824,17 +907,42 @@
       border:0;
       background:transparent;
       color:var(--ink);
-      padding:0;
       cursor:pointer;
+      padding:0;
     }
 
     .gallery-control-arrow{
-      width:32px;
-      height:32px;
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      border-radius:12px;
+    }
+
+    .gallery-control-arrow.left{
+      justify-content:flex-start;
+      padding-left:6px;
+    }
+
+    .gallery-control-arrow.right{
+      justify-content:flex-end;
+      padding-right:6px;
+    }
+
+    .gallery-control-center{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      border-radius:10px;
+      min-height:100%;
+      padding:0 12px;
+      border-radius:12px;
+      font-size:12px;
+      line-height:1.2;
+      font-weight:700;
+      color:rgba(11,18,32,0.52);
+      letter-spacing:.01em;
+      text-align:center;
+      white-space:nowrap;
     }
 
     .gallery-control-arrow:hover,
@@ -852,17 +960,6 @@
       stroke-linejoin:round;
     }
 
-    .gallery-control-center{
-      justify-self:center;
-      font-size:12px;
-      line-height:1.2;
-      font-weight:700;
-      color:rgba(11,18,32,0.52);
-      letter-spacing:.01em;
-      text-align:center;
-      white-space:nowrap;
-    }
-
     .thumbs{
       display:grid;
       grid-template-columns:repeat(3, minmax(0, 1fr));
@@ -872,13 +969,13 @@
     .thumb{
       aspect-ratio:1 / 1;
       border-radius:18px;
-      border:1px solid rgba(11,18,32,0.08);
       background:#fff;
       overflow:hidden;
       cursor:pointer;
       box-shadow:var(--shadow-soft);
       user-select:none;
       padding:0;
+      border:0;
     }
 
     .thumb img{
@@ -895,8 +992,7 @@
     }
 
     .product-box{
-      border:1px solid transparent;
-      border-radius:var(--radius-lg);
+      border:0;
       background:transparent;
       box-shadow:none;
       padding:2px 0 0;
@@ -1088,6 +1184,7 @@
       justify-content:flex-end;
       gap:10px;
       min-height:0;
+      flex:1 1 auto;
     }
 
     .brief-meta{
@@ -1111,6 +1208,9 @@
       display:flex;
       flex-direction:column;
       gap:12px;
+      margin-top:auto;
+      padding-top:10px;
+      padding-bottom:4px;
     }
 
     .selector-row--roast{
@@ -1154,6 +1254,8 @@
     }
 
     .option-action-row{
+      position:relative;
+      top:-2px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -1367,8 +1469,7 @@
     .below-grid,
     .faq-block{
       margin-top:var(--section-stack-gap);
-      border-radius:var(--radius-lg);
-      border:1px solid transparent;
+      border:0;
       background:transparent;
       box-shadow:none;
       padding:2px 0 0;
@@ -1447,8 +1548,8 @@
     }
 
     .subcard{
+      border:0;
       border-radius:18px;
-      border:1px solid transparent;
       background:var(--soft-2);
       padding:14px 14px;
       height:100%;
@@ -1551,8 +1652,8 @@
     }
 
     .faq-item{
+      border:0;
       border-radius:16px;
-      border:1px solid transparent;
       background:var(--soft-2);
       padding:14px;
     }
@@ -1949,10 +2050,11 @@
       width:92px;
       height:92px;
       border-radius:16px;
-      border:1px solid rgba(11,18,32,0.10);
       background:#fff;
       object-fit:contain;
       padding:8px;
+      border:0;
+      box-shadow:var(--shadow-soft);
     }
 
     .cart-item-copy{
@@ -2027,13 +2129,6 @@
       box-shadow:none;
     }
 
-    @media (min-width:921px){
-      .product-flex-fill{
-        flex:1 1 auto;
-        min-height:72px;
-      }
-    }
-
     @media (max-width:1180px){
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
@@ -2065,8 +2160,14 @@
       }
 
       .product-box{ min-height:0 !important; }
+      .product-flex-fill{ flex:none; }
+      .checkout-stack{
+        margin-top:0;
+        padding-bottom:0;
+      }
 
       .option-action-row{
+        top:0;
         flex-direction:column;
         align-items:stretch;
       }
@@ -2147,16 +2248,6 @@
 
       .lang-caret{ font-size:11px; }
 
-      .lang-dropdown{
-        width:min(300px, calc(100vw - (var(--padX) * 2)));
-        max-width:90vw;
-      }
-
-      .lang-item{
-        font-size:15px;
-        padding:9px 10px;
-      }
-
       h1{
         font-size:25px;
         white-space:normal;
@@ -2199,7 +2290,9 @@
       .qty-input{ font-size:13px; }
 
       .gallery-control-row{
-        grid-template-columns:28px 1fr 28px;
+        grid-template-columns:minmax(72px, 1fr) auto minmax(72px, 1fr);
+        min-height:48px;
+        padding:4px 0 8px;
       }
 
       .gallery-control-center{
@@ -2510,7 +2603,7 @@
             </div>
 
             <div class="gallery-control-row" aria-label="Image gallery controls">
-              <button class="gallery-control-arrow" id="prevBtn" type="button" aria-label="Previous product image">
+              <button class="gallery-control-arrow left" id="prevBtn" type="button" aria-label="Previous product image">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"></path></svg>
               </button>
 
@@ -2518,7 +2611,7 @@
                 Click to view full image
               </button>
 
-              <button class="gallery-control-arrow" id="nextBtn" type="button" aria-label="Next product image">
+              <button class="gallery-control-arrow right" id="nextBtn" type="button" aria-label="Next product image">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6l6 6-6 6"></path></svg>
               </button>
             </div>
@@ -2927,7 +3020,7 @@
           </div>
           <div class="cart-meta-row">
             <span>Quantity</span>
-            <span id="cartQty">1</span>
+            <span id="cartQty">0</span>
           </div>
           <div class="cart-meta-row">
             <span>Status</span>
@@ -2947,11 +3040,7 @@
 
     function updateLayoutVars(){
       const sw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-      const viewportW = window.innerWidth - sw;
-      const desktopFrame = Math.max(0, (viewportW - 1200) / 2);
-
       document.documentElement.style.setProperty("--scrollbarW", sw + "px");
-      document.documentElement.style.setProperty("--desktopFrameW", desktopFrame + "px");
     }
 
     updateLayoutVars();
@@ -2967,73 +3056,56 @@
       const langBtnLabel = document.getElementById("langBtnLabel");
       const langItems = Array.from(document.querySelectorAll(".lang-item"));
       const contentWrapper = document.querySelector(".content-wrapper");
+      const headerBottom = document.querySelector(".header-bottom");
 
-      if (!langBtn || !langMenu || !langDropdown || !langBtnLabel) return;
+      if (!langBtn || !langMenu || !langDropdown || !langBtnLabel || !headerBottom) return;
 
       const activeItem = langItems.find(item => item.classList.contains("active"));
       if (activeItem && activeItem.dataset.langName) {
         langBtnLabel.textContent = "Language: " + activeItem.dataset.langName;
       }
 
-      function clearDropdownGeometry(){
-        langDropdown.style.position = "";
-        langDropdown.style.top = "";
-        langDropdown.style.left = "";
-        langDropdown.style.right = "";
-        langDropdown.style.width = "";
-        langDropdown.style.maxWidth = "";
+      function clearDesktopLangLayout(){
+        langMenu.classList.remove("desktop-lang");
+        langMenu.style.position = "";
+        langMenu.style.left = "";
+        langMenu.style.top = "";
+        langMenu.style.width = "";
+        langMenu.style.right = "";
       }
 
-      function placeDropdown(){
-        clearDropdownGeometry();
+      function applyDesktopLangLayout(){
+        clearDesktopLangLayout();
 
         const isDesktop = window.matchMedia("(min-width: 981px)").matches;
         if (!isDesktop || !contentWrapper) return;
 
-        const sw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        const viewportW = window.innerWidth - sw;
+        const viewportW = window.innerWidth - Math.max(0, window.innerWidth - document.documentElement.clientWidth);
         const wrapperRect = contentWrapper.getBoundingClientRect();
-        const btnRect = langBtn.getBoundingClientRect();
+        const bottomRect = headerBottom.getBoundingClientRect();
 
         const frameLeft = Math.round(wrapperRect.right);
         const frameRight = Math.round(viewportW);
         const frameW = Math.max(0, frameRight - frameLeft);
+        const frameGap = Math.max(16, Math.min(24, Math.round(frameW * 0.09)));
+        const innerW = Math.max(220, frameW - (frameGap * 2));
+        const top = Math.round(bottomRect.top - 4);
 
-        const frameGap = Math.max(16, Math.min(22, Math.round(frameW * 0.09)));
-        const frameInnerW = Math.max(0, frameW - (frameGap * 2));
-        const top = Math.round(btnRect.bottom + 4);
-
-        langDropdown.style.position = "fixed";
-        langDropdown.style.top = top + "px";
-        langDropdown.style.right = "auto";
-
-        if (frameInnerW >= 180) {
-          langDropdown.style.left = (frameLeft + frameGap) + "px";
-          langDropdown.style.width = frameInnerW + "px";
-          langDropdown.style.maxWidth = frameInnerW + "px";
-        } else {
-          const fallbackW = Math.min(
-            Math.max(220, parseInt(getComputedStyle(document.documentElement).getPropertyValue("--desktopLangFallbackW"), 10) || 260),
-            viewportW - 24
-          );
-
-          let left = Math.round(btnRect.right - fallbackW);
-          left = Math.max(12, Math.min(left, viewportW - fallbackW - 12));
-
-          langDropdown.style.left = left + "px";
-          langDropdown.style.width = fallbackW + "px";
-          langDropdown.style.maxWidth = fallbackW + "px";
-        }
+        langMenu.classList.add("desktop-lang");
+        langMenu.style.position = "fixed";
+        langMenu.style.left = (frameLeft + frameGap) + "px";
+        langMenu.style.top = top + "px";
+        langMenu.style.width = innerW + "px";
+        langMenu.style.right = "auto";
       }
 
       function closeLangMenu(){
         langDropdown.classList.remove("open");
         langBtn.setAttribute("aria-expanded", "false");
-        clearDropdownGeometry();
       }
 
       function openLangMenu(){
-        placeDropdown();
+        applyDesktopLangLayout();
         langDropdown.classList.add("open");
         langBtn.setAttribute("aria-expanded", "true");
       }
@@ -3056,14 +3128,14 @@
       });
 
       window.addEventListener("resize", function(){
-        if (langDropdown.classList.contains("open")) placeDropdown();
+        applyDesktopLangLayout();
       });
 
       window.addEventListener("orientationchange", function(){
-        if (langDropdown.classList.contains("open")) {
-          setTimeout(placeDropdown, 150);
-        }
+        setTimeout(applyDesktopLangLayout, 150);
       });
+
+      applyDesktopLangLayout();
     })();
   </script>
 
@@ -3139,6 +3211,43 @@
       const leftCol = document.getElementById("leftCol");
       const productBox = document.getElementById("productBox");
 
+      function parseNonNegativeInt(value){
+        const parsed = parseInt(value, 10);
+        return Number.isNaN(parsed) ? 0 : Math.max(0, parsed);
+      }
+
+      function clampQty(value){
+        const parsed = parseInt(value, 10);
+        if (Number.isNaN(parsed)) return 1;
+        return Math.max(1, Math.min(10, parsed));
+      }
+
+      function ensureCartDefaults(){
+        if (localStorage.getItem(FALLBACK_COUNT_KEY) === null) {
+          localStorage.setItem(FALLBACK_COUNT_KEY, "0");
+        }
+
+        if (localStorage.getItem(FALLBACK_QTY_KEY) === null) {
+          localStorage.setItem(FALLBACK_QTY_KEY, "0");
+        }
+
+        if (localStorage.getItem(FALLBACK_ROAST_KEY) === null) {
+          localStorage.setItem(FALLBACK_ROAST_KEY, "light");
+        }
+
+        if (localStorage.getItem(STORAGE_KEY) === null) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            productId: "mayanut-flour",
+            title: "MayaNut™ Flour",
+            weight: "1/4 LB",
+            qty: 0,
+            roast: "light",
+            count: 0,
+            image: images[0].src
+          }));
+        }
+      }
+
       function safeSetImg(imgEl, src, alt){
         if (!imgEl) return;
         imgEl.alt = alt || "";
@@ -3154,12 +3263,6 @@
         document.body.classList.toggle("modal-open", anyOpen);
       }
 
-      function clampQty(value){
-        const parsed = parseInt(value, 10);
-        if (Number.isNaN(parsed)) return 1;
-        return Math.max(1, Math.min(10, parsed));
-      }
-
       function readStoredCart(){
         let parsed = null;
 
@@ -3169,30 +3272,16 @@
           parsed = null;
         }
 
-        const fallbackQty = clampQty(localStorage.getItem(FALLBACK_QTY_KEY) || "1");
-        const fallbackRoast = localStorage.getItem(FALLBACK_ROAST_KEY) === "dark" ? "dark" : "light";
-        const fallbackCount = clampQty(localStorage.getItem(FALLBACK_COUNT_KEY) || "0");
-
-        if (parsed && typeof parsed === "object") {
-          return {
-            productId: "mayanut-flour",
-            title: "MayaNut™ Flour",
-            weight: parsed.weight || "1/4 LB",
-            qty: clampQty(parsed.qty || fallbackQty),
-            roast: parsed.roast === "dark" ? "dark" : "light",
-            count: clampQty(parsed.count || parsed.qty || fallbackCount || 0),
-            image: parsed.image || images[0].src
-          };
-        }
+        const fallbackCount = parseNonNegativeInt(localStorage.getItem(FALLBACK_COUNT_KEY) || "0");
 
         return {
           productId: "mayanut-flour",
           title: "MayaNut™ Flour",
-          weight: "1/4 LB",
-          qty: fallbackQty,
-          roast: fallbackRoast,
-          count: fallbackCount > 0 ? fallbackCount : 0,
-          image: images[0].src
+          weight: (parsed && parsed.weight) || "1/4 LB",
+          qty: parseNonNegativeInt(parsed && parsed.qty),
+          roast: (parsed && parsed.roast) === "dark" ? "dark" : "light",
+          count: parseNonNegativeInt((parsed && parsed.count) || fallbackCount),
+          image: (parsed && parsed.image) || images[0].src
         };
       }
 
@@ -3215,8 +3304,6 @@
         cartState = payload;
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-        localStorage.setItem(FALLBACK_QTY_KEY, String(selectedQty));
-        localStorage.setItem(FALLBACK_ROAST_KEY, selectedRoast);
         localStorage.setItem(FALLBACK_COUNT_KEY, String(cartCount));
       }
 
@@ -3227,14 +3314,14 @@
 
       function updateCartUI(){
         const activeState = cartState || {
-          qty: selectedQty,
-          roast: selectedRoast,
-          weight: selectedWeight,
-          count: cartCount,
+          qty: 0,
+          roast: "light",
+          weight: "1/4 LB",
+          count: 0,
           image: images[0].src
         };
 
-        cartQty.textContent = String(activeState.qty);
+        cartQty.textContent = String(activeState.qty || 0);
         cartWeight.textContent = activeState.weight || "1/4 LB";
         cartItemRoast.textContent = activeState.roast === "dark" ? "Dark Roast" : "Light Roast";
         safeSetImg(cartItemImg, activeState.image || images[0].src, "MayaNut flour product pouch");
@@ -3253,13 +3340,13 @@
         qtyPlus.disabled = selectedQty >= 10;
         qtyMinus.setAttribute("aria-disabled", qtyMinus.disabled ? "true" : "false");
         qtyPlus.setAttribute("aria-disabled", qtyPlus.disabled ? "true" : "false");
-        saveSelectionState();
         syncHeights();
       }
 
       function setQty(value){
         selectedQty = clampQty(value);
         updateQtyControls();
+        saveSelectionState();
       }
 
       function setRoast(type){
@@ -3295,6 +3382,7 @@
 
       function openImageModal(){
         closeCart(false);
+        closeWeightMenu();
         lastFocusedElement = document.activeElement;
         safeSetImg(imageModalImg, images[idx].src, images[idx].alt);
         imageModal.classList.add("open");
@@ -3543,16 +3631,20 @@
         updateCartUI();
       });
 
+      ensureCartDefaults();
+
       const stored = readStoredCart();
       cartState = stored;
       cartCount = stored.count || 0;
-      selectedQty = stored.qty || 1;
-      selectedRoast = stored.roast || "light";
+
+      const storedSelectionQty = parseNonNegativeInt(localStorage.getItem(FALLBACK_QTY_KEY) || "0");
+      selectedQty = storedSelectionQty > 0 ? clampQty(storedSelectionQty) : 1;
+      selectedRoast = localStorage.getItem(FALLBACK_ROAST_KEY) === "dark" ? "dark" : "light";
       selectedWeight = stored.weight || "1/4 LB";
 
       setWeight(selectedWeight);
       setRoast(selectedRoast);
-      setQty(selectedQty);
+      updateQtyControls();
       setImage(0);
       updateCartCount();
       updateCartUI();

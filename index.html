@@ -47,7 +47,7 @@
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1024">
   <meta property="og:image:height" content="1536">
-  <meta property="og:image:alt" content="MayaNut flour pouch by The MayaNut Company">
+  <meta property="og:image:alt" content="MayaNut Flour pouch by The MayaNut Company">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="es_ES">
   <meta property="og:locale:alternate" content="fr_FR">
@@ -60,7 +60,7 @@
   <meta name="twitter:title" content="The MayaNut Company | MayaNut™ Flour">
   <meta name="twitter:description" content="MayaNut™ Flour from Alicastrum, with smooth texture, warm roasted depth, and a bold cocoa-like flavor for smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking.">
   <meta name="twitter:image" content="https://www.mayanut.com/the-mayanut-company-product-pouch.png">
-  <meta name="twitter:image:alt" content="MayaNut flour pouch by The MayaNut Company">
+  <meta name="twitter:image:alt" content="MayaNut Flour pouch by The MayaNut Company">
   <meta name="twitter:site" content="@mayanutcompany">
   <meta name="twitter:creator" content="@mayanutcompany">
 
@@ -141,7 +141,7 @@
         "url":"https://www.mayanut.com/the-mayanut-company-product-pouch.png",
         "width":1024,
         "height":1536,
-        "caption":"MayaNut flour pouch by The MayaNut Company"
+        "caption":"MayaNut Flour pouch by The MayaNut Company"
       },
       {
         "@type":"FAQPage",
@@ -205,14 +205,10 @@
 
       --ink:#0b1220;
       --muted:rgba(11,18,32,0.72);
-      --soft:#f6f7f9;
-      --soft-2:#fbfcfd;
       --orange:#ff7000;
       --orange-press:#d95e00;
-      --line:rgba(11,18,32,0.10);
 
       --radius:18px;
-      --radius-lg:22px;
       --shadow:0 14px 40px rgba(15,23,42,0.08);
       --shadow-soft:0 10px 28px rgba(15,23,42,0.06);
 
@@ -1057,11 +1053,21 @@
       border-radius:18px;
     }
 
-    .story-card .media img{
+    .story-media-link{
+      display:block;
+      position:relative;
+    }
+
+    .story-media-link img{
       width:100%;
       height:100%;
       object-fit:cover;
       object-position:center;
+      transition:transform .16s ease;
+    }
+
+    .story-media-link:hover img{
+      transform:scale(1.015);
     }
 
     .story-card .copy{
@@ -1303,7 +1309,9 @@
       color:var(--ink);
       padding:var(--gap) var(--padX) 16px;
       position:relative;
-      z-index:2;
+      z-index:3;
+      isolation:isolate;
+      overflow:hidden;
     }
 
     .footer-inner{
@@ -1311,7 +1319,7 @@
       margin:0 auto;
       background:#fff;
       position:relative;
-      z-index:1;
+      z-index:2;
     }
 
     @media (min-width:981px){
@@ -1456,7 +1464,7 @@
     .bottom-tabs{
       position:fixed;
       left:0;
-      right:var(--scrollbarW);
+      right:0;
       bottom:0;
       z-index:99999;
       background:#fff;
@@ -1468,21 +1476,8 @@
       outline:0;
       overflow:hidden;
       contain:paint;
-      -webkit-transform:translateZ(0);
-      transform:translateZ(0);
       backface-visibility:hidden;
-    }
-
-    .bottom-tabs::before{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      top:-8px;
-      height:10px;
-      background:#fff;
-      pointer-events:none;
-      z-index:0;
+      will-change:transform;
     }
 
     .bottom-tabs nav{
@@ -1520,8 +1515,6 @@
       overflow:hidden;
       text-overflow:ellipsis;
       box-shadow:none;
-      -webkit-transform:translateZ(0);
-      transform:translateZ(0);
     }
 
     .bottom-tabs a:hover,
@@ -1829,8 +1822,21 @@
     @media (max-width:980px){
       .subnav{ display:none; }
       .bottom-tabs{ display:block; }
-      main{ padding-bottom:calc(var(--bottomNavH) + 24px); }
-      .footer{ padding-bottom:calc(var(--bottomNavH) + 14px); }
+      main{ padding-bottom:calc(var(--bottomNavH) + 28px); }
+      .footer{
+        padding-bottom:calc(var(--bottomNavH) + 18px);
+      }
+      .footer::after{
+        content:"";
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:calc(var(--bottomNavH) + env(safe-area-inset-bottom) - 2px);
+        height:26px;
+        background:#fff;
+        pointer-events:none;
+        z-index:99998;
+      }
     }
 
     @media (max-width:920px){
@@ -1881,6 +1887,25 @@
 
       .story-card .media{
         border-radius:20px;
+      }
+    }
+
+    @media (max-width:680px){
+      .founder-story-card .copy{
+        order:1;
+      }
+
+      .founder-story-card .media{
+        order:2;
+        margin-top:14px;
+      }
+
+      .hero-panel{
+        margin-bottom:34px;
+      }
+
+      .hero-media-link{
+        padding-bottom:16px;
       }
     }
 
@@ -2089,11 +2114,11 @@
       }
 
       .hero-panel{
-        margin-bottom:32px;
+        margin-bottom:38px;
       }
 
       .hero-media-link{
-        padding-bottom:14px;
+        padding-bottom:18px;
       }
     }
 
@@ -2260,7 +2285,7 @@
           <a class="hero-media-link" href="/product.html" aria-label="Go to the MayaNut Flour product page">
             <img
               src="/the-mayanut-company-product-pouch.png"
-              alt="MayaNut flour pouch"
+              alt="MayaNut Flour pouch"
               loading="eager"
               decoding="async"
               fetchpriority="high"
@@ -2274,8 +2299,8 @@
 
       <section class="panel" aria-label="Who we are and quick links">
         <div class="grid-two">
-          <article class="story-card" aria-label="Who we are">
-            <div class="media" aria-label="Founder photo">
+          <article class="story-card founder-story-card" aria-label="Who we are">
+            <a class="media story-media-link" href="/about.html" aria-label="Go to the About page">
               <img
                 src="/august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
                 alt="Founder August Kokus with young Alicastrum trees in Florida"
@@ -2285,7 +2310,7 @@
                 height="900"
                 sizes="(max-width: 920px) 100vw, 50vw"
               >
-            </div>
+            </a>
             <div class="copy">
               <h2>Who We Are</h2>
               <p>
@@ -2414,17 +2439,17 @@
           </div>
 
           <article class="story-card" aria-label="The Alicastrum tree">
-            <div class="media" aria-label="Alicastrum fruit image">
+            <a class="media story-media-link" href="/alicastrum-brosimum-alicastrum.html" aria-label="Go to the Alicastrum page">
               <img
                 src="/maya-nut-mayanut-fruit-brosimum-alicastrum.jpg"
-                alt="Alicastrum fruit and seeds used to make MayaNut flour"
+                alt="Alicastrum fruit and seeds used to make MayaNut Flour"
                 loading="lazy"
                 decoding="async"
                 width="1200"
                 height="1200"
                 sizes="(max-width: 920px) 100vw, 50vw"
               >
-            </div>
+            </a>
             <div class="copy">
               <h2>The Alicastrum Tree</h2>
               <p>
@@ -2589,7 +2614,7 @@
             class="cart-item-img"
             id="cartItemImg"
             src="/the-mayanut-company-product-pouch.png"
-            alt="MayaNut flour pouch"
+            alt="MayaNut Flour pouch"
             width="92"
             height="92"
           >
@@ -2930,7 +2955,7 @@
         cartWeight.textContent = activeState.weight || "1/4 LB";
         cartItemRoast.textContent = roastLabel(activeState.roast);
         cartItemImg.src = activeState.image || "/the-mayanut-company-product-pouch.png";
-        cartItemImg.alt = "MayaNut flour pouch";
+        cartItemImg.alt = "MayaNut Flour pouch";
 
         const hasItems = cartCount > 0;
         cartEmpty.classList.toggle("is-hidden", hasItems);

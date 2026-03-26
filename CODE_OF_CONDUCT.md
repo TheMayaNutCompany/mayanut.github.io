@@ -6,9 +6,9 @@ _Based on the Contributor Covenant v2.1_
 
 ## 🌱 Our Commitment
 
-We commit to providing a welcoming, respectful, and harassment-free environment for everyone contributing to this repository — whether you're writing code, improving translations, submitting research, reporting bugs, or sharing photos and knowledge about *Brosimum alicastrum*.
+We are committed to providing a welcoming, respectful, and harassment-free environment for everyone contributing to this repository — whether through code, translations, research, bug reports, documentation, photography, or knowledge related to *Brosimum alicastrum*.
 
-The values guiding this project include:
+This project is guided by the following values:
 
 - Sustainability  
 - Respect for culture and biodiversity  
@@ -17,32 +17,32 @@ The values guiding this project include:
 - Collaboration over competition  
 - Environmental stewardship  
 
-Everyone participating is expected to uphold these values.
+Everyone participating in this project is expected to uphold these values.
 
 ---
 
 ## 🤝 Our Standards
 
-### ✔ Positive and encouraged behaviors:
+### ✔ Positive and encouraged behaviors
 
 - Acting with kindness, empathy, and professionalism  
-- Providing constructive, respectful feedback  
-- Helping newcomers feel welcome  
-- Acknowledging differing viewpoints and lived experiences  
-- Giving proper credit and citation when applicable  
+- Providing constructive and respectful feedback  
+- Helping new contributors feel welcome  
+- Respecting differing viewpoints and lived experiences  
+- Giving proper credit and citation where appropriate  
 - Sharing accurate information and avoiding speculation presented as fact  
-- Respectfully honoring indigenous knowledge tied to MayaNut and its history  
+- Respectfully honoring indigenous knowledge connected to MayaNut™ and its history  
 
-### ✘ Unacceptable behaviors:
+### ✘ Unacceptable behaviors
 
 - Harassment, threats, discrimination, or hateful language  
 - Personal, political, or cultural attacks  
-- Persistent negativity or antagonistic debate  
+- Persistent antagonism, hostility, or deliberately disruptive behavior  
 - Posting private, confidential, or identifying information without consent  
 - Publishing misinformation or misleading claims  
-- Uploading copyrighted materials without rights or permission  
-- Attempting to exploit or destabilize the website or repository  
-- Spam, self-promotion, commercial solicitation unrelated to this project  
+- Uploading copyrighted materials without the necessary rights or permission  
+- Attempting to exploit, damage, or destabilize the website or repository  
+- Spam, self-promotion, or commercial solicitation unrelated to this project  
 
 ---
 
@@ -52,9 +52,10 @@ Project maintainers are responsible for:
 
 - Clarifying community expectations  
 - Responding to unacceptable behavior  
-- Taking corrective action when needed  
+- Reviewing reports fairly and consistently  
+- Taking appropriate corrective action when needed  
 
-Maintainers have the right to remove or reject:
+Maintainers reserve the right to remove, edit, reject, or restrict:
 
 - Comments  
 - Commits  
@@ -68,17 +69,17 @@ that violate this Code of Conduct.
 
 ## 📩 Reporting Violations
 
-To report concerns, email:
+To report concerns, please email:
 
-📧 **themayanutcompany@gmail.com**  
-Subject Line: **Code of Conduct Report**
+📧 **info@mayanut.com**  
+**Subject line:** Code of Conduct Report
 
-Please include:
+Please include, where possible:
 
 - What happened  
 - Where it occurred  
-- Supporting evidence (screenshots, links, etc.)  
-- Whether this is ongoing behavior  
+- Supporting evidence such as screenshots or links  
+- Whether the behavior is ongoing  
 
 A response will be provided within **5 business days**.
 
@@ -86,20 +87,21 @@ A response will be provided within **5 business days**.
 
 ## 🔒 Confidentiality
 
-All reports are handled privately.  
-Information shared will only be used to enforce project policy — never published or stored publicly.
+All reports will be handled as privately as possible.
+
+Information shared in a report will only be used for review, response, and enforcement purposes, and will not be published publicly except where disclosure is required by law or necessary to address serious risk.
 
 ---
 
 ## 🚫 Consequences
 
-Depending on severity and frequency, actions may include:
+Depending on the severity or frequency of a violation, responses may include:
 
 - A private warning  
-- Temporary contribution suspension  
-- Permanent ban from participation  
-- Issue lockdown or removal  
-- Legal escalation if required  
+- Temporary suspension from contributions or participation  
+- Permanent removal from participation  
+- Issue, discussion, or pull request lockdown or removal  
+- Further action, including legal escalation, where necessary  
 
 ---
 
@@ -107,31 +109,31 @@ Depending on severity and frequency, actions may include:
 
 This Code of Conduct applies to:
 
-- GitHub interactions (issues, commits, PRs)  
-- Documentation editing  
-- Community discussions  
-- Any project-related communication or representation in public spaces  
+- GitHub interactions, including issues, commits, pull requests, and discussions  
+- Documentation and content contributions  
+- Project-related communications  
+- Public spaces where an individual is representing this project or The MayaNut Company  
 
 ---
 
 ## ❤️ Attribution
 
-Adapted from the **Contributor Covenant v2.1:**  
+Adapted from the **Contributor Covenant v2.1**:  
 https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
 
 ---
 
-### 🌳 Thank You
+## 🌳 Thank You
 
 By participating in this project, you support:
 
 - Restoration of tropical ecosystems  
-- Scientific documentation of *Brosimum alicastrum*  
-- Translation accessibility  
-- A global effort to reintroduce a resilient and culturally meaningful superfood  
+- Documentation and understanding of *Brosimum alicastrum*  
+- Greater accessibility through translation and clear communication  
+- A broader effort to reintroduce a resilient and culturally meaningful food tree  
 
 Your respect and collaboration help this project grow — just like the trees it represents.
 
 ---
 
-📌 _Last updated: December 2025_
+_Last updated: March 2026_

@@ -34,7 +34,7 @@ Primary fieldwork, nursery development, and long-term cultivation efforts are ba
 - 🌍 **Localized site structure** (English root; additional language paths in progress)
 - ⚡ **Static hosting**
 - ⛓️ **No framework dependencies** (vanilla HTML, CSS, and JavaScript)
-- 🔍 **SEO-ready foundation** with structured metadata, semantic markup, hreflang, and JSON-LD
+- 🔍 **SEO-ready foundation** with structured metadata, semantic markup, hreflang, JSON-LD, and manifest support
 
 ---
 
@@ -42,9 +42,9 @@ Primary fieldwork, nursery development, and long-term cultivation efforts are ba
 
 - clearly explain **What is MayaNut™?**
 - support a strong **product-first experience**
-- provide polished supporting pages such as **About**, **FAQ**, **Recipes**, and **Product**
+- provide polished supporting pages such as **About**, **FAQ**, **Recipes**, **Product**, and related informational pages
 - maintain a premium, uncluttered visual identity across desktop and mobile
-- preserve strong crawlability, metadata quality, and internal linking discipline
+- preserve strong crawlability, metadata quality, internal linking, and page consistency
 
 ---
 
@@ -117,11 +117,17 @@ Schema is only added where it matches real page content.
 ├─ product.html
 ├─ privacy.html
 ├─ terms.html
+├─ trademark.html
 │
 ├─ site.webmanifest
 ├─ robots.txt
 ├─ sitemap.xml
 ├─ README.md
+├─ LICENSE
+├─ CODE_OF_CONDUCT.md
+├─ CONTRIBUTING.md
+├─ SECURITY.md
+├─ SUPPORT.md
 │
 ├─ es/
 ├─ fr/

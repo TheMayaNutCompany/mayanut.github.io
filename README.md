@@ -2,7 +2,7 @@
 *MayaNut™ Flour • Alicastrum • Brosimum alicastrum • Tropical agroforestry • Reforestation*
 
 <p align="center">
-  <img src="https://mayanut.com/the-mayanut-company-logo-tm.png" width="200" alt="The MayaNut Company logo">
+  <img src="https://mayanut.com/the-mayanut-company-logo-tm.svg" width="200" alt="The MayaNut Company logo">
 </p>
 
 <p align="center">
@@ -11,18 +11,18 @@
 
 This repository contains the source for **The MayaNut Company** website — a fast, static, multi-page site built to introduce **MayaNut™ Flour**, a finely milled product made from the seeds of the Alicastrum tree (*Brosimum alicastrum*), and to support a clean, product-forward brand experience as the company grows.
 
-The goal is straightforward: visitors should quickly understand **what MayaNut™ is**, move naturally toward **products**, and then explore deeper supporting pages only if they want more detail.
+The goal is simple: visitors should quickly understand **what MayaNut™ is**, move naturally toward **products**, and explore deeper supporting pages only when they want more detail.
 
 ---
 
 ## Overview
 
-The website serves as:
+The site serves as:
 
-- a **product-first brand site** for The MayaNut Company
+- a **product-first brand website** for The MayaNut Company
 - an introduction to **MayaNut™ Flour** and the **Alicastrum** tree
-- a foundation for **recipes, education, and supporting content**
-- a static, performance-conscious site designed for **clarity, SEO, and long-term scalability**
+- a foundation for **recipes, educational content, and supporting pages**
+- a static, performance-conscious experience designed for **clarity, SEO, and long-term scalability**
 
 Primary fieldwork, nursery development, and long-term cultivation efforts are based in **South Florida, USA**.
 
@@ -33,22 +33,22 @@ Primary fieldwork, nursery development, and long-term cultivation efforts are ba
 - 🚧 **Active development**
 - 🌍 **Localized site structure** (English root; additional language paths in progress)
 - ⚡ **Static hosting**
-- ⛓️ **No framework dependencies** (vanilla HTML/CSS/JS)
-- 🔍 **SEO-ready foundation** with structured metadata, semantic markup, and JSON-LD
+- ⛓️ **No framework dependencies** (vanilla HTML, CSS, and JavaScript)
+- 🔍 **SEO-ready foundation** with structured metadata, semantic markup, hreflang, and JSON-LD
 
 ---
 
-## Current site goals
+## Primary site goals
 
 - clearly explain **What is MayaNut™?**
 - support a strong **product-first experience**
 - provide polished supporting pages such as **About**, **FAQ**, **Recipes**, and **Product**
-- maintain a clean, premium visual identity across desktop and mobile
-- preserve strong crawlability, metadata, and structured internal linking
+- maintain a premium, uncluttered visual identity across desktop and mobile
+- preserve strong crawlability, metadata quality, and internal linking discipline
 
 ---
 
-## Key features
+## Current features
 
 - Product-forward homepage with clear introductory positioning
 - Responsive design for desktop, mobile, tablet, and mobile landscape
@@ -58,7 +58,7 @@ Primary fieldwork, nursery development, and long-term cultivation efforts are ba
 - Cart state persistence across pages via local storage
 - FAQ accordion behavior with one item open at a time
 - Performance-conscious image loading using `loading="lazy"` and `decoding="async"` where appropriate
-- Static architecture designed for maintainability and fast hosting
+- Lightweight static architecture designed for maintainability and fast hosting
 
 ---
 
@@ -73,7 +73,7 @@ The site is built with strong technical hygiene in mind, including:
 - hreflang across localized paths
 - semantic HTML
 - JSON-LD structured data
-- image alt text
+- descriptive alt text
 - disciplined ARIA usage
 - web manifest support
 - mobile-first layout behavior
@@ -91,14 +91,14 @@ Relevant structured data may include:
 - `CollectionPage`
 - `ItemList`
 
-Schema is only added where it reflects real content on the page.
+Schema is only added where it matches real page content.
 
 ---
 
 ## Tech stack
 
 - **HTML5** — structure, semantics, crawlability
-- **CSS3** — layout, typography, responsiveness, branding
+- **CSS3** — layout, typography, responsiveness, and branding
 - **Vanilla JavaScript** — menus, overlays, accordions, cart state, language panel, and UI interactions
 - **GitHub Pages** — static hosting
 

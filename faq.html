@@ -297,11 +297,11 @@
       --footer-mark-size:52px;
       --footer-logo-ratio:2.42;
       --cart-badge-size:20px;
-      --header-button-size:48px;
-      --header-badge-overhang:calc(var(--cart-badge-size) / 2);
+      --header-button-size:56px;
+      --header-badge-overhang:0px;
       --header-wall-gap:var(--header-button-size);
-      --header-left-pad:var(--header-wall-gap);
-      --header-right-pad:calc(var(--header-wall-gap) + var(--header-badge-overhang));
+      --header-left-pad:var(--header-button-size);
+      --header-right-pad:var(--header-button-size);
     }
 
     @media (prefers-color-scheme: dark){
@@ -442,6 +442,7 @@
       top:0;
       left:0;
       right:0;
+      width:100%;
       z-index:99999;
       background:#fff;
       overflow:visible;
@@ -614,58 +615,54 @@
 
     .header-cart{
       position:relative;
-      width:var(--header-button-size);
-      height:var(--header-button-size);
-      border-radius:15px;
+      width:56px;
+      height:56px;
       border:1px solid var(--orange);
+      border-radius:14px;
       background:var(--orange);
-      color:#fff;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      transition:transform .12s ease, background .12s ease, border-color .12s ease;
-      overflow:visible;
+      overflow:hidden;
+      transition:background .14s ease, border-color .14s ease, transform .12s ease;
       flex:0 0 auto;
+      margin:0;
     }
 
     .header-cart:hover{
-      transform:translateY(-1px);
       background:var(--orange-press);
       border-color:var(--orange-press);
+      transform:translateY(-1px);
     }
 
-    .header-cart svg{
-      width:22px;
-      height:22px;
-      fill:none;
+    .cart-icon{
+      width:56px;
+      height:56px;
       stroke:#fff;
-      stroke-width:2.2;
+      fill:none;
+      stroke-width:1.5;
       stroke-linecap:round;
       stroke-linejoin:round;
+      transform:translateY(4px);
+      flex:0 0 auto;
     }
 
-    .cart-badge{
+    .cart-count{
       position:absolute;
-      min-width:var(--cart-badge-size);
-      width:var(--cart-badge-size);
-      height:var(--cart-badge-size);
-      padding:0;
-      border-radius:999px;
-      background:var(--orange);
+      left:50%;
+      top:44.2%;
+      transform:translate(-50%,-50%);
       color:#fff;
-      border:1px solid #fff;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:11px;
+      font-size:12px;
       font-weight:900;
       line-height:1;
-      z-index:3;
       pointer-events:none;
-      transition:background .12s ease, border-color .12s ease;
-      top:calc(var(--cart-badge-size) / -2);
-      right:calc(var(--cart-badge-size) / -2);
+    }
+
+    .wheel{
+      fill:#fff;
+      stroke:none;
     }
 
     .header-cart:hover .cart-badge,
@@ -1445,6 +1442,7 @@
       position:fixed;
       left:0;
       right:0;
+      width:100%;
       bottom:0;
       z-index:99999;
       background:#fff;
@@ -1824,10 +1822,10 @@
 
     @media (min-width:761px) and (max-width:1180px){
       :root{
-        --header-button-size:46px;
+        --header-button-size:56px;
         --header-wall-gap:var(--header-button-size);
-        --header-left-pad:var(--header-wall-gap);
-        --header-right-pad:calc(var(--header-wall-gap) + var(--header-badge-overhang));
+        --header-left-pad:var(--header-button-size);
+        --header-right-pad:var(--header-button-size);
       }
     }
 
@@ -1869,10 +1867,10 @@
         --headerSubH:34px;
         --headerH:calc(var(--headerTopH) + var(--headerSubH));
         --footer-mark-size:48px;
-        --header-button-size:44px;
+        --header-button-size:56px;
         --header-wall-gap:var(--header-button-size);
-        --header-left-pad:var(--header-wall-gap);
-        --header-right-pad:calc(var(--header-wall-gap) + var(--header-badge-overhang));
+        --header-left-pad:var(--header-button-size);
+        --header-right-pad:var(--header-button-size);
       }
 
       .brand-link img{
@@ -2090,12 +2088,15 @@
             </nav>
 
             <button class="header-cart" id="cartLaunch" type="button" aria-label="Open cart. 0 items">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="9" cy="20" r="1.5"></circle>
-                <circle cx="18" cy="20" r="1.5"></circle>
-                <path d="M3 4h2l2.2 10h10.9l1.8-7H6.2"></path>
+              <svg class="cart-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M1.8 3.2h1.4"></path>
+                <path d="M3.2 3.2 4.2 9.6"></path>
+                <path d="M4.2 9.6h7.6"></path>
+                <path d="M11.8 9.6 13 4.2"></path>
+                <circle class="wheel" cx="5.4" cy="12.8" r=".93"></circle>
+                <circle class="wheel" cx="10.6" cy="12.8" r=".93"></circle>
               </svg>
-              <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
+              <span class="cart-count" id="cartBadge">0</span>
             </button>
           </div>
         </div>

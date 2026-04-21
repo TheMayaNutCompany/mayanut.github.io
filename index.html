@@ -1329,6 +1329,7 @@
       padding:6px 0 0;
       border-radius:16px;
       --hero-carousel-stage-offset:0px;
+      --hero-carousel-below-offset:0px;
     }
 
     .hero-carousel-stage{
@@ -1386,19 +1387,29 @@
       display:block;
     }
 
+    .hero-carousel-below{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      margin-top:var(--hero-carousel-below-offset);
+      transition:margin-top .18s ease;
+    }
+
     .hero-carousel-dots{
       width:100%;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:7px;
-      margin-top:8px;
+      margin-top:0;
     }
 
     .hero-carousel-actions{
       width:100%;
       max-width:470px;
-      margin-top:8px;
+      margin-top:0;
       display:grid;
       grid-template-columns:1fr 1fr;
       align-items:center;
@@ -1455,7 +1466,13 @@
     .btn:hover{
       background:var(--orange-press);
       border-color:var(--orange-press);
+      color:#d9dde3;
       transform:translateY(-1px);
+    }
+
+    a.btn:hover,
+    button.btn:hover{
+      color:#d9dde3;
     }
 
     .btn.ghost{
@@ -3779,8 +3796,8 @@
                 <div class="hero-carousel-track" id="heroCarouselTrack" aria-live="polite">
                   <a class="hero-carousel-slide" href="/products.html" aria-label="Go to MayaNut™ Flour &amp; Powder product page image 3 again">
                     <img
-                      src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder product image"
+                      src="/the-mayanut-company-logo-tm.png?v=15"
+                      alt="The MayaNut Company logo placeholder image"
                       loading="eager"
                       decoding="async"
                       width="1200"
@@ -3791,7 +3808,7 @@
                   <a class="hero-carousel-slide" href="/products.html" aria-label="Go to MayaNut™ Flour &amp; Powder product page image 1">
                     <img
                       src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder product image"
+                      alt="MayaNut™ Flour &amp; Powder powder image"
                       loading="eager"
                       decoding="async"
                       fetchpriority="high"
@@ -3802,8 +3819,8 @@
                   </a>
                   <a class="hero-carousel-slide" href="/products.html" aria-label="Go to MayaNut™ Flour &amp; Powder product page image 2">
                     <img
-                      src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder product image"
+                      src="/the-mayanut-company-product-pouch.png"
+                      alt="MayaNut™ Flour &amp; Powder product pouch"
                       loading="eager"
                       decoding="async"
                       width="1200"
@@ -3813,8 +3830,8 @@
                   </a>
                   <a class="hero-carousel-slide" href="/products.html" aria-label="Go to MayaNut™ Flour &amp; Powder product page image 3">
                     <img
-                      src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder product image"
+                      src="/the-mayanut-company-logo-tm.png?v=15"
+                      alt="The MayaNut Company logo placeholder image"
                       loading="eager"
                       decoding="async"
                       width="1200"
@@ -3825,7 +3842,7 @@
                   <a class="hero-carousel-slide" href="/products.html" aria-label="Go to MayaNut™ Flour &amp; Powder product page image 1 again">
                     <img
                       src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder product image"
+                      alt="MayaNut™ Flour &amp; Powder powder image"
                       loading="eager"
                       decoding="async"
                       width="1200"
@@ -3836,14 +3853,16 @@
                 </div>
               </div>
             </div>
-            <div class="hero-carousel-dots" role="tablist" aria-label="Select hero image">
-              <button class="hero-carousel-dot is-active" type="button" role="tab" aria-selected="true" aria-label="Show hero image 1" data-index="0"></button>
-              <button class="hero-carousel-dot" type="button" role="tab" aria-selected="false" aria-label="Show hero image 2" data-index="1"></button>
-              <button class="hero-carousel-dot" type="button" role="tab" aria-selected="false" aria-label="Show hero image 3" data-index="2"></button>
-            </div>
-            <div class="hero-carousel-actions" aria-label="Hero actions">
-              <a class="btn" href="/products.html" aria-label="View MayaNut™ Flour &amp; Powder product page">Try MayaNut™ Flour &amp; Powder</a>
-              <a class="btn ghost" href="/recipes.html" aria-label="View recipes using MayaNut™ Flour &amp; Powder">View Recipes</a>
+            <div class="hero-carousel-below" id="heroCarouselBelow">
+              <div class="hero-carousel-dots" role="tablist" aria-label="Select hero image">
+                <button class="hero-carousel-dot is-active" type="button" role="tab" aria-selected="true" aria-label="Show hero image 1" data-index="0"></button>
+                <button class="hero-carousel-dot" type="button" role="tab" aria-selected="false" aria-label="Show hero image 2" data-index="1"></button>
+                <button class="hero-carousel-dot" type="button" role="tab" aria-selected="false" aria-label="Show hero image 3" data-index="2"></button>
+              </div>
+              <div class="hero-carousel-actions" id="heroCarouselActions" aria-label="Hero actions">
+                <a class="btn" href="/products.html" aria-label="View MayaNut™ Flour &amp; Powder product page">Try MayaNut™ Flour &amp; Powder</a>
+                <a class="btn ghost" href="/recipes.html" aria-label="View recipes using MayaNut™ Flour &amp; Powder">View Recipes</a>
+              </div>
             </div>
           </div>
         </div>
@@ -4821,11 +4840,13 @@
       var carousel = document.getElementById('heroCarousel');
       var track = document.getElementById('heroCarouselTrack');
       var stage = document.getElementById('heroCarouselStage');
+      var below = document.getElementById('heroCarouselBelow');
+      var actions = document.getElementById('heroCarouselActions');
       var viewport = carousel ? carousel.querySelector('.hero-carousel-viewport') : null;
       var dots = Array.prototype.slice.call(document.querySelectorAll('.hero-carousel-dot'));
       var badges = document.querySelectorAll('.hero-badges .hero-badge');
       var proofItems = document.querySelectorAll('.hero-proof-grid .hero-proof-item');
-      if (!carousel || !track || !stage || !viewport || !dots.length) return;
+      if (!carousel || !track || !stage || !below || !actions || !viewport || !dots.length) return;
 
       var realTotal = dots.length;
       var slideTotal = track.children.length;
@@ -4895,21 +4916,31 @@
       function alignCarousel(){
         if (window.innerWidth <= 820){
           carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
+          carousel.style.setProperty('--hero-carousel-below-offset', '0px');
           return;
         }
         var badgeIcon = badges[0] ? badges[0].querySelector('.hero-badge-icon') : null;
+        var formatItem = proofItems[1];
         var inFood = proofItems[3];
         var viewportRect = viewport.getBoundingClientRect();
-        if (!badgeIcon || !inFood || !viewportRect.height){
+        if (!badgeIcon || !formatItem || !inFood || !viewportRect.height){
           carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
+          carousel.style.setProperty('--hero-carousel-below-offset', '0px');
           return;
         }
         var badgeRect = badgeIcon.getBoundingClientRect();
+        var formatRect = formatItem.getBoundingClientRect();
         var inFoodRect = inFood.getBoundingClientRect();
-        var desiredCenter = (badgeRect.top + inFoodRect.bottom) / 2;
-        var currentCenter = viewportRect.top + (viewportRect.height / 2);
-        var offset = desiredCenter - currentCenter;
-        carousel.style.setProperty('--hero-carousel-stage-offset', Math.round(offset) + 'px');
+        var desiredImageCenter = (badgeRect.top + inFoodRect.bottom) / 2;
+        var currentImageCenter = viewportRect.top + (viewportRect.height / 2);
+        var stageOffset = desiredImageCenter - currentImageCenter;
+        carousel.style.setProperty('--hero-carousel-stage-offset', Math.round(stageOffset) + 'px');
+
+        var desiredActionCenter = (formatRect.bottom + inFoodRect.top) / 2;
+        var actionsRect = actions.getBoundingClientRect();
+        var currentActionCenter = actionsRect.top + (actionsRect.height / 2);
+        var belowOffset = desiredActionCenter - currentActionCenter;
+        carousel.style.setProperty('--hero-carousel-below-offset', Math.round(belowOffset) + 'px');
       }
 
       function handleDragStart(clientX){

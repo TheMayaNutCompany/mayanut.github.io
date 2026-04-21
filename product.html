@@ -978,12 +978,21 @@
 
     .product-img{
       border-radius:var(--radius-lg);
+      touch-action:pan-y;
+      user-select:none;
+      -webkit-user-select:none;
       overflow:hidden;
       background:#fff;
       position:relative;
       aspect-ratio:1 / 1;
       box-shadow:var(--shadow);
       height:auto;
+      cursor:grab;
+    }
+
+    .product-img.is-dragging,
+    .product-img.is-dragging .carousel-img{
+      cursor:grabbing;
     }
 
     .carousel-img{
@@ -991,82 +1000,46 @@
       height:100%;
       object-fit:contain;
       object-position:center;
-      cursor:zoom-in;
+      cursor:grab;
       user-select:none;
       background:#fff;
       display:block;
       padding:16px;
     }
 
-    .gallery-control-row{
+    .gallery-dots-row{
       width:100%;
-      min-height:54px;
-      display:grid;
-      grid-template-columns:minmax(96px, 1fr) auto minmax(96px, 1fr);
-      align-items:stretch;
-      gap:10px;
-      padding:6px 0 10px;
-      color:var(--ink);
-      user-select:none;
-    }
-
-    .gallery-control-arrow,
-    .gallery-control-center{
-      appearance:none;
-      border:0;
-      background:transparent;
-      color:var(--ink);
-      cursor:pointer;
-      padding:0;
-    }
-
-    .gallery-control-arrow{
-      width:100%;
-      height:100%;
       display:flex;
       align-items:center;
-      border-radius:12px;
+      justify-content:center;
+      padding:8px 0 10px;
     }
 
-    .gallery-control-arrow.left{
-      justify-content:flex-start;
-      padding-left:6px;
-    }
-
-    .gallery-control-arrow.right{
-      justify-content:flex-end;
-      padding-right:6px;
-    }
-
-    .gallery-control-center{
-      display:inline-flex;
+    .gallery-dots{
+      display:flex;
       align-items:center;
       justify-content:center;
-      min-height:100%;
-      padding:0 12px;
-      border-radius:12px;
-      font-size:12px;
-      line-height:1.2;
-      font-weight:700;
-      color:rgba(11,18,32,0.52);
-      letter-spacing:.01em;
-      text-align:center;
-      white-space:nowrap;
+      gap:7px;
     }
 
-    .gallery-control-arrow:hover,
-    .gallery-control-center:hover{
-      color:var(--orange);
+    .gallery-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      border:0;
+      padding:0;
+      background:#d9dde3;
+      cursor:pointer;
+      transition:background .16s ease, transform .16s ease;
     }
 
-    .gallery-control-arrow svg{
-      width:15px;
-      height:15px;
-      stroke:currentColor;
-      fill:none;
-      stroke-width:2.2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
+    .gallery-dot:hover{
+      transform:scale(1.06);
+      background:#ff9000;
+    }
+
+    .gallery-dot.is-active{
+      background:#ff9000;
     }
 
     .thumbs-micro-section{
@@ -1166,6 +1139,8 @@
       stroke-linecap:round;
       stroke-linejoin:round;
     }
+
+    .feat .chk{ transition:transform .14s ease, background .14s ease; }
 
     h1{
       font-size:32px;
@@ -1392,11 +1367,17 @@
       box-shadow:none;
     }
 
-    .selector-pill:hover{ background:#f8f9fb; }
+    .selector-pill:hover{ background:#f8f9fb; border-color:var(--orange); color:var(--orange); }
 
     .selector-pill.active{
       border-color:var(--orange);
       box-shadow:0 0 0 3px rgba(255,144,0,0.16);
+      color:var(--orange);
+      background:#fff;
+    }
+
+    .selector-pill.active:hover{
+      border-color:var(--orange);
       color:var(--orange);
       background:#fff;
     }
@@ -1440,8 +1421,29 @@
     }
 
     .weight-btn:hover{
-      border-color:rgba(11,18,32,0.18);
+      border-color:var(--orange);
       background:#fafbfc;
+    }
+
+    .weight-btn[aria-expanded="true"]{
+      border-color:var(--orange);
+      background:#fafbfc;
+    }
+
+    .weight-btn:hover .weight-btn:hover .weight-btn-prefix,
+    .weight-btn:hover .weight-caret,
+    .weight-btn[aria-expanded="true"] .weight-btn-prefix,
+    .weight-btn[aria-expanded="true"] .weight-caret{
+      color:var(--orange);
+    }
+
+    .weight-btn-prefix{
+      color:var(--ink);
+      transition:color .12s ease;
+    }
+
+    .weight-btn-value{
+      color:var(--orange);
     }
 
     .weight-caret{
@@ -1481,7 +1483,14 @@
 
     .weight-item:hover{
       background:#f8fafc;
-      border-color:rgba(11,18,32,0.08);
+      border-color:var(--orange);
+      color:var(--orange);
+    }
+
+    .weight-item[aria-checked="true"]{
+      color:var(--orange);
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(255,144,0,0.12);
     }
 
     .qty-stepper{
@@ -1518,7 +1527,7 @@
     .qty-step:hover:not(:disabled){ background:#f8f9fb; }
 
     .qty-step:disabled{
-      color:rgba(11,18,32,0.28);
+      color:#d9dde3;
       cursor:not-allowed;
     }
 
@@ -2620,15 +2629,8 @@
         grid-column:1 / -1;
       }
 
-      .gallery-control-row{
-        grid-template-columns:minmax(72px, 1fr) auto minmax(72px, 1fr);
-        min-height:48px;
-        padding:4px 0 8px;
-      }
-
-      .gallery-control-center{
-        font-size:11px;
-        white-space:normal;
+      .gallery-dots-row{
+        padding:6px 0 8px;
       }
 
       .thumb{
@@ -2819,7 +2821,18 @@
         transition:none !important;
       }
     }
-  </style>
+  
+
+    @keyframes badgePulseBrief{
+      0%{ transform:scale(1); }
+      18%{ transform:scale(1.24); }
+      100%{ transform:scale(1); }
+    }
+
+    .feat .chk.is-pulsing{
+      animation:badgePulseBrief 1s ease;
+    }
+</style>
 </head>
 
 <body>
@@ -2947,7 +2960,7 @@
                 id="carImg"
                 class="carousel-img"
                 src="/the-mayanut-company-product-pouch.png"
-                alt="MayaNut™ Flour product pouch"
+                alt="MayaNut™ Flour & Powder product pouch"
                 loading="eager"
                 fetchpriority="high"
                 decoding="async"
@@ -2957,27 +2970,21 @@
               >
             </div>
 
-            <div class="gallery-control-row" aria-label="Image gallery controls">
-              <button class="gallery-control-arrow left" id="prevBtn" type="button" aria-label="Previous product image">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"></path></svg>
-              </button>
-
-              <button class="gallery-control-center" id="openImageModalBtn" type="button" aria-label="View full product image">
-                Click to view full image
-              </button>
-
-              <button class="gallery-control-arrow right" id="nextBtn" type="button" aria-label="Next product image">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6l6 6-6 6"></path></svg>
-              </button>
+            <div class="gallery-dots-row" aria-label="Product image controls">
+              <div class="gallery-dots" id="galleryDots" role="tablist" aria-label="Select product image">
+                <button class="gallery-dot is-active" id="galleryDot0" type="button" role="tab" aria-selected="true" aria-label="Show product image 1" data-index="0"></button>
+                <button class="gallery-dot" id="galleryDot1" type="button" role="tab" aria-selected="false" aria-label="Show product image 2" data-index="1"></button>
+                <button class="gallery-dot" id="galleryDot2" type="button" role="tab" aria-selected="false" aria-label="Show product image 3" data-index="2"></button>
+              </div>
             </div>
 
             <div class="thumbs-micro-section" id="thumbsMicroSection" aria-label="Thumbnail micro section">
               <div class="thumbs" aria-label="Product image thumbnails">
-                <button class="thumb" id="thumb0" type="button" aria-label="View MayaNut™ Flour product pouch image" aria-current="true">
-                  <img src="/the-mayanut-company-product-pouch.png" alt="MayaNut™ Flour product pouch thumbnail" loading="lazy" decoding="async" width="400" height="400">
+                <button class="thumb" id="thumb0" type="button" aria-label="View MayaNut™ Flour & Powder product pouch image" aria-current="true">
+                  <img src="/the-mayanut-company-product-pouch.png" alt="MayaNut™ Flour & Powder product pouch thumbnail" loading="lazy" decoding="async" width="400" height="400">
                 </button>
-                <button class="thumb" id="thumb1" type="button" aria-label="View MayaNut™ Flour close-up image" aria-current="false">
-                  <img src="/mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut™ Flour close-up thumbnail" loading="lazy" decoding="async" width="400" height="400">
+                <button class="thumb" id="thumb1" type="button" aria-label="View MayaNut™ Flour & Powder close-up image" aria-current="false">
+                  <img src="/mayanut-powder-maya-nut-brosimum-alicastrum.png" alt="MayaNut™ Flour & Powder close-up thumbnail" loading="lazy" decoding="async" width="400" height="400">
                 </button>
                 <button class="thumb" id="thumb2" type="button" aria-label="View The MayaNut Company logo image" aria-current="false">
                   <img src="/the-mayanut-company-logo-tm.png" alt="The MayaNut Company logo thumbnail" loading="lazy" decoding="async" width="400" height="400">
@@ -3076,7 +3083,7 @@
                     aria-controls="weightMenu"
                     aria-label="Choose weight. Current weight 1/4 pound"
                   >
-                    <span id="weightBtnLabel">Wt: 1/4 LB</span>
+                    <span class="weight-btn-prefix">Wt:</span><span class="weight-btn-value" id="weightBtnValue">1/4 LB</span>
                     <span class="weight-caret" aria-hidden="true">▼</span>
                   </button>
 
@@ -3096,7 +3103,7 @@
                       type="number"
                       inputmode="numeric"
                       min="1"
-                      max="10"
+                      max="9"
                       step="1"
                       value="1"
                       aria-label="Quantity"
@@ -3105,7 +3112,7 @@
                   <button class="qty-step" id="qtyPlus" type="button" aria-label="Increase quantity">+</button>
                 </div>
 
-                <button class="add-cart-btn" id="addToCartBtn" type="button" aria-label="Add MayaNut™ Flour to cart">
+                <button class="add-cart-btn" id="addToCartBtn" type="button" aria-label="Add MayaNut™ Flour & Powder to cart">
                   Add to Cart
                 </button>
               </div>
@@ -3376,7 +3383,7 @@
             class="cart-item-img"
             id="cartItemImg"
             src="/the-mayanut-company-product-pouch.png"
-            alt="MayaNut™ Flour product pouch"
+            alt="MayaNut™ Flour & Powder product pouch"
             width="92"
             height="92"
           >
@@ -3564,7 +3571,7 @@
       const UNIT_PRICE = 9.99;
 
       const images = [
-        { src: "/the-mayanut-company-product-pouch.png", alt: "MayaNut™ Flour product pouch" },
+        { src: "/the-mayanut-company-product-pouch.png", alt: "MayaNut™ Flour & Powder product pouch" },
         { src: "/mayanut-powder-maya-nut-brosimum-alicastrum.png", alt: "Close-up of MayaNut™ Flour made from roasted Alicastrum seed flour" },
         { src: "/the-mayanut-company-logo-tm.png", alt: "The MayaNut Company logo" }
       ];
@@ -3617,8 +3624,11 @@
       const cartTotalPrice = document.getElementById("cartTotalPrice");
 
       const carImg = document.getElementById("carImg");
-      const prevBtn = document.getElementById("prevBtn");
-      const nextBtn = document.getElementById("nextBtn");
+      const galleryDots = [
+        document.getElementById("galleryDot0"),
+        document.getElementById("galleryDot1"),
+        document.getElementById("galleryDot2")
+      ];
       const thumbs = [
         document.getElementById("thumb0"),
         document.getElementById("thumb1"),
@@ -3629,7 +3639,7 @@
       const imageModalClose = document.getElementById("imageModalClose");
       const imageModalImg = document.getElementById("imageModalImg");
       const imageModalCard = document.getElementById("imageModalCard");
-      const openImageModalBtn = document.getElementById("openImageModalBtn");
+      
 
       const leftCol = document.getElementById("leftCol");
       const productBox = document.getElementById("productBox");
@@ -3645,13 +3655,13 @@
       function clampQty(value){
         const parsed = parseInt(value, 10);
         if (Number.isNaN(parsed)) return 1;
-        return Math.max(1, Math.min(10, parsed));
+        return Math.max(1, Math.min(9, parsed));
       }
 
       function clampCartQty(value){
         const parsed = parseInt(value, 10);
         if (Number.isNaN(parsed)) return 0;
-        return Math.max(0, Math.min(10, parsed));
+        return Math.max(0, Math.min(9, parsed));
       }
 
       function formatMoney(value){
@@ -3671,7 +3681,7 @@
         if (localStorage.getItem(STORAGE_KEY) === null) {
           localStorage.setItem(STORAGE_KEY, JSON.stringify({
             productId: "mayanut-flour",
-            title: "MayaNut™ Flour",
+            title: "MayaNut™ Flour & Powder",
             weight: "1/4 LB",
             qty: 0,
             roast: "light",
@@ -3712,7 +3722,7 @@
 
         return {
           productId: "mayanut-flour",
-          title: "MayaNut™ Flour",
+          title: "MayaNut™ Flour & Powder",
           weight: (parsed && parsed.weight) || "1/4 LB",
           qty: parsedQty,
           roast: (parsed && parsed.roast) === "dark" ? "dark" : "light",
@@ -3729,7 +3739,7 @@
       function saveCartState(nextState){
         const payload = {
           productId: "mayanut-flour",
-          title: "MayaNut™ Flour",
+          title: "MayaNut™ Flour & Powder",
           weight: (nextState && nextState.weight) || selectedWeight || "1/4 LB",
           qty: clampCartQty((nextState && nextState.qty) != null ? nextState.qty : cartCount),
           roast: ((nextState && nextState.roast) === "dark") ? "dark" : "light",
@@ -3760,7 +3770,7 @@
         cartQty.textContent = String(activeState.qty || 0);
         cartWeight.textContent = activeState.weight || "1/4 LB";
         cartItemRoast.textContent = activeState.roast === "dark" ? "Dark Roast" : "Light Roast";
-        safeSetImg(cartItemImg, activeState.image || images[0].src, "MayaNut™ Flour product pouch");
+        safeSetImg(cartItemImg, activeState.image || images[0].src, "MayaNut™ Flour & Powder product pouch");
 
         const hasItems = cartCount > 0;
         cartEmpty.classList.toggle("is-hidden", hasItems);
@@ -3771,7 +3781,7 @@
         cartTotalRow.classList.toggle("is-hidden", !hasItems);
 
         cartQtyMinus.disabled = cartCount <= 0;
-        cartQtyPlus.disabled = cartCount >= 10;
+        cartQtyPlus.disabled = cartCount >= 9;
 
         cartSummaryLine.textContent = "MayaNut™ Flour · " + (activeState.weight || "1/4 LB") + " × " + (activeState.qty || 0);
         cartTotalPrice.textContent = formatMoney((activeState.qty || 0) * UNIT_PRICE);
@@ -3780,7 +3790,7 @@
       function updateQtyControls(){
         qtyInput.value = String(selectedQty);
         qtyMinus.disabled = selectedQty <= 1;
-        qtyPlus.disabled = selectedQty >= 10;
+        qtyPlus.disabled = selectedQty >= 9;
         qtyMinus.setAttribute("aria-disabled", qtyMinus.disabled ? "true" : "false");
         qtyPlus.setAttribute("aria-disabled", qtyPlus.disabled ? "true" : "false");
         scheduleSyncHeights();
@@ -3805,13 +3815,17 @@
 
       function setWeight(value){
         selectedWeight = value || "1/4 LB";
-        weightBtnLabel.textContent = "Wt: " + selectedWeight;
+        if (weightBtnValue) weightBtnValue.textContent = selectedWeight;
         weightOptionQuarter.setAttribute("aria-checked", selectedWeight === "1/4 LB" ? "true" : "false");
       }
 
       function setThumbs(){
         thumbs.forEach(function(thumb, i){
           thumb.setAttribute("aria-current", i === idx ? "true" : "false");
+        });
+        galleryDots.forEach(function(dot, i){
+          dot.classList.toggle('is-active', i === idx);
+          dot.setAttribute('aria-selected', i === idx ? 'true' : 'false');
         });
       }
 
@@ -3821,6 +3835,49 @@
         safeSetImg(imageModalImg, images[idx].src, images[idx].alt);
         setThumbs();
         scheduleSyncHeights();
+      }
+
+      let isGalleryPointerDown = false;
+      let galleryDragging = false;
+      let galleryStartX = 0;
+      let galleryDeltaX = 0;
+      let suppressGalleryClick = false;
+
+      function handleGalleryDragStart(clientX){
+        isGalleryPointerDown = true;
+        galleryDragging = false;
+        galleryStartX = clientX;
+        galleryDeltaX = 0;
+        suppressGalleryClick = false;
+        const wrap = carImg ? carImg.closest('.product-img') : null;
+        if (wrap) wrap.classList.add('is-dragging');
+      }
+
+      function handleGalleryDragMove(clientX){
+        if (!isGalleryPointerDown) return;
+        galleryDeltaX = clientX - galleryStartX;
+        if (Math.abs(galleryDeltaX) > 8) galleryDragging = true;
+      }
+
+      function handleGalleryDragEnd(){
+        if (!isGalleryPointerDown) return;
+        isGalleryPointerDown = false;
+        const wrap = carImg ? carImg.closest('.product-img') : null;
+        if (wrap) wrap.classList.remove('is-dragging');
+        const threshold = Math.max(36, (carImg ? carImg.clientWidth : 320) * 0.12);
+        if (galleryDragging && Math.abs(galleryDeltaX) > threshold){
+          suppressGalleryClick = true;
+          if (galleryDeltaX < 0) {
+            setImage(idx + 1);
+          } else {
+            setImage(idx - 1);
+          }
+        } else if (Math.abs(galleryDeltaX) > 8){
+          suppressGalleryClick = true;
+        }
+        galleryDragging = false;
+        galleryDeltaX = 0;
+        setTimeout(function(){ suppressGalleryClick = false; }, 250);
       }
 
       function openImageModal(){
@@ -4024,7 +4081,7 @@
       function addCurrentSelectionToCart(){
         saveCartState({
           productId: "mayanut-flour",
-          title: "MayaNut™ Flour",
+          title: "MayaNut™ Flour & Powder",
           weight: selectedWeight,
           qty: selectedQty,
           roast: selectedRoast,
@@ -4099,14 +4156,30 @@
         }
       });
 
-      prevBtn.addEventListener("click", function(){ setImage(idx - 1); });
-      nextBtn.addEventListener("click", function(){ setImage(idx + 1); });
+      galleryDots.forEach(function(dot, i){
+        dot.addEventListener("click", function(){ setImage(i); });
+      });
       thumbs.forEach(function(thumb, i){
         thumb.addEventListener("click", function(){ setImage(i); });
       });
 
-      carImg.addEventListener("click", openImageModal);
-      openImageModalBtn.addEventListener("click", openImageModal);
+      const productImgWrap = carImg ? carImg.closest('.product-img') : null;
+      if (productImgWrap){
+        productImgWrap.addEventListener('pointerdown', function(e){ handleGalleryDragStart(e.clientX); });
+        productImgWrap.addEventListener('pointermove', function(e){ handleGalleryDragMove(e.clientX); });
+        productImgWrap.addEventListener('pointerup', handleGalleryDragEnd);
+        productImgWrap.addEventListener('pointercancel', handleGalleryDragEnd);
+        productImgWrap.addEventListener('pointerleave', function(){ if (isGalleryPointerDown) handleGalleryDragEnd(); });
+      }
+
+      carImg.addEventListener("click", function(e){
+        if (suppressGalleryClick){
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        openImageModal();
+      });
       imageModalClose.addEventListener("click", function(){ closeImageModal(true); });
       imageModal.addEventListener("click", function(){ closeImageModal(true); });
       imageModalCard.addEventListener("click", function(e){ e.stopPropagation(); });
@@ -4157,10 +4230,10 @@
         if (productBox) alignmentObserver.observe(productBox);
 
         const productImgWrap = document.querySelector(".product-img");
-        const galleryRow = document.querySelector(".gallery-control-row");
+        const galleryDotsRow = document.querySelector(".gallery-dots-row");
 
         if (productImgWrap) alignmentObserver.observe(productImgWrap);
-        if (galleryRow) alignmentObserver.observe(galleryRow);
+        if (galleryDotsRow) alignmentObserver.observe(galleryDotsRow);
       }
 
       window.addEventListener("storage", function(){
@@ -4246,5 +4319,29 @@
       });
     })();
   </script>
+
+<script>
+    (function(){
+      function bindPulse(selector){
+        var coarse = window.matchMedia('(max-width:760px), (pointer:coarse)').matches;
+        if (!coarse) return;
+        Array.prototype.forEach.call(document.querySelectorAll(selector), function(el){
+          var timer = null;
+          function pulse(){
+            el.classList.remove('is-pulsing');
+            void el.offsetWidth;
+            el.classList.add('is-pulsing');
+            clearTimeout(timer);
+            timer = setTimeout(function(){ el.classList.remove('is-pulsing'); }, 1000);
+          }
+          var trigger = el.closest('.feat') || el;
+          trigger.addEventListener('click', pulse);
+          trigger.addEventListener('touchstart', pulse, {passive:true});
+        });
+      }
+      bindPulse('.feat .chk');
+    })();
+  </script>
+
 </body>
 </html>

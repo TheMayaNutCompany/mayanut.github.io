@@ -88,9 +88,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Marcellus&display=swap" rel="stylesheet">
 
   <link rel="preload" as="image" href="/mayanut-powder-maya-nut-brosimum-alicastrum.png" fetchpriority="high">
+  <link rel="preload" as="image" href="/the-mayanut-company-logo-tm.svg?v=15" type="image/svg+xml" fetchpriority="high">
 
   <script type="application/ld+json">
   {
@@ -1330,6 +1333,7 @@
       padding:6px 0 0;
       border-radius:22px;
       --hero-carousel-stage-offset:0px;
+      --hero-carousel-dots-offset:0px;
       --hero-carousel-actions-offset:0px;
     }
 
@@ -1342,7 +1346,7 @@
       margin-inline:auto;
       margin-top:var(--hero-carousel-stage-offset);
       transition:margin-top .18s ease;
-      overflow:visible;
+      overflow:hidden;
       position:relative;
       z-index:1;
       border-radius:22px;
@@ -1362,9 +1366,10 @@
       -webkit-user-select:none;
       position:relative;
       isolation:isolate;
-      transform:none;
+      transform:translateZ(0);
       backface-visibility:hidden;
       -webkit-backface-visibility:hidden;
+      contain:paint;
     }
 
     .hero-carousel.is-dragging .hero-carousel-viewport{
@@ -1377,6 +1382,8 @@
       transform:translateX(0);
       transition:transform .45s ease;
       will-change:transform;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
     }
 
     .hero-carousel.is-dragging .hero-carousel-track{
@@ -1418,7 +1425,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      gap:12px;
+      gap:0;
       margin-top:12px;
       margin-inline:auto;
       overflow:visible;
@@ -1434,6 +1441,8 @@
       gap:7px;
       margin-top:0;
       position:relative;
+      top:var(--hero-carousel-dots-offset);
+      transition:top .18s ease;
       z-index:2;
     }
 
@@ -2909,16 +2918,6 @@
     }
 
     
-    @media (max-width:640px){
-      .hero-carousel-actions{
-        grid-template-columns:1fr 1fr;
-        gap:12px;
-      }
-
-      .hero-carousel-actions .btn{
-        width:auto;
-      }
-    }
 
     @media (prefers-reduced-motion: reduce){
       *{
@@ -5000,31 +4999,41 @@
       function alignCarousel(){
         if (window.innerWidth <= 820){
           carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
+          carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
           carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
           return;
         }
         var badgeIcon = badges[0] ? badges[0].querySelector('.hero-badge-icon') : null;
         var formatItem = proofItems[1];
         var inFood = proofItems[3];
+        var dotsWrap = below.querySelector('.hero-carousel-dots');
         var viewportRect = viewport.getBoundingClientRect();
-        if (!badgeIcon || !formatItem || !inFood || !viewportRect.height){
+        if (!badgeIcon || !formatItem || !inFood || !dotsWrap || !viewportRect.height){
           carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
+          carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
           carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
           return;
         }
         var badgeRect = badgeIcon.getBoundingClientRect();
         var formatRect = formatItem.getBoundingClientRect();
         var inFoodRect = inFood.getBoundingClientRect();
-        var desiredImageCenter = (badgeRect.top + inFoodRect.bottom) / 2;
-        var currentImageCenter = viewportRect.top + (viewportRect.height / 2);
-        var stageOffset = clamp(Math.round(desiredImageCenter - currentImageCenter), -24, 120);
+        var desiredImageTop = badgeRect.top;
+        var currentImageTop = viewportRect.top;
+        var stageOffset = clamp(Math.round(desiredImageTop - currentImageTop), -120, 40);
         carousel.style.setProperty('--hero-carousel-stage-offset', stageOffset + 'px');
 
-        var desiredActionCenter = (formatRect.bottom + inFoodRect.top) / 2;
         var actionsRect = actions.getBoundingClientRect();
+        var desiredActionCenter = (formatRect.bottom + inFoodRect.top) / 2;
         var currentActionCenter = actionsRect.top + (actionsRect.height / 2);
-        var actionsOffset = clamp(Math.round(desiredActionCenter - currentActionCenter), -80, 80);
+        var actionsOffset = clamp(Math.round(desiredActionCenter - currentActionCenter), -120, 120);
         carousel.style.setProperty('--hero-carousel-actions-offset', actionsOffset + 'px');
+
+        var dotsRect = dotsWrap.getBoundingClientRect();
+        var desiredActionTop = actionsRect.top + actionsOffset;
+        var desiredDotsCenter = (viewportRect.bottom + desiredActionTop) / 2;
+        var currentDotsCenter = dotsRect.top + (dotsRect.height / 2);
+        var dotsOffset = clamp(Math.round(desiredDotsCenter - currentDotsCenter), -80, 80);
+        carousel.style.setProperty('--hero-carousel-dots-offset', dotsOffset + 'px');
       }
 
       function restoreCarouselImages(){
@@ -5048,10 +5057,22 @@
           track.style.display = 'flex';
           track.style.visibility = 'visible';
           track.style.opacity = '1';
+          track.style.transform = 'translateX(-' + (current * step) + '%)';
           viewport.style.display = 'block';
           viewport.style.visibility = 'visible';
           viewport.style.opacity = '1';
+          viewport.style.transform = 'translateZ(0)';
           setTransform(current, false);
+          Array.prototype.forEach.call(track.querySelectorAll('img'), function(img){
+            img.style.visibility = 'visible';
+            img.style.opacity = '1';
+            img.style.transform = 'translateZ(0)';
+            img.style.display = 'block';
+            void img.offsetHeight;
+            if (typeof img.decode === 'function') {
+              img.decode().catch(function(){});
+            }
+          });
           void viewport.offsetHeight;
           alignCarousel();
         });
@@ -5152,20 +5173,25 @@
       window.addEventListener('pageshow', function(){
         refreshCarouselStage();
         window.setTimeout(refreshCarouselStage, 120);
+        window.setTimeout(refreshCarouselStage, 320);
         startAuto();
       });
       window.addEventListener('focus', function(){
         refreshCarouselStage();
         window.setTimeout(refreshCarouselStage, 120);
+        window.setTimeout(refreshCarouselStage, 320);
         startAuto();
       });
       document.addEventListener('visibilitychange', function(){
-        if (!document.hidden){
-          window.setTimeout(refreshCarouselStage, 0);
-          window.setTimeout(refreshCarouselStage, 120);
-          window.setTimeout(refreshCarouselStage, 300);
-          startAuto();
+        if (document.hidden){
+          stopAuto();
+          return;
         }
+        refreshCarouselStage();
+        window.setTimeout(refreshCarouselStage, 0);
+        window.setTimeout(refreshCarouselStage, 120);
+        window.setTimeout(refreshCarouselStage, 320);
+        startAuto();
       });
 
       Array.prototype.forEach.call(track.querySelectorAll('img'), function(img){
@@ -5258,6 +5284,10 @@
           e.stopPropagation();
         }
       }, true);
+
+      window.addEventListener('beforeprint', function(e){
+        e.preventDefault && e.preventDefault();
+      });
     })();
   </script>
 </body>

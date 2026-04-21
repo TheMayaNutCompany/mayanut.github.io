@@ -1338,10 +1338,13 @@
       max-width:470px;
       display:flex;
       justify-content:center;
+      align-items:center;
       margin-inline:auto;
       margin-top:var(--hero-carousel-stage-offset);
       transition:margin-top .18s ease;
       overflow:visible;
+      position:relative;
+      z-index:1;
     }
 
     .hero-carousel-viewport{
@@ -1356,10 +1359,10 @@
       user-select:none;
       -webkit-user-select:none;
       position:relative;
-      backface-visibility:hidden;
-      -webkit-backface-visibility:hidden;
-      transform:translateZ(0);
-      -webkit-mask-image:-webkit-radial-gradient(white, black);
+      isolation:isolate;
+      contain:paint;
+      clip-path:inset(0 round 22px);
+      transform:none;
     }
 
     .hero-carousel.is-dragging .hero-carousel-viewport{
@@ -1396,9 +1399,9 @@
       object-position:center;
       background:#fff;
       display:block;
-      backface-visibility:hidden;
-      -webkit-backface-visibility:hidden;
-      transform:translateZ(0);
+      visibility:visible;
+      opacity:1;
+      transform:none;
     }
 
     .hero-carousel-below{
@@ -1408,11 +1411,13 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      gap:10px;
+      gap:14px;
       margin-top:var(--hero-carousel-below-offset);
       margin-inline:auto;
       transition:margin-top .18s ease;
       overflow:visible;
+      position:relative;
+      z-index:2;
     }
 
     .hero-carousel-dots{
@@ -5010,13 +5015,32 @@
         var desiredActionCenter = (formatRect.bottom + inFoodRect.top) / 2;
         var actionsRect = actions.getBoundingClientRect();
         var currentActionCenter = actionsRect.top + (actionsRect.height / 2);
-        var belowOffset = clamp(Math.round(desiredActionCenter - currentActionCenter), -12, 36);
+        var belowOffset = clamp(Math.round(desiredActionCenter - currentActionCenter), -18, 42);
         carousel.style.setProperty('--hero-carousel-below-offset', belowOffset + 'px');
+      }
+
+      function restoreCarouselImages(){
+        Array.prototype.forEach.call(track.querySelectorAll('img'), function(img){
+          var source = img.getAttribute('data-src') || img.getAttribute('src');
+          if (source && !img.getAttribute('data-src')){
+            img.setAttribute('data-src', source);
+          }
+          if (!source) return;
+          if (!img.currentSrc || img.naturalWidth === 0){
+            img.setAttribute('src', source);
+          }
+          img.style.visibility = 'visible';
+          img.style.opacity = '1';
+        });
       }
 
       function refreshCarouselStage(){
         requestAnimationFrame(function(){
+          restoreCarouselImages();
           setTransform(current, false);
+          track.style.display = 'flex';
+          viewport.style.visibility = 'visible';
+          viewport.style.opacity = '1';
           alignCarousel();
         });
       }
@@ -5111,22 +5135,34 @@
       carousel.addEventListener('mouseleave', startAuto);
       carousel.addEventListener('focusin', stopAuto);
       carousel.addEventListener('focusout', startAuto);
-      window.addEventListener('resize', alignCarousel);
+      window.addEventListener('resize', refreshCarouselStage);
       window.addEventListener('load', refreshCarouselStage);
-      window.addEventListener('pageshow', refreshCarouselStage);
-      window.addEventListener('focus', refreshCarouselStage);
+      window.addEventListener('pageshow', function(){
+        refreshCarouselStage();
+        startAuto();
+      });
+      window.addEventListener('focus', function(){
+        refreshCarouselStage();
+        startAuto();
+      });
       document.addEventListener('visibilitychange', function(){
         if (!document.hidden){
-          refreshCarouselStage();
+          window.setTimeout(refreshCarouselStage, 0);
+          window.setTimeout(refreshCarouselStage, 120);
           startAuto();
         }
       });
 
       Array.prototype.forEach.call(track.querySelectorAll('img'), function(img){
-        if (!img.complete){
-          img.addEventListener('load', refreshCarouselStage);
-          img.addEventListener('error', refreshCarouselStage);
-        }
+        var source = img.getAttribute('src');
+        if (source) img.setAttribute('data-src', source);
+        img.addEventListener('load', refreshCarouselStage);
+        img.addEventListener('error', function(){
+          if (img.getAttribute('data-src')){
+            img.setAttribute('src', img.getAttribute('data-src'));
+          }
+          refreshCarouselStage();
+        });
       });
 
       goTo(1, false);

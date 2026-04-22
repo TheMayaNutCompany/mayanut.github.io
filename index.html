@@ -366,7 +366,7 @@
           "name": "What is MayaNut™ Flour &amp; Powder?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "MayaNut™ is a roasted, finely milled flour and powder made from roasted Brosimum alicastrum seeds."
+            "text": "MayaNut™ Flour & Powder is a roasted, finely milled flour and powder made from roasted Brosimum alicastrum seeds."
           }
         },
         {
@@ -398,7 +398,7 @@
           "name": "What does MayaNut™ Flour &amp; Powder come from?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "MayaNut™ is made from roasted seeds of Brosimum alicastrum."
+            "text": "MayaNut™ Flour & Powder is made from roasted seeds of Brosimum alicastrum."
           }
         },
         {
@@ -1482,6 +1482,7 @@
       justify-content:center;
       gap:7px;
       margin-top:0;
+      min-height:16px;
       position:relative;
       top:var(--hero-carousel-dots-offset);
       transition:none;
@@ -3994,8 +3995,8 @@
           <article class="story-card founder-story-card" aria-label="Who we are">
             <a class="story-media-link" href="/about.html" aria-label="Go to the About page">
               <img
-                src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder powder image"
+                src="/august-kokus-augustkokus-mayanut-brosimum-alicastrum.jpeg"
+                alt="August Kokus with young Brosimum alicastrum trees in Florida"
                 loading="lazy"
                 decoding="async"
                 width="1200"
@@ -4009,7 +4010,7 @@
                 August Kokus founded The MayaNut Company in 2025 to introduce <span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span> as a modern pantry ingredient and build a long-term identity around <span class="botanical-name notranslate" translate="no"><em>Brosimum alicastrum</em></span>, the species behind the product.
               </p>
               <p style="margin-top:12px;">
-                The company is being built around MayaNut™ Flour &amp; Powder and broader <span class="botanical-name notranslate" translate="no"><em>Brosimum alicastrum</em></span> awareness so more people can discover the product and connect it to the species behind it.
+                The company is being built around <span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span> and broader <span class="botanical-name notranslate" translate="no"><em>Brosimum alicastrum</em></span> awareness so more people can discover the product and connect it to the species behind it.
               </p>
               <div class="section-link-row">
                 <a class="btn ghost" href="/about.html" aria-label="Read more about The MayaNut Company">Read More</a>
@@ -4134,8 +4135,8 @@
           <article class="story-card" aria-label="Brosimum alicastrum">
             <a class="story-media-link" href="/alicastrum-brosimum-alicastrum.html" aria-label="Go to the Brosimum alicastrum page">
               <img
-                src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder powder image"
+                src="/maya-nut-fruit-brosimum-alicastrum.jpg"
+                alt="Fruit of Maya Nut breadnut tree (Brosimum alicastrum)"
                 loading="lazy"
                 decoding="async"
                 width="1200"
@@ -4194,8 +4195,8 @@
           <span class="founded-text">Founded in Florida</span>
           <img
             class="florida-ic"
-            src="/mayanut-powder-maya-nut-brosimum-alicastrum.png"
-                      alt="MayaNut™ Flour &amp; Powder powder image"
+            src="/florida-image-the-maya-nut-company.png"
+            alt="Florida silhouette icon"
             width="52"
             height="52"
             loading="lazy"
@@ -5064,17 +5065,18 @@
         var stageOffset = clamp(Math.round(desiredImageTop - currentImageTop), -120, 40);
         carousel.style.setProperty('--hero-carousel-stage-offset', stageOffset + 'px');
 
+        var shiftedImageBottom = viewportRect.bottom + stageOffset;
         var actionsRect = actions.getBoundingClientRect();
         var desiredActionCenter = (formatRect.bottom + inFoodRect.top) / 2;
         var currentActionCenter = actionsRect.top + (actionsRect.height / 2);
         var actionsOffset = clamp(Math.round(desiredActionCenter - currentActionCenter), -120, 120);
         carousel.style.setProperty('--hero-carousel-actions-offset', actionsOffset + 'px');
 
+        var shiftedActionTop = actionsRect.top + actionsOffset;
         var dotsRect = dotsWrap.getBoundingClientRect();
-        var desiredActionTop = actionsRect.top + actionsOffset;
-        var desiredDotsCenter = (viewportRect.bottom + desiredActionTop) / 2;
+        var desiredDotsCenter = (shiftedImageBottom + shiftedActionTop) / 2;
         var currentDotsCenter = dotsRect.top + (dotsRect.height / 2);
-        var dotsOffset = clamp(Math.round(desiredDotsCenter - currentDotsCenter), -80, 80);
+        var dotsOffset = clamp(Math.round(desiredDotsCenter - currentDotsCenter), -120, 120);
         carousel.style.setProperty('--hero-carousel-dots-offset', dotsOffset + 'px');
       }
 
@@ -5106,14 +5108,16 @@
           viewport.style.transform = 'translateZ(0)';
           setTransform(current, false);
           Array.prototype.forEach.call(track.querySelectorAll('img'), function(img){
+            var stableSource = img.getAttribute('data-src') || img.getAttribute('src');
+            if (stableSource && img.getAttribute('src') !== stableSource) {
+              img.setAttribute('src', stableSource);
+            }
             img.style.visibility = 'visible';
             img.style.opacity = '1';
             img.style.transform = 'translateZ(0)';
             img.style.display = 'block';
+            img.loading = 'eager';
             void img.offsetHeight;
-            if (typeof img.decode === 'function') {
-              img.decode().catch(function(){});
-            }
           });
           void viewport.offsetHeight;
           alignCarousel();

@@ -5040,27 +5040,31 @@
       }
 
       function alignCarousel(){
+        carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
+        carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
+        carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
+
         if (window.innerWidth <= 820){
-          carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
-          carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
-          carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
           return;
         }
+
         var badge = badges[0];
         var badgeIcon = badge ? badge.querySelector('.hero-badge-icon') : null;
         var formatItem = proofItems[1];
         var inFood = proofItems[3];
         var dotsWrap = below.querySelector('.hero-carousel-dots');
+
+        if (!badge || !badgeIcon || !formatItem || !inFood || !dotsWrap){
+          return;
+        }
+
         var viewportRect = viewport.getBoundingClientRect();
-        if (!badge || !badgeIcon || !formatItem || !inFood || !dotsWrap || !viewportRect.height){
-          carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
-          carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
-          carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
+        if (!viewportRect.height){
           return;
         }
 
         var badgeRect = badge.getBoundingClientRect();
-        var iconSize = badgeIcon.offsetHeight || 20;
+        var iconSize = 20;
         var formatRect = formatItem.getBoundingClientRect();
         var inFoodRect = inFood.getBoundingClientRect();
 
@@ -5070,14 +5074,15 @@
         carousel.style.setProperty('--hero-carousel-stage-offset', stageOffset + 'px');
 
         var shiftedImageBottom = viewportRect.bottom + stageOffset;
+
         var actionsRect = actions.getBoundingClientRect();
         var desiredActionCenter = (formatRect.bottom + inFoodRect.top) / 2;
         var currentActionCenter = actionsRect.top + (actionsRect.height / 2);
         var actionsOffset = clamp(Math.round(desiredActionCenter - currentActionCenter), -120, 120);
         carousel.style.setProperty('--hero-carousel-actions-offset', actionsOffset + 'px');
 
-        var shiftedActionTop = actionsRect.top + actionsOffset;
         var dotsRect = dotsWrap.getBoundingClientRect();
+        var shiftedActionTop = actionsRect.top + actionsOffset;
         var desiredDotsCenter = (shiftedImageBottom + shiftedActionTop) / 2;
         var currentDotsCenter = dotsRect.top + (dotsRect.height / 2);
         var dotsOffset = clamp(Math.round(desiredDotsCenter - currentDotsCenter), -120, 120);

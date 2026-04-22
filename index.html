@@ -1201,10 +1201,52 @@
 
     .hero-badge-icon::before{ content:"✓"; }
 
-    .hero-badge-icon{ transition:transform .14s ease, background .14s ease; }
+    .hero-badge-icon{
+      transform:scale(1);
+      transition:none;
+      will-change:transform;
+    }
 
-    .hero-badge:hover .hero-badge-icon{
-      transform:scale(1.08);
+    .hero-badges.is-intro-playing .hero-badge:nth-child(1) .hero-badge-icon{
+      animation:heroCheckWave1 1.8s ease-out 1 both;
+    }
+
+    .hero-badges.is-intro-playing .hero-badge:nth-child(2) .hero-badge-icon{
+      animation:heroCheckWave2 1.8s ease-out 1 both;
+    }
+
+    .hero-badges.is-intro-playing .hero-badge:nth-child(3) .hero-badge-icon{
+      animation:heroCheckWave3 1.8s ease-out 1 both;
+    }
+
+    @keyframes heroCheckWave1{
+      0%{ transform:scale(1.22); }
+      16.66%{ transform:scale(1.10); }
+      33.33%{ transform:scale(0.94); }
+      50%{ transform:scale(1); }
+      66.66%{ transform:scale(1); }
+      83.33%{ transform:scale(1); }
+      100%{ transform:scale(1); }
+    }
+
+    @keyframes heroCheckWave2{
+      0%{ transform:scale(1.10); }
+      16.66%{ transform:scale(1.22); }
+      33.33%{ transform:scale(1.10); }
+      50%{ transform:scale(0.94); }
+      66.66%{ transform:scale(1); }
+      83.33%{ transform:scale(1); }
+      100%{ transform:scale(1); }
+    }
+
+    @keyframes heroCheckWave3{
+      0%{ transform:scale(0.94); }
+      16.66%{ transform:scale(1.10); }
+      33.33%{ transform:scale(1.22); }
+      50%{ transform:scale(1.10); }
+      66.66%{ transform:scale(0.94); }
+      83.33%{ transform:scale(1); }
+      100%{ transform:scale(1); }
     }
 
     .hero-section-title{
@@ -1345,7 +1387,7 @@
       align-items:center;
       margin-inline:auto;
       margin-top:var(--hero-carousel-stage-offset);
-      transition:margin-top .18s ease;
+      transition:none;
       overflow:hidden;
       position:relative;
       z-index:1;
@@ -1442,7 +1484,7 @@
       margin-top:0;
       position:relative;
       top:var(--hero-carousel-dots-offset);
-      transition:top .18s ease;
+      transition:none;
       z-index:2;
     }
 
@@ -1457,7 +1499,7 @@
       position:relative;
       z-index:2;
       top:var(--hero-carousel-actions-offset);
-      transition:top .18s ease;
+      transition:none;
     }
 
     .hero-carousel-actions .btn:first-child{
@@ -5168,18 +5210,32 @@
       carousel.addEventListener('mouseleave', startAuto);
       carousel.addEventListener('focusin', stopAuto);
       carousel.addEventListener('focusout', startAuto);
-      window.addEventListener('resize', refreshCarouselStage);
-      window.addEventListener('load', refreshCarouselStage);
+      var refreshTimers = [];
+      function clearRefreshTimers(){
+        while (refreshTimers.length){
+          window.clearTimeout(refreshTimers.pop());
+        }
+      }
+
+      function scheduleCarouselRefresh(delays){
+        clearRefreshTimers();
+        (delays || [0]).forEach(function(delay){
+          refreshTimers.push(window.setTimeout(refreshCarouselStage, delay));
+        });
+      }
+
+      window.addEventListener('resize', function(){
+        scheduleCarouselRefresh([0]);
+      });
+      window.addEventListener('load', function(){
+        scheduleCarouselRefresh([0, 120]);
+      });
       window.addEventListener('pageshow', function(){
-        refreshCarouselStage();
-        window.setTimeout(refreshCarouselStage, 120);
-        window.setTimeout(refreshCarouselStage, 320);
+        scheduleCarouselRefresh([0, 120]);
         startAuto();
       });
       window.addEventListener('focus', function(){
-        refreshCarouselStage();
-        window.setTimeout(refreshCarouselStage, 120);
-        window.setTimeout(refreshCarouselStage, 320);
+        scheduleCarouselRefresh([0, 120]);
         startAuto();
       });
       document.addEventListener('visibilitychange', function(){
@@ -5187,10 +5243,7 @@
           stopAuto();
           return;
         }
-        refreshCarouselStage();
-        window.setTimeout(refreshCarouselStage, 0);
-        window.setTimeout(refreshCarouselStage, 120);
-        window.setTimeout(refreshCarouselStage, 320);
+        scheduleCarouselRefresh([0, 120]);
         startAuto();
       });
 
@@ -5213,27 +5266,26 @@
   </script>
 
 <script>
-    (function(){
-      function bindPulse(selector){
-        var coarse = window.matchMedia('(max-width:760px), (pointer:coarse)').matches;
-        if (!coarse) return;
-        Array.prototype.forEach.call(document.querySelectorAll(selector), function(el){
-          var timer = null;
-          function pulse(){
-            el.classList.remove('is-pulsing');
-            void el.offsetWidth;
-            el.classList.add('is-pulsing');
-            clearTimeout(timer);
-            timer = setTimeout(function(){ el.classList.remove('is-pulsing'); }, 1000);
-          }
-          var trigger = el.closest('.hero-badge') || el.closest('.feat') || el;
-          trigger.addEventListener('click', pulse);
-          trigger.addEventListener('touchstart', pulse, {passive:true});
-        });
+    (function initHeroCheckIntro(){
+      var badges = document.querySelector('.hero-badges');
+      if (!badges) return;
+      function playOnce(){
+        badges.classList.remove('is-intro-playing');
+        void badges.offsetWidth;
+        badges.classList.add('is-intro-playing');
+        window.setTimeout(function(){
+          badges.classList.remove('is-intro-playing');
+        }, 1850);
       }
-      bindPulse('.hero-badge-icon');
+      if (document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', playOnce, {once:true});
+      } else {
+        playOnce();
+      }
     })();
   </script>
+
+
 <script>
     (function(){
       var protectedTargets = "img, svg, .brand-link, .hero-media-link, .hero-carousel, .hero-carousel-dots, .story-media-link, .wide-media, .footer-logo-link";

@@ -5046,21 +5046,25 @@
           carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
           return;
         }
-        var badgeIcon = badges[0] ? badges[0].querySelector('.hero-badge-icon') : null;
+        var badge = badges[0];
+        var badgeIcon = badge ? badge.querySelector('.hero-badge-icon') : null;
         var formatItem = proofItems[1];
         var inFood = proofItems[3];
         var dotsWrap = below.querySelector('.hero-carousel-dots');
         var viewportRect = viewport.getBoundingClientRect();
-        if (!badgeIcon || !formatItem || !inFood || !dotsWrap || !viewportRect.height){
+        if (!badge || !badgeIcon || !formatItem || !inFood || !dotsWrap || !viewportRect.height){
           carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
           carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
           carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
           return;
         }
-        var badgeRect = badgeIcon.getBoundingClientRect();
+
+        var badgeRect = badge.getBoundingClientRect();
+        var iconSize = badgeIcon.offsetHeight || 20;
         var formatRect = formatItem.getBoundingClientRect();
         var inFoodRect = inFood.getBoundingClientRect();
-        var desiredImageTop = badgeRect.top;
+
+        var desiredImageTop = badgeRect.top + ((badgeRect.height - iconSize) / 2);
         var currentImageTop = viewportRect.top;
         var stageOffset = clamp(Math.round(desiredImageTop - currentImageTop), -120, 40);
         carousel.style.setProperty('--hero-carousel-stage-offset', stageOffset + 'px');
@@ -5229,17 +5233,17 @@
       }
 
       window.addEventListener('resize', function(){
-        scheduleCarouselRefresh([0]);
+        scheduleCarouselRefresh([0, 90, 220]);
       });
       window.addEventListener('load', function(){
-        scheduleCarouselRefresh([0, 120]);
+        scheduleCarouselRefresh([0, 90, 220, 420]);
       });
       window.addEventListener('pageshow', function(){
-        scheduleCarouselRefresh([0, 120]);
+        scheduleCarouselRefresh([0, 90, 220, 420]);
         startAuto();
       });
       window.addEventListener('focus', function(){
-        scheduleCarouselRefresh([0, 120]);
+        scheduleCarouselRefresh([0, 90, 220]);
         startAuto();
       });
       document.addEventListener('visibilitychange', function(){
@@ -5247,9 +5251,14 @@
           stopAuto();
           return;
         }
-        scheduleCarouselRefresh([0, 120]);
+        scheduleCarouselRefresh([0, 90, 220]);
         startAuto();
       });
+      if (document.fonts && document.fonts.ready){
+        document.fonts.ready.then(function(){
+          scheduleCarouselRefresh([0, 120, 260]);
+        }).catch(function(){});
+      }
 
       Array.prototype.forEach.call(track.querySelectorAll('img'), function(img){
         var source = img.getAttribute('src');
@@ -5264,7 +5273,7 @@
       });
 
       goTo(1, false);
-      refreshCarouselStage();
+      scheduleCarouselRefresh([0, 90, 220, 420]);
       startAuto();
     })();
   </script>

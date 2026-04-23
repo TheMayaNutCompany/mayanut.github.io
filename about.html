@@ -1003,6 +1003,48 @@
 
     .hero-badge-icon::before{ content:"✓"; }
 
+
+    .hero-badge-icon{
+      transform:scale(1);
+      will-change:transform;
+    }
+
+    .hero-badges.is-intro-playing .hero-badge:nth-child(1) .hero-badge-icon{
+      animation:heroCheckWave1 1.8s ease-out 1 both;
+    }
+
+    .hero-badges.is-intro-playing .hero-badge:nth-child(2) .hero-badge-icon{
+      animation:heroCheckWave2 1.8s ease-out 1 both;
+    }
+
+    .hero-badges.is-intro-playing .hero-badge:nth-child(3) .hero-badge-icon{
+      animation:heroCheckWave3 1.8s ease-out 1 both;
+    }
+
+    @keyframes heroCheckWave1{
+      0%{ transform:scale(1.22); }
+      16.66%{ transform:scale(1.10); }
+      33.33%{ transform:scale(0.94); }
+      50%,100%{ transform:scale(1); }
+    }
+
+    @keyframes heroCheckWave2{
+      0%{ transform:scale(1.10); }
+      16.66%{ transform:scale(1.22); }
+      33.33%{ transform:scale(1.10); }
+      50%{ transform:scale(0.94); }
+      66.66%,100%{ transform:scale(1); }
+    }
+
+    @keyframes heroCheckWave3{
+      0%{ transform:scale(0.94); }
+      16.66%{ transform:scale(1.10); }
+      33.33%{ transform:scale(1.22); }
+      50%{ transform:scale(1.10); }
+      66.66%{ transform:scale(0.94); }
+      83.33%,100%{ transform:scale(1); }
+    }
+
     .hero-section-title{
       font-family:var(--font-display);
       font-size:var(--section-title-size);
@@ -2508,6 +2550,7 @@
       *{
         scroll-behavior:auto !important;
         transition:none !important;
+        animation:none !important;
       }
     }
   </style>
@@ -3381,8 +3424,8 @@
 <div class="hero-merged-copy">
 <div class="hero-badges" aria-label="About page highlights">
 <span class="hero-badge"><span class="hero-badge-icon" aria-hidden="true"></span>Founded in Florida</span>
-<span class="hero-badge"><span class="hero-badge-icon" aria-hidden="true"></span>Product = MayaNut™ Flour &amp; Powder</span>
-<span class="hero-badge"><span class="hero-badge-icon" aria-hidden="true"></span><span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span> is the species</span>
+<span class="hero-badge"><span class="hero-badge-icon" aria-hidden="true"></span><span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span></span>
+<span class="hero-badge"><span class="hero-badge-icon" aria-hidden="true"></span><span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span></span>
 </div>
 <h1 class="hero-section-title">About The MayaNut Company</h1>
 <p class="hero-kicker">The MayaNut Company was founded by August Kokus to introduce <span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span> as an everyday ingredient while building long-term awareness of <span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span>.</p>
@@ -3413,7 +3456,7 @@
 <div class="copy">
 <h2 id="story-heading">Our Story</h2>
 <p>The MayaNut Company was built around a straightforward idea: introduce a roasted ingredient people can actually use at home and give it a clear identity. <span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span> is positioned for practical daily uses such as smoothies, açaí bowls, oatmeal, baking, and warm drinks.</p>
-<p>At the same time, the company keeps the source language disciplined. The product is MayaNut™. The species behind it is <span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span>. That makes the site easier to understand for customers while keeping the botanical reference accurate.</p>
+<p>At the same time, the company keeps the source language disciplined. The product is <span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span>. The species behind it is <span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span>. That makes the site easier to understand for customers while keeping the botanical reference accurate.</p>
 </div>
 </article>
 
@@ -3429,7 +3472,7 @@
 <section class="mod" id="vision" aria-labelledby="vision-heading">
 <div class="body">
 <h2 class="title" id="vision-heading">Vision</h2>
-<p class="desc">The long-term aim is larger than one product page. The company is intended to help establish a lasting consumer identity for MayaNut™ while contributing to broader awareness of <span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span> through practical use, repeat purchase, and familiarity.</p>
+<p class="desc">The long-term aim is larger than one product page. The company is intended to help establish a lasting consumer identity for <span class="notranslate" translate="no">MayaNut™ Flour &amp; Powder</span> while contributing to broader awareness of <span class="notranslate botanical-name" translate="no"><em>Brosimum alicastrum</em></span> through practical use, repeat purchase, and familiarity.</p>
 <a class="btn ghost" href="/alicastrum-brosimum-alicastrum.html" aria-label="Learn about Brosimum alicastrum">Learn About the Species</a>
 </div>
 </section>
@@ -3813,6 +3856,34 @@
         applyCurrentLanguageState();
         clearContactActive();
         closeLanguagePanel(false);
+      });
+    })();
+  </script>
+<script>
+    (function initHeroBadgeIntro(){
+      function playHeroBadgeIntro(){
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var badgeRow = document.querySelector('.hero-badges');
+        if (!badgeRow) return;
+        badgeRow.classList.remove('is-intro-playing');
+        window.requestAnimationFrame(function(){
+          window.requestAnimationFrame(function(){
+            badgeRow.classList.add('is-intro-playing');
+            window.setTimeout(function(){
+              badgeRow.classList.remove('is-intro-playing');
+            }, 1850);
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', playHeroBadgeIntro, { once:true });
+      } else {
+        playHeroBadgeIntro();
+      }
+
+      window.addEventListener('pageshow', function(event){
+        if (event.persisted) playHeroBadgeIntro();
       });
     })();
   </script>

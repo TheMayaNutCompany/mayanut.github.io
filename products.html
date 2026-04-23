@@ -79,8 +79,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Marcellus&display=swap" rel="stylesheet">
 
   <link rel="preload" as="image" href="/the-mayanut-company-product-pouch.png" fetchpriority="high">
-  <link rel="preload" as="image" href="/the-mayanut-company-logo-tm.svg" type="image/svg+xml" fetchpriority="high">
-
+  
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -1140,7 +1139,53 @@
       stroke-linejoin:round;
     }
 
-    .feat .chk{ transition:transform .14s ease, background .14s ease; }
+    .feat .chk{
+      transform:scale(1);
+      transition:none;
+      will-change:transform;
+    }
+
+    .features.is-intro-playing .feat:nth-child(1) .chk{
+      animation:productCheckWave1 1.8s ease-out 1 both;
+    }
+
+    .features.is-intro-playing .feat:nth-child(2) .chk{
+      animation:productCheckWave2 1.8s ease-out 1 both;
+    }
+
+    .features.is-intro-playing .feat:nth-child(3) .chk{
+      animation:productCheckWave3 1.8s ease-out 1 both;
+    }
+
+    @keyframes productCheckWave1{
+      0%{ transform:scale(1.22); }
+      16.66%{ transform:scale(1.10); }
+      33.33%{ transform:scale(0.94); }
+      50%{ transform:scale(1); }
+      66.66%{ transform:scale(1); }
+      83.33%{ transform:scale(1); }
+      100%{ transform:scale(1); }
+    }
+
+    @keyframes productCheckWave2{
+      0%{ transform:scale(1.10); }
+      16.66%{ transform:scale(1.22); }
+      33.33%{ transform:scale(1.10); }
+      50%{ transform:scale(0.94); }
+      66.66%{ transform:scale(1); }
+      83.33%{ transform:scale(1); }
+      100%{ transform:scale(1); }
+    }
+
+    @keyframes productCheckWave3{
+      0%{ transform:scale(0.94); }
+      16.66%{ transform:scale(1.10); }
+      33.33%{ transform:scale(1.22); }
+      50%{ transform:scale(1.10); }
+      66.66%{ transform:scale(0.94); }
+      83.33%{ transform:scale(1); }
+      100%{ transform:scale(1); }
+    }
 
     h1{
       font-size:32px;
@@ -1367,7 +1412,7 @@
       box-shadow:none;
     }
 
-    .selector-pill:hover{ background:#f8f9fb; border-color:var(--orange); color:var(--orange); }
+    .selector-pill:hover{ background:#f8f9fb; border-color:rgba(11,18,32,0.10); color:var(--orange); }
 
     .selector-pill.active{
       border-color:var(--orange);
@@ -1524,7 +1569,7 @@
       -webkit-tap-highlight-color:transparent;
     }
 
-    .qty-step:hover:not(:disabled){ background:#f8f9fb; }
+    .qty-step:hover:not(:disabled){ background:#f8f9fb; color:var(--orange); }
 
     .qty-step:disabled{
       color:#d9dde3;
@@ -1636,6 +1681,8 @@
       background:transparent;
       box-shadow:none;
       padding:2px 0 0;
+      content-visibility:auto;
+      contain-intrinsic-size:700px;
     }
 
     .under-buy-wide .serving{
@@ -3562,7 +3609,33 @@
         });
       });
     })();
-  </script>  <script>
+  </script>
+
+  <script>
+    (function initFeatureCheckIntro(){
+      const features = document.querySelector('.features');
+      if (!features) return;
+
+      function playIntro(){
+        features.classList.remove('is-intro-playing');
+        void features.offsetWidth;
+        features.classList.add('is-intro-playing');
+        window.setTimeout(function(){
+          features.classList.remove('is-intro-playing');
+        }, 1900);
+      }
+
+      if (document.readyState === 'complete') {
+        requestAnimationFrame(playIntro);
+      } else {
+        window.addEventListener('load', function(){
+          requestAnimationFrame(playIntro);
+        }, { once:true });
+      }
+    })();
+  </script>
+
+  <script>
     (function(){
       const STORAGE_KEY = "mayanutSiteCart";
       const FALLBACK_QTY_KEY = "mayanutSelectedQty";

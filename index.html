@@ -4331,6 +4331,101 @@
   }
 </style>
 
+
+<style id="mayanut-final-hero-controls-fix">
+  /* Final hero controls fix:
+     - Image remains a rounded square.
+     - Dots sit centered in the vertical gap between image and buttons.
+     - Buttons are evenly spaced left/right under the image.
+     - JS offsets are neutralized for these controls. */
+  .hero-carousel{
+    --hero-control-gap:16px;
+  }
+
+  .hero-carousel-below{
+    width:100% !important;
+    max-width:560px !important;
+    display:grid !important;
+    grid-template-rows:auto auto !important;
+    row-gap:var(--hero-control-gap) !important;
+    align-items:center !important;
+    justify-items:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    margin-top:var(--hero-control-gap) !important;
+    overflow:visible !important;
+  }
+
+  .hero-carousel-dots{
+    width:100% !important;
+    min-height:16px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:7px !important;
+    margin:0 !important;
+    top:0 !important;
+    transform:none !important;
+  }
+
+  .hero-carousel-actions{
+    width:100% !important;
+    max-width:560px !important;
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    align-items:center !important;
+    justify-items:stretch !important;
+    gap:18px !important;
+    margin:0 !important;
+    top:0 !important;
+    transform:none !important;
+  }
+
+  .hero-carousel-actions .btn{
+    width:100% !important;
+    min-width:0 !important;
+    justify-self:stretch !important;
+    text-align:center !important;
+  }
+
+  .hero-carousel-actions .btn:first-child,
+  .hero-carousel-actions .btn:last-child{
+    justify-self:stretch !important;
+  }
+
+  @media (min-width:981px){
+    .hero-carousel{
+      justify-content:flex-start !important;
+      height:auto !important;
+    }
+
+    .hero-carousel-stage,
+    .hero-carousel-viewport,
+    .hero-carousel-below,
+    .hero-carousel-actions{
+      max-width:560px !important;
+    }
+
+    .hero-carousel-below{
+      margin-top:16px !important;
+    }
+  }
+
+  @media (max-width:680px){
+    .hero-carousel-below{
+      max-width:100% !important;
+      row-gap:10px !important;
+      margin-top:10px !important;
+    }
+
+    .hero-carousel-actions{
+      max-width:100% !important;
+      grid-template-columns:1fr !important;
+      gap:10px !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
@@ -5656,18 +5751,8 @@
 
         var shiftedImageBottom = viewportRect.bottom + stageOffset;
 
-        var actionsRect = actions.getBoundingClientRect();
-        var desiredActionBottom = inFoodRect.bottom;
-        var currentActionBottom = actionsRect.bottom;
-        var actionsOffset = clamp(Math.round(desiredActionBottom - currentActionBottom), -140, 80);
-        carousel.style.setProperty('--hero-carousel-actions-offset', actionsOffset + 'px');
-
-        var dotsRect = dotsWrap.getBoundingClientRect();
-        var shiftedActionTop = actionsRect.top + actionsOffset;
-        var desiredDotsCenter = (shiftedImageBottom + shiftedActionTop) / 2;
-        var currentDotsCenter = dotsRect.top + (dotsRect.height / 2);
-        var dotsOffset = clamp(Math.round(desiredDotsCenter - currentDotsCenter), -140, 120);
-        carousel.style.setProperty('--hero-carousel-dots-offset', dotsOffset + 'px');
+        carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
+        carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
       }
 
       function restoreCarouselImages(){

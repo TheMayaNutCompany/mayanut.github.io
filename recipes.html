@@ -1122,13 +1122,33 @@
     .recipes-wrap{
       display:flex;
       flex-direction:column;
-      gap:24px;
+      gap:0;
     }
 
     .recipe-card{
+      position:relative;
       scroll-margin-top:calc(var(--headerH) + 18px);
       content-visibility:auto;
       contain-intrinsic-size:560px;
+    }
+
+    .recipe-card + .recipe-card{
+      padding-top:24px;
+    }
+
+    .recipe-card:not(:last-child){
+      padding-bottom:24px;
+    }
+
+    .recipe-card:not(:last-child)::after{
+      content:"";
+      position:absolute;
+      left:clamp(12px, 2.2vw, 28px);
+      right:clamp(12px, 2.2vw, 28px);
+      bottom:0;
+      height:1px;
+      background:rgba(11,18,32,0.12);
+      pointer-events:none;
     }
 
     .recipe-grid{
@@ -2430,6 +2450,114 @@
       contain-intrinsic-size:900px;
     }
 
+
+  /* Final recipe separator + filter layout correction */
+  .toolbar-grid{
+    grid-template-columns:minmax(260px, 2fr) minmax(210px, 1.15fr) repeat(4, minmax(145px, 1fr));
+    gap:12px;
+    align-items:end;
+  }
+
+  .recipes-wrap{
+    gap:0;
+  }
+
+  .recipe-card{
+    position:relative;
+  }
+
+  .recipe-card:not(:last-child){
+    padding-bottom:0 !important;
+  }
+
+  .recipe-card:not(:last-child)::after{
+    content:none !important;
+  }
+
+  .recipe-card + .recipe-card{
+    margin-top:24px;
+    padding-top:24px !important;
+  }
+
+  .recipe-card + .recipe-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:clamp(16px, 3vw, 42px);
+    right:clamp(16px, 3vw, 42px);
+    height:1px;
+    background:rgba(11,18,32,0.14);
+    pointer-events:none;
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    .toolbar-grid{
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .toolbar-field:first-child{
+      grid-column:span 2;
+    }
+
+    .toolbar-field:nth-child(2){
+      grid-column:span 1;
+    }
+
+    .toolbar-field:nth-child(3),
+    .toolbar-field:nth-child(4),
+    .toolbar-field:nth-child(5),
+    .toolbar-field:nth-child(6){
+      grid-column:auto;
+    }
+  }
+
+  @media (max-width:760px){
+    .toolbar-grid{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .toolbar-field:first-child,
+    .toolbar-field:last-child{
+      grid-column:1 / -1;
+    }
+
+    .toolbar-field:nth-child(2),
+    .toolbar-field:nth-child(3),
+    .toolbar-field:nth-child(4),
+    .toolbar-field:nth-child(5){
+      grid-column:auto;
+    }
+
+    .recipe-card + .recipe-card{
+      margin-top:22px;
+      padding-top:22px !important;
+    }
+
+    .recipe-card + .recipe-card::before{
+      left:clamp(12px, 5vw, 24px);
+      right:clamp(12px, 5vw, 24px);
+    }
+  }
+
+  @media (max-width:560px){
+    .toolbar-grid{
+      grid-template-columns:1fr;
+    }
+
+    .toolbar-field,
+    .toolbar-field:first-child,
+    .toolbar-field:last-child,
+    .toolbar-field:nth-child(2),
+    .toolbar-field:nth-child(3),
+    .toolbar-field:nth-child(4),
+    .toolbar-field:nth-child(5),
+    .toolbar-field:nth-child(6){
+      grid-column:auto;
+    }
+  }
+
 </style>
 
 <style id="recipes-page-final-stability-fix-v3">
@@ -3084,6 +3212,114 @@
   }
 </style>
 
+<style id="recipes-filter-lines-final-fix">
+  .toolbar-grid{
+    grid-template-columns:minmax(260px, 2fr) minmax(210px, 1.15fr) repeat(4, minmax(145px, 1fr));
+    gap:12px;
+    align-items:end;
+  }
+
+  .recipes-wrap{
+    gap:0;
+  }
+
+  .recipe-card{
+    position:relative;
+  }
+
+  .recipe-card:not(:last-child){
+    padding-bottom:0 !important;
+  }
+
+  .recipe-card:not(:last-child)::after{
+    content:none !important;
+  }
+
+  .recipe-card + .recipe-card{
+    margin-top:24px;
+    padding-top:24px !important;
+  }
+
+  .recipe-card + .recipe-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:clamp(16px, 3vw, 42px);
+    right:clamp(16px, 3vw, 42px);
+    height:1px;
+    background:rgba(11,18,32,0.14);
+    pointer-events:none;
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    .toolbar-grid{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      gap:12px;
+    }
+
+    .toolbar-field:first-child{
+      grid-column:span 2 !important;
+    }
+
+    .toolbar-field:nth-child(2){
+      grid-column:span 1 !important;
+    }
+
+    .toolbar-field:nth-child(3),
+    .toolbar-field:nth-child(4),
+    .toolbar-field:nth-child(5),
+    .toolbar-field:nth-child(6){
+      grid-column:auto !important;
+    }
+  }
+
+  @media (max-width:760px){
+    .toolbar-grid{
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:10px;
+    }
+
+    .toolbar-field:first-child,
+    .toolbar-field:last-child{
+      grid-column:1 / -1 !important;
+    }
+
+    .toolbar-field:nth-child(2),
+    .toolbar-field:nth-child(3),
+    .toolbar-field:nth-child(4),
+    .toolbar-field:nth-child(5){
+      grid-column:auto !important;
+    }
+
+    .recipe-card + .recipe-card{
+      margin-top:22px;
+      padding-top:22px !important;
+    }
+
+    .recipe-card + .recipe-card::before{
+      left:clamp(12px, 5vw, 24px);
+      right:clamp(12px, 5vw, 24px);
+    }
+  }
+
+  @media (max-width:560px){
+    .toolbar-grid{
+      grid-template-columns:1fr !important;
+    }
+
+    .toolbar-field,
+    .toolbar-field:first-child,
+    .toolbar-field:last-child,
+    .toolbar-field:nth-child(2),
+    .toolbar-field:nth-child(3),
+    .toolbar-field:nth-child(4),
+    .toolbar-field:nth-child(5),
+    .toolbar-field:nth-child(6){
+      grid-column:auto !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -3229,7 +3465,7 @@
 </section>
 <section aria-label="Recipe search and filters" class="toolbar-section">
 <h2 class="toolbar-title">Find the Right MayaNut™ Flour &amp; Powder Recipe</h2>
-<p class="toolbar-intro">Use the filters below to narrow the recipe hub by MayaNut™ type, recipe category, difficulty, and best use. MayaNut™ Light Flour is the default for baking, while MayaNut™ Dark Roast is the drink-forward and topping-forward option.</p>
+<p class="toolbar-intro">Use the filters below to narrow the recipe hub by MayaNut™ Flour or Powder, recipe type, difficulty, and best use. MayaNut™ Light Flour is the default for baking, while MayaNut™ Dark Roast is the drink-forward and topping-forward option.</p>
 <div class="toolbar-grid">
 <div class="toolbar-field">
 <label class="control-label" for="recipeSearch">Search recipes</label>
@@ -3244,11 +3480,11 @@
 </div>
 </div>
 <div class="toolbar-field">
-<label class="control-label" for="filterMayanutType">MayaNut™ Type</label>
+<label class="control-label" for="filterMayanutType">MayaNut™ Flour or Powder</label>
 <select class="toolbar-select" id="filterMayanutType">
 <option value="all">All</option>
-<option value="light">Light Flour</option>
-<option value="dark">Dark Roast</option>
+<option value="light">MayaNut™ Light Flour</option>
+<option value="dark">MayaNut™ Dark Roast Powder</option>
 <option value="either">Works With Either</option>
 </select>
 </div>

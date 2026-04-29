@@ -4305,6 +4305,26 @@
   }
 </style>
 
+
+<style id="mayanut-footer-current-page-link-lock">
+  /* Footer current-page rule: the link matching the current page is orange and underlined. */
+  .footer-links a[aria-current="page"],
+  .footer-links a.footer-current-link{
+    color:var(--orange) !important;
+    text-decoration:underline !important;
+    text-decoration-color:var(--orange) !important;
+    text-underline-offset:4px !important;
+    text-decoration-thickness:2px !important;
+    font-weight:700 !important;
+  }
+
+  .footer-links a[aria-current="page"]:hover,
+  .footer-links a.footer-current-link:hover{
+    color:var(--orange) !important;
+    text-decoration-color:var(--orange) !important;
+  }
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -4680,7 +4700,7 @@
 <h4>Support / Learn</h4>
 <ul class="footer-links">
 <li><a aria-label="Brosimum alicastrum page" href="/alicastrum-brosimum-alicastrum.html">Brosimum alicastrum</a></li>
-<li><a aria-label="MayaNut™ Flour &amp; Powder product page" href="/products.html">MayaNut™ Flour &amp; Powder</a></li>
+<li><a aria-current="page" aria-label="MayaNut™ Flour &amp; Powder product page" class="footer-current-link" href="/products.html">MayaNut™ Flour &amp; Powder</a></li>
 <li><a aria-label="Recipes page" href="/recipes.html">Recipes</a></li>
 <li><a aria-label="FAQ page" href="/faq.html">FAQ</a></li>
 <li><a aria-label="Gallery page" href="/gallery.html">Gallery</a></li>
@@ -5944,6 +5964,111 @@
     requestAnimationFrame(alignTabletSelector);
     setTimeout(alignTabletSelector, 150);
     setTimeout(alignTabletSelector, 450);
+  })();
+</script>
+
+
+<style id="mayanut-products-tablet-recommendation-dynamic-final">
+  @media (min-width:761px) and (max-width:1180px){
+    .thumbs-recommendation-row{display:grid !important;grid-template-columns:1fr !important;gap:10px !important;align-items:start !important;width:100% !important;}
+    .thumbs-recommendation-row > .thumb-recommendations{margin-top:0 !important;width:100% !important;align-self:start !important;display:block !important;}
+    #roastRow,.selector-row--roast{grid-template-columns:repeat(2, minmax(0, 1fr)) !important;align-items:start !important;}
+  }
+  @media (max-width:760px){#roastRow,.selector-row--roast{grid-template-columns:repeat(2, minmax(0, 1fr)) !important;}}
+</style>
+<script id="mayanut-products-dynamic-recommendations-and-tablet-align">
+(function(){
+  const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
+  const tabletTwoCol = window.matchMedia('(min-width:921px) and (max-width:1180px)');
+  const row = document.querySelector('.thumbs-recommendation-row');
+  const recommendation = document.querySelector('.thumb-recommendations');
+  const productBox = document.getElementById('productBox');
+  const purchaseControls = document.getElementById('purchaseControlsSection');
+  const selector = document.getElementById('roastRow');
+  const spacer = document.getElementById('purchaseAnchorSpacer');
+  const roastLight = document.getElementById('roastLight');
+  const roastDark = document.getElementById('roastDark');
+  if (!recommendation || !selector) return;
+  const copy = {
+    flour: {
+      label: 'MayaNut™ Flour recommendations',
+      serving: '<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads. Adjust to taste.',
+      items: ['Best for baking-forward uses where smooth texture matters.','Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.']
+    },
+    powder: {
+      label: 'MayaNut™ Powder recommendations',
+      serving: '<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',
+      items: ['Best for smoothies, açaí bowls, oats, warm drinks, and roast-forward daily uses.','Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.']
+    }
+  };
+  function currentType(){ return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour'; }
+  function setRecommendation(type){
+    const chosen = copy[type === 'powder' ? 'powder' : 'flour'];
+    recommendation.setAttribute('aria-label', chosen.label);
+    recommendation.innerHTML = '<p class="serving">' + chosen.serving + '</p><ul aria-label="Quick uses list">' + chosen.items.map(function(item){return '<li>' + item + '</li>';}).join('') + '</ul>';
+  }
+  function placeRecommendation(){
+    if (!row || !productBox) return;
+    if (tablet.matches) {
+      if (recommendation.parentElement !== row) row.appendChild(recommendation);
+    } else if (recommendation.parentElement !== productBox) {
+      if (purchaseControls && purchaseControls.nextSibling) productBox.insertBefore(recommendation, purchaseControls.nextSibling);
+      else productBox.appendChild(recommendation);
+    }
+  }
+  function clearTabletSpacerOnly(){
+    if (!spacer) return;
+    spacer.style.height = ''; spacer.style.minHeight = ''; spacer.style.flexBasis = ''; spacer.style.flex = '';
+  }
+  function alignTabletSelectorToRecommendation(){
+    setRecommendation(currentType());
+    placeRecommendation();
+    if (!spacer || !selector) return;
+    if (!tablet.matches) { if (window.innerWidth <= 760) clearTabletSpacerOnly(); return; }
+    if (!tabletTwoCol.matches) { clearTabletSpacerOnly(); return; }
+    const serving = recommendation.querySelector('.serving');
+    if (!serving) return;
+    spacer.style.flex = '0 0 auto'; spacer.style.height = '0px'; spacer.style.minHeight = '0px'; spacer.style.flexBasis = '0px';
+    requestAnimationFrame(function(){
+      const desiredTop = Math.round(serving.getBoundingClientRect().top);
+      const currentTop = Math.round(selector.getBoundingClientRect().top);
+      const delta = Math.max(0, desiredTop - currentTop);
+      spacer.style.height = delta + 'px'; spacer.style.minHeight = delta + 'px'; spacer.style.flexBasis = delta + 'px';
+    });
+  }
+  [roastLight, roastDark].forEach(function(button){
+    if (!button) return;
+    button.addEventListener('click', function(){ requestAnimationFrame(alignTabletSelectorToRecommendation); setTimeout(alignTabletSelectorToRecommendation, 80); });
+  });
+  window.addEventListener('load', alignTabletSelectorToRecommendation, {passive:true});
+  window.addEventListener('resize', alignTabletSelectorToRecommendation, {passive:true});
+  window.addEventListener('orientationchange', alignTabletSelectorToRecommendation, {passive:true});
+  window.addEventListener('pageshow', alignTabletSelectorToRecommendation, {passive:true});
+  requestAnimationFrame(alignTabletSelectorToRecommendation);
+  setTimeout(alignTabletSelectorToRecommendation, 180);
+  setTimeout(alignTabletSelectorToRecommendation, 520);
+  setTimeout(alignTabletSelectorToRecommendation, 900);
+})();
+</script>
+
+<script id="mayanut-footer-current-page-link-script">
+  (function markCurrentFooterLink(){
+    var currentPath = (window.location.pathname || "/").replace(/\/index\.html$/i, "/");
+    currentPath = currentPath.replace(/\/+$/, "") || "/";
+
+    document.querySelectorAll(".footer-links a[href]").forEach(function(link){
+      var linkPath = new URL(link.getAttribute("href"), window.location.origin).pathname;
+      linkPath = linkPath.replace(/\/index\.html$/i, "/");
+      linkPath = linkPath.replace(/\/+$/, "") || "/";
+      var isCurrent = linkPath === currentPath;
+
+      link.classList.toggle("footer-current-link", isCurrent);
+      if (isCurrent) {
+        link.setAttribute("aria-current", "page");
+      } else if (link.getAttribute("aria-current") === "page") {
+        link.removeAttribute("aria-current");
+      }
+    });
   })();
 </script>
 

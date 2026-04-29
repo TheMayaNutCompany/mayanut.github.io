@@ -3950,6 +3950,97 @@
     }
   }
 </style>
+
+<style id="mayanut-products-brand-qty-recs-final-fix">
+  /* Final repair: header brand lockup, disabled quantity visibility, and recommendation bottom alignment. */
+  @media (min-width:981px){
+    .site-header .brand-lockup{
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:2px !important;
+      width:max-content !important;
+      max-width:100% !important;
+      min-width:0 !important;
+      margin:0 !important;
+      padding:0 !important;
+      transform:none !important;
+      overflow:visible !important;
+    }
+
+    .site-header .brand-name{
+      display:block !important;
+      width:max-content !important;
+      max-width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      white-space:nowrap !important;
+      text-align:center !important;
+      font-family:var(--font-display) !important;
+      font-size:clamp(24.2px, 2.42vw, 42.9px) !important;
+      font-weight:400 !important;
+      letter-spacing:.01em !important;
+      line-height:1 !important;
+      color:var(--ink) !important;
+      transform:none !important;
+    }
+
+    .site-header .brand-subtitle{
+      display:block !important;
+      align-self:center !important;
+      width:97.2% !important;
+      max-width:97.2% !important;
+      min-width:0 !important;
+      margin-top:0 !important;
+      margin-bottom:0 !important;
+      margin-left:1.4% !important;
+      margin-right:1.4% !important;
+      padding:0 !important;
+      overflow:visible !important;
+      text-overflow:clip !important;
+      white-space:nowrap !important;
+      text-align:center !important;
+      font-size:clamp(11.9px, 1.21vw, 18.9px) !important;
+      font-weight:500 !important;
+      letter-spacing:.085em !important;
+      line-height:1.12 !important;
+      color:rgba(11,18,32,0.62) !important;
+      transform:none !important;
+    }
+
+    .product-box{
+      display:flex !important;
+      flex-direction:column !important;
+    }
+
+    .product-box > .thumb-recommendations{
+      margin-top:auto !important;
+      align-self:stretch !important;
+      display:flex !important;
+      flex-direction:column !important;
+      justify-content:center !important;
+    }
+  }
+
+  .qty-step:disabled,
+  .qty-step[aria-disabled="true"]{
+    color:rgba(11,18,32,0.30) !important;
+    background:#fff !important;
+    cursor:not-allowed !important;
+    opacity:1 !important;
+  }
+
+  .qty-step:disabled:hover,
+  .qty-step[aria-disabled="true"]:hover{
+    color:rgba(11,18,32,0.30) !important;
+    background:#fff !important;
+    transform:none !important;
+  }
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -4123,7 +4214,7 @@
 </div>
 <div aria-label="Ingredients and storage summary" class="product-flex-fill">
 <div class="brief-meta">
-<span class="brief-meta-row"><strong>Ingredients:</strong> 100% roasted, finely milled Brosimum alicastrum seed flour.</span>
+<span class="brief-meta-row"><strong>Ingredients:</strong> 100% roasted, finely milled Brosimum alicastrum seed flour and powder.</span>
 <span class="brief-meta-row"><strong>Storage:</strong> Store in a cool, dry place away from direct sunlight.</span>
 </div>
 <div aria-hidden="true" class="purchase-anchor-spacer" id="purchaseAnchorSpacer"></div>
@@ -4186,7 +4277,7 @@
 <p>MayaNut™ Flour &amp; Powder is a roasted, finely milled flour and powder made from roasted <strong>Brosimum alicastrum</strong> seeds, from a tropical species long valued as a traditional food in Mesoamerica.</p>
 <p>Carefully dried and gently roasted, this Guatemalan-sourced flour delivers a smooth texture, warm roasted depth, and a bold, cocoa-like flavor. It brings richness to smoothies, açaí bowls, baking, warm drinks, oatmeal, and everyday cooking.</p>
 <p>Light roast offers a smoother, more mellow profile, while dark roast is roasted longer for a deeper, bolder flavor.</p>
-<p><strong>Ingredients:</strong> 100% roasted, finely milled Brosimum alicastrum seed flour.<br/><strong>Storage:</strong> Store in a cool, dry place away from direct sunlight.</p>
+<p><strong>Ingredients:</strong> 100% roasted, finely milled Brosimum alicastrum seed flour and powder.<br/><strong>Storage:</strong> Store in a cool, dry place away from direct sunlight.</p>
 <div aria-label="Details grid" class="two-cols">
 <div aria-label="Flavor profile" class="subcard">
 <h3>Flavor Profile</h3>
@@ -5441,5 +5532,35 @@
   }
 })();
 </script>
+
+<script id="mayanut-products-final-alignment-fix">
+  (function(){
+    const mq = window.matchMedia('(min-width:981px)');
+    const leftCol = document.getElementById('leftCol');
+    const productBox = document.getElementById('productBox');
+    const recommendation = document.querySelector('.product-box > .thumb-recommendations');
+
+    function alignRecommendationBottom(){
+      if (!leftCol || !productBox || !recommendation || !mq.matches) {
+        if (recommendation) recommendation.style.marginTop = '';
+        return;
+      }
+
+      productBox.style.minHeight = Math.ceil(leftCol.getBoundingClientRect().height) + 'px';
+      recommendation.style.marginTop = 'auto';
+    }
+
+    window.addEventListener('load', alignRecommendationBottom, {passive:true});
+    window.addEventListener('resize', alignRecommendationBottom, {passive:true});
+    window.addEventListener('orientationchange', alignRecommendationBottom, {passive:true});
+    if (window.ResizeObserver && leftCol) {
+      const ro = new ResizeObserver(alignRecommendationBottom);
+      ro.observe(leftCol);
+      ro.observe(productBox);
+    }
+    requestAnimationFrame(alignRecommendationBottom);
+  })();
+</script>
+
 </body>
 </html>

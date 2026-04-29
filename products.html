@@ -5251,8 +5251,56 @@
 </style>
 
 
-<style id="mayanut-final-tablet-centered-recommendations-lock">
-  /* Final tablet-only centering polish. Keeps the stable no-snap layout intact. */
+
+<style id="mayanut-recommendation-aligned-under-r-final">
+  /*
+    Final correction after the tablet-centering pass:
+    - desktop recommendation block stays level with the top of the little images through the stable no-snap layout
+    - recommendation sentence and all three bullet lines share one left edge under the R in Recommendation
+    - tablet keeps the stable no-snap button alignment; only the text alignment is corrected
+  */
+  .thumb-recommendations,
+  .thumb-recommendations *{
+    transition:none !important;
+    animation:none !important;
+    will-change:auto !important;
+  }
+
+  .thumb-recommendations .serving{
+    text-align:left !important;
+    margin:0 0 6px 0 !important;
+    padding:0 !important;
+    line-height:1.42 !important;
+  }
+
+  .thumb-recommendations ul{
+    display:block !important;
+    list-style-position:inside !important;
+    padding-left:0 !important;
+    margin:0 !important;
+    text-align:left !important;
+  }
+
+  .thumb-recommendations li{
+    text-align:left !important;
+    margin:0 0 4px 0 !important;
+    padding-left:0 !important;
+    line-height:1.48 !important;
+  }
+
+  @media (min-width:1181px){
+    .product-box > .thumb-recommendations,
+    #productBox > .thumb-recommendations{
+      width:100% !important;
+      max-width:100% !important;
+      justify-self:start !important;
+      align-self:start !important;
+      text-align:left !important;
+      margin-left:0 !important;
+      margin-right:0 !important;
+    }
+  }
+
   @media (min-width:761px) and (max-width:1180px){
     #productGrid > .thumb-recommendations,
     .product-grid > .thumb-recommendations{
@@ -5263,38 +5311,20 @@
       max-width:min(620px, 100%) !important;
       margin-left:auto !important;
       margin-right:auto !important;
-      text-align:center !important;
+      text-align:left !important;
     }
 
     #productGrid > .thumb-recommendations .serving,
-    .product-grid > .thumb-recommendations .serving{
-      text-align:center !important;
-      margin-left:auto !important;
-      margin-right:auto !important;
-    }
-
+    .product-grid > .thumb-recommendations .serving,
     #productGrid > .thumb-recommendations ul,
-    .product-grid > .thumb-recommendations ul{
-      width:100% !important;
-      max-width:620px !important;
-      display:grid !important;
-      justify-items:center !important;
-      margin-left:auto !important;
-      margin-right:auto !important;
-      padding-left:0 !important;
-      list-style-position:inside !important;
-      text-align:center !important;
-    }
-
+    .product-grid > .thumb-recommendations ul,
     #productGrid > .thumb-recommendations li,
     .product-grid > .thumb-recommendations li{
-      width:100% !important;
-      max-width:620px !important;
-      text-align:center !important;
-      padding-left:0 !important;
+      text-align:left !important;
     }
   }
 </style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -6594,7 +6624,22 @@
         }
       });
 
-      /* Removed old ResizeObserver alignment watcher; final layout is locked by CSS + one-pass alignment. */
+      if ("ResizeObserver" in window) {
+        const alignmentObserver = new ResizeObserver(function(){
+          scheduleSyncHeights();
+        });
+
+        if (leftCol) alignmentObserver.observe(leftCol);
+        if (thumbsMicroSection) alignmentObserver.observe(thumbsMicroSection);
+        if (purchaseControlsSection) alignmentObserver.observe(purchaseControlsSection);
+        if (productBox) alignmentObserver.observe(productBox);
+
+        const productImgWrap = document.querySelector(".product-img");
+        const galleryDotsRow = document.querySelector(".gallery-dots-row");
+
+        if (productImgWrap) alignmentObserver.observe(productImgWrap);
+        if (galleryDotsRow) alignmentObserver.observe(galleryDotsRow);
+      }
 
       window.addEventListener("storage", function(){
         const nextState = readStoredCart();
@@ -7472,101 +7517,6 @@
   window.addEventListener('load', function(){ schedule(80); }, {once:true, passive:true});
   window.addEventListener('pageshow', function(){ schedule(80); }, {once:true, passive:true});
   window.addEventListener('orientationchange', function(){ schedule(140); }, {passive:true});
-})();
-</script>
-
-
-
-<style id="mayanut-tablet-recommendations-unmistakably-centered-final">
-  /* Final visible tablet centering lock. This comes after all earlier alignment layers. */
-  @media (min-width:761px) and (max-width:1180px){
-    #productGrid > .thumb-recommendations,
-    .product-grid > .thumb-recommendations{
-      grid-column:1 / -1 !important;
-      justify-self:center !important;
-      align-self:start !important;
-      width:min(680px, calc(100% - 24px)) !important;
-      max-width:min(680px, calc(100% - 24px)) !important;
-      margin-left:auto !important;
-      margin-right:auto !important;
-      text-align:center !important;
-      display:block !important;
-      transform:none !important;
-      transition:none !important;
-      animation:none !important;
-    }
-
-    #productGrid > .thumb-recommendations .serving,
-    .product-grid > .thumb-recommendations .serving{
-      width:100% !important;
-      max-width:100% !important;
-      margin:0 auto 7px auto !important;
-      padding:0 !important;
-      text-align:center !important;
-      line-height:1.42 !important;
-    }
-
-    #productGrid > .thumb-recommendations ul,
-    .product-grid > .thumb-recommendations ul{
-      width:100% !important;
-      max-width:660px !important;
-      margin:0 auto !important;
-      padding-left:0 !important;
-      list-style-position:inside !important;
-      text-align:center !important;
-      display:block !important;
-    }
-
-    #productGrid > .thumb-recommendations li,
-    .product-grid > .thumb-recommendations li{
-      width:100% !important;
-      max-width:660px !important;
-      margin:0 auto 4px auto !important;
-      padding-left:0 !important;
-      text-align:center !important;
-      line-height:1.44 !important;
-    }
-  }
-</style>
-
-<script id="mayanut-tablet-recommendations-center-visible-js">
-(function(){
-  'use strict';
-  var tabletMQ = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  function centerTabletRecommendations(){
-    if (!tabletMQ.matches) return;
-    var rec = document.querySelector('#productGrid > .thumb-recommendations, .product-grid > .thumb-recommendations, .thumb-recommendations');
-    if (!rec) return;
-    rec.style.setProperty('text-align','center','important');
-    rec.style.setProperty('justify-self','center','important');
-    rec.style.setProperty('margin-left','auto','important');
-    rec.style.setProperty('margin-right','auto','important');
-    rec.style.setProperty('width','min(680px, calc(100% - 24px))','important');
-    rec.querySelectorAll('.serving, ul, li').forEach(function(el){
-      el.style.setProperty('text-align','center','important');
-      el.style.setProperty('margin-left','auto','important');
-      el.style.setProperty('margin-right','auto','important');
-    });
-    var ul = rec.querySelector('ul');
-    if (ul) {
-      ul.style.setProperty('padding-left','0','important');
-      ul.style.setProperty('list-style-position','inside','important');
-    }
-  }
-  function runSoon(){
-    centerTabletRecommendations();
-    window.setTimeout(centerTabletRecommendations, 40);
-    window.setTimeout(centerTabletRecommendations, 120);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', runSoon, {once:true});
-  else runSoon();
-  window.addEventListener('pageshow', runSoon, {passive:true});
-  window.addEventListener('orientationchange', function(){ window.setTimeout(runSoon, 120); }, {passive:true});
-  document.addEventListener('click', function(e){
-    if (e.target && e.target.closest && e.target.closest('#roastRow, .selector-row--roast')) {
-      window.setTimeout(runSoon, 70);
-    }
-  }, true);
 })();
 </script>
 

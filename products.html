@@ -6116,5 +6116,92 @@
 })();
 </script>
 
+
+
+<style id="mayanut-product-tablet-option-row-third-bullet-lock">
+  /* Final tablet-only alignment:
+     The selector row remains aligned with the Recommendation sentence.
+     The weight / quantity / add-to-cart row aligns with the top of the third recommendation bullet. */
+  @media (min-width:761px) and (max-width:1180px){
+    #purchaseControlsSection,.purchase-controls-section{
+      gap:0 !important;
+    }
+
+    #optionActionRow,.option-action-row{
+      margin-top:0 !important;
+      transform:none !important;
+      will-change:auto !important;
+    }
+  }
+</style>
+
+<script id="mayanut-product-tablet-option-row-third-bullet-lock-js">
+(function(){
+  const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
+  const selector = document.getElementById('roastRow') || document.querySelector('.selector-row--roast');
+  const optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
+  const recommendation = document.querySelector('.thumb-recommendations');
+  const spacer = document.getElementById('purchaseAnchorSpacer');
+
+  if (!selector || !optionRow || !recommendation) return;
+
+  function alignOptionRowToThirdBullet(){
+    if (!tablet.matches){
+      optionRow.style.marginTop = '';
+      optionRow.style.transform = '';
+      optionRow.style.willChange = '';
+      return;
+    }
+
+    requestAnimationFrame(function(){
+      const thirdBullet = recommendation.querySelector('li:nth-child(3)');
+      if (!thirdBullet) return;
+
+      // Keep the earlier selector-to-Recommendation alignment intact, then align the controls to bullet 3.
+      optionRow.style.transform = 'none';
+      optionRow.style.willChange = 'auto';
+      optionRow.style.marginTop = '0px';
+
+      requestAnimationFrame(function(){
+        const thirdTop = Math.round(thirdBullet.getBoundingClientRect().top);
+        const optionTop = Math.round(optionRow.getBoundingClientRect().top);
+        const delta = thirdTop - optionTop;
+
+        if (delta >= 0){
+          optionRow.style.marginTop = delta + 'px';
+        } else {
+          // If a narrow tablet layout ever makes the third bullet sit higher, move the row up instead of leaving a mismatch.
+          optionRow.style.marginTop = '0px';
+          optionRow.style.transform = 'translateY(' + delta + 'px)';
+          optionRow.style.willChange = 'transform';
+        }
+      });
+    });
+  }
+
+  function scheduleAlignment(){
+    // These timings intentionally run after the existing recommendation/selector alignment script.
+    [90, 210, 470, 980, 1380].forEach(function(delay){
+      window.setTimeout(alignOptionRowToThirdBullet, delay);
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    if (e.target && e.target.closest && e.target.closest('#roastRow button, .selector-row--roast button')){
+      scheduleAlignment();
+    }
+  }, true);
+
+  window.addEventListener('load', scheduleAlignment, {passive:true});
+  window.addEventListener('resize', scheduleAlignment, {passive:true});
+  window.addEventListener('orientationchange', scheduleAlignment, {passive:true});
+  window.addEventListener('pageshow', scheduleAlignment, {passive:true});
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(scheduleAlignment).catch(function(){});
+  }
+  scheduleAlignment();
+})();
+</script>
+
 </body>
 </html>

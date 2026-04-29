@@ -6161,10 +6161,7 @@
         weightBtn.setAttribute("aria-expanded", "false");
       }
 
-      function scheduleSyncHeights(){
-        if (syncRaf) cancelAnimationFrame(syncRaf);
-        syncRaf = requestAnimationFrame(syncHeights);
-      }
+      function scheduleSyncHeights(){ return; }
 
       function syncHeights(){
         const canAlignToThumbs = window.matchMedia("(min-width: 921px)").matches;
@@ -6879,27 +6876,232 @@
 
 
 
+<style id="mayanut-product-no-flicker-alignment-final">
+  /* Stable final product alignment: no repeated measuring loop, no flicker. */
+  .footer-links a[aria-current="page"],
+  .footer-links a.footer-current-link{
+    color:var(--orange) !important;
+    text-decoration:none !important;
+    text-decoration-line:none !important;
+    font-weight:700 !important;
+  }
+
+  #purchaseControlsSection,
+  .purchase-controls-section{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    margin-top:0;
+    padding-top:0 !important;
+    min-height:0 !important;
+    height:auto !important;
+    transform:none !important;
+    will-change:auto !important;
+  }
+
+  #roastRow,
+  .selector-row--roast{
+    display:grid !important;
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    width:100% !important;
+    margin:0 !important;
+    align-items:stretch !important;
+    order:1 !important;
+  }
+
+  #optionActionRow,
+  .option-action-row{
+    order:2 !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    align-items:center !important;
+    transform:none !important;
+    will-change:auto !important;
+  }
+
+  #productFeedback,
+  .product-feedback{ order:3 !important; }
+
+  #qtyStepper,
+  .qty-stepper{
+    margin-left:0 !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+
+  #weightBtn,
+  .weight-btn,
+  #addToCartBtn,
+  .add-cart-btn{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  .thumb-recommendations .serving{
+    text-align:left !important;
+  }
+
+  @media (min-width:1181px){
+    .product-grid{
+      align-items:start !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      gap:12px !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      gap:12px !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(130px,1fr) 178px minmax(178px,1fr) !important;
+      gap:12px !important;
+      justify-content:stretch !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:178px !important;
+      grid-template-columns:44px minmax(90px,1fr) 44px !important;
+      justify-self:center !important;
+    }
+
+    .product-box > .thumb-recommendations{
+      width:100% !important;
+      margin-left:0 !important;
+      margin-right:0 !important;
+    }
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    .product-grid{
+      grid-template-columns:minmax(292px,.92fr) minmax(0,1fr) !important;
+      gap:clamp(14px,2vw,22px) !important;
+      align-items:start !important;
+    }
+
+    .left-col,
+    .product-box{
+      min-width:0 !important;
+    }
+
+    .thumbs-recommendation-row{
+      display:grid !important;
+      grid-template-columns:1fr !important;
+      gap:10px !important;
+      align-items:start !important;
+      width:100% !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      gap:10px !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      gap:8px !important;
+      min-height:42px !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(98px,1fr) 132px minmax(138px,1fr) !important;
+      gap:8px !important;
+      justify-content:stretch !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:132px !important;
+      grid-template-columns:38px minmax(56px,1fr) 38px !important;
+      justify-self:center !important;
+    }
+
+    .selector-pill{
+      min-width:0 !important;
+      white-space:normal !important;
+      text-align:center !important;
+      line-height:1.08 !important;
+      padding-left:8px !important;
+      padding-right:8px !important;
+      font-size:clamp(9.8px,.55vw + 7px,11px) !important;
+      letter-spacing:.055em !important;
+    }
+
+    #productGrid > .thumb-recommendations,
+    .product-grid > .thumb-recommendations{
+      grid-column:1 / -1 !important;
+      width:min(720px, 100%) !important;
+      justify-self:center !important;
+      margin-top:12px !important;
+      text-align:left !important;
+    }
+
+    #productGrid > .thumb-recommendations .serving,
+    .product-grid > .thumb-recommendations .serving{
+      margin:0 0 8px 20px !important;
+      text-align:left !important;
+    }
+
+    #productGrid > .thumb-recommendations ul,
+    .product-grid > .thumb-recommendations ul{
+      margin:0 !important;
+      padding-left:20px !important;
+      text-align:left !important;
+    }
+  }
+
+  @media (max-width:760px){
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      gap:8px !important;
+      transform:none !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+      gap:8px !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      margin-top:0 !important;
+    }
+  }
+</style>
 <script id="mayanut-final-product-layout-js">
 (function(){
-  const desktopMQ = window.matchMedia('(min-width:1181px)');
-  const tabletMQ = window.matchMedia('(min-width:761px) and (max-width:1180px)');
+  'use strict';
 
-  const productGrid = document.getElementById('productGrid') || document.querySelector('.product-grid');
-  const leftCol = document.getElementById('leftCol') || document.querySelector('.left-col');
-  const productBox = document.getElementById('productBox') || document.querySelector('.product-box');
-  const productImg = document.querySelector('.product-img');
-  const thumbs = document.querySelector('.thumbs');
-  const recommendation = document.querySelector('.thumb-recommendations');
-  const purchaseControls = document.getElementById('purchaseControlsSection') || document.querySelector('.purchase-controls-section');
-  const optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
-  const selectorRow = document.getElementById('roastRow') || document.querySelector('.selector-row--roast');
-  const spacer = document.getElementById('purchaseAnchorSpacer') || document.querySelector('.purchase-anchor-spacer');
-  const roastLight = document.getElementById('roastLight');
-  const roastDark = document.getElementById('roastDark');
+  var desktopMQ = window.matchMedia('(min-width:1181px)');
+  var tabletMQ = window.matchMedia('(min-width:761px) and (max-width:1180px)');
+
+  var productGrid = document.getElementById('productGrid') || document.querySelector('.product-grid');
+  var leftCol = document.getElementById('leftCol') || document.querySelector('.left-col');
+  var productBox = document.getElementById('productBox') || document.querySelector('.product-box');
+  var productImg = document.querySelector('.product-img');
+  var thumbsRow = document.querySelector('.thumbs-recommendation-row');
+  var thumbs = document.querySelector('.thumbs');
+  var recommendation = document.querySelector('.thumb-recommendations');
+  var purchaseControls = document.getElementById('purchaseControlsSection') || document.querySelector('.purchase-controls-section');
+  var optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
+  var selectorRow = document.getElementById('roastRow') || document.querySelector('.selector-row--roast');
+  var spacer = document.getElementById('purchaseAnchorSpacer') || document.querySelector('.purchase-anchor-spacer');
+  var roastLight = document.getElementById('roastLight');
+  var roastDark = document.getElementById('roastDark');
 
   if (!productGrid || !productBox || !purchaseControls || !spacer || !optionRow || !selectorRow || !recommendation) return;
 
-  const recommendationCopy = {
+  var recommendationCopy = {
     flour: {
       label: 'MayaNut™ Flour baking recommendations',
       serving: '<strong>Recommendation:</strong> add 1–2 tbsp for baking.',
@@ -6925,13 +7127,13 @@
   }
 
   function setRecommendation(){
-    const chosen = recommendationCopy[currentType()];
+    var chosen = recommendationCopy[currentType()];
     recommendation.setAttribute('aria-label', chosen.label);
     recommendation.innerHTML = '<p class="serving">' + chosen.serving + '</p><ul aria-label="Quick uses list">' + chosen.items.map(function(item){ return '<li>' + item + '</li>'; }).join('') + '</ul>';
   }
 
-  function clearPositioning(){
-    [purchaseControls, optionRow, recommendation, productBox].forEach(function(el){
+  function clearLayout(){
+    [purchaseControls, optionRow, selectorRow, recommendation, productBox].forEach(function(el){
       if (!el) return;
       el.style.removeProperty('height');
       el.style.removeProperty('min-height');
@@ -6939,28 +7141,29 @@
       el.style.removeProperty('transform');
       el.style.removeProperty('top');
     });
+
+    purchaseControls.style.removeProperty('gap');
     spacer.style.setProperty('display', 'block', 'important');
     spacer.style.setProperty('height', '0px', 'important');
     spacer.style.setProperty('min-height', '0px', 'important');
     spacer.style.setProperty('flex-basis', '0px', 'important');
-    if (leftCol && productBox && (desktopMQ.matches || tabletMQ.matches)) {
-      productBox.style.setProperty('min-height', Math.ceil(leftCol.getBoundingClientRect().height) + 'px', 'important');
-    }
   }
 
   function movePurchaseTopTo(targetTop){
     purchaseControls.style.removeProperty('margin-top');
-    const currentTop = Math.round(purchaseControls.getBoundingClientRect().top);
-    const delta = Math.round(targetTop - currentTop);
+    spacer.style.setProperty('height', '0px', 'important');
+    spacer.style.setProperty('min-height', '0px', 'important');
+    spacer.style.setProperty('flex-basis', '0px', 'important');
+
+    var currentTop = Math.round(purchaseControls.getBoundingClientRect().top);
+    var delta = Math.round(targetTop - currentTop);
     if (!Number.isFinite(delta)) return;
+
     if (delta >= 0) {
       spacer.style.setProperty('height', delta + 'px', 'important');
       spacer.style.setProperty('min-height', delta + 'px', 'important');
       spacer.style.setProperty('flex-basis', delta + 'px', 'important');
     } else {
-      spacer.style.setProperty('height', '0px', 'important');
-      spacer.style.setProperty('min-height', '0px', 'important');
-      spacer.style.setProperty('flex-basis', '0px', 'important');
       purchaseControls.style.setProperty('margin-top', delta + 'px', 'important');
     }
   }
@@ -6968,13 +7171,13 @@
   function moveElementTopTo(el, targetTop){
     if (!el) return;
     el.style.removeProperty('margin-top');
-    const currentTop = Math.round(el.getBoundingClientRect().top);
-    const delta = Math.round(targetTop - currentTop);
+    var currentTop = Math.round(el.getBoundingClientRect().top);
+    var delta = Math.round(targetTop - currentTop);
     if (!Number.isFinite(delta)) return;
     el.style.setProperty('margin-top', delta + 'px', 'important');
   }
 
-  function placeRecommendation(){
+  function placeRecommendationForViewport(){
     if (tabletMQ.matches) {
       if (recommendation.parentElement !== productGrid) productGrid.appendChild(recommendation);
     } else {
@@ -6984,32 +7187,35 @@
 
   function alignDesktop(){
     if (!productImg || !thumbs) return;
-    placeRecommendation();
-    clearPositioning();
+    placeRecommendationForViewport();
+    clearLayout();
 
     requestAnimationFrame(function(){
-      const desiredGap = 12;
-      const selectorH = Math.ceil(selectorRow.getBoundingClientRect().height || 42);
-      const imageBottom = Math.round(productImg.getBoundingClientRect().bottom);
-      movePurchaseTopTo(imageBottom - selectorH - desiredGap);
+      var imageBottom = Math.round(productImg.getBoundingClientRect().bottom);
+      var selectorHeight = Math.ceil(selectorRow.getBoundingClientRect().height || 42);
+      var desiredGap = 12;
+      movePurchaseTopTo(imageBottom - selectorHeight - desiredGap);
 
       requestAnimationFrame(function(){
         moveElementTopTo(optionRow, imageBottom);
-        const thumbsTop = Math.round(thumbs.getBoundingClientRect().top);
-        moveElementTopTo(recommendation, thumbsTop);
+        moveElementTopTo(recommendation, Math.round(thumbs.getBoundingClientRect().top));
       });
     });
   }
 
   function alignTablet(){
     if (!thumbs) return;
-    placeRecommendation();
-    clearPositioning();
+    placeRecommendationForViewport();
+    clearLayout();
 
     requestAnimationFrame(function(){
-      const rect = thumbs.getBoundingClientRect();
-      const thumbsTop = Math.round(rect.top);
-      const thumbsBottom = Math.round(rect.bottom);
+      var thumbsRect = thumbs.getBoundingClientRect();
+      var thumbsTop = Math.round(thumbsRect.top);
+      var thumbsBottom = Math.round(thumbsRect.bottom);
+      var selectorHeight = Math.ceil(selectorRow.getBoundingClientRect().height || 42);
+      var desiredGap = Math.max(8, Math.round((thumbsBottom - thumbsTop) - selectorHeight));
+
+      purchaseControls.style.setProperty('gap', desiredGap + 'px', 'important');
       movePurchaseTopTo(thumbsTop);
 
       requestAnimationFrame(function(){
@@ -7020,8 +7226,8 @@
   }
 
   function alignMobile(){
-    placeRecommendation();
-    clearPositioning();
+    placeRecommendationForViewport();
+    clearLayout();
     spacer.style.setProperty('display', 'none', 'important');
   }
 
@@ -7032,36 +7238,30 @@
     else alignMobile();
   }
 
-  let timers = [];
-  function schedule(){
-    timers.forEach(function(t){ clearTimeout(t); });
-    timers = [0, 40, 120, 260, 560, 1000, 1600].map(function(delay){ return window.setTimeout(align, delay); });
+  var scheduled = 0;
+  function schedule(delay){
+    window.clearTimeout(scheduled);
+    scheduled = window.setTimeout(function(){
+      requestAnimationFrame(align);
+    }, delay == null ? 60 : delay);
   }
 
   [roastLight, roastDark].forEach(function(button){
     if (!button) return;
-    button.addEventListener('click', schedule, true);
+    button.addEventListener('click', function(){ schedule(20); }, true);
   });
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedule, {once:true});
-  else schedule();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ schedule(0); }, {once:true});
+  else schedule(0);
 
-  window.addEventListener('load', schedule, {passive:true});
-  window.addEventListener('pageshow', schedule, {passive:true});
-  window.addEventListener('resize', schedule, {passive:true});
-  window.addEventListener('orientationchange', schedule, {passive:true});
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) schedule(); }, {passive:true});
-  document.addEventListener('click', function(e){
-    if (e.target && e.target.closest && e.target.closest('#roastRow, #weightBtn, #qtyStepper, #addToCartBtn, .selector-pill')) schedule();
-  }, true);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule).catch(function(){});
-
-  if ('ResizeObserver' in window) {
-    const observer = new ResizeObserver(function(){ schedule(); });
-    [productGrid, productBox, leftCol, productImg, thumbs, purchaseControls, optionRow, selectorRow, recommendation].forEach(function(el){ if (el) observer.observe(el); });
-  }
+  window.addEventListener('load', function(){ schedule(80); }, {passive:true});
+  window.addEventListener('pageshow', function(){ schedule(80); }, {passive:true});
+  window.addEventListener('resize', function(){ schedule(120); }, {passive:true});
+  window.addEventListener('orientationchange', function(){ schedule(160); }, {passive:true});
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ schedule(80); }).catch(function(){});
 })();
 </script>
+
 
 </body>
 </html>

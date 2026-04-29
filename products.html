@@ -8583,44 +8583,7 @@
   }
 
   function alignPurchaseRows(){
-    if (!purchaseControls || !spacer) return;
-
-    purchaseControls.style.removeProperty('margin-top');
-    important(purchaseControls, 'height', 'auto');
-    important(purchaseControls, 'min-height', '0px');
-    important(purchaseControls, 'justify-content', 'flex-start');
-
-    if (!desktopMQ.matches || !thumbs){
-      important(spacer, 'display', 'none');
-      important(spacer, 'height', '0px');
-      important(spacer, 'min-height', '0px');
-      important(spacer, 'flex-basis', '0px');
-      purchaseControls.style.removeProperty('margin-top');
-      return;
-    }
-
-    important(spacer, 'display', 'block');
-    important(spacer, 'height', '0px');
-    important(spacer, 'min-height', '0px');
-    important(spacer, 'flex-basis', '0px');
-
-    window.requestAnimationFrame(function(){
-      var thumbTop = Math.round(thumbs.getBoundingClientRect().top);
-      var controlsTop = Math.round(purchaseControls.getBoundingClientRect().top);
-      var delta = thumbTop - controlsTop;
-      if (!Number.isFinite(delta)) return;
-      if (delta >= 0){
-        important(spacer, 'height', delta + 'px');
-        important(spacer, 'min-height', delta + 'px');
-        important(spacer, 'flex-basis', delta + 'px');
-        purchaseControls.style.removeProperty('margin-top');
-      } else {
-        important(spacer, 'height', '0px');
-        important(spacer, 'min-height', '0px');
-        important(spacer, 'flex-basis', '0px');
-        important(purchaseControls, 'margin-top', delta + 'px');
-      }
-    });
+    return;
   }
 
   var alignTimer = null;
@@ -9352,84 +9315,6 @@
     }
   }
 </style>
-
-<script id="mayanut-tablet-mobile-final-layout-sync-js">
-(function(){
-  'use strict';
-
-  var tabletMQ = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  var desktopMQ = window.matchMedia('(min-width:1181px)');
-  var root = document.documentElement;
-
-  function removeRecommendations(){
-    Array.prototype.forEach.call(document.querySelectorAll('.thumb-recommendations'), function(node){
-      node.remove();
-    });
-  }
-
-  function syncBrand(){
-    var brandLockup = document.querySelector('.site-header .brand-lockup');
-    if (!brandLockup) return;
-    brandLockup.innerHTML = '<span class="brand-name" aria-label="The MayaNut Company"><span class="brand-small brand-the">The</span><span class="brand-mayanut"><span class="brand-maya">Maya</span><span class="brand-nut">Nut</span></span><span class="brand-small brand-company">Company</span></span>';
-  }
-
-  function syncPurchaseOffset(){
-    var spacer = document.getElementById('purchaseAnchorSpacer');
-    var controls = document.getElementById('purchaseControlsSection');
-    var thumbs = document.querySelector('.thumbs');
-    if (!spacer || !controls || !thumbs) return;
-
-    root.style.setProperty('--tablet-purchase-offset', '0px');
-    spacer.style.setProperty('height', '0px', 'important');
-    spacer.style.setProperty('min-height', '0px', 'important');
-    spacer.style.setProperty('flex-basis', '0px', 'important');
-
-    if (!tabletMQ.matches && !desktopMQ.matches) return;
-
-    window.requestAnimationFrame(function(){
-      root.style.setProperty('--tablet-purchase-offset', '0px');
-      spacer.style.setProperty('height', '0px', 'important');
-      spacer.style.setProperty('min-height', '0px', 'important');
-      spacer.style.setProperty('flex-basis', '0px', 'important');
-
-      var thumbTop = thumbs.getBoundingClientRect().top;
-      var controlsTop = controls.getBoundingClientRect().top;
-      var delta = Math.round(thumbTop - controlsTop);
-      if (!Number.isFinite(delta) || delta < 0) delta = 0;
-
-      root.style.setProperty('--tablet-purchase-offset', delta + 'px');
-      spacer.style.setProperty('display', 'block', 'important');
-      spacer.style.setProperty('height', delta + 'px', 'important');
-      spacer.style.setProperty('min-height', delta + 'px', 'important');
-      spacer.style.setProperty('flex-basis', delta + 'px', 'important');
-    });
-  }
-
-  var timer = null;
-  function syncAll(){
-    window.clearTimeout(timer);
-    timer = window.setTimeout(function(){
-      removeRecommendations();
-      syncBrand();
-      syncPurchaseOffset();
-    }, 20);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncAll, {once:true});
-  } else {
-    syncAll();
-  }
-
-  window.addEventListener('load', function(){ syncAll(); window.setTimeout(syncAll, 120); }, {once:true, passive:true});
-  window.addEventListener('resize', syncAll, {passive:true});
-  window.addEventListener('orientationchange', syncAll, {passive:true});
-  window.addEventListener('pageshow', syncAll, {passive:true});
-})();
-</script>
-
-
-
 <style id="mayanut-final-quantity-divider-and-tablet-lower-lock">
   /* Final correction:
      - Mobile quantity box is compact so the divider lines sit close to the center number.
@@ -9610,69 +9495,583 @@
   }
 </style>
 
-<script id="mayanut-final-tablet-thumbnail-top-sync">
+<style id="mayanut-final-static-no-flicker-purchase-lock">
+  /*
+    Final static purchase-control lock:
+    - No JS measuring, so no flicker/jump.
+    - Desktop and tablet purchase rows are lowered once with CSS so the style row starts at the thumbnail top.
+    - Mobile weight and quantity split the row equally at the midpoint under the centered style label.
+  */
+
+  #purchaseControlsSection,
+  .purchase-controls-section,
+  #roastRow,
+  .selector-row--roast,
+  #optionActionRow,
+  .option-action-row,
+  #weightBtn,
+  .weight-btn,
+  #qtyStepper,
+  .qty-stepper,
+  #addToCartBtn,
+  .add-cart-btn{
+    transition:none !important;
+    animation:none !important;
+  }
+
+  #purchaseControlsSection,
+  .purchase-controls-section{
+    will-change:auto !important;
+    transform:none !important;
+  }
+
+  @media (min-width:1181px){
+    #productGrid.product-grid,
+    .product-grid{
+      align-items:start !important;
+    }
+
+    #productBox,
+    .product-box{
+      display:flex !important;
+      flex-direction:column !important;
+      height:auto !important;
+      min-height:0 !important;
+      justify-content:flex-start !important;
+      overflow:visible !important;
+    }
+
+    #productBox .product-flex-fill,
+    .product-box .product-flex-fill{
+      flex:0 0 auto !important;
+      min-height:0 !important;
+      height:auto !important;
+    }
+
+    #purchaseAnchorSpacer,
+    .purchase-anchor-spacer{
+      display:block !important;
+      height:clamp(148px, 10.85vw, 166px) !important;
+      min-height:clamp(148px, 10.85vw, 166px) !important;
+      flex:0 0 clamp(148px, 10.85vw, 166px) !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:12px !important;
+      margin:0 !important;
+      padding:0 !important;
+      width:100% !important;
+      height:auto !important;
+      min-height:0 !important;
+      justify-content:flex-start !important;
+      align-self:stretch !important;
+      position:relative !important;
+      top:auto !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) 148px minmax(0,1fr) !important;
+      column-gap:12px !important;
+      row-gap:0 !important;
+      align-items:stretch !important;
+      width:100% !important;
+      height:42px !important;
+      margin:0 !important;
+      transform:none !important;
+    }
+
+    #styleSelectorNote{
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      max-width:148px !important;
+      color:rgba(11,18,32,0.48) !important;
+      font-size:10.5px !important;
+      font-weight:750 !important;
+      letter-spacing:.045em !important;
+      line-height:1.12 !important;
+      text-align:center !important;
+      text-transform:uppercase !important;
+      white-space:normal !important;
+      pointer-events:none !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(136px,1fr) 188px minmax(178px,1fr) !important;
+      gap:12px !important;
+      align-items:stretch !important;
+      justify-content:stretch !important;
+      width:100% !important;
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      margin:0 !important;
+      padding:0 !important;
+      position:relative !important;
+      top:auto !important;
+      transform:none !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap,
+    #weightBtn,
+    .weight-btn,
+    #addToCartBtn,
+    .add-cart-btn{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      margin:0 !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:188px !important;
+      min-width:188px !important;
+      max-width:188px !important;
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      grid-template-columns:minmax(0,1fr) 46px minmax(0,1fr) !important;
+      justify-self:center !important;
+      margin:0 !important;
+    }
+
+    #qtyInput,
+    .qty-input,
+    .qty-input-wrap{
+      width:46px !important;
+      min-width:46px !important;
+      max-width:46px !important;
+      text-align:center !important;
+    }
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    #productGrid.product-grid,
+    .product-grid{
+      grid-template-columns:minmax(292px,.92fr) minmax(0,1fr) !important;
+      gap:clamp(14px,2vw,22px) !important;
+      align-items:start !important;
+    }
+
+    #productBox,
+    .product-box{
+      display:flex !important;
+      flex-direction:column !important;
+      height:auto !important;
+      min-height:0 !important;
+      justify-content:flex-start !important;
+      overflow:visible !important;
+    }
+
+    #productBox .product-flex-fill,
+    .product-box .product-flex-fill{
+      flex:0 0 auto !important;
+      min-height:0 !important;
+      height:auto !important;
+    }
+
+    #purchaseAnchorSpacer,
+    .purchase-anchor-spacer{
+      display:block !important;
+      height:clamp(92px, 9.6vw, 124px) !important;
+      min-height:clamp(92px, 9.6vw, 124px) !important;
+      flex:0 0 clamp(92px, 9.6vw, 124px) !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:8px !important;
+      width:100% !important;
+      height:auto !important;
+      min-height:0 !important;
+      justify-content:flex-start !important;
+      align-self:stretch !important;
+      margin:0 !important;
+      padding:0 !important;
+      position:relative !important;
+      top:auto !important;
+      transform:none !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      order:1 !important;
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) minmax(94px, 126px) minmax(0,1fr) !important;
+      column-gap:8px !important;
+      row-gap:0 !important;
+      align-items:stretch !important;
+      width:100% !important;
+      min-height:42px !important;
+      margin:0 !important;
+      transform:none !important;
+    }
+
+    #styleSelectorNote{
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      max-width:126px !important;
+      color:rgba(11,18,32,0.48) !important;
+      font-size:9.5px !important;
+      font-weight:750 !important;
+      letter-spacing:.032em !important;
+      line-height:1.06 !important;
+      text-align:center !important;
+      text-transform:uppercase !important;
+      white-space:normal !important;
+      pointer-events:none !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      order:2 !important;
+      display:grid !important;
+      grid-template-columns:minmax(96px,1fr) 128px minmax(132px,1fr) !important;
+      gap:8px !important;
+      align-items:stretch !important;
+      justify-content:stretch !important;
+      width:100% !important;
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      margin:0 !important;
+      padding:0 !important;
+      position:relative !important;
+      top:auto !important;
+      transform:none !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap,
+    #weightBtn,
+    .weight-btn,
+    #addToCartBtn,
+    .add-cart-btn{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      margin:0 !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:128px !important;
+      min-width:128px !important;
+      max-width:128px !important;
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr) !important;
+      justify-self:center !important;
+      margin:0 !important;
+    }
+
+    #qtyInput,
+    .qty-input,
+    .qty-input-wrap{
+      width:42px !important;
+      min-width:42px !important;
+      max-width:42px !important;
+      text-align:center !important;
+    }
+  }
+
+  @media (max-width:760px){
+    #purchaseAnchorSpacer,
+    .purchase-anchor-spacer{
+      display:none !important;
+      height:0 !important;
+      min-height:0 !important;
+      flex:0 0 0 !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:8px !important;
+      width:100% !important;
+      height:auto !important;
+      min-height:0 !important;
+      margin:0 !important;
+      padding:0 !important;
+      transform:none !important;
+      justify-content:flex-start !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      order:1 !important;
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) minmax(76px, 96px) minmax(0,1fr) !important;
+      column-gap:6px !important;
+      row-gap:0 !important;
+      width:100% !important;
+      align-items:stretch !important;
+      margin:0 !important;
+    }
+
+    #styleSelectorNote{
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      max-width:96px !important;
+      color:rgba(11,18,32,0.48) !important;
+      font-size:8.5px !important;
+      font-weight:750 !important;
+      letter-spacing:.02em !important;
+      line-height:1.04 !important;
+      text-align:center !important;
+      text-transform:uppercase !important;
+      white-space:normal !important;
+      pointer-events:none !important;
+      user-select:none !important;
+    }
+
+    #roastLight,
+    #roastDark,
+    .selector-pill{
+      height:42px !important;
+      min-height:42px !important;
+      max-height:42px !important;
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      padding-left:7px !important;
+      padding-right:7px !important;
+      font-size:10.2px !important;
+      letter-spacing:.055em !important;
+      line-height:1.08 !important;
+      white-space:normal !important;
+      text-align:center !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      order:2 !important;
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+      grid-template-rows:40px 44px !important;
+      column-gap:8px !important;
+      row-gap:8px !important;
+      align-items:stretch !important;
+      justify-content:stretch !important;
+      width:100% !important;
+      height:auto !important;
+      min-height:0 !important;
+      max-height:none !important;
+      margin:0 !important;
+      padding:0 !important;
+      top:auto !important;
+      transform:none !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap{
+      grid-column:1 !important;
+      grid-row:1 !important;
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      justify-self:stretch !important;
+      height:40px !important;
+      min-height:40px !important;
+      max-height:40px !important;
+    }
+
+    #weightBtn,
+    .weight-btn{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      height:40px !important;
+      min-height:40px !important;
+      max-height:40px !important;
+      padding-left:10px !important;
+      padding-right:10px !important;
+      justify-content:space-between !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      grid-column:2 !important;
+      grid-row:1 !important;
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      height:40px !important;
+      min-height:40px !important;
+      max-height:40px !important;
+      justify-self:stretch !important;
+      margin:0 !important;
+      grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr) !important;
+    }
+
+    .qty-input-wrap{
+      width:42px !important;
+      min-width:42px !important;
+      max-width:42px !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      border-left:1px solid rgba(11,18,32,0.10) !important;
+      border-right:1px solid rgba(11,18,32,0.10) !important;
+    }
+
+    #qtyInput,
+    .qty-input{
+      width:42px !important;
+      min-width:42px !important;
+      max-width:42px !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+      text-align:center !important;
+      font-size:13px !important;
+      letter-spacing:.04em !important;
+    }
+
+    #qtyMinus,
+    #qtyPlus,
+    .qty-step{
+      width:auto !important;
+      min-width:0 !important;
+      max-width:none !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      font-size:19px !important;
+    }
+
+    #addToCartBtn,
+    .add-cart-btn{
+      grid-column:1 / -1 !important;
+      grid-row:2 !important;
+      justify-self:stretch !important;
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      height:44px !important;
+      min-height:44px !important;
+      max-height:44px !important;
+      margin:0 !important;
+      padding-left:12px !important;
+      padding-right:12px !important;
+      font-size:11.5px !important;
+      letter-spacing:.085em !important;
+      white-space:nowrap !important;
+    }
+  }
+
+  @media (max-width:380px){
+    #roastRow,
+    .selector-row--roast{
+      grid-template-columns:minmax(0,1fr) minmax(70px, 88px) minmax(0,1fr) !important;
+      column-gap:5px !important;
+    }
+
+    #styleSelectorNote{
+      max-width:88px !important;
+      font-size:7.9px !important;
+      letter-spacing:.012em !important;
+    }
+
+    #roastLight,
+    #roastDark,
+    .selector-pill{
+      font-size:9.7px !important;
+      letter-spacing:.045em !important;
+      padding-left:5px !important;
+      padding-right:5px !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      column-gap:7px !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr) !important;
+    }
+
+    #qtyInput,
+    .qty-input,
+    .qty-input-wrap{
+      width:40px !important;
+      min-width:40px !important;
+      max-width:40px !important;
+    }
+
+    #addToCartBtn,
+    .add-cart-btn{
+      font-size:10.8px !important;
+      letter-spacing:.07em !important;
+    }
+  }
+</style>
+
+<script id="mayanut-final-static-layout-safety-js">
 (function(){
   'use strict';
 
-  var tabletMQ = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  var root = document.documentElement;
-  var raf = 0;
-
-  function setSpacer(px){
-    var spacer = document.getElementById('purchaseAnchorSpacer');
-    if (!spacer) return;
-    root.style.setProperty('--mayanut-tablet-thumb-align-offset', px + 'px');
-    spacer.style.setProperty('display', tabletMQ.matches ? 'block' : 'none', 'important');
-    spacer.style.setProperty('height', px + 'px', 'important');
-    spacer.style.setProperty('min-height', px + 'px', 'important');
-    spacer.style.setProperty('flex-basis', px + 'px', 'important');
-  }
-
-  function syncTabletButtonsToThumbTop(){
-    window.cancelAnimationFrame(raf);
-    raf = window.requestAnimationFrame(function(){
-      if (!tabletMQ.matches){
-        setSpacer(0);
-        return;
-      }
-
-      var spacer = document.getElementById('purchaseAnchorSpacer');
-      var roastRow = document.getElementById('roastRow');
-      var thumbs = document.querySelector('.thumbs');
-      if (!spacer || !roastRow || !thumbs) return;
-
-      setSpacer(0);
-
-      window.requestAnimationFrame(function(){
-        var thumbTop = thumbs.getBoundingClientRect().top;
-        var rowTop = roastRow.getBoundingClientRect().top;
-        var delta = Math.ceil(thumbTop - rowTop);
-        if (!Number.isFinite(delta) || delta < 0) delta = 0;
-        setSpacer(delta);
-      });
+  function removeRecommendations(){
+    Array.prototype.forEach.call(document.querySelectorAll('.thumb-recommendations'), function(node){
+      node.remove();
     });
   }
 
-  function schedule(){
-    syncTabletButtonsToThumbTop();
-    window.setTimeout(syncTabletButtonsToThumbTop, 80);
-    window.setTimeout(syncTabletButtonsToThumbTop, 220);
+  function keepBrandSynced(){
+    var brandLockup = document.querySelector('.site-header .brand-lockup');
+    if (!brandLockup) return;
+    if (!brandLockup.querySelector('.brand-mayanut')) {
+      brandLockup.innerHTML = '<span class="brand-name" aria-label="The MayaNut Company"><span class="brand-small brand-the">The</span><span class="brand-mayanut"><span class="brand-maya">Maya</span><span class="brand-nut">Nut</span></span><span class="brand-small brand-company">Company</span></span>';
+    }
   }
 
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', schedule, {once:true});
+  function lockStaticSpacer(){
+    var root = document.documentElement;
+    var spacer = document.getElementById('purchaseAnchorSpacer');
+    if (!spacer) return;
+    root.style.removeProperty('--tablet-purchase-offset');
+    root.style.removeProperty('--mayanut-tablet-thumb-align-offset');
+    spacer.style.removeProperty('height');
+    spacer.style.removeProperty('min-height');
+    spacer.style.removeProperty('flex-basis');
+    spacer.style.removeProperty('display');
+  }
+
+  function sync(){
+    removeRecommendations();
+    keepBrandSynced();
+    lockStaticSpacer();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', sync, { once:true });
   } else {
-    schedule();
+    sync();
   }
 
-  window.addEventListener('load', schedule, {once:true, passive:true});
-  window.addEventListener('resize', schedule, {passive:true});
-  window.addEventListener('orientationchange', schedule, {passive:true});
-  window.addEventListener('pageshow', schedule, {passive:true});
-
-  Array.prototype.forEach.call(document.images || [], function(img){
-    if (!img.complete) img.addEventListener('load', schedule, {once:true, passive:true});
-  });
+  window.addEventListener('load', sync, { once:true, passive:true });
+  window.addEventListener('pageshow', sync, { passive:true });
 })();
 </script>
 

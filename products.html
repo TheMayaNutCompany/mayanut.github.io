@@ -9428,5 +9428,253 @@
 })();
 </script>
 
+
+
+<style id="mayanut-final-quantity-divider-and-tablet-lower-lock">
+  /* Final correction:
+     - Mobile quantity box is compact so the divider lines sit close to the center number.
+     - Tablet purchase controls are pinned to the top of the thumbnail row by script-measured spacer.
+  */
+
+  @media (min-width:761px) and (max-width:1180px){
+    #purchaseAnchorSpacer,
+    .purchase-anchor-spacer{
+      display:block !important;
+      height:var(--mayanut-tablet-thumb-align-offset, var(--tablet-purchase-offset, 0px)) !important;
+      min-height:var(--mayanut-tablet-thumb-align-offset, var(--tablet-purchase-offset, 0px)) !important;
+      flex:0 0 var(--mayanut-tablet-thumb-align-offset, var(--tablet-purchase-offset, 0px)) !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      margin-top:0 !important;
+      padding-top:0 !important;
+      transform:none !important;
+      align-self:stretch !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      margin-top:0 !important;
+      transform:none !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      margin-top:0 !important;
+      transform:none !important;
+    }
+  }
+
+  @media (max-width:760px){
+    #optionActionRow,
+    .option-action-row{
+      grid-template-columns:minmax(104px,118px) 136px !important;
+      grid-template-rows:40px 44px !important;
+      column-gap:8px !important;
+      row-gap:8px !important;
+      justify-content:space-between !important;
+      align-items:stretch !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      grid-column:2 !important;
+      grid-row:1 !important;
+      width:136px !important;
+      min-width:136px !important;
+      max-width:136px !important;
+      justify-self:end !important;
+      grid-template-columns:46px 44px 46px !important;
+      height:40px !important;
+      min-height:40px !important;
+      max-height:40px !important;
+    }
+
+    #qtyInput,
+    .qty-input{
+      width:44px !important;
+      min-width:44px !important;
+      max-width:44px !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+      text-align:center !important;
+    }
+
+    .qty-input-wrap{
+      width:44px !important;
+      min-width:44px !important;
+      max-width:44px !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+
+    #qtyMinus,
+    #qtyPlus,
+    .qty-step{
+      min-width:0 !important;
+      width:auto !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap{
+      grid-column:1 !important;
+      grid-row:1 !important;
+      width:118px !important;
+      min-width:104px !important;
+      max-width:118px !important;
+      justify-self:start !important;
+    }
+
+    #weightBtn,
+    .weight-btn{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+    }
+
+    #addToCartBtn,
+    .add-cart-btn{
+      grid-column:1 / -1 !important;
+      grid-row:2 !important;
+      width:100% !important;
+      max-width:none !important;
+      justify-self:stretch !important;
+    }
+  }
+
+  @media (max-width:380px){
+    #optionActionRow,
+    .option-action-row{
+      grid-template-columns:minmax(96px,108px) 126px !important;
+      column-gap:7px !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap{
+      width:108px !important;
+      min-width:96px !important;
+      max-width:108px !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:126px !important;
+      min-width:126px !important;
+      max-width:126px !important;
+      grid-template-columns:42px 42px 42px !important;
+    }
+
+    #qtyInput,
+    .qty-input,
+    .qty-input-wrap{
+      width:42px !important;
+      min-width:42px !important;
+      max-width:42px !important;
+    }
+  }
+
+  @media (max-width:340px){
+    #optionActionRow,
+    .option-action-row{
+      grid-template-columns:minmax(88px,100px) 120px !important;
+      column-gap:6px !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap{
+      width:100px !important;
+      min-width:88px !important;
+      max-width:100px !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:120px !important;
+      min-width:120px !important;
+      max-width:120px !important;
+      grid-template-columns:40px 40px 40px !important;
+    }
+
+    #qtyInput,
+    .qty-input,
+    .qty-input-wrap{
+      width:40px !important;
+      min-width:40px !important;
+      max-width:40px !important;
+    }
+  }
+</style>
+
+<script id="mayanut-final-tablet-thumbnail-top-sync">
+(function(){
+  'use strict';
+
+  var tabletMQ = window.matchMedia('(min-width:761px) and (max-width:1180px)');
+  var root = document.documentElement;
+  var raf = 0;
+
+  function setSpacer(px){
+    var spacer = document.getElementById('purchaseAnchorSpacer');
+    if (!spacer) return;
+    root.style.setProperty('--mayanut-tablet-thumb-align-offset', px + 'px');
+    spacer.style.setProperty('display', tabletMQ.matches ? 'block' : 'none', 'important');
+    spacer.style.setProperty('height', px + 'px', 'important');
+    spacer.style.setProperty('min-height', px + 'px', 'important');
+    spacer.style.setProperty('flex-basis', px + 'px', 'important');
+  }
+
+  function syncTabletButtonsToThumbTop(){
+    window.cancelAnimationFrame(raf);
+    raf = window.requestAnimationFrame(function(){
+      if (!tabletMQ.matches){
+        setSpacer(0);
+        return;
+      }
+
+      var spacer = document.getElementById('purchaseAnchorSpacer');
+      var roastRow = document.getElementById('roastRow');
+      var thumbs = document.querySelector('.thumbs');
+      if (!spacer || !roastRow || !thumbs) return;
+
+      setSpacer(0);
+
+      window.requestAnimationFrame(function(){
+        var thumbTop = thumbs.getBoundingClientRect().top;
+        var rowTop = roastRow.getBoundingClientRect().top;
+        var delta = Math.ceil(thumbTop - rowTop);
+        if (!Number.isFinite(delta) || delta < 0) delta = 0;
+        setSpacer(delta);
+      });
+    });
+  }
+
+  function schedule(){
+    syncTabletButtonsToThumbTop();
+    window.setTimeout(syncTabletButtonsToThumbTop, 80);
+    window.setTimeout(syncTabletButtonsToThumbTop, 220);
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', schedule, {once:true});
+  } else {
+    schedule();
+  }
+
+  window.addEventListener('load', schedule, {once:true, passive:true});
+  window.addEventListener('resize', schedule, {passive:true});
+  window.addEventListener('orientationchange', schedule, {passive:true});
+  window.addEventListener('pageshow', schedule, {passive:true});
+
+  Array.prototype.forEach.call(document.images || [], function(img){
+    if (!img.complete) img.addEventListener('load', schedule, {once:true, passive:true});
+  });
+})();
+</script>
+
 </body>
 </html>

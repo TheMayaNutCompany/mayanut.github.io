@@ -5325,6 +5325,147 @@
   }
 </style>
 
+
+<style id="mayanut-desktop-image-bottom-thumb-rec-final">
+  /* Final desktop-only product geometry lock:
+     - lower row (Wt / Qty / Add to Cart) bottom aligns with the big image bottom
+     - Flour/Powder row stays directly above that row
+     - recommendations sit below the buttons and start at the top of the thumbnail images
+     - recommendation sentence and bullets share the same left edge under the R in Recommendation
+     - no animation/transition on these layout elements, preventing flicker */
+  #purchaseControlsSection,
+  .purchase-controls-section,
+  #roastRow,
+  .selector-row--roast,
+  #optionActionRow,
+  .option-action-row,
+  .thumb-recommendations,
+  #purchaseAnchorSpacer,
+  .purchase-anchor-spacer{
+    transition:none !important;
+    animation:none !important;
+    will-change:auto !important;
+  }
+
+  .thumb-recommendations,
+  .thumb-recommendations .serving,
+  .thumb-recommendations ul,
+  .thumb-recommendations li{
+    text-align:left !important;
+  }
+
+  .thumb-recommendations .serving{
+    margin-left:0 !important;
+    margin-right:0 !important;
+    padding-left:0 !important;
+  }
+
+  .thumb-recommendations ul{
+    display:block !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    padding-left:0 !important;
+    list-style-position:inside !important;
+    max-width:none !important;
+  }
+
+  .thumb-recommendations li{
+    padding-left:0 !important;
+  }
+
+  @media (min-width:1181px){
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:12px !important;
+      width:100% !important;
+      min-height:0 !important;
+      height:auto !important;
+      justify-content:flex-start !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+      transform:none !important;
+      top:auto !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      order:1 !important;
+      display:grid !important;
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:12px !important;
+      width:100% !important;
+      margin:0 !important;
+      align-items:stretch !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      order:2 !important;
+      display:grid !important;
+      grid-template-columns:minmax(136px,1fr) 178px minmax(178px,1fr) !important;
+      gap:12px !important;
+      align-items:center !important;
+      justify-content:stretch !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+      transform:none !important;
+      top:auto !important;
+    }
+
+    #weightBtn,
+    .weight-btn,
+    #addToCartBtn,
+    .add-cart-btn{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:178px !important;
+      min-width:178px !important;
+      max-width:178px !important;
+      grid-template-columns:44px minmax(90px,1fr) 44px !important;
+      justify-self:center !important;
+      margin-left:0 !important;
+    }
+
+    #productBox > .thumb-recommendations,
+    .product-box > .thumb-recommendations{
+      display:block !important;
+      width:100% !important;
+      max-width:100% !important;
+      margin-left:0 !important;
+      margin-right:0 !important;
+      justify-self:stretch !important;
+      align-self:start !important;
+      transform:none !important;
+    }
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    /* Leave the stable tablet geometry intact; only keep recommendation text aligned under the R. */
+    #productGrid > .thumb-recommendations,
+    .product-grid > .thumb-recommendations{
+      text-align:left !important;
+    }
+
+    #productGrid > .thumb-recommendations .serving,
+    .product-grid > .thumb-recommendations .serving,
+    #productGrid > .thumb-recommendations ul,
+    .product-grid > .thumb-recommendations ul,
+    #productGrid > .thumb-recommendations li,
+    .product-grid > .thumb-recommendations li{
+      text-align:left !important;
+      margin-left:0 !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -7517,6 +7658,114 @@
   window.addEventListener('load', function(){ schedule(80); }, {once:true, passive:true});
   window.addEventListener('pageshow', function(){ schedule(80); }, {once:true, passive:true});
   window.addEventListener('orientationchange', function(){ schedule(140); }, {passive:true});
+})();
+</script>
+
+
+<script id="mayanut-desktop-image-bottom-thumb-rec-final-js">
+(function(){
+  'use strict';
+  var desktopMQ = window.matchMedia('(min-width:1181px)');
+  var productBox = document.getElementById('productBox') || document.querySelector('.product-box');
+  var productImg = document.querySelector('.product-img');
+  var thumbs = document.querySelector('.thumbs');
+  var purchaseControls = document.getElementById('purchaseControlsSection') || document.querySelector('.purchase-controls-section');
+  var optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
+  var selectorRow = document.getElementById('roastRow') || document.querySelector('.selector-row--roast');
+  var spacer = document.getElementById('purchaseAnchorSpacer') || document.querySelector('.purchase-anchor-spacer');
+  var recommendation = document.querySelector('.thumb-recommendations');
+
+  function important(el, prop, value){ if (el) el.style.setProperty(prop, value, 'important'); }
+  function clear(el, props){ if (!el) return; props.forEach(function(prop){ el.style.removeProperty(prop); }); }
+  function freeze(el){ if (!el) return; important(el,'transition','none'); important(el,'animation','none'); important(el,'will-change','auto'); }
+
+  function restoreDesktopParent(){
+    if (recommendation && productBox && recommendation.parentElement !== productBox){
+      productBox.appendChild(recommendation);
+    }
+  }
+
+  function resetDesktopInline(){
+    [purchaseControls, optionRow, selectorRow, recommendation, spacer].forEach(freeze);
+    [purchaseControls, recommendation, spacer].forEach(function(el){ clear(el, ['margin-top','height','min-height','flex-basis','transform','top']); });
+    important(spacer, 'display', 'block');
+    important(spacer, 'height', '0px');
+    important(spacer, 'min-height', '0px');
+    important(spacer, 'flex-basis', '0px');
+  }
+
+  function setTopByMargin(el, targetTop){
+    if (!el) return;
+    el.style.removeProperty('margin-top');
+    var currentTop = el.getBoundingClientRect().top;
+    var delta = Math.round(targetTop - currentTop);
+    if (!Number.isFinite(delta)) return;
+    important(el, 'margin-top', delta + 'px');
+  }
+
+  function setPurchaseBottomToImageBottom(){
+    if (!purchaseControls || !selectorRow || !optionRow || !productImg || !spacer) return;
+    purchaseControls.style.removeProperty('margin-top');
+    important(spacer, 'height', '0px');
+    important(spacer, 'min-height', '0px');
+    important(spacer, 'flex-basis', '0px');
+
+    var imageBottom = Math.round(productImg.getBoundingClientRect().bottom);
+    var selectorHeight = Math.ceil(selectorRow.getBoundingClientRect().height || 42);
+    var optionHeight = Math.ceil(optionRow.getBoundingClientRect().height || 48);
+    var gap = 12;
+    var targetTop = imageBottom - selectorHeight - gap - optionHeight;
+    var currentTop = Math.round(purchaseControls.getBoundingClientRect().top);
+    var delta = Math.round(targetTop - currentTop);
+    if (!Number.isFinite(delta)) return;
+
+    if (delta >= 0){
+      important(spacer, 'height', delta + 'px');
+      important(spacer, 'min-height', delta + 'px');
+      important(spacer, 'flex-basis', delta + 'px');
+      purchaseControls.style.removeProperty('margin-top');
+    } else {
+      important(purchaseControls, 'margin-top', delta + 'px');
+    }
+
+    // Fine correction after the first movement, so the bottom edge truly meets the image bottom.
+    window.requestAnimationFrame(function(){
+      var lowerBottom = Math.round(optionRow.getBoundingClientRect().bottom);
+      var correction = Math.round(imageBottom - lowerBottom);
+      if (!Number.isFinite(correction) || Math.abs(correction) < 1) return;
+      var currentMargin = parseFloat(window.getComputedStyle(purchaseControls).marginTop) || 0;
+      important(purchaseControls, 'margin-top', (currentMargin + correction) + 'px');
+    });
+  }
+
+  function alignDesktop(){
+    if (!desktopMQ.matches) return;
+    if (!productBox || !productImg || !thumbs || !purchaseControls || !optionRow || !selectorRow || !recommendation) return;
+    restoreDesktopParent();
+    resetDesktopInline();
+    important(purchaseControls, 'gap', '12px');
+    setPurchaseBottomToImageBottom();
+    window.requestAnimationFrame(function(){
+      setTopByMargin(recommendation, Math.round(thumbs.getBoundingClientRect().top));
+    });
+  }
+
+  var timer = null;
+  function schedule(delay){
+    window.clearTimeout(timer);
+    timer = window.setTimeout(function(){
+      window.requestAnimationFrame(alignDesktop);
+    }, delay == null ? 30 : delay);
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ schedule(0); }, {once:true});
+  } else {
+    schedule(0);
+  }
+  window.addEventListener('load', function(){ schedule(60); }, {once:true, passive:true});
+  window.addEventListener('pageshow', function(){ schedule(60); }, {once:true, passive:true});
+  window.addEventListener('resize', function(){ schedule(120); }, {passive:true});
 })();
 </script>
 

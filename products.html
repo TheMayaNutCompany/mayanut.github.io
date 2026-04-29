@@ -4514,6 +4514,52 @@
   }
 </style>
 
+
+<style id="mayanut-product-tablet-true-recommendation-alignment-final">
+  .footer-links a[aria-current="page"],
+  .footer-links a.footer-current-link{
+    color:var(--orange) !important;
+    text-decoration:none !important;
+    text-decoration-line:none !important;
+    text-decoration-color:transparent !important;
+    text-underline-offset:0 !important;
+    text-decoration-thickness:0 !important;
+    font-weight:700 !important;
+  }
+  .footer-links a[aria-current="page"]::after,
+  .footer-links a.footer-current-link::after{content:none !important;display:none !important;}
+  #roastGranules,.selector-pill[aria-label*="Granules"],.selector-pill[data-format="granules"]{display:none !important;}
+  #roastRow,.selector-row--roast{display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important;width:100% !important;order:1 !important;margin:0 !important;align-items:start !important;}
+  #purchaseControlsSection,.purchase-controls-section{display:flex !important;flex-direction:column !important;gap:2px !important;will-change:auto;}
+  #optionActionRow,.option-action-row{order:2 !important;margin-top:0 !important;margin-bottom:0 !important;}
+  #productFeedback,.product-feedback{order:3 !important;}
+  @media (min-width:761px) and (max-width:1180px){
+    .product-grid{grid-template-columns:minmax(300px,.92fr) minmax(0,1fr) !important;gap:clamp(14px,2vw,22px) !important;align-items:start !important;}
+    .left-col,.product-box{min-width:0 !important;}
+    .thumbs-recommendation-row{display:grid !important;grid-template-columns:1fr !important;gap:10px !important;align-items:start !important;width:100% !important;}
+    .thumbs-recommendation-row > .thumb-recommendations{margin-top:0 !important;width:100% !important;align-self:start !important;display:block !important;}
+    .thumb-recommendations .serving{margin-top:0 !important;}
+    .purchase-anchor-spacer{display:block !important;flex:0 0 auto !important;}
+    #purchaseControlsSection,.purchase-controls-section{gap:2px !important;}
+    #optionActionRow,.option-action-row{margin-top:0 !important;}
+    .selector-pill{min-width:0 !important;white-space:normal !important;text-align:center !important;line-height:1.08 !important;padding-left:8px !important;padding-right:8px !important;font-size:clamp(9.8px,.55vw + 7px,11px) !important;letter-spacing:.055em !important;}
+  }
+  @media (min-width:761px) and (max-width:860px){
+    .product-grid{grid-template-columns:minmax(270px,.9fr) minmax(0,1fr) !important;gap:14px !important;}
+    h1#productTitle{font-size:clamp(24px,3.35vw,29px) !important;white-space:normal !important;}
+    .features{gap:6px !important;}
+    .feat{font-size:clamp(8.2px,.45vw + 7px,10px) !important;}
+    .desc{font-size:13.5px !important;line-height:1.62 !important;}
+    .brief-meta{font-size:12.75px !important;line-height:1.45 !important;}
+  }
+  @media (max-width:760px){
+    .product-grid{grid-template-columns:1fr !important;}
+    #roastRow,.selector-row--roast{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important;}
+    #purchaseControlsSection,.purchase-controls-section{gap:4px !important;transform:none !important;}
+    #optionActionRow,.option-action-row{margin-top:1px !important;}
+  }
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -5995,250 +6041,22 @@
 })();
 </script>
 
-<script id="mayanut-products-final-alignment-fix">
-  (function(){
-    const mq = window.matchMedia('(min-width:981px)');
-    const leftCol = document.getElementById('leftCol');
-    const productBox = document.getElementById('productBox');
-    const recommendation = document.querySelector('.product-box > .thumb-recommendations');
-
-    function alignRecommendationBottom(){
-      if (!leftCol || !productBox || !recommendation || !mq.matches) {
-        if (recommendation) recommendation.style.marginTop = '';
-        return;
-      }
-
-      productBox.style.minHeight = Math.ceil(leftCol.getBoundingClientRect().height) + 'px';
-      recommendation.style.marginTop = 'auto';
-    }
-
-    window.addEventListener('load', alignRecommendationBottom, {passive:true});
-    window.addEventListener('resize', alignRecommendationBottom, {passive:true});
-    window.addEventListener('orientationchange', alignRecommendationBottom, {passive:true});
-    if (window.ResizeObserver && leftCol) {
-      const ro = new ResizeObserver(alignRecommendationBottom);
-      ro.observe(leftCol);
-      ro.observe(productBox);
-    }
-    requestAnimationFrame(alignRecommendationBottom);
-  })();
-</script>
 
 
-<script id="mayanut-products-final-control-thumb-alignment">
-  (function(){
-    const desktop = window.matchMedia('(min-width:981px)');
-    const thumbs = document.querySelector('.thumbs');
-    const selector = document.getElementById('roastRow');
-    const optionRow = document.getElementById('optionActionRow');
-    const spacer = document.getElementById('purchaseAnchorSpacer');
-    const leftCol = document.getElementById('leftCol');
-    const productBox = document.getElementById('productBox');
-    const recommendation = document.querySelector('.product-box > .thumb-recommendations');
-
-    function resetDynamicLayout(){
-      if (spacer) {
-        spacer.style.height = '';
-        spacer.style.minHeight = '';
-        spacer.style.flexBasis = '';
-        spacer.style.flex = '';
-      }
-      if (productBox) productBox.style.minHeight = '';
-      if (recommendation) recommendation.style.marginTop = '';
-    }
-
-    function alignProductControls(){
-      if (!desktop.matches || !thumbs || !selector || !optionRow || !spacer) {
-        resetDynamicLayout();
-        return;
-      }
-
-      spacer.style.flex = '0 0 auto';
-      spacer.style.height = '0px';
-      spacer.style.minHeight = '0px';
-      spacer.style.flexBasis = '0px';
-
-      requestAnimationFrame(function(){
-        const desiredTop = thumbs.getBoundingClientRect().top;
-        const currentTop = optionRow.getBoundingClientRect().top;
-        const delta = Math.round(desiredTop - currentTop);
-        const newSpacer = Math.max(0, delta);
-
-        spacer.style.height = newSpacer + 'px';
-        spacer.style.minHeight = newSpacer + 'px';
-        spacer.style.flexBasis = newSpacer + 'px';
-
-        requestAnimationFrame(function(){
-          if (leftCol && productBox && recommendation && desktop.matches) {
-            productBox.style.minHeight = Math.ceil(leftCol.getBoundingClientRect().height) + 'px';
-            recommendation.style.marginTop = 'auto';
-          }
-        });
-      });
-    }
-
-    window.addEventListener('load', alignProductControls, {passive:true});
-    window.addEventListener('resize', alignProductControls, {passive:true});
-    window.addEventListener('orientationchange', alignProductControls, {passive:true});
-
-    if (window.ResizeObserver) {
-      const ro = new ResizeObserver(alignProductControls);
-      if (thumbs) ro.observe(thumbs);
-      if (selector) ro.observe(selector);
-      if (optionRow) ro.observe(optionRow);
-      if (leftCol) ro.observe(leftCol);
-      if (productBox) ro.observe(productBox);
-    }
-  })();
-</script>
 
 
-<script id="mayanut-products-two-format-tablet-layout-js">
-  (function(){
-    const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-    const tabletTwoCol = window.matchMedia('(min-width:921px) and (max-width:1180px)');
-    const row = document.querySelector('.thumbs-recommendation-row');
-    const thumbs = document.querySelector('.thumbs');
-    const recommendation = document.querySelector('.thumb-recommendations');
-    const productBox = document.getElementById('productBox');
-    const purchaseControls = document.getElementById('purchaseControlsSection');
-    const selector = document.getElementById('roastRow');
-    const spacer = document.getElementById('purchaseAnchorSpacer');
-
-    function placeRecommendation(){
-      if (!recommendation || !row || !productBox) return;
-      if (tablet.matches) {
-        if (recommendation.parentElement !== row) row.appendChild(recommendation);
-      } else {
-        if (recommendation.parentElement !== productBox) {
-          if (purchaseControls && purchaseControls.nextSibling) {
-            productBox.insertBefore(recommendation, purchaseControls.nextSibling);
-          } else {
-            productBox.appendChild(recommendation);
-          }
-        }
-      }
-    }
-
-    function alignTabletSelector(){
-      placeRecommendation();
-      if (!tabletTwoCol.matches || !thumbs || !selector || !spacer) {
-        if (spacer) {
-          spacer.style.height = '';
-          spacer.style.minHeight = '';
-          spacer.style.flexBasis = '';
-          spacer.style.flex = '';
-        }
-        return;
-      }
-
-      spacer.style.flex = '0 0 auto';
-      spacer.style.height = '0px';
-      spacer.style.minHeight = '0px';
-      spacer.style.flexBasis = '0px';
-
-      requestAnimationFrame(function(){
-        const desiredTop = Math.round(thumbs.getBoundingClientRect().bottom);
-        const currentTop = Math.round(selector.getBoundingClientRect().top);
-        const delta = Math.max(0, desiredTop - currentTop);
-        spacer.style.height = delta + 'px';
-        spacer.style.minHeight = delta + 'px';
-        spacer.style.flexBasis = delta + 'px';
-      });
-    }
-
-    window.addEventListener('load', alignTabletSelector, {passive:true});
-    window.addEventListener('resize', alignTabletSelector, {passive:true});
-    window.addEventListener('orientationchange', alignTabletSelector, {passive:true});
-    requestAnimationFrame(alignTabletSelector);
-    setTimeout(alignTabletSelector, 150);
-    setTimeout(alignTabletSelector, 450);
-  })();
-</script>
 
 
-<style id="mayanut-products-tablet-recommendation-dynamic-final">
-  @media (min-width:761px) and (max-width:1180px){
-    .thumbs-recommendation-row{display:grid !important;grid-template-columns:1fr !important;gap:10px !important;align-items:start !important;width:100% !important;}
-    .thumbs-recommendation-row > .thumb-recommendations{margin-top:0 !important;width:100% !important;align-self:start !important;display:block !important;}
-    #roastRow,.selector-row--roast{grid-template-columns:repeat(2, minmax(0, 1fr)) !important;align-items:start !important;}
-  }
-  @media (max-width:760px){#roastRow,.selector-row--roast{grid-template-columns:repeat(2, minmax(0, 1fr)) !important;}}
-</style>
-<script id="mayanut-products-dynamic-recommendations-and-tablet-align">
-(function(){
-  const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  const tabletTwoCol = window.matchMedia('(min-width:921px) and (max-width:1180px)');
-  const row = document.querySelector('.thumbs-recommendation-row');
-  const recommendation = document.querySelector('.thumb-recommendations');
-  const productBox = document.getElementById('productBox');
-  const purchaseControls = document.getElementById('purchaseControlsSection');
-  const selector = document.getElementById('roastRow');
-  const spacer = document.getElementById('purchaseAnchorSpacer');
-  const roastLight = document.getElementById('roastLight');
-  const roastDark = document.getElementById('roastDark');
-  if (!recommendation || !selector) return;
-  const copy = {
-    flour: {
-      label: 'MayaNut™ Flour recommendations',
-      serving: '<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads. Adjust to taste.',
-      items: ['Best for baking-forward uses where smooth texture matters.','Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.']
-    },
-    powder: {
-      label: 'MayaNut™ Powder recommendations',
-      serving: '<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',
-      items: ['Best for smoothies, açaí bowls, oats, warm drinks, and roast-forward daily uses.','Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.']
-    }
-  };
-  function currentType(){ return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour'; }
-  function setRecommendation(type){
-    const chosen = copy[type === 'powder' ? 'powder' : 'flour'];
-    recommendation.setAttribute('aria-label', chosen.label);
-    recommendation.innerHTML = '<p class="serving">' + chosen.serving + '</p><ul aria-label="Quick uses list">' + chosen.items.map(function(item){return '<li>' + item + '</li>';}).join('') + '</ul>';
-  }
-  function placeRecommendation(){
-    if (!row || !productBox) return;
-    if (tablet.matches) {
-      if (recommendation.parentElement !== row) row.appendChild(recommendation);
-    } else if (recommendation.parentElement !== productBox) {
-      if (purchaseControls && purchaseControls.nextSibling) productBox.insertBefore(recommendation, purchaseControls.nextSibling);
-      else productBox.appendChild(recommendation);
-    }
-  }
-  function clearTabletSpacerOnly(){
-    if (!spacer) return;
-    spacer.style.height = ''; spacer.style.minHeight = ''; spacer.style.flexBasis = ''; spacer.style.flex = '';
-  }
-  function alignTabletSelectorToRecommendation(){
-    setRecommendation(currentType());
-    placeRecommendation();
-    if (!spacer || !selector) return;
-    if (!tablet.matches) { if (window.innerWidth <= 760) clearTabletSpacerOnly(); return; }
-    if (!tabletTwoCol.matches) { clearTabletSpacerOnly(); return; }
-    const serving = recommendation.querySelector('.serving');
-    if (!serving) return;
-    spacer.style.flex = '0 0 auto'; spacer.style.height = '0px'; spacer.style.minHeight = '0px'; spacer.style.flexBasis = '0px';
-    requestAnimationFrame(function(){
-      const desiredTop = Math.round(serving.getBoundingClientRect().top);
-      const currentTop = Math.round(selector.getBoundingClientRect().top);
-      const delta = Math.max(0, desiredTop - currentTop);
-      spacer.style.height = delta + 'px'; spacer.style.minHeight = delta + 'px'; spacer.style.flexBasis = delta + 'px';
-    });
-  }
-  [roastLight, roastDark].forEach(function(button){
-    if (!button) return;
-    button.addEventListener('click', function(){ requestAnimationFrame(alignTabletSelectorToRecommendation); setTimeout(alignTabletSelectorToRecommendation, 80); });
-  });
-  window.addEventListener('load', alignTabletSelectorToRecommendation, {passive:true});
-  window.addEventListener('resize', alignTabletSelectorToRecommendation, {passive:true});
-  window.addEventListener('orientationchange', alignTabletSelectorToRecommendation, {passive:true});
-  window.addEventListener('pageshow', alignTabletSelectorToRecommendation, {passive:true});
-  requestAnimationFrame(alignTabletSelectorToRecommendation);
-  setTimeout(alignTabletSelectorToRecommendation, 180);
-  setTimeout(alignTabletSelectorToRecommendation, 520);
-  setTimeout(alignTabletSelectorToRecommendation, 900);
-})();
-</script>
+
+
+
+
+
+
+
+
+
+
 
 <script id="mayanut-footer-current-page-link-script">
   (function markCurrentFooterLink(){
@@ -6262,10 +6080,16 @@
 </script>
 
 
-<script id="mayanut-product-final-tablet-selector-recommendation-aligner">
+
+
+
+
+
+
+
+<script id="mayanut-product-tablet-true-recommendation-alignment-js">
 (function(){
   const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  const tabletTwoCol = window.matchMedia('(min-width:921px) and (max-width:1180px)');
   const row = document.querySelector('.thumbs-recommendation-row');
   const recommendation = document.querySelector('.thumb-recommendations');
   const productBox = document.getElementById('productBox') || document.querySelector('.product-box');
@@ -6275,253 +6099,20 @@
   const optionRow = document.getElementById('optionActionRow');
   const roastLight = document.getElementById('roastLight');
   const roastDark = document.getElementById('roastDark');
-  if (!recommendation || !selector) return;
-
+  if (!recommendation || !selector || !purchaseControls) return;
   const recommendationCopy = {
-    flour: {
-      label: 'MayaNut™ Flour baking recommendations',
-      serving: '<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads.',
-      items: [
-        'Best for baking-forward uses where smooth texture matters.',
-        'Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.',
-        'Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.'
-      ]
-    },
-    powder: {
-      label: 'MayaNut™ Powder drink and bowl recommendations',
-      serving: '<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',
-      items: [
-        'Best for smoothies, açaí bowls, oatmeal, warm drinks, and roast-forward daily uses.',
-        'Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.',
-        'Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.'
-      ]
-    }
+    flour:{label:'MayaNut™ Flour baking recommendations',serving:'<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads.',items:['Best for baking-forward uses where smooth texture matters.','Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.']},
+    powder:{label:'MayaNut™ Powder drink and bowl recommendations',serving:'<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',items:['Best for smoothies, açaí bowls, oatmeal, warm drinks, and roast-forward daily uses.','Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.']}
   };
-
-  function currentType(){
-    return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour';
-  }
-
-  function setRecommendation(type){
-    const chosen = recommendationCopy[type === 'powder' ? 'powder' : 'flour'];
-    recommendation.setAttribute('aria-label', chosen.label);
-    recommendation.innerHTML = '<p class="serving">' + chosen.serving + '</p><ul aria-label="Quick uses list">' + chosen.items.map(function(item){ return '<li>' + item + '</li>'; }).join('') + '</ul>';
-  }
-
-  function placeRecommendation(){
-    if (!row || !productBox) return;
-    if (tablet.matches) {
-      if (recommendation.parentElement !== row) row.appendChild(recommendation);
-    } else if (recommendation.parentElement !== productBox) {
-      if (purchaseControls && purchaseControls.nextSibling) productBox.insertBefore(recommendation, purchaseControls.nextSibling);
-      else productBox.appendChild(recommendation);
-    }
-  }
-
-  function resetInlineAlignment(){
-    if (spacer) {
-      spacer.style.flex = '';
-      spacer.style.height = '';
-      spacer.style.minHeight = '';
-      spacer.style.flexBasis = '';
-    }
-    if (purchaseControls) {
-      purchaseControls.style.marginTop = '';
-    }
-  }
-
-  function alignTabletSelectorToRecommendation(){
-    setRecommendation(currentType());
-    placeRecommendation();
-    resetInlineAlignment();
-    if (!tablet.matches || !tabletTwoCol.matches || !spacer || !selector || !purchaseControls) return;
-
-    const serving = recommendation.querySelector('.serving');
-    if (!serving) return;
-
-    // Start from natural layout, then compute the correction needed so the top
-    // of the Flour/Powder button row equals the top of the Recommendation line.
-    spacer.style.flex = '0 0 auto';
-    spacer.style.height = '0px';
-    spacer.style.minHeight = '0px';
-    spacer.style.flexBasis = '0px';
-    purchaseControls.style.marginTop = '0px';
-
-    requestAnimationFrame(function(){
-      const desiredTop = Math.round(serving.getBoundingClientRect().top);
-      const selectorTop = Math.round(selector.getBoundingClientRect().top);
-      const delta = desiredTop - selectorTop;
-
-      if (delta >= 0) {
-        spacer.style.height = delta + 'px';
-        spacer.style.minHeight = delta + 'px';
-        spacer.style.flexBasis = delta + 'px';
-        purchaseControls.style.marginTop = '0px';
-      } else {
-        spacer.style.height = '0px';
-        spacer.style.minHeight = '0px';
-        spacer.style.flexBasis = '0px';
-        purchaseControls.style.marginTop = delta + 'px';
-      }
-
-      if (optionRow) optionRow.style.marginTop = '3px';
-    });
-  }
-
-  function scheduleAlign(){
-    alignTabletSelectorToRecommendation();
-    setTimeout(alignTabletSelectorToRecommendation, 60);
-    setTimeout(alignTabletSelectorToRecommendation, 180);
-    setTimeout(alignTabletSelectorToRecommendation, 420);
-  }
-
-  [roastLight, roastDark].forEach(function(button){
-    if (!button) return;
-    button.addEventListener('click', scheduleAlign);
-  });
-
-  window.addEventListener('load', scheduleAlign, {passive:true});
-  window.addEventListener('resize', scheduleAlign, {passive:true});
-  window.addEventListener('orientationchange', scheduleAlign, {passive:true});
-  window.addEventListener('pageshow', scheduleAlign, {passive:true});
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleAlign).catch(function(){});
-  scheduleAlign();
-})();
-</script>
-
-<script id="mayanut-product-final-tablet-perfect-aligner-no-underline">
-(function(){
-  const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  const tabletTwoColumn = window.matchMedia('(min-width:921px) and (max-width:1180px)');
-  const row = document.querySelector('.thumbs-recommendation-row');
-  const recommendation = document.querySelector('.thumb-recommendations');
-  const productBox = document.getElementById('productBox') || document.querySelector('.product-box');
-  const purchaseControls = document.getElementById('purchaseControlsSection');
-  const selector = document.getElementById('roastRow');
-  const spacer = document.getElementById('purchaseAnchorSpacer');
-  const optionRow = document.getElementById('optionActionRow');
-  const roastLight = document.getElementById('roastLight');
-  const roastDark = document.getElementById('roastDark');
-
-  const recommendationCopy = {
-    flour: {
-      label: 'MayaNut™ Flour baking recommendations',
-      serving: '<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads.',
-      items: [
-        'Best for baking-forward uses where smooth texture matters.',
-        'Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.',
-        'Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.'
-      ]
-    },
-    powder: {
-      label: 'MayaNut™ Powder drink and bowl recommendations',
-      serving: '<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',
-      items: [
-        'Best for smoothies, açaí bowls, oatmeal, warm drinks, and roast-forward daily uses.',
-        'Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.',
-        'Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.'
-      ]
-    }
-  };
-
-  function currentType(){
-    return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour';
-  }
-
-  function setRecommendation(type){
-    if (!recommendation) return;
-    const chosen = recommendationCopy[type === 'powder' ? 'powder' : 'flour'];
-    recommendation.setAttribute('aria-label', chosen.label);
-    recommendation.innerHTML = '<p class="serving">' + chosen.serving + '</p><ul aria-label="Quick uses list">' + chosen.items.map(function(item){ return '<li>' + item + '</li>'; }).join('') + '</ul>';
-  }
-
-  function keepFooterCurrentOrangeOnly(){
-    Array.prototype.slice.call(document.querySelectorAll('.footer-links a[aria-current="page"], .footer-links a.footer-current-link')).forEach(function(link){
-      link.style.color = 'var(--orange)';
-      link.style.textDecoration = 'none';
-      link.style.textDecorationLine = 'none';
-      link.style.textDecorationColor = 'transparent';
-      link.style.fontWeight = '700';
-    });
-  }
-
-  function placeRecommendation(){
-    if (!recommendation || !productBox) return;
-    if (tablet.matches && row) {
-      if (recommendation.parentElement !== row) row.appendChild(recommendation);
-    } else if (recommendation.parentElement !== productBox) {
-      if (purchaseControls && purchaseControls.nextSibling) productBox.insertBefore(recommendation, purchaseControls.nextSibling);
-      else productBox.appendChild(recommendation);
-    }
-  }
-
-  function resetAlignment(){
-    if (spacer) {
-      spacer.style.flex = '';
-      spacer.style.height = '';
-      spacer.style.minHeight = '';
-      spacer.style.flexBasis = '';
-    }
-    if (purchaseControls) purchaseControls.style.marginTop = '';
-    if (optionRow) optionRow.style.marginTop = '1px';
-  }
-
-  function alignControlsToRecommendation(){
-    setRecommendation(currentType());
-    keepFooterCurrentOrangeOnly();
-    placeRecommendation();
-    resetAlignment();
-
-    if (!tablet.matches || !tabletTwoColumn.matches || !recommendation || !selector || !spacer || !purchaseControls) return;
-
-    const serving = recommendation.querySelector('.serving');
-    if (!serving) return;
-
-    spacer.style.flex = '0 0 auto';
-    spacer.style.height = '0px';
-    spacer.style.minHeight = '0px';
-    spacer.style.flexBasis = '0px';
-    purchaseControls.style.marginTop = '0px';
-    if (optionRow) optionRow.style.marginTop = '1px';
-
-    requestAnimationFrame(function(){
-      const desiredTop = Math.round(serving.getBoundingClientRect().top);
-      const selectorTop = Math.round(selector.getBoundingClientRect().top);
-      const delta = desiredTop - selectorTop;
-      if (delta >= 0) {
-        spacer.style.height = delta + 'px';
-        spacer.style.minHeight = delta + 'px';
-        spacer.style.flexBasis = delta + 'px';
-        purchaseControls.style.marginTop = '0px';
-      } else {
-        spacer.style.height = '0px';
-        spacer.style.minHeight = '0px';
-        spacer.style.flexBasis = '0px';
-        purchaseControls.style.marginTop = delta + 'px';
-      }
-      if (optionRow) optionRow.style.marginTop = '1px';
-    });
-  }
-
-  function scheduleAlignment(){
-    alignControlsToRecommendation();
-    setTimeout(alignControlsToRecommendation, 60);
-    setTimeout(alignControlsToRecommendation, 180);
-    setTimeout(alignControlsToRecommendation, 420);
-    setTimeout(alignControlsToRecommendation, 900);
-  }
-
-  [roastLight, roastDark].forEach(function(button){
-    if (!button) return;
-    button.addEventListener('click', scheduleAlignment);
-  });
-
-  window.addEventListener('load', scheduleAlignment, {passive:true});
-  window.addEventListener('resize', scheduleAlignment, {passive:true});
-  window.addEventListener('orientationchange', scheduleAlignment, {passive:true});
-  window.addEventListener('pageshow', scheduleAlignment, {passive:true});
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleAlignment).catch(function(){});
-  scheduleAlignment();
+  function currentType(){return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour';}
+  function setRecommendation(type){const chosen=recommendationCopy[type==='powder'?'powder':'flour'];recommendation.setAttribute('aria-label',chosen.label);recommendation.innerHTML='<p class="serving">'+chosen.serving+'</p><ul aria-label="Quick uses list">'+chosen.items.map(function(item){return '<li>'+item+'</li>';}).join('')+'</ul>';}
+  function placeRecommendation(){if(tablet.matches && row){if(recommendation.parentElement!==row)row.appendChild(recommendation);}else if(productBox && recommendation.parentElement!==productBox){if(purchaseControls && purchaseControls.nextSibling)productBox.insertBefore(recommendation,purchaseControls.nextSibling);else productBox.appendChild(recommendation);}}
+  function footerCurrentOrangeOnly(){document.querySelectorAll('.footer-links a[aria-current="page"], .footer-links a.footer-current-link').forEach(function(link){link.style.color='var(--orange)';link.style.textDecoration='none';link.style.textDecorationLine='none';link.style.textDecorationColor='transparent';link.style.fontWeight='700';});}
+  function resetAlignment(){if(spacer){spacer.style.display=tablet.matches?'block':'';spacer.style.flex='0 0 auto';spacer.style.height='0px';spacer.style.minHeight='0px';spacer.style.flexBasis='0px';}purchaseControls.style.marginTop='0px';purchaseControls.style.transform='none';purchaseControls.style.willChange='auto';if(optionRow)optionRow.style.marginTop='0px';}
+  function align(){setRecommendation(currentType());placeRecommendation();footerCurrentOrangeOnly();resetAlignment();if(!tablet.matches || !spacer)return;const serving=recommendation.querySelector('.serving');if(!serving)return;requestAnimationFrame(function(){resetAlignment();const desiredTop=Math.round(serving.getBoundingClientRect().top);const selectorTop=Math.round(selector.getBoundingClientRect().top);const delta=desiredTop-selectorTop;if(delta>=0){spacer.style.height=delta+'px';spacer.style.minHeight=delta+'px';spacer.style.flexBasis=delta+'px';purchaseControls.style.transform='none';}else{spacer.style.height='0px';spacer.style.minHeight='0px';spacer.style.flexBasis='0px';purchaseControls.style.transform='translateY('+delta+'px)';purchaseControls.style.willChange='transform';}if(optionRow)optionRow.style.marginTop='0px';});}
+  function schedule(){align();window.setTimeout(align,60);window.setTimeout(align,180);window.setTimeout(align,420);window.setTimeout(align,920);window.setTimeout(align,1320);}
+  [roastLight,roastDark].forEach(function(button){if(!button)return;button.addEventListener('click',schedule);});
+  window.addEventListener('load',schedule,{passive:true});window.addEventListener('resize',schedule,{passive:true});window.addEventListener('orientationchange',schedule,{passive:true});window.addEventListener('pageshow',schedule,{passive:true});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(schedule).catch(function(){});schedule();
 })();
 </script>
 

@@ -4563,15 +4563,16 @@
 
 <style id="mayanut-plain-orange-checks-fade-final">
   /* Final product feature checkmark polish:
-     - remove orange circles
-     - use larger plain orange checkmarks
-     - replace pulse/scale animation with left-to-right fade-in only */
+     - larger plain orange checkmarks
+     - each check fades in independently from left to right
+     - starts immediately when the page script reaches the feature row
+     - faster stagger, slightly slower individual fade */
   .features .feat .chk{
-    width:20px !important;
-    height:20px !important;
-    min-width:20px !important;
-    min-height:20px !important;
-    flex:0 0 20px !important;
+    width:24px !important;
+    height:24px !important;
+    min-width:24px !important;
+    min-height:24px !important;
+    flex:0 0 24px !important;
     border-radius:0 !important;
     background:transparent !important;
     display:inline-flex !important;
@@ -4583,11 +4584,11 @@
   }
 
   .features .feat .chk svg{
-    width:15px !important;
-    height:15px !important;
+    width:19px !important;
+    height:19px !important;
     stroke:var(--orange) !important;
     fill:none !important;
-    stroke-width:3.25 !important;
+    stroke-width:3.45 !important;
     stroke-linecap:round !important;
     stroke-linejoin:round !important;
   }
@@ -4595,12 +4596,12 @@
   .features.is-intro-playing .feat .chk{
     opacity:0 !important;
     transform:none !important;
-    animation:mayanutCheckFadeOnly .48s ease-out 1 forwards !important;
+    animation:mayanutCheckFadeOnly .64s ease-out 1 forwards !important;
   }
 
-  .features.is-intro-playing .feat:nth-child(1) .chk{ animation-delay:.05s !important; }
-  .features.is-intro-playing .feat:nth-child(2) .chk{ animation-delay:.24s !important; }
-  .features.is-intro-playing .feat:nth-child(3) .chk{ animation-delay:.43s !important; }
+  .features.is-intro-playing .feat:nth-child(1) .chk{ animation-delay:0s !important; }
+  .features.is-intro-playing .feat:nth-child(2) .chk{ animation-delay:.11s !important; }
+  .features.is-intro-playing .feat:nth-child(3) .chk{ animation-delay:.22s !important; }
 
   .features .feat .chk.is-pulsing{
     animation:none !important;
@@ -4608,24 +4609,24 @@
     transform:none !important;
   }
 
-  @keyframes mayanutCheckFadeOnly{
+   mayanutCheckFadeOnly{
     0%{ opacity:0; }
     100%{ opacity:1; }
   }
 
-  @media (max-width:760px){
+   (max-width:760px){
     .features .feat .chk{
-      width:18px !important;
-      height:18px !important;
-      min-width:18px !important;
-      min-height:18px !important;
-      flex-basis:18px !important;
+      width:21px !important;
+      height:21px !important;
+      min-width:21px !important;
+      min-height:21px !important;
+      flex-basis:21px !important;
     }
 
     .features .feat .chk svg{
-      width:14px !important;
-      height:14px !important;
-      stroke-width:3.15 !important;
+      width:17px !important;
+      height:17px !important;
+      stroke-width:3.35 !important;
     }
   }
 </style>
@@ -5253,12 +5254,12 @@
         }, 1900);
       }
 
-      if (document.readyState === 'complete') {
-        requestAnimationFrame(playIntro);
-      } else {
-        window.addEventListener('load', function(){
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function(){
           requestAnimationFrame(playIntro);
         }, { once:true });
+      } else {
+        requestAnimationFrame(playIntro);
       }
     })();
   </script>

@@ -237,8 +237,8 @@
         },
         {
           "@type": "PropertyValue",
-          "name": "Roast Options",
-          "value": "Light Roast, Dark Roast"
+          "name": "Product Options",
+          "value": "MayaNut™ Flour, MayaNut™ Powder, MayaNut™ Granules"
         },
         {
           "@type": "PropertyValue",
@@ -1499,8 +1499,8 @@
 
     .selector-row--roast{
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:8px;
       margin:0;
     }
 
@@ -3607,6 +3607,52 @@
   }
 </style>
 
+
+<style id="mayanut-product-format-and-cart-refinement">
+  .header-cart .cart-icon{
+    width:48px !important;
+    height:48px !important;
+    transform:translateY(3px) !important;
+  }
+
+  .selector-row--roast{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:8px !important;
+  }
+
+  .selector-pill{
+    min-width:0 !important;
+    padding-left:8px !important;
+    padding-right:8px !important;
+    font-size:10.5px !important;
+    letter-spacing:.055em !important;
+  }
+
+  .purchase-controls-section{
+    gap:6px !important;
+  }
+
+  .option-action-row{
+    margin-top:-2px !important;
+  }
+
+  @media (max-width:640px){
+    .selector-row--roast{
+      grid-template-columns:1fr !important;
+      gap:8px !important;
+    }
+
+    .selector-pill{
+      height:42px !important;
+      font-size:11px !important;
+      letter-spacing:.07em !important;
+    }
+
+    .option-action-row{
+      margin-top:0 !important;
+    }
+  }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -3783,12 +3829,15 @@
 <div aria-hidden="true" class="purchase-anchor-spacer" id="purchaseAnchorSpacer"></div>
 </div>
 <div aria-label="Product options and purchase controls" class="purchase-controls-section" id="purchaseControlsSection">
-<div aria-label="Roast selectors" class="selector-row--roast" id="roastRow">
-<button aria-label="Select light roast" aria-pressed="true" class="selector-pill active" id="roastLight" type="button">
-                  Light Roast
+<div aria-label="Product format selectors" class="selector-row--roast" id="roastRow">
+<button aria-label="Select MayaNut™ Flour" aria-pressed="true" class="selector-pill active" id="roastLight" type="button">
+                  MayaNut™ Flour
                 </button>
-<button aria-label="Select dark roast" aria-pressed="false" class="selector-pill" id="roastDark" type="button">
-                  Dark Roast
+<button aria-label="Select MayaNut™ Powder" aria-pressed="false" class="selector-pill" id="roastDark" type="button">
+                  MayaNut™ Powder
+                </button>
+<button aria-label="Select MayaNut™ Granules for steeping and coffee-style beverages" aria-pressed="false" class="selector-pill" id="roastGranules" type="button">
+                  MayaNut™ Granules
                 </button>
 </div>
 <div aria-label="Weight quantity and add to cart" class="option-action-row" id="optionActionRow">
@@ -4265,6 +4314,7 @@
 
       const roastLight = document.getElementById("roastLight");
       const roastDark = document.getElementById("roastDark");
+      const roastGranules = document.getElementById("roastGranules");
 
       const qtyInput = document.getElementById("qtyInput");
       const qtyMinus = document.getElementById("qtyMinus");
@@ -4342,6 +4392,17 @@
         return "$" + value.toFixed(2);
       }
 
+      function normalizeRoast(type){
+        return type === "dark" ? "dark" : (type === "granules" ? "granules" : "light");
+      }
+
+      function getRoastLabel(type){
+        const normalized = normalizeRoast(type);
+        if (normalized === "dark") return "MayaNut™ Powder";
+        if (normalized === "granules") return "MayaNut™ Granules";
+        return "MayaNut™ Flour";
+      }
+
       function ensureCartDefaults(){
         if (localStorage.getItem(FALLBACK_COUNT_KEY) === null) {
           localStorage.setItem(FALLBACK_COUNT_KEY, "0");
@@ -4399,7 +4460,7 @@
           title: "MayaNut™ Flour & Powder",
           weight: (parsed && parsed.weight) || "1/4 LB",
           qty: parsedQty,
-          roast: (parsed && parsed.roast) === "dark" ? "dark" : "light",
+          roast: normalizeRoast(parsed && parsed.roast),
           count: effectiveCount,
           image: (parsed && parsed.image) || images[0].src
         };
@@ -4416,7 +4477,7 @@
           title: "MayaNut™ Flour & Powder",
           weight: (nextState && nextState.weight) || selectedWeight || "1/4 LB",
           qty: clampCartQty((nextState && nextState.qty) != null ? nextState.qty : cartCount),
-          roast: ((nextState && nextState.roast) === "dark") ? "dark" : "light",
+          roast: normalizeRoast((nextState && nextState.roast) || selectedRoast),
           count: clampCartQty((nextState && nextState.count) != null ? nextState.count : ((nextState && nextState.qty) != null ? nextState.qty : cartCount)),
           image: (nextState && nextState.image) || images[0].src
         };
@@ -4443,7 +4504,7 @@
 
         cartQty.textContent = String(activeState.qty || 0);
         cartWeight.textContent = activeState.weight || "1/4 LB";
-        cartItemRoast.textContent = activeState.roast === "dark" ? "Dark Roast" : "Light Roast";
+        cartItemRoast.textContent = getRoastLabel(activeState.roast);
         safeSetImg(cartItemImg, activeState.image || images[0].src, "MayaNut™ Flour & Powder product pouch");
 
         const hasItems = cartCount > 0;
@@ -4477,12 +4538,19 @@
       }
 
       function setRoast(type){
-        const isLight = type === "light";
-        selectedRoast = isLight ? "light" : "dark";
+        selectedRoast = normalizeRoast(type);
+        const isLight = selectedRoast === "light";
+        const isDark = selectedRoast === "dark";
+        const isGranules = selectedRoast === "granules";
+
         roastLight.classList.toggle("active", isLight);
-        roastDark.classList.toggle("active", !isLight);
+        roastDark.classList.toggle("active", isDark);
+        if (roastGranules) roastGranules.classList.toggle("active", isGranules);
+
         roastLight.setAttribute("aria-pressed", isLight ? "true" : "false");
-        roastDark.setAttribute("aria-pressed", !isLight ? "true" : "false");
+        roastDark.setAttribute("aria-pressed", isDark ? "true" : "false");
+        if (roastGranules) roastGranules.setAttribute("aria-pressed", isGranules ? "true" : "false");
+
         saveSelectionState();
         scheduleSyncHeights();
       }
@@ -4789,6 +4857,7 @@
 
       roastLight.addEventListener("click", function(){ setRoast("light"); });
       roastDark.addEventListener("click", function(){ setRoast("dark"); });
+      if (roastGranules) roastGranules.addEventListener("click", function(){ setRoast("granules"); });
 
       weightBtn.addEventListener("click", function(e){
         e.stopPropagation();
@@ -4926,7 +4995,7 @@
 
       const storedSelectionQty = parseNonNegativeInt(localStorage.getItem(FALLBACK_QTY_KEY) || "0");
       selectedQty = storedSelectionQty > 0 ? clampQty(storedSelectionQty) : 1;
-      selectedRoast = localStorage.getItem(FALLBACK_ROAST_KEY) === "dark" ? "dark" : "light";
+      selectedRoast = normalizeRoast(localStorage.getItem(FALLBACK_ROAST_KEY));
       selectedWeight = stored.weight || "1/4 LB";
 
       setWeight(selectedWeight);

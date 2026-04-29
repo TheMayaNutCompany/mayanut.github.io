@@ -6771,5 +6771,183 @@
   })();
 </script>
 
+
+
+<style id="mayanut-final-purchase-row-spacing-alignment">
+  /* Final purchase-row geometry polish.
+     Desktop: selector row spans the product-box width; weight aligns left with MayaNut™ Flour;
+     quantity sits centered; add-to-cart aligns right with MayaNut™ Powder;
+     the two rows have a clearer vertical gap; the lower row aligns to the thumbnail top. */
+  @media (min-width:1181px){
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:12px !important;
+      width:100% !important;
+      margin-top:0 !important;
+      padding-top:0 !important;
+      justify-content:flex-start !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      display:grid !important;
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:12px !important;
+      width:100% !important;
+      margin:0 !important;
+      align-items:stretch !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1fr) auto minmax(0, 1fr) !important;
+      gap:0 !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+      align-items:center !important;
+      justify-content:stretch !important;
+      transform:none !important;
+      top:auto !important;
+    }
+
+    #optionActionRow .weight-wrap,
+    .option-action-row .weight-wrap{
+      justify-self:start !important;
+      width:132px !important;
+      min-width:132px !important;
+      max-width:132px !important;
+    }
+
+    #weightBtn,
+    .weight-btn{
+      width:132px !important;
+      min-width:132px !important;
+      max-width:132px !important;
+      justify-self:start !important;
+      padding-left:14px !important;
+      padding-right:14px !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      justify-self:center !important;
+      width:184px !important;
+      min-width:184px !important;
+      max-width:184px !important;
+      grid-template-columns:46px 92px 46px !important;
+      margin-left:0 !important;
+    }
+
+    #addToCartBtn,
+    .add-cart-btn{
+      justify-self:end !important;
+      width:170px !important;
+      min-width:170px !important;
+      max-width:170px !important;
+      margin-left:0 !important;
+    }
+  }
+</style>
+
+<script id="mayanut-final-desktop-purchase-row-align-script">
+  (function(){
+    const desktopMQ = window.matchMedia('(min-width:1181px)');
+
+    function resetDesktopInlineAlignment(){
+      const spacer = document.getElementById('purchaseAnchorSpacer') || document.querySelector('.purchase-anchor-spacer');
+      const purchase = document.getElementById('purchaseControlsSection') || document.querySelector('.purchase-controls-section');
+      const optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
+
+      if (spacer) {
+        spacer.style.setProperty('display', 'block', 'important');
+        spacer.style.setProperty('height', '0px', 'important');
+        spacer.style.setProperty('min-height', '0px', 'important');
+        spacer.style.setProperty('flex-basis', '0px', 'important');
+      }
+
+      if (purchase) {
+        purchase.style.removeProperty('margin-top');
+        purchase.style.removeProperty('transform');
+        purchase.style.removeProperty('top');
+        purchase.style.removeProperty('will-change');
+      }
+
+      if (optionRow) {
+        optionRow.style.removeProperty('margin-top');
+        optionRow.style.removeProperty('transform');
+        optionRow.style.removeProperty('top');
+        optionRow.style.removeProperty('will-change');
+      }
+    }
+
+    function alignDesktopPurchaseRow(){
+      if (!desktopMQ.matches) return;
+
+      const spacer = document.getElementById('purchaseAnchorSpacer') || document.querySelector('.purchase-anchor-spacer');
+      const purchase = document.getElementById('purchaseControlsSection') || document.querySelector('.purchase-controls-section');
+      const optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
+      const thumbs = document.querySelector('.thumbs');
+
+      if (!spacer || !purchase || !optionRow || !thumbs) return;
+
+      resetDesktopInlineAlignment();
+
+      requestAnimationFrame(function(){
+        const targetTop = Math.round(thumbs.getBoundingClientRect().top);
+        const optionTop = Math.round(optionRow.getBoundingClientRect().top);
+        const delta = targetTop - optionTop;
+
+        if (!Number.isFinite(delta)) return;
+
+        if (delta >= 0) {
+          spacer.style.setProperty('height', delta + 'px', 'important');
+          spacer.style.setProperty('min-height', delta + 'px', 'important');
+          spacer.style.setProperty('flex-basis', delta + 'px', 'important');
+          purchase.style.removeProperty('margin-top');
+          purchase.style.removeProperty('transform');
+        } else {
+          spacer.style.setProperty('height', '0px', 'important');
+          spacer.style.setProperty('min-height', '0px', 'important');
+          spacer.style.setProperty('flex-basis', '0px', 'important');
+          purchase.style.setProperty('margin-top', delta + 'px', 'important');
+          purchase.style.removeProperty('transform');
+        }
+      });
+    }
+
+    function schedule(){
+      if (!desktopMQ.matches) {
+        resetDesktopInlineAlignment();
+        return;
+      }
+      [0, 40, 120, 260, 560, 1000, 1600].forEach(function(delay){
+        window.setTimeout(alignDesktopPurchaseRow, delay);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', schedule, {once:true});
+    } else {
+      schedule();
+    }
+
+    window.addEventListener('load', schedule, {passive:true});
+    window.addEventListener('pageshow', schedule, {passive:true});
+    window.addEventListener('resize', schedule, {passive:true});
+    window.addEventListener('orientationchange', schedule, {passive:true});
+    document.addEventListener('visibilitychange', function(){ if (!document.hidden) schedule(); }, {passive:true});
+    document.addEventListener('click', function(e){
+      if (e.target && e.target.closest && e.target.closest('#roastRow, #weightBtn, #qtyStepper, #addToCartBtn, .selector-pill')) {
+        schedule();
+      }
+    }, true);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule).catch(function(){});
+  })();
+</script>
+
 </body>
 </html>

@@ -4560,6 +4560,75 @@
   }
 </style>
 
+
+<style id="mayanut-plain-orange-checks-fade-final">
+  /* Final product feature checkmark polish:
+     - remove orange circles
+     - use larger plain orange checkmarks
+     - replace pulse/scale animation with left-to-right fade-in only */
+  .features .feat .chk{
+    width:20px !important;
+    height:20px !important;
+    min-width:20px !important;
+    min-height:20px !important;
+    flex:0 0 20px !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    transform:none !important;
+    transition:none !important;
+    will-change:opacity !important;
+  }
+
+  .features .feat .chk svg{
+    width:15px !important;
+    height:15px !important;
+    stroke:var(--orange) !important;
+    fill:none !important;
+    stroke-width:3.25 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+  }
+
+  .features.is-intro-playing .feat .chk{
+    opacity:0 !important;
+    transform:none !important;
+    animation:mayanutCheckFadeOnly .48s ease-out 1 forwards !important;
+  }
+
+  .features.is-intro-playing .feat:nth-child(1) .chk{ animation-delay:.05s !important; }
+  .features.is-intro-playing .feat:nth-child(2) .chk{ animation-delay:.24s !important; }
+  .features.is-intro-playing .feat:nth-child(3) .chk{ animation-delay:.43s !important; }
+
+  .features .feat .chk.is-pulsing{
+    animation:none !important;
+    opacity:1 !important;
+    transform:none !important;
+  }
+
+  @keyframes mayanutCheckFadeOnly{
+    0%{ opacity:0; }
+    100%{ opacity:1; }
+  }
+
+  @media (max-width:760px){
+    .features .feat .chk{
+      width:18px !important;
+      height:18px !important;
+      min-width:18px !important;
+      min-height:18px !important;
+      flex-basis:18px !important;
+    }
+
+    .features .feat .chk svg{
+      width:14px !important;
+      height:14px !important;
+      stroke-width:3.15 !important;
+    }
+  }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -4759,7 +4828,7 @@
                     </button>
 </div>
 </div>
-<div aria-label="Quantity selector" class="qty-stepper">
+<div aria-label="Quantity selector" class="qty-stepper" id="qtyStepper">
 <button aria-label="Decrease quantity" class="qty-step" id="qtyMinus" type="button">−</button>
 <div class="qty-input-wrap">
 <input aria-label="Quantity" class="qty-input" id="qtyInput" inputmode="numeric" max="9" min="1" step="1" type="number" value="1"/>
@@ -6079,127 +6148,375 @@
   })();
 </script>
 
+<style id="mayanut-product-final-tablet-desktop-control-alignment-lock">
+  /* Final visible alignment lock:
+     - footer current link stays orange only, no underline
+     - quantity stepper is narrower
+     - add-to-cart right edge aligns with the Powder button right edge
+     - tablet controls align to the third recommendation bullet
+     - desktop controls align to the top of the mini images
+  */
+  .footer-links a[aria-current="page"],
+  .footer-links a.footer-current-link{
+    color:var(--orange) !important;
+    text-decoration:none !important;
+    text-decoration-line:none !important;
+    text-decoration-color:transparent !important;
+    text-underline-offset:0 !important;
+    text-decoration-thickness:0 !important;
+    font-weight:700 !important;
+  }
 
+  .footer-links a[aria-current="page"]::after,
+  .footer-links a.footer-current-link::after{
+    content:none !important;
+    display:none !important;
+  }
 
+  #roastGranules,
+  .selector-pill[aria-label*="Granules"],
+  .selector-pill[data-format="granules"]{
+    display:none !important;
+  }
 
+  #roastRow,
+  .selector-row--roast{
+    display:grid !important;
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:8px !important;
+    width:100% !important;
+    margin:0 !important;
+    order:1 !important;
+    align-items:start !important;
+  }
 
+  #purchaseControlsSection,
+  .purchase-controls-section{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:0 !important;
+    justify-content:flex-start !important;
+    margin-top:0 !important;
+    padding-top:0 !important;
+    min-height:0 !important;
+    height:auto !important;
+    will-change:auto !important;
+  }
 
+  #optionActionRow,
+  .option-action-row{
+    order:2 !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    align-items:center !important;
+    justify-content:stretch !important;
+    transform:none;
+    will-change:auto;
+  }
 
+  #productFeedback,
+  .product-feedback{
+    order:3 !important;
+  }
 
+  #qtyStepper,
+  .qty-stepper{
+    margin-left:0 !important;
+    min-width:0 !important;
+    max-width:none !important;
+    width:100% !important;
+  }
 
-<script id="mayanut-product-tablet-true-recommendation-alignment-js">
-(function(){
-  const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
-  const row = document.querySelector('.thumbs-recommendation-row');
-  const recommendation = document.querySelector('.thumb-recommendations');
-  const productBox = document.getElementById('productBox') || document.querySelector('.product-box');
-  const purchaseControls = document.getElementById('purchaseControlsSection');
-  const selector = document.getElementById('roastRow');
-  const spacer = document.getElementById('purchaseAnchorSpacer');
-  const optionRow = document.getElementById('optionActionRow');
-  const roastLight = document.getElementById('roastLight');
-  const roastDark = document.getElementById('roastDark');
-  if (!recommendation || !selector || !purchaseControls) return;
-  const recommendationCopy = {
-    flour:{label:'MayaNut™ Flour baking recommendations',serving:'<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads.',items:['Best for baking-forward uses where smooth texture matters.','Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.']},
-    powder:{label:'MayaNut™ Powder drink and bowl recommendations',serving:'<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',items:['Best for smoothies, açaí bowls, oatmeal, warm drinks, and roast-forward daily uses.','Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.','Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.']}
-  };
-  function currentType(){return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour';}
-  function setRecommendation(type){const chosen=recommendationCopy[type==='powder'?'powder':'flour'];recommendation.setAttribute('aria-label',chosen.label);recommendation.innerHTML='<p class="serving">'+chosen.serving+'</p><ul aria-label="Quick uses list">'+chosen.items.map(function(item){return '<li>'+item+'</li>';}).join('')+'</ul>';}
-  function placeRecommendation(){if(tablet.matches && row){if(recommendation.parentElement!==row)row.appendChild(recommendation);}else if(productBox && recommendation.parentElement!==productBox){if(purchaseControls && purchaseControls.nextSibling)productBox.insertBefore(recommendation,purchaseControls.nextSibling);else productBox.appendChild(recommendation);}}
-  function footerCurrentOrangeOnly(){document.querySelectorAll('.footer-links a[aria-current="page"], .footer-links a.footer-current-link').forEach(function(link){link.style.color='var(--orange)';link.style.textDecoration='none';link.style.textDecorationLine='none';link.style.textDecorationColor='transparent';link.style.fontWeight='700';});}
-  function resetAlignment(){if(spacer){spacer.style.display=tablet.matches?'block':'';spacer.style.flex='0 0 auto';spacer.style.height='0px';spacer.style.minHeight='0px';spacer.style.flexBasis='0px';}purchaseControls.style.marginTop='0px';purchaseControls.style.transform='none';purchaseControls.style.willChange='auto';if(optionRow)optionRow.style.marginTop='0px';}
-  function align(){setRecommendation(currentType());placeRecommendation();footerCurrentOrangeOnly();resetAlignment();if(!tablet.matches || !spacer)return;const serving=recommendation.querySelector('.serving');if(!serving)return;requestAnimationFrame(function(){resetAlignment();const desiredTop=Math.round(serving.getBoundingClientRect().top);const selectorTop=Math.round(selector.getBoundingClientRect().top);const delta=desiredTop-selectorTop;if(delta>=0){spacer.style.height=delta+'px';spacer.style.minHeight=delta+'px';spacer.style.flexBasis=delta+'px';purchaseControls.style.transform='none';}else{spacer.style.height='0px';spacer.style.minHeight='0px';spacer.style.flexBasis='0px';purchaseControls.style.transform='translateY('+delta+'px)';purchaseControls.style.willChange='transform';}if(optionRow)optionRow.style.marginTop='0px';});}
-  function schedule(){align();window.setTimeout(align,60);window.setTimeout(align,180);window.setTimeout(align,420);window.setTimeout(align,920);window.setTimeout(align,1320);}
-  [roastLight,roastDark].forEach(function(button){if(!button)return;button.addEventListener('click',schedule);});
-  window.addEventListener('load',schedule,{passive:true});window.addEventListener('resize',schedule,{passive:true});window.addEventListener('orientationchange',schedule,{passive:true});window.addEventListener('pageshow',schedule,{passive:true});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(schedule).catch(function(){});schedule();
-})();
-</script>
+  #qtyStepper .qty-input-wrap,
+  .qty-stepper .qty-input-wrap{
+    min-width:0 !important;
+  }
 
+  #qtyInput,
+  .qty-input{
+    padding-left:2px !important;
+    padding-right:2px !important;
+  }
 
-
-<style id="mayanut-product-tablet-option-row-third-bullet-lock">
-  /* Final tablet-only alignment:
-     The selector row remains aligned with the Recommendation sentence.
-     The weight / quantity / add-to-cart row aligns with the top of the third recommendation bullet. */
-  @media (min-width:761px) and (max-width:1180px){
-    #purchaseControlsSection,.purchase-controls-section{
-      gap:0 !important;
+  @media (min-width:1181px){
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:124px 122px 170px !important;
+      gap:8px !important;
+      justify-content:end !important;
     }
 
-    #optionActionRow,.option-action-row{
+    #qtyStepper,
+    .qty-stepper{
+      grid-template-columns:40px 42px 40px !important;
+    }
+
+    #weightBtn,
+    .weight-btn,
+    #addToCartBtn,
+    .add-cart-btn{
+      width:100% !important;
+      min-width:0 !important;
+    }
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    .product-grid{
+      grid-template-columns:minmax(292px,.92fr) minmax(0,1fr) !important;
+      gap:clamp(14px,2vw,22px) !important;
+      align-items:start !important;
+    }
+
+    .left-col,
+    .product-box{
+      min-width:0 !important;
+    }
+
+    .thumbs-recommendation-row{
+      display:grid !important;
+      grid-template-columns:1fr !important;
+      gap:10px !important;
+      align-items:start !important;
+      width:100% !important;
+    }
+
+    .thumbs-recommendation-row > .thumb-recommendations{
       margin-top:0 !important;
+      width:100% !important;
+      align-self:start !important;
+      display:block !important;
+    }
+
+    .thumb-recommendations .serving{
+      margin-top:0 !important;
+      margin-bottom:8px !important;
+    }
+
+    #roastRow,
+    .selector-row--roast{
+      min-height:42px !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(98px, 1fr) 110px minmax(134px, 1fr) !important;
+      gap:7px !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      grid-template-columns:36px 38px 36px !important;
+    }
+
+    #weightBtn,
+    .weight-btn,
+    #addToCartBtn,
+    .add-cart-btn{
+      width:100% !important;
+      min-width:0 !important;
+      padding-left:8px !important;
+      padding-right:8px !important;
+    }
+
+    .selector-pill{
+      min-width:0 !important;
+      white-space:normal !important;
+      text-align:center !important;
+      line-height:1.08 !important;
+      padding-left:8px !important;
+      padding-right:8px !important;
+      font-size:clamp(9.8px,.55vw + 7px,11px) !important;
+      letter-spacing:.055em !important;
+    }
+  }
+
+  @media (max-width:760px){
+    #roastRow,
+    .selector-row--roast{
+      grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+      gap:8px !important;
+    }
+
+    #purchaseControlsSection,
+    .purchase-controls-section{
+      gap:4px !important;
       transform:none !important;
-      will-change:auto !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      margin-top:1px !important;
     }
   }
 </style>
 
-<script id="mayanut-product-tablet-option-row-third-bullet-lock-js">
+<script id="mayanut-product-final-visible-alignment-js">
 (function(){
   const tablet = window.matchMedia('(min-width:761px) and (max-width:1180px)');
+  const desktop = window.matchMedia('(min-width:1181px)');
+
+  const row = document.querySelector('.thumbs-recommendation-row');
+  const thumbs = document.querySelector('.thumbs');
+  const recommendation = document.querySelector('.thumb-recommendations');
+  const productBox = document.getElementById('productBox') || document.querySelector('.product-box');
+  const purchaseControls = document.getElementById('purchaseControlsSection') || document.querySelector('.purchase-controls-section');
   const selector = document.getElementById('roastRow') || document.querySelector('.selector-row--roast');
   const optionRow = document.getElementById('optionActionRow') || document.querySelector('.option-action-row');
-  const recommendation = document.querySelector('.thumb-recommendations');
-  const spacer = document.getElementById('purchaseAnchorSpacer');
+  const spacer = document.getElementById('purchaseAnchorSpacer') || document.querySelector('.purchase-anchor-spacer');
+  const roastLight = document.getElementById('roastLight');
+  const roastDark = document.getElementById('roastDark');
 
-  if (!selector || !optionRow || !recommendation) return;
+  if (!recommendation || !purchaseControls || !selector || !optionRow) return;
 
-  function alignOptionRowToThirdBullet(){
-    if (!tablet.matches){
-      optionRow.style.marginTop = '';
-      optionRow.style.transform = '';
-      optionRow.style.willChange = '';
-      return;
+  const recommendationCopy = {
+    flour: {
+      label: 'MayaNut™ Flour baking recommendations',
+      serving: '<strong>Recommendation:</strong> add 1–2 tbsp to batters, doughs, muffins, pancakes, brownies, cookies, or breads.',
+      items: [
+        'Best for baking-forward uses where smooth texture matters.',
+        'Start small in pancakes, muffins, cookies, brownies, breads, and flatbreads.',
+        'Pairs well with cocoa, cinnamon, vanilla, banana, dates, oats, and warm spices.'
+      ]
+    },
+    powder: {
+      label: 'MayaNut™ Powder drink and bowl recommendations',
+      serving: '<strong>Recommendation:</strong> add 1–2 tbsp per smoothie, bowl, oatmeal, latte-style drink, or warm beverage. Adjust to taste.',
+      items: [
+        'Best for smoothies, açaí bowls, oatmeal, warm drinks, and roast-forward daily uses.',
+        'Stir or blend into milk, water, coffee-style drinks, cocoa-style drinks, and breakfast bowls.',
+        'Pairs well with cocoa, cinnamon, vanilla, banana, dates, maple, nutmeg, and fruit.'
+      ]
     }
+  };
 
+  function currentType(){
+    return roastDark && roastDark.classList.contains('active') ? 'powder' : 'flour';
+  }
+
+  function setRecommendation(){
+    const chosen = recommendationCopy[currentType()];
+    recommendation.setAttribute('aria-label', chosen.label);
+    recommendation.innerHTML = '<p class="serving">' + chosen.serving + '</p><ul aria-label="Quick uses list">' + chosen.items.map(function(item){ return '<li>' + item + '</li>'; }).join('') + '</ul>';
+  }
+
+  function placeRecommendation(){
+    if (tablet.matches && row) {
+      if (recommendation.parentElement !== row) row.appendChild(recommendation);
+    } else if (productBox && recommendation.parentElement !== productBox) {
+      productBox.appendChild(recommendation);
+    }
+  }
+
+  function resetAlignment(){
+    purchaseControls.style.marginTop = '0px';
+    purchaseControls.style.transform = 'none';
+    purchaseControls.style.willChange = 'auto';
+    optionRow.style.marginTop = '0px';
+    optionRow.style.transform = 'none';
+    optionRow.style.willChange = 'auto';
+    if (spacer) {
+      spacer.style.display = (tablet.matches || desktop.matches) ? 'block' : '';
+      spacer.style.flex = '0 0 auto';
+      spacer.style.height = '0px';
+      spacer.style.minHeight = '0px';
+      spacer.style.flexBasis = '0px';
+    }
+  }
+
+  function moveWholeControlsTo(targetTop, measuredEl){
+    if (!spacer || !measuredEl) return;
+    const currentTop = Math.round(measuredEl.getBoundingClientRect().top);
+    const delta = Math.round(targetTop - currentTop);
+    if (delta >= 0) {
+      spacer.style.height = delta + 'px';
+      spacer.style.minHeight = delta + 'px';
+      spacer.style.flexBasis = delta + 'px';
+      purchaseControls.style.transform = 'none';
+      purchaseControls.style.willChange = 'auto';
+    } else {
+      spacer.style.height = '0px';
+      spacer.style.minHeight = '0px';
+      spacer.style.flexBasis = '0px';
+      purchaseControls.style.transform = 'translateY(' + delta + 'px)';
+      purchaseControls.style.willChange = 'transform';
+    }
+  }
+
+  function alignTablet(){
+    const serving = recommendation.querySelector('.serving');
+    const thirdBullet = recommendation.querySelector('li:nth-child(3)');
+    if (!serving || !thirdBullet) return;
+
+    resetAlignment();
     requestAnimationFrame(function(){
-      const thirdBullet = recommendation.querySelector('li:nth-child(3)');
-      if (!thirdBullet) return;
-
-      // Keep the earlier selector-to-Recommendation alignment intact, then align the controls to bullet 3.
-      optionRow.style.transform = 'none';
-      optionRow.style.willChange = 'auto';
-      optionRow.style.marginTop = '0px';
+      // 1) top of Flour/Powder buttons = top of Recommendation sentence.
+      moveWholeControlsTo(Math.round(serving.getBoundingClientRect().top), selector);
 
       requestAnimationFrame(function(){
-        const thirdTop = Math.round(thirdBullet.getBoundingClientRect().top);
-        const optionTop = Math.round(optionRow.getBoundingClientRect().top);
-        const delta = thirdTop - optionTop;
+        // 2) top of weight/qty/add-to-cart row = top of the third recommendation bullet.
+        optionRow.style.marginTop = '0px';
+        optionRow.style.transform = 'none';
+        optionRow.style.willChange = 'auto';
 
-        if (delta >= 0){
-          optionRow.style.marginTop = delta + 'px';
-        } else {
-          // If a narrow tablet layout ever makes the third bullet sit higher, move the row up instead of leaving a mismatch.
-          optionRow.style.marginTop = '0px';
-          optionRow.style.transform = 'translateY(' + delta + 'px)';
-          optionRow.style.willChange = 'transform';
-        }
+        requestAnimationFrame(function(){
+          const thirdTop = Math.round(thirdBullet.getBoundingClientRect().top);
+          const optionTop = Math.round(optionRow.getBoundingClientRect().top);
+          const delta = Math.round(thirdTop - optionTop);
+          if (delta >= 0) {
+            optionRow.style.marginTop = delta + 'px';
+          } else {
+            optionRow.style.marginTop = '0px';
+            optionRow.style.transform = 'translateY(' + delta + 'px)';
+            optionRow.style.willChange = 'transform';
+          }
+        });
       });
     });
   }
 
-  function scheduleAlignment(){
-    // These timings intentionally run after the existing recommendation/selector alignment script.
-    [90, 210, 470, 980, 1380].forEach(function(delay){
-      window.setTimeout(alignOptionRowToThirdBullet, delay);
+  function alignDesktop(){
+    if (!thumbs) return;
+    resetAlignment();
+    requestAnimationFrame(function(){
+      // Desktop: top of weight/qty/add-to-cart row = top of little thumbnail images.
+      const targetTop = Math.round(thumbs.getBoundingClientRect().top);
+      moveWholeControlsTo(targetTop, optionRow);
     });
   }
 
-  document.addEventListener('click', function(e){
-    if (e.target && e.target.closest && e.target.closest('#roastRow button, .selector-row--roast button')){
-      scheduleAlignment();
-    }
-  }, true);
+  function align(){
+    setRecommendation();
+    placeRecommendation();
+    resetAlignment();
 
-  window.addEventListener('load', scheduleAlignment, {passive:true});
-  window.addEventListener('resize', scheduleAlignment, {passive:true});
-  window.addEventListener('orientationchange', scheduleAlignment, {passive:true});
-  window.addEventListener('pageshow', scheduleAlignment, {passive:true});
-  if (document.fonts && document.fonts.ready){
-    document.fonts.ready.then(scheduleAlignment).catch(function(){});
+    if (tablet.matches) {
+      alignTablet();
+    } else if (desktop.matches) {
+      alignDesktop();
+    }
   }
-  scheduleAlignment();
+
+  function schedule(){
+    [0, 40, 120, 260, 520, 900, 1400].forEach(function(delay){
+      window.setTimeout(align, delay);
+    });
+  }
+
+  [roastLight, roastDark].forEach(function(button){
+    if (!button) return;
+    button.addEventListener('click', schedule, true);
+  });
+
+  window.addEventListener('load', schedule, {passive:true});
+  window.addEventListener('resize', schedule, {passive:true});
+  window.addEventListener('orientationchange', schedule, {passive:true});
+  window.addEventListener('pageshow', schedule, {passive:true});
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) schedule(); }, {passive:true});
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule).catch(function(){});
+  schedule();
 })();
 </script>
 

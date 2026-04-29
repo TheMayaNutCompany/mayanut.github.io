@@ -4630,6 +4630,139 @@
     }
   }
 </style>
+
+<style id="mayanut-final-qty-thumb-check-lock">
+  /*
+    Final requested polish:
+    - desktop quantity selector widened again
+    - desktop purchase row aligns with the top of the thumbnail strip
+    - tablet purchase row aligns with the top of the third recommendation bullet
+    - checkmarks are larger, plain orange, and visible immediately with no animation
+  */
+
+  .features .feat .chk,
+  .features.is-intro-playing .feat .chk,
+  .features .feat .chk.is-pulsing{
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    min-height:30px !important;
+    flex:0 0 30px !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+    animation:none !important;
+    will-change:auto !important;
+  }
+
+  .features .feat .chk svg,
+  .features.is-intro-playing .feat .chk svg,
+  .features .feat .chk.is-pulsing svg{
+    width:23px !important;
+    height:23px !important;
+    stroke:var(--orange) !important;
+    fill:none !important;
+    stroke-width:3.85 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+    animation:none !important;
+  }
+
+  .features.is-intro-playing .feat:nth-child(1) .chk,
+  .features.is-intro-playing .feat:nth-child(2) .chk,
+  .features.is-intro-playing .feat:nth-child(3) .chk{
+    opacity:1 !important;
+    animation:none !important;
+    transform:none !important;
+  }
+
+  @media (max-width:760px){
+    .features .feat .chk,
+    .features.is-intro-playing .feat .chk,
+    .features .feat .chk.is-pulsing{
+      width:26px !important;
+      height:26px !important;
+      min-width:26px !important;
+      min-height:26px !important;
+      flex-basis:26px !important;
+    }
+
+    .features .feat .chk svg,
+    .features.is-intro-playing .feat .chk svg,
+    .features .feat .chk.is-pulsing svg{
+      width:21px !important;
+      height:21px !important;
+      stroke-width:3.7 !important;
+    }
+  }
+
+  @media (min-width:1181px){
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:124px 168px 170px !important;
+      gap:8px !important;
+      justify-content:end !important;
+      align-items:center !important;
+      width:100% !important;
+      max-width:100% !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      grid-template-columns:42px 84px 42px !important;
+      margin-left:0 !important;
+    }
+
+    #qtyInput,
+    .qty-input{
+      padding-left:4px !important;
+      padding-right:4px !important;
+    }
+
+    #weightBtn,
+    .weight-btn,
+    #addToCartBtn,
+    .add-cart-btn{
+      width:100% !important;
+      min-width:0 !important;
+    }
+  }
+
+  @media (min-width:761px) and (max-width:1180px){
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(98px, 1fr) 124px minmax(134px, 1fr) !important;
+      gap:7px !important;
+      justify-content:stretch !important;
+      align-items:center !important;
+      width:100% !important;
+      max-width:100% !important;
+    }
+
+    #qtyStepper,
+    .qty-stepper{
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
+      grid-template-columns:38px 48px 38px !important;
+      margin-left:0 !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -6519,6 +6652,123 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule).catch(function(){});
   schedule();
 })();
+</script>
+
+
+<script id="mayanut-final-control-alignment-script">
+  (function(){
+    const desktopMQ = window.matchMedia("(min-width:1181px)");
+    const tabletMQ = window.matchMedia("(min-width:761px) and (max-width:1180px)");
+
+    function px(value){
+      const parsed = parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function thirdRecommendationBullet(){
+      const items = document.querySelectorAll(".thumb-recommendations li");
+      return items.length >= 3 ? items[2] : null;
+    }
+
+    function resetAlignment(anchor, purchase, row){
+      if (row) {
+        row.style.removeProperty("margin-top");
+        row.style.removeProperty("transform");
+        row.style.removeProperty("top");
+      }
+
+      if (purchase) {
+        purchase.style.removeProperty("margin-top");
+        purchase.style.removeProperty("transform");
+        purchase.style.removeProperty("top");
+      }
+    }
+
+    function alignControls(){
+      const anchor = document.getElementById("purchaseAnchorSpacer");
+      const purchase = document.getElementById("purchaseControlsSection");
+      const row = document.getElementById("optionActionRow");
+      const thumbs = document.getElementById("thumbsMicroSection");
+
+      if (!anchor || !purchase || !row) return;
+
+      resetAlignment(anchor, purchase, row);
+
+      if (!desktopMQ.matches && !tabletMQ.matches) return;
+
+      requestAnimationFrame(function(){
+        const targetEl = desktopMQ.matches ? thumbs : thirdRecommendationBullet();
+        if (!targetEl) return;
+
+        const purchaseRect = purchase.getBoundingClientRect();
+        const rowRect = row.getBoundingClientRect();
+        const targetRect = targetEl.getBoundingClientRect();
+
+        if (!purchaseRect.height || !rowRect.height || !targetRect.height) return;
+
+        const rowOffsetInsidePurchase = rowRect.top - purchaseRect.top;
+        const desiredPurchaseTop = targetRect.top - rowOffsetInsidePurchase;
+        const neededDelta = Math.round(desiredPurchaseTop - purchaseRect.top);
+
+        let currentSpacer = px(anchor.style.height);
+        let nextSpacer = Math.round(currentSpacer + neededDelta);
+
+        if (nextSpacer >= 0) {
+          anchor.style.setProperty("height", nextSpacer + "px", "important");
+          purchase.style.removeProperty("margin-top");
+        } else {
+          anchor.style.setProperty("height", "0px", "important");
+          purchase.style.setProperty("margin-top", nextSpacer + "px", "important");
+        }
+      });
+    }
+
+    function scheduleAlign(){
+      alignControls();
+      window.setTimeout(alignControls, 40);
+      window.setTimeout(alignControls, 140);
+      window.setTimeout(alignControls, 320);
+      window.setTimeout(alignControls, 700);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", scheduleAlign, { once:true });
+    } else {
+      scheduleAlign();
+    }
+
+    window.addEventListener("load", scheduleAlign);
+    window.addEventListener("pageshow", scheduleAlign);
+    window.addEventListener("resize", scheduleAlign);
+    window.addEventListener("orientationchange", function(){
+      window.setTimeout(scheduleAlign, 120);
+      window.setTimeout(scheduleAlign, 420);
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(scheduleAlign).catch(function(){});
+    }
+
+    if ("ResizeObserver" in window) {
+      const observer = new ResizeObserver(function(){
+        scheduleAlign();
+      });
+
+      ["leftCol", "productBox", "thumbsMicroSection", "purchaseControlsSection", "optionActionRow"].forEach(function(id){
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+
+      const rec = document.querySelector(".thumb-recommendations");
+      if (rec) observer.observe(rec);
+    }
+
+    document.addEventListener("click", function(e){
+      if (e.target && e.target.closest && e.target.closest("#roastRow, #weightMenu, #qtyStepper, #addToCartBtn")) {
+        window.setTimeout(scheduleAlign, 60);
+      }
+    }, true);
+  })();
 </script>
 
 </body>

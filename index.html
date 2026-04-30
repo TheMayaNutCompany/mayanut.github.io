@@ -5308,6 +5308,74 @@
   }
 </style>
 
+
+<style id="mayanut-index-final-measured-cta-edge-lock">
+  /*
+    Final desktop edge lock:
+    - JavaScript measures the real rendered big-image viewport width.
+    - Dots and CTA row receive that same exact width.
+    - Left CTA begins at image left edge.
+    - Right CTA ends at image right edge.
+    - Dots are centered inside the same measured width.
+  */
+  @media (min-width:981px){
+    .hero-carousel-below,
+    .hero-carousel-dots,
+    .hero-carousel-actions{
+      box-sizing:border-box !important;
+      margin-left:auto !important;
+      margin-right:auto !important;
+      left:auto !important;
+      right:auto !important;
+      max-width:var(--index-hero-measured-width, 560px) !important;
+      width:var(--index-hero-measured-width, 560px) !important;
+    }
+
+    .hero-carousel-dots{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:8px !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+      text-align:center !important;
+    }
+
+    .hero-carousel-actions{
+      display:grid !important;
+      grid-template-columns:auto minmax(0, 1fr) auto !important;
+      align-items:center !important;
+      justify-items:stretch !important;
+      column-gap:0 !important;
+      row-gap:0 !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+
+    .hero-carousel-actions .btn,
+    .hero-carousel-actions .btn:first-child,
+    .hero-carousel-actions .btn:last-child{
+      width:max-content !important;
+      max-width:none !important;
+      min-width:0 !important;
+      margin:0 !important;
+      flex:none !important;
+      align-self:center !important;
+      white-space:nowrap !important;
+    }
+
+    .hero-carousel-actions .btn:first-child{
+      grid-column:1 !important;
+      justify-self:start !important;
+    }
+
+    .hero-carousel-actions .btn:last-child{
+      grid-column:3 !important;
+      justify-self:end !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
@@ -6849,5 +6917,95 @@
       });
     })();
   </script>
+
+<script id="mayanut-index-final-measured-cta-edge-lock-script">
+  (function(){
+    function setMeasuredHeroEdges(){
+      var carousel = document.getElementById('heroCarousel');
+      var viewport = carousel ? carousel.querySelector('.hero-carousel-viewport') : null;
+      var below = document.getElementById('heroCarouselBelow');
+      var dots = carousel ? carousel.querySelector('.hero-carousel-dots') : null;
+      var actions = document.getElementById('heroCarouselActions');
+      if (!carousel || !viewport || !below || !dots || !actions) return;
+
+      var isDesktop = window.matchMedia && window.matchMedia('(min-width: 981px)').matches;
+
+      if (!isDesktop){
+        carousel.style.removeProperty('--index-hero-measured-width');
+        [below, dots, actions].forEach(function(el){
+          el.style.removeProperty('width');
+          el.style.removeProperty('max-width');
+          el.style.removeProperty('margin-left');
+          el.style.removeProperty('margin-right');
+        });
+        return;
+      }
+
+      var rect = viewport.getBoundingClientRect();
+      var width = Math.round(rect.width);
+      if (!width || width < 320) return;
+
+      var px = width + 'px';
+      carousel.style.setProperty('--index-hero-measured-width', px);
+
+      [below, dots, actions].forEach(function(el){
+        el.style.width = px;
+        el.style.maxWidth = px;
+        el.style.marginLeft = 'auto';
+        el.style.marginRight = 'auto';
+      });
+
+      dots.style.justifyContent = 'center';
+      dots.style.textAlign = 'center';
+
+      actions.style.display = 'grid';
+      actions.style.gridTemplateColumns = 'auto minmax(0, 1fr) auto';
+      actions.style.columnGap = '0px';
+      actions.style.alignItems = 'center';
+
+      var buttons = actions.querySelectorAll('.btn');
+      if (buttons[0]){
+        buttons[0].style.gridColumn = '1';
+        buttons[0].style.justifySelf = 'start';
+        buttons[0].style.margin = '0';
+      }
+      if (buttons[1]){
+        buttons[1].style.gridColumn = '3';
+        buttons[1].style.justifySelf = 'end';
+        buttons[1].style.margin = '0';
+      }
+    }
+
+    function scheduleMeasuredHeroEdges(){
+      window.requestAnimationFrame(function(){
+        setMeasuredHeroEdges();
+        window.requestAnimationFrame(setMeasuredHeroEdges);
+      });
+    }
+
+    if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', scheduleMeasuredHeroEdges);
+    } else {
+      scheduleMeasuredHeroEdges();
+    }
+
+    window.addEventListener('load', scheduleMeasuredHeroEdges);
+    window.addEventListener('resize', scheduleMeasuredHeroEdges);
+    window.addEventListener('pageshow', scheduleMeasuredHeroEdges);
+    window.addEventListener('orientationchange', scheduleMeasuredHeroEdges);
+
+    if (document.fonts && document.fonts.ready){
+      document.fonts.ready.then(scheduleMeasuredHeroEdges).catch(function(){});
+    }
+
+    document.querySelectorAll('.hero-carousel img').forEach(function(img){
+      if (!img.complete){
+        img.addEventListener('load', scheduleMeasuredHeroEdges, { once:false });
+        img.addEventListener('error', scheduleMeasuredHeroEdges, { once:false });
+      }
+    });
+  })();
+</script>
+
 </body>
 </html>

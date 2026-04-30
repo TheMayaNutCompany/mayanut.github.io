@@ -5082,6 +5082,60 @@
   }
 </style>
 
+
+<style id="mayanut-index-final-hero-cta-proof-baseline-lock">
+  /* Final index hero alignment lock: desktop CTA buttons bottom-align to the In Food proof card,
+     and the dots are centered in the vertical gap between the large image and the raised CTA row. */
+  @media (min-width:981px){
+    .hero-carousel{
+      --index-hero-actions-y:0px;
+      --index-hero-dots-y:0px;
+    }
+
+    .hero-carousel-below{
+      margin-top:auto !important;
+      max-width:560px !important;
+      gap:0 !important;
+      transform:none !important;
+      transition:none !important;
+    }
+
+    .hero-carousel-dots{
+      margin:0 !important;
+      min-height:16px !important;
+      transform:translateY(var(--index-hero-dots-y, 0px)) !important;
+      top:0 !important;
+      transition:none !important;
+      will-change:transform !important;
+    }
+
+    .hero-carousel-actions{
+      width:100% !important;
+      max-width:560px !important;
+      height:44px !important;
+      min-height:44px !important;
+      margin:0 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:18px !important;
+      transform:translateY(var(--index-hero-actions-y, 0px)) !important;
+      top:0 !important;
+      transition:none !important;
+      will-change:transform !important;
+    }
+
+    .hero-carousel-actions .btn:first-child{
+      justify-self:start !important;
+      margin-right:auto !important;
+    }
+
+    .hero-carousel-actions .btn:last-child{
+      justify-self:end !important;
+      margin-left:auto !important;
+    }
+  }
+</style>
 </head>
 
 <body>
@@ -6344,6 +6398,34 @@
         carousel.style.setProperty('--hero-carousel-stage-offset', '0px');
         carousel.style.setProperty('--hero-carousel-dots-offset', '0px');
         carousel.style.setProperty('--hero-carousel-actions-offset', '0px');
+        carousel.style.setProperty('--index-hero-actions-y', '0px');
+        carousel.style.setProperty('--index-hero-dots-y', '0px');
+
+        if (!window.matchMedia || !window.matchMedia('(min-width: 981px)').matches) {
+          return;
+        }
+
+        var foodCard = proofItems && proofItems.length ? proofItems[proofItems.length - 1] : null;
+        var dotsRow = carousel.querySelector('.hero-carousel-dots');
+        if (!foodCard || !dotsRow) return;
+
+        var stageRect = stage.getBoundingClientRect();
+        var actionsRect = actions.getBoundingClientRect();
+        var foodRect = foodCard.getBoundingClientRect();
+
+        if (!stageRect.height || !actionsRect.height || !foodRect.height) return;
+
+        /* Align the bottom of the two hero CTA buttons with the bottom of the In Food proof card. */
+        var actionShift = Math.round(foodRect.bottom - actionsRect.bottom);
+        carousel.style.setProperty('--index-hero-actions-y', actionShift + 'px');
+
+        /* Put the three dots halfway between the bottom of the large image and the raised button row. */
+        var movedActionsTop = actionsRect.top + actionShift;
+        var dotsRect = dotsRow.getBoundingClientRect();
+        var targetDotCenter = Math.round((stageRect.bottom + movedActionsTop) / 2);
+        var currentDotCenter = Math.round(dotsRect.top + (dotsRect.height / 2));
+        var dotShift = targetDotCenter - currentDotCenter;
+        carousel.style.setProperty('--index-hero-dots-y', dotShift + 'px');
       }
 
       function restoreCarouselImages(){

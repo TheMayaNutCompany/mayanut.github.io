@@ -5833,6 +5833,54 @@
   }
 </style>
 
+
+
+<style id="mayanut-index-final-badge-paragraph-line-edge-lock">
+  /* Final desktop badge alignment lock:
+     matches the Caffeine-Free right edge to the actual hero paragraph line edge
+     where the tea-style drink / coffee substitute phrase wraps, while keeping
+     Gluten-Free on the left and Vegan centered between both edges. */
+  @media (min-width:981px){
+    .hero-badges,
+    .hero-badges.is-intro-playing{
+      display:grid !important;
+      grid-template-columns:max-content minmax(0, 1fr) max-content !important;
+      align-items:center !important;
+      justify-content:start !important;
+      width:min(100%, var(--index-badge-paragraph-line-width, 440px)) !important;
+      max-width:var(--index-badge-paragraph-line-width, 440px) !important;
+      min-width:0 !important;
+      margin-left:0 !important;
+      margin-right:auto !important;
+      margin-bottom:16px !important;
+      padding:0 !important;
+      column-gap:0 !important;
+      row-gap:0 !important;
+    }
+
+    .hero-badge:nth-child(1){
+      grid-column:1 !important;
+      justify-self:start !important;
+      justify-content:flex-start !important;
+      text-align:left !important;
+    }
+
+    .hero-badge:nth-child(2){
+      grid-column:2 !important;
+      justify-self:center !important;
+      justify-content:center !important;
+      text-align:center !important;
+    }
+
+    .hero-badge:nth-child(3){
+      grid-column:3 !important;
+      justify-self:end !important;
+      justify-content:flex-end !important;
+      text-align:right !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
@@ -7516,6 +7564,146 @@
     requestAnimationFrame(function(){
       queued = false;
       lockHeroBadgesToText();
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', queueLock, { once:true });
+  } else {
+    queueLock();
+  }
+  window.addEventListener('load', queueLock, { passive:true });
+  window.addEventListener('resize', queueLock, { passive:true });
+  window.addEventListener('pageshow', queueLock, { passive:true });
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(queueLock).catch(function(){});
+  }
+})();
+</script>
+
+
+
+<script id="mayanut-index-final-badge-paragraph-line-edge-script">
+(function(){
+  'use strict';
+
+  function rectWidth(el){
+    var r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+    return r && r.width ? r.width : 0;
+  }
+
+  function mapTextOffset(root, index){
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var node;
+    var seen = 0;
+    while((node = walker.nextNode())){
+      var next = seen + node.nodeValue.length;
+      if(index <= next){
+        return { node:node, offset:Math.max(0, Math.min(node.nodeValue.length, index - seen)) };
+      }
+      seen = next;
+    }
+    return null;
+  }
+
+  function rangeForNeedle(root, needle){
+    if(!root || !needle) return null;
+    var text = root.textContent || '';
+    var startIndex = text.indexOf(needle);
+    if(startIndex < 0) return null;
+    var endIndex = startIndex + needle.length;
+    var start = mapTextOffset(root, startIndex);
+    var end = mapTextOffset(root, endIndex);
+    if(!start || !end) return null;
+    var range = document.createRange();
+    range.setStart(start.node, start.offset);
+    range.setEnd(end.node, end.offset);
+    return range;
+  }
+
+  function firstMainHeroParagraph(){
+    var title = document.querySelector('.hero-section-title');
+    if(title){
+      var node = title.nextElementSibling;
+      while(node){
+        if(node.matches && node.matches('p')) return node;
+        node = node.nextElementSibling;
+      }
+    }
+    var candidates = document.querySelectorAll('.hero-merged-copy p');
+    for(var i=0; i<candidates.length; i++){
+      if((candidates[i].textContent || '').indexOf('tea-style drink') >= 0) return candidates[i];
+    }
+    return null;
+  }
+
+  function lineRightForNeedle(paragraph, copyLeft, needle){
+    var targetRange = rangeForNeedle(paragraph, needle);
+    if(!targetRange) return 0;
+    var targetRects = Array.prototype.slice.call(targetRange.getClientRects()).filter(function(r){
+      return r.width > 0 && r.height > 0;
+    });
+    targetRange.detach && targetRange.detach();
+    if(!targetRects.length) return 0;
+
+    /* Use the first target fragment: on desktop this is the line the user described,
+       where “tea-style drink, coffee sub-” reaches its right edge. */
+    var target = targetRects[0];
+    var fullRange = document.createRange();
+    fullRange.selectNodeContents(paragraph);
+    var lineRects = Array.prototype.slice.call(fullRange.getClientRects()).filter(function(r){
+      return r.width > 0 && r.height > 0;
+    });
+    fullRange.detach && fullRange.detach();
+
+    var best = null;
+    for(var i=0; i<lineRects.length; i++){
+      var r = lineRects[i];
+      var overlaps = r.top < target.bottom && r.bottom > target.top;
+      if(overlaps){
+        if(!best || r.right > best.right) best = r;
+      }
+    }
+
+    return best ? Math.round(best.right - copyLeft) : Math.round(target.right - copyLeft);
+  }
+
+  function lockBadgeRowToParagraphLine(){
+    var badges = document.querySelector('.hero-badges');
+    var copy = document.querySelector('.hero-merged-copy');
+    var paragraph = firstMainHeroParagraph();
+    if(!badges || !copy || !paragraph) return;
+
+    if(!window.matchMedia('(min-width: 981px)').matches){
+      badges.style.removeProperty('--index-badge-paragraph-line-width');
+      return;
+    }
+
+    var copyRect = copy.getBoundingClientRect();
+    if(!copyRect.width) return;
+
+    var needle = 'tea-style drink, coffee';
+    var lineWidth = lineRightForNeedle(paragraph, copyRect.left, needle);
+
+    var badgeNodes = Array.prototype.slice.call(badges.querySelectorAll('.hero-badge'));
+    var badgesNeed = badgeNodes.reduce(function(sum, node){ return sum + rectWidth(node); }, 0) + 48;
+    var paragraphWidth = rectWidth(paragraph);
+    var copyWidth = rectWidth(copy);
+
+    var target = Math.max(lineWidth || 0, badgesNeed, 360);
+    if(paragraphWidth) target = Math.min(target, Math.ceil(paragraphWidth));
+    if(copyWidth) target = Math.min(target, Math.floor(copyWidth));
+
+    badges.style.setProperty('--index-badge-paragraph-line-width', Math.round(target) + 'px');
+  }
+
+  var queued = false;
+  function queueLock(){
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(function(){
+      queued = false;
+      lockBadgeRowToParagraphLine();
     });
   }
 

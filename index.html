@@ -6648,6 +6648,44 @@
   }
 </style>
 
+
+<style id="mayanut-footer-wordmark-midpoint-lock">
+  /* Final footer wordmark placement:
+     keep The MayaNut Company centered in the whitespace between
+     the Explore MayaNut™ Flour & Powder button and the Support heading. */
+  .footer{
+    --footer-wordmark-top:28px;
+  }
+
+  .footer-inner{
+    position:relative !important;
+    padding-top:clamp(76px, 7vw, 118px) !important;
+  }
+
+  .footer-wordmark-block{
+    position:absolute !important;
+    left:50% !important;
+    top:var(--footer-wordmark-top) !important;
+    transform:translateX(-50%) !important;
+    width:max-content !important;
+    max-width:calc(100vw - 32px) !important;
+    margin:0 !important;
+    padding:0 !important;
+    z-index:4 !important;
+  }
+
+  .footer-company.footer-company-wordmark,
+  .footer-company-wordmark{
+    margin:0 !important;
+  }
+
+  @media (max-width:760px){
+    .footer-inner{
+      padding-top:clamp(66px, 15vw, 96px) !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
@@ -8458,6 +8496,71 @@
     document.fonts.ready.then(queueLock).catch(function(){});
   }
 })();
+</script>
+
+
+<script id="mayanut-footer-wordmark-midpoint-script">
+  (function syncFooterWordmarkMidpoint(){
+    const footer = document.querySelector('.footer');
+    const footerInner = document.querySelector('.footer-inner');
+    const wordmark = document.querySelector('.footer-wordmark-block');
+    const supportHeading = document.querySelector('.footer-col.center h4');
+
+    function findExploreButton(){
+      const buttons = Array.from(document.querySelectorAll('a.btn, a.button, .btn[href]'));
+      return buttons.reverse().find(function(button){
+        return /Explore\s+MayaNut/i.test((button.textContent || '').replace(/\s+/g, ' ').trim());
+      });
+    }
+
+    function update(){
+      const exploreButton = findExploreButton();
+      if (!footer || !footerInner || !wordmark || !supportHeading || !exploreButton) return;
+
+      const footerRect = footer.getBoundingClientRect();
+      const wordmarkRect = wordmark.getBoundingClientRect();
+      const buttonRect = exploreButton.getBoundingClientRect();
+      const supportRect = supportHeading.getBoundingClientRect();
+
+      const footerTop = footerRect.top + window.scrollY;
+      const buttonBottom = buttonRect.bottom + window.scrollY;
+      const supportTop = supportRect.top + window.scrollY;
+      const targetCenter = (buttonBottom + supportTop) / 2;
+
+      let targetTop = targetCenter - footerTop - (wordmarkRect.height / 2);
+      const maxTop = Math.max(8, supportTop - footerTop - wordmarkRect.height - 8);
+      targetTop = Math.max(8, Math.min(targetTop, maxTop));
+
+      footer.style.setProperty('--footer-wordmark-top', targetTop.toFixed(2) + 'px');
+    }
+
+    let rafId = 0;
+    function schedule(){
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(function(){
+        rafId = 0;
+        update();
+      });
+    }
+
+    window.addEventListener('load', schedule, { passive:true });
+    window.addEventListener('resize', schedule, { passive:true });
+    window.addEventListener('orientationchange', schedule, { passive:true });
+    window.addEventListener('pageshow', schedule, { passive:true });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(schedule).catch(function(){});
+    }
+
+    if ('ResizeObserver' in window && footerInner) {
+      const observer = new ResizeObserver(schedule);
+      observer.observe(footerInner);
+      const exploreButton = findExploreButton();
+      if (exploreButton) observer.observe(exploreButton);
+    }
+
+    schedule();
+  })();
 </script>
 
 </body>

@@ -1172,6 +1172,22 @@ html{color-scheme:light !important}
 .site-header .header-cart .cart-icon,.site-header .header-cart svg.cart-icon,.site-header .cart-icon,.site-header svg.cart-icon,button.header-cart#cartLaunch svg.cart-icon{width:var(--mayanut-cart-master-icon-size) !important;height:var(--mayanut-cart-master-icon-size) !important;min-width:var(--mayanut-cart-master-icon-size) !important;min-height:var(--mayanut-cart-master-icon-size) !important;max-width:var(--mayanut-cart-master-icon-size) !important;max-height:var(--mayanut-cart-master-icon-size) !important;flex:0 0 var(--mayanut-cart-master-icon-size) !important;display:block !important;margin:0 !important;padding:0 !important;transform:translateY(var(--mayanut-cart-master-icon-y)) !important;stroke:#fff !important;fill:none !important;stroke-width:var(--mayanut-cart-master-stroke) !important;stroke-linecap:round !important;stroke-linejoin:round !important;overflow:visible !important}
 .site-header .header-cart .wheel,.site-header .cart-icon .wheel,.site-header svg.cart-icon .wheel{fill:#fff !important;stroke:none !important}
 .site-header .cart-count,.site-header .header-cart .cart-count,button.header-cart#cartLaunch .cart-count{position:absolute !important;left:50% !important;top:44.2% !important;transform:translate(-50%,-50%) !important;color:#fff !important;font-size:13px !important;font-weight:900 !important;line-height:1 !important;pointer-events:none !important}
+
+
+/* Product choice popup: matches language modal shell, with 75% dark overlay */
+.product-choice-backdrop.lang-backdrop,.product-choice-backdrop.lang-backdrop.open{background:rgba(4,10,20,.75) !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important}
+.product-choice-panel.lang-panel{width:min(620px,calc(100vw - 32px));max-height:calc(100dvh - var(--headerH) - 24px);border-radius:14px;padding:18px 18px 16px}
+.product-choice-tabs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:0 0 16px 0}
+.product-choice-tab{min-height:42px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(11,18,32,.14);border-radius:10px;background:#fff;color:var(--ink);font-size:13px;font-weight:800;letter-spacing:.04em;line-height:1;text-align:center;white-space:nowrap;transition:background .12s ease,border-color .12s ease,color .12s ease,transform .10s ease,box-shadow .12s ease}
+.product-choice-tab:hover{background:#f7f8fa;border-color:rgba(255,144,0,.48);color:var(--orange);transform:translateY(-1px)}
+.product-choice-tab:active{transform:translateY(0);box-shadow:0 0 0 3px rgba(255,144,0,.12)}
+.product-choice-tab:first-child{justify-self:start}
+.product-choice-tab:last-child{justify-self:end}
+.product-choice-close{width:30px;height:30px;border:0;background:transparent;color:rgba(11,18,32,.72);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border-radius:10px;font-size:21px;line-height:1;padding:0;justify-self:center}
+.product-choice-close:hover{color:var(--orange);background:rgba(255,144,0,.08)}
+.product-choice-copy{margin:0;text-align:center;font-size:13px;font-weight:650;line-height:1.6;color:rgba(11,18,32,.68)}
+@media (max-width:720px){.product-choice-panel.lang-panel{width:min(520px,calc(100vw - 20px));padding:16px 14px 14px}.product-choice-tabs{gap:8px;margin-bottom:12px}.product-choice-tab{min-height:40px;padding:0 10px;font-size:12px;letter-spacing:.02em}.product-choice-copy{font-size:12px}}
+@media (max-width:380px){.product-choice-tabs{grid-template-columns:1fr;gap:8px}.product-choice-tab,.product-choice-close{justify-self:stretch;width:100%}.product-choice-close{order:3}}
 </style>
 
 </head>
@@ -1259,6 +1275,16 @@ html{color-scheme:light !important}
 <a class="lang-option" data-language="हिन्दी" href="/hi/" lang="hi">हिन्दी</a>
 </div>
 </div>
+</div>
+<div class="lang-backdrop product-choice-backdrop" hidden="" id="productChoiceBackdrop"></div>
+<div aria-labelledby="productChoicePanelTitle" aria-modal="true" class="lang-panel product-choice-panel notranslate" hidden="" id="productChoicePanel" role="dialog" translate="no">
+  <div class="product-choice-tabs" role="group" aria-label="Choose MayaNut product format">
+    <a class="product-choice-tab" href="/mayanut-flour.html" aria-label="Go to MayaNut Flour page">MayaNut Flour</a>
+    <button aria-label="Close product selector" class="product-choice-close" id="productChoiceClose" type="button">×</button>
+    <a class="product-choice-tab" href="/mayanut-powder.html" aria-label="Go to MayaNut Powder page">MayaNut Powder</a>
+  </div>
+  <h2 class="sr-only" id="productChoicePanelTitle">Choose MayaNut product format</h2>
+  <p class="product-choice-copy">Choose the format that fits how you plan to use MayaNut™.</p>
 </div>
 <main id="main-content" tabindex="-1" aria-label="Home page">
     <div class="content-wrapper">
@@ -1913,6 +1939,115 @@ html{color-scheme:light !important}
       });
     })();
   </script>
+
+  <script>
+    (function initProductChoicePopup(){
+      const productPanel = document.getElementById("productChoicePanel");
+      const productBackdrop = document.getElementById("productChoiceBackdrop");
+      const productClose = document.getElementById("productChoiceClose");
+      const productTriggers = Array.from(document.querySelectorAll('a[href="/products.html"]'));
+      if (!productPanel || !productBackdrop || !productTriggers.length) return;
+
+      let lastFocusedProductTrigger = null;
+      let productTrapHandler = null;
+
+      function closeLanguageIfOpen(){
+        const langPanel = document.getElementById("langPanel");
+        const langBackdrop = document.getElementById("langBackdrop");
+        const langBtn = document.getElementById("langBtn");
+        if (langPanel){ langPanel.classList.remove("open"); langPanel.hidden = true; }
+        if (langBackdrop){ langBackdrop.classList.remove("open"); langBackdrop.hidden = true; }
+        if (langBtn){ langBtn.setAttribute("aria-expanded", "false"); }
+      }
+
+      function focusableInProductPanel(){
+        return Array.from(productPanel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+      }
+
+      function removeProductTrap(){
+        if (productTrapHandler){
+          document.removeEventListener("keydown", productTrapHandler, true);
+          productTrapHandler = null;
+        }
+      }
+
+      function addProductTrap(){
+        productTrapHandler = function(e){
+          if (!productPanel.classList.contains("open")) return;
+          if (e.key === "Escape"){
+            e.preventDefault();
+            closeProductPanel(true);
+            return;
+          }
+          if (e.key !== "Tab") return;
+          const focusable = focusableInProductPanel();
+          if (!focusable.length) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          const active = document.activeElement;
+          if (e.shiftKey){
+            if (active === first || active === productPanel){
+              e.preventDefault();
+              last.focus();
+            }
+          } else if (active === last){
+            e.preventDefault();
+            first.focus();
+          }
+        };
+        document.addEventListener("keydown", productTrapHandler, true);
+      }
+
+      function openProductPanel(trigger){
+        closeLanguageIfOpen();
+        lastFocusedProductTrigger = trigger || document.activeElement;
+        productPanel.hidden = false;
+        productBackdrop.hidden = false;
+        productPanel.classList.add("open");
+        productBackdrop.classList.add("open");
+        productTriggers.forEach(function(link){
+          link.setAttribute("aria-expanded", "true");
+          link.setAttribute("aria-haspopup", "dialog");
+          link.setAttribute("aria-controls", "productChoicePanel");
+        });
+        addProductTrap();
+        const focusable = focusableInProductPanel();
+        if (focusable.length) focusable[0].focus();
+      }
+
+      function closeProductPanel(restoreFocus){
+        productPanel.classList.remove("open");
+        productBackdrop.classList.remove("open");
+        productPanel.hidden = true;
+        productBackdrop.hidden = true;
+        productTriggers.forEach(function(link){ link.setAttribute("aria-expanded", "false"); });
+        removeProductTrap();
+        if (restoreFocus && lastFocusedProductTrigger && typeof lastFocusedProductTrigger.focus === "function"){
+          setTimeout(function(){ lastFocusedProductTrigger.focus(); }, 0);
+        }
+      }
+
+      productTriggers.forEach(function(link){
+        link.setAttribute("aria-haspopup", "dialog");
+        link.setAttribute("aria-controls", "productChoicePanel");
+        link.setAttribute("aria-expanded", "false");
+        link.addEventListener("click", function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          productPanel.classList.contains("open") ? closeProductPanel(true) : openProductPanel(link);
+        });
+      });
+
+      if (productClose){
+        productClose.addEventListener("click", function(){ closeProductPanel(true); });
+      }
+
+      productBackdrop.addEventListener("click", function(){ closeProductPanel(true); });
+
+      window.addEventListener("pageshow", function(){ closeProductPanel(false); });
+    })();
+  </script>
+
 
   <script>
     (function initFaqAccordion(){

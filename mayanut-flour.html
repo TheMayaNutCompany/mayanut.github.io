@@ -8437,192 +8437,7 @@ button.header-cart{
   })();
 </script>
 
-<script id="mayanut-clean-product-dynamic-sync">
-(function(){
-  "use strict";
 
-  var roastLight = document.getElementById("roastLight");
-  var roastDark = document.getElementById("roastDark");
-  var controls = document.getElementById("purchaseControlsSection");
-  var spacer = document.getElementById("purchaseAnchorSpacer");
-  var thumbsTarget = document.getElementById("thumbsMicroSection") || document.querySelector(".thumbs");
-  var tabletDesktopMQ = window.matchMedia("(min-width:761px)");
-
-  var copy = {
-    light: {
-      label: "MayaNut™ Flour",
-      intro: "MayaNut™ Flour is a roasted, finely milled flour made from roasted Brosimum alicastrum seeds. Carefully dried and gently roasted, this Guatemalan-sourced flour has a smooth, earthy depth and a warm cocoa-like note, positioned for pancakes, muffins, cookies, brownies, breads, flatbreads, and other baking-forward uses.",
-      ingredients: "<strong>Ingredients:</strong> 100% roasted, finely milled Brosimum alicastrum seed flour.",
-      infoTitle: "What is MayaNut™ Flour?",
-      p1: "MayaNut™ Flour is a roasted, finely milled flour made from roasted <strong>Brosimum alicastrum</strong> seeds, from a tropical species long valued as a traditional food in Mesoamerica.",
-      p2: "<span class=\"notranslate\" translate=\"no\">Maya nut</span> may be used more broadly in reference to the botanical source and common-name context around <em class=\"notranslate\" translate=\"no\">Brosimum alicastrum</em>, while <span class=\"notranslate\" translate=\"no\">MayaNut™ Flour</span> is The MayaNut Company's branded flour product.",
-      p3: "Carefully dried and gently roasted, this Guatemalan-sourced flour delivers smooth texture and a mellow roasted profile for pancakes, muffins, cookies, brownies, breads, flatbreads, and other baking-forward uses.",
-      p4: "MayaNut™ Flour is the baking-forward option for pancakes, muffins, cookies, brownies, breads, flatbreads, and other flour-style recipes.",
-      flavor: [
-        "Warm roasted character",
-        "Soft, flour-style cocoa-like depth",
-        "Smooth, finely milled texture for baking",
-        "Mellow finish without bitterness"
-      ],
-      ways: [
-        "Add to pancakes, muffins, cookies, and brownies",
-        "Fold into breads, flatbreads, and baked goods",
-        "Blend into smoothies or bowls when a flour-style texture is desired",
-        "Mix into oatmeal and everyday recipes"
-      ],
-      highlights: [
-        "Naturally caffeine-free",
-        "Vegan pantry ingredient",
-        "Made from <span class=\"notranslate\" translate=\"no\">Brosimum alicastrum</span> seeds",
-        "Guatemalan-sourced flour"
-      ],
-      faqQ: "What is MayaNut™ Flour?",
-      faqA: "MayaNut™ Flour is a roasted, finely milled flour made from roasted <em>Brosimum alicastrum</em> seeds. <span class=\"notranslate\" translate=\"no\">Maya nut</span> may be used more broadly in reference to the botanical source and common-name context around <em class=\"notranslate\" translate=\"no\">Brosimum alicastrum</em>, while <span class=\"notranslate\" translate=\"no\">MayaNut™ Flour</span> is The MayaNut Company's branded flour product."
-    },
-    dark: {
-      label: "MayaNut™ Powder",
-      intro: "MayaNut™ Powder is a roasted, finely milled powder made from roasted Brosimum alicastrum seeds. Carefully dried and roasted for a deeper profile, this Guatemalan-sourced powder is positioned for smoothies, açaí bowls, oatmeal, warm drinks, latte-style drinks, and cocoa-style recipes.",
-      ingredients: "<strong>Ingredients:</strong> 100% roasted, finely milled Brosimum alicastrum seed powder.",
-      infoTitle: "What is MayaNut™ Powder?",
-      p1: "MayaNut™ Powder is a roasted, finely milled powder made from roasted <strong>Brosimum alicastrum</strong> seeds, from a tropical species long valued as a traditional food in Mesoamerica.",
-      p2: "<span class=\"notranslate\" translate=\"no\">Maya nut</span> may be used more broadly in reference to the botanical source and common-name context around <em class=\"notranslate\" translate=\"no\">Brosimum alicastrum</em>, while <span class=\"notranslate\" translate=\"no\">MayaNut™ Powder</span> is The MayaNut Company's branded powder product.",
-      p3: "Carefully dried and roasted for a deeper profile, this Guatemalan-sourced powder delivers a bold cocoa-like roasted character for smoothies, açaí bowls, oatmeal, warm drinks, latte-style drinks, and cocoa-style recipes.",
-      p4: "MayaNut™ Powder is the roast-forward drink and bowl option. MayaNut™ Flour is the smoother baking-forward option.",
-      flavor: [
-        "Deeper roasted character",
-        "Bold, cocoa-like flavor",
-        "Smooth, finely milled drink-friendly powder",
-        "Roast-forward finish without coffee caffeine"
-      ],
-      ways: [
-        "Blend into smoothies and shakes",
-        "Mix into açaí bowls and oatmeal",
-        "Stir into warm drinks, latte-style drinks, and cocoa-style drinks",
-        "Use as a coffee-style or cocoa-style roasted ingredient"
-      ],
-      highlights: [
-        "Naturally caffeine-free",
-        "Vegan pantry ingredient",
-        "Made from <span class=\"notranslate\" translate=\"no\">Brosimum alicastrum</span> seeds",
-        "Guatemalan-sourced powder"
-      ],
-      faqQ: "What is MayaNut™ Powder?",
-      faqA: "MayaNut™ Powder is a roasted, finely milled powder made from roasted <em>Brosimum alicastrum</em> seeds. <span class=\"notranslate\" translate=\"no\">Maya nut</span> may be used more broadly in reference to the botanical source and common-name context around <em class=\"notranslate\" translate=\"no\">Brosimum alicastrum</em>, while <span class=\"notranslate\" translate=\"no\">MayaNut™ Powder</span> is The MayaNut Company's branded powder product."
-    }
-  };
-
-  function byId(id){ return document.getElementById(id); }
-  function setText(id, value){ var el = byId(id); if (el) el.textContent = value; }
-  function setHTML(id, value){ var el = byId(id); if (el) el.innerHTML = value; }
-  function setList(id, list){
-    var el = byId(id);
-    if (!el) return;
-    el.innerHTML = list.map(function(item){ return "<li>" + item + "</li>"; }).join("");
-  }
-
-  function currentType(){
-    return "light";
-  }
-
-  function applyCopy(type){
-    var c = copy[type] || copy.light;
-    setHTML("productTitle", '<span class="product-title-brand">MayaNut™</span> <span class="product-title-kind">Flour</span><span class="product-title-weight">10 lbs</span>');
-    setHTML("productIntroCopy", c.intro);
-    setHTML("ingredientsLine", c.ingredients);
-    setText("recipesLineText", "Recipes with MayaNut™");
-    var recipesLink = byId("recipesLineLink");
-    if (recipesLink) recipesLink.setAttribute("aria-label", "Recipes with MayaNut™");
-    setText("productInfoTitle", c.infoTitle);
-    setHTML("productInfoP1", c.p1);
-    setHTML("productInfoP2", c.p2);
-    setHTML("productInfoP3", c.p3);
-    setHTML("productInfoP4", c.p4);
-    setHTML("productInfoIngredients", c.ingredients + "<br/><strong>Storage:</strong> Store in a cool, dry place away from direct sunlight.");
-    setList("flavorList", c.flavor);
-    setList("waysToUseList", c.ways);
-    setList("productHighlightsList", c.highlights);
-    setText("faqQuestion1Text", c.faqQ);
-    setHTML("faqAnswer1", c.faqA);
-    var addButton = byId("addToCartBtn");
-    if (addButton) addButton.setAttribute("aria-label", "Add selected " + c.label + " to cart");
-    var waysCard = byId("waysToUseCard");
-    if (waysCard) waysCard.setAttribute("aria-label", "Ways to use " + c.label);
-  }
-
-  function removeRecommendations(){
-    Array.prototype.forEach.call(document.querySelectorAll(".thumb-recommendations, #thumbRecommendations, [data-recommendations]"), function(el){
-      if (el && el.parentNode) el.parentNode.removeChild(el);
-    });
-  }
-
-  var alignRaf = 0;
-  function alignPurchaseBlock(){
-    if (alignRaf) window.cancelAnimationFrame(alignRaf);
-    alignRaf = window.requestAnimationFrame(function(){
-      alignRaf = 0;
-      removeRecommendations();
-
-      if (!controls || !spacer || !thumbsTarget || !tabletDesktopMQ.matches){
-        if (spacer) spacer.style.setProperty("--mayanut-purchase-spacer", "0px");
-        if (spacer) spacer.style.height = "0px";
-        document.body.classList.add("purchase-layout-ready");
-        return;
-      }
-
-      spacer.style.height = "0px";
-      spacer.style.setProperty("--mayanut-purchase-spacer", "0px");
-      controls.style.height = "";
-      controls.style.minHeight = "";
-
-      var targetTop = thumbsTarget.getBoundingClientRect().top + window.pageYOffset;
-      var controlsTop = controls.getBoundingClientRect().top + window.pageYOffset;
-      var offset = Math.max(0, Math.round(targetTop - controlsTop));
-
-      spacer.style.setProperty("--mayanut-purchase-spacer", offset + "px");
-      spacer.style.height = offset + "px";
-      document.body.classList.add("purchase-layout-ready");
-    });
-  }
-
-  function sync(){
-    applyCopy(currentType());
-    alignPurchaseBlock();
-  }
-
-  if (roastLight && roastDark){
-    try { localStorage.setItem("mayanutSelectedRoast", "light"); } catch(e) {}
-    if (!roastLight.classList.contains("active")){
-      roastLight.click();
-    } else {
-      roastLight.classList.add("active");
-      roastLight.setAttribute("aria-pressed", "true");
-      roastDark.classList.remove("active");
-      roastDark.setAttribute("aria-pressed", "false");
-    }
-
-    roastLight.addEventListener("click", function(){ window.setTimeout(sync, 0); });
-    roastDark.addEventListener("click", function(){ window.setTimeout(sync, 0); });
-  }
-
-  removeRecommendations();
-  sync();
-
-  if (document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", sync, {once:true});
-  }
-
-  window.addEventListener("load", function(){ sync(); window.setTimeout(sync, 120); }, {once:true, passive:true});
-  window.addEventListener("resize", sync, {passive:true});
-  window.addEventListener("orientationchange", sync, {passive:true});
-  window.addEventListener("pageshow", sync, {passive:true});
-
-  if (tabletDesktopMQ.addEventListener){
-    tabletDesktopMQ.addEventListener("change", sync);
-  } else if (tabletDesktopMQ.addListener){
-    tabletDesktopMQ.addListener(sync);
-  }
-})();
-</script>
 
 
 <script id="mayanut-shared-footer-wordmark-midpoint-measured-final-2026-04-30">
@@ -8673,87 +8488,7 @@ button.header-cart{
   })();
 </script>
 
-<script id="mayanut-flour-page-fixed-product-align-2026-05-01">
-  (function fixedMayaNutFlourPage(){
-    "use strict";
 
-    var roastLight = document.getElementById("roastLight");
-    var roastDark = document.getElementById("roastDark");
-    var controls = document.getElementById("purchaseControlsSection");
-    var spacer = document.getElementById("purchaseAnchorSpacer");
-    var thumbs = document.getElementById("thumbsMicroSection") || document.querySelector(".thumbs");
-
-    function forceFlour(){
-      try { localStorage.setItem("mayanutSelectedRoast", "light"); } catch(e) {}
-      if (roastLight){
-        roastLight.classList.add("active");
-        roastLight.setAttribute("aria-pressed", "true");
-      }
-      if (roastDark){
-        roastDark.classList.remove("active");
-        roastDark.setAttribute("aria-pressed", "false");
-      }
-    }
-
-    function alignControls(){
-      forceFlour();
-      if (!controls || !spacer || !thumbs) return;
-
-      var isMobile = window.matchMedia("(max-width:760px)").matches;
-      if (isMobile){
-        spacer.style.height = "0px";
-        spacer.style.setProperty("--mayanut-purchase-spacer", "0px");
-        controls.style.height = "";
-        controls.style.minHeight = "";
-        document.body.classList.add("purchase-layout-ready");
-        return;
-      }
-
-      spacer.style.height = "0px";
-      spacer.style.setProperty("--mayanut-purchase-spacer", "0px");
-      controls.style.height = "auto";
-      controls.style.minHeight = "0px";
-
-      var thumbRect = thumbs.getBoundingClientRect();
-      var controlRect = controls.getBoundingClientRect();
-      var controlHeight = controlRect.height || controls.offsetHeight || 48;
-      var currentTop = controlRect.top + window.pageYOffset;
-      var targetTop;
-
-      /* Desktop/tablet: the three-control row is vertically centered against the thumbnail strip. */
-      targetTop = thumbRect.top + window.pageYOffset + ((thumbRect.height - controlHeight) / 2);
-
-      var offset = Math.max(0, Math.round(targetTop - currentTop));
-      spacer.style.height = offset + "px";
-      spacer.style.setProperty("--mayanut-purchase-spacer", offset + "px");
-      document.body.classList.add("purchase-layout-ready");
-    }
-
-    var raf = 0;
-    function requestAlign(){
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(function(){
-        raf = 0;
-        alignControls();
-      });
-    }
-
-    if (roastLight) roastLight.addEventListener("click", function(){ setTimeout(requestAlign, 0); });
-    if (roastDark) roastDark.addEventListener("click", function(){ forceFlour(); setTimeout(requestAlign, 0); });
-
-    window.addEventListener("load", function(){ requestAlign(); setTimeout(requestAlign, 80); setTimeout(requestAlign, 240); }, {passive:true});
-    window.addEventListener("resize", requestAlign, {passive:true});
-    window.addEventListener("orientationchange", requestAlign, {passive:true});
-    window.addEventListener("pageshow", requestAlign, {passive:true});
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestAlign).catch(function(){});
-
-    if (document.readyState === "loading"){
-      document.addEventListener("DOMContentLoaded", requestAlign, {once:true});
-    } else {
-      requestAlign();
-    }
-  })();
-</script>
 
 
 <script id="mayanut-flour-single-sku-dom-storage-lock-2026-05-01">
@@ -8860,47 +8595,299 @@ button.header-cart{
 
 
 
-<script id="mayanut-flour-final-midpoint-and-title-lock-2026-05-01">
-(function(){
-  "use strict";
 
-  function byId(id){ return document.getElementById(id); }
 
-  function styleSectionTitles(){
-    var info = byId("productInfoTitle");
-    if (info){
-      var text = (info.textContent || "").replace(/\s+/g, " ").trim();
-      if (/^What is MayaNut™ Flour\??$/.test(text)){
-        info.innerHTML = 'What is <span class="section-title-brand-black notranslate" translate="no">MayaNut™</span> Flour?';
-      }
+
+
+<style id="mayanut-flour-microbug-final-lock-2026-05-01">
+  /* Final micro-bug lock: no old selector flash, stable purchase row, fixed header cart inset, orange popup buttons. */
+  #roastRow,
+  #roastRow *{
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+    height:0 !important;
+    max-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+    pointer-events:none !important;
+  }
+
+  #purchaseControlsSection,
+  .purchase-controls-section{
+    visibility:visible !important;
+    opacity:1 !important;
+    transition:none !important;
+    transform:none !important;
+    will-change:auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    margin-top:0 !important;
+  }
+
+  body:not(.purchase-layout-ready) #purchaseControlsSection,
+  body:not(.purchase-layout-ready) .purchase-controls-section{
+    visibility:visible !important;
+    opacity:1 !important;
+  }
+
+  #purchaseAnchorSpacer,
+  .purchase-anchor-spacer{
+    display:block !important;
+    min-height:0 !important;
+    transition:none !important;
+    transform:none !important;
+    will-change:auto !important;
+  }
+
+  #optionActionRow,
+  .option-action-row,
+  .weight-btn,
+  .qty-stepper,
+  .add-cart-btn{
+    transition:none !important;
+    transform:none !important;
+    will-change:auto !important;
+  }
+
+  @media (min-width:761px){
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(118px, 140px) minmax(168px, 210px) minmax(148px, 172px) !important;
+      justify-content:start !important;
+      align-items:center !important;
+      gap:8px !important;
+      width:100% !important;
+      max-width:560px !important;
+      overflow:visible !important;
+    }
+
+    .weight-btn,
+    .qty-stepper,
+    .add-cart-btn{
+      height:44px !important;
+      min-height:44px !important;
+      max-height:44px !important;
+      width:100% !important;
+      max-width:100% !important;
+      min-width:0 !important;
+      justify-self:stretch !important;
+      align-self:center !important;
+    }
+
+    .add-cart-btn{
+      padding:0 14px !important;
+      font-size:11px !important;
+      letter-spacing:.07em !important;
+      white-space:nowrap !important;
     }
   }
 
-  function alignControlsToThumbMidpoint(){
-    styleSectionTitles();
+  @media (min-width:761px) and (max-width:1180px){
+    #optionActionRow,
+    .option-action-row{
+      grid-template-columns:minmax(106px, 124px) minmax(146px, 176px) minmax(132px, 152px) !important;
+      max-width:468px !important;
+      gap:7px !important;
+    }
 
-    var row = byId("optionActionRow");
+    .weight-btn{
+      padding:0 8px !important;
+      gap:5px !important;
+      font-size:10.5px !important;
+    }
+
+    .qty-stepper{
+      grid-template-columns:minmax(38px, 1fr) 58px minmax(38px, 1fr) !important;
+    }
+
+    .add-cart-btn{
+      padding:0 10px !important;
+      font-size:10.5px !important;
+      letter-spacing:.055em !important;
+    }
+  }
+
+  @media (max-width:760px){
+    #purchaseAnchorSpacer,
+    .purchase-anchor-spacer{
+      display:none !important;
+      height:0 !important;
+      flex-basis:0 !important;
+    }
+
+    #optionActionRow,
+    .option-action-row{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap:10px !important;
+      align-items:center !important;
+      width:100% !important;
+      max-width:none !important;
+    }
+
+    .add-cart-btn{
+      grid-column:1 / -1 !important;
+      width:100% !important;
+    }
+  }
+
+  .site-header{
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+  .site-header .header-top-inner,
+  .site-header .header-bottom-inner{
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    padding-left:max(14px, env(safe-area-inset-left)) !important;
+    padding-right:max(14px, env(safe-area-inset-right)) !important;
+  }
+
+  .site-header .header-top-row{
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+  .site-header .header-main-actions{
+    margin:0 !important;
+    padding:0 !important;
+    justify-self:end !important;
+    align-self:center !important;
+  }
+
+  .site-header .header-cart,
+  .header-cart{
+    width:56px !important;
+    height:56px !important;
+    min-width:56px !important;
+    min-height:56px !important;
+    max-width:56px !important;
+    max-height:56px !important;
+    flex:0 0 56px !important;
+    margin:0 !important;
+    padding:0 !important;
+    border-radius:14px !important;
+    overflow:hidden !important;
+  }
+
+  .site-header .cart-icon,
+  .cart-icon{
+    width:56px !important;
+    height:56px !important;
+    min-width:56px !important;
+    min-height:56px !important;
+    flex:0 0 56px !important;
+    transform:translateY(4px) !important;
+  }
+
+  .product-choice-tab.flour-choice,
+  .product-choice-tab.powder-choice{
+    background:#ff9000 !important;
+    border-color:#ff9000 !important;
+    color:#fff !important;
+    box-shadow:none !important;
+  }
+
+  .product-choice-tab.flour-choice:hover,
+  .product-choice-tab.powder-choice:hover,
+  .product-choice-tab.flour-choice:focus-visible,
+  .product-choice-tab.powder-choice:focus-visible{
+    background:#e67f00 !important;
+    border-color:#e67f00 !important;
+    color:#fff !important;
+    transform:translateY(-1px) !important;
+  }
+</style>
+
+<script id="mayanut-flour-microbug-final-lock-script-2026-05-01">
+(function(){
+  "use strict";
+
+  var raf = 0;
+  var lockTimer = 0;
+
+  function byId(id){ return document.getElementById(id); }
+
+  function forceSingleSku(){
+    var row = byId("roastRow");
+    if (row){
+      row.hidden = true;
+      row.setAttribute("aria-hidden", "true");
+      row.style.setProperty("display", "none", "important");
+      row.style.setProperty("visibility", "hidden", "important");
+      row.style.setProperty("height", "0", "important");
+      row.style.setProperty("overflow", "hidden", "important");
+      row.style.setProperty("pointer-events", "none", "important");
+    }
+
+    var weightValue = byId("weightBtnValue");
+    if (weightValue) weightValue.textContent = "10 lbs";
+
+    var cartWeight = byId("cartWeight");
+    if (cartWeight) cartWeight.textContent = "10 lbs";
+
+    var cartRoast = byId("cartItemRoast");
+    if (cartRoast) cartRoast.textContent = "MayaNut™ Flour";
+
+    try{
+      localStorage.setItem("mayanutSelectedRoast", "light");
+      if (!localStorage.getItem("mayanutSelectedQty")) localStorage.setItem("mayanutSelectedQty", "1");
+    }catch(e){}
+  }
+
+  function lockHeaderInset(){
+    document.documentElement.style.setProperty("--site-header-edge-gap", "14px", "important");
+    document.documentElement.style.setProperty("--index-header-edge-gap", "14px", "important");
+
+    var nodes = document.querySelectorAll(".site-header .header-top-inner, .site-header .header-bottom-inner");
+    nodes.forEach(function(el){
+      el.style.setProperty("box-sizing", "border-box", "important");
+      el.style.setProperty("padding-left", "max(14px, env(safe-area-inset-left))", "important");
+      el.style.setProperty("padding-right", "max(14px, env(safe-area-inset-right))", "important");
+    });
+
+    var cart = document.querySelector(".site-header .header-cart");
+    if (cart){
+      cart.style.setProperty("width", "56px", "important");
+      cart.style.setProperty("height", "56px", "important");
+      cart.style.setProperty("flex", "0 0 56px", "important");
+      cart.style.setProperty("margin", "0", "important");
+      cart.style.setProperty("padding", "0", "important");
+    }
+  }
+
+  function alignControlsOnce(){
+    forceSingleSku();
+    lockHeaderInset();
+
     var spacer = byId("purchaseAnchorSpacer");
+    var row = byId("optionActionRow");
     var thumbs = byId("thumbsMicroSection") || document.querySelector(".thumbs");
-    var controls = byId("purchaseControlsSection");
-
-    if (!row || !spacer || !thumbs || !controls) return;
-
     var isMobile = window.matchMedia("(max-width:760px)").matches;
-    if (isMobile){
-      spacer.style.setProperty("--flour-controls-spacer", "0px");
-      spacer.style.setProperty("height", "0px", "important");
-      spacer.style.setProperty("display", "none", "important");
-      controls.style.height = "";
-      controls.style.minHeight = "";
+
+    if (!spacer || !row || !thumbs || isMobile){
+      if (spacer){
+        spacer.style.setProperty("height", "0px", "important");
+        spacer.style.setProperty("flex-basis", "0px", "important");
+        if (isMobile) spacer.style.setProperty("display", "none", "important");
+      }
+      document.body.classList.add("purchase-layout-ready");
+      document.body.classList.add("controls-stable-ready");
       return;
     }
 
     spacer.style.setProperty("display", "block", "important");
     spacer.style.setProperty("height", "0px", "important");
-    spacer.style.setProperty("--flour-controls-spacer", "0px");
-    controls.style.height = "";
-    controls.style.minHeight = "";
+    spacer.style.setProperty("flex-basis", "0px", "important");
 
     var thumbRect = thumbs.getBoundingClientRect();
     var rowRect = row.getBoundingClientRect();
@@ -8908,46 +8895,37 @@ button.header-cart{
     var rowCenter = rowRect.top + window.pageYOffset + (rowRect.height / 2);
     var offset = Math.max(0, Math.round(targetCenter - rowCenter));
 
-    spacer.style.setProperty("--flour-controls-spacer", offset + "px");
     spacer.style.setProperty("height", offset + "px", "important");
     spacer.style.setProperty("flex-basis", offset + "px", "important");
+    spacer.style.setProperty("--mayanut-purchase-spacer", offset + "px");
+    spacer.style.setProperty("--flour-controls-spacer", offset + "px");
 
-    window.requestAnimationFrame(function(){
-      var correctedThumbRect = thumbs.getBoundingClientRect();
-      var correctedRowRect = row.getBoundingClientRect();
-      var correctedTarget = correctedThumbRect.top + window.pageYOffset + (correctedThumbRect.height / 2);
-      var correctedCenter = correctedRowRect.top + window.pageYOffset + (correctedRowRect.height / 2);
-      var correction = Math.round(correctedTarget - correctedCenter);
-      if (Math.abs(correction) > 1){
-        var next = Math.max(0, offset + correction);
-        spacer.style.setProperty("--flour-controls-spacer", next + "px");
-        spacer.style.setProperty("height", next + "px", "important");
-        spacer.style.setProperty("flex-basis", next + "px", "important");
-      }
-      document.body.classList.add("purchase-layout-ready");
-    });
+    document.body.classList.add("purchase-layout-ready");
+    document.body.classList.add("controls-stable-ready");
   }
 
-  var raf = 0;
-  function requestAlign(){
-    if (raf) window.cancelAnimationFrame(raf);
-    raf = window.requestAnimationFrame(function(){
+  function requestLock(){
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function(){
       raf = 0;
-      alignControlsToThumbMidpoint();
+      alignControlsOnce();
     });
   }
 
-  if (document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", requestAlign, {once:true});
-  } else {
-    requestAlign();
+  function settleLock(){
+    requestLock();
+    clearTimeout(lockTimer);
+    lockTimer = setTimeout(requestLock, 80);
   }
 
-  window.addEventListener("load", function(){ requestAlign(); setTimeout(requestAlign, 90); setTimeout(requestAlign, 260); }, {passive:true});
-  window.addEventListener("resize", requestAlign, {passive:true});
-  window.addEventListener("orientationchange", requestAlign, {passive:true});
-  window.addEventListener("pageshow", requestAlign, {passive:true});
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestAlign).catch(function(){});
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", settleLock, {once:true});
+  else settleLock();
+
+  window.addEventListener("load", function(){ settleLock(); setTimeout(requestLock, 240); }, {passive:true});
+  window.addEventListener("pageshow", settleLock, {passive:true});
+  window.addEventListener("resize", settleLock, {passive:true});
+  window.addEventListener("orientationchange", settleLock, {passive:true});
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(settleLock).catch(function(){});
 })();
 </script>
 

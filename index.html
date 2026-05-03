@@ -1542,7 +1542,8 @@ html{color-scheme:light !important}
 </style>
 
 
-<style id="mayanut-index-newsletter-email-placeholder-final">
+
+<style id="mayanut-index-newsletter-email-input-toast-final">
 .newsletter-signup-row{
   display:flex;
   align-items:center;
@@ -1552,14 +1553,16 @@ html{color-scheme:light !important}
   max-width:560px;
 }
 
-.newsletter-email-placeholder{
+.newsletter-email-input{
+  appearance:none;
+  -webkit-appearance:none;
   height:44px;
   min-width:260px;
   max-width:min(320px, 100%);
   border-radius:12px;
   background:#fff;
   border:1px solid rgba(11,18,32,0.14);
-  color:rgba(11,18,32,0.52);
+  color:var(--ink);
   display:inline-flex;
   align-items:center;
   justify-content:flex-start;
@@ -1570,7 +1573,46 @@ html{color-scheme:light !important}
   line-height:1.2;
   text-align:left;
   box-shadow:0 10px 24px rgba(0,0,0,.10);
+  outline:none;
+}
+
+.newsletter-email-input::placeholder{
+  color:rgba(11,18,32,0.46);
+  opacity:1;
+}
+
+.newsletter-email-input:focus{
+  border-color:rgba(255,144,0,0.62);
+  box-shadow:0 0 0 3px rgba(255,144,0,0.14), 0 10px 24px rgba(0,0,0,.10);
+}
+
+.newsletter-unavailable-toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%) translateY(8px);
+  z-index:130000;
+  background:rgba(11,18,32,.92);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-family:var(--font-ui);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.2;
+  box-shadow:0 14px 30px rgba(0,0,0,.18);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
   white-space:nowrap;
+}
+
+.newsletter-unavailable-toast.show{
+  opacity:1;
+  visibility:visible;
+  transform:translateX(-50%) translateY(0);
+  transition:opacity .16s ease, transform .16s ease;
 }
 
 @media (max-width:640px){
@@ -1580,11 +1622,10 @@ html{color-scheme:light !important}
     max-width:320px;
   }
 
-  .newsletter-email-placeholder{
+  .newsletter-email-input{
     width:100%;
     min-width:0;
-    justify-content:center;
-    text-align:center;
+    text-align:left;
   }
 
   .newsletter-signup-row .newsletter-banner-btn{
@@ -1970,11 +2011,14 @@ html{color-scheme:light !important}
     <div class="newsletter-banner-content">
       <h2>Join Our Newsletter!</h2>
       <div class="newsletter-signup-row" aria-label="Newsletter email signup placeholder">
-        <div class="newsletter-email-placeholder" aria-hidden="true">Enter your email, it’s free!</div>
+        <label class="sr-only" for="newsletterEmail">Email address for newsletter signup</label>
+        <input class="newsletter-email-input" id="newsletterEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Enter your email — it’s free" aria-label="Email address for newsletter signup">
         <button class="newsletter-banner-btn" type="button" aria-label="Subscribe to The MayaNut Company newsletter">Subscribe</button>
       </div>
     </div>
   </section>
+
+  <div class="newsletter-unavailable-toast" id="newsletterUnavailableToast" role="status" aria-live="polite">Unavailable for now.</div>
 
   <footer class="footer" aria-label="Footer">
     <div class="footer-inner">
@@ -3541,6 +3585,27 @@ html{color-scheme:light !important}
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule).catch(function(){});
     schedule();
   })();
+</script>
+
+
+<script id="mayanut-index-newsletter-unavailable-script">
+(function(){
+  const subscribeBtn = document.querySelector('.newsletter-banner-btn');
+  const toast = document.getElementById('newsletterUnavailableToast');
+  if(!subscribeBtn || !toast) return;
+
+  let toastTimer = null;
+
+  subscribeBtn.addEventListener('click', function(event){
+    event.preventDefault();
+    toast.classList.add('show');
+
+    if(toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function(){
+      toast.classList.remove('show');
+    }, 1800);
+  });
+})();
 </script>
 
 </body>

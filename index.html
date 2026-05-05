@@ -2477,12 +2477,12 @@ button.header-cart#cartLaunch.is-pressed{
 
 
 
-<style id="mayanut-footer-logo-actually-bigger-final-override">
-/* ACTUAL FINAL FOOTER LOGO OVERRIDE — higher specificity than every earlier footer-logo rule. */
+<style id="mayanut-footer-logo-final-size-130-112-89">
+/* FINAL FOOTER LOGO SIZE OVERRIDE — exact requested sizes: 130 desktop, 112 tablet, 89 mobile. */
 :root{
-  --mayanut-footer-logo-desktop-actual:260px;
-  --mayanut-footer-logo-tablet-actual:224px;
-  --mayanut-footer-logo-mobile-actual:178px;
+  --mayanut-footer-logo-desktop-actual:130px;
+  --mayanut-footer-logo-tablet-actual:112px;
+  --mayanut-footer-logo-mobile-actual:89px;
 }
 
 html body .footer .footer-inner > .footer-wordmark-block.notranslate,
@@ -2587,6 +2587,35 @@ html body .footer .footer-inner > .footer-wordmark-block .footer-logo-above-word
     aspect-ratio:1 / 1 !important;
   }
 }
+</style>
+
+
+<style id="mayanut-cart-product-popup-arrow-final">
+  #cartEmpty .cart-shop-products-btn{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:8px !important;
+  }
+
+  #cartEmpty .cart-shop-products-btn .recipes-arrow{
+    width:17px !important;
+    height:17px !important;
+    stroke:currentColor !important;
+    fill:none !important;
+    stroke-width:2.2 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+    flex:0 0 auto !important;
+    transform:translateY(0.5px) !important;
+  }
+
+  @media (max-width:760px){
+    #cartEmpty .cart-shop-products-btn .recipes-arrow{
+      width:16px !important;
+      height:16px !important;
+    }
+  }
 </style>
 
 </head>
@@ -2973,7 +3002,7 @@ html body .footer .footer-inner > .footer-wordmark-block .footer-logo-above-word
 <div class="footer-wordmark-block notranslate" translate="no" aria-label="The MayaNut Company footer wordmark">
 <div class="footer-logo-above-wordmark-wrap">
           <a class="footer-logo-home-link" href="#top" aria-label="Back to top of The MayaNut Company home page">
-            <img class="footer-logo-above-wordmark" src="/tm-sun-logo-the-mayanut-company.svg" alt="The MayaNut Company logo" width="260" height="260" loading="lazy" decoding="async">
+            <img class="footer-logo-above-wordmark" src="/tm-sun-logo-the-mayanut-company.svg" alt="The MayaNut Company logo" width="130" height="130" loading="lazy" decoding="async">
           </a>
         </div>
         <a href="/" aria-label="Go to home page" class="footer-wordmark-link">
@@ -3067,7 +3096,13 @@ html body .footer .footer-inner > .footer-wordmark-block .footer-logo-above-word
         <div class="cart-empty" id="cartEmpty">
           <div class="cart-empty-title">Cart Empty</div>
           <div class="cart-empty-copy">Your cart is currently empty.</div>
-          <a class="btn" href="/products.html" aria-label="Shop products">Shop Products →</a>
+          <a class="btn cart-shop-products-btn" href="/products.html" aria-label="Shop products">
+            <span>Shop Products</span>
+            <svg aria-hidden="true" class="recipes-arrow" viewBox="0 0 24 24" focusable="false">
+              <path d="M4 12h14"></path>
+              <path d="M13 6l6 6-6 6"></path>
+            </svg>
+          </a>
         </div>
 
         <div class="cart-item is-hidden" id="cartItemBlock" aria-label="Cart item">
@@ -3372,7 +3407,10 @@ html body .footer .footer-inner > .footer-wordmark-block .footer-logo-above-word
 
       function openProductPanel(trigger){
         closeLanguageIfOpen();
-        lastFocusedProductTrigger = trigger || document.activeElement;
+        if (typeof window.mayanutCloseCartForProductChoice === "function") {
+          window.mayanutCloseCartForProductChoice();
+        }
+        lastFocusedProductTrigger = trigger && trigger.closest && trigger.closest("#cartOverlay") ? document.getElementById("cartLaunch") : (trigger || document.activeElement);
         productPanel.hidden = false;
         productBackdrop.hidden = false;
         productPanel.classList.add("open");
@@ -3774,6 +3812,14 @@ html body .footer .footer-inner > .footer-wordmark-block .footer-logo-above-word
           }, 160);
         }
       }
+
+      window.mayanutCloseCartForProductChoice = function(){
+        cartOverlay.classList.remove("open");
+        cartOverlay.setAttribute("aria-hidden", "true");
+        cartOverlay.hidden = true;
+        updateBodyOverlayState();
+        removeCartTrap();
+      };
 
       function updateCartQuantity(nextValue){
         const nextQty = clampCartQty(nextValue);

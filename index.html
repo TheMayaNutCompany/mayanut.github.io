@@ -64,7 +64,7 @@
 <meta content="@mayanutcompany" name="twitter:creator"/>
 <meta content="mayanut.com" name="twitter:domain"/>
 <meta content="https://www.mayanut.com/" name="twitter:url"/>
-<meta content="2026-05-07T00:00:00-04:00" property="og:updated_time"/>
+<meta content="2026-05-11T00:00:00-04:00" property="og:updated_time"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="//fonts.googleapis.com" rel="dns-prefetch"/>
@@ -4003,7 +4003,7 @@ html body .site-header .brand-link img{
 </div>
 <nav aria-label="Primary navigation" class="desktop-primary-nav">
 <a aria-current="page" class="active" href="/">Home</a>
-<a href="/mayanut-flour.html">Buy</a>
+<a href="/products.html">Buy</a>
 <a href="/about.html">About</a>
 <a href="/faq.html">FAQ</a>
 <a href="/recipes.html">Recipes</a>
@@ -7344,6 +7344,135 @@ html body .site-header .desktop-primary-nav{
   }
 }
 </style>
+
+
+<!-- FINAL REQUEST PATCH: tighter split line, Buy selector colors, newsletter green rules, SEO freshness preserved -->
+<style id="mayanut-index-final-buy-newsletter-line-patch-2026-05-11">
+:root{
+  --mayanut-product-green:#405000;
+  --mayanut-newsletter-rule:#405000;
+}
+
+/* Mobile/tablet header divider: keep the logo splitting the line, but bring the visible line ends closer to the logo. */
+@media (min-width:761px) and (max-width:980px){
+  html body .site-header .header-bottom{
+    border-top-color:#405000 !important;
+  }
+  html body .site-header .header-bottom::before{
+    left:calc(50% - 126px) !important;
+    width:252px !important;
+    height:3px !important;
+    background:#fff !important;
+  }
+}
+@media (max-width:760px){
+  html body .site-header .header-bottom{
+    border-top-color:#405000 !important;
+  }
+  html body .site-header .header-bottom::before{
+    left:calc(50% - 82px) !important;
+    width:164px !important;
+    height:3px !important;
+    background:#fff !important;
+  }
+}
+
+/* Restore/force Buy and all /products.html links on index to open the product-choice popup. */
+html body .site-header .desktop-primary-nav a[href="/products.html"]{
+  cursor:pointer !important;
+}
+html body.product-choice-is-open .desktop-primary-nav a[href="/products.html"],
+html.product-choice-is-open body .desktop-primary-nav a[href="/products.html"],
+html body .desktop-primary-nav a[href="/products.html"][aria-expanded="true"]{
+  color:#ff9000 !important;
+}
+html body.product-choice-is-open .desktop-primary-nav a[href="/products.html"]::after,
+html.product-choice-is-open body .desktop-primary-nav a[href="/products.html"]::after,
+html body .desktop-primary-nav a[href="/products.html"][aria-expanded="true"]::after{
+  width:100% !important;
+  background:#ff9000 !important;
+}
+
+/* Product-choice popup: Flour is brand orange, Powder is green. */
+html body .product-choice-panel .product-choice-tab.flour-choice{
+  background:#ff9000 !important;
+  border-color:#ff9000 !important;
+  color:#fff !important;
+}
+html body .product-choice-panel .product-choice-tab.flour-choice:hover,
+html body .product-choice-panel .product-choice-tab.flour-choice:focus-visible{
+  background:#c77000 !important;
+  border-color:#c77000 !important;
+  color:#fff !important;
+}
+html body .product-choice-panel .product-choice-tab.powder-choice{
+  background:#405000 !important;
+  border-color:#405000 !important;
+  color:#fff !important;
+}
+html body .product-choice-panel .product-choice-tab.powder-choice:hover,
+html body .product-choice-panel .product-choice-tab.powder-choice:focus-visible{
+  background:#2f3b00 !important;
+  border-color:#2f3b00 !important;
+  color:#fff !important;
+}
+
+/* Newsletter: medium green rules above and below the bottom newsletter strip. */
+html body .newsletter-banner-strip{
+  border-top:3px solid var(--mayanut-newsletter-rule) !important;
+  border-bottom:3px solid var(--mayanut-newsletter-rule) !important;
+}
+</style>
+
+<script id="mayanut-index-buy-popup-ensure-2026-05-11">
+(function(){
+  function ensureBuyPopup(){
+    var productPanel = document.getElementById('productChoicePanel');
+    var productBackdrop = document.getElementById('productChoiceBackdrop');
+    if(!productPanel || !productBackdrop) return;
+    var closeBtn = document.getElementById('productChoiceClose');
+    var triggers = Array.prototype.slice.call(document.querySelectorAll('a[href="/products.html"], .desktop-primary-nav a[href="/products.html"]'));
+    function openPanel(e){
+      if(e){ e.preventDefault(); e.stopPropagation(); }
+      productPanel.hidden = false;
+      productBackdrop.hidden = false;
+      productPanel.classList.add('open');
+      productBackdrop.classList.add('open');
+      document.documentElement.classList.add('product-choice-is-open');
+      document.body.classList.add('product-choice-is-open');
+      triggers.forEach(function(a){
+        a.setAttribute('aria-expanded','true');
+        a.setAttribute('aria-controls','productChoicePanel');
+        a.setAttribute('aria-haspopup','dialog');
+      });
+      var first = productPanel.querySelector('a,button');
+      if(first) first.focus({preventScroll:true});
+    }
+    function closePanel(){
+      productPanel.classList.remove('open');
+      productBackdrop.classList.remove('open');
+      document.documentElement.classList.remove('product-choice-is-open');
+      document.body.classList.remove('product-choice-is-open');
+      productPanel.hidden = true;
+      productBackdrop.hidden = true;
+      triggers.forEach(function(a){ a.setAttribute('aria-expanded','false'); });
+    }
+    triggers.forEach(function(a){
+      a.setAttribute('aria-haspopup','dialog');
+      a.setAttribute('aria-controls','productChoicePanel');
+      a.removeEventListener('click', openPanel, true);
+      a.addEventListener('click', openPanel, true);
+    });
+    if(closeBtn){ closeBtn.addEventListener('click', function(e){ e.preventDefault(); closePanel(); }); }
+    productBackdrop.addEventListener('click', closePanel);
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && productPanel.classList.contains('open')) closePanel();
+    });
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureBuyPopup);
+  else ensureBuyPopup();
+})();
+</script>
 
 </body>
 </html>

@@ -118,6 +118,86 @@ html body .newsletter-banner-strip{
 }
 </style>
 
+
+<style id="mobile-tablet-logo-centerline-fix">
+/* Final mobile/tablet header geometry: the grey divider line passes through the vertical center of the logo. */
+@media (min-width:761px) and (max-width:980px){
+  html body .site-header .header-top-row{
+    min-height:78px !important;
+    height:78px !important;
+    align-items:end !important;
+  }
+  html body .site-header .brand{
+    align-self:end !important;
+    transform:translateY(35px) !important;
+    overflow:visible !important;
+    z-index:6 !important;
+  }
+  html body .site-header .brand-link.brand-word-logo-link{
+    justify-content:center !important;
+    align-items:flex-end !important;
+    margin:0 auto !important;
+    overflow:visible !important;
+  }
+  html body .site-header img.brand-word-logo,
+  html body .site-header .brand-link.brand-word-logo-link > img.brand-word-logo{
+    height:70px !important;
+    max-height:70px !important;
+    width:auto !important;
+    max-width:min(52vw,250px) !important;
+    object-fit:contain !important;
+    margin:0 auto !important;
+  }
+  html body .site-header .header-bottom{
+    position:relative !important;
+    border-top:1px solid rgba(11,18,32,.14) !important;
+  }
+  html body .site-header .header-bottom::before{
+    left:calc(50% - 82px) !important;
+    width:164px !important;
+    height:3px !important;
+    background:#fff !important;
+  }
+}
+@media (max-width:760px){
+  html body .site-header .header-top-row{
+    min-height:78px !important;
+    height:78px !important;
+    align-items:end !important;
+  }
+  html body .site-header .brand{
+    align-self:end !important;
+    transform:translateY(31px) !important;
+    overflow:visible !important;
+    z-index:6 !important;
+  }
+  html body .site-header .brand-link.brand-word-logo-link{
+    justify-content:center !important;
+    align-items:flex-end !important;
+    margin:0 auto !important;
+    overflow:visible !important;
+  }
+  html body .site-header img.brand-word-logo,
+  html body .site-header .brand-link.brand-word-logo-link > img.brand-word-logo{
+    height:62px !important;
+    max-height:62px !important;
+    width:auto !important;
+    max-width:min(48vw,178px) !important;
+    object-fit:contain !important;
+    margin:0 auto !important;
+  }
+  html body .site-header .header-bottom{
+    position:relative !important;
+    border-top:1px solid rgba(11,18,32,.14) !important;
+  }
+  html body .site-header .header-bottom::before{
+    left:calc(50% - 52px) !important;
+    width:104px !important;
+    height:3px !important;
+    background:#fff !important;
+  }
+}
+</style>
 </head>
 <body id="top">
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -2468,6 +2548,70 @@ html body .newsletter-banner-strip{
   function checks(){document.querySelectorAll('.hero-badge-icon').forEach(function(el){el.style.setProperty('background','transparent','important');el.style.setProperty('border','0','important');el.style.setProperty('box-shadow','none','important');});}
   function run(){bindPair('.btn-orange,a.btn.btn-orange,button.btn.btn-orange,.newsletter-banner-btn','#FF9000','#D97A00','#fff');bindPair('.product-split-btn.product-split-flour,.product-choice-panel .product-choice-tab.flour-choice','#FFC000','#D9A300','#fff');bindPair('.product-split-btn.product-split-powder,.product-choice-panel .product-choice-tab.powder-choice','#477000','#3C5F00','#fff');checks();}
   run();document.addEventListener('DOMContentLoaded',run);window.addEventListener('load',run);window.addEventListener('resize',checks,{passive:true});
+})();
+</script>
+
+<style id="mayanut-final-top-cutoff-fix-2026-05-12">
+/* Keeps the first hero content safely below the fixed header on desktop, tablet, mobile, and phone landscape. */
+:root{
+  --mayanut-safe-header-height:136px;
+  --mayanut-hero-top-breathing-room:clamp(22px,2.4vw,34px);
+}
+html{
+  scroll-padding-top:calc(var(--mayanut-safe-header-height) + var(--mayanut-hero-top-breathing-room) + 12px) !important;
+}
+html body main#main-content{
+  padding-top:calc(var(--mayanut-safe-header-height) + var(--mayanut-hero-top-breathing-room)) !important;
+}
+html body .hero-panel,
+html body .hero-merged,
+html body .hero-merged-copy{
+  position:relative !important;
+  z-index:1 !important;
+}
+html body .hero-badges{
+  margin-top:0 !important;
+}
+#main-content,
+.hero-panel{
+  scroll-margin-top:calc(var(--mayanut-safe-header-height) + var(--mayanut-hero-top-breathing-room) + 12px) !important;
+}
+@media (max-width:1180px){
+  :root{
+    --mayanut-safe-header-height:148px;
+    --mayanut-hero-top-breathing-room:24px;
+  }
+}
+@media (max-width:760px){
+  :root{
+    --mayanut-safe-header-height:142px;
+    --mayanut-hero-top-breathing-room:22px;
+  }
+}
+@media (orientation:landscape) and (max-height:560px){
+  :root{
+    --mayanut-safe-header-height:120px;
+    --mayanut-hero-top-breathing-room:18px;
+  }
+}
+</style>
+<script id="mayanut-final-live-header-offset-2026-05-12">
+(function(){
+  function setHeaderOffset(){
+    var header=document.querySelector('.site-header');
+    if(!header) return;
+    var h=Math.ceil(header.getBoundingClientRect().height || 0);
+    if(h > 0){
+      document.documentElement.style.setProperty('--mayanut-safe-header-height', h + 'px');
+    }
+  }
+  setHeaderOffset();
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setHeaderOffset);
+  else setHeaderOffset();
+  window.addEventListener('load', setHeaderOffset);
+  window.addEventListener('resize', setHeaderOffset, {passive:true});
+  window.addEventListener('orientationchange', function(){setTimeout(setHeaderOffset, 80);});
+  if(document.fonts && document.fonts.ready){document.fonts.ready.then(setHeaderOffset).catch(function(){});}
 })();
 </script>
 </body>

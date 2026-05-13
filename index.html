@@ -2550,9 +2550,9 @@ html body .newsletter-banner-strip{
       paint(btn, normal);
       btn.addEventListener('mouseenter', function(){ paint(btn, hover); }, {passive:true});
       btn.addEventListener('mouseleave', function(){ paint(btn, normal); }, {passive:true});
-      btn.addEventListener('focus', function(){ paint(btn, hover); }, {passive:true});
+      btn.addEventListener('focus', function(){ paint(btn, normal); }, {passive:true});
       btn.addEventListener('blur', function(){ paint(btn, normal); }, {passive:true});
-      btn.addEventListener('touchstart', function(){ paint(btn, hover); }, {passive:true});
+      btn.addEventListener('touchstart', function(){ paint(btn, normal); }, {passive:true});
       btn.addEventListener('touchend', function(){ setTimeout(function(){ paint(btn, normal); }, 140); }, {passive:true});
       btn.addEventListener('touchcancel', function(){ paint(btn, normal); }, {passive:true});
     });
@@ -2579,7 +2579,7 @@ html body .newsletter-banner-strip{
       paint(el, normal);
       el.addEventListener('mouseenter', function(){ paint(el, hover); }, {passive:true});
       el.addEventListener('mouseleave', function(){ paint(el, normal); }, {passive:true});
-      el.addEventListener('focus', function(){ paint(el, hover); }, {passive:true});
+      el.addEventListener('focus', function(){ paint(el, normal); }, {passive:true});
       el.addEventListener('blur', function(){ paint(el, normal); }, {passive:true});
     });
   }
@@ -2640,7 +2640,7 @@ html body .newsletter-banner-strip{
 (function(){
   function set(el,p,v){if(el)el.style.setProperty(p,v,'important');}
   function paint(el,bg,fg){set(el,'background',bg);set(el,'background-color',bg);set(el,'border-color',bg);set(el,'color',fg||'#fff');set(el,'-webkit-text-fill-color',fg||'#fff');}
-  function bindPair(selector,normal,hover,fg){document.querySelectorAll(selector).forEach(function(el){if(el.dataset.cleanHover===normal+hover)return;el.dataset.cleanHover=normal+hover;paint(el,normal,fg);el.addEventListener('mouseenter',function(){paint(el,hover,fg);},{passive:true});el.addEventListener('mouseleave',function(){paint(el,normal,fg);},{passive:true});el.addEventListener('focus',function(){paint(el,hover,fg);},{passive:true});el.addEventListener('blur',function(){paint(el,normal,fg);},{passive:true});});}
+  function bindPair(selector,normal,hover,fg){document.querySelectorAll(selector).forEach(function(el){if(el.dataset.cleanHover===normal+hover)return;el.dataset.cleanHover=normal+hover;paint(el,normal,fg);el.addEventListener('mouseenter',function(){paint(el,hover,fg);},{passive:true});el.addEventListener('mouseleave',function(){paint(el,normal,fg);},{passive:true});el.addEventListener('focus',function(){paint(el,normal,fg);},{passive:true});el.addEventListener('blur',function(){paint(el,normal,fg);},{passive:true});});}
   function checks(){document.querySelectorAll('.hero-badge-icon').forEach(function(el){el.style.setProperty('background','transparent','important');el.style.setProperty('border','0','important');el.style.setProperty('box-shadow','none','important');});}
   function run(){bindPair('.btn-orange,a.btn.btn-orange,button.btn.btn-orange,.newsletter-banner-btn','#FF9000','#D97A00','#fff');bindPair('.product-split-btn.product-split-flour,.product-choice-panel .product-choice-tab.flour-choice','#FFC000','#D9A300','#fff');bindPair('.product-split-btn.product-split-powder,.product-choice-panel .product-choice-tab.powder-choice','#477000','#3C5F00','#fff');checks();}
   run();document.addEventListener('DOMContentLoaded',run);window.addEventListener('load',run);window.addEventListener('resize',checks,{passive:true});
@@ -3241,6 +3241,106 @@ html body .newsletter-banner-content::after{
   window.addEventListener('pageshow', runFinalLockedPatch, {passive:true});
   window.addEventListener('resize', function(){ window.setTimeout(runFinalLockedPatch, 50); }, {passive:true});
   window.addEventListener('orientationchange', function(){ window.setTimeout(runFinalLockedPatch, 90); }, {passive:true});
+})();
+</script>
+
+
+<style id="mayanut-final-flour-buy-button-state-fix-2026-05-13">
+  /* Buy popup flour button: never open in a dark/hover-looking state. */
+  html body.product-choice-is-open:not(.mayanut-product-choice-hover-ready) .product-choice-panel .product-choice-tab.flour-choice,
+  html body.product-choice-is-open:not(.mayanut-product-choice-hover-ready) .product-choice-panel .product-choice-tab.flour-choice:hover,
+  html body.product-choice-is-open:not(.mayanut-product-choice-hover-ready) .product-choice-panel .product-choice-tab.flour-choice:focus,
+  html body.product-choice-is-open:not(.mayanut-product-choice-hover-ready) .product-choice-panel .product-choice-tab.flour-choice:focus-visible,
+  html body.product-choice-is-open:not(.mayanut-product-choice-hover-ready) .product-choice-panel .product-choice-tab.flour-choice:active{
+    background:#FFC000 !important;
+    background-color:#FFC000 !important;
+    border-color:#FFC000 !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+  html body .product-choice-panel .product-choice-tab.flour-choice:not(:hover),
+  html body .product-choice-panel .product-choice-tab.flour-choice:focus,
+  html body .product-choice-panel .product-choice-tab.flour-choice:focus-visible,
+  html body .product-choice-panel .product-choice-tab.flour-choice:active{
+    background:#FFC000 !important;
+    background-color:#FFC000 !important;
+    border-color:#FFC000 !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    box-shadow:none !important;
+  }
+  @media (hover:hover) and (pointer:fine){
+    html body.product-choice-is-open.mayanut-product-choice-hover-ready .product-choice-panel .product-choice-tab.flour-choice:hover{
+      background:#D9A300 !important;
+      background-color:#D9A300 !important;
+      border-color:#D9A300 !important;
+      color:#fff !important;
+      -webkit-text-fill-color:#fff !important;
+      box-shadow:none !important;
+      transform:translateY(-1px) !important;
+    }
+  }
+</style>
+<script id="mayanut-final-flour-buy-button-state-fix-2026-05-13">
+(function(){
+  var normal = '#FFC000';
+  var hover = '#D9A300';
+  function set(el, prop, value){ if(el) el.style.setProperty(prop, value, 'important'); }
+  function paint(el, color){
+    set(el, 'background', color);
+    set(el, 'background-color', color);
+    set(el, 'border-color', color);
+    set(el, 'color', '#fff');
+    set(el, '-webkit-text-fill-color', '#fff');
+    set(el, 'box-shadow', 'none');
+  }
+  function flourButtons(){
+    return Array.prototype.slice.call(document.querySelectorAll('.product-choice-panel .product-choice-tab.flour-choice'));
+  }
+  function resetFlourButtons(){
+    if(!document.body.classList.contains('product-choice-is-open')){
+      document.body.classList.remove('mayanut-product-choice-hover-ready');
+      return;
+    }
+    if(!document.body.classList.contains('mayanut-product-choice-hover-ready')){
+      flourButtons().forEach(function(btn){ paint(btn, normal); set(btn, 'transform', 'none'); });
+    }
+  }
+  function bind(){
+    flourButtons().forEach(function(btn){
+      if(btn.dataset.mayanutFinalFlourStateFix === '1') return;
+      btn.dataset.mayanutFinalFlourStateFix = '1';
+      paint(btn, normal);
+      btn.addEventListener('focus', function(){ setTimeout(function(){ paint(btn, normal); }, 0); }, true);
+      btn.addEventListener('focusin', function(){ setTimeout(function(){ paint(btn, normal); }, 0); }, true);
+      btn.addEventListener('touchstart', function(){ paint(btn, normal); }, {passive:true});
+      btn.addEventListener('pointermove', function(e){
+        if(e.pointerType === 'mouse'){
+          document.body.classList.add('mayanut-product-choice-hover-ready');
+          if(btn.matches(':hover')) paint(btn, hover);
+        }
+      }, {passive:true});
+      btn.addEventListener('mouseenter', function(){
+        if(document.body.classList.contains('mayanut-product-choice-hover-ready')) paint(btn, hover);
+        else paint(btn, normal);
+      }, {passive:true});
+      btn.addEventListener('mouseleave', function(){ paint(btn, normal); }, {passive:true});
+    });
+  }
+  function run(){ bind(); resetFlourButtons(); }
+  run();
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('load', run, {passive:true});
+  window.addEventListener('pageshow', run, {passive:true});
+  document.addEventListener('click', function(){ setTimeout(run, 0); setTimeout(run, 80); }, true);
+  document.addEventListener('focusin', function(){ setTimeout(run, 0); }, true);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') document.body.classList.remove('mayanut-product-choice-hover-ready'); }, true);
+  var panel = document.getElementById('productChoicePanel');
+  if(panel && 'MutationObserver' in window){
+    new MutationObserver(function(){ setTimeout(run, 0); }).observe(panel, {attributes:true, attributeFilter:['class','hidden']});
+  }
 })();
 </script>
 

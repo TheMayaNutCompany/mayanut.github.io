@@ -3598,10 +3598,76 @@ html body #heroCarousel .product-split-btn.product-split-powder{
 }
 </style>
 
-<script id="mayanut-final-powder-cta-bottom-align-in-food-runtime-2026-05-17">
+
+
+<style id="mayanut-final-powder-cta-no-flicker-2026-05-17">
+/* Stable no-flicker hero CTA lock: one centered Powder button; its bottom aligns with the bottom of the In Food card. */
+html body #heroCarousel{
+  --mayanut-powder-cta-align-y:0px;
+}
+
+html body #heroCarousel #heroCarouselActions,
+html body #heroCarousel .hero-carousel-actions{
+  transform:translateY(var(--mayanut-powder-cta-align-y,0px)) !important;
+  transition:none !important;
+  animation:none !important;
+  will-change:auto !important;
+}
+
+html body #heroCarousel #heroCarouselActions .product-split-cta.hero-product-split-cta,
+html body #heroCarousel .hero-carousel-actions .product-split-cta.hero-product-split-cta{
+  width:100% !important;
+  max-width:520px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  justify-items:center !important;
+  text-align:center !important;
+}
+
+html body #heroCarousel #heroCarouselActions .product-split-btn.product-split-powder,
+html body #heroCarousel .hero-carousel-actions .product-split-btn.product-split-powder,
+html body #heroCarousel .hero-product-split-cta .product-split-btn.product-split-powder{
+  display:inline-flex !important;
+  width:fit-content !important;
+  min-width:0 !important;
+  max-width:calc(100% - 24px) !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  justify-self:center !important;
+  align-self:center !important;
+  text-align:center !important;
+}
+
+@media (max-width:820px){
+  html body #heroCarousel{
+    --mayanut-powder-cta-align-y:0px !important;
+  }
+  html body #heroCarousel #heroCarouselActions,
+  html body #heroCarousel .hero-carousel-actions{
+    transform:none !important;
+  }
+}
+</style>
+
+<script id="mayanut-final-powder-cta-no-flicker-runtime-2026-05-17">
 (function(){
   var raf = 0;
-  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  var resizeTimer = 0;
+  var lastShift = null;
+
+  function clamp(value, min, max){
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function getCurrentShift(carousel){
+    var raw = carousel.style.getPropertyValue('--mayanut-powder-cta-align-y') || '0';
+    var n = parseFloat(raw);
+    return Number.isFinite(n) ? n : 0;
+  }
+
   function findInFoodCard(){
     var items = Array.prototype.slice.call(document.querySelectorAll('.hero-proof-grid .hero-proof-item'));
     for(var i = 0; i < items.length; i++){
@@ -3611,48 +3677,78 @@ html body #heroCarousel .product-split-btn.product-split-powder{
     }
     return items.length ? items[items.length - 1] : null;
   }
+
   function alignPowderCTA(){
     raf = 0;
     var carousel = document.getElementById('heroCarousel');
     var actions = document.getElementById('heroCarouselActions');
     var powderButton = carousel ? carousel.querySelector('.product-split-btn.product-split-powder') : null;
     var inFood = findInFoodCard();
+
     if(!carousel || !actions || !powderButton || !inFood){ return; }
 
-    carousel.style.setProperty('--mayanut-powder-cta-align-y','0px','important');
-
+    /* Mobile/tablet stack should stay natural; desktop/tablet-landscape uses the measured lock. */
     if(!(window.matchMedia && window.matchMedia('(min-width:821px)').matches)){
-      actions.style.setProperty('transform','none','important');
+      carousel.style.setProperty('--mayanut-powder-cta-align-y','0px','important');
+      actions.style.removeProperty('transform');
+      lastShift = 0;
       return;
     }
 
-    actions.style.setProperty('transform','translateY(0px)','important');
+    var buttonRect = powderButton.getBoundingClientRect();
+    var foodRect = inFood.getBoundingClientRect();
+    if(!buttonRect || !foodRect || !buttonRect.height || !foodRect.height){ return; }
 
-    window.requestAnimationFrame(function(){
-      var buttonRect = powderButton.getBoundingClientRect();
-      var foodRect = inFood.getBoundingClientRect();
-      if(!buttonRect || !foodRect || !buttonRect.height || !foodRect.height){ return; }
+    var current = getCurrentShift(carousel);
+    var delta = Math.round(foodRect.bottom - buttonRect.bottom);
+    var next = clamp(Math.round(current + delta), -220, 220);
 
-      var shift = Math.round(foodRect.bottom - buttonRect.bottom);
-      shift = clamp(shift, -220, 220);
+    /* Do not keep rewriting the same value; this prevents the visible flicker/reflow loop. */
+    if(lastShift !== null && Math.abs(next - lastShift) <= 1){ return; }
+    if(Math.abs(next - current) <= 1){
+      lastShift = current;
+      return;
+    }
 
-      carousel.style.setProperty('--mayanut-powder-cta-align-y', shift + 'px', 'important');
-      actions.style.setProperty('transform','translateY(' + shift + 'px)','important');
-    });
+    carousel.style.setProperty('--mayanut-powder-cta-align-y', next + 'px', 'important');
+    lastShift = next;
   }
+
   function scheduleAlign(){
-    if(raf){ window.cancelAnimationFrame(raf); }
+    if(raf){ return; }
     raf = window.requestAnimationFrame(alignPowderCTA);
   }
 
-  document.addEventListener('DOMContentLoaded', scheduleAlign);
-  window.addEventListener('load', scheduleAlign, {passive:true});
-  window.addEventListener('resize', scheduleAlign, {passive:true});
-  window.addEventListener('orientationchange', scheduleAlign, {passive:true});
-  window.addEventListener('pageshow', scheduleAlign, {passive:true});
+  function scheduleResizeAlign(){
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(function(){
+      lastShift = null;
+      scheduleAlign();
+    }, 120);
+  }
 
-  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(scheduleAlign).catch(function(){}); }
-  [80,220,500,1000,1600].forEach(function(delay){ window.setTimeout(scheduleAlign, delay); });
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', scheduleAlign, {once:true});
+  } else {
+    scheduleAlign();
+  }
+
+  window.addEventListener('load', function(){ lastShift = null; scheduleAlign(); }, {passive:true});
+  window.addEventListener('pageshow', function(){ lastShift = null; scheduleAlign(); }, {passive:true});
+  window.addEventListener('resize', scheduleResizeAlign, {passive:true});
+  window.addEventListener('orientationchange', scheduleResizeAlign, {passive:true});
+
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ lastShift = null; scheduleAlign(); }).catch(function(){});
+  }
+
+  var carousel = document.getElementById('heroCarousel');
+  if(window.ResizeObserver && carousel){
+    var observer = new ResizeObserver(function(){ scheduleResizeAlign(); });
+    observer.observe(carousel);
+    var proofGrid = document.querySelector('.hero-proof-grid');
+    if(proofGrid){ observer.observe(proofGrid); }
+  }
 })();
 </script>
 

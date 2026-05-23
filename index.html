@@ -3958,5 +3958,214 @@ html body #heroCarousel .hero-product-split-cta .product-split-btn.product-split
 })();
 </script>
 
+
+<style id="mayanut-index-final-mobile-2x2-paragraph-cta-lock-2026-05-22">
+/* Final correction: mobile proof notes stay 2x2; tablet CTA aligns to the left paragraph bottom. */
+@media (max-width:760px){
+  html body .hero-proof-grid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+    max-width:100% !important;
+    width:100% !important;
+    margin-top:16px !important;
+  }
+  html body .hero-proof-item{
+    min-height:104px !important;
+    padding:12px 11px 11px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    gap:5px !important;
+  }
+  html body .hero-proof-label{
+    font-size:10.5px !important;
+    line-height:1.15 !important;
+    letter-spacing:.085em !important;
+    margin-bottom:2px !important;
+  }
+  html body .hero-proof-copy{
+    font-size:12.8px !important;
+    line-height:1.42 !important;
+  }
+}
+@media (max-width:390px){
+  html body .hero-proof-grid{
+    gap:8px !important;
+  }
+  html body .hero-proof-item{
+    min-height:112px !important;
+    padding:11px 9px 10px !important;
+  }
+  html body .hero-proof-copy{
+    font-size:12.2px !important;
+    line-height:1.38 !important;
+  }
+}
+
+/* Keep the tablet hero in two columns and let the measured CTA aligner win over older no-flicker guards. */
+@media (min-width:761px) and (max-width:1180px){
+  html body .hero-merged{
+    display:grid !important;
+    grid-template-columns:minmax(0,1.18fr) minmax(250px,.82fr) !important;
+    align-items:start !important;
+    gap:22px !important;
+  }
+  html body .hero-merged-copy{
+    order:initial !important;
+    min-width:0 !important;
+  }
+  html body #heroCarousel,
+  html body .hero-carousel{
+    order:initial !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-self:start !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+  }
+  html body #heroCarouselStage,
+  html body .hero-carousel-stage,
+  html body .hero-carousel-viewport{
+    width:100% !important;
+    max-width:min(340px,38vw) !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  html body #heroCarouselBelow,
+  html body .hero-carousel-below{
+    width:100% !important;
+    max-width:min(340px,38vw) !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    margin-top:10px !important;
+  }
+  html body #heroCarouselActions,
+  html body .hero-carousel-actions{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:flex-start !important;
+    top:0 !important;
+    margin-top:0 !important;
+    transform:translateY(var(--mayanut-powder-cta-align-y,0px)) !important;
+    transition:none !important;
+    will-change:auto !important;
+  }
+  html body #heroCarousel .product-split-cta.hero-product-split-cta{
+    width:100% !important;
+    max-width:340px !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+  }
+  html body #heroCarousel .product-split-btn.product-split-powder{
+    margin-left:auto !important;
+    margin-right:auto !important;
+    max-width:100% !important;
+    white-space:nowrap !important;
+  }
+}
+@media (min-width:761px) and (max-width:900px){
+  html body .hero-merged{
+    grid-template-columns:minmax(0,1.12fr) minmax(230px,.88fr) !important;
+    gap:18px !important;
+  }
+  html body #heroCarouselStage,
+  html body .hero-carousel-stage,
+  html body .hero-carousel-viewport,
+  html body #heroCarouselBelow,
+  html body .hero-carousel-below{
+    max-width:min(300px,38vw) !important;
+  }
+}
+</style>
+
+<script id="mayanut-index-final-cta-paragraph-bottom-lock-2026-05-22">
+(function(){
+  var raf = 0;
+  var timer = 0;
+  var last = null;
+
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+  function getTargetParagraph(){
+    return document.querySelector('.hero-merged-copy .hero-note') ||
+           document.querySelector('.hero-merged-copy p:last-of-type');
+  }
+
+  function alignCTA(){
+    raf = 0;
+    var carousel = document.getElementById('heroCarousel');
+    var actions = document.getElementById('heroCarouselActions');
+    var button = actions ? actions.querySelector('.product-split-btn.product-split-powder') : null;
+    var target = getTargetParagraph();
+
+    if(!carousel || !actions || !button || !target){ return; }
+
+    /* Let phone layout stay natural; tablet and desktop use the measured paragraph-bottom lock. */
+    if(!(window.matchMedia && window.matchMedia('(min-width:761px)').matches)){
+      carousel.style.setProperty('--mayanut-powder-cta-align-y','0px','important');
+      last = 0;
+      return;
+    }
+
+    /* Reset before measuring so older scripts do not accumulate vertical drift. */
+    carousel.style.setProperty('--mayanut-powder-cta-align-y','0px','important');
+    actions.getBoundingClientRect();
+
+    var buttonRect = button.getBoundingClientRect();
+    var targetRect = target.getBoundingClientRect();
+    if(!buttonRect.height || !targetRect.height){ return; }
+
+    var delta = Math.round(targetRect.bottom - buttonRect.bottom);
+    var maxShift = window.matchMedia('(max-width:1180px)').matches ? 190 : 220;
+    var next = clamp(delta, -190, maxShift);
+
+    if(last !== null && Math.abs(next - last) <= 1){ return; }
+    carousel.style.setProperty('--mayanut-powder-cta-align-y', next + 'px', 'important');
+    last = next;
+  }
+
+  function schedule(){
+    if(raf){ return; }
+    raf = window.requestAnimationFrame(alignCTA);
+  }
+
+  function scheduleSettled(){
+    window.clearTimeout(timer);
+    timer = window.setTimeout(function(){
+      last = null;
+      schedule();
+      window.setTimeout(function(){ last = null; schedule(); }, 180);
+    }, 80);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', scheduleSettled, {once:true});
+  } else {
+    scheduleSettled();
+  }
+
+  window.addEventListener('load', scheduleSettled, {passive:true});
+  window.addEventListener('pageshow', scheduleSettled, {passive:true});
+  window.addEventListener('resize', scheduleSettled, {passive:true});
+  window.addEventListener('orientationchange', scheduleSettled, {passive:true});
+
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(scheduleSettled).catch(function(){});
+  }
+
+  if(window.ResizeObserver){
+    var observer = new ResizeObserver(scheduleSettled);
+    ['.hero-merged-copy', '#heroCarousel', '#heroCarouselActions', '.hero-proof-grid'].forEach(function(sel){
+      var el = document.querySelector(sel);
+      if(el){ observer.observe(el); }
+    });
+  }
+})();
+</script>
+
 </body>
 </html>
